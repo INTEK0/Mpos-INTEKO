@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="NewIntekoDataSet" targetNamespace="http://tempuri.org/NewIntekoDataSet.xsd" xmlns:mstns="http://tempuri.org/NewIntekoDataSet.xsd" xmlns="http://tempuri.org/NewIntekoDataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="SqlCon" IsAppSettingsProperty="true" Modifier="Assembly" Name="SqlCon (Settings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.WindowsFormsApp2.Properties.Settings.GlobalReference.Default.SqlCon" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="gaytarilacag_mallarTableAdapter" GeneratorDataComponentClassName="gaytarilacag_mallarTableAdapter" Name="gaytarilacag_mallar" UserDataComponentName="gaytarilacag_mallarTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="SqlCon (Settings)" DbObjectName="NewInteko.dbo.gaytarilacag_mallar" DbObjectType="View" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>SELECT MAL_ALISI_DETAILS_ID, FAKTURA_NOMRE, SIRKET_ADI, MEHSUL_ADI, MEHSUL_KODU, MIGDARI, WAREHOUSE_NAME FROM dbo.gaytarilacag_mallar</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="MAL_ALISI_DETAILS_ID" DataSetColumn="MAL_ALISI_DETAILS_ID" />
+              <Mapping SourceColumn="FAKTURA_NOMRE" DataSetColumn="FAKTURA_NOMRE" />
+              <Mapping SourceColumn="SIRKET_ADI" DataSetColumn="SIRKET_ADI" />
+              <Mapping SourceColumn="MEHSUL_ADI" DataSetColumn="MEHSUL_ADI" />
+              <Mapping SourceColumn="MEHSUL_KODU" DataSetColumn="MEHSUL_KODU" />
+              <Mapping SourceColumn="MIGDARI" DataSetColumn="MIGDARI" />
+              <Mapping SourceColumn="WAREHOUSE_NAME" DataSetColumn="WAREHOUSE_NAME" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="NewIntekoDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="True" msprop:Generator_DataSetName="NewIntekoDataSet" msprop:Generator_UserDSName="NewIntekoDataSet">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="gaytarilacag_mallar" msprop:Generator_TableClassName="gaytarilacag_mallarDataTable" msprop:Generator_TableVarName="tablegaytarilacag_mallar" msprop:Generator_RowChangedName="gaytarilacag_mallarRowChanged" msprop:Generator_TablePropName="gaytarilacag_mallar" msprop:Generator_RowDeletingName="gaytarilacag_mallarRowDeleting" msprop:Generator_RowChangingName="gaytarilacag_mallarRowChanging" msprop:Generator_RowEvHandlerName="gaytarilacag_mallarRowChangeEventHandler" msprop:Generator_RowDeletedName="gaytarilacag_mallarRowDeleted" msprop:Generator_RowClassName="gaytarilacag_mallarRow" msprop:Generator_UserTableName="gaytarilacag_mallar" msprop:Generator_RowEvArgName="gaytarilacag_mallarRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="MAL_ALISI_DETAILS_ID" msprop:Generator_ColumnVarNameInTable="columnMAL_ALISI_DETAILS_ID" msprop:Generator_ColumnPropNameInRow="MAL_ALISI_DETAILS_ID" msprop:Generator_ColumnPropNameInTable="MAL_ALISI_DETAILS_IDColumn" msprop:Generator_UserColumnName="MAL_ALISI_DETAILS_ID" type="xs:int" />
+              <xs:element name="FAKTURA_NOMRE" msprop:Generator_ColumnVarNameInTable="columnFAKTURA_NOMRE" msprop:Generator_ColumnPropNameInRow="FAKTURA_NOMRE" msprop:Generator_ColumnPropNameInTable="FAKTURA_NOMREColumn" msprop:Generator_UserColumnName="FAKTURA_NOMRE" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="20" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="SIRKET_ADI" msprop:Generator_ColumnVarNameInTable="columnSIRKET_ADI" msprop:Generator_ColumnPropNameInRow="SIRKET_ADI" msprop:Generator_ColumnPropNameInTable="SIRKET_ADIColumn" msprop:Generator_UserColumnName="SIRKET_ADI" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="500" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="MEHSUL_ADI" msprop:Generator_ColumnVarNameInTable="columnMEHSUL_ADI" msprop:Generator_ColumnPropNameInRow="MEHSUL_ADI" msprop:Generator_ColumnPropNameInTable="MEHSUL_ADIColumn" msprop:Generator_UserColumnName="MEHSUL_ADI" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="100" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="MEHSUL_KODU" msprop:Generator_ColumnVarNameInTable="columnMEHSUL_KODU" msprop:Generator_ColumnPropNameInRow="MEHSUL_KODU" msprop:Generator_ColumnPropNameInTable="MEHSUL_KODUColumn" msprop:Generator_UserColumnName="MEHSUL_KODU" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="100" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="MIGDARI" msprop:Generator_ColumnVarNameInTable="columnMIGDARI" msprop:Generator_ColumnPropNameInRow="MIGDARI" msprop:Generator_ColumnPropNameInTable="MIGDARIColumn" msprop:Generator_UserColumnName="MIGDARI" type="xs:decimal" minOccurs="0" />
+              <xs:element name="WAREHOUSE_NAME" msprop:Generator_ColumnVarNameInTable="columnWAREHOUSE_NAME" msprop:Generator_ColumnPropNameInRow="WAREHOUSE_NAME" msprop:Generator_ColumnPropNameInTable="WAREHOUSE_NAMEColumn" msprop:Generator_UserColumnName="WAREHOUSE_NAME" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="500" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:gaytarilacag_mallar" />
+      <xs:field xpath="mstns:MAL_ALISI_DETAILS_ID" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>

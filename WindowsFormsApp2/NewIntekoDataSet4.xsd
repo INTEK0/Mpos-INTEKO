@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="NewIntekoDataSet4" targetNamespace="http://tempuri.org/NewIntekoDataSet4.xsd" xmlns:mstns="http://tempuri.org/NewIntekoDataSet4.xsd" xmlns="http://tempuri.org/NewIntekoDataSet4.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="SqlCon" IsAppSettingsProperty="true" Modifier="Assembly" Name="SqlCon (Settings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.WindowsFormsApp2.Properties.Settings.GlobalReference.Default.SqlCon" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="MAL_GAYTARMSA_DEYISMETableAdapter" GeneratorDataComponentClassName="MAL_GAYTARMSA_DEYISMETableAdapter" Name="MAL_GAYTARMSA_DEYISME" UserDataComponentName="MAL_GAYTARMSA_DEYISMETableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="SqlCon (Settings)" DbObjectName="NewInteko.dbo.MAL_GAYTARMSA_DEYISME" DbObjectType="View" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>SELECT MAL_GEYTARMA_DETAILS, [FAKTURA NÖMRƏSİ], [TƏCHİZATÇI ADI], [MƏHSUL ADI], [MƏHSUL KODU], MİQDARI, ANBAR, [QAYTARILMIŞ MİQDAR] FROM dbo.MAL_GAYTARMSA_DEYISME</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="MAL_GEYTARMA_DETAILS" DataSetColumn="MAL_GEYTARMA_DETAILS" />
+              <Mapping SourceColumn="FAKTURA NÖMRƏSİ" DataSetColumn="FAKTURA NÖMRƏSİ" />
+              <Mapping SourceColumn="TƏCHİZATÇI ADI" DataSetColumn="TƏCHİZATÇI ADI" />
+              <Mapping SourceColumn="MƏHSUL ADI" DataSetColumn="MƏHSUL ADI" />
+              <Mapping SourceColumn="MƏHSUL KODU" DataSetColumn="MƏHSUL KODU" />
+              <Mapping SourceColumn="MİQDARI" DataSetColumn="MİQDARI" />
+              <Mapping SourceColumn="ANBAR" DataSetColumn="ANBAR" />
+              <Mapping SourceColumn="QAYTARILMIŞ MİQDAR" DataSetColumn="QAYTARILMIŞ MİQDAR" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="NewIntekoDataSet4" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="True" msprop:Generator_DataSetName="NewIntekoDataSet4" msprop:Generator_UserDSName="NewIntekoDataSet4">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="MAL_GAYTARMSA_DEYISME" msprop:Generator_TableClassName="MAL_GAYTARMSA_DEYISMEDataTable" msprop:Generator_TableVarName="tableMAL_GAYTARMSA_DEYISME" msprop:Generator_RowChangedName="MAL_GAYTARMSA_DEYISMERowChanged" msprop:Generator_TablePropName="MAL_GAYTARMSA_DEYISME" msprop:Generator_RowDeletingName="MAL_GAYTARMSA_DEYISMERowDeleting" msprop:Generator_RowChangingName="MAL_GAYTARMSA_DEYISMERowChanging" msprop:Generator_RowEvHandlerName="MAL_GAYTARMSA_DEYISMERowChangeEventHandler" msprop:Generator_RowDeletedName="MAL_GAYTARMSA_DEYISMERowDeleted" msprop:Generator_RowClassName="MAL_GAYTARMSA_DEYISMERow" msprop:Generator_UserTableName="MAL_GAYTARMSA_DEYISME" msprop:Generator_RowEvArgName="MAL_GAYTARMSA_DEYISMERowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="MAL_GEYTARMA_DETAILS" msprop:Generator_ColumnVarNameInTable="columnMAL_GEYTARMA_DETAILS" msprop:Generator_ColumnPropNameInRow="MAL_GEYTARMA_DETAILS" msprop:Generator_ColumnPropNameInTable="MAL_GEYTARMA_DETAILSColumn" msprop:Generator_UserColumnName="MAL_GEYTARMA_DETAILS" type="xs:int" />
+              <xs:element name="FAKTURA_x0020_NÖMRƏSİ" msprop:Generator_ColumnVarNameInTable="columnFAKTURA_NÖMRƏSİ" msprop:Generator_ColumnPropNameInRow="FAKTURA_NÖMRƏSİ" msprop:Generator_ColumnPropNameInTable="FAKTURA_NÖMRƏSİColumn" msprop:Generator_UserColumnName="FAKTURA NÖMRƏSİ" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="20" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="TƏCHİZATÇI_x0020_ADI" msprop:Generator_ColumnVarNameInTable="columnTƏCHİZATÇI_ADI" msprop:Generator_ColumnPropNameInRow="TƏCHİZATÇI_ADI" msprop:Generator_ColumnPropNameInTable="TƏCHİZATÇI_ADIColumn" msprop:Generator_UserColumnName="TƏCHİZATÇI ADI" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="500" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="MƏHSUL_x0020_ADI" msprop:Generator_ColumnVarNameInTable="columnMƏHSUL_ADI" msprop:Generator_ColumnPropNameInRow="MƏHSUL_ADI" msprop:Generator_ColumnPropNameInTable="MƏHSUL_ADIColumn" msprop:Generator_UserColumnName="MƏHSUL ADI" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="100" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="MƏHSUL_x0020_KODU" msprop:Generator_ColumnVarNameInTable="columnMƏHSUL_KODU" msprop:Generator_ColumnPropNameInRow="MƏHSUL_KODU" msprop:Generator_ColumnPropNameInTable="MƏHSUL_KODUColumn" msprop:Generator_UserColumnName="MƏHSUL KODU" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="100" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="MİQDARI" msprop:Generator_ColumnVarNameInTable="columnMİQDARI" msprop:Generator_ColumnPropNameInRow="MİQDARI" msprop:Generator_ColumnPropNameInTable="MİQDARIColumn" msprop:Generator_UserColumnName="MİQDARI" type="xs:decimal" minOccurs="0" />
+              <xs:element name="ANBAR" msprop:Generator_ColumnVarNameInTable="columnANBAR" msprop:Generator_ColumnPropNameInRow="ANBAR" msprop:Generator_ColumnPropNameInTable="ANBARColumn" msprop:Generator_UserColumnName="ANBAR" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="500" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="QAYTARILMIŞ_x0020_MİQDAR" msprop:Generator_ColumnVarNameInTable="columnQAYTARILMIŞ_MİQDAR" msprop:Generator_ColumnPropNameInRow="QAYTARILMIŞ_MİQDAR" msprop:Generator_ColumnPropNameInTable="QAYTARILMIŞ_MİQDARColumn" msprop:Generator_UserColumnName="QAYTARILMIŞ MİQDAR" type="xs:decimal" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:MAL_GAYTARMSA_DEYISME" />
+      <xs:field xpath="mstns:MAL_GEYTARMA_DETAILS" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>

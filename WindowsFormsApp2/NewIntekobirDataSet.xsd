@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="NewIntekobirDataSet" targetNamespace="http://tempuri.org/NewIntekobirDataSet.xsd" xmlns:mstns="http://tempuri.org/NewIntekobirDataSet.xsd" xmlns="http://tempuri.org/NewIntekobirDataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="chartdbConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="chartdbConnectionString (Settings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.WindowsFormsApp2.Properties.Settings.GlobalReference.Default.chartdbConnectionString" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="anbar_deyismeTableAdapter" GeneratorDataComponentClassName="anbar_deyismeTableAdapter" Name="anbar_deyisme" UserDataComponentName="anbar_deyismeTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="chartdbConnectionString (Settings)" DbObjectName="dbo.anbar_deyisme" DbObjectType="View" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>SELECT SATIS_GIYMETI FROM dbo.anbar_deyisme</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="SATIS_GIYMETI" DataSetColumn="SATIS_GIYMETI" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="NewIntekobirDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="True" msprop:Generator_DataSetName="NewIntekobirDataSet" msprop:Generator_UserDSName="NewIntekobirDataSet">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="anbar_deyisme" msprop:Generator_TableClassName="anbar_deyismeDataTable" msprop:Generator_TableVarName="tableanbar_deyisme" msprop:Generator_TablePropName="anbar_deyisme" msprop:Generator_RowDeletingName="anbar_deyismeRowDeleting" msprop:Generator_RowChangingName="anbar_deyismeRowChanging" msprop:Generator_RowEvHandlerName="anbar_deyismeRowChangeEventHandler" msprop:Generator_RowDeletedName="anbar_deyismeRowDeleted" msprop:Generator_UserTableName="anbar_deyisme" msprop:Generator_RowChangedName="anbar_deyismeRowChanged" msprop:Generator_RowEvArgName="anbar_deyismeRowChangeEvent" msprop:Generator_RowClassName="anbar_deyismeRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="SATIS_GIYMETI" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnSATIS_GIYMETI" msprop:Generator_ColumnPropNameInRow="SATIS_GIYMETI" msprop:Generator_ColumnPropNameInTable="SATIS_GIYMETIColumn" msprop:Generator_UserColumnName="SATIS_GIYMETI" type="xs:decimal" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
