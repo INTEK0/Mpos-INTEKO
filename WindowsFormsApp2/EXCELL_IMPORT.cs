@@ -40,7 +40,12 @@ namespace WindowsFormsApp2
         private void simpleButton1_Click(object sender, EventArgs e)
         {
 
-            using (OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "Excell 97-2003 Workbook|.xls|Excell Workbook|*.xlsx" })
+            using (OpenFileDialog openFileDialog = new OpenFileDialog()
+            {
+                Filter = "Excell 97-2003 Workbook|.xls|Excell Workbook|*.xlsx",
+                FilterIndex = 2,
+            })
+            {
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     textEdit1.Text = openFileDialog.FileName;
@@ -61,7 +66,7 @@ namespace WindowsFormsApp2
                     }
                 }
 
-
+            }
         }
 
         private void selectedindexchanged_Click(object sender, EventArgs e)
@@ -199,12 +204,6 @@ namespace WindowsFormsApp2
                 if (Convert.ToInt32(countstring) > 0)
                 {
 
-
-
-
-
-
-
                     string query2 = "insert into COMPANY.TECHIZATCI (TECHIZATCI_NOMRE,SIRKET_ADI )    SELECT case when ('T-'+ RTRIM( LTRIM(CAST(MAX(CAST(REPLACE(TECHIZATCI_NOMRE,'T-','')  \r\n   AS INT)+1) AS NCHAR(10)))) ) is null then 'T-1' ELSE\r\n   \r\n   ('T-'+ RTRIM( LTRIM(CAST(MAX(CAST(REPLACE(TECHIZATCI_NOMRE,'T-','')  \r\n   AS INT)+1) AS NCHAR(10)))) )\r\n    END as col,@techizatci FROM COMPANY.TECHIZATCI";
 
                     SqlCommand command2 = new SqlCommand(query2, cont);
@@ -252,10 +251,6 @@ namespace WindowsFormsApp2
                 if (Convert.ToInt32(countstring) > 0)
                 {
 
-
-
-
-
                     string querykategori2 = "INSERT INTO [dbo].[KATEGORIYA] ([KATEGORIYA])  VALUES (@kategoriya)";
 
                     SqlCommand command2 = new SqlCommand(querykategori2, cont);
@@ -265,14 +260,6 @@ namespace WindowsFormsApp2
                     command2.ExecuteNonQuery();
                     cont.Close();
                 }
-                else
-                {
-
-                }
-
-
-
-
             }
 
             con.Close();
@@ -477,7 +464,7 @@ namespace WindowsFormsApp2
 
                 //string querqayit = "  INSERT INTO [MAL_ALISI_MAIN]  SELECT TOP 1  '" + FAKTURA_NO + "'," + TECHIZATCI_ID + ", '" + mydate + "' ,0 ,( SELECT CASE WHEN  ('MA-'+ RTRIM( LTRIM(CAST(MAX(CAST(REPLACE(EMELIYYAT_NOMRE,'MA-','')   AS INT)+1) AS NCHAR(10)))) )   IS NULL THEN 'MA-1'  ELSE   ('MA-'+ RTRIM( LTRIM(CAST(MAX(CAST(REPLACE(EMELIYYAT_NOMRE,'MA-','')    AS INT)+1) AS NCHAR(10)))) ) END   as col FROM MAL_ALISI_MAIN)  ,CAST(GETDATE() AS date)  ," + DbProsedures.GetUser().Id + " ,N'MƏHSUL ALIŞI'  FROM [userParol]";
                 string querydetailkayit = "INSERT INTO [MAL_ALISI_DETAILS] ([MAL_ALISI_MAIN_ID]\r\n           ,[KATEGORIYA]\r\n           ,[BARKOD]\r\n           ,[MEHSUL_ADI]\r\n           ,[MEHSUL_KODU]\r\n           ,[ANBAR_ID]\r\n           ,[MIGDARI]\r\n           ,[VAHID]\r\n           ,[VALYUTA]\r\n           ,[VERGI_DERECESI]\r\n           ,[SATIS_GIYMETI]\r\n           ,[ALIS_GIYMETI]\r\n           \r\n           ,[DiscountDate]\r\n ,[ISTEHSAL_TARIXI],[BITIS_TARIXI],[GEYD]         ) SELECT  \r\n\r\n(SELECT MAX(MAL_ALISI_MAIN_ID) FROM MAL_ALISI_MAIN)\r\n,(SELECT KATEGORIYA_ID FROM KATEGORIYA WHERE [KATEGORIYA]=[EXCELL_IMPORT_DATA_NEW].KATEGORIYA)\r\n   ,CASE WHEN [BARKOD] IS NULL THEN (SELECT TOP 1 BARKOD FROM MAL_ALISI_DETAILS WHERE MEHSUL_ADI=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI) \r\n   \r\n    WHEN BARKOD<>(SELECT TOP 1 BARKOD FROM MAL_ALISI_DETAILS WHERE MEHSUL_ADI=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI) THEN (SELECT TOP 1 BARKOD FROM MAL_ALISI_DETAILS WHERE MEHSUL_ADI=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI)    \r\n  \r\n   \r\n   ELSE BARKOD END\r\n     ,CASE WHEN [MEHSUL_ADI] IS NULL THEN  (SELECT TOP 1 MEHSUL_ADI FROM MAL_ALISI_DETAILS WHERE BARKOD=[EXCELL_IMPORT_DATA_NEW].BARKOD) ELSE [MEHSUL_ADI] END\r\n ,CASE WHEN \r\n (CASE WHEN [MEHSUL_KODU] IS NULL THEN (SELECT TOP 1 [MEHSUL_KODU] FROM MAL_ALISI_DETAILS WHERE BARKOD=[EXCELL_IMPORT_DATA_NEW].BARKOD) WHEN MEHSUL_KODU<>(SELECT TOP 1 [MEHSUL_KODU] FROM MAL_ALISI_DETAILS WHERE BARKOD=[EXCELL_IMPORT_DATA_NEW].BARKOD) THEN (SELECT TOP 1 [MEHSUL_KODU] FROM MAL_ALISI_DETAILS WHERE BARKOD=[EXCELL_IMPORT_DATA_NEW].BARKOD) ELSE MEHSUL_KODU END ) IS NULL \r\n \r\n THEN (CASE WHEN [MEHSUL_KODU] IS NULL THEN (SELECT TOP 1 [MEHSUL_KODU] FROM MAL_ALISI_DETAILS WHERE MEHSUL_ADI=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI) ELSE MEHSUL_KODU END )  \r\n \r\n \r\n WHEN MEHSUL_KODU<>(SELECT TOP 1 [MEHSUL_KODU] FROM MAL_ALISI_DETAILS WHERE MEHSUL_ADI=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI) THEN (SELECT TOP 1 [MEHSUL_KODU] FROM MAL_ALISI_DETAILS WHERE MEHSUL_ADI=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI)    \r\n  \r\n  ELSE MEHSUL_KODU\r\n\r\n  END\r\n\t   ,4\r\n\t     ,cast([MEHSULUN_MIGDARI] as decimal(9,2))\r\n\t\t ,CAST([VAHIDI] AS int)\r\n\t\t ,1\r\n\t\t   ,cast([EDV] as int)\r\n\t\t    ,cast(replace([SATINALMA_GIYMETI],',','.') as decimal(9,2))\r\n ,cast(replace([SATIS_GIYMETI],',','.') as decimal(9,2))\r\n     , GETDATE(),CONVERT(DATETIME, [ISTEHSAL_TARIHI], 104) ,CONVERT (DATETIME,[SONISTIFADE_TARIHI],104),  TESVIR    FROM [EXCELL_IMPORT_DATA_NEW]\r\n\r\n  WHERE  [KONTROL]=0\r\n\r\n  AND ALIS_TARIHI='" + ALIS_TARIHI + "'  AND FAKTURA_NO=N'" + FAKTURA_NO + "' AND TECHIZATCI_ADI=N'" + TECHIZATCI_ADI + "'";
-                string querydetailkayit2 = "INSERT INTO [MAL_ALISI_DETAILS] ([MAL_ALISI_MAIN_ID]\r\n           ,[KATEGORIYA]\r\n           ,[BARKOD]\r\n           ,[MEHSUL_ADI]\r\n           ,[MEHSUL_KODU]\r\n           ,[ANBAR_ID]\r\n           ,[MIGDARI]\r\n           ,[VAHID]\r\n           ,[VALYUTA]\r\n           ,[VERGI_DERECESI]\r\n           ,[SATIS_GIYMETI]\r\n           ,[ALIS_GIYMETI]\r\n           \r\n           ,[DiscountDate]\r\n   ,[ISTEHSAL_TARIXI],[BITIS_TARIXI],[GEYD]       ) SELECT  \r\n\r\n(SELECT MAX(MAL_ALISI_MAIN_ID) FROM MAL_ALISI_MAIN)\r\n,(SELECT KATEGORIYA_ID FROM KATEGORIYA WHERE [KATEGORIYA]=[EXCELL_IMPORT_DATA_NEW].KATEGORIYA)\r\n, CASE WHEN [BARKOD] IS NULL THEN  CAST(CONVERT(int, RAND() * 10000) AS nvarchar)  ELSE BARKOD END\r\n ,CASE WHEN [MEHSUL_ADI] IS NULL THEN  (SELECT TOP 1 MEHSUL_ADI FROM MAL_ALISI_DETAILS WHERE BARKOD=[EXCELL_IMPORT_DATA_NEW].BARKOD) ELSE [MEHSUL_ADI] END\r\n ,CASE WHEN [MEHSUL_KODU] IS NULL THEN  CAST(CONVERT(INT, RAND() * 10000) AS   varchar(20))  ELSE MEHSUL_KODU END\r\n\t   ,4\r\n\t     ,cast([MEHSULUN_MIGDARI] as decimal(9,2))\r\n\t\t ,cast([VAHIDI] as int)\r\n\t\t ,1\r\n\t\t   ,cast([EDV] as int)\r\n\t\t    ,cast(replace([SATINALMA_GIYMETI],',','.') as decimal(9,2))\r\n ,cast(replace([SATIS_GIYMETI],',','.') as decimal(9,2))\r\n      ,GETDATE(), CONVERT(DATETIME, [ISTEHSAL_TARIHI], 104) ,CONVERT (DATETIME,[SONISTIFADE_TARIHI],104),  TESVIR   FROM [EXCELL_IMPORT_DATA_NEW]\r\n\r\n  WHERE  [KONTROL]=1  AND ALIS_TARIHI='" + ALIS_TARIHI + "'  AND FAKTURA_NO=N'" + FAKTURA_NO + "' AND TECHIZATCI_ADI=N'" + TECHIZATCI_ADI + "'";
+                string querydetailkayit2 = "INSERT INTO [MAL_ALISI_DETAILS] ([MAL_ALISI_MAIN_ID]\r\n           ,[KATEGORIYA]\r\n           ,[BARKOD]\r\n           ,[MEHSUL_ADI]\r\n           ,[MEHSUL_KODU]\r\n           ,[ANBAR_ID]\r\n           ,[MIGDARI]\r\n           ,[VAHID]\r\n           ,[VALYUTA]\r\n           ,[VERGI_DERECESI]\r\n           ,[SATIS_GIYMETI]\r\n           ,[ALIS_GIYMETI]\r\n           \r\n           ,[DiscountDate]\r\n   ,[ISTEHSAL_TARIXI],[BITIS_TARIXI],[GEYD]       ) SELECT  \r\n\r\n(SELECT MAX(MAL_ALISI_MAIN_ID) FROM MAL_ALISI_MAIN)\r\n,(SELECT KATEGORIYA_ID FROM KATEGORIYA WHERE [KATEGORIYA]=[EXCELL_IMPORT_DATA_NEW].KATEGORIYA)\r\n, CASE WHEN [BARKOD] IS NULL THEN  CAST(CONVERT(int, RAND() * 100000) AS nvarchar)  ELSE BARKOD END\r\n ,CASE WHEN [MEHSUL_ADI] IS NULL THEN  (SELECT TOP 1 MEHSUL_ADI FROM MAL_ALISI_DETAILS WHERE BARKOD=[EXCELL_IMPORT_DATA_NEW].BARKOD) ELSE [MEHSUL_ADI] END\r\n ,CASE WHEN [MEHSUL_KODU] IS NULL THEN  CAST(CONVERT(INT, RAND() * 10000) AS   varchar(20))  ELSE MEHSUL_KODU END\r\n\t   ,4\r\n\t     ,cast([MEHSULUN_MIGDARI] as decimal(9,2))\r\n\t\t ,cast([VAHIDI] as int)\r\n\t\t ,1\r\n\t\t   ,cast([EDV] as int)\r\n\t\t    ,cast(replace([SATINALMA_GIYMETI],',','.') as decimal(9,2))\r\n ,cast(replace([SATIS_GIYMETI],',','.') as decimal(9,2))\r\n      ,GETDATE(), CONVERT(DATETIME, [ISTEHSAL_TARIHI], 104) ,CONVERT (DATETIME,[SONISTIFADE_TARIHI],104),  TESVIR   FROM [EXCELL_IMPORT_DATA_NEW]\r\n\r\n  WHERE  [KONTROL]=1  AND ALIS_TARIHI='" + ALIS_TARIHI + "'  AND FAKTURA_NO=N'" + FAKTURA_NO + "' AND TECHIZATCI_ADI=N'" + TECHIZATCI_ADI + "'";
                 string queryambarmagazakontrol = "\r\ndelete from ANBAR_MAGAZA\r\n\r\n   INSERT INTO ANBAR_MAGAZA(ANBAR_ID,MAGAZA_ID,TARIX,EMELIYYAT_NOMRE,mal_details_id,migdar)\r\n\t\tselect 4, 1002,getdate(),1,MAL_ALISI_DETAILS_ID,MIGDARI from MAL_ALISI_DETAILS ";
 
                 int supplierId = Convert.ToInt32(TECHIZATCI_ID);
@@ -529,6 +516,8 @@ namespace WindowsFormsApp2
 
             ReadyMessages.SUCCESS_DEFAULT_MESSAGE("Məhsullar sistemə uğurla əlavə edildi");
             FormHelpers.Log("Yeni məhsullar Excel import ilə sistemə daxil edildi");
+            DialogResult = DialogResult.OK;
+
             goto closethis;
 
 
@@ -585,7 +574,7 @@ namespace WindowsFormsApp2
                 {
 
 
-                    DialogResult result1 = MessageBox.Show($"{tezhicatci} təchizatçısı yaradılsın ?","Yeni Təchizatçı", MessageBoxButtons.YesNo);
+                    DialogResult result1 = MessageBox.Show($"{tezhicatci} təchizatçısı yaradılsın ?", "Yeni Təchizatçı", MessageBoxButtons.YesNo);
                     if (result1 == DialogResult.Yes)
                     {
 
@@ -640,7 +629,7 @@ namespace WindowsFormsApp2
                 {
 
 
-                    DialogResult resultkategori = MessageBox.Show($"Yeni {kategori} kateqoriyası yaradılsın ?","Yeni Kateqoriya", MessageBoxButtons.YesNo);
+                    DialogResult resultkategori = MessageBox.Show($"Yeni {kategori} kateqoriyası yaradılsın ?", "Yeni Kateqoriya", MessageBoxButtons.YesNo);
                     if (resultkategori == DialogResult.Yes)
                     {
 
@@ -750,8 +739,8 @@ namespace WindowsFormsApp2
 
 Bəli - Fərqli kodda {malzeme} məhsulu yaradılacaq
 Xeyr - Əvvəlki barkod ilə {malzeme} məhsulu yaradılacaq";
-                    
-                        DialogResult resultmalzeme = MessageBox.Show(message,"Mpos", MessageBoxButtons.YesNo);
+
+                    DialogResult resultmalzeme = MessageBox.Show(message, "Mpos", MessageBoxButtons.YesNo);
                     if (resultmalzeme == DialogResult.Yes)
                     {
 
@@ -802,11 +791,6 @@ Xeyr - Əvvəlki barkod ilə {malzeme} məhsulu yaradılacaq";
 
                 else if (kontrolkodbarkod == 1 && kontrolmalzemead == 1)
                 {
-
-
-
-
-
 
                 }
 
@@ -963,6 +947,7 @@ Xeyr - Əvvəlki barkod ilə {malzeme} məhsulu yaradılacaq";
 
                 ReadyMessages.SUCCESS_DEFAULT_MESSAGE("Məhsullar sistemə uğurla əlavə edildi");
                 FormHelpers.Log("Yeni məhsullar Excel import ilə sistemə daxil edildi");
+                DialogResult = DialogResult.OK;
                 goto closethis;
             }
             else

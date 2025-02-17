@@ -29,7 +29,6 @@ namespace WindowsFormsApp2.Helpers
                 return string.Empty;
             }
         }
-
         public static string TsName => GetRegistryValue("TsName");
         public static string CompanyName => GetRegistryValue("CompanyName");
         public static string Voen => GetRegistryValue("Voen");

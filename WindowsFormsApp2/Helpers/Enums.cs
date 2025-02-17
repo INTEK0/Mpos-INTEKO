@@ -16,11 +16,13 @@ namespace WindowsFormsApp2.Helpers
 
         public enum PayType
         {
+            Empty,
             Cash,
             Card,
             CashCard,
             PreCashCard,
-            Installment
+            Installment,
+            OtherPay
         }
 
         public enum HeaderMessage

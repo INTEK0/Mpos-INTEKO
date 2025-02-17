@@ -2288,6 +2288,7 @@ namespace WindowsFormsApp2
             this.layoutControlItem63.Size = new System.Drawing.Size(261, 44);
             this.layoutControlItem63.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem63.TextVisible = false;
+            this.layoutControlItem63.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // layoutControlItem64
             // 
@@ -2297,6 +2298,7 @@ namespace WindowsFormsApp2
             this.layoutControlItem64.Size = new System.Drawing.Size(432, 36);
             this.layoutControlItem64.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem64.TextVisible = false;
+            this.layoutControlItem64.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // emptySpaceItem19
             // 

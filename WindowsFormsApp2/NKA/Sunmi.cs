@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
+using static DTOs;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
 using static WindowsFormsApp2.Helpers.Enums;
@@ -255,13 +256,13 @@ namespace WindowsFormsApp2.NKA
             }
         }
 
-        public static bool Sales(string ipAddress, string proccessNo, decimal cash, decimal card, decimal total, string cashier, Customer customer, Doctor doctor, string rrn = "")
+        public static bool Sales(SalesDto salesData)
         {
             List<Item> items = new List<Item>();
 
             SqlConnection conn = new SqlConnection();
             SqlCommand cmd = new SqlCommand();
-            conn.ConnectionString = Properties.Settings.Default.SqlCon;
+            conn.ConnectionString = DbHelpers.DbConnectionString;
             conn.Open();
             string query = $@"SELECT 
                               name,
@@ -269,6 +270,7 @@ namespace WindowsFormsApp2.NKA
                               code,
                               salePrice,
                               quantity,
+                              discount,
                               vatType,
                               quantityType,
                               salePrice*quantity as ssum
@@ -286,7 +288,7 @@ namespace WindowsFormsApp2.NKA
                 double quantity = Convert.ToDouble(dr["quantity"]);
                 int vatType = Convert.ToInt32(dr["vatType"]);
                 int quantityType = Convert.ToInt32(dr["quantityType"]);
-                double ssum = Convert.ToDouble(dr["ssum"]);
+                decimal discount = Convert.ToDecimal(dr["discount"]);
                 salePrice = Math.Round(salePrice, 2);
 
                 Item itemProduct = new Item
@@ -297,7 +299,7 @@ namespace WindowsFormsApp2.NKA
                     quantity = quantity,
                     vatType = vatType,
                     quantityType = quantityType,
-                    discountAmount = 0
+                    discountAmount = discount
                 };
                 items.Add(itemProduct);
             }
@@ -305,13 +307,13 @@ namespace WindowsFormsApp2.NKA
             Data data = new Data
             {
                 documentUUID = Guid.NewGuid().ToString(),
-                cashPayment = cash,
-                cardPayment = card,
+                cashPayment = salesData.Cash,
+                cardPayment = salesData.Card,
                 bonusPayment = 0,
                 items = items,
-                cashierName = cashier,
-                clientName = customer == null ? null : $"{customer.Name} {customer.Surname} {customer.FatherName}",
-                rrn = rrn,
+                cashierName = salesData.Cashier,
+                clientName = salesData.Customer == null ? null : $"{salesData.Customer.Name} {salesData.Customer.Surname} {salesData.Customer.FatherName}",
+                rrn = salesData.Rrn,
                 moneyBackType = null
             };
 
@@ -326,7 +328,7 @@ namespace WindowsFormsApp2.NKA
                 NullValueHandling = NullValueHandling.Ignore
             });
 
-            var response = RequestPOST(ipAddress, json);
+            var response = RequestPOST(salesData.IpAddress, json);
 
             if (response != null)
             {
@@ -336,15 +338,15 @@ namespace WindowsFormsApp2.NKA
                     {
                         posNomre = response.data.number,
                         longFiskalId = response.data.document_id,
-                        proccessNo = proccessNo,
-                        cash = cash,
-                        card = card,
-                        total = total,
+                        proccessNo = salesData.ProccessNo,
+                        cash = salesData.Cash,
+                        card = salesData.Card,
+                        total = salesData.Total,
                         json = json,
                         shortFiskalId = response.data.short_document_id,
                         rrn = response.data.rrn,
-                        customerId = customer?.CustomerID,
-                        doctorId = doctor?.Id,
+                        customerId = salesData.Customer?.CustomerID,
+                        doctorId = salesData.Doctor?.Id,
                     });
 
                     if (MessageVisible)
@@ -373,15 +375,14 @@ namespace WindowsFormsApp2.NKA
             }
         }
 
-        public static bool ReturnPos(string url, string cashier, string proccesNo, string _bankrrn = "")
+        public static bool Refund(RefundDto refundData)
         {
             string fiskallID = "";
             decimal cash = default;
             decimal card = default;
 
-            SqlConnection conn2 = new SqlConnection();
+            SqlConnection conn2 = new SqlConnection(DbHelpers.DbConnectionString);
             SqlCommand cmd2 = new SqlCommand();
-            conn2.ConnectionString = Properties.Settings.Default.SqlCon;
             conn2.Open();
             string query2 = "SELECT  [pos_satis_check_main_id],[pos_nomre],[fiscal_id],[date_] ,[user_id_] ," +
                 "[emeliyyat_nomre],[NEGD_],[KART_],[UMUMI_MEBLEG] ,[json_] ,[fiscalNum],[documentID]" +
@@ -414,7 +415,7 @@ namespace WindowsFormsApp2.NKA
 
             SqlConnection conn = new SqlConnection();
             SqlCommand cmd = new SqlCommand();
-            conn.ConnectionString = Properties.Settings.Default.SqlCon;
+            conn.ConnectionString = DbHelpers.DbConnectionString;
             conn.Open();
 
 
@@ -428,7 +429,7 @@ namespace WindowsFormsApp2.NKA
               FROM pos_satis_check_details p
                        INNER JOIN MAL_ALISI_DETAILS md ON p.mal_alisi_details_id = md.MAL_ALISI_DETAILS_ID
                        INNER JOIN pos_gaytarma_manual pl ON p.pos_satis_check_details_id = pl.pos_satis_check_details
-              WHERE pl.emeliyyat_nomre = '{proccesNo}')";
+              WHERE pl.emeliyyat_nomre = '{refundData.ProccessNo}')";
 
 
 
@@ -469,8 +470,8 @@ namespace WindowsFormsApp2.NKA
                 cardPayment = card,
                 items = items,
                 moneyBackType = 0,
-                cashierName = cashier,
-                rrn = _bankrrn,
+                cashierName = refundData.Cashier,
+                rrn = refundData.Rrn,
                 isManual = true
             };
 
@@ -487,7 +488,7 @@ namespace WindowsFormsApp2.NKA
 
 
             RestClient rest = new RestClient();
-            RestRequest request = new RestRequest(url, Method.Post);
+            RestRequest request = new RestRequest(refundData.IpAddress, Method.Post);
             request.AddHeader("Content-Type", "application/json;charset=utf-8");
             request.AddStringBody(json, DataFormat.Json);
             RestResponse response = rest.Execute(request);
@@ -584,7 +585,7 @@ namespace WindowsFormsApp2.NKA
             public int? codeType { get; set; } = null;
             public int quantityType { get; set; }
             public int vatType { get; set; }
-            public double? discountAmount { get; set; } = null;
+            public decimal? discountAmount { get; set; } = null;
         }
 
         public class Data

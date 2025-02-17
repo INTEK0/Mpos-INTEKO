@@ -1,6 +1,7 @@
 ﻿using DevExpress.CodeParser;
 using DevExpress.DashboardCommon.Viewer;
 using DevExpress.Data.Linq.Helpers;
+using DevExpress.Map.Native;
 using DevExpress.Pdf.Native.BouncyCastle.Utilities.Net;
 using DevExpress.PivotGrid.PivotQuery;
 using DevExpress.XtraBars.Navigation;
@@ -1164,27 +1165,27 @@ namespace WindowsFormsApp2
                         {
 
                             decimal f = Convert.ToDecimal(textEdit6.Text);
-                            bool clinic = false;
-                            DialogResult result = XtraMessageBox.Show("A4 sənədi çap edilsin ?", nameof(HeaderMessage.Mesaj), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                            if (result is DialogResult.Yes)
-                            {
-                                clinic = true;
-                            }
+                            //bool clinic = false;
+                            //DialogResult result = XtraMessageBox.Show("A4 sənədi çap edilsin ?", nameof(HeaderMessage.Mesaj), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            //if (result is DialogResult.Yes)
+                            //{
+                            //    clinic = true;
+                            //}
 
-                            gelen_data_negd_pos(0, f, f, 0, 0, clinic);
+                            gelen_data_negd_pos(0, f, f, 0, 0, false);
                         }
                     }
                     else
                     {
                         decimal f = Convert.ToDecimal(textEdit6.Text);
 
-                        bool clinic = false;
-                        DialogResult result = XtraMessageBox.Show("A4 sənədi çap edilsin ?", nameof(HeaderMessage.Mesaj), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                        if (result is DialogResult.Yes)
-                        {
-                            clinic = true;
-                        }
-                        gelen_data_negd_pos(0, f, f, 0, 0, clinic);
+                        //bool clinic = false;
+                        //DialogResult result = XtraMessageBox.Show("A4 sənədi çap edilsin ?", nameof(HeaderMessage.Mesaj), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        //if (result is DialogResult.Yes)
+                        //{
+                        //    clinic = true;
+                        //}
+                        gelen_data_negd_pos(0, f, f, 0, 0, false);
                     }
                 }
 
@@ -1306,6 +1307,68 @@ namespace WindowsFormsApp2
                     }
                 }
             }
+            else if (type is PayType.OtherPay)
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                if (!string.IsNullOrEmpty(textEdit6.Text))
+                {
+                    SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString);
+                    string queryString = "SELECT STATUS FROM MENFI_AC_BAGLA ";
+                    SqlCommand command = new SqlCommand(queryString, connection);
+
+
+                    SqlDataAdapter da = new SqlDataAdapter(command);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+                    decimal saysa24 = 0;
+                    int number = dt.Rows[0].Field<int>("STATUS");
+                    int numberkontrol = 0;
+
+                    if (number == 0)
+                    {
+
+                        for (int i = 0; i < gridView1.DataRowCount; i++)
+                        {
+                            DataRow row = gridView1.GetDataRow(i);
+
+                            SqlConnection connection4 = new SqlConnection(Properties.Settings.Default.SqlCon);
+                            string queryStringk = "SELECT sum(   migdar_ ) as miktar   FROM dbo.GAIME_SATIS_SEARCH_menfi_ACIG() where [MƏHSUL ADI]=N'" + row["MƏHSUL ADI"].ToString() + "' and [MƏHSUL KODU]=(select [MEHSUL_KODU]from [MAL_ALISI_DETAILS] where [MAL_ALISI_DETAILS_ID]=" + Convert.ToInt32(row["MAL_ALISI_DETAILS_ID"]) + " ) group by TECHIZATCI_ID ,[TƏCHİZATÇI] ,[MƏHSUL ADI],  [MƏHSUL KODU],BARKOD  ";
+                            connection4.Open();
+                            SqlCommand command4 = new SqlCommand(queryStringk, connection4);
+                            decimal saysa = Convert.ToDecimal(row["SAY"]);
+                            SqlDataReader dr4 = command4.ExecuteReader();
+                            while (dr4.Read())
+                            {
+                                saysa24 = Convert.ToDecimal(dr4["miktar"].ToString());
+                            }
+                            if ((saysa24 - saysa) < 0)
+
+                            {
+                                numberkontrol = numberkontrol + 1;
+                                XtraMessageBox.Show($"Satılan məhsul sayı anbardakı qalıqdan çoxdur \nMəhsul adı: {row["MƏHSUL ADI"].ToString()}\nAnbar qalığı: {saysa24.ToString("N2")}", "Bildiriş", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            }
+                            else
+                            {
+                                numberkontrol = numberkontrol + 0;
+
+                            }
+                        }
+                        if (numberkontrol == 0)
+                        {
+                            decimal f = Convert.ToDecimal(textEdit6.Text);
+
+                            gelen_data_negd_pos(0, f, f, 0, 0, false, Enums.PayType.OtherPay);
+                        }
+                    }
+                    else
+                    {
+                        decimal f = Convert.ToDecimal(textEdit6.Text);
+                        gelen_data_negd_pos(0, f, f, 0, 0, false, Enums.PayType.OtherPay);
+                    }
+                }
+
+                Cursor.Current = Cursors.Default;
+            }
             else if (type is PayType.Installment)
             {
                 Cursor.Current = Cursors.WaitCursor;
@@ -1388,7 +1451,24 @@ namespace WindowsFormsApp2
 
         private void simpleButton6_Click(object sender, EventArgs e)
         {
-            Payment(Enums.PayType.Card);
+            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("OtherPay").ToString());
+            if (control)
+            {
+                fCardAndOtherPay f = new fCardAndOtherPay();
+                var result = f.ShowDialog();
+                if (result is DialogResult.Yes)
+                {
+                    Payment(Enums.PayType.OtherPay);
+                }
+                else if(result is DialogResult.No)
+                {
+                    Payment(Enums.PayType.Card);
+                }
+            }
+            else
+            {
+                Payment(Enums.PayType.Card);
+            }
         }
 
         private void simpleButton7_Click(object sender, EventArgs e)
@@ -2430,7 +2510,7 @@ namespace WindowsFormsApp2
             FormHelpers.OpenForm<POS_GAYTARMA_LAYOUT>(textBox1.Text, tUsername.Text);
         }
 
-        public void gelen_data_negd_pos(decimal cash_, decimal card_, decimal umumi_mebleg_, decimal incomingSum = default, decimal _qaliq = default, bool clinic = false)
+        public void gelen_data_negd_pos(decimal cash_, decimal card_, decimal umumi_mebleg_, decimal incomingSum = default, decimal _qaliq = default, bool clinic = false, PayType payType = PayType.Empty)
         {
             try
             {
@@ -2518,15 +2598,25 @@ namespace WindowsFormsApp2
                 switch (lModel.Text)
                 {
                     case "1":
-                        IsSuccess = Sunmi.Sales(lIpAdress.Text,
-                                                textEdit1.Text,
-                                                incomingSum,
-                                                card_,
-                                                umumi_mebleg_,
-                                                tUsername.Text,
-                                                _customer,
-                                                _doctor,
-                                                bankttnminputdata);
+                        IsSuccess = Sunmi.Sales(new DTOs.SalesDto
+                        {
+                            IpAddress = lIpAdress.Text,
+                            ProccessNo = textEdit1.Text,
+                            Cash = incomingSum,
+                            Card = card_,
+                            Total = umumi_mebleg_,
+                            Cashier = tUsername.Text,
+                            Customer = null,
+                            Doctor = null,
+                            Rrn = bankttnminputdata
+                        });
+
+                        if (IsSuccess)
+                        {
+                            clear();
+                            textEdit11.Text = DbProsedures.GET_TotalSalesCount();
+                            CalculationDelete();
+                        }
 
                         if (IsSuccess)
                         {
@@ -2571,7 +2661,28 @@ namespace WindowsFormsApp2
                         paysales(cash_, card_, umumi_mebleg_);
                         break; /*DATAPAY*/
                     case "6":
-                        nbasales(cash_, card_, umumi_mebleg_, incomingSum, _qaliq);
+                        //nbasales(new DTOs.SalesDto
+                        //{
+                        //    Cash = cash_,
+                        //    Card = card_,
+                        //    Total = umumi_mebleg_,
+                        //    IncomingSum = incomingSum,
+                        //    Balance = _qaliq,
+                        //    PayType = payType
+                        //});
+
+                        NBA.Sales(new DTOs.SalesDto
+                        {
+                            Cash = cash_,
+                            Card = card_,
+                            Total = umumi_mebleg_,
+                            IncomingSum = incomingSum,
+                            Balance = _qaliq,
+                            PayType = payType,
+                            IpAddress = lIpAdress.Text,
+                            AccessToken = textBox4.Text
+                        });
+
                         break; /*NBA*/
                     case "7":
                         IsSuccess = EKASAM.Sales(lIpAdress.Text.Replace("\n", ""),
@@ -3105,16 +3216,23 @@ namespace WindowsFormsApp2
 
         }
 
-        private void nbasales(decimal cash_, decimal card_, decimal umumi_mebleg_, decimal _incomingSum = default, decimal _qaliq = default)
+        private void nbasales(DTOs.SalesDto salesData/*decimal cash_, decimal card_, decimal umumi_mebleg_, decimal _incomingSum = default, decimal _qaliq = default*/)
         {
             try
             {
-                Cursor.Current = Cursors.WaitCursor;
-                if (string.IsNullOrWhiteSpace(textBox1.Text) || string.IsNullOrWhiteSpace(textBox4.Text))
+
+                if (string.IsNullOrWhiteSpace(textBox1.Text))
                 {
-                    ReadyMessages.WARNING_DEFAULT_MESSAGE("NÖVBƏ AÇILMAYIB !\nPOS AÇ DÜYMƏSİNƏ VURARAQ NÖVBƏNİ AÇIN");
-                    return;
+                    textBox1.Text = NBA.Login(lIpAdress.Text, TerminalTokenData.NkaSerialNumber);
                 }
+
+
+                Cursor.Current = Cursors.WaitCursor;
+                //if (string.IsNullOrWhiteSpace(textBox1.Text) || string.IsNullOrWhiteSpace(textBox4.Text))
+                //{
+                //    ReadyMessages.WARNING_DEFAULT_MESSAGE("NÖVBƏ AÇILMAYIB !\nPOS AÇ DÜYMƏSİNƏ VURARAQ NÖVBƏNİ AÇIN");
+                //    return;
+                //}
 
                 string cash = "";
                 string tot = "";
@@ -3140,12 +3258,12 @@ namespace WindowsFormsApp2
 
                 while (dr2.Read())
                 {
-                    if (decimal.Parse(dr2["paidPayment"].ToString()) > umumi_mebleg_)
+                    if (decimal.Parse(dr2["paidPayment"].ToString()) > salesData.Total)
                     {
-                        cash = umumi_mebleg_.ToString();
-                        tot = umumi_mebleg_.ToString();
+                        cash = salesData.Total.ToString();
+                        tot = salesData.Total.ToString();
                         odenen = dr2["paidPayment"].ToString();
-                        qaliq = (decimal.Parse(dr2["paidPayment"].ToString()) - umumi_mebleg_).ToString();
+                        qaliq = (decimal.Parse(dr2["paidPayment"].ToString()) - salesData.Total).ToString();
                     }
                     else
                     {
@@ -3158,10 +3276,10 @@ namespace WindowsFormsApp2
 
                     SqlConnection connvat = new SqlConnection();
                     SqlCommand cmdvat = new SqlCommand();
-                    connvat.ConnectionString = Properties.Settings.Default.SqlCon;
+                    connvat.ConnectionString = DbHelpers.DbConnectionString;
                     connvat.Open();
                     string queryvat = $@"select t.vatType,sum(t.ssum) as ssum,sum(t.ssumvat) as ssumvat from
-                (select  case  vatType when 1 then '18.0' when 3 then '0.0' when 4 then '2.0' when 5 then '8.0' else 'bos' end as vatType,
+                (select  case  vatType when 1 then '18.0' when 2 then '18.0' when 3 then '0.0' when 4 then '2.0' when 5 then '8.0' else 'bos' end as vatType,
                 salePrice* quantity as ssum,
                 ROUND(case vatType when 1 then (salePrice* quantity)*18/118 when 3 then 0 when 4 then salePrice* quantity*0.02 else 0 end,2) as ssumvat
                 FROM dbo.item WHERE user_id = {Properties.Settings.Default.UserID}) as t group by t.vatType";
@@ -3177,9 +3295,8 @@ namespace WindowsFormsApp2
                         string vatType = drvat["vatType"].ToString();
                         string ssumvat = drvat["ssum"].ToString();
 
-                        //todo vergi faizlərini əlavə etmək
+                        
                         if (vatType == "18.0")
-
                         {
                             edvhesap1 = drvat["ssum"].ToString();
                             edvhesap2 = drvat["ssumvat"].ToString();
@@ -3210,13 +3327,13 @@ namespace WindowsFormsApp2
 
                     dataheadersa = "\"sum\"  : " + tot.Replace(",", ".") + "," +
                         "" +
-                        " \"cashSum\" : " + cash_.ToString().Replace(",", ".") + "," +
+                        " \"cashSum\" : " + salesData.Cash.ToString().Replace(",", ".") + "," +
                         "\"cashlessSum\": " + card.Replace(",", ".") + "," +
                         " \"prepaymentSum\" : 0.0," +
                         " \"creditSum\" : 0.0," +
                         "\"bonusSum\" : 0.0, " +
-                        "\"incomingSum\" : " + _incomingSum.ToString().Replace(",", ".") + "," +
-                        "\"changeSum\" : " + _qaliq.ToString().Replace(",", ".") + "," +
+                        "\"incomingSum\" : " + salesData.IncomingSum.ToString().Replace(",", ".") + "," +
+                        "\"changeSum\" : " + salesData.Balance.ToString().Replace(",", ".") + "," +
                         " \"vatAmounts\" : [" + vatsanew +
 
                            "  ] } },\"operationId\":\"createDocument\",\"version\":1 }";
@@ -3226,9 +3343,19 @@ namespace WindowsFormsApp2
 
                 SqlConnection conn = new SqlConnection();
                 SqlCommand cmd = new SqlCommand();
-                conn.ConnectionString = Properties.Settings.Default.SqlCon;
+                conn.ConnectionString = DbHelpers.DbConnectionString;
                 conn.Open();
-                string query = $"select name,Item.item_id,salePrice,quantity,case  vatType when 1 then '18' when 3 then '0' when 4 then '2' when 5 then '8' else 0 end as vatType,quantityType,salePrice*quantity as ssum from  dbo.item where user_id = {Properties.Settings.Default.UserID}";
+                string query = $@"select name,Item.item_id,salePrice,quantity,
+case  vatType 
+when 1 then '18'
+when 2 then '18'
+when 3 then '0' 
+when 4 then '2' 
+when 5 then '8' 
+else 0 end as vatType,
+quantityType,
+salePrice*quantity as ssum
+from  dbo.item where user_id = {Properties.Settings.Default.UserID}";
 
                 cmd.Connection = conn;
                 cmd.CommandText = query;
@@ -3253,87 +3380,149 @@ namespace WindowsFormsApp2
 
                 var url = lIpAdress.Text;
                 //var url3 = "http://81.21.87.10:9942/transaction/start";
-                if (card_ > 0)
+
+
+                if (salesData.PayType is PayType.OtherPay)
                 {
-                    var client2 = new RestClient();
-                    var client3 = new RestClient();
-
-                    string url2 = url.Replace($"{NBA.NBA_FISCAL_SERVICE_PORT}/api/v1", $"{NBA.NBA_BANK_SERVICE_PORT}/transaction/start");
-                    string urlbankcontrol = url.Replace($"{NBA.NBA_FISCAL_SERVICE_PORT}/api/v1", $"{NBA.NBA_BANK_SERVICE_PORT}/transaction/status");
-
-                    var requestSend = new RestRequest(url2, Method.Post);
-                    var requestbankdetail = new RestRequest(urlbankcontrol, Method.Post);
-
-                    var requestsend = new RestRequest(url2, Method.Post);
-                    string bankid;
-
-                    requestsend.AddHeader("Accept", "application/json;charset=utf-8");
-                    requestsend.AddHeader("apikey", "87903e62-9643-4e46-bb6f-3920be587332");
-
-                    requestbankdetail.AddHeader("Accept", "application/json;charset=utf-8");
-                    requestbankdetail.AddHeader("apikey", "87903e62-9643-4e46-bb6f-3920be587332");
-
-                    var body2 = "{ \"type\":\"sale\",\"amount\":\"" + card_.ToString().Replace(",", "") + "\",\"currency\":\"AZN\",\"applicationid\":\"xxxxxxxx\", \"dontredirecttosale\":false}";
-                    requestsend.AddStringBody(body2, DataFormat.Json);
-
-                    RestResponse response2 = client2.Execute(requestsend);
-
-                banksalessend:
-                    if (response2.Content == "ERROR!!! Please Check Banking APP")
+                    goto otherPay;
+                }
+                else
+                {
+                    if (salesData.Card > 0)
                     {
-                        XtraMessageBox.Show("ERROR!!! Please Check Banking APP", "Error");
-                        goto banksalessend;
-                    }
-                    else
-                    {
-                        nbarootbank weatherForecastbank = JsonSerializer.Deserialize<nbarootbank>(response2.Content);
+                        var client2 = new RestClient();
+                        var client3 = new RestClient();
 
-                        bankid = $"{weatherForecastbank.trnid}";
-                    }
-                    Thread.Sleep(4000);
+                        string url2 = url.Replace($"{NBA.NBA_FISCAL_SERVICE_PORT}/api/v1", $"{NBA.NBA_BANK_SERVICE_PORT}/transaction/start");
+                        string urlbankcontrol = url.Replace($"{NBA.NBA_FISCAL_SERVICE_PORT}/api/v1", $"{NBA.NBA_BANK_SERVICE_PORT}/transaction/status");
 
+                        var requestSend = new RestRequest(url2, Method.Post);
+                        var requestbankdetail = new RestRequest(urlbankcontrol, Method.Post);
 
-                bankstart:
-                    var bodybankdetail = "{\"trnid\":\"" + bankid + "\",\"installmentindex\":-1}";
-                    requestbankdetail.AddStringBody(bodybankdetail, DataFormat.Json);
-                    RestResponse responsebankdetail = client3.Execute(requestbankdetail);
+                        var requestsend = new RestRequest(url2, Method.Post);
+                        string bankid;
 
+                        requestsend.AddHeader("Accept", "application/json;charset=utf-8");
+                        requestsend.AddHeader("apikey", "87903e62-9643-4e46-bb6f-3920be587332");
 
-                    string dataccontrolsa = responsebankdetail.Content;
-                    string data2 = System.Text.RegularExpressions.Regex.Unescape(dataccontrolsa);
+                        requestbankdetail.AddHeader("Accept", "application/json;charset=utf-8");
+                        requestbankdetail.AddHeader("apikey", "87903e62-9643-4e46-bb6f-3920be587332");
 
-                    data2 = CleanJson(data2);
+                        var body2 = "{ \"type\":\"sale\",\"amount\":\"" + salesData.Card.ToString().Replace(",", "") + "\",\"currency\":\"AZN\",\"applicationid\":\"xxxxxxxx\", \"dontredirecttosale\":false}";
+                        requestsend.AddStringBody(body2, DataFormat.Json);
 
-                    nbarootbankdetail weatherForecastbankdetail = System.Text.Json.JsonSerializer.Deserialize<nbarootbankdetail>(data2);
+                        RestResponse response2 = client2.Execute(requestsend);
 
-
-                    int i = 0, j = 0;
-
-                    string statusa = $"{weatherForecastbankdetail.status}";
-                    if (statusa == "approved")
-                    {
-                        bankdizi.Clear();
-                        foreach (var item in weatherForecastbankdetail.merchantreceipt)
+                    banksalessend:
+                        if (response2.Content == "ERROR!!! Please Check Banking APP")
                         {
-                            bankdizi.Add(item.line);
+                            XtraMessageBox.Show("ERROR!!! Please Check Banking APP", "Error");
+                            goto banksalessend;
+                        }
+                        else
+                        {
+                            nbarootbank weatherForecastbank = JsonSerializer.Deserialize<nbarootbank>(response2.Content);
 
-                            if (item.line.Contains("RRN") || item.line.Contains("rrn"))
+                            bankid = $"{weatherForecastbank.trnid}";
+                        }
+                        Thread.Sleep(3000);
+
+
+                    bankstart:
+                        var bodybankdetail = "{\"trnid\":\"" + bankid + "\",\"installmentindex\":-1}";
+                        requestbankdetail.AddStringBody(bodybankdetail, DataFormat.Json);
+                        RestResponse responsebankdetail = client3.Execute(requestbankdetail);
+
+
+                        string dataccontrolsa = responsebankdetail.Content;
+                        string data2 = System.Text.RegularExpressions.Regex.Unescape(dataccontrolsa);
+
+                        data2 = CleanJson(data2);
+
+                        nbarootbankdetail weatherForecastbankdetail = System.Text.Json.JsonSerializer.Deserialize<nbarootbankdetail>(data2);
+
+
+                        int i = 0, j = 0;
+
+                        string statusa = $"{weatherForecastbankdetail.status}";
+                        if (statusa == "approved")
+                        {
+                            bankdizi.Clear();
+                            foreach (var item in weatherForecastbankdetail.merchantreceipt)
                             {
-                                rrnCode = item.line.Split(':').Last().Trim();
+                                bankdizi.Add(item.line);
+
+                                if (item.line.Contains("RRN") || item.line.Contains("rrn"))
+                                {
+                                    rrnCode = item.line.Split(':').Last().Trim();
+                                }
                             }
+
+                            bankdizic.Clear();
+                            foreach (var item in weatherForecastbankdetail.customerreceipt)
+                            {
+                                bankdizic.Add(item.line);
+                            }
+
+                            #region [..XƏZİNƏDAR QƏBZİ..]
+
+                            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("TerminalCashierPrint").ToString());
+                            if (control)
+                            {
+                                PrintDocument pd = new PrintDocument();
+                                pd.DefaultPageSettings = new PageSettings
+                                {
+                                    PaperSize = new PrinterSettings().DefaultPageSettings.PaperSize
+                                };
+
+                                pd.PrintPage += new PrintPageEventHandler(nba_bankprint);
+
+                                pagesCount = 1;
+
+
+                                PrintDialog PrintDialog1 = new PrintDialog
+                                {
+                                    Document = pd
+                                };
+
+                                pd.Print();
+                            }
+
+                            #endregion [..XƏZİNƏDAR QƏBZİ..]
+
+
+                            #region [..MÜŞTƏRİ QƏBZİ..]
+
+                            PrintDocument pd2 = new PrintDocument();
+                            pd2.DefaultPageSettings = new PageSettings
+                            {
+                                PaperSize = new PrinterSettings().DefaultPageSettings.PaperSize
+                            };
+                            pd2.PrintPage += new PrintPageEventHandler(nba_bankprintc);
+
+                            pagesCount = 1;
+
+                            PrintDialog printDialog2 = new PrintDialog
+                            {
+                                Document = pd2
+                            };
+
+                            pd2.Print();
+
+                            #endregion [..MÜŞTƏRİ QƏBZİ..]
+
                         }
-
-                        bankdizic.Clear();
-                        foreach (var item in weatherForecastbankdetail.customerreceipt)
+                        else if (statusa == "not approved")
                         {
-                            bankdizic.Add(item.line);
-                        }
+                            foreach (var item in weatherForecastbankdetail.customerreceipt)
+                            {
+                                bankdizi[j++] = item.line;
+                            }
+                            ReadyMessages.ERROR_BANK_MESSAGE(weatherForecastbankdetail.responsecodeText);
 
-                        #region [..XƏZİNƏDAR QƏBZİ..]
+                            #region [..XƏZİNƏDAR QƏBZİ..]
 
-                        bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("TerminalCashierPrint").ToString());
-                        if (control)
-                        {
+
                             PrintDocument pd = new PrintDocument();
                             pd.DefaultPageSettings = new PageSettings
                             {
@@ -3351,75 +3540,24 @@ namespace WindowsFormsApp2
                             };
 
                             pd.Print();
+
+
+                            #endregion [..XƏZİNƏDAR QƏBZİ..]
+
+                            return;
                         }
-
-                        #endregion [..XƏZİNƏDAR QƏBZİ..]
-
-
-                        #region [..MÜŞTƏRİ QƏBZİ..]
-
-                        PrintDocument pd2 = new PrintDocument();
-                        pd2.DefaultPageSettings = new PageSettings
+                        else
                         {
-                            PaperSize = new PrinterSettings().DefaultPageSettings.PaperSize
-                        };
-                        pd2.PrintPage += new PrintPageEventHandler(nba_bankprintc);
-
-                        pagesCount = 1;
-
-                        PrintDialog printDialog2 = new PrintDialog
-                        {
-                            Document = pd2
-                        };
-
-                        pd2.Print();
-
-                        #endregion [..MÜŞTƏRİ QƏBZİ..]
-
-                    }
-                    else if (statusa == "not approved")
-                    {
-                        foreach (var item in weatherForecastbankdetail.customerreceipt)
-                        {
-                            bankdizi[j++] = item.line;
+                            goto bankstart;
                         }
-                        ReadyMessages.ERROR_BANK_MESSAGE(weatherForecastbankdetail.responsecodeText);
-
-                        #region [..XƏZİNƏDAR QƏBZİ..]
-
-
-                        PrintDocument pd = new PrintDocument();
-                        pd.DefaultPageSettings = new PageSettings
-                        {
-                            PaperSize = new PrinterSettings().DefaultPageSettings.PaperSize
-                        };
-
-                        pd.PrintPage += new PrintPageEventHandler(nba_bankprint);
-
-                        pagesCount = 1;
-
-
-                        PrintDialog PrintDialog1 = new PrintDialog
-                        {
-                            Document = pd
-                        };
-
-                        pd.Print();
-
-
-                        #endregion [..XƏZİNƏDAR QƏBZİ..]
-
-                        return;
+                        parameters = "{\"parameters\":{\"access_token\":\"" + textBox1.Text + "\",\"doc_type\":\"sale\",\"data\":{\"cashier\":\"" + tUsername.Text + "\",\"currency\":\"AZN\",\"rrn\":\"" + rrnCode + "\",";
                     }
-                    else
-                    {
-                        goto bankstart;
-                    }
-                    parameters = "{\"parameters\":{\"access_token\":\"" + textBox1.Text + "\",\"doc_type\":\"sale\",\"data\":{\"cashier\":\"" + tUsername.Text + "\",\"currency\":\"AZN\",\"rrn\":\"" + rrnCode + "\",";
                 }
 
+            otherPay:
 
                 alldata = parameters + productsa + pnew + p2 + dataheadersa;
+               
                 var client = new RestClient();
                 var request = new RestRequest(url, Method.Post);
                 request.AddHeader("Content-Type", "application/json;charset=utf-8");
@@ -3438,7 +3576,7 @@ namespace WindowsFormsApp2
                     }
 
                     sdocumentid = $"{weatherForecast.data.short_document_id}";
-                    YekunMebleg = umumi_mebleg_.ToString();
+                    YekunMebleg = salesData.Total.ToString();
 
                     fissayi = $"{weatherForecast.data.document_number}";
 
@@ -3456,9 +3594,9 @@ namespace WindowsFormsApp2
                         posNomre = weatherForecast.data.document_number.ToString(),
                         longFiskalId = weatherForecast.data.document_id,
                         proccessNo = textEdit1.Text,
-                        cash = cash_,
-                        card = card_,
-                        total = umumi_mebleg_,
+                        cash = salesData.Cash,
+                        card = salesData.Card,
+                        total = salesData.Total,
                         json = alldata,
                         shortFiskalId = weatherForecast.data.short_document_id,
                         rrn = rrnCode
@@ -3486,7 +3624,11 @@ namespace WindowsFormsApp2
                 }
                 else
                 {
-                    if (card_ > 0)
+                    if (salesData.PayType == PayType.OtherPay)
+                    {
+                        goto Finish;
+                    }
+                    if (salesData.Card > 0)
                     {
                         var client2 = new RestClient();
                         var client3 = new RestClient();
@@ -3506,7 +3648,7 @@ namespace WindowsFormsApp2
                         requestbankdetail.AddHeader("Accept", "application/json;charset=utf-8");
                         requestbankdetail.AddHeader("apikey", "87903e62-9643-4e46-bb6f-3920be587332");
 
-                        var body2 = "{ \"type\":\"void\",\"amount\":\"" + card_.ToString().Replace(",", "") + "\",\"rrn\":\"" + rrnCode + "\", \"dontredirecttosale\":false}";
+                        var body2 = "{ \"type\":\"void\",\"amount\":\"" + salesData.Card.ToString().Replace(",", "") + "\",\"rrn\":\"" + rrnCode + "\", \"dontredirecttosale\":false}";
                         requestsend.AddStringBody(body2, DataFormat.Json);
 
                         RestResponse response2 = client2.Execute(requestsend);
@@ -3598,6 +3740,7 @@ namespace WindowsFormsApp2
 
                     }
 
+                    Finish:
                     ReadyMessages.ERROR_SALES_MESSAGE(weatherForecast.message);
                     FormHelpers.Log($"Pos satışı xətası: {weatherForecast.message}");
                     return;
@@ -4261,9 +4404,9 @@ namespace WindowsFormsApp2
             e.Graphics.DrawString("_______________________________________________", font2, Brushes.Black, new Point(5, offset2 + 837));
 
             e.Graphics.DrawString("DVX göndəriləyən çeklərin sayı: 0", font, Brushes.Black, 5, offset2 + 850);
-            e.Graphics.DrawString("NKA-nın modeli:" + nkamodel, font, Brushes.Black, 5, offset2 + 860);
-            e.Graphics.DrawString("NKA-nın zavod nömrəsi:" + nkanumber, font, Brushes.Black, 5, offset2 + 870);
-            e.Graphics.DrawString("NMQ-nın qeydiyyat nömrəsi:" + nkarnumber, font, Brushes.Black, 5, offset2 + 880);
+            e.Graphics.DrawString("NKA-nın modeli:" + TerminalTokenData.NkaModel, font, Brushes.Black, 5, offset2 + 860);
+            e.Graphics.DrawString("NKA-nın zavod nömrəsi:" + TerminalTokenData.NkaSerialNumber, font, Brushes.Black, 5, offset2 + 870);
+            e.Graphics.DrawString("NMQ-nın qeydiyyat nömrəsi:" + TerminalTokenData.NMQRegistrationNumber, font, Brushes.Black, 5, offset2 + 880);
 
 
 
@@ -4568,9 +4711,9 @@ namespace WindowsFormsApp2
             e.Graphics.DrawString("_______________________________________________", font2, Brushes.Black, new Point(5, offset2 + 837));
 
             e.Graphics.DrawString("DVX göndəriləyən çeklərin sayı: 0", font, Brushes.Black, 5, offset2 + 850);
-            e.Graphics.DrawString("NKA-nın modeli:" + nkamodel, font, Brushes.Black, 5, offset2 + 860);
-            e.Graphics.DrawString("NKA-nın zavod nömrəsi:" + nkanumber, font, Brushes.Black, 5, offset2 + 870);
-            e.Graphics.DrawString("NMQ-nın qeydiyyat nömrəsi:" + nkarnumber, font, Brushes.Black, 5, offset2 + 880);
+            e.Graphics.DrawString("NKA-nın modeli:" + TerminalTokenData.NkaModel, font, Brushes.Black, 5, offset2 + 860);
+            e.Graphics.DrawString("NKA-nın zavod nömrəsi:" + TerminalTokenData.NkaSerialNumber, font, Brushes.Black, 5, offset2 + 870);
+            e.Graphics.DrawString("NMQ-nın qeydiyyat nömrəsi:" + TerminalTokenData.NMQRegistrationNumber, font, Brushes.Black, 5, offset2 + 880);
 
 
             //   e.Graphics.DrawString("www.e-kassa.gov.az", font, Brushes.Black, 60, offset2 + 840);
@@ -4875,9 +5018,9 @@ namespace WindowsFormsApp2
             e.Graphics.DrawString("_______________________________________________", font2, Brushes.Black, new Point(5, offset2 + 840));
 
             e.Graphics.DrawString("DVX gonderilmeyen ceklerin sayi:0", font, Brushes.Black, 5, offset2 + 850);
-            e.Graphics.DrawString("NKA-nın modeli:" + nkamodel, font, Brushes.Black, 5, offset2 + 860);
-            e.Graphics.DrawString("NKA-nın zavod nömrəsi:" + nkanumber, font, Brushes.Black, 5, offset2 + 870);
-            e.Graphics.DrawString("NMQ-nın qeydiyyat nömrəsi:" + nkarnumber, font, Brushes.Black, 5, offset2 + 880);
+            e.Graphics.DrawString("NKA-nın modeli:" + TerminalTokenData.NkaModel, font, Brushes.Black, 5, offset2 + 860);
+            e.Graphics.DrawString("NKA-nın zavod nömrəsi:" + TerminalTokenData.NkaSerialNumber, font, Brushes.Black, 5, offset2 + 870);
+            e.Graphics.DrawString("NMQ-nın qeydiyyat nömrəsi:" + TerminalTokenData.NMQRegistrationNumber, font, Brushes.Black, 5, offset2 + 880);
 
 
             // e.Graphics.DrawString("www.e-kassa.gov.az", font, Brushes.Black, 60, offset2 + 840);
@@ -4912,7 +5055,7 @@ namespace WindowsFormsApp2
 
             Rectangle rect2 = new Rectangle(70, 10, 100, 122);
 
-            string ustbaslik = "TS Adı :" + obyetname + "\r\n" + "TS Ünvanı :" + obyektadres + "\r\n" + "\r\n" + "VÖ Adı :" + customer + "\r\n" + "VÖEN - Obyekt kodu :" + obyektkod /*+ "\r\n" + "Obyektin kodu :" + obyektkod*/;
+            string ustbaslik = "TS Adı :" + TerminalTokenData.TsName + "\r\n" + "TS Ünvanı :" + TerminalTokenData.Address + "\r\n" + "\r\n" + "VÖ Adı :" + TerminalTokenData.CompanyName + "\r\n" + "VÖEN - Obyekt kodu :" + TerminalTokenData.ObjectTaxNumber /*+ "\r\n" + "Obyektin kodu :" + obyektkod*/;
 
             SqlConnection conn2 = new SqlConnection(Properties.Settings.Default.SqlCon);
             SqlCommand cmd2 = new SqlCommand();
@@ -5028,9 +5171,9 @@ namespace WindowsFormsApp2
             e.Graphics.DrawString("**********************************************", font2, Brushes.Black, 5, offset + m + 153);
 
             e.Graphics.DrawString("Növbə ərzində vurulmuş çek sayı: " + gunfissayi, font, Brushes.Black, 5, offset + m + 165);
-            e.Graphics.DrawString("NKA-nın modeli:" + nkamodel, font, Brushes.Black, 5, offset + m + 175);
-            e.Graphics.DrawString("NKA-nın zavod nömrəsi:" + nkanumber, font, Brushes.Black, 5, offset + m + 190);
-            e.Graphics.DrawString("NMQ-nin qeydiyyat nömrəsi:" + nkarnumber, font, Brushes.Black, 5, offset + m + 205);
+            e.Graphics.DrawString("NKA-nın modeli:" + TerminalTokenData.NkaModel, font, Brushes.Black, 5, offset + m + 175);
+            e.Graphics.DrawString("NKA-nın zavod nömrəsi:" + TerminalTokenData.NkaSerialNumber, font, Brushes.Black, 5, offset + m + 190);
+            e.Graphics.DrawString("NMQ-nin qeydiyyat nömrəsi:" + TerminalTokenData.NMQRegistrationNumber, font, Brushes.Black, 5, offset + m + 205);
             e.Graphics.DrawString("Fiskal İD:" + sdocumentid, font, Brushes.Black, 5, offset + m + 215);
             e.Graphics.DrawString("www.e-kassa.gov.az", font, Brushes.Black, 90, offset + m + 230);
             e.Graphics.DrawImage(qrcodeimg, 90, offset + m + 255, width: 80, height: 80);
@@ -5200,9 +5343,9 @@ FROM  dbo.item WHERE user_id = {Properties.Settings.Default.UserID}";
             e.Graphics.DrawString("**********************************************", font2, Brushes.Black, new Point(5, offset + m + 150));
 
             e.Graphics.DrawString($"Növbə ərzində vurulmuş çek sayı: {nbaLastDocumentResponse.data.doc.positionInShift}", font, Brushes.Black, 5, offset + m + 165);
-            e.Graphics.DrawString("NKA-nın modeli:" + nkamodel, font, Brushes.Black, 5, offset + m + 175);
-            e.Graphics.DrawString("NKA-nın zavod nömrəsi:" + nkanumber, font, Brushes.Black, 5, offset + m + 190);
-            e.Graphics.DrawString("NMQ-nın qeydiyyat nömrəsi:" + nkarnumber, font, Brushes.Black, 5, offset + m + 205);
+            e.Graphics.DrawString("NKA-nın modeli:" + TerminalTokenData.NkaModel, font, Brushes.Black, 5, offset + m + 175);
+            e.Graphics.DrawString("NKA-nın zavod nömrəsi:" + TerminalTokenData.NkaSerialNumber, font, Brushes.Black, 5, offset + m + 190);
+            e.Graphics.DrawString("NMQ-nın qeydiyyat nömrəsi:" + TerminalTokenData.NMQRegistrationNumber, font, Brushes.Black, 5, offset + m + 205);
             e.Graphics.DrawString("Fiskal ID: " + fiskalID, font, Brushes.Black, 5, offset + m + 215);
 
             e.Graphics.DrawString("www.e-kassa.gov.az", font, Brushes.Black, 80, offset + m + 230);
@@ -5275,9 +5418,9 @@ FROM  dbo.item WHERE user_id = {Properties.Settings.Default.UserID}";
             e.Graphics.DrawString("**********************************************", font2, Brushes.Black, new Point(5, offset2 + 275));
 
             e.Graphics.DrawString("Növbə ərzində vurulmuş çek sayı:" + gunfissayi, font, Brushes.Black, 5, offset2 + 290);
-            e.Graphics.DrawString("NKA-nın modeli:" + nkamodel, font, Brushes.Black, 5, offset2 + 305);
-            e.Graphics.DrawString("NKA-nın zavod nömrəsi:" + nkanumber, font, Brushes.Black, 5, offset2 + 320);
-            e.Graphics.DrawString("NMQ-nın qeydiyyat nömrəsi:" + nkarnumber, font, Brushes.Black, 5, offset2 + 335);
+            e.Graphics.DrawString("NKA-nın modeli:" + TerminalTokenData.NkaModel, font, Brushes.Black, 5, offset2 + 305);
+            e.Graphics.DrawString("NKA-nın zavod nömrəsi:" + TerminalTokenData.NkaSerialNumber, font, Brushes.Black, 5, offset2 + 320);
+            e.Graphics.DrawString("NMQ-nın qeydiyyat nömrəsi:" + TerminalTokenData.NMQRegistrationNumber, font, Brushes.Black, 5, offset2 + 335);
             e.Graphics.DrawString("Fiskal ID:" + sdocumentid, font, Brushes.Black, 5, offset2 + 350);
 
             e.Graphics.DrawString("www.e-kassa.gov.az", font, Brushes.Black, 60, offset2 + 365);
@@ -5345,9 +5488,9 @@ FROM  dbo.item WHERE user_id = {Properties.Settings.Default.UserID}";
             e.Graphics.DrawString("**********************************************", font2, Brushes.Black, new Point(5, offset2 + 275));
 
             e.Graphics.DrawString("Növbə ərzində vurulmuş çek sayı:" + gunfissayi, font, Brushes.Black, 5, offset2 + 290);
-            e.Graphics.DrawString("NKA-nın modeli:" + nkamodel, font, Brushes.Black, 5, offset2 + 305);
-            e.Graphics.DrawString("NKA-nın zavod nömrəsi:" + nkanumber, font, Brushes.Black, 5, offset2 + 320);
-            e.Graphics.DrawString("NMQ-nın qeydiyyat nömrəsi:" + nkarnumber, font, Brushes.Black, 5, offset2 + 335);
+            e.Graphics.DrawString("NKA-nın modeli:" + TerminalTokenData.NkaModel, font, Brushes.Black, 5, offset2 + 305);
+            e.Graphics.DrawString("NKA-nın zavod nömrəsi:" + TerminalTokenData.NkaSerialNumber, font, Brushes.Black, 5, offset2 + 320);
+            e.Graphics.DrawString("NMQ-nın qeydiyyat nömrəsi:" + TerminalTokenData.NMQRegistrationNumber, font, Brushes.Black, 5, offset2 + 335);
             e.Graphics.DrawString("Fiskal ID:" + sdocumentid, font, Brushes.Black, 5, offset2 + 350);
 
             e.Graphics.DrawString("www.e-kassa.gov.az", font, Brushes.Black, 60, offset2 + 365);

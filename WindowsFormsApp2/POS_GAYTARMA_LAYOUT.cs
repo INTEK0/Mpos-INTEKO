@@ -2264,7 +2264,13 @@ FROM [pos_gaytarma_manual]));";
                         switch (lModel.Text)
                         {
                             case "1":
-                                isSuccess = Sunmi.ReturnPos(lIpAddress.Text, Cashier, textEdit1.Text);
+                                isSuccess = Sunmi.Refund(new DTOs.RefundDto
+                                {
+                                    IpAddress = lIpAddress.Text,
+                                    Cashier = Cashier,
+                                    ProccessNo = textEdit1.Text
+                                });
+
                                 if (isSuccess)
                                 {
                                     textEdit1.Text = DbProsedures.GET_RefundProccessNo();

@@ -56,8 +56,8 @@ namespace WindowsFormsApp2.NKA
                     payment_change = null,
                     check_type = 40
                 },
-                name = "SuperApi",
-                password = "123"
+                name = "Api",
+                password = "1"
             };
 
             var root = new RootObject
@@ -286,7 +286,7 @@ namespace WindowsFormsApp2.NKA
 
             SqlConnection conn = new SqlConnection();
             SqlCommand cmd = new SqlCommand();
-            conn.ConnectionString = Properties.Settings.Default.SqlCon;
+            conn.ConnectionString = DbHelpers.DbConnectionString;
             conn.Open();
             string query = $@"
 select 
@@ -455,7 +455,6 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
             {
                 NullValueHandling = NullValueHandling.Ignore
             });
-
 
             var response = RequestPOST(ipAddress, json);
 

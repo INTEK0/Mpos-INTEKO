@@ -209,6 +209,7 @@ namespace WindowsFormsApp2
             this.chActive = new DevExpress.XtraEditors.CheckButton();
             this.tabKassa = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.panelControl14 = new DevExpress.XtraEditors.PanelControl();
+            this.chOtherPay = new DevExpress.XtraEditors.CheckEdit();
             this.chTerminalPrintReceipt = new DevExpress.XtraEditors.CheckEdit();
             this.chSendToKassa = new DevExpress.XtraEditors.CheckEdit();
             this.chPosSalesMessage = new DevExpress.XtraEditors.CheckEdit();
@@ -308,6 +309,7 @@ namespace WindowsFormsApp2
             this.tabKassa.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl14)).BeginInit();
             this.panelControl14.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chOtherPay.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chTerminalPrintReceipt.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chSendToKassa.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chPosSalesMessage.Properties)).BeginInit();
@@ -2755,13 +2757,14 @@ namespace WindowsFormsApp2
             this.tabKassa.Caption = "Kassa ayarları";
             this.tabKassa.Controls.Add(this.panelControl14);
             this.tabKassa.Name = "tabKassa";
-            this.tabKassa.Size = new System.Drawing.Size(1157, 759);
+            this.tabKassa.Size = new System.Drawing.Size(1157, 761);
             // 
             // panelControl14
             // 
             this.panelControl14.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(245)))), ((int)(((byte)(250)))));
             this.panelControl14.Appearance.Options.UseBackColor = true;
             this.panelControl14.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.panelControl14.Controls.Add(this.chOtherPay);
             this.panelControl14.Controls.Add(this.chTerminalPrintReceipt);
             this.panelControl14.Controls.Add(this.chSendToKassa);
             this.panelControl14.Controls.Add(this.chPosSalesMessage);
@@ -2775,14 +2778,33 @@ namespace WindowsFormsApp2
             this.panelControl14.LookAndFeel.UseDefaultLookAndFeel = false;
             this.panelControl14.Margin = new System.Windows.Forms.Padding(1);
             this.panelControl14.Name = "panelControl14";
-            this.panelControl14.Size = new System.Drawing.Size(1157, 759);
+            this.panelControl14.Size = new System.Drawing.Size(1157, 761);
             this.panelControl14.TabIndex = 13;
+            // 
+            // chOtherPay
+            // 
+            this.chOtherPay.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.chOtherPay.Location = new System.Drawing.Point(8, 200);
+            this.chOtherPay.Name = "chOtherPay";
+            this.chOtherPay.Properties.Appearance.Font = new System.Drawing.Font("Verdana", 11F);
+            this.chOtherPay.Properties.Appearance.Options.UseFont = true;
+            this.chOtherPay.Properties.Caption = "Digər nağdsız ödənişlər";
+            this.chOtherPay.Properties.CheckBoxOptions.Style = DevExpress.XtraEditors.Controls.CheckBoxStyle.SvgToggle1;
+            this.chOtherPay.Properties.CheckBoxOptions.SvgImageSize = new System.Drawing.Size(32, 28);
+            this.chOtherPay.Properties.GlyphAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.chOtherPay.Size = new System.Drawing.Size(1137, 32);
+            this.chOtherPay.TabIndex = 25;
+            this.chOtherPay.ToolTip = "Aktiv edildikdə pos satışı zamanı kart düyməsinə vurulduqda açılan pəncərədə digə" +
+    "r ödənişləri etmək üçün əlavə bir pəncərə açılacaq. Həmin pəncərədə Nağdsız ödən" +
+    "iş və Digər ödəniş olacaqdır. ";
+            this.chOtherPay.CheckedChanged += new System.EventHandler(this.chOtherPay_CheckedChanged);
             // 
             // chTerminalPrintReceipt
             // 
             this.chTerminalPrintReceipt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.chTerminalPrintReceipt.Location = new System.Drawing.Point(10, 162);
+            this.chTerminalPrintReceipt.Location = new System.Drawing.Point(8, 162);
             this.chTerminalPrintReceipt.Name = "chTerminalPrintReceipt";
             this.chTerminalPrintReceipt.Properties.Appearance.Font = new System.Drawing.Font("Verdana", 11F);
             this.chTerminalPrintReceipt.Properties.Appearance.Options.UseFont = true;
@@ -3105,6 +3127,7 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.panelControl14)).EndInit();
             this.panelControl14.ResumeLayout(false);
             this.panelControl14.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chOtherPay.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chTerminalPrintReceipt.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chSendToKassa.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chPosSalesMessage.Properties)).EndInit();
@@ -3311,6 +3334,7 @@ namespace WindowsFormsApp2
         private DevExpress.XtraEditors.TileControl tileControl1;
         private DevExpress.XtraEditors.TileGroup tileGroup1;
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement60;
+        private DevExpress.XtraEditors.CheckEdit chOtherPay;
     }
 }
 

@@ -300,6 +300,12 @@
     <Compile Include="Forms\fBasket.Designer.cs">
       <DependentUpon>fBasket.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\fCardAndOtherPay.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\fCardAndOtherPay.Designer.cs">
+      <DependentUpon>fCardAndOtherPay.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\fCategory.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -632,6 +638,7 @@
     </Compile>
     <Compile Include="NKA\AzSmart.cs" />
     <Compile Include="NKA\DataPay.cs" />
+    <Compile Include="NKA\DTOs.cs" />
     <Compile Include="NKA\EKASAM.cs" />
     <Compile Include="NKA\NBA.cs" />
     <Compile Include="NKA\Omnitech.cs" />
@@ -960,6 +967,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fBasket.resx">
       <DependentUpon>fBasket.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\fCardAndOtherPay.resx">
+      <DependentUpon>fCardAndOtherPay.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fCategory.resx">
       <DependentUpon>fCategory.cs</DependentUpon>

@@ -146,7 +146,11 @@ namespace WindowsFormsApp2
 
         private void accordionControlElement48_Click(object sender, EventArgs e)
         {
-            OpenForm<EXCELL_IMPORT>();
+            EXCELL_IMPORT f = new EXCELL_IMPORT();
+            if (f.ShowDialog() is DialogResult.OK)
+            {
+                lRefresh_Click(null, null);
+            }
         }
 
         private void accordionControlElement50_Click(object sender, EventArgs e)
@@ -359,6 +363,7 @@ namespace WindowsFormsApp2
             HotSalesShow();
             SendToKassaShow();
             TerminalReceiptPrintShow();
+            OtherPayShow();
             SuccessMessageVisibleShow();
             Get_StockDecreasingAmountShow();
             //ClinicModuleShow();
@@ -936,6 +941,19 @@ ORDER BY TotalAmount DESC;
             }
         }
 
+        private void OtherPayShow()
+        {
+            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("OtherPay").ToString());
+            if (control)
+            {
+                chOtherPay.Checked = true;
+            }
+            else
+            {
+                chOtherPay.Checked = false;
+            }
+        }
+
         //private void ClinicModuleShow()
         //{
         //    bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("ClinicModule").ToString());
@@ -1063,6 +1081,18 @@ ORDER BY TotalAmount DESC;
         private void accordionControlElement60_Click(object sender, EventArgs e)
         {
             OpenForm<MEHSUL_MALIYET_HESABAT>();
+        }
+
+        private void chOtherPay_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chOtherPay.Checked)
+            {
+                Registry.CurrentUser.CreateSubKey("Mpos").SetValue("OtherPay", true);
+            }
+            else
+            {
+                Registry.CurrentUser.CreateSubKey("Mpos").SetValue("OtherPay", false);
+            }
         }
 
         private void chTerminalPrintReceipt_CheckedChanged(object sender, EventArgs e)

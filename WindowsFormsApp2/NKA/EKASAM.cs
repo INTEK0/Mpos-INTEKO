@@ -74,7 +74,6 @@ namespace WindowsFormsApp2.NKA
 
         }
 
-
         private static EKASAMResponse RequestGET(string ipAddress, string json, string urla)
         {
             string dt = DateTime.Now.ToString("yyyyMMddHHmmss");
@@ -104,8 +103,6 @@ namespace WindowsFormsApp2.NKA
                 return null;
             }
         }
-
-
 
         public static string ComputeSha256Hash(string rawData)
         {
@@ -187,79 +184,39 @@ namespace WindowsFormsApp2.NKA
 
         public static bool GetShiftStatus(string ipAddress, string accessToken)
         {
-            accessToken = Login(ipAddress);
             if (string.IsNullOrWhiteSpace(accessToken))
             {
                 accessToken = Login(ipAddress);
             }
-            // OpenShift(ipAddress,"");
 
             var response = RequestGET(ipAddress, "", "kas_shift");
 
             if (response.message == "Success operation")
             {
-             //   MessageBox.Show(response.shift_open.ToString());
-
-
-                if (response.shift_open == false)
-
+                if (response.data.shift_open)
                 {
-                    // ReadyMessages.SUCCESS_OPEN_SHIFT_MESSAGE();
-                    FormHelpers.Log("Shift Status Bagli");
-
-                    OpenShift(ipAddress, accessToken);
-                    return false;
-
-
+                    string open_time = Convert.ToDateTime(response.data.shift_open_time).ToString("dd.MM.yyyy HH:mm:ss");
+                    ReadyMessages.SUCCESS_SHIFT_STATUS_MESSAGE(open_time);
+                    return true;
                 }
 
                 else
                 {
 
-                    ReadyMessages.SUCCESS_OPEN_SHIFT_MESSAGE();
-                    FormHelpers.Log("Shift Status Acildi");
-                    return true;
+                    OpenShift(ipAddress, accessToken);
+                    return false;
                 }
 
             }
-            else if (response.message == "document: invalid shift status")
+            else
             {
-                //ReadyMessages.WARNING_DEFAULT_MESSAGE(response.message);
-                //FormHelpers.Log($"{ErrorMessages.ERROR_OPENSHIFT} Xəta mesajı: {response.message}");
+                ReadyMessages.ERROR_OPENSHIFT_MESSAGE(response.message);
                 return false;
             }
-            else { return false; }
-
-
-
-
-            //if (response.message is "Success operation")
-            //{
-            //    if (response.data.shift_open)
-            //    {
-            //        string open_time = Convert.ToDateTime(response.data.shift_open_time).ToString("dd.MM.yyyy HH:mm:ss");
-            //        ReadyMessages.SUCCESS_SHIFT_STATUS_MESSAGE(open_time);
-            //        return true;
-            //    }
-            //    else
-            //    {
-            //        OpenShift(ipAddress + "/kas_shift", accessToken);
-            //        return false;
-            //    }
-            //}
-            //else
-            //{
-            //    ReadyMessages.ERROR_OPENSHIFT_MESSAGE(response.message);
-            //    return false;
-            //}
         }
 
         private static void OpenShift(string ipAddress, string accessToken)
         {
-
-
-
-
             var response = RequestGET(ipAddress, "", "kas_openshift");
 
             if (response.message == "Success operation")
@@ -268,52 +225,15 @@ namespace WindowsFormsApp2.NKA
                 FormHelpers.Log(CommonData.SUCCESS_OPEN_SHIFT);
 
             }
-            else if (response.message == "document: invalid shift status")
+            else
             {
-                ReadyMessages.WARNING_DEFAULT_MESSAGE(response.message);
+                ReadyMessages.ERROR_OPENSHIFT_MESSAGE(response.message);
                 FormHelpers.Log($"{ErrorMessages.ERROR_OPENSHIFT} Xəta mesajı: {response.message}");
-
             }
-            else { }
         }
 
         public static void CloseShift(string ipAddress, string accessToken)
         {
-            //accessToken = Login(ipAddress);
-            //if (string.IsNullOrWhiteSpace(accessToken))
-            //{
-            //    accessToken = Login(ipAddress);
-            //}
-
-            //var requestData = new RequestData
-            //{
-
-            //};
-
-            //var root = new RootObject
-            //{
-            //    requestData = requestData
-            //};
-
-            //string json = Newtonsoft.Json.JsonConvert.SerializeObject(root, new JsonSerializerSettings
-            //{
-            //    NullValueHandling = NullValueHandling.Ignore
-            //});
-
-            //var response = RequestGET(ipAddress + "/kas_closeshift", json);
-
-            //if (response.message is "Successful operation")
-            //{
-            //    if (MessageVisible)
-            //    {
-            //        ReadyMessages.SUCCESS_CLOSE_SHIFT_MESSAGE();
-            //    }
-            //    FormHelpers.Log($"{CommonData.SUCCESS_CLOSE_SHIFT}\n" +
-            //                    $"Növbənin açılma vaxtı: {response.data.shiftOpenAtUtc}\n" +
-            //                    $"Növbənin bağlanma vaxtı: {response.data.createdAtUtc}");
-            //}
-
-
             var response = RequestGET(ipAddress, "", "kas_closeshift");
 
             if (response.message == "Success operation")
@@ -335,69 +255,24 @@ namespace WindowsFormsApp2.NKA
 
         public static void XReport(string ipAddress, string accessToken)
         {
-            //accessToken = Login(ipAddress);
-            //if (string.IsNullOrWhiteSpace(accessToken))
-            //{
-            //    accessToken = Login(ipAddress);
-            //}
-
-            //var requestData = new RequestData
-            //{
-
-            //};
-
-            //var root = new RootObject
-            //{
-            //    requestData = requestData
-            //};
-
-            //string json = Newtonsoft.Json.JsonConvert.SerializeObject(root, new JsonSerializerSettings
-            //{
-            //    NullValueHandling = NullValueHandling.Ignore
-            //});
-
-            //var response = RequestGET(ipAddress + "/kas_xreport", json);
-
-            //if (response.message == "Successful operation")
-            //{
-            //    if (MessageVisible)
-            //    {
-            //        ReadyMessages.SUCCESS_X_REPORT_MESSAGE();
-            //    }
-
-            //    FormHelpers.Log(CommonData.SUCCESS_X_REPORT);
-            //}
-            //else
-            //{
-            //    ReadyMessages.ERROR_X_REPORT_MESSAGE(response.message);
-            //    FormHelpers.Log($"{ErrorMessages.ERROR_X_REPORT}  Xəta mesajı: {response.message}");
-            //}
-
-
             var response = RequestGET(ipAddress, "", "kas_xreport");
 
             if (response.message == "Success operation")
             {
                 ReadyMessages.SUCCESS_X_REPORT_MESSAGE();
                 FormHelpers.Log($"{ErrorMessages.ERROR_X_REPORT}  Xəta mesajı: {response.message}");
-
             }
             else
             {
                 ReadyMessages.WARNING_DEFAULT_MESSAGE(response.message);
                 FormHelpers.Log($"{ErrorMessages.ERROR_X_REPORT} Xəta mesajı: {response.message}");
-
             }
 
         }
 
         public static bool Sales(string ipAddress, string token, string proccessNo, decimal total, decimal cash, decimal card, decimal incomingSum, string cashier, Customer customer, Doctor doctor, decimal qaliq, string rrn = "")
         {
-            Login(ipAddress);
-            if (string.IsNullOrWhiteSpace(token))
-            {
-                token = Login(ipAddress);
-            }
+            token = Login(ipAddress);
 
             List<Item> items = new List<Item>();
             List<Itemticaretelave> items2 = new List<Itemticaretelave>();
@@ -455,20 +330,13 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
                 int quantityType = Convert.ToInt32(dr["quantityType"]);
                 decimal ssum = Convert.ToDecimal(dr["ssum"]);
 
-                decimal marginSum = (salePrice- purchasePrice) * (decimal)quantity;
+                decimal marginSum = (salePrice - purchasePrice) * (decimal)quantity;
 
                 if (vatTypeName != "TİCARƏT ƏLAVƏSİ 18%")
                 {
                     marginSum = 0;
                     purchasePrice = 0;
                 }
-
-
-                //vatAmounts.Add(new VatAmount
-                //{
-
-                //    vatSum = total
-                //});
 
                 if (vatTypeName == "TİCARƏT ƏLAVƏSİ 18%")
 
@@ -493,9 +361,7 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
                 }
 
                 else
-
                 {
-
                     Item item = new Item
                     {
                         itemName = name,
@@ -508,7 +374,6 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
                         itemVatPercent = vatType,
                         //itemMarginPrice = purchasePrice,
                         //itemMarginSum = marginSum,
-
                     };
                     items.Add(item);
 
@@ -530,9 +395,6 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
                         vatSumFor8Percent += ssum;
                     }
                 }
-               
-
-                
             }
 
             if (vatSumFor18Percent > 0)
@@ -578,7 +440,6 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
                 cashlessSum = card,
                 currency = "AZN",
                 items = items,
-               
                 incomingSum = incomingSum,
                 sum = total,
                 vatAmounts = vatAmounts,
@@ -591,8 +452,6 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
             };
 
 
-           
-                   
             string json = Newtonsoft.Json.JsonConvert.SerializeObject(rootObject, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
@@ -693,9 +552,6 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
 
         public static string Refund(string ipAddress, string accessToken, PayType payType, string cashier, string proccesNo)
         {
-
-
-
             string _fiskallID = "", _shortFiskallID = "", _checkNum = "";
             decimal _cash = default, _card = default, _total2 = default;
 
@@ -776,8 +632,8 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
                             itemPrice = Convert.ToDecimal(dr["satis_giymet"]),
                             itemSum = ssum,
                             itemVatPercent = Convert.ToDecimal(dr["TaxPrc"]),
-                         //   itemMarginPrice = Convert.ToDecimal(dr["alis_giymet"]),
-                         //   itemMarginSum = Convert.ToDecimal(marginSum)
+                            //   itemMarginPrice = Convert.ToDecimal(dr["alis_giymet"]),
+                            //   itemMarginSum = Convert.ToDecimal(marginSum)
                         };
                         items.Add(item);
 
@@ -983,7 +839,7 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
             public decimal itemPrice { get; set; }
             public decimal itemSum { get; set; }
             public decimal itemVatPercent { get; set; }
-           public decimal itemMarginPrice { get; set; }
+            public decimal itemMarginPrice { get; set; }
             public decimal itemMarginSum { get; set; }
         }
 
@@ -999,8 +855,8 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
             public decimal itemPrice { get; set; }
             public decimal itemSum { get; set; }
             public decimal itemVatPercent { get; set; }
-               public decimal itemMarginPrice { get; set; }
-               public decimal itemMarginSum { get; set; }
+            public decimal itemMarginPrice { get; set; }
+            public decimal itemMarginSum { get; set; }
         }
 
         public class zreport
@@ -1028,7 +884,7 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
 
             public List<Item> items { get; set; }
 
-        
+
             public decimal sum { get; set; }
             public decimal cashSum { get; set; }
             public decimal cashlessSum { get; set; }
@@ -1065,7 +921,7 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
         public class VatSum
         {
             public decimal vatSum { get; set; }
-           
+
         }
         public class VatAmount
         {

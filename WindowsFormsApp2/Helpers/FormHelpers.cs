@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
+using WindowsFormsApp2.NKA;
 
 namespace WindowsFormsApp2.Helpers
 {
@@ -220,7 +221,7 @@ then 5 when kf.KASSA_FIRMALAR=N'NBA'then 6 when kf.KASSA_FIRMALAR=N'EKASAM' then
 when kf.KASSA_FIRMALAR = N'SUNMI' THEN  'http://' + ki.IP_ADRESS + ':5544'
 when kf.KASSA_FIRMALAR = N'AzSMART' then 'http://' + ki.IP_ADRESS + ':10156' 
 when kf.KASSA_FIRMALAR = N'DATAPAY' then 'http://'+ ki.IP_ADRESS + ':2222'
-when kf.KASSA_FIRMALAR = N'NBA' then 'http://'+ ki.IP_ADRESS + ':9847/api/v1'
+when kf.KASSA_FIRMALAR = N'NBA' then 'http://'+ ki.IP_ADRESS + ':{NBA.NBA_FISCAL_SERVICE_PORT}/api/v1'
 when kf.KASSA_FIRMALAR = N'OMNITECH' then 'http://'+ ki.IP_ADRESS + ':8989/v2'
 when kf.KASSA_FIRMALAR = N'EKASAM' then 'http://'+ ki.IP_ADRESS + ':9876/api/'
 else '' end  ,rtrim(ltrim(isnull(ki.merchant_id,'yox'))) merchant_id from KASSA_IP ki inner join KASSA_FIRMALAR kf on ki.KASSA_FIRMA_IP = kf.KASSA_FIRMALAR_ID
@@ -318,6 +319,16 @@ inner join userParol u on u.id = ki.KASSIR_ID where u.id = {Properties.Settings.
             if (Registry.GetValue(@"HKEY_CURRENT_USER\Mpos\", "TerminalCashierPrint", null) == null)
             {
                 Registry.CurrentUser.CreateSubKey("Mpos").SetValue("TerminalCashierPrint", true);
+            }
+
+            if (Registry.GetValue(@"HKEY_CURRENT_USER\Mpos\", "ClinicModule", null) == null)
+            {
+                Registry.CurrentUser.CreateSubKey("Mpos").SetValue("ClinicModule", false);
+            }
+
+            if (Registry.GetValue(@"HKEY_CURRENT_USER\Mpos\", "OtherPay", null) == null)
+            {
+                Registry.CurrentUser.CreateSubKey("Mpos").SetValue("OtherPay", false);
             }
             #endregion [..REGEDIT FILE..]
         }

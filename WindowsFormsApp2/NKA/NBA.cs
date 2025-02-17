@@ -1,15 +1,20 @@
-﻿using DevExpress.Xpo;
+﻿using DevExpress.DashboardCommon;
+using DevExpress.Xpo;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Security.Policy;
 using System.Text.Json;
 using System.Windows.Forms;
 using WindowsFormsApp2.Forms;
 using WindowsFormsApp2.Helpers;
+using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
+using static DTOs;
+using static WindowsFormsApp2.POS_LAYOUT_NEW;
 
 namespace WindowsFormsApp2.NKA
 {
@@ -18,188 +23,8 @@ namespace WindowsFormsApp2.NKA
         public static readonly string NBA_FISCAL_SERVICE_PORT = "9847"; //9898 prod port - 9847 test port
         public static readonly string NBA_BANK_SERVICE_PORT = "9944"; //9999 prod port - 9944 test port
 
+        /* return olunacaq json, edvHesap1, edvHesap2, edvdenazad2,odenen,qaliq */
 
-        public static (string json, string edvhesap1, string edvhesap2, string edvdenazad2, string odenen, string qaliq) Sales(decimal _total, decimal _cash, decimal _card, decimal _incomingSum, string _cashier, string _accessToken, string rrn = default)
-        {
-            List<Item> items = new List<Item>();
-            List<VatAmount> vatAmounts = new List<VatAmount>();
-
-
-            decimal _edvlitoplam = default;
-            decimal _edvlitoplam2 = default;
-            decimal _odenen = default;
-            decimal _qaliq = default;
-            decimal _edvsiz = default;
-            string _vatType = string.Empty;
-            decimal qaliq = default;
-
-
-            if (_card == 0)
-            {
-                qaliq = _incomingSum - _total;
-            }
-            //else if (_card > 0 && _cash > 0)
-            //{
-            //    qaliq = _incomingSum - _total;
-            //}
-
-            using (SqlConnection conn = new SqlConnection())
-            {
-                conn.ConnectionString = Properties.Settings.Default.SqlCon;
-
-                using (SqlCommand cmd = new SqlCommand())
-                {
-                    conn.Open();
-
-                    string query = @"
-   select 
-    t.name,
-    t.item_id,
-    t.salePrice,
-    t.quantity,   
-	case t.vatType 
-        when 1 then '18' 
-        when 4 then '2' 
-        when 5 then '8' 
-        else '0' 
-    end as vatType, 
-    t.quantityType,
-    t.salePrice * t.quantity as total, 
-    ROUND(
-        case t.vatType 
-            when 1 then t.salePrice * t.quantity * 0.18 
-            when 3 then 0 
-            when 4 then t.salePrice * t.quantity * 0.02 
-            else 0 
-        end, 
-    2) as ssumvat,
-    SUM(t.salePrice * t.quantity) OVER (PARTITION BY t.vatType) as EdvliToplam,
-    SUM(
-        ROUND(
-            case t.vatType 
-                when 1 then t.salePrice * t.quantity * 0.18 
-                when 3 then 0 
-                when 4 then t.salePrice * t.quantity * 0.02 
-                else 0 
-            end, 
-        2)
-    ) OVER (PARTITION BY t.vatType) as EdvsizToplam
-from dbo.item as t;
-";
-
-                    cmd.Connection = conn;
-                    cmd.CommandText = query;
-
-                    using (SqlDataReader dr = cmd.ExecuteReader())
-                    {
-                        while (dr.Read())
-                        {
-                            string name = dr["name"].ToString();
-                            string code = dr["item_id"].ToString();
-                            decimal salePrice = Convert.ToDecimal(dr["salePrice"]);
-                            decimal quantity = Convert.ToDecimal(dr["quantity"]);
-                            int quantityType = Convert.ToInt32(dr["quantityType"]);
-                            decimal total = Convert.ToDecimal(dr["total"]);
-                            //string taxName = dr["TaxName"].ToString();
-                            int TaxPrc = Convert.ToInt32(dr["vatType"]);
-
-                            int miqdar = Convert.ToInt32(quantity);
-                            Item itemProduct = new Item
-                            {
-                                itemName = name,
-                                itemCode = code,
-                                itemCodeType = 0,
-                                itemQuantityType = quantityType,
-                                itemQuantity = miqdar,
-                                itemPrice = salePrice,
-                                itemSum = total,
-                                itemVatPercent = TaxPrc
-                            };
-                            items.Add(itemProduct);
-                        }
-                    }
-                }
-            }
-
-
-            using (SqlConnection conn = new SqlConnection())
-            {
-                conn.ConnectionString = Properties.Settings.Default.SqlCon;
-                using (SqlCommand cmd = new SqlCommand())
-                {
-                    string query2 = @"
-select t.vatType,sum(t.ssum) as ssum,sum(t.ssumvat) as ssumvat 
-from( select  case  vatType when 1 then '18' when 3 then '0' when 4 then '2' when 5 then '8' else 'bos' end as vatType,
-salePrice* quantity as ssum,ROUND(case vatType when 1 then (salePrice* quantity)*18/118 when 3 then 0 when 4 then salePrice* quantity*0.02 else 0 end,2)
-as ssumvat  from dbo.item  ) as t group by t.vatType";
-
-                    cmd.Connection = conn;
-                    cmd.CommandText = query2;
-                    conn.Open();
-                    using (SqlDataReader dr2 = cmd.ExecuteReader())
-                    {
-                        while (dr2.Read())
-                        {
-                            string vatType = dr2["vatType"].ToString();
-                            if (vatType == "18")
-                            {
-                                _edvlitoplam = Convert.ToDecimal(dr2["ssum"].ToString());
-                                _edvlitoplam2 = Convert.ToDecimal(dr2["ssumvat"].ToString());
-                            }
-                            else
-                            {
-                                _edvsiz = Convert.ToDecimal(dr2["ssum"].ToString());
-                            }
-
-                            VatAmount vatAmount = new VatAmount
-                            {
-                                vatPercent = vatType,
-                                vatSum = _edvlitoplam
-                            };
-                            vatAmounts.Add(vatAmount);
-                        }
-                    }
-                }
-            }
-
-            _odenen = _incomingSum;
-            _qaliq = qaliq;
-
-
-            Data data = new Data()
-            {
-                sum = _total,
-                cashSum = _cash,
-                cashlessSum = _card,
-                incomingSum = _incomingSum,
-                cashier = _cashier,
-                items = items,
-                vatAmounts = vatAmounts,
-                changeSum = qaliq
-
-            };
-
-            Parameters parameters = new Parameters
-            {
-                access_token = _accessToken,
-                doc_type = "sale",
-                data = data
-            };
-
-
-            RootObject rootObject = new RootObject
-            {
-                parameters = parameters
-            };
-
-
-            string json = JsonConvert.SerializeObject(rootObject, new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore
-            });
-
-            return (json, _edvlitoplam.ToString(), _edvlitoplam2.ToString(), _edvsiz.ToString(), _odenen.ToString(), _qaliq.ToString());
-        }
 
         public static GetInfoResponse GetInfo(string ipAddress)
         {
@@ -249,7 +74,7 @@ as ssumvat  from dbo.item  ) as t group by t.vatType";
             Parameters parameters = new Parameters
             {
                 cashregister_factory_number = cashregister_factory_number,
-                pin = "23264544",
+                pin = "12348765",
                 role = "user",
             };
 
@@ -318,12 +143,12 @@ as ssumvat  from dbo.item  ) as t group by t.vatType";
             {
                 ReadyMessages.SUCCESS_OPEN_SHIFT_MESSAGE();
                 FormHelpers.Log(CommonData.SUCCESS_OPEN_SHIFT);
-          //      fDeposit f = new fDeposit();
-          //      if (f.ShowDialog() is DialogResult.OK)
-           //     {
-          //          decimal depositAmount = f.depositAmount;
-           //         Deposit(ipAddress, accessToken, depositAmount, "Kassir");
-             //   }
+                //      fDeposit f = new fDeposit();
+                //      if (f.ShowDialog() is DialogResult.OK)
+                //     {
+                //          decimal depositAmount = f.depositAmount;
+                //         Deposit(ipAddress, accessToken, depositAmount, "Kassir");
+                //   }
             }
         }
 
@@ -538,9 +363,232 @@ as ssumvat  from dbo.item  ) as t group by t.vatType";
             return null;
         }
 
+        public static void Sales(SalesDto salesData)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(salesData.AccessToken))
+                {
+                    salesData.AccessToken = Login(salesData.IpAddress, TerminalTokenData.NkaSerialNumber);
+                }
 
+
+                List<SalesRequest.Item> items = new List<SalesRequest.Item>();
+                List<SalesRequest.VatAmount> vatAmounts = new List<SalesRequest.VatAmount>();
+
+                using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+                {
+                    string query = $@"
+select 
+    t.name,
+    t.item_id,
+    t.salePrice,
+	t.purchasePrice,
+    t.quantity,   
+	case t.vatType 
+        when 1 then '18' 
+        when 2 then '18' 
+        when 3 then '0'
+        when 4 then '2' 
+        when 5 then '8'
+    end as vatType, 
+		case t.vatType 
+        when 1 then '18%' 
+		when 2 then N'TİCARƏT ƏLAVƏSİ 18%'
+        when 3 then N'ƏDV-SİZ' 
+        when 4 then 'SV-2%' 
+        when 5 then '8%' 
+    end as vatTypeName,
+    t.quantityType,
+    t.salePrice * t.quantity as ssum
+from dbo.item as t
+WHERE user_id = {Properties.Settings.Default.UserID}";
+
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        con.Open();
+                        using (SqlDataReader dr = cmd.ExecuteReader())
+                        {
+                            decimal vatSumFor18Percent = 0;
+                            decimal vatSumFor2Percent = 0;
+                            decimal vatSumFor0Percent = 0;
+                            decimal vatSumFor8Percent = 0;
+
+                            while (dr.Read())
+                            {
+                                string name = dr["name"].ToString();
+                                string code = dr["item_id"].ToString();
+                                decimal salePrice = Convert.ToDecimal(dr["salePrice"]);
+                                decimal? purchasePrice = Convert.ToDecimal(dr["purchasePrice"]);
+                                double quantity = Convert.ToDouble(dr["quantity"]);
+                                int vatType = Convert.ToInt32(dr["vatType"]);
+                                string vatTypeName = dr["vatTypeName"].ToString();
+                                int quantityType = Convert.ToInt32(dr["quantityType"]);
+                                decimal ssum = Convert.ToDecimal(dr["ssum"]);
+
+                                decimal? marginSum = purchasePrice * (decimal)quantity;
+
+                                if (vatTypeName != "TİCARƏT ƏLAVƏSİ 18%")
+                                {
+                                    marginSum = null;
+                                    purchasePrice = null;
+                                }
+
+                                SalesRequest.Item item = new SalesRequest.Item
+                                {
+                                    itemName = name,
+                                    itemCode = code,
+                                    itemQuantityType = quantityType,
+                                    itemQuantity = quantity,
+                                    itemPrice = salePrice,
+                                    itemSum = ssum,
+                                    itemVatPercent = vatType,
+                                    itemMarginPrice = purchasePrice,
+                                    itemMarginSum = marginSum,
+                                    discount = 0,
+                                };
+                                items.Add(item);
+
+                                if (vatType == 18)
+                                {
+                                    vatSumFor18Percent += ssum;
+                                }
+                                else if (vatType == 2)
+                                {
+                                    vatSumFor2Percent += ssum;
+                                }
+                                else if (vatType == 0)
+                                {
+                                    vatSumFor0Percent += ssum;
+                                }
+                                else if (vatType == 8)
+                                {
+                                    vatSumFor8Percent += ssum;
+                                }
+                            }
+                            if (vatSumFor18Percent > 0)
+                            {
+                                vatAmounts.Add(new SalesRequest.VatAmount
+                                {
+                                    vatPercent = 18,
+                                    vatSum = vatSumFor18Percent
+                                });
+                            }
+
+                            if (vatSumFor2Percent > 0)
+                            {
+                                vatAmounts.Add(new SalesRequest.VatAmount
+                                {
+                                    vatPercent = 2,
+                                    vatSum = vatSumFor0Percent
+                                });
+                            }
+
+                            if (vatSumFor0Percent > 0)
+                            {
+                                vatAmounts.Add(new SalesRequest.VatAmount
+                                {
+                                    vatPercent = 0,
+                                    vatSum = vatSumFor0Percent
+                                });
+                            }
+
+                            if (vatSumFor8Percent > 0)
+                            {
+                                vatAmounts.Add(new SalesRequest.VatAmount
+                                {
+                                    vatPercent = 8,
+                                    vatSum = vatSumFor8Percent
+                                });
+                            }
+
+                            SalesRequest.Data data = new SalesRequest.Data
+                            {
+                                sum = salesData.Total,
+                                cashSum = salesData.Cash,
+                                cashlessSum = salesData.Card,
+                                incomingSum = salesData.IncomingSum,
+                                cashier = salesData.Cashier,
+                                items = items,
+                                vatAmounts = vatAmounts,
+                            };
+
+                            SalesRequest.Parameters parameters = new SalesRequest.Parameters
+                            {
+                                access_token = salesData.AccessToken,
+                                data = data,
+                            };
+
+                            string json = Newtonsoft.Json.JsonConvert.SerializeObject(parameters, new JsonSerializerSettings
+                            {
+                                NullValueHandling = NullValueHandling.Ignore
+                            });
+
+                            var client = new RestClient();
+                            var request = new RestRequest(salesData.IpAddress, Method.Post);
+                            request.AddHeader("Content-Type", "application/json;charset=utf-8");
+                            request.AddStringBody(json, DataFormat.Json);
+                            RestResponse response = client.Execute(request);
+
+                            nbaroot weatherForecast = System.Text.Json.JsonSerializer.Deserialize<nbaroot>(response.Content);
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
 
         #region [..Request Classes..]
+
+        public class SalesRequest
+        {
+            public class Item
+            {
+                public string itemName { get; set; }
+                public int? itemCodeType { get; set; } = null;
+                public string itemCode { get; set; }
+                public int itemQuantityType { get; set; }
+                public double itemQuantity { get; set; }
+                public decimal itemPrice { get; set; }
+                public decimal? discount { get; set; }
+                public decimal? itemMarginPrice { get; set; }
+                public decimal? itemMarginSum { get; set; }
+                public decimal itemSum { get; set; }
+                public int itemVatPercent { get; set; }
+            }
+            public class VatAmount
+            {
+                public decimal vatSum { get; set; }
+                public int vatPercent { get; set; }
+            }
+            public class Data
+            {
+                public string cashier { get; set; }
+                public string currency { get; set; } = "AZN";
+                public List<Item> items { get; set; }
+                public decimal sum { get; set; }
+                public decimal cashSum { get; set; }
+                public decimal cashlessSum { get; set; }
+                public decimal prepaymentSum { get; set; } = 0;
+                public decimal creditSum { get; set; } = 0;
+                public decimal bonusSum { get; set; } = 0;
+                public decimal incomingSum { get; set; }
+                public decimal changeSum { get; set; } = 0;
+                public List<VatAmount> vatAmounts { get; set; }
+            }
+            public class Parameters
+            {
+                public string access_token { get; set; }
+                public string doc_type { get; set; } = "sale";
+                public string operationId { get; set; } = "createDocument";
+                public int version { get; set; } = 1;
+                public Data data { get; set; }
+            }
+        }
 
         public class Item
         {
@@ -760,7 +808,11 @@ as ssumvat  from dbo.item  ) as t group by t.vatType";
 
         #endregion [..Response Classes..]
 
-        
+
+        public class NbaSalesReturnData
+        {
+
+        }
 
         public class GetInfoResponse
         {
