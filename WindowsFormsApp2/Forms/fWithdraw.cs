@@ -58,7 +58,7 @@ namespace WindowsFormsApp2.Forms
 
         private void bEnter_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(tPaid.Text))
+            if (!string.IsNullOrWhiteSpace(tPaid.Text))
             {
 
                 decimal amount = Convert.ToDecimal(tPaid.EditValue.ToString());

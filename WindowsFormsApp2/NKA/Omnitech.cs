@@ -1075,7 +1075,7 @@ case A.VERGI_DERECESI
             decimal totalMarginSum = 0;  // Toplam itemMarginSum'u tutacak
             decimal totalItemSum = 0;    // Toplam itemSum'u tutacak
 
-            using (SqlConnection conn = new SqlConnection(Properties.Settings.Default.SqlCon))
+            using (SqlConnection conn = new SqlConnection(DbHelpers.DbConnectionString))
             {
                 conn.Open();
                 string query = $@"(SELECT md.MEHSUL_ADI AS name,

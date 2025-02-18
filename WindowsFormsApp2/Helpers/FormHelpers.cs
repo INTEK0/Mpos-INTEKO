@@ -69,12 +69,12 @@ namespace WindowsFormsApp2.Helpers
             }
         }
 
-        public static void OperationLog(Enums.OperationType type, int operationId)
+        public static void OperationLog(Enums.OperationType type, int operationId, string message = "", string jsonCode = "")
         {
             using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
             {
 
-                string query = "INSERT INTO OperationLogs (UserID, TypeId,OperationId, Tarix, Saat) VALUES (@UserID, @TypeId, @OperationId, @Date, @Time)";
+                string query = "INSERT INTO OperationLogs (UserID, TypeId,OperationId, Tarix, Saat, Message,JsonCode) VALUES (@UserID, @TypeId, @OperationId, @Date, @Time, @Message, @JsonCode)";
 
                 SqlCommand command = new SqlCommand(query, con);
 
@@ -83,6 +83,9 @@ namespace WindowsFormsApp2.Helpers
                 command.Parameters.AddWithValue("@TypeId", (int)type);
                 command.Parameters.AddWithValue("@Date", DateTime.Now.Date);
                 command.Parameters.AddWithValue("@Time", DateTime.Now.TimeOfDay);
+                command.Parameters.AddWithValue("@Message", message);
+                command.Parameters.AddWithValue("@JsonCode",jsonCode);
+
 
                 try
                 {

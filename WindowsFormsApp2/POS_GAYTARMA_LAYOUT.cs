@@ -679,257 +679,264 @@ namespace WindowsFormsApp2
 
 
 
-         //   try
-         //   {
-         //       SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
-         //       SqlConnection conn2 = new SqlConnection();
-         //       SqlCommand cmd2 = new SqlCommand();
-         //       conn2.ConnectionString = Properties.Settings.Default.SqlCon;
-         //       conn2.Open();
-         //       string query2 = "SELECT  [pos_satis_check_main_id],[pos_nomre],[fiscal_id],[date_] ,[user_id_] ," +
-         //           "[emeliyyat_nomre],[NEGD_],[KART_],[UMUMI_MEBLEG] ,[json_] ,[fiscalNum],[documentID]" +
-         //           "  FROM [pos_satis_check_main] WHERE[pos_satis_check_main_id] IN(SELECT[pos_satis_check_main_id]  " +
-         //           " FROM [pos_gaytarma_manual] where [pos_gaytarma_manual_id] =(select max([pos_gaytarma_manual_id]) " +
-         //           "from [pos_gaytarma_manual])); ";
+            //   try
+            //   {
+            //       SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
+            //       SqlConnection conn2 = new SqlConnection();
+            //       SqlCommand cmd2 = new SqlCommand();
+            //       conn2.ConnectionString = Properties.Settings.Default.SqlCon;
+            //       conn2.Open();
+            //       string query2 = "SELECT  [pos_satis_check_main_id],[pos_nomre],[fiscal_id],[date_] ,[user_id_] ," +
+            //           "[emeliyyat_nomre],[NEGD_],[KART_],[UMUMI_MEBLEG] ,[json_] ,[fiscalNum],[documentID]" +
+            //           "  FROM [pos_satis_check_main] WHERE[pos_satis_check_main_id] IN(SELECT[pos_satis_check_main_id]  " +
+            //           " FROM [pos_gaytarma_manual] where [pos_gaytarma_manual_id] =(select max([pos_gaytarma_manual_id]) " +
+            //           "from [pos_gaytarma_manual])); ";
 
 
 
 
 
-         //       cmd2.Connection = conn2;
-         //       cmd2.CommandText = query2;
+            //       cmd2.Connection = conn2;
+            //       cmd2.CommandText = query2;
 
-         //       SqlDataReader dr2 = cmd2.ExecuteReader();
+            //       SqlDataReader dr2 = cmd2.ExecuteReader();
 
-         //       while (dr2.Read())
-         //       {
-
-
-         //           string cash = dr2["NEGD_"].ToString();
-         //           string card = dr2["KART_"].ToString();
+            //       while (dr2.Read())
+            //       {
 
 
-         //           string fiscal_id = dr2["fiscal_id"].ToString();
-         //           string fiscalNum = dr2["fiscalNum"].ToString();
+            //           string cash = dr2["NEGD_"].ToString();
+            //           string card = dr2["KART_"].ToString();
 
 
-
-
-         //           dataheadersa4 = "\"parentDocument\":\"" + fiscal_id + "\", ";
-
-
-
-         //       }
-
-
-         //       SqlConnection conn = new SqlConnection();
-         //       SqlCommand cmd = new SqlCommand();
-         //       conn.ConnectionString = Properties.Settings.Default.SqlCon;
-         //       conn.Open();
-
-
-         //       string query = $@"(SELECT md.MEHSUL_ADI AS name,
-         //              p.item_id AS code,
-         //              pl.say AS say,
-         //              p.satis_giymet AS satis_giymet,
-					    //pl.say * p.satis_giymet as tutar,
-         //              p.quantity_type AS quantity_type,
-         //              md.VERGI_DERECESI AS vtypes
-         //     FROM pos_satis_check_details p
-         //              INNER JOIN MAL_ALISI_DETAILS md ON p.mal_alisi_details_id = md.MAL_ALISI_DETAILS_ID
-         //              INNER JOIN pos_gaytarma_manual pl ON p.pos_satis_check_details_id = pl.pos_satis_check_details
-         //     WHERE pl.emeliyyat_nomre = '{textEdit1.Text}')";
+            //           string fiscal_id = dr2["fiscal_id"].ToString();
+            //           string fiscalNum = dr2["fiscalNum"].ToString();
 
 
 
 
-         //       cmd.Connection = conn;
-         //       cmd.CommandText = query;
-
-         //       SqlDataReader dr = cmd.ExecuteReader();
-         //       while (dr.Read())
-         //       {
-         //           string name = dr["name"].ToString();
-         //           string code = dr["code"].ToString();
-         //           string sprice = dr["satis_giymet"].ToString();
-         //           string qty = dr["say"].ToString();
-         //           string vat = dr["vtypes"].ToString();
-         //           string qunit = dr["quantity_type"].ToString();
-         //           string ssum = dr["tutar"].ToString();
-
-         //           p = p + "{\"itemName\":\"" + name + "\",\"itemCodeType\":0,\"itemCode\":\"" + code + "\",\"itemQuantityType\":" + qunit + ",\"itemQuantity\":" + qty.Replace(",", ".") + ",\"itemPrice\":" + sprice.Replace(",", ".") + ",\"itemSum\":" + ssum.Replace(",", ".") + ",\"itemVatPercent\":" + vat.Replace(",", ".") + ",\"discount\":0.0" + "},";
-         //           vatkonts2 = vat;
-         //       }
-         //       string pnew = p.Substring(0, p.Length - 1);
-         //       SqlConnection conn4 = new SqlConnection();
-         //       SqlCommand cmd4 = new SqlCommand();
-         //       conn4.ConnectionString = Properties.Settings.Default.SqlCon;
-         //       conn4.Open();
-         //       //  string query4 = "SELECT SUM(tutar) as tut,sum(edv) as edvs from (SELECT    SUM( (M.say)*[satis_giymet]) as tutar, SUM((M.say)*[satis_giymet])*0.18 as edv FROM  [pos_satis_check_details] AS T,[pos_gaytarma_manual] AS M  WHERE T.[pos_satis_check_details_id]=M.[pos_satis_check_details] and  m.[pos_gaytarma_manual_id] =(select max([pos_gaytarma_manual_id]) from [pos_gaytarma_manual])) z";// position column from position table
-         //       string query4 = "SELECT SUM(tutar) as tut,sum(edv) as edvs from  " +
-         //           "(SELECT    SUM((M.say) *[satis_giymet]) as tutar, SUM((M.say) *[satis_giymet]) * 0.18 as edv " +
-         //           " FROM [pos_satis_check_details] AS T,[pos_gaytarma_manual] AS M " +
-         //            " WHERE T.[pos_satis_check_details_id] = M.[pos_satis_check_details] and m.[pos_gaytarma_manual_id] IN(" +
-         //            " SELECT [pos_gaytarma_manual_id] FROM [pos_gaytarma_manual] WHERE  convert(varchar, DATE_, 20) = (" +
-         //            " SELECT convert(varchar, DATE_, 20)  FROM [pos_gaytarma_manual] WHERE[pos_gaytarma_manual_id] = (" +
-         //            " SELECT  MAX([pos_gaytarma_manual_id]) FROM [pos_gaytarma_manual])))) Z";
-
-         //       cmd4.Connection = conn4;
-         //       cmd4.CommandText = query4;
-
-         //       SqlDataReader dr4 = cmd4.ExecuteReader();
-
-         //       if (type is PayType.Cash)
-         //       {
-         //           while (dr4.Read())
-         //           {
-
-
-         //               string tutara = dr4["tut"].ToString();
-         //               string edvsa = dr4["edvs"].ToString();
-
-         //               tutkontrol = $@"
-         //               ""bonusSum"": 0.0,
-         //               ""cashSum"": {tutara.Replace(",", ".")},
-         //               ""cashier"": Kassir,
-         //               ""cashlessSum"": 0.0,
-         //               ""creditSum"": 0.0,
-         //               ""currency"": ""AZN"",";
-
-
-         //               edvlikisimsa = $@"
-         //               ""sum"": {tutara.Replace(",", ".")},
-         //               ""vatAmounts"": [
-         //                   {{
-         //                       ""vatPercent"": {vatkonts2},
-         //                       ""vatSum"": {tutara.Replace(",", ".")}
-         //                   }}
-         //               ]";
-         //           }
-         //       }
-         //       else if (type is PayType.Card)
-         //       {
-         //           while (dr4.Read())
-         //           {
-         //               string tutara = dr4["tut"].ToString();
-         //               string edvsa = dr4["edvs"].ToString();
-
-         //               tutkontrol = $@"
-         //               ""bonusSum"": 0.0,
-         //               ""cashSum"": 0.0,
-         //               ""cashier"": Kassir,
-         //               ""cashlessSum"": {tutara.Replace(",", ".")},
-         //               ""creditSum"": 0.0,
-         //               ""currency"": ""AZN"",";
-
-
-         //               edvlikisimsa = $@"
-         //               ""sum"": {tutara.Replace(",", ".")},
-         //               ""vatAmounts"": [
-         //                   {{
-         //                       ""vatPercent"": {vatkonts2},
-         //                       ""vatSum"": {tutara.Replace(",", ".")}
-         //                   }}
-         //               ]";
-
-         //           }
-         //       }
-
-         //       //            else if (type is PayType.CashCard)
-         //       //            {
-         //       //                while (dr4.Read())
-         //       //                {
-
-
-         //       //                    string tutara = dr4["tut"].ToString();
-         //       //                    string edvsa = dr4["edvs"].ToString();
-
-         //       //                    tutkontrol = "" +
-         //       //                        "\"bonusSum\":0.0, " +
-         //       //"\"cashSum\":" + tutara.Replace(",", ".") + ", " +
-         //       //"\"cashier\":" + Cashier + ", \"cashlessSum\":0.0, \"creditSum\":0.0," +
-         //       //"\"currency\":\"AZN\", \"firstOperationAtUtc\":\"\",";
-
-         //       //                    edvlikisimsa = "\"sum\":" + tutara.Replace(",", ".") + "," +
-         //       //                    "\"vatAmounts\":[" +
-         //       //                    "{ \"vatPercent\":" + vatkonts2 + ", \"vatSum\": " + tutara.Replace(",", ".") + " }]},";
-
-         //       //                }
-         //       //            }
-
-
-         //       string footernews = "}";
-         //       alldata = dataheader + tutkontrol + productsa + pnew + p2 + dataheadersa4 + edvlikisimsa + footernews;
-         //       httpRequest.Method = "POST";
-
-         //       string dt = DateTime.Now.ToString("yyyyMMddHHmmss");
-         //       string nonce = Guid.NewGuid().ToString("n").Substring(0, 8);
-         //       string token = EKASAM.ComputeSha256Hash(EKASAM.ComputeSha256Hash(dt) + ":" + nonce + ":" + "MPOS");
-
-
-         //       var options = new RestClientOptions(_url)
-         //       {
-         //           MaxTimeout = -1,
-         //       };
-         //       var client = new RestClient(options);
-         //       var request = new RestRequest("/kas_moneyback", Method.Post);
-         //       request.AddHeader("dt", dt);
-         //       request.AddHeader("nonce", nonce);
-         //       request.AddHeader("token", token);
-         //       request.AddStringBody(json, DataFormat.Json);
-         //       RestResponse response = client.Execute(request);
+            //           dataheadersa4 = "\"parentDocument\":\"" + fiscal_id + "\", ";
 
 
 
-         //       using (var streamWriter = new StreamWriter(httpRequest.GetRequestStream()))
-         //       {
-         //           streamWriter.Write(json);
-         //       }
+            //       }
 
-         //       var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
-         //       using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-         //       {
-         //           var result = streamReader.ReadToEnd();
 
-         //           WeatherForecastomnitech weatherForecast =
-         //            System.Text.Json.JsonSerializer.Deserialize<WeatherForecastomnitech>(result);
+            //       SqlConnection conn = new SqlConnection();
+            //       SqlCommand cmd = new SqlCommand();
+            //       conn.ConnectionString = Properties.Settings.Default.SqlCon;
+            //       conn.Open();
 
-         //           //MessageBox.Show($"{weatherForecast.message}");
 
-         //           if ($"{weatherForecast.message}" == "Success operation" || $"{weatherForecast.message}" == "Successful operation")
-         //           {
-         //               if (MessageVisible)
-         //               {
-         //                   ReadyMessages.SUCCESS_RETURN_SALES_MESSAGE();
-         //               }
-
-         //               FormHelpers.Log($"Qəbz geri qaytarması edildi Qəbz №: {weatherForecast.document_number}");
-         //               textEdit1.Text = DbProsedures.GET_RefundProccessNo();
-         //               gridControl1.RefreshDataSource();
-         //               /* textEdit3.Text = a; */
-
-         //           }
-         //           else
-         //           {
-         //               XtraMessageBox.Show(weatherForecast.message);
-         //               FormHelpers.Log($"Pos satış qaytarma xətası. Xəta mesajı: {weatherForecast.message}");
-         //           }
-         //       }
+            //       string query = $@"(SELECT md.MEHSUL_ADI AS name,
+            //              p.item_id AS code,
+            //              pl.say AS say,
+            //              p.satis_giymet AS satis_giymet,
+            //pl.say * p.satis_giymet as tutar,
+            //              p.quantity_type AS quantity_type,
+            //              md.VERGI_DERECESI AS vtypes
+            //     FROM pos_satis_check_details p
+            //              INNER JOIN MAL_ALISI_DETAILS md ON p.mal_alisi_details_id = md.MAL_ALISI_DETAILS_ID
+            //              INNER JOIN pos_gaytarma_manual pl ON p.pos_satis_check_details_id = pl.pos_satis_check_details
+            //     WHERE pl.emeliyyat_nomre = '{textEdit1.Text}')";
 
 
 
-         //   }
-         //   catch (Exception e)
-         //   {
-         //       throw e;
-         //   }
+
+            //       cmd.Connection = conn;
+            //       cmd.CommandText = query;
+
+            //       SqlDataReader dr = cmd.ExecuteReader();
+            //       while (dr.Read())
+            //       {
+            //           string name = dr["name"].ToString();
+            //           string code = dr["code"].ToString();
+            //           string sprice = dr["satis_giymet"].ToString();
+            //           string qty = dr["say"].ToString();
+            //           string vat = dr["vtypes"].ToString();
+            //           string qunit = dr["quantity_type"].ToString();
+            //           string ssum = dr["tutar"].ToString();
+
+            //           p = p + "{\"itemName\":\"" + name + "\",\"itemCodeType\":0,\"itemCode\":\"" + code + "\",\"itemQuantityType\":" + qunit + ",\"itemQuantity\":" + qty.Replace(",", ".") + ",\"itemPrice\":" + sprice.Replace(",", ".") + ",\"itemSum\":" + ssum.Replace(",", ".") + ",\"itemVatPercent\":" + vat.Replace(",", ".") + ",\"discount\":0.0" + "},";
+            //           vatkonts2 = vat;
+            //       }
+            //       string pnew = p.Substring(0, p.Length - 1);
+            //       SqlConnection conn4 = new SqlConnection();
+            //       SqlCommand cmd4 = new SqlCommand();
+            //       conn4.ConnectionString = Properties.Settings.Default.SqlCon;
+            //       conn4.Open();
+            //       //  string query4 = "SELECT SUM(tutar) as tut,sum(edv) as edvs from (SELECT    SUM( (M.say)*[satis_giymet]) as tutar, SUM((M.say)*[satis_giymet])*0.18 as edv FROM  [pos_satis_check_details] AS T,[pos_gaytarma_manual] AS M  WHERE T.[pos_satis_check_details_id]=M.[pos_satis_check_details] and  m.[pos_gaytarma_manual_id] =(select max([pos_gaytarma_manual_id]) from [pos_gaytarma_manual])) z";// position column from position table
+            //       string query4 = "SELECT SUM(tutar) as tut,sum(edv) as edvs from  " +
+            //           "(SELECT    SUM((M.say) *[satis_giymet]) as tutar, SUM((M.say) *[satis_giymet]) * 0.18 as edv " +
+            //           " FROM [pos_satis_check_details] AS T,[pos_gaytarma_manual] AS M " +
+            //            " WHERE T.[pos_satis_check_details_id] = M.[pos_satis_check_details] and m.[pos_gaytarma_manual_id] IN(" +
+            //            " SELECT [pos_gaytarma_manual_id] FROM [pos_gaytarma_manual] WHERE  convert(varchar, DATE_, 20) = (" +
+            //            " SELECT convert(varchar, DATE_, 20)  FROM [pos_gaytarma_manual] WHERE[pos_gaytarma_manual_id] = (" +
+            //            " SELECT  MAX([pos_gaytarma_manual_id]) FROM [pos_gaytarma_manual])))) Z";
+
+            //       cmd4.Connection = conn4;
+            //       cmd4.CommandText = query4;
+
+            //       SqlDataReader dr4 = cmd4.ExecuteReader();
+
+            //       if (type is PayType.Cash)
+            //       {
+            //           while (dr4.Read())
+            //           {
+
+
+            //               string tutara = dr4["tut"].ToString();
+            //               string edvsa = dr4["edvs"].ToString();
+
+            //               tutkontrol = $@"
+            //               ""bonusSum"": 0.0,
+            //               ""cashSum"": {tutara.Replace(",", ".")},
+            //               ""cashier"": Kassir,
+            //               ""cashlessSum"": 0.0,
+            //               ""creditSum"": 0.0,
+            //               ""currency"": ""AZN"",";
+
+
+            //               edvlikisimsa = $@"
+            //               ""sum"": {tutara.Replace(",", ".")},
+            //               ""vatAmounts"": [
+            //                   {{
+            //                       ""vatPercent"": {vatkonts2},
+            //                       ""vatSum"": {tutara.Replace(",", ".")}
+            //                   }}
+            //               ]";
+            //           }
+            //       }
+            //       else if (type is PayType.Card)
+            //       {
+            //           while (dr4.Read())
+            //           {
+            //               string tutara = dr4["tut"].ToString();
+            //               string edvsa = dr4["edvs"].ToString();
+
+            //               tutkontrol = $@"
+            //               ""bonusSum"": 0.0,
+            //               ""cashSum"": 0.0,
+            //               ""cashier"": Kassir,
+            //               ""cashlessSum"": {tutara.Replace(",", ".")},
+            //               ""creditSum"": 0.0,
+            //               ""currency"": ""AZN"",";
+
+
+            //               edvlikisimsa = $@"
+            //               ""sum"": {tutara.Replace(",", ".")},
+            //               ""vatAmounts"": [
+            //                   {{
+            //                       ""vatPercent"": {vatkonts2},
+            //                       ""vatSum"": {tutara.Replace(",", ".")}
+            //                   }}
+            //               ]";
+
+            //           }
+            //       }
+
+            //       //            else if (type is PayType.CashCard)
+            //       //            {
+            //       //                while (dr4.Read())
+            //       //                {
+
+
+            //       //                    string tutara = dr4["tut"].ToString();
+            //       //                    string edvsa = dr4["edvs"].ToString();
+
+            //       //                    tutkontrol = "" +
+            //       //                        "\"bonusSum\":0.0, " +
+            //       //"\"cashSum\":" + tutara.Replace(",", ".") + ", " +
+            //       //"\"cashier\":" + Cashier + ", \"cashlessSum\":0.0, \"creditSum\":0.0," +
+            //       //"\"currency\":\"AZN\", \"firstOperationAtUtc\":\"\",";
+
+            //       //                    edvlikisimsa = "\"sum\":" + tutara.Replace(",", ".") + "," +
+            //       //                    "\"vatAmounts\":[" +
+            //       //                    "{ \"vatPercent\":" + vatkonts2 + ", \"vatSum\": " + tutara.Replace(",", ".") + " }]},";
+
+            //       //                }
+            //       //            }
+
+
+            //       string footernews = "}";
+            //       alldata = dataheader + tutkontrol + productsa + pnew + p2 + dataheadersa4 + edvlikisimsa + footernews;
+            //       httpRequest.Method = "POST";
+
+            //       string dt = DateTime.Now.ToString("yyyyMMddHHmmss");
+            //       string nonce = Guid.NewGuid().ToString("n").Substring(0, 8);
+            //       string token = EKASAM.ComputeSha256Hash(EKASAM.ComputeSha256Hash(dt) + ":" + nonce + ":" + "MPOS");
+
+
+            //       var options = new RestClientOptions(_url)
+            //       {
+            //           MaxTimeout = -1,
+            //       };
+            //       var client = new RestClient(options);
+            //       var request = new RestRequest("/kas_moneyback", Method.Post);
+            //       request.AddHeader("dt", dt);
+            //       request.AddHeader("nonce", nonce);
+            //       request.AddHeader("token", token);
+            //       request.AddStringBody(json, DataFormat.Json);
+            //       RestResponse response = client.Execute(request);
+
+
+
+            //       using (var streamWriter = new StreamWriter(httpRequest.GetRequestStream()))
+            //       {
+            //           streamWriter.Write(json);
+            //       }
+
+            //       var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+            //       using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            //       {
+            //           var result = streamReader.ReadToEnd();
+
+            //           WeatherForecastomnitech weatherForecast =
+            //            System.Text.Json.JsonSerializer.Deserialize<WeatherForecastomnitech>(result);
+
+            //           //MessageBox.Show($"{weatherForecast.message}");
+
+            //           if ($"{weatherForecast.message}" == "Success operation" || $"{weatherForecast.message}" == "Successful operation")
+            //           {
+            //               if (MessageVisible)
+            //               {
+            //                   ReadyMessages.SUCCESS_RETURN_SALES_MESSAGE();
+            //               }
+
+            //               FormHelpers.Log($"Qəbz geri qaytarması edildi Qəbz №: {weatherForecast.document_number}");
+            //               textEdit1.Text = DbProsedures.GET_RefundProccessNo();
+            //               gridControl1.RefreshDataSource();
+            //               /* textEdit3.Text = a; */
+
+            //           }
+            //           else
+            //           {
+            //               XtraMessageBox.Show(weatherForecast.message);
+            //               FormHelpers.Log($"Pos satış qaytarma xətası. Xəta mesajı: {weatherForecast.message}");
+            //           }
+            //       }
+
+
+
+            //   }
+            //   catch (Exception e)
+            //   {
+            //       throw e;
+            //   }
 
         }
 
-
+        string ErrorJsonSend = null;
         public void nba_gaytarma(string _url, PayType type)
         {
+            rrnCode = null;
+            body2a = null;
+            ErrorJsonSend = null;
             var url = _url;
+            if (string.IsNullOrWhiteSpace(keys_))
+            {
+                keys_ = NBA.Login(lIpAddress.Text, TerminalTokenData.NkaSerialNumber);
+            }
 
             string p = "";
 
@@ -952,12 +959,11 @@ namespace WindowsFormsApp2
 
             try
             {
-                SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
-                SqlConnection conn2 = new SqlConnection();
+                SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString);
+                SqlConnection conn2 = new SqlConnection(DbHelpers.DbConnectionString);
                 SqlCommand cmd2 = new SqlCommand();
-                conn2.ConnectionString = Properties.Settings.Default.SqlCon;
                 conn2.Open();
-                string query2 = @"SELECT  [pos_satis_check_main_id],
+                string query2 = $@"SELECT  [pos_satis_check_main_id],
 [pos_nomre],
 [fiscal_id],
 [date_],
@@ -972,7 +978,7 @@ namespace WindowsFormsApp2
 bankttnm as rrn
 FROM [pos_satis_check_main] WHERE[pos_satis_check_main_id] IN(SELECT[pos_satis_check_main_id] 
 FROM [pos_gaytarma_manual] where [pos_gaytarma_manual_id] =(select max([pos_gaytarma_manual_id]) 
-FROM [pos_gaytarma_manual]));";
+FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID}'));";
 
 
 
@@ -1014,32 +1020,55 @@ FROM [pos_gaytarma_manual]));";
 
                 SqlConnection conn = new SqlConnection();
                 SqlCommand cmd = new SqlCommand();
-                conn.ConnectionString = Properties.Settings.Default.SqlCon;
+                conn.ConnectionString = DbHelpers.DbConnectionString;
                 conn.Open();
 
-                string query = $@"SELECT
-                (SELECT [MEHSUL_ADI] 
-                FROM[dbo].[MAL_ALISI_DETAILS] WHERE [MAL_ALISI_DETAILS_ID] = T.[mal_alisi_details_id]) AS name,
-                [quantity_type],[satis_giymet],[Code], M.say, (M.say) * [satis_giymet] as tutar,
-                (M.say) *[satis_giymet] * 
-                (SELECT CASE vatType 
-                WHEN 1 THEN 0.18 
-                WHEN 3 THEN 0 
-                WHEN 4 THEN 0.02
-                WHEN 5 THEN 0.08
-                ELSE 0 END 
-                FROM ITEM WHERE [mal_alisi_details_id] = T.[mal_alisi_details_id] AND user_id = {Properties.Settings.Default.UserID}) as edv,
-                (SELECT CASE vatType 
-                WHEN 1 THEN 18
-                WHEN 3 THEN 0 
-                WHEN 4 THEN 2 
-                WHEN 5 THEN 8 
-                ELSE 0 END 
-                FROM ITEM WHERE [mal_alisi_details_id] = T.[mal_alisi_details_id] AND user_id = {Properties.Settings.Default.UserID}) as vtypes FROM[pos_satis_check_details] AS T,
-                [pos_gaytarma_manual] AS M WHERE T.[pos_satis_check_details_id]= M.[pos_satis_check_details] and m.[pos_gaytarma_manual_id] IN 
-                (SELECT[pos_gaytarma_manual_id] FROM[pos_gaytarma_manual] 
-                WHERE  convert(varchar, DATE_, 20) = (SELECT convert(varchar, DATE_, 20) FROM[pos_gaytarma_manual] WHERE[pos_gaytarma_manual_id] = (SELECT  MAX([pos_gaytarma_manual_id]) FROM[pos_gaytarma_manual] WHERE user_id_ = {Properties.Settings.Default.UserID})))";
-
+                //string query = $@"SELECT
+                //(SELECT [MEHSUL_ADI] 
+                //FROM[dbo].[MAL_ALISI_DETAILS] WHERE [MAL_ALISI_DETAILS_ID] = T.[mal_alisi_details_id]) AS name,
+                //[quantity_type],[satis_giymet],[Code], M.say, (M.say) * [satis_giymet] as tutar,
+                //(M.say) *[satis_giymet] * 
+                //(SELECT CASE vatType 
+                //WHEN 1 THEN 0.18 
+                //WHEN 3 THEN 0 
+                //WHEN 4 THEN 0.02
+                //WHEN 5 THEN 0.08
+                //ELSE 0 END 
+                //FROM ITEM WHERE [mal_alisi_details_id] = T.[mal_alisi_details_id] AND user_id = {Properties.Settings.Default.UserID}) as edv,
+                //(SELECT CASE vatType 
+                //WHEN 1 THEN 18
+                //WHEN 3 THEN 0 
+                //WHEN 4 THEN 2 
+                //WHEN 5 THEN 8 
+                //ELSE 0 END 
+                //FROM ITEM WHERE [mal_alisi_details_id] = T.[mal_alisi_details_id] AND user_id = {Properties.Settings.Default.UserID}) as vtypes FROM[pos_satis_check_details] AS T,
+                //[pos_gaytarma_manual] AS M WHERE T.[pos_satis_check_details_id]= M.[pos_satis_check_details] and m.[pos_gaytarma_manual_id] IN 
+                //(SELECT[pos_gaytarma_manual_id] FROM[pos_gaytarma_manual] 
+                //WHERE  convert(varchar, DATE_, 20) = (SELECT convert(varchar, DATE_, 20) FROM[pos_gaytarma_manual] WHERE[pos_gaytarma_manual_id] = (SELECT  MAX([pos_gaytarma_manual_id]) FROM[pos_gaytarma_manual] WHERE user_id_ = {Properties.Settings.Default.UserID})))";
+                string query = $@"(SELECT md.MEHSUL_ADI AS name,
+                                p.item_id AS Code,
+                                pl.say AS say,
+                                md.ALIS_GIYMETI as alis_giymet,
+                                p.satis_giymet AS satis_giymet,
+                                pl.say * p.satis_giymet as tutar,
+                                p.quantity_type AS quantity_type,
+                               CASE md.VERGI_DERECESI 
+								WHEN 1 THEN 0.18 
+								WHEN 3 THEN 0 
+								WHEN 4 THEN 0.02
+								WHEN 5 THEN 0.08
+								ELSE 0 END edv,
+                                 case md.VERGI_DERECESI 
+                                 when 1 then '18' 
+                                 when 2 then '18' 
+                                 when 3 then '0' 
+                                 when 4 then '2' 
+                                 when 5 then '8' 
+                                 end as vtypes
+                                FROM pos_satis_check_details p
+                                INNER JOIN MAL_ALISI_DETAILS md ON p.mal_alisi_details_id = md.MAL_ALISI_DETAILS_ID
+                                INNER JOIN pos_gaytarma_manual pl ON p.pos_satis_check_details_id = pl.pos_satis_check_details
+                                WHERE pl.emeliyyat_nomre = '{textEdit1.Text}' and pl.user_id_ = '{Properties.Settings.Default.UserID}')";
 
                 cmd.Connection = conn;
                 cmd.CommandText = query;
@@ -1170,22 +1199,6 @@ FROM [pos_gaytarma_manual]));";
                         body2a = body2;
 
                     }
-
-                    //if (tarihsoncontrol.ToString() == "0")
-                    //{
-
-                    //    var body2 = JsonConvert.SerializeObject(new
-                    //    {
-                    //        type = "void",
-                    //        amount = Math.Round(Convert.ToDouble(cardTotal), 2).ToString().Replace(",", ""),
-                    //        rrn = rrnCode,
-                    //        dontredirecttosale = false
-                    //    });
-
-
-                    //    body2a = body2;
-                    //}
-
                     else
                     {
 
@@ -1202,7 +1215,7 @@ FROM [pos_gaytarma_manual]));";
 
                     RestResponse response2 = client2.Execute(requestsend);
 
-                    banksalessend:
+                banksalessend:
                     if (response2.Content == "ERROR!!! Please Check Banking APP")
                     {
                         XtraMessageBox.Show("ERROR!!! Please Check Banking APP", "Error");
@@ -1214,10 +1227,10 @@ FROM [pos_gaytarma_manual]));";
 
                         bankid = $"{weatherForecastbank.trnid}";
                     }
-                    Thread.Sleep(4000);
+                    Thread.Sleep(3000);
 
 
-                    bankstart:
+                bankstart:
                     var bodybankdetail = "{\"trnid\":\"" + bankid + "\",\"installmentindex\":-1}";
                     requestbankdetail.AddStringBody(bodybankdetail, DataFormat.Json);
                     RestResponse responsebankdetail = client3.Execute(requestbankdetail);
@@ -1242,10 +1255,10 @@ FROM [pos_gaytarma_manual]));";
                         {
                             bankdizi.Add(item.line);
 
-                            if (item.line.Contains("RRN") || item.line.Contains("rrn"))
-                            {
-                                rrnCode = item.line.Split(':').Last().Trim();
-                            }
+                            //if (item.line.Contains("RRN") || item.line.Contains("rrn"))
+                            //{
+                            //    rrnCode = item.line.Split(':').Last().Trim();
+                            //}
                         }
 
                         bankdizic.Clear();
@@ -1261,7 +1274,7 @@ FROM [pos_gaytarma_manual]));";
                         {
                             PaperSize = new PrinterSettings().DefaultPageSettings.PaperSize
                         };
-
+                        pd.DocumentName = "Xəzinədar qəbzi";
                         pd.PrintPage += new PrintPageEventHandler(nba_bankprint);
 
                         pagesCount = 1;
@@ -1269,6 +1282,7 @@ FROM [pos_gaytarma_manual]));";
 
                         PrintDialog PrintDialog1 = new PrintDialog
                         {
+
                             Document = pd
                         };
 
@@ -1284,6 +1298,8 @@ FROM [pos_gaytarma_manual]));";
                         {
                             PaperSize = new PrinterSettings().DefaultPageSettings.PaperSize
                         };
+                        pd.DocumentName = "Müştəri qəbzi";
+
                         pd2.PrintPage += new PrintPageEventHandler(nba_bankprintc);
 
                         pagesCount = 1;
@@ -1301,21 +1317,15 @@ FROM [pos_gaytarma_manual]));";
                     else if (statusa == "not approved")
                     {
                         #region [..XƏZİNƏDAR QƏBZİ..]
-                        if (weatherForecastbankdetail.errorReceiptData != null)
+
+                        if (weatherForecastbankdetail.errorreceipt != null)
                         {
-                            bankdizi.Clear();
-                            foreach (var item in weatherForecastbankdetail.errorReceiptData)
+                            foreach (var item in weatherForecastbankdetail.errorreceipt)
                             {
                                 bankdizi.Add(item.line);
                             }
                         }
-                        else
-                        {
-                            ReadyMessages.ERROR_DEFAULT_MESSAGE(weatherForecastbankdetail.responsecodeText);
-                            return;
-                        }
-
-
+                        ReadyMessages.ERROR_BANK_MESSAGE(weatherForecastbankdetail.responsecodeText);
 
                         PrintDocument pd = new PrintDocument();
                         pd.DefaultPageSettings = new PageSettings
@@ -1347,6 +1357,7 @@ FROM [pos_gaytarma_manual]));";
 
 
                 alldata = parameters + parameters2 + productsa + pnew + p2 + tutkontrol;
+                ErrorJsonSend = alldata;
                 _payType = type;
 
 
@@ -1356,8 +1367,6 @@ FROM [pos_gaytarma_manual]));";
                 var body = alldata;
                 request.AddStringBody(body, DataFormat.Json);
                 RestResponse response = client.Execute(request);
-
-
 
 
                 nbaroot weatherForecast = System.Text.Json.JsonSerializer.Deserialize<nbaroot>(response.Content);
@@ -1414,6 +1423,7 @@ FROM [pos_gaytarma_manual]));";
             }
             catch (Exception e)
             {
+                FormHelpers.Log($"Qaytarma zamanı göndərilən json:\n {ErrorJsonSend}");
                 ReadyMessages.ERROR_DEFAULT_MESSAGE(e.Message);
             }
 

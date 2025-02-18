@@ -68,7 +68,7 @@
             this.labelControl2.Name = "labelControl2";
             this.labelControl2.Size = new System.Drawing.Size(398, 30);
             this.labelControl2.TabIndex = 6;
-            this.labelControl2.Text = "KASSAYA MƏXARIC";
+            this.labelControl2.Text = "KASSA MƏXARİC";
             // 
             // tablePanel1
             // 

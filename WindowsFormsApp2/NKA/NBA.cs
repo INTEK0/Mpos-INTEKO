@@ -22,6 +22,7 @@ namespace WindowsFormsApp2.NKA
     {
         public static readonly string NBA_FISCAL_SERVICE_PORT = "9847"; //9898 prod port - 9847 test port
         public static readonly string NBA_BANK_SERVICE_PORT = "9944"; //9999 prod port - 9944 test port
+        private static readonly string NBA_LOGIN_PIN = "23264544"; //12348765 prod ping - 23264544 test pin
 
         /* return olunacaq json, edvHesap1, edvHesap2, edvdenazad2,odenen,qaliq */
 
@@ -74,7 +75,7 @@ namespace WindowsFormsApp2.NKA
             Parameters parameters = new Parameters
             {
                 cashregister_factory_number = cashregister_factory_number,
-                pin = "12348765",
+                pin = NBA_LOGIN_PIN,
                 role = "user",
             };
 
@@ -363,7 +364,7 @@ namespace WindowsFormsApp2.NKA
             return null;
         }
 
-        public static void Sales(SalesDto salesData)
+        public static string Sales(SalesDto salesData)
         {
             try
             {
@@ -438,6 +439,7 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
                                 {
                                     itemName = name,
                                     itemCode = code,
+                                    itemCodeType = 0,
                                     itemQuantityType = quantityType,
                                     itemQuantity = quantity,
                                     itemPrice = salePrice,
@@ -514,23 +516,29 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
                             };
 
                             SalesRequest.Parameters parameters = new SalesRequest.Parameters
-                            {
+                            {   
                                 access_token = salesData.AccessToken,
                                 data = data,
                             };
 
-                            string json = Newtonsoft.Json.JsonConvert.SerializeObject(parameters, new JsonSerializerSettings
+                            SalesRequest root = new SalesRequest
+                            {
+                                parameters = parameters
+                            };
+
+                            string json = Newtonsoft.Json.JsonConvert.SerializeObject(root, new JsonSerializerSettings
                             {
                                 NullValueHandling = NullValueHandling.Ignore
                             });
 
-                            var client = new RestClient();
-                            var request = new RestRequest(salesData.IpAddress, Method.Post);
-                            request.AddHeader("Content-Type", "application/json;charset=utf-8");
-                            request.AddStringBody(json, DataFormat.Json);
-                            RestResponse response = client.Execute(request);
+                            return json;
+                            //var client = new RestClient();
+                            //var request = new RestRequest(salesData.IpAddress, Method.Post);
+                            //request.AddHeader("Content-Type", "application/json;charset=utf-8");
+                            //request.AddStringBody(json, DataFormat.Json);
+                            //RestResponse response = client.Execute(request);
 
-                            nbaroot weatherForecast = System.Text.Json.JsonSerializer.Deserialize<nbaroot>(response.Content);
+                            //nbaroot weatherForecast = System.Text.Json.JsonSerializer.Deserialize<nbaroot>(response.Content);
                         }
                     }
                 }
@@ -546,6 +554,9 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
 
         public class SalesRequest
         {
+            public string operationId { get; set; } = "createDocument";
+            public int version { get; set; } = 1;
+            public Parameters parameters { get; set; }
             public class Item
             {
                 public string itemName { get; set; }
@@ -582,10 +593,8 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
             }
             public class Parameters
             {
-                public string access_token { get; set; }
                 public string doc_type { get; set; } = "sale";
-                public string operationId { get; set; } = "createDocument";
-                public int version { get; set; } = 1;
+                public string access_token { get; set; }
                 public Data data { get; set; }
             }
         }
@@ -626,15 +635,15 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
 
         public class Parameters
         {
-            public string from { get; set; }
-            public string to { get; set; }
-            public string access_token { get; set; }
-            public string doc_type { get; set; }
+            public string from { get; set; } = null;
+            public string to { get; set; } = null;
+            public string access_token { get; set; } = null;
+            public string doc_type { get; set; } = null;
             public int? prev_doc_number { get; set; } = null;
             public string pin { get; set; } = null;
             public string role { get; set; } = null;
             public string cashregister_factory_number { get; set; } = null;
-            public Data data { get; set; }
+            public Data data { get; set; } = null;
         }
 
         public class RootObject

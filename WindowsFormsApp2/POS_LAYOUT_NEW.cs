@@ -1460,7 +1460,7 @@ namespace WindowsFormsApp2
                 {
                     Payment(Enums.PayType.OtherPay);
                 }
-                else if(result is DialogResult.No)
+                else if (result is DialogResult.No)
                 {
                     Payment(Enums.PayType.Card);
                 }
@@ -1660,7 +1660,7 @@ namespace WindowsFormsApp2
             public List<Databanksacustomer> customerreceipt { get; set; }
 
             public List<Databanksasettlementreceipt> settlementreceipt { get; set; }
-            public List<Databanksa> errorReceiptData { get; set; }
+            public List<Databanksa> errorreceipt { get; set; }
 
         }
 
@@ -2661,27 +2661,29 @@ namespace WindowsFormsApp2
                         paysales(cash_, card_, umumi_mebleg_);
                         break; /*DATAPAY*/
                     case "6":
-                        //nbasales(new DTOs.SalesDto
+                        //NBA.Sales(new DTOs.SalesDto
                         //{
                         //    Cash = cash_,
                         //    Card = card_,
                         //    Total = umumi_mebleg_,
                         //    IncomingSum = incomingSum,
                         //    Balance = _qaliq,
-                        //    PayType = payType
+                        //    PayType = payType,
+                        //    IpAddress = lIpAdress.Text,
+                        //    AccessToken = textBox4.Text
                         //});
 
-                        NBA.Sales(new DTOs.SalesDto
+                        nbasales(new DTOs.SalesDto
                         {
                             Cash = cash_,
                             Card = card_,
                             Total = umumi_mebleg_,
                             IncomingSum = incomingSum,
                             Balance = _qaliq,
-                            PayType = payType,
-                            IpAddress = lIpAdress.Text,
-                            AccessToken = textBox4.Text
+                            PayType = payType
                         });
+
+
 
                         break; /*NBA*/
                     case "7":
@@ -3216,8 +3218,10 @@ namespace WindowsFormsApp2
 
         }
 
+        string ErrorSendJson = string.Empty;
         private void nbasales(DTOs.SalesDto salesData/*decimal cash_, decimal card_, decimal umumi_mebleg_, decimal _incomingSum = default, decimal _qaliq = default*/)
         {
+            ErrorSendJson = null;
             try
             {
 
@@ -3242,7 +3246,7 @@ namespace WindowsFormsApp2
                 string productsa = "\"items\":[";
                 string p2 = "],";
                 string dataheadersa = " ";
-                string alldata = "";
+               // string alldata = "";
                 int satirsayi = 0;
 
                 SqlConnection conn2 = new SqlConnection();
@@ -3295,7 +3299,7 @@ namespace WindowsFormsApp2
                         string vatType = drvat["vatType"].ToString();
                         string ssumvat = drvat["ssum"].ToString();
 
-                        
+
                         if (vatType == "18.0")
                         {
                             edvhesap1 = drvat["ssum"].ToString();
@@ -3459,10 +3463,14 @@ from  dbo.item where user_id = {Properties.Settings.Default.UserID}";
                             }
 
                             bankdizic.Clear();
-                            foreach (var item in weatherForecastbankdetail.customerreceipt)
+                            if (weatherForecastbankdetail.customerreceipt != null)
                             {
-                                bankdizic.Add(item.line);
+                                foreach (var item in weatherForecastbankdetail.customerreceipt)
+                                {
+                                    bankdizic.Add(item.line);
+                                }
                             }
+
 
                             #region [..XƏZİNƏDAR QƏBZİ..]
 
@@ -3514,11 +3522,18 @@ from  dbo.item where user_id = {Properties.Settings.Default.UserID}";
                         }
                         else if (statusa == "not approved")
                         {
-                            foreach (var item in weatherForecastbankdetail.customerreceipt)
+                            bankdizi.Clear();
+                            bankdizic.Clear();
+
+                            if (weatherForecastbankdetail.errorreceipt != null)
                             {
-                                bankdizi[j++] = item.line;
+                                foreach (var item in weatherForecastbankdetail.errorreceipt)
+                                {
+                                    bankdizi.Add(item.line);
+                                }
                             }
                             ReadyMessages.ERROR_BANK_MESSAGE(weatherForecastbankdetail.responsecodeText);
+
 
                             #region [..XƏZİNƏDAR QƏBZİ..]
 
@@ -3556,18 +3571,34 @@ from  dbo.item where user_id = {Properties.Settings.Default.UserID}";
 
             otherPay:
 
-                alldata = parameters + productsa + pnew + p2 + dataheadersa;
-               
+               string json =  NBA.Sales(new DTOs.SalesDto
+               {
+                   Cash = salesData.Cash,
+                   Card = salesData.Card,
+                   Total = salesData.Total,
+                   IncomingSum = salesData.IncomingSum,
+                   Balance = salesData.Balance,
+                   PayType = salesData.PayType,
+                   Rrn = rrnCode,
+                   Cashier = tUsername.Text,
+                   IpAddress = lIpAdress.Text,
+                   AccessToken = textBox4.Text
+               });
+
+
+               // alldata = parameters + productsa + pnew + p2 + dataheadersa;
+                ErrorSendJson = json;
+
                 var client = new RestClient();
                 var request = new RestRequest(url, Method.Post);
                 request.AddHeader("Content-Type", "application/json;charset=utf-8");
-                request.AddStringBody(alldata, DataFormat.Json);
+                request.AddStringBody(json, DataFormat.Json);
                 RestResponse response = client.Execute(request);
 
                 nbaroot weatherForecast = System.Text.Json.JsonSerializer.Deserialize<nbaroot>(response.Content);
 
 
-                if ($"{weatherForecast.message}" == "Successful operation")
+                if (weatherForecast.message == "Successful operation")
                 {
                     if (MessageVisible)
                     {
@@ -3597,7 +3628,7 @@ from  dbo.item where user_id = {Properties.Settings.Default.UserID}";
                         cash = salesData.Cash,
                         card = salesData.Card,
                         total = salesData.Total,
-                        json = alldata,
+                        json = json,
                         shortFiskalId = weatherForecast.data.short_document_id,
                         rrn = rrnCode
                     });
@@ -3624,6 +3655,7 @@ from  dbo.item where user_id = {Properties.Settings.Default.UserID}";
                 }
                 else
                 {
+                    FormHelpers.Log($"Pos satış xətası - {weatherForecast.message}\nJson: {ErrorSendJson}");
                     if (salesData.PayType == PayType.OtherPay)
                     {
                         goto Finish;
@@ -3657,7 +3689,7 @@ from  dbo.item where user_id = {Properties.Settings.Default.UserID}";
 
                         bankid = $"{weatherForecastbank.trnid}";
 
-
+                    bankstart2:
                         var bodybankdetail = "{\"trnid\":\"" + bankid + "\",\"installmentindex\":-1}";
                         requestbankdetail.AddStringBody(bodybankdetail, DataFormat.Json);
                         RestResponse responsebankdetail = client3.Execute(requestbankdetail);
@@ -3682,6 +3714,7 @@ from  dbo.item where user_id = {Properties.Settings.Default.UserID}";
                                 bankdizi.Add(item.line);
                             }
 
+                            bankdizic.Clear();
                             foreach (var item in weatherForecastbankdetail.customerreceipt)
                             {
                                 bankdizic.Add(item.line);
@@ -3689,27 +3722,25 @@ from  dbo.item where user_id = {Properties.Settings.Default.UserID}";
 
                             #region [..XƏZİNƏDAR QƏBZİ..]
 
-                            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("TerminalCashierPrint").ToString());
-                            if (control)
+
+                            PrintDocument pd = new PrintDocument();
+                            pd.DefaultPageSettings = new PageSettings
                             {
-                                PrintDocument pd = new PrintDocument();
-                                pd.DefaultPageSettings = new PageSettings
-                                {
-                                    PaperSize = new PrinterSettings().DefaultPageSettings.PaperSize
-                                };
+                                PaperSize = new PrinterSettings().DefaultPageSettings.PaperSize
+                            };
 
-                                pd.PrintPage += new PrintPageEventHandler(nba_bankprint);
+                            pd.PrintPage += new PrintPageEventHandler(nba_bankprint);
 
-                                pagesCount = 1;
+                            pagesCount = 1;
 
 
-                                PrintDialog PrintDialog1 = new PrintDialog
-                                {
-                                    Document = pd
-                                };
+                            PrintDialog PrintDialog1 = new PrintDialog
+                            {
+                                Document = pd
+                            };
 
-                                pd.Print();
-                            }
+                            pd.Print();
+
 
                             #endregion [..XƏZİNƏDAR QƏBZİ..]
 
@@ -3735,12 +3766,56 @@ from  dbo.item where user_id = {Properties.Settings.Default.UserID}";
 
                             #endregion [..MÜŞTƏRİ QƏBZİ..]
                         }
+                        else if (statusa == "not approved")
+                        {
+                            bankdizi.Clear();
+                            bankdizic.Clear();
 
+                            if (weatherForecastbankdetail.errorreceipt != null)
+                            {
+                                foreach (var item in weatherForecastbankdetail.errorreceipt)
+                                {
+                                    bankdizi.Add(item.line);
+                                }
+                            }
+                            ReadyMessages.ERROR_BANK_MESSAGE(weatherForecastbankdetail.responsecodeText);
+
+
+                            #region [..XƏZİNƏDAR QƏBZİ..]
+
+
+                            PrintDocument pd = new PrintDocument();
+                            pd.DefaultPageSettings = new PageSettings
+                            {
+                                PaperSize = new PrinterSettings().DefaultPageSettings.PaperSize
+                            };
+
+                            pd.PrintPage += new PrintPageEventHandler(nba_bankprint);
+
+                            pagesCount = 1;
+
+
+                            PrintDialog PrintDialog1 = new PrintDialog
+                            {
+                                Document = pd
+                            };
+
+                            pd.Print();
+                            #endregion [..XƏZİNƏDAR QƏBZİ..]
+
+                            ReadyMessages.ERROR_SALES_MESSAGE(weatherForecastbankdetail.responsecodeText);
+                            FormHelpers.Log($"Pos satışı xətası: {weatherForecastbankdetail.responsecodeText}");
+                            return;
+                        }
+                        else
+                        {
+                            goto bankstart2;
+                        }
 
 
                     }
 
-                    Finish:
+                Finish:
                     ReadyMessages.ERROR_SALES_MESSAGE(weatherForecast.message);
                     FormHelpers.Log($"Pos satışı xətası: {weatherForecast.message}");
                     return;
@@ -3748,11 +3823,15 @@ from  dbo.item where user_id = {Properties.Settings.Default.UserID}";
             }
             catch (Exception ex)
             {
+                FormHelpers.Log($"Satış zamanı göndərilən json:\n {ErrorSendJson}");
+
                 throw ex;
                 //ReadyMessages.ERROR_DEFAULT_MESSAGE(ex.Message);
             }
             finally
             {
+                FormHelpers.OperationLog(Enums.OperationType.PosSales, 0,"Pos satış zamanı göndərilən json", ErrorSendJson);
+
                 Cursor.Current = Cursors.Default;
             }
 
@@ -5460,14 +5539,14 @@ FROM  dbo.item WHERE user_id = {Properties.Settings.Default.UserID}";
 
             e.Graphics.DrawString(ustbaslik, fonta, Brushes.Black, new RectangleF(50F, 10F, 200F, 90F), sf);
 
-            e.Graphics.DrawString("Məxariç Çeki", font4, Brushes.Black, new Point(90, offset2 + 105));
+            e.Graphics.DrawString("Məxaric Çeki", font4, Brushes.Black, new Point(90, offset2 + 105));
             e.Graphics.DrawString("Çek nömrəsi No:" + textEdit1.Text + "-" + fissayi, font2, Brushes.Black, new Point(70, offset2 + 120));
             e.Graphics.DrawString("Kassir:" + tUsername.Text, font, Brushes.Black, new Point(5, offset2 + 135));
             e.Graphics.DrawString("Tarix: " + DateTime.Now.ToString("dd.MM.yyyy"), font, Brushes.Black, new Point(190, offset2 + 135));
             e.Graphics.DrawString("Saat: " + DateTime.Now.ToString("HH:mm"), font, Brushes.Black, new Point(190, offset2 + 150));
 
             e.Graphics.DrawString("**********************************************", font2, Brushes.Black, new Point(5, offset2 + 165));
-            e.Graphics.DrawString("Məxariç məbləğı", f8, Brushes.Black, 5, offset2 + 180);
+            e.Graphics.DrawString("Məxaric məbləği", f8, Brushes.Black, 5, offset2 + 180);
             e.Graphics.DrawString(String.Format("{0:0.00}", Convert.ToDouble(withdrawa)), f9, Brushes.Black, new Point(240, offset2 + 180));
 
 
@@ -5481,7 +5560,7 @@ FROM  dbo.item WHERE user_id = {Properties.Settings.Default.UserID}";
             e.Graphics.DrawString(String.Format("{0:0.00}", Convert.ToDouble(withdrawa)), f9, Brushes.Black, new Point(240, offset2 + 215));
 
             e.Graphics.DrawString("**********************************************", font2, Brushes.Black, new Point(5, offset2 + 230));
-            e.Graphics.DrawString("Məxariç üsulu", f8, Brushes.Black, 5, offset2 + 245);
+            e.Graphics.DrawString("Məxaric üsulu", f8, Brushes.Black, 5, offset2 + 245);
             e.Graphics.DrawString("Nağd:", f8, Brushes.Black, 5, offset2 + 260);
             e.Graphics.DrawString(String.Format("{0:0.00}", Convert.ToDouble(withdrawa)), f8, Brushes.Black, 240, offset2 + 260);
 
