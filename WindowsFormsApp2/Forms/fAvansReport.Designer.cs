@@ -31,11 +31,25 @@
             DevExpress.XtraGrid.GridLevelNode gridLevelNode1 = new DevExpress.XtraGrid.GridLevelNode();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(fAvansReport));
             this.gridPay = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn18 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn22 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn24 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn15 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn16 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn17 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn19 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn20 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
             this.gridSale = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn21 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn23 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -52,16 +66,6 @@
             this.simpleButton2 = new DevExpress.XtraEditors.SimpleButton();
             this.dateEdit2 = new DevExpress.XtraEditors.DateEdit();
             this.dateEdit1 = new DevExpress.XtraEditors.DateEdit();
-            this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn15 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn16 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn17 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn18 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn19 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn20 = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.gridPay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridSale)).BeginInit();
@@ -81,18 +85,136 @@
             // 
             this.gridPay.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
             this.gridColumn10,
+            this.gridColumn18,
+            this.gridColumn22,
             this.gridColumn12,
             this.gridColumn13,
+            this.gridColumn24,
             this.gridColumn14,
             this.gridColumn15,
             this.gridColumn16,
             this.gridColumn17,
-            this.gridColumn18,
             this.gridColumn19,
             this.gridColumn20});
             this.gridPay.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFullFocus;
             this.gridPay.GridControl = this.gridControl1;
             this.gridPay.Name = "gridPay";
+            this.gridPay.OptionsView.ShowIndicator = false;
+            // 
+            // gridColumn10
+            // 
+            this.gridColumn10.Caption = "ID";
+            this.gridColumn10.FieldName = "Id";
+            this.gridColumn10.Name = "gridColumn10";
+            this.gridColumn10.OptionsColumn.AllowEdit = false;
+            // 
+            // gridColumn18
+            // 
+            this.gridColumn18.Caption = "ÖDƏNİŞ TARİXİ";
+            this.gridColumn18.DisplayFormat.FormatString = "dd.MM.yyyy HH:mm.ss";
+            this.gridColumn18.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            this.gridColumn18.FieldName = "PayDate";
+            this.gridColumn18.Name = "gridColumn18";
+            this.gridColumn18.OptionsColumn.AllowEdit = false;
+            this.gridColumn18.Visible = true;
+            this.gridColumn18.VisibleIndex = 0;
+            this.gridColumn18.Width = 118;
+            // 
+            // gridColumn22
+            // 
+            this.gridColumn22.Caption = "MÜŞTƏRİ";
+            this.gridColumn22.FieldName = "CustomerName";
+            this.gridColumn22.Name = "gridColumn22";
+            this.gridColumn22.Visible = true;
+            this.gridColumn22.VisibleIndex = 3;
+            this.gridColumn22.Width = 122;
+            // 
+            // gridColumn12
+            // 
+            this.gridColumn12.Caption = "ÇEK NÖMRƏSİ";
+            this.gridColumn12.FieldName = "pos_nomre";
+            this.gridColumn12.Name = "gridColumn12";
+            this.gridColumn12.OptionsColumn.AllowEdit = false;
+            this.gridColumn12.Visible = true;
+            this.gridColumn12.VisibleIndex = 1;
+            this.gridColumn12.Width = 78;
+            // 
+            // gridColumn13
+            // 
+            this.gridColumn13.Caption = "FİSKAL İD";
+            this.gridColumn13.FieldName = "fiscalId";
+            this.gridColumn13.Name = "gridColumn13";
+            this.gridColumn13.OptionsColumn.AllowEdit = false;
+            // 
+            // gridColumn24
+            // 
+            this.gridColumn24.Caption = "TƏCHİZATÇI";
+            this.gridColumn24.FieldName = "SupplierName";
+            this.gridColumn24.Name = "gridColumn24";
+            this.gridColumn24.OptionsColumn.AllowEdit = false;
+            this.gridColumn24.Visible = true;
+            this.gridColumn24.VisibleIndex = 4;
+            this.gridColumn24.Width = 122;
+            // 
+            // gridColumn14
+            // 
+            this.gridColumn14.Caption = "MƏHSUL ADI";
+            this.gridColumn14.FieldName = "ProductName";
+            this.gridColumn14.Name = "gridColumn14";
+            this.gridColumn14.OptionsColumn.AllowEdit = false;
+            this.gridColumn14.Visible = true;
+            this.gridColumn14.VisibleIndex = 5;
+            this.gridColumn14.Width = 122;
+            // 
+            // gridColumn15
+            // 
+            this.gridColumn15.Caption = "BARKOD";
+            this.gridColumn15.FieldName = "Barcode";
+            this.gridColumn15.Name = "gridColumn15";
+            this.gridColumn15.OptionsColumn.AllowEdit = false;
+            this.gridColumn15.Visible = true;
+            this.gridColumn15.VisibleIndex = 6;
+            this.gridColumn15.Width = 122;
+            // 
+            // gridColumn16
+            // 
+            this.gridColumn16.Caption = "MİQDAR";
+            this.gridColumn16.FieldName = "Amount";
+            this.gridColumn16.Name = "gridColumn16";
+            this.gridColumn16.OptionsColumn.AllowEdit = false;
+            this.gridColumn16.Visible = true;
+            this.gridColumn16.VisibleIndex = 7;
+            this.gridColumn16.Width = 79;
+            // 
+            // gridColumn17
+            // 
+            this.gridColumn17.Caption = "SATIŞ QİYMƏTİ";
+            this.gridColumn17.FieldName = "SalePrice";
+            this.gridColumn17.Name = "gridColumn17";
+            this.gridColumn17.OptionsColumn.AllowEdit = false;
+            this.gridColumn17.Visible = true;
+            this.gridColumn17.VisibleIndex = 8;
+            this.gridColumn17.Width = 142;
+            // 
+            // gridColumn19
+            // 
+            this.gridColumn19.Caption = "KASSİR";
+            this.gridColumn19.FieldName = "Username";
+            this.gridColumn19.Name = "gridColumn19";
+            this.gridColumn19.OptionsColumn.AllowEdit = false;
+            this.gridColumn19.Visible = true;
+            this.gridColumn19.VisibleIndex = 2;
+            this.gridColumn19.Width = 122;
+            // 
+            // gridColumn20
+            // 
+            this.gridColumn20.Caption = "ÖDƏNİLƏN AVANS MƏBLƏĞİ";
+            this.gridColumn20.FieldName = "Prepayment";
+            this.gridColumn20.Name = "gridColumn20";
+            this.gridColumn20.OptionsColumn.AllowEdit = false;
+            this.gridColumn20.Visible = true;
+            this.gridColumn20.VisibleIndex = 9;
+            this.gridColumn20.Width = 161;
             // 
             // gridControl1
             // 
@@ -120,13 +242,15 @@
             this.gridSale.Appearance.OddRow.Options.UseBackColor = true;
             this.gridSale.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
             this.gridColumn11,
+            this.gridColumn7,
+            this.gridColumn21,
             this.gridColumn1,
             this.gridColumn2,
+            this.gridColumn23,
             this.gridColumn3,
             this.gridColumn4,
             this.gridColumn5,
             this.gridColumn6,
-            this.gridColumn7,
             this.gridColumn8,
             this.gridColumn9});
             this.gridSale.DetailHeight = 431;
@@ -144,76 +268,117 @@
             this.gridColumn11.Caption = "ID";
             this.gridColumn11.FieldName = "Id";
             this.gridColumn11.Name = "gridColumn11";
+            this.gridColumn11.OptionsColumn.AllowEdit = false;
+            // 
+            // gridColumn21
+            // 
+            this.gridColumn21.Caption = "MÜŞTƏRİ";
+            this.gridColumn21.FieldName = "CustomerName";
+            this.gridColumn21.Name = "gridColumn21";
+            this.gridColumn21.OptionsColumn.AllowEdit = false;
+            this.gridColumn21.OptionsColumn.ReadOnly = true;
+            this.gridColumn21.Visible = true;
+            this.gridColumn21.VisibleIndex = 3;
+            this.gridColumn21.Width = 122;
             // 
             // gridColumn1
             // 
             this.gridColumn1.Caption = "ÇEK NÖMRƏSİ";
             this.gridColumn1.FieldName = "pos_nomre";
             this.gridColumn1.Name = "gridColumn1";
+            this.gridColumn1.OptionsColumn.AllowEdit = false;
             this.gridColumn1.Visible = true;
-            this.gridColumn1.VisibleIndex = 0;
+            this.gridColumn1.VisibleIndex = 1;
+            this.gridColumn1.Width = 78;
             // 
             // gridColumn2
             // 
             this.gridColumn2.Caption = "FİSKAL İD";
             this.gridColumn2.FieldName = "fiscalId";
             this.gridColumn2.Name = "gridColumn2";
+            this.gridColumn2.OptionsColumn.AllowEdit = false;
+            // 
+            // gridColumn23
+            // 
+            this.gridColumn23.Caption = "TƏCHİZATÇI";
+            this.gridColumn23.FieldName = "SupplierName";
+            this.gridColumn23.Name = "gridColumn23";
+            this.gridColumn23.OptionsColumn.AllowEdit = false;
+            this.gridColumn23.Visible = true;
+            this.gridColumn23.VisibleIndex = 4;
+            this.gridColumn23.Width = 122;
             // 
             // gridColumn3
             // 
             this.gridColumn3.Caption = "MƏHSUL ADI";
             this.gridColumn3.FieldName = "ProductName";
             this.gridColumn3.Name = "gridColumn3";
+            this.gridColumn3.OptionsColumn.AllowEdit = false;
             this.gridColumn3.Visible = true;
-            this.gridColumn3.VisibleIndex = 1;
+            this.gridColumn3.VisibleIndex = 5;
+            this.gridColumn3.Width = 122;
             // 
             // gridColumn4
             // 
             this.gridColumn4.Caption = "BARKOD";
             this.gridColumn4.FieldName = "Barcode";
             this.gridColumn4.Name = "gridColumn4";
+            this.gridColumn4.OptionsColumn.AllowEdit = false;
             this.gridColumn4.Visible = true;
-            this.gridColumn4.VisibleIndex = 2;
+            this.gridColumn4.VisibleIndex = 6;
+            this.gridColumn4.Width = 122;
             // 
             // gridColumn5
             // 
             this.gridColumn5.Caption = "MİQDAR";
             this.gridColumn5.FieldName = "Amount";
             this.gridColumn5.Name = "gridColumn5";
+            this.gridColumn5.OptionsColumn.AllowEdit = false;
             this.gridColumn5.Visible = true;
-            this.gridColumn5.VisibleIndex = 3;
+            this.gridColumn5.VisibleIndex = 7;
+            this.gridColumn5.Width = 89;
             // 
             // gridColumn6
             // 
             this.gridColumn6.Caption = "SATIŞ QİYMƏTİ";
             this.gridColumn6.FieldName = "SalePrice";
             this.gridColumn6.Name = "gridColumn6";
+            this.gridColumn6.OptionsColumn.AllowEdit = false;
             this.gridColumn6.Visible = true;
-            this.gridColumn6.VisibleIndex = 4;
+            this.gridColumn6.VisibleIndex = 8;
+            this.gridColumn6.Width = 137;
             // 
             // gridColumn7
             // 
             this.gridColumn7.Caption = "SATIŞ TARİXİ";
+            this.gridColumn7.DisplayFormat.FormatString = "dd.MM.yyyy HH:mm.ss";
+            this.gridColumn7.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.gridColumn7.FieldName = "SaleDate";
             this.gridColumn7.Name = "gridColumn7";
+            this.gridColumn7.OptionsColumn.AllowEdit = false;
             this.gridColumn7.Visible = true;
-            this.gridColumn7.VisibleIndex = 5;
+            this.gridColumn7.VisibleIndex = 0;
+            this.gridColumn7.Width = 118;
             // 
             // gridColumn8
             // 
             this.gridColumn8.Caption = "KASSİR";
             this.gridColumn8.FieldName = "Username";
             this.gridColumn8.Name = "gridColumn8";
+            this.gridColumn8.OptionsColumn.AllowEdit = false;
             this.gridColumn8.Visible = true;
-            this.gridColumn8.VisibleIndex = 6;
+            this.gridColumn8.VisibleIndex = 2;
+            this.gridColumn8.Width = 122;
             // 
             // gridColumn9
             // 
             this.gridColumn9.Caption = "AVANS MƏBLƏĞİ";
             this.gridColumn9.FieldName = "Prepayment";
             this.gridColumn9.Name = "gridColumn9";
+            this.gridColumn9.OptionsColumn.AllowEdit = false;
             this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 7;
+            this.gridColumn9.VisibleIndex = 9;
+            this.gridColumn9.Width = 156;
             // 
             // gridView1
             // 
@@ -345,80 +510,6 @@
             this.dateEdit1.Size = new System.Drawing.Size(172, 32);
             this.dateEdit1.TabIndex = 1;
             // 
-            // gridColumn10
-            // 
-            this.gridColumn10.Caption = "ID";
-            this.gridColumn10.Name = "gridColumn10";
-            // 
-            // gridColumn12
-            // 
-            this.gridColumn12.Caption = "ÇEK NÖMRƏSİ";
-            this.gridColumn12.FieldName = "pos_nomre";
-            this.gridColumn12.Name = "gridColumn12";
-            this.gridColumn12.Visible = true;
-            this.gridColumn12.VisibleIndex = 0;
-            // 
-            // gridColumn13
-            // 
-            this.gridColumn13.Caption = "FİSKAL İD";
-            this.gridColumn13.FieldName = "fiscalId";
-            this.gridColumn13.Name = "gridColumn13";
-            // 
-            // gridColumn14
-            // 
-            this.gridColumn14.Caption = "MƏHSUL ADI";
-            this.gridColumn14.FieldName = "ProductName";
-            this.gridColumn14.Name = "gridColumn14";
-            this.gridColumn14.Visible = true;
-            this.gridColumn14.VisibleIndex = 1;
-            // 
-            // gridColumn15
-            // 
-            this.gridColumn15.Caption = "BARKOD";
-            this.gridColumn15.FieldName = "Barcode";
-            this.gridColumn15.Name = "gridColumn15";
-            this.gridColumn15.Visible = true;
-            this.gridColumn15.VisibleIndex = 2;
-            // 
-            // gridColumn16
-            // 
-            this.gridColumn16.Caption = "MİQDAR";
-            this.gridColumn16.FieldName = "Amount";
-            this.gridColumn16.Name = "gridColumn16";
-            this.gridColumn16.Visible = true;
-            this.gridColumn16.VisibleIndex = 3;
-            // 
-            // gridColumn17
-            // 
-            this.gridColumn17.Caption = "SATIŞ QİYMƏTİ";
-            this.gridColumn17.FieldName = "SalePrice";
-            this.gridColumn17.Name = "gridColumn17";
-            this.gridColumn17.Visible = true;
-            this.gridColumn17.VisibleIndex = 4;
-            // 
-            // gridColumn18
-            // 
-            this.gridColumn18.Caption = "SATIŞ TARİXİ";
-            this.gridColumn18.Name = "gridColumn18";
-            this.gridColumn18.Visible = true;
-            this.gridColumn18.VisibleIndex = 5;
-            // 
-            // gridColumn19
-            // 
-            this.gridColumn19.Caption = "KASSİR";
-            this.gridColumn19.FieldName = "Username";
-            this.gridColumn19.Name = "gridColumn19";
-            this.gridColumn19.Visible = true;
-            this.gridColumn19.VisibleIndex = 6;
-            // 
-            // gridColumn20
-            // 
-            this.gridColumn20.Caption = "ÖDƏNİLƏN AVANS MƏBLƏĞİ";
-            this.gridColumn20.FieldName = "Prepayment";
-            this.gridColumn20.Name = "gridColumn20";
-            this.gridColumn20.Visible = true;
-            this.gridColumn20.VisibleIndex = 7;
-            // 
             // fAvansReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -481,5 +572,9 @@
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn18;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn19;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn20;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn22;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn21;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn24;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn23;
     }
 }

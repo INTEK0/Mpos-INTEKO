@@ -28,10 +28,10 @@ namespace WindowsFormsApp2.Forms
 
         private enum ReportType
         {
+            [Description("Avans ödənişləri")]
+            AvansPay,
             [Description("Avans satışları")]
             AvansSale,
-            [Description("Avans ödənişləri")]
-            AvansPay
         }
 
         private void fAvansReport_Load(object sender, EventArgs e)
@@ -50,7 +50,7 @@ namespace WindowsFormsApp2.Forms
             lookReportType.Properties.ValueMember = "Key";
             lookReportType.Properties.PopulateColumns();
             lookReportType.Properties.Columns["Key"].Visible = false;
-            lookReportType.EditValue = ReportType.AvansSale;
+            lookReportType.EditValue = ReportType.AvansPay;
 
             DateTime dateTime = DateTime.UtcNow.Date;
 
@@ -77,19 +77,24 @@ namespace WindowsFormsApp2.Forms
             string query = @"SELECT 
 psm.pos_satis_check_main_id as Id, 
 psm.pos_nomre as pos_nomre, 
-psm.fiscal_id as fiscalId, 
-psm.date_ as SaleDate, 
+psm.PREfiscal_id as fiscalId, 
+psm.PREdate_ as SaleDate,
 u.AD as Username, 
 psm.Prepayment,
 psd.satis_giymet as SalePrice,
 psd.count_ as Amount,
+t.SIRKET_ADI as SupplierName,
 mad.MEHSUL_ADI as ProductName,
-mad.BARKOD as Barcode
+mad.BARKOD as Barcode,
+customer.AD + ' ' + customer.SOYAD + ' ' + customer.ATAADI as CustomerName
 FROM [pos_satis_check_main] psm
 INNER JOIN pos_satis_check_details psd ON psd.pos_satis_check_main_id = psm.pos_satis_check_main_id
 INNER JOIN MAL_ALISI_DETAILS mad ON mad.MAL_ALISI_DETAILS_ID = psd.mal_alisi_details_id
+INNER JOIN MAL_ALISI_MAIN man ON man.MAL_ALISI_MAIN_ID = mad.MAL_ALISI_MAIN_ID
+INNER JOIN COMPANY.TECHIZATCI t ON t.TECHIZATCI_ID = man.TECHIZATCI_ID
+LEFT JOIN MUSTERILER customer ON customer.MUSTERILER_ID = psm.CustomerId
 INNER JOIN userParol u ON u.id = psm.user_id_
-WHERE psm.Prepayment IS NOT NULL AND psm.PREfiscal_id IS NULL";
+WHERE psm.Prepayment IS NOT NULL AND psm.PREfiscal_id IS NOT NULL";
             var data = DbProsedures.ConvertToDataTable(query);
             gridControl1.DataSource = data;
         }
@@ -100,18 +105,23 @@ WHERE psm.Prepayment IS NOT NULL AND psm.PREfiscal_id IS NULL";
 psm.pos_satis_check_main_id as Id, 
 psm.pos_nomre as pos_nomre, 
 psm.fiscal_id as fiscalId, 
-psm.date_ as SaleDate, 
+psm.date_ as PayDate, 
 u.AD as Username, 
 psm.Prepayment,
 psd.satis_giymet as SalePrice,
 psd.count_ as Amount,
+t.SIRKET_ADI as SupplierName,
 mad.MEHSUL_ADI as ProductName,
-mad.BARKOD as Barcode
+mad.BARKOD as Barcode,
+customer.AD + ' ' + customer.SOYAD + ' ' + customer.ATAADI as CustomerName
 FROM [pos_satis_check_main] psm
 INNER JOIN pos_satis_check_details psd ON psd.pos_satis_check_main_id = psm.pos_satis_check_main_id
 INNER JOIN MAL_ALISI_DETAILS mad ON mad.MAL_ALISI_DETAILS_ID = psd.mal_alisi_details_id
+INNER JOIN MAL_ALISI_MAIN man ON man.MAL_ALISI_MAIN_ID = mad.MAL_ALISI_MAIN_ID
+INNER JOIN COMPANY.TECHIZATCI t ON t.TECHIZATCI_ID = man.TECHIZATCI_ID
+LEFT JOIN MUSTERILER customer ON customer.MUSTERILER_ID = psm.CustomerId
 INNER JOIN userParol u ON u.id = psm.user_id_
-WHERE psm.Prepayment IS NOT NULL AND psm.PREfiscal_id IS NOT NULL";
+WHERE psm.Prepayment IS NOT NULL AND psm.PREfiscal_id IS NULL";
             var data = DbProsedures.ConvertToDataTable(query);
             gridControl1.DataSource = data;
         }

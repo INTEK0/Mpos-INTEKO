@@ -1095,6 +1095,11 @@ ORDER BY TotalAmount DESC;
             }
         }
 
+        private void accordionControlElement61_Click(object sender, EventArgs e)
+        {
+            OpenForm<fAvansReport>();
+        }
+
         private void chTerminalPrintReceipt_CheckedChanged(object sender, EventArgs e)
         {
             if (chTerminalPrintReceipt.Checked)
