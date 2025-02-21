@@ -391,7 +391,7 @@ namespace WindowsFormsApp2
             this.simpleButton15.Size = new System.Drawing.Size(426, 30);
             this.simpleButton15.StyleController = this.layoutControl1;
             this.simpleButton15.TabIndex = 102;
-            this.simpleButton15.Text = "AVANS SATIŞ";
+            this.simpleButton15.Text = "AVANS ÖDƏNİŞİ ET";
             this.simpleButton15.Click += new System.EventHandler(this.simpleButton15_Click_1);
             // 
             // simpleButton4
@@ -2286,7 +2286,6 @@ namespace WindowsFormsApp2
             this.layoutControlItem63.Size = new System.Drawing.Size(261, 44);
             this.layoutControlItem63.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem63.TextVisible = false;
-            this.layoutControlItem63.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // layoutControlItem64
             // 
@@ -2296,7 +2295,6 @@ namespace WindowsFormsApp2
             this.layoutControlItem64.Size = new System.Drawing.Size(432, 36);
             this.layoutControlItem64.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem64.TextVisible = false;
-            this.layoutControlItem64.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // emptySpaceItem19
             // 

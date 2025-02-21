@@ -15,6 +15,7 @@ using WindowsFormsApp2.Helpers.Messages;
 using WindowsFormsApp2.Helpers;
 using System.Security.Cryptography;
 using DevExpress.DashboardCommon;
+using static DTOs;
 
 namespace WindowsFormsApp2.NKA
 {
@@ -270,19 +271,18 @@ namespace WindowsFormsApp2.NKA
 
         }
 
-        public static bool Sales(string ipAddress, string token, string proccessNo, decimal total, decimal cash, decimal card, decimal incomingSum, string cashier, Customer customer, Doctor doctor, decimal qaliq, string rrn = "")
+        public static bool Sales(SalesDto salesData)
         {
-            token = Login(ipAddress);
+            salesData.AccessToken = Login(salesData.IpAddress);
 
             List<Item> items = new List<Item>();
             List<Itemticaretelave> items2 = new List<Itemticaretelave>();
             List<VatAmount> vatAmounts = new List<VatAmount>();
 
-            SqlConnection conn = new SqlConnection();
-            SqlCommand cmd = new SqlCommand();
-            conn.ConnectionString = Properties.Settings.Default.SqlCon;
-            conn.Open();
-            string query = $@"
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                con.Open();
+                string query = $@"
 select 
     t.name,
     t.item_id,
@@ -307,145 +307,145 @@ select
     t.salePrice * t.quantity as ssum
 from dbo.item as t
 WHERE user_id = {Properties.Settings.Default.UserID}";
-
-            cmd.Connection = conn;
-            cmd.CommandText = query;
-
-            SqlDataReader dr = cmd.ExecuteReader();
-
-            decimal vatSumFor18Percent = 0;
-            decimal vatSumFor2Percent = 0;
-            decimal vatSumFor0Percent = 0;
-            decimal vatSumFor8Percent = 0;
-
-            while (dr.Read())
-            {
-                string name = dr["name"].ToString();
-                string code = dr["item_id"].ToString();
-                decimal salePrice = Convert.ToDecimal(dr["salePrice"]);
-                decimal purchasePrice = Convert.ToDecimal(dr["purchasePrice"]);
-                double quantity = Convert.ToDouble(dr["quantity"]);
-                int vatType = Convert.ToInt32(dr["vatType"]);
-                string vatTypeName = dr["vatTypeName"].ToString();
-                int quantityType = Convert.ToInt32(dr["quantityType"]);
-                decimal ssum = Convert.ToDecimal(dr["ssum"]);
-
-                decimal marginSum = (salePrice - purchasePrice) * (decimal)quantity;
-
-                if (vatTypeName != "TİCARƏT ƏLAVƏSİ 18%")
+                using (SqlCommand cmd = new SqlCommand(query,con))
                 {
-                    marginSum = 0;
-                    purchasePrice = 0;
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        decimal vatSumFor18Percent = 0;
+                        decimal vatSumFor2Percent = 0;
+                        decimal vatSumFor0Percent = 0;
+                        decimal vatSumFor8Percent = 0;
+                        while (dr.Read())
+                        {
+                            string name = dr["name"].ToString();
+                            string code = dr["item_id"].ToString();
+                            decimal salePrice = Convert.ToDecimal(dr["salePrice"]);
+                            decimal purchasePrice = Convert.ToDecimal(dr["purchasePrice"]);
+                            double quantity = Convert.ToDouble(dr["quantity"]);
+                            int vatType = Convert.ToInt32(dr["vatType"]);
+                            string vatTypeName = dr["vatTypeName"].ToString();
+                            int quantityType = Convert.ToInt32(dr["quantityType"]);
+                            decimal ssum = Convert.ToDecimal(dr["ssum"]);
+
+                            decimal marginSum = (salePrice - purchasePrice) * (decimal)quantity;
+
+                            if (vatTypeName != "TİCARƏT ƏLAVƏSİ 18%")
+                            {
+                                marginSum = 0;
+                                purchasePrice = 0;
+                            }
+
+                            if (vatTypeName == "TİCARƏT ƏLAVƏSİ 18%")
+
+                            {
+                                Item item = new Item
+                                {
+                                    itemName = name,
+                                    itemCode = code,
+                                    itemCodeType = 1,
+                                    itemQuantityType = quantityType,
+                                    itemQuantity = quantity,
+                                    itemPrice = salePrice,
+                                    itemSum = ssum,
+                                    itemVatPercent = vatType,
+                                    itemMarginPrice = purchasePrice,
+                                    itemMarginSum = marginSum,
+
+                                };
+                                items.Add(item);
+
+                                vatSumFor18Percent += marginSum;
+                            }
+
+                            else
+                            {
+                                Item item = new Item
+                                {
+                                    itemName = name,
+                                    itemCode = code,
+                                    itemCodeType = 1,
+                                    itemQuantityType = quantityType,
+                                    itemQuantity = quantity,
+                                    itemPrice = salePrice,
+                                    itemSum = ssum,
+                                    itemVatPercent = vatType,
+                                    //itemMarginPrice = purchasePrice,
+                                    //itemMarginSum = marginSum,
+                                };
+                                items.Add(item);
+
+                                if (vatType == 18)
+                                {
+                                    vatSumFor18Percent += ssum;
+                                }
+                                else if (vatType == 2)
+                                {
+                                    vatSumFor2Percent += ssum;
+                                }
+                                else if (vatType == 0)
+                                {
+                                    vatSumFor0Percent += ssum;
+                                }
+
+                                else if (vatType == 8)
+                                {
+                                    vatSumFor8Percent += ssum;
+                                }
+                            }
+                        }
+
+                        if (vatSumFor18Percent > 0)
+                        {
+                            vatAmounts.Add(new VatAmount
+                            {
+                                vatPercent = 18,
+                                vatSum = vatSumFor18Percent
+                            });
+                        }
+
+                        if (vatSumFor2Percent > 0)
+                        {
+                            vatAmounts.Add(new VatAmount
+                            {
+                                vatPercent = 2,
+                                vatSum = vatSumFor2Percent
+                            });
+                        }
+
+                        if (vatSumFor0Percent > 0)
+                        {
+                            vatAmounts.Add(new VatAmount
+                            {
+                                vatPercent = 0,
+                                vatSum = vatSumFor0Percent
+                            });
+                        }
+
+                        if (vatSumFor8Percent > 0)
+                        {
+                            vatAmounts.Add(new VatAmount
+                            {
+                                vatPercent = 8,
+                                vatSum = vatSumFor8Percent
+                            });
+                        }
+                    }
                 }
-
-                if (vatTypeName == "TİCARƏT ƏLAVƏSİ 18%")
-
-                {
-                    Item item = new Item
-                    {
-                        itemName = name,
-                        itemCode = code,
-                        itemCodeType = 1,
-                        itemQuantityType = quantityType,
-                        itemQuantity = quantity,
-                        itemPrice = salePrice,
-                        itemSum = ssum,
-                        itemVatPercent = vatType,
-                        itemMarginPrice = purchasePrice,
-                        itemMarginSum = marginSum,
-
-                    };
-                    items.Add(item);
-
-                    vatSumFor18Percent += marginSum;
-                }
-
-                else
-                {
-                    Item item = new Item
-                    {
-                        itemName = name,
-                        itemCode = code,
-                        itemCodeType = 1,
-                        itemQuantityType = quantityType,
-                        itemQuantity = quantity,
-                        itemPrice = salePrice,
-                        itemSum = ssum,
-                        itemVatPercent = vatType,
-                        //itemMarginPrice = purchasePrice,
-                        //itemMarginSum = marginSum,
-                    };
-                    items.Add(item);
-
-                    if (vatType == 18)
-                    {
-                        vatSumFor18Percent += ssum;
-                    }
-                    else if (vatType == 2)
-                    {
-                        vatSumFor2Percent += ssum;
-                    }
-                    else if (vatType == 0)
-                    {
-                        vatSumFor0Percent += ssum;
-                    }
-
-                    else if (vatType == 8)
-                    {
-                        vatSumFor8Percent += ssum;
-                    }
-                }
-            }
-
-            if (vatSumFor18Percent > 0)
-            {
-                vatAmounts.Add(new VatAmount
-                {
-                    vatPercent = 18,
-                    vatSum = vatSumFor18Percent
-                });
-            }
-
-            if (vatSumFor2Percent > 0)
-            {
-                vatAmounts.Add(new VatAmount
-                {
-                    vatPercent = 2,
-                    vatSum = vatSumFor2Percent
-                });
-            }
-
-            if (vatSumFor0Percent > 0)
-            {
-                vatAmounts.Add(new VatAmount
-                {
-                    vatPercent = 0,
-                    vatSum = vatSumFor0Percent
-                });
-            }
-
-            if (vatSumFor8Percent > 0)
-            {
-                vatAmounts.Add(new VatAmount
-                {
-                    vatPercent = 8,
-                    vatSum = vatSumFor8Percent
-                });
             }
 
             Root rootObject = new Root
             {
-                cashier = cashier,
-                cashSum = cash,
-                cashlessSum = card,
+                cashier = salesData.Cashier,
+                cashSum = salesData.Cash,
+                cashlessSum = salesData.Card,
                 currency = "AZN",
                 items = items,
-                incomingSum = incomingSum,
-                sum = total,
+                incomingSum = salesData.IncomingSum,
+                sum = salesData.Total,
                 vatAmounts = vatAmounts,
                 prepaymentSum = 0,
                 bonusSum = 0,
-                changeSum = qaliq,
+                changeSum = salesData.Balance,
                 creditContract = null,
                 creditSum = 0,
                 parents = null,
@@ -458,7 +458,7 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
             });
 
 
-            var response = RequestPOST(ipAddress, json, "kas_sale");
+            var response = RequestPOST(salesData.IpAddress, json, "kas_sale");
 
             if (response != null)
             {
@@ -468,14 +468,14 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
                     {
                         posNomre = response.data.document_number.ToString(),
                         longFiskalId = response.data.document_id,
-                        proccessNo = proccessNo,
-                        cash = cash,
-                        card = card,
-                        total = total,
+                        proccessNo = salesData.ProccessNo,
+                        cash = salesData.Cash,
+                        card = salesData.Card,
+                        total = salesData.Total,
                         json = json,
                         shortFiskalId = response.data.short_document_id,
-                        customerId = customer?.CustomerID,
-                        doctorId = doctor?.Id,
+                        customerId = salesData.Customer?.CustomerID,
+                        doctorId = salesData.Doctor?.Id,
                     });
 
                     if (MessageVisible)
@@ -550,12 +550,14 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
             }
         }
 
-        public static string Refund(string ipAddress, string accessToken, PayType payType, string cashier, string proccesNo)
+        public static bool Refund(RefundDto refund /*string ipAddress, string accessToken, PayType payType, string cashier, string proccesNo*/)
         {
+            refund.AccessToken = Login(refund.IpAddress);
+
             string _fiskallID = "", _shortFiskallID = "", _checkNum = "";
             decimal _cash = default, _card = default, _total2 = default;
 
-            using (SqlConnection conn2 = new SqlConnection(Properties.Settings.Default.SqlCon))
+            using (SqlConnection conn2 = new SqlConnection(DbHelpers.DbConnectionString))
             {
                 conn2.Open();
                 string query2 = $@"SELECT [pos_satis_check_main_id],
@@ -589,7 +591,7 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
             decimal totalMarginSum = 0;  // Toplam itemMarginSum'u tutacak
             decimal totalItemSum = 0;    // Toplam itemSum'u tutacak
 
-            using (SqlConnection conn = new SqlConnection(Properties.Settings.Default.SqlCon))
+            using (SqlConnection conn = new SqlConnection(DbHelpers.DbConnectionString))
             {
                 conn.Open();
                 string query = $@"(SELECT md.MEHSUL_ADI AS name,
@@ -610,7 +612,7 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
                                 FROM pos_satis_check_details p
                                 INNER JOIN MAL_ALISI_DETAILS md ON p.mal_alisi_details_id = md.MAL_ALISI_DETAILS_ID
                                 INNER JOIN pos_gaytarma_manual pl ON p.pos_satis_check_details_id = pl.pos_satis_check_details
-                                WHERE pl.emeliyyat_nomre = '{proccesNo}')";
+                                WHERE pl.emeliyyat_nomre = '{refund.ProccessNo}')";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 using (SqlDataReader dr = cmd.ExecuteReader())
@@ -714,10 +716,10 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
             var root = new RootRefund
             {
                 sum = _total2,
-                cashSum = (payType == PayType.Cash) ? _total2 : 0,
-                cashlessSum = (payType == PayType.Card) ? _card : 0,
-                incomingSum = (payType == PayType.CashCard) ? _cash : 0,
-                cashier = cashier,
+                cashSum = (refund.PayType == PayType.Cash) ? _total2 : 0,
+                cashlessSum = (refund.PayType == PayType.Card) ? _card : 0,
+                incomingSum = (refund.PayType == PayType.CashCard) ? _cash : 0,
+                cashier = refund.Cashier,
                 vatAmounts = vatAmounts,
                 items = items,
 
@@ -729,7 +731,7 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
             {
                 NullValueHandling = NullValueHandling.Ignore
             });
-            var response = RequestPOST(ipAddress, json, "kas_moneyback");
+            var response = RequestPOST(refund.IpAddress, json, "kas_moneyback");
 
 
 
@@ -737,43 +739,39 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
             {
                 if (response.message == "Success operation")
                 {
-
-
                     if (MessageVisible)
                     {
                         ReadyMessages.SUCCESS_RETURN_SALES_MESSAGE();
                     }
 
-                    FormHelpers.Log($"Pos satış qaytarma uğurla edildi. Qəbz №: {response.data.document_number}");
-                    return json;
+                    FormHelpers.Log($"Pos satış qaytarması uğurla edildi. Qəbz №: {response.data.document_number}");
+                    return true;
                 }
                 else if (response.message == "document: invalid shift duration")
                 {
                     XtraMessageBox.Show("GÜN SONU (Z) HESABATI ÇIXARILMAYIB !\n\nZəhmət olmasa pos bağla düyməsinə vuraraq günü sonlandırın.", "Mesaj", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return json;
+                    return false;
                 }
                 else if (response.message == "document: invalid shift status")
                 {
                     XtraMessageBox.Show("NÖVBƏ AÇILMAYIB !\n\nZəhmət olmasa pos aç düyməsinə vuraraq növbəni açın.", "Mesaj", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return json;
+                    return false;
                 }
                 else
                 {
                     ReadyMessages.ERROR_RETURN_SALES_MESSAGE(response.message);
                     FormHelpers.Log($"Pos qaytarma xətası - Xəta mesajı: {response.message}");
-                    return json;
+                    return false;
                 }
             }
             else
             {
-                return json;
+                return false;
             }
         }
 
         public static void LastReceiptCopy(string ipAdress, string accessToken)
         {
-
-
             string fiskalID = string.Empty;
             using (SqlConnection con = new SqlConnection(Properties.Settings.Default.SqlCon))
             {
@@ -796,11 +794,6 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
                 fiscalId = fiskalID,
             };
 
-            //RootObject root = new RootObject
-            //{
-            //    requestData = requestData
-            //};
-
             string json = Newtonsoft.Json.JsonConvert.SerializeObject(copyprint, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
@@ -808,7 +801,7 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
 
             var response = RequestPOST(ipAdress, json, " kas_receipt_copy");
 
-            if (response.message == "Successful operation")
+            if (response.message == "Success operation")
             {
                 if (MessageVisible)
                 {

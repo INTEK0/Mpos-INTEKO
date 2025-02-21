@@ -111,6 +111,7 @@ namespace WindowsFormsApp2.Helpers.DB
             public decimal bonus { get; set; } = 0;
             public decimal? paidPayment { get; set; } = null;
             public string CustomerName { get; set; }
+            public Enums.PayType PayType { get; set; }
         }
 
         public class Item
@@ -148,6 +149,7 @@ namespace WindowsFormsApp2.Helpers.DB
             public string rrn { get; set; } = null;
             public Nullable<int> customerId { get; set; }
             public Nullable<int> doctorId { get; set; }
+            public decimal Prepayment { get; set; } = 0; // Avans satışı
         }
 
         public class PosRefund
@@ -245,6 +247,16 @@ namespace WindowsFormsApp2.Helpers.DB
             public string Email { get; set; }
             public string Gender { get; set; }
             public int IsDeleted { get; set; }
+        }
+
+        public class OperationLogs
+        {
+            public Enums.OperationType OperationType { get; set; }
+            public int OperationId { get; set; }
+            public string Message { get; set; } = string.Empty;
+            public string RequestCode { get; set; } = string.Empty;
+            public string ResponseCode { get; set; } = string.Empty;
+
         }
     }
 }

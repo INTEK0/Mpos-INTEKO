@@ -69,22 +69,23 @@ namespace WindowsFormsApp2.Helpers
             }
         }
 
-        public static void OperationLog(Enums.OperationType type, int operationId, string message = "", string jsonCode = "")
+        public static void OperationLog(DatabaseClasses.OperationLogs logs)
         {
             using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
             {
 
-                string query = "INSERT INTO OperationLogs (UserID, TypeId,OperationId, Tarix, Saat, Message,JsonCode) VALUES (@UserID, @TypeId, @OperationId, @Date, @Time, @Message, @JsonCode)";
+                string query = "INSERT INTO OperationLogs (UserID, TypeId,OperationId, Tarix, Saat, Message,RequestCode,ResponseCode) VALUES (@UserID, @TypeId, @OperationId, @Date, @Time, @Message, @RequestCode, @ResponseCode)";
 
                 SqlCommand command = new SqlCommand(query, con);
 
                 command.Parameters.AddWithValue("@UserID", Properties.Settings.Default.UserID);
-                command.Parameters.AddWithValue("@OperationId", operationId);
-                command.Parameters.AddWithValue("@TypeId", (int)type);
+                command.Parameters.AddWithValue("@OperationId", logs.OperationId);
+                command.Parameters.AddWithValue("@TypeId", (int)logs.OperationType);
                 command.Parameters.AddWithValue("@Date", DateTime.Now.Date);
                 command.Parameters.AddWithValue("@Time", DateTime.Now.TimeOfDay);
-                command.Parameters.AddWithValue("@Message", message);
-                command.Parameters.AddWithValue("@JsonCode",jsonCode);
+                command.Parameters.AddWithValue("@Message", logs.Message);
+                command.Parameters.AddWithValue("@RequestCode", logs.RequestCode);
+                command.Parameters.AddWithValue("@ResponseCode", logs.ResponseCode);
 
 
                 try

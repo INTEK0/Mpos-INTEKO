@@ -323,13 +323,21 @@ namespace WindowsFormsApp2.Helpers.DB
                     parameter = cmd.Parameters.Add("@doctorId", SqlDbType.Int);
                     parameter.Value = item.doctorId;
 
+                    parameter = cmd.Parameters.Add("@Prepayment", SqlDbType.Int);
+                    parameter.Value = item.Prepayment;
+
                     connection.Open();
                     parameter = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
                     parameter.Direction = ParameterDirection.Output;
                     cmd.ExecuteNonQuery();
 
 
-                    FormHelpers.OperationLog(Enums.OperationType.PosSales, Convert.ToInt32(parameter.Value));
+                    FormHelpers.OperationLog(new OperationLogs
+                    {
+                        OperationType = OperationType.PosSales,
+                        OperationId = Convert.ToInt32(parameter.Value)
+                    });
+
 
 
                     return Convert.ToInt32(parameter.Value);
@@ -418,37 +426,11 @@ namespace WindowsFormsApp2.Helpers.DB
                     param = cmd.Parameters.Add("@paidPayment", SqlDbType.Decimal);
                     param.Value = item.paidPayment;
 
-                    param = cmd.Parameters.Add("@userID", SqlDbType.Int);
-                    param.Value = Properties.Settings.Default.UserID;
-
-                    cmd.ExecuteNonQuery();
-                }
-            }
-        }
-
-        public static void InsertHeaderPre(Header item)
-        {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
-            {
-                using (SqlCommand cmd = new SqlCommand(INSERT_HeaderQueryPre, connection))
-                {
-                    connection.Open();
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    SqlParameter param;
-                    param = cmd.Parameters.Add("@cashPayment", SqlDbType.Decimal);
-                    param.Value = item.cash;
-
-                    param = cmd.Parameters.Add("@cardPayment", SqlDbType.Decimal);
-                    param.Value = item.card;
-
-                    param = cmd.Parameters.Add("@bonusPayment", SqlDbType.Decimal);
-                    param.Value = item.bonus;
-
-                    param = cmd.Parameters.Add("@clientName", SqlDbType.NVarChar, 100);
-                    param.Value = item.CustomerName;
-
-                    param = cmd.Parameters.Add("@paidPayment", SqlDbType.Decimal);
-                    param.Value = item.paidPayment;
+                    if (item.PayType is PayType.Prepayment)
+                    {
+                        param = cmd.Parameters.Add("@prepayment", SqlDbType.Decimal);
+                        param.Value = (item.cash + item.card);
+                    }
 
                     param = cmd.Parameters.Add("@userID", SqlDbType.Int);
                     param.Value = Properties.Settings.Default.UserID;
@@ -531,7 +513,12 @@ namespace WindowsFormsApp2.Helpers.DB
                     cmd.ExecuteNonQuery();
 
 
-                    FormHelpers.OperationLog(OperationType.RefundPosSales, Convert.ToInt32(param.Value));
+                    FormHelpers.OperationLog(new OperationLogs
+                    {
+                        OperationType = OperationType.RefundPosSales,
+                        OperationId = Convert.ToInt32(param.Value)
+                    });
+
 
                     return Convert.ToInt32(param.Value);
                 }
@@ -830,7 +817,11 @@ namespace WindowsFormsApp2.Helpers.DB
                     cmd.ExecuteNonQuery();
 
 
-                    FormHelpers.OperationLog(OperationType.AddProduct, Convert.ToInt32(param.Value));
+                    FormHelpers.OperationLog(new OperationLogs
+                    {
+                        OperationType = OperationType.AddProduct,
+                        OperationId = Convert.ToInt32(param.Value)
+                    });
 
 
                     return Convert.ToInt32(param.Value);
@@ -874,7 +865,12 @@ namespace WindowsFormsApp2.Helpers.DB
                     cmd.ExecuteNonQuery();
 
 
-                    FormHelpers.OperationLog(OperationType.AddProduct, Convert.ToInt32(param.Value));
+                    FormHelpers.OperationLog(new OperationLogs
+                    {
+                        OperationType = OperationType.AddProduct,
+                        OperationId = Convert.ToInt32(param.Value)
+                    });
+
 
 
                     return Convert.ToInt32(param.Value);

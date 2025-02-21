@@ -1,46 +1,37 @@
 ﻿using System;
 using System.Windows.Forms;
+using WindowsFormsApp2.Helpers;
 
 namespace WindowsFormsApp2
 {
     public partial class prepaymentsales : DevExpress.XtraEditors.XtraForm
     {
         private readonly POS_LAYOUT_NEW frm1;
-        //private readonly POS_GAYTARMA_LAYOUT frmg1;
-        public prepaymentsales(POS_LAYOUT_NEW frm/*, POS_GAYTARMA_LAYOUT frmg = null*/)
+        public prepaymentsales(POS_LAYOUT_NEW frm)
         {
             InitializeComponent();
             frm1 = frm;
-            //frmg1 = frmg;
         }
 
-        private void IsSucces()
+        private void IsSucces(Enums.PayType type)
         {
-            //if (frm1 is null)
-            //{
-            //    frmg1.bankttnminputdata = textBox1.Text;
-            //    this.Close();
-            //}
-            //else
-            //{
-            frm1.prepaymentsalesfinish(textBox1.Text);
+            frm1.prepaymentsalesfinish(textBox1.Text, type);
             DialogResult = DialogResult.OK;
-            //}
         }
 
         private void simpleButton1_Click(object sender, EventArgs e)
         {
-            IsSucces();
+            IsSucces(Enums.PayType.Cash);
         }
 
-        private void textBox1_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        private void simpleButton2_Click(object sender, EventArgs e)
         {
-            if (e.KeyCode is Keys.Enter)
-            {
-                IsSucces();
-            }
+            IsSucces(Enums.PayType.Card);
         }
 
-
+        private void simpleButton3_Click(object sender, EventArgs e)
+        {
+            IsSucces(Enums.PayType.CashCard);
+        }
     }
 }

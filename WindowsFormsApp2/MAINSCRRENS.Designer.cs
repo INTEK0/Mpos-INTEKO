@@ -226,6 +226,7 @@ namespace WindowsFormsApp2
             this.tabModul = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.tileControl1 = new DevExpress.XtraEditors.TileControl();
             this.tileGroup1 = new DevExpress.XtraEditors.TileGroup();
+            this.accordionControlElement61 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.fluentDesignFormContainer1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl2)).BeginInit();
@@ -1699,6 +1700,7 @@ namespace WindowsFormsApp2
             this.accordionControlElement45,
             this.accordionControlElement46,
             this.accordionControlElement56,
+            this.accordionControlElement61,
             this.accordionControlElement60});
             this.accordionControlElement30.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("accordionControlElement30.ImageOptions.SvgImage")));
             this.accordionControlElement30.Name = "accordionControlElement30";
@@ -2643,7 +2645,7 @@ namespace WindowsFormsApp2
             this.tabAllSettings.Name = "tabAllSettings";
             this.tabAllSettings.Properties.AppearanceCaption.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.tabAllSettings.Properties.AppearanceCaption.Options.UseFont = true;
-            this.tabAllSettings.Size = new System.Drawing.Size(1157, 761);
+            this.tabAllSettings.Size = new System.Drawing.Size(1157, 759);
             // 
             // panelControl13
             // 
@@ -2662,7 +2664,7 @@ namespace WindowsFormsApp2
             this.panelControl13.LookAndFeel.UseDefaultLookAndFeel = false;
             this.panelControl13.Margin = new System.Windows.Forms.Padding(1);
             this.panelControl13.Name = "panelControl13";
-            this.panelControl13.Size = new System.Drawing.Size(1157, 761);
+            this.panelControl13.Size = new System.Drawing.Size(1157, 759);
             this.panelControl13.TabIndex = 12;
             // 
             // chClinicModul
@@ -3015,6 +3017,12 @@ namespace WindowsFormsApp2
             this.tileGroup1.Name = "tileGroup1";
             this.tileGroup1.Text = "tileGroup1";
             // 
+            // accordionControlElement61
+            // 
+            this.accordionControlElement61.Name = "accordionControlElement61";
+            this.accordionControlElement61.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
+            this.accordionControlElement61.Text = "Kassa avans hesabatı";
+            // 
             // MAINSCRRENS
             // 
             this.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(245)))), ((int)(((byte)(250)))));
@@ -3335,6 +3343,7 @@ namespace WindowsFormsApp2
         private DevExpress.XtraEditors.TileGroup tileGroup1;
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement60;
         private DevExpress.XtraEditors.CheckEdit chOtherPay;
+        private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement61;
     }
 }
 

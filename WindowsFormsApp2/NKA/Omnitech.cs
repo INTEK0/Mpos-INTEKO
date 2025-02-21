@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
+using static DTOs;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
 using static WindowsFormsApp2.Helpers.Enums;
 
@@ -16,6 +17,8 @@ namespace WindowsFormsApp2.NKA
     public static class Omnitech
     {
         private static readonly bool MessageVisible = FormHelpers.SuccessMessageVisible();
+        private static readonly string Username = "SuperApi";
+        private static readonly string Pin = "123";
         private static OmnitechResponse RequestPOST(string ipAddress, string json)
         {
             try
@@ -56,8 +59,8 @@ namespace WindowsFormsApp2.NKA
                     payment_change = null,
                     check_type = 40
                 },
-                name = "Api",
-                password = "1"
+                name = Username,
+                password = Pin
             };
 
             var root = new RootObject
@@ -507,22 +510,20 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
             }
         }
 
-
-        public static bool SalesPre(string ipAddress, string token, string proccessNo, decimal total, decimal cash, decimal card, decimal incomingSum, string cashier, Customer customer, Doctor doctor, string rrn = "")
+        public static bool Prepayment(SalesDto salesData /*string ipAddress, string token, string proccessNo, decimal total, decimal cash, decimal card, decimal incomingSum, string cashier, Customer customer, Doctor doctor, string rrn = ""*/)
         {
-            if (string.IsNullOrWhiteSpace(token))
+            if (string.IsNullOrWhiteSpace(salesData.AccessToken))
             {
-                token = Login(ipAddress);
+                salesData.AccessToken = Login(salesData.IpAddress);
             }
 
             List<Item> items = new List<Item>();
             List<VatAmount> vatAmounts = new List<VatAmount>();
 
-            SqlConnection conn = new SqlConnection();
-            SqlCommand cmd = new SqlCommand();
-            conn.ConnectionString = Properties.Settings.Default.SqlCon;
-            conn.Open();
-            string query = $@"
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                con.Open();
+                string query = $@"
 select 
     t.name,
     t.item_id,
@@ -548,113 +549,112 @@ select
 from dbo.item as t
 WHERE user_id = {Properties.Settings.Default.UserID}";
 
-            cmd.Connection = conn;
-            cmd.CommandText = query;
+                decimal vatSumFor18Percent = 0;
+                decimal vatSumFor2Percent = 0;
+                decimal vatSumFor0Percent = 0;
 
-            SqlDataReader dr = cmd.ExecuteReader();
-
-            decimal vatSumFor18Percent = 0;
-            decimal vatSumFor2Percent = 0;
-            decimal vatSumFor0Percent = 0;
-
-            while (dr.Read())
-            {
-                string name = dr["name"].ToString();
-                string code = dr["item_id"].ToString();
-                decimal salePrice = Convert.ToDecimal(dr["salePrice"]);
-                decimal? purchasePrice = Convert.ToDecimal(dr["purchasePrice"]);
-                double quantity = Convert.ToDouble(dr["quantity"]);
-                int vatType = Convert.ToInt32(dr["vatType"]);
-                string vatTypeName = dr["vatTypeName"].ToString();
-                int quantityType = Convert.ToInt32(dr["quantityType"]);
-                decimal ssum = Convert.ToDecimal(dr["ssum"]);
-
-                decimal? marginSum = purchasePrice * (decimal)quantity;
-
-                if (vatTypeName != "TİCARƏT ƏLAVƏSİ 18%")
+                using (SqlCommand cmd = new SqlCommand(query, con))
                 {
-                    marginSum = null;
-                    purchasePrice = null;
+
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            string name = dr["name"].ToString();
+                            string code = dr["item_id"].ToString();
+                            decimal salePrice = Convert.ToDecimal(dr["salePrice"]);
+                            decimal? purchasePrice = Convert.ToDecimal(dr["purchasePrice"]);
+                            double quantity = Convert.ToDouble(dr["quantity"]);
+                            int vatType = Convert.ToInt32(dr["vatType"]);
+                            string vatTypeName = dr["vatTypeName"].ToString();
+                            int quantityType = Convert.ToInt32(dr["quantityType"]);
+                            decimal ssum = Convert.ToDecimal(dr["ssum"]);
+
+                            decimal? marginSum = purchasePrice * (decimal)quantity;
+
+                            if (vatTypeName != "TİCARƏT ƏLAVƏSİ 18%")
+                            {
+                                marginSum = null;
+                                purchasePrice = null;
+                            }
+
+
+                            Item item = new Item
+                            {
+                                itemName = name,
+                                itemCode = code,
+                                itemQuantityType = quantityType,
+                                itemQuantity = quantity,
+                                itemPrice = salePrice,
+                                itemSum = ssum,
+                                itemVatPercent = vatType,
+                                itemMarginPrice = purchasePrice,
+                                itemMarginSum = marginSum,
+                                discount = 0,
+                            };
+                            items.Add(item);
+
+                            if (vatType == 18)
+                            {
+                                vatSumFor18Percent += ssum;
+                            }
+                            else if (vatType == 2)
+                            {
+                                vatSumFor2Percent += ssum;
+                            }
+                            else if (vatType == 0)
+                            {
+                                vatSumFor0Percent += ssum;
+                            }
+                        }
+                    }
                 }
 
-
-                Item item = new Item
+                if (vatSumFor18Percent > 0)
                 {
-                    itemName = name,
-                    itemCode = code,
-                    itemQuantityType = quantityType,
-                    itemQuantity = quantity,
-                    itemPrice = salePrice,
-                    itemSum = ssum,
-                    itemVatPercent = vatType,
-                    itemMarginPrice = purchasePrice,
-                    itemMarginSum = marginSum,
-                    discount = 0,
-                };
-                items.Add(item);
-
-                if (vatType == 18)
-                {
-                    vatSumFor18Percent += ssum;
+                    vatAmounts.Add(new VatAmount
+                    {
+                        vatPercent = 18,
+                        vatSum = vatSumFor18Percent
+                    });
                 }
-                else if (vatType == 2)
+
+                if (vatSumFor2Percent > 0)
                 {
-                    vatSumFor2Percent += ssum;
+                    vatAmounts.Add(new VatAmount
+                    {
+                        vatPercent = 2,
+                        vatSum = vatSumFor0Percent
+                    });
                 }
-                else if (vatType == 0)
+
+                if (vatSumFor0Percent > 0)
                 {
-                    vatSumFor0Percent += ssum;
+                    vatAmounts.Add(new VatAmount
+                    {
+                        vatPercent = 0,
+                        vatSum = vatSumFor0Percent
+                    });
                 }
-            }
-
-            if (vatSumFor18Percent > 0)
-            {
-                vatAmounts.Add(new VatAmount
-                {
-                    vatPercent = 18,
-                    vatSum = vatSumFor18Percent
-                });
-            }
-
-            if (vatSumFor2Percent > 0)
-            {
-                vatAmounts.Add(new VatAmount
-                {
-                    vatPercent = 2,
-                    vatSum = vatSumFor0Percent
-                });
-            }
-
-            if (vatSumFor0Percent > 0)
-            {
-                vatAmounts.Add(new VatAmount
-                {
-                    vatPercent = 0,
-                    vatSum = vatSumFor0Percent
-                });
             }
 
             Data data = new Data
             {
-                sum = total,
-                cashSum = cash,
-                cashlessSum = card,
-                incomingSum = incomingSum,
-                cashier = cashier,
+                sum = salesData.Cash + salesData.Card,
+                cashSum = salesData.Cash,
+                cashlessSum = salesData.Card,
+                incomingSum = salesData.IncomingSum,
+                prepaymentSum = 0,
+                cashier = salesData.Cashier,
                 items = items,
                 vatAmounts = vatAmounts,
-                prepaymentSum = cash + card,
             };
-
-
 
             Parameters parameters = new Parameters
             {
                 doc_type = "prepay",
                 data = data
             };
-
-
 
             TokenData tokenData = new TokenData
             {
@@ -667,10 +667,9 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
                 check_type = 34
             };
 
-
             RequestData requestData = new RequestData
             {
-                access_token = token,
+                access_token = salesData.AccessToken,
                 tokenData = tokenData,
                 checkData = checkData
             };
@@ -681,13 +680,14 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
                 receiptDetails = null
             };
 
+
             string json = Newtonsoft.Json.JsonConvert.SerializeObject(rootObject, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
             });
 
 
-            var response = RequestPOST(ipAddress, json);
+            var response = RequestPOST(salesData.IpAddress, json);
 
             if (response != null)
             {
@@ -697,14 +697,15 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
                     {
                         posNomre = response.document_number.ToString(),
                         longFiskalId = response.long_id,
-                        proccessNo = proccessNo,
-                        cash = cash,
-                        card = card,
-                        total = total,
+                        proccessNo = salesData.ProccessNo,
+                        cash = salesData.Cash,
+                        card = salesData.Card,
+                        Prepayment = salesData.Cash + salesData.Card,
+                        total = salesData.Total,
                         json = json,
                         shortFiskalId = response.short_id,
-                        customerId = customer?.CustomerID,
-                        doctorId = doctor?.Id,
+                        customerId = salesData.Customer?.CustomerID,
+                        doctorId = salesData.Doctor?.Id,
                     });
 
                     if (MessageVisible)
@@ -738,11 +739,7 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
             }
         }
 
-
-
-
-
-        public static bool PreSaleFinish(string ipAddress, string token, decimal id, string username, string fisids)
+        public static bool PrepaymentSale(string ipAddress, string token, decimal id, string username, string fisids, decimal prepay, Enums.PayType type)
         {
             if (string.IsNullOrWhiteSpace(token))
             {
@@ -751,16 +748,19 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
 
             List<Item> items = new List<Item>();
             List<VatAmount> vatAmounts = new List<VatAmount>();
+            List<string> preList = new List<string>();
 
-            SqlConnection conn = new SqlConnection();
-            SqlCommand cmd = new SqlCommand();
-            conn.ConnectionString = Properties.Settings.Default.SqlCon;
-            conn.Open();
-            string query = $@"
+            decimal vatSumFor18Percent = 0;
+            decimal vatSumFor2Percent = 0;
+            decimal vatSumFor0Percent = 0;
+            decimal total = 0;
+
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                con.Open();
+                string query = $@"
 SELECT 
 A.[MEHSUL_ADI] as name,d.item_id,D.satis_giymet as salePrice,D.satis_giymet as purchasePrice,d.count_ as quantity,
-
-
 
 case A.VERGI_DERECESI 
         when 1 then '18' 
@@ -786,65 +786,62 @@ case A.VERGI_DERECESI
   where 
   POS.pos_satis_check_main_id=D.pos_satis_check_main_id AND 
   A.[mal_alisi_details_id]=D.[mal_alisi_details_id]
-  
-  AND D.[pos_satis_check_main_id]=" + id;
-
-            cmd.Connection = conn;
-            cmd.CommandText = query;
-
-            SqlDataReader dr = cmd.ExecuteReader();
-
-            decimal vatSumFor18Percent = 0;
-            decimal vatSumFor2Percent = 0;
-            decimal vatSumFor0Percent = 0;
-            decimal total = 0;
-            while (dr.Read())
-            {
-                string name = dr["name"].ToString();
-                string code = dr["item_id"].ToString();
-                decimal salePrice = Convert.ToDecimal(dr["salePrice"]);
-                decimal? purchasePrice = Convert.ToDecimal(dr["purchasePrice"]);
-                double quantity = Convert.ToDouble(dr["quantity"]);
-                int vatType = Convert.ToInt32(dr["vatType"]);
-                string vatTypeName = dr["vatTypeName"].ToString();
-                int quantityType = Convert.ToInt32(dr["quantityType"]);
-                decimal ssum = Convert.ToDecimal(dr["ssum"]);
-
-                decimal? marginSum = purchasePrice * (decimal)quantity;
-                total = total + ssum;
-                if (vatTypeName != "TİCARƏT ƏLAVƏSİ 18%")
+  AND D.[pos_satis_check_main_id]={id}";
+                using (SqlCommand cmd = new SqlCommand(query,con))
                 {
-                    marginSum = null;
-                    purchasePrice = null;
-                }
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        while (dr.Read())
+                        {
+                            string name = dr["name"].ToString();
+                            string code = dr["item_id"].ToString();
+                            decimal salePrice = Convert.ToDecimal(dr["salePrice"]);
+                            decimal? purchasePrice = Convert.ToDecimal(dr["purchasePrice"]);
+                            double quantity = Convert.ToDouble(dr["quantity"]);
+                            int vatType = Convert.ToInt32(dr["vatType"]);
+                            string vatTypeName = dr["vatTypeName"].ToString();
+                            int quantityType = Convert.ToInt32(dr["quantityType"]);
+                            decimal ssum = Convert.ToDecimal(dr["ssum"]);
+
+                            decimal? marginSum = purchasePrice * (decimal)quantity;
+                            total = total + ssum;
+                            if (vatTypeName != "TİCARƏT ƏLAVƏSİ 18%")
+                            {
+                                marginSum = null;
+                                purchasePrice = null;
+                            }
 
 
-                Item item = new Item
-                {
-                    itemName = name,
-                    itemCode = code,
-                    itemQuantityType = quantityType,
-                    itemQuantity = quantity,
-                    itemPrice = salePrice,
-                    itemSum = ssum,
-                    itemVatPercent = vatType,
-                    itemMarginPrice = purchasePrice,
-                    itemMarginSum = marginSum,
-                    discount = 0,
-                };
-                items.Add(item);
+                            Item item = new Item
+                            {
+                                itemName = name,
+                                itemCode = code,
+                                itemQuantityType = quantityType,
+                                itemQuantity = quantity,
+                                itemPrice = salePrice,
+                                itemSum = ssum,
+                                itemVatPercent = vatType,
+                                itemMarginPrice = purchasePrice,
+                                itemMarginSum = marginSum,
+                                discount = 0,
+                            };
+                            items.Add(item);
 
-                if (vatType == 18)
-                {
-                    vatSumFor18Percent += ssum;
-                }
-                else if (vatType == 2)
-                {
-                    vatSumFor2Percent += ssum;
-                }
-                else if (vatType == 0)
-                {
-                    vatSumFor0Percent += ssum;
+                            if (vatType == 18)
+                            {
+                                vatSumFor18Percent += ssum;
+                            }
+                            else if (vatType == 2)
+                            {
+                                vatSumFor2Percent += ssum;
+                            }
+                            else if (vatType == 0)
+                            {
+                                vatSumFor0Percent += ssum;
+                            }
+                        }
+                    }
                 }
             }
 
@@ -853,7 +850,7 @@ case A.VERGI_DERECESI
                 vatAmounts.Add(new VatAmount
                 {
                     vatPercent = 18,
-                    vatSum = vatSumFor18Percent
+                    vatSum = vatSumFor18Percent - prepay
                 });
             }
 
@@ -862,7 +859,7 @@ case A.VERGI_DERECESI
                 vatAmounts.Add(new VatAmount
                 {
                     vatPercent = 2,
-                    vatSum = vatSumFor0Percent
+                    vatSum = vatSumFor0Percent - prepay
                 });
             }
 
@@ -871,36 +868,47 @@ case A.VERGI_DERECESI
                 vatAmounts.Add(new VatAmount
                 {
                     vatPercent = 0,
-                    vatSum = vatSumFor0Percent
+                    vatSum = vatSumFor0Percent - prepay
                 });
             }
 
+            decimal newprepay = Convert.ToDecimal(prepay);
+            decimal casha = 0;
+            decimal carda = 0;
+            decimal incominga = 0;
+
+            if (type is PayType.Cash)
+            {
+                casha = total - newprepay;
+                incominga = total - newprepay;
+            }
+            else if (type is PayType.Card)
+            {
+                carda = total - newprepay;
+            }
+            else if (type is PayType.CashCard)
+            {
+
+            }
+            preList.Add(fisids);
+
             Data data = new Data
             {
-                parents = fisids,
-                prepaymentSum = total,
-                sum = 0,
-                cashSum = 0,
-                cashlessSum = 0,
-                incomingSum = 0,
+                parents = preList,
+                prepaymentSum = newprepay,
+                sum = total - newprepay,
+                cashSum = casha,
+                cashlessSum = carda,
+                incomingSum = incominga,
                 cashier = username,
                 items = items,
                 vatAmounts = vatAmounts,
             };
 
-
-
             Parameters parameters = new Parameters
             {
                 doc_type = "sale",
                 data = data
-            };
-
-            List<ReceiptDetail> receiptDetails = new List<ReceiptDetail>()
-            {
-            new ReceiptDetail { v = $"Müştəri: Yeni Müştəri" },
-            //new ReceiptDetail { t = 1, k = "Number", v = "new number" },
-            //new ReceiptDetail { t = 2, k = "Number", v = "5258645" }
             };
 
             TokenData tokenData = new TokenData
@@ -914,7 +922,6 @@ case A.VERGI_DERECESI
                 check_type = 1
             };
 
-
             RequestData requestData = new RequestData
             {
                 access_token = token,
@@ -925,7 +932,7 @@ case A.VERGI_DERECESI
             RootObject rootObject = new RootObject
             {
                 requestData = requestData,
-                receiptDetails = receiptDetails
+                receiptDetails = null
             };
 
             string json = Newtonsoft.Json.JsonConvert.SerializeObject(rootObject, new JsonSerializerSettings
@@ -940,23 +947,22 @@ case A.VERGI_DERECESI
             {
                 if (response.message == "Successful operation")
                 {
-
-
-                    SqlConnection connection4 = new SqlConnection(Properties.Settings.Default.SqlCon);
-                    string queryStringk = $"UPDATE [dbo].[pos_satis_check_main] SET [PREdate_]=getdate(),PREfiscal_id='{response.document_number}' where pos_satis_check_main_id={id}  ";
-                    connection4.Open();
-                    SqlCommand command4 = new SqlCommand(queryStringk, connection4);
-
-                    SqlDataReader dr4 = command4.ExecuteReader();
-
-
+                    using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+                    {
+                        string query = $"UPDATE [dbo].[pos_satis_check_main] SET NEGD_={casha.ToString("N2").Replace(',', '.')}+NEGD_,KART_={carda.ToString("N2").Replace(',', '.')}+KART_, [PREdate_]=getdate(),PREfiscal_id='{response.short_id}' where pos_satis_check_main_id={id}";
+                        using (SqlCommand cmd = new SqlCommand(query,con))
+                        {
+                            con.Open();
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
 
                     if (MessageVisible)
                     {
                         ReadyMessages.SUCCESS_SALES_MESSAGE();
                     }
 
-                    FormHelpers.Log($"Pos satışı uğurla edildi. Qəbz №: {response.document_number}");
+                    FormHelpers.Log($"Avans satışı uğurla edildi. Qəbz №: {response.document_number}");
                     return true;
                 }
                 else if (response.message == "document: invalid shift duration")
@@ -972,7 +978,7 @@ case A.VERGI_DERECESI
                 else
                 {
                     ReadyMessages.ERROR_SALES_MESSAGE(response.message);
-                    FormHelpers.Log($"Pos satışı xətası - Xəta mesajı: {response.message}");
+                    FormHelpers.Log($"Avans satışı xətası - Xəta mesajı: {response.message}");
                     return false;
                 }
             }
@@ -981,7 +987,6 @@ case A.VERGI_DERECESI
                 return false;
             }
         }
-
 
         public static void PeriodicReport(DateTime _start, DateTime _end, string ipAddress)
         {
@@ -1292,12 +1297,12 @@ case A.VERGI_DERECESI
 
         private class Data
         {
+            public List<string> parents { get; set; } = null;
             public string cashier { get; set; }
             public string currency { get; set; } = "AZN";
             public List<Item> items { get; set; }
             public decimal sum { get; set; }
             public decimal cashSum { get; set; }
-
             public decimal cashlessSum { get; set; }
             public decimal prepaymentSum { get; set; } = 0;
             public decimal creditSum { get; set; } = 0;
@@ -1306,8 +1311,6 @@ case A.VERGI_DERECESI
             public string parentDocument { get; set; } = null;
             public string refund_short_document_id { get; set; } = null;
             public string refund_document_number { get; set; } = null;
-
-            public string parents { get; set; } = null;
             public List<VatAmount> vatAmounts { get; set; }
         }
 

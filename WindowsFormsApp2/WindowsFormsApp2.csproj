@@ -294,6 +294,12 @@
     <Compile Include="Forms\fAdminPassword.Designer.cs">
       <DependentUpon>fAdminPassword.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\fAvansReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\fAvansReport.Designer.cs">
+      <DependentUpon>fAvansReport.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\fBasket.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -964,6 +970,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fAdminPassword.resx">
       <DependentUpon>fAdminPassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\fAvansReport.resx">
+      <DependentUpon>fAvansReport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fBasket.resx">
       <DependentUpon>fBasket.cs</DependentUpon>

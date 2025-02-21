@@ -20,7 +20,7 @@ namespace WindowsFormsApp2.Helpers
             Cash,
             Card,
             CashCard,
-            PreCashCard,
+            Prepayment,
             Installment,
             OtherPay
         }
@@ -80,7 +80,9 @@ namespace WindowsFormsApp2.Helpers
             [Description("Exceli kontrollu əlavə et")]
             ExcelImport_Control,
             [Description("Exceli birbaşa əlavə et")]
-            ExcelImport_Direct
+            ExcelImport_Direct,
+            [Description("Z-Hesabat (Gün sonu)")]
+            ZReport
         }
 
         public static string GetEnumDescription(Enum value)

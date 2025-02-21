@@ -1,5 +1,6 @@
 ﻿using DevExpress.DashboardCommon;
 using DevExpress.Xpo;
+using DevExpress.XtraMap.Native;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
@@ -20,9 +21,9 @@ namespace WindowsFormsApp2.NKA
 {
     public class NBA
     {
-        public static readonly string NBA_FISCAL_SERVICE_PORT = "9847"; //9898 prod port - 9847 test port
-        public static readonly string NBA_BANK_SERVICE_PORT = "9944"; //9999 prod port - 9944 test port
-        private static readonly string NBA_LOGIN_PIN = "23264544"; //12348765 prod ping - 23264544 test pin
+        public static readonly string NBA_FISCAL_SERVICE_PORT = "9898"; //9898 prod port - 9847 test port
+        public static readonly string NBA_BANK_SERVICE_PORT = "9999"; //9999 prod port - 9944 test port
+        private static readonly string NBA_LOGIN_PIN = "12348765"; //12348765 prod ping - 23264544 test pin
 
         /* return olunacaq json, edvHesap1, edvHesap2, edvdenazad2,odenen,qaliq */
 
@@ -155,6 +156,12 @@ namespace WindowsFormsApp2.NKA
 
         public static Root CloseShift(string ipAddress, string accessToken)
         {
+            if (string.IsNullOrWhiteSpace(accessToken))
+            {
+                accessToken = Login(ipAddress, TerminalTokenData.NkaSerialNumber);
+            }
+
+
             Parameters parameters = new Parameters
             {
                 access_token = accessToken,
@@ -178,7 +185,8 @@ namespace WindowsFormsApp2.NKA
             RestResponse response = rest.Execute(request);
 
             Root weatherForecast = System.Text.Json.JsonSerializer.Deserialize<Root>(response.Content);
-
+            weatherForecast.ResponseJson = response.Content;
+            weatherForecast.RequestJson = json;
             if (weatherForecast.message != "Successful operation")
             {
                 ReadyMessages.ERROR_DEFAULT_MESSAGE($"Xəta mesajı: {weatherForecast.message}");
@@ -510,6 +518,7 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
                                 cashSum = salesData.Cash,
                                 cashlessSum = salesData.Card,
                                 incomingSum = salesData.IncomingSum,
+                                changeSum = salesData.Balance,
                                 cashier = salesData.Cashier,
                                 items = items,
                                 vatAmounts = vatAmounts,
@@ -532,13 +541,7 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
                             });
 
                             return json;
-                            //var client = new RestClient();
-                            //var request = new RestRequest(salesData.IpAddress, Method.Post);
-                            //request.AddHeader("Content-Type", "application/json;charset=utf-8");
-                            //request.AddStringBody(json, DataFormat.Json);
-                            //RestResponse response = client.Execute(request);
-
-                            //nbaroot weatherForecast = System.Text.Json.JsonSerializer.Deserialize<nbaroot>(response.Content);
+  
                         }
                     }
                 }
@@ -742,6 +745,8 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
             public DataResponse data { get; set; }
             public int code { get; set; }
             public string message { get; set; }
+            public string RequestJson { get; set; }
+            public string ResponseJson { get; set; }
         }
 
         public class SaleVatAmount

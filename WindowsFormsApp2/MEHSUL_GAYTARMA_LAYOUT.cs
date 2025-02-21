@@ -20,7 +20,7 @@ namespace WindowsFormsApp2
     public partial class MEHSUL_GAYTARMA_LAYOUT : DevExpress.XtraEditors.XtraForm
     {
         public static int g_user_id;
-        private readonly string  qeryString = "EXEC  dbo.MAL_GAYTARMA_KOD";
+        private readonly string qeryString = "EXEC  dbo.MAL_GAYTARMA_KOD";
         public MEHSUL_GAYTARMA_LAYOUT(int gay_u_id)
         {
             InitializeComponent();
@@ -82,7 +82,7 @@ namespace WindowsFormsApp2
                 con.Dispose();
             }
         }
-        
+
 
         private void GETKOD()
         {
@@ -127,10 +127,15 @@ namespace WindowsFormsApp2
                         decimal b = Convert.ToDecimal(row[10].ToString());
                         if (a >= b)
                         {
-                            int u = mg.InsertMalGaytarmaDetails(ret.ToString(), row[0].ToString(), row[10].ToString(),memoEdit1.Text);
+                            int u = mg.InsertMalGaytarmaDetails(ret.ToString(), row[0].ToString(), row[10].ToString(), memoEdit1.Text);
                         }
 
-                        FormHelpers.OperationLog(Enums.OperationType.RefundProduct, ret);
+                        FormHelpers.OperationLog(new Helpers.DB.DatabaseClasses.OperationLogs
+                        {
+                            OperationType = Enums.OperationType.RefundProduct,
+                            OperationId = ret
+                        });
+
                         FormHelpers.Log($"{row[2]} təchizatçısının {row[4]} məhsulunun {row[10]} {row[6]} qaytarması edildi");
 
 
@@ -254,7 +259,7 @@ namespace WindowsFormsApp2
         private void simpleButton3_Click(object sender, EventArgs e)
         {
             FormHelpers.OpenForm<GAYTARMA_AXTARİS>(this);
-            
+
         }
         public void getall()
         {

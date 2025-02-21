@@ -33,5 +33,6 @@ public static class DTOs
         public decimal Total { get; set; }
         public string Cashier { get; set; }
         public string Rrn { get; set; } = string.Empty;
+        public Enums.PayType PayType { get; set; }
     }
 }

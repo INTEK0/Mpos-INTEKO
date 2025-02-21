@@ -1249,7 +1249,7 @@ namespace WindowsFormsApp2
                     }
                 }
             }
-            else if (type is Enums.PayType.PreCashCard)
+            else if (type is Enums.PayType.Prepayment)
             {
                 if (!string.IsNullOrEmpty(textEdit6.Text))
                 {
@@ -1731,9 +1731,13 @@ namespace WindowsFormsApp2
 
         public void NBA_CloseShift()
         {
+            string SendJson = null;
+            string ResponseJson = null;
             try
             {
                 var responseData = NBA.CloseShift(lIpAdress.Text, textBox1.Text);
+                SendJson = responseData.RequestJson;
+                ResponseJson = responseData.ResponseJson;
                 if (responseData == null) { return; }
                 else
                 {
@@ -1860,16 +1864,22 @@ namespace WindowsFormsApp2
                     };
 
                     pd.Print();
-
-
-
-
-
                 }
             }
             catch (Exception e)
             {
                 ReadyMessages.ERROR_SERVER_CONNECTION_MESSAGE(e.Message);
+            }
+            finally
+            {
+                FormHelpers.OperationLog(new OperationLogs
+                {
+                    OperationType = Enums.OperationType.ZReport,
+                    OperationId = 0,
+                    Message = "Z Report request/response json",
+                    RequestCode = SendJson,
+                    ResponseCode = ResponseJson,
+                });
             }
         }
 
@@ -2125,65 +2135,38 @@ namespace WindowsFormsApp2
             }
         }
 
-        private void simpleButton15_Click(object sender, EventArgs e)
+        public void prepaymentsalesfinish(string fisid, Enums.PayType type)
         {
+            string query = $@"SELECT pos_satis_check_main_id,
+                            Prepayment,
+                            fiscal_id
+                            FROM [pos_satis_check_main]
+                            where Prepayment>0
+                            and fiscalNum= '{fisid}'";
 
-
-
-
-
-        }
-
-        public void prepaymentsalesfinish(string fisid)
-        {
-            string Fisida = fisid;
-
-
-            SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
-            string queryString = "SELECT pos_satis_check_main_id  FROM  [pos_satis_check_main] where Prepayment>0 and ficalNum='" + Fisida + "'";
-            SqlCommand command = new SqlCommand(queryString, connection);
-
-
-            SqlDataAdapter da = new SqlDataAdapter(command);
-            DataTable dt = new DataTable();
-            da.Fill(dt);
-            decimal saysa24 = 0;
-            int number = dt.Rows[0].Field<int>("pos_satis_check_main_id");
-
-
+            var data = DbProsedures.ConvertToDataTable(query);
+            int number = data.Rows[0].Field<int>("pos_satis_check_main_id");
+            decimal prepay = data.Rows[0].Field<decimal>("Prepayment");
+            string fiskalid = data.Rows[0].Field<string>("fiscal_id");
 
             if (number > 0)
             {
-
                 switch (lModel.Text)
                 {
-
                     case "3":
-                        Omnitech.PreSaleFinish(lIpAdress.Text, textBox1.Text, number, tUsername.Text, Fisida);
+                        Omnitech.PrepaymentSale(lIpAdress.Text, textBox1.Text, number, tUsername.Text, fisid, prepay, type);
                         break; /*OMNITECH*/
-
                 }
-
-
-
             }
-
             else
             {
-
-                XtraMessageBox.Show("ERROR!!! Please Check FISKAL ID ", "Error");
-
+                ReadyMessages.ERROR_DEFAULT_MESSAGE("Fiskal id nömrəsi düzgün daxil edilmədi");
             }
-
-
-
-
-
         }
 
         private void simpleButton15_Click_1(object sender, EventArgs e)
         {
-            Payment(Enums.PayType.PreCashCard);
+            Payment(Enums.PayType.Prepayment);
         }
 
         private void simpleButton3_Click_1(object sender, EventArgs e)
@@ -2687,16 +2670,20 @@ namespace WindowsFormsApp2
 
                         break; /*NBA*/
                     case "7":
-                        IsSuccess = EKASAM.Sales(lIpAdress.Text.Replace("\n", ""),
-                            textBox1.Text,
-                            textEdit1.Text,
-                            umumi_mebleg_,
-                            cash_,
-                            card_,
-                            incomingSum,
-                            tUsername.Text,
-                            _customer,
-                            _doctor, incomingSum - cash_);
+                        IsSuccess = EKASAM.Sales(new DTOs.SalesDto
+                        {
+                            IpAddress = lIpAdress.Text.Replace("\n", ""),
+                            AccessToken = textBox1.Text,
+                            ProccessNo = textEdit1.Text,
+                            Total = umumi_mebleg_,
+                            Cash = cash_,
+                            Card = card_,
+                            IncomingSum = incomingSum,
+                            Cashier = tUsername.Text,
+                            Customer = _customer,
+                            Doctor = _doctor,
+                            Balance = incomingSum - cash_
+                        });
 
                         if (IsSuccess)
                         {
@@ -2724,10 +2711,6 @@ namespace WindowsFormsApp2
 
             tBarcode.Focus();
         }
-
-
-
-
 
         public void gelen_data_negd_pos_pre(decimal cash_, decimal card_, decimal umumi_mebleg_, decimal incomingSum = default, decimal _qaliq = default, bool clinic = false)
         {
@@ -2773,12 +2756,13 @@ namespace WindowsFormsApp2
 
 
                 DbProsedures.DeleteHeader();
-                DbProsedures.InsertHeaderPre(new Header
+                DbProsedures.InsertHeader(new Header
                 {
                     cash = cash_,
                     card = card_,
                     CustomerName = string.IsNullOrWhiteSpace(tCustomer.Text) ? "YENİ MÜŞTƏRİ" : tCustomer.Text,
-                    paidPayment = incomingSum
+                    paidPayment = incomingSum,
+                    PayType = PayType.Prepayment
                 });
 
                 //RRN KODU MANUAL OLARAQ YAZMAQ ÜÇÜN
@@ -2808,7 +2792,7 @@ namespace WindowsFormsApp2
                 //Satışı Xprinterə yönləndirmək üçün
                 if (chSendToPrinter.Visible is true && chSendToPrinter.Checked is true)
                 {
-                    xprintersales(cash_, card_, umumi_mebleg_, incomingSum);
+                    ReadyMessages.WARNING_DEFAULT_MESSAGE("Avans satışları yalnız NKA Kassaları üçün nəzərdə tutulmuşdur");
                     return;
                 }
 
@@ -2816,18 +2800,20 @@ namespace WindowsFormsApp2
 
                 switch (lModel.Text)
                 {
-
                     case "3":
-                        IsSuccess = Omnitech.SalesPre(lIpAdress.Text.Replace("\n", ""),
-                            textBox1.Text,
-                            textEdit1.Text,
-                            umumi_mebleg_,
-                            cash_,
-                            card_,
-                            incomingSum,
-                            tUsername.Text,
-                            _customer,
-                            _doctor);
+                        IsSuccess = Omnitech.Prepayment(new DTOs.SalesDto
+                        {
+                            IpAddress = lIpAdress.Text.Replace("\n", ""),
+                            AccessToken = textBox1.Text,
+                            ProccessNo = textEdit1.Text,
+                            Total = umumi_mebleg_,
+                            Cash = cash_,
+                            Card = card_,
+                            IncomingSum = incomingSum,
+                            Cashier = tUsername.Text,
+                            Customer = _customer,
+                            Doctor = _doctor
+                        });
 
                         if (IsSuccess)
                         {
@@ -2836,18 +2822,17 @@ namespace WindowsFormsApp2
                             CalculationDelete();
                         }
                         break; /*OMNITECH*/
-
                 }
             }
             catch (WebException ex) when (ex.Status is WebExceptionStatus.ConnectFailure)
             {
-                throw;
-                //ReadyMessages.ERROR_SERVER_CONNECTION_MESSAGE(ex.Message);
+                //throw;
+                ReadyMessages.ERROR_SERVER_CONNECTION_MESSAGE(ex.Message);
             }
             catch (WebException ex)
             {
-                throw;
-                //ReadyMessages.ERROR_DEFAULT_MESSAGE(ex.Message);
+                //throw;
+                ReadyMessages.ERROR_DEFAULT_MESSAGE(ex.Message);
             }
             finally
             {
@@ -3218,18 +3203,13 @@ namespace WindowsFormsApp2
 
         }
 
-        string ErrorSendJson = string.Empty;
+
         private void nbasales(DTOs.SalesDto salesData/*decimal cash_, decimal card_, decimal umumi_mebleg_, decimal _incomingSum = default, decimal _qaliq = default*/)
         {
-            ErrorSendJson = null;
+            string RequestSendJson = string.Empty;
+            string ResponseSendJson = string.Empty;
             try
             {
-
-                if (string.IsNullOrWhiteSpace(textBox1.Text))
-                {
-                    textBox1.Text = NBA.Login(lIpAdress.Text, TerminalTokenData.NkaSerialNumber);
-                }
-
 
                 Cursor.Current = Cursors.WaitCursor;
                 //if (string.IsNullOrWhiteSpace(textBox1.Text) || string.IsNullOrWhiteSpace(textBox4.Text))
@@ -3246,7 +3226,7 @@ namespace WindowsFormsApp2
                 string productsa = "\"items\":[";
                 string p2 = "],";
                 string dataheadersa = " ";
-               // string alldata = "";
+                // string alldata = "";
                 int satirsayi = 0;
 
                 SqlConnection conn2 = new SqlConnection();
@@ -3262,12 +3242,12 @@ namespace WindowsFormsApp2
 
                 while (dr2.Read())
                 {
-                    if (decimal.Parse(dr2["paidPayment"].ToString()) > salesData.Total)
+                    if (decimal.Parse(dr2["paidPayment"].ToString()) > salesData.Cash)
                     {
                         cash = salesData.Total.ToString();
                         tot = salesData.Total.ToString();
                         odenen = dr2["paidPayment"].ToString();
-                        qaliq = (decimal.Parse(dr2["paidPayment"].ToString()) - salesData.Total).ToString();
+                        qaliq = (decimal.Parse(dr2["paidPayment"].ToString()) - salesData.Cash).ToString();
                     }
                     else
                     {
@@ -3571,29 +3551,30 @@ from  dbo.item where user_id = {Properties.Settings.Default.UserID}";
 
             otherPay:
 
-               string json =  NBA.Sales(new DTOs.SalesDto
-               {
-                   Cash = salesData.Cash,
-                   Card = salesData.Card,
-                   Total = salesData.Total,
-                   IncomingSum = salesData.IncomingSum,
-                   Balance = salesData.Balance,
-                   PayType = salesData.PayType,
-                   Rrn = rrnCode,
-                   Cashier = tUsername.Text,
-                   IpAddress = lIpAdress.Text,
-                   AccessToken = textBox4.Text
-               });
+                string json = NBA.Sales(new DTOs.SalesDto
+                {
+                    Cash = salesData.Cash,
+                    Card = salesData.Card,
+                    Total = salesData.Total,
+                    IncomingSum = salesData.IncomingSum,
+                    Balance = salesData.Balance,
+                    PayType = salesData.PayType,
+                    Rrn = rrnCode,
+                    Cashier = tUsername.Text,
+                    IpAddress = lIpAdress.Text,
+                    AccessToken = textBox1.Text
+                });
 
 
-               // alldata = parameters + productsa + pnew + p2 + dataheadersa;
-                ErrorSendJson = json;
+                // alldata = parameters + productsa + pnew + p2 + dataheadersa;
+                RequestSendJson = json;
 
                 var client = new RestClient();
                 var request = new RestRequest(url, Method.Post);
                 request.AddHeader("Content-Type", "application/json;charset=utf-8");
                 request.AddStringBody(json, DataFormat.Json);
                 RestResponse response = client.Execute(request);
+                ResponseSendJson = response.Content;
 
                 nbaroot weatherForecast = System.Text.Json.JsonSerializer.Deserialize<nbaroot>(response.Content);
 
@@ -3655,7 +3636,7 @@ from  dbo.item where user_id = {Properties.Settings.Default.UserID}";
                 }
                 else
                 {
-                    FormHelpers.Log($"Pos satış xətası - {weatherForecast.message}\nJson: {ErrorSendJson}");
+                    FormHelpers.Log($"Pos satış xətası - {weatherForecast.message}\nJson: {RequestSendJson}");
                     if (salesData.PayType == PayType.OtherPay)
                     {
                         goto Finish;
@@ -3823,14 +3804,31 @@ from  dbo.item where user_id = {Properties.Settings.Default.UserID}";
             }
             catch (Exception ex)
             {
-                FormHelpers.Log($"Satış zamanı göndərilən json:\n {ErrorSendJson}");
+                FormHelpers.Log($"Satış zamanı göndərilən json:\n {RequestSendJson}");
 
                 throw ex;
                 //ReadyMessages.ERROR_DEFAULT_MESSAGE(ex.Message);
             }
             finally
             {
-                FormHelpers.OperationLog(Enums.OperationType.PosSales, 0,"Pos satış zamanı göndərilən json", ErrorSendJson);
+                FormHelpers.OperationLog(new OperationLogs
+                {
+                    OperationType = OperationType.PosSales,
+                    OperationId = 0,
+                    Message = "Kassa satış",
+                    RequestCode = RequestSendJson,
+                    ResponseCode = ResponseSendJson,
+                });
+
+
+                //FormHelpers.OperationLog(new OperationLogs
+                //{
+                //    OperationType = OperationType.PosSales,
+                //    OperationId = 0,
+                //    Message = "Bank satış",
+                //    RequestCode = RequestSendJson,
+                //    ResponseCode = ResponseSendJson,
+                //});
 
                 Cursor.Current = Cursors.Default;
             }

@@ -120,7 +120,11 @@ namespace WindowsFormsApp2
                 }
             }
 
-            FormHelpers.OperationLog(OperationType.RefundQaimeSales, returnMainId);
+            FormHelpers.OperationLog(new DatabaseClasses.OperationLogs
+            {
+                OperationType = OperationType.RefundQaimeSales,
+                OperationId = returnMainId
+            });
 
             return empCount;
         }
@@ -131,7 +135,7 @@ namespace WindowsFormsApp2
 
             using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
             {
-                using (SqlCommand cmd = new SqlCommand("update_gaime_satis", con)) 
+                using (SqlCommand cmd = new SqlCommand("update_gaime_satis", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -151,7 +155,12 @@ namespace WindowsFormsApp2
                 }
             }
 
-            FormHelpers.OperationLog(OperationType.QaimeSales, returnMainId);
+            FormHelpers.OperationLog(new DatabaseClasses.OperationLogs
+            {
+                OperationType = OperationType.QaimeSales,
+                OperationId = returnMainId
+            });
+
 
             return empCount;
         }

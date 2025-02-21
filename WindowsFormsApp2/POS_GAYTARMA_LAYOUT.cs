@@ -655,9 +655,9 @@ namespace WindowsFormsApp2
 
 
 
-        public void ekasam_gaytarma(string _url, PayType type)
+        private void ekasam_gaytarma(string _url, PayType type)
         {
-            string json = EKASAM.Refund(_url, textBox1.Text, type, Cashier, textEdit1.Text);
+         //   string json = EKASAM.Refund(_url, textBox1.Text, type, Cashier, textEdit1.Text);
 
 
             var url = _url.Replace("\n", "");
@@ -2380,22 +2380,40 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
                                     }
                                 }
                                 break; /*NBA*/
-
-
                             case "7":
-                                textBox1.Text = EKASAM.Login(lIpAddress.Text); //AccessToken
                                 switch (type)
                                 {
                                     case PayType.Cash:
-                                        ekasam_gaytarma(lIpAddress.Text, PayType.Cash);
+                                        isSuccess =  EKASAM.Refund(new DTOs.RefundDto
+                                        {
+                                            IpAddress = lIpAddress.Text,
+                                            PayType = PayType.Cash,
+                                            Cashier = Cashier,
+                                            ProccessNo = textEdit1.Text
+                                        });
+
+                                        if (isSuccess)
+                                        {
+                                            textEdit1.Text = DbProsedures.GET_RefundProccessNo();
+                                            gridControl1.DataSource = null;
+                                        }
+                                        //ekasam_gaytarma(lIpAddress.Text, PayType.Cash);
                                         break;
                                     case PayType.Card:
-                                        ekasam_gaytarma(lIpAddress.Text, PayType.Card);
-                                        break;
-                                    case PayType.CashCard:
-                                        //  omnitech_gaytarma(labelControl1.Text.ToString(), PayType.CashCard);
-                                        break;
-                                    default:
+                                        isSuccess = EKASAM.Refund(new DTOs.RefundDto
+                                        {
+                                            IpAddress = lIpAddress.Text,
+                                            PayType = PayType.Card,
+                                            Cashier = Cashier,
+                                            ProccessNo = textEdit1.Text
+                                        });
+
+                                        if (isSuccess)
+                                        {
+                                            textEdit1.Text = DbProsedures.GET_RefundProccessNo();
+                                            gridControl1.DataSource = null;
+                                        }
+                                         //ekasam_gaytarma(lIpAddress.Text, PayType.Card);
                                         break;
                                 }
                                 break; /*EKASSAM*/
