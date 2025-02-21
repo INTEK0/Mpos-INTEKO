@@ -1885,12 +1885,6 @@ namespace WindowsFormsApp2
 
         private void simpleButton2_Click(object sender, EventArgs e)
         {
-            //fDeposit f = new fDeposit(this);
-            //if (f.ShowDialog() is DialogResult.OK)
-            //{
-            //    decimal deposit = f.depositAmount;
-            //    NBA.Deposit(lIpAdress.Text, textBox4.Text, deposit, tUsername.Text);
-            //}
             fDeposit n = new fDeposit(this);
             n.ShowDialog();
         }
@@ -2167,6 +2161,33 @@ namespace WindowsFormsApp2
         private void simpleButton15_Click_1(object sender, EventArgs e)
         {
             Payment(Enums.PayType.Prepayment);
+        }
+
+        private void bDeposit_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            fDeposit n = new fDeposit(this);
+            n.ShowDialog();
+        }
+
+        private void bWithdraw_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            fWithdraw n = new fWithdraw(this);
+            n.ShowDialog();
+        }
+
+        private void bPrintClinic_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            if (XezerClinicPrint())
+            {
+                CalculationDelete();
+                clear();
+            }
+        }
+
+        private void bBarShotcurt_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            fShortcuts f = new fShortcuts();
+            f.ShowDialog();
         }
 
         private void simpleButton3_Click_1(object sender, EventArgs e)
