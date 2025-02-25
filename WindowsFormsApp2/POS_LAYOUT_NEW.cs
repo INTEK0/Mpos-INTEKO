@@ -2133,7 +2133,8 @@ namespace WindowsFormsApp2
         {
             string query = $@"SELECT pos_satis_check_main_id,
                             Prepayment,
-                            fiscal_id
+                            fiscal_id,
+                            UMUMI_MEBLEG
                             FROM [pos_satis_check_main]
                             where Prepayment>0
                             and fiscalNum= '{fisid}'";
@@ -2142,13 +2143,26 @@ namespace WindowsFormsApp2
             int number = data.Rows[0].Field<int>("pos_satis_check_main_id");
             decimal prepay = data.Rows[0].Field<decimal>("Prepayment");
             string fiskalid = data.Rows[0].Field<string>("fiscal_id");
+            decimal total = data.Rows[0].Field<decimal>("UMUMI_MEBLEG");
+
 
             if (number > 0)
             {
                 switch (lModel.Text)
                 {
+                    case "1":
+                        Sunmi.PrepaymentSale(new DTOs.SalesDto
+                        {
+                            IpAddress = lIpAdress.Text,
+                            Cashier = tUsername.Text,
+                            Total = total,
+                            FiscalId = fiskalid,
+                            PrepaymentPay = prepay,
+                            PayType = type
+                        }, number);
+                        break; /*SUNMI*/
                     case "3":
-                        Omnitech.PrepaymentSale(lIpAdress.Text, textBox1.Text, number, tUsername.Text, fisid, prepay, type);
+                        Omnitech.PrepaymentSale(lIpAdress.Text, textBox1.Text, number, tUsername.Text, fiskalid, prepay, type);
                         break; /*OMNITECH*/
                 }
             }
@@ -2821,6 +2835,27 @@ namespace WindowsFormsApp2
 
                 switch (lModel.Text)
                 {
+                    case "1":
+                        IsSuccess = Sunmi.Prepayment(new DTOs.SalesDto
+                        {
+                            IpAddress = lIpAdress.Text,
+                            ProccessNo = textEdit1.Text,
+                            Cash = incomingSum,
+                            Card = card_,
+                            Total = umumi_mebleg_,
+                            Cashier = tUsername.Text,
+                            Customer = _customer,
+                            Doctor = _doctor,
+                            Rrn = bankttnminputdata
+                        });
+
+                        if (IsSuccess)
+                        {
+                            clear();
+                            textEdit11.Text = DbProsedures.GET_TotalSalesCount();
+                            CalculationDelete();
+                        }
+                        break; /*SUNMI*/
                     case "3":
                         IsSuccess = Omnitech.Prepayment(new DTOs.SalesDto
                         {

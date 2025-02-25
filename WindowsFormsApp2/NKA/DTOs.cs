@@ -1,5 +1,6 @@
 ﻿using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
 using WindowsFormsApp2.Helpers;
+using static WindowsFormsApp2.Helpers.Enums;
 
 public static class DTOs
 {
@@ -20,6 +21,8 @@ public static class DTOs
         public Doctor Doctor { get; set; }
         public string Rrn { get; set; } = string.Empty;
         public Enums.PayType PayType { get; set; }
+        public string FiscalId { get; set; } = null;
+        public decimal PrepaymentPay { get; set; } //Avans ödənişləri üçün
     }
 
     public class RefundDto

@@ -1,5 +1,6 @@
 ﻿using ComponentFactory.Krypton.Toolkit;
 using DevExpress.XtraEditors;
+using DevExpress.XtraMap.Native;
 using Newtonsoft.Json;
 using RestSharp;
 using System;
@@ -571,7 +572,254 @@ namespace WindowsFormsApp2.NKA
             }
         }
 
+        public static bool Prepayment(SalesDto salesData)
+        {
+            List<PrepaymentRequest.Item> items = new List<PrepaymentRequest.Item>();
+            int _vatType = 0;
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                con.Open();
+                string query = $@"SELECT 
+                              name,
+                              --Item.item_id,
+                              code,
+                              salePrice,
+                              quantity,
+                              discount,
+                              vatType,
+                              quantityType,
+                              salePrice*quantity as ssum
+                              FROM dbo.item WHERE user_id = {Properties.Settings.Default.UserID};";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            string name = dr["name"].ToString();
+                            string code = dr["code"].ToString();
+                            decimal salePrice = Convert.ToDecimal(dr["salePrice"]);
+                            double quantity = Convert.ToDouble(dr["quantity"]);
+                            int vatType = Convert.ToInt32(dr["vatType"]);
+                            int quantityType = Convert.ToInt32(dr["quantityType"]);
+                            decimal discount = Convert.ToDecimal(dr["discount"]);
+                            salePrice = Math.Round(salePrice, 2);
+                            _vatType = vatType;
+                            PrepaymentRequest.Item itemProduct = new PrepaymentRequest.Item
+                            {
+                                name = name,
+                                code = code,
+                                salePrice = salePrice,
+                                quantity = quantity,
+                                vatType = vatType,
+                                quantityType = quantityType
+                            };
+                            items.Add(itemProduct);
+                        }
+                    }
+                }
+            }
 
+            PrepaymentRequest.Data data = new PrepaymentRequest.Data
+            {
+                sum = salesData.Cash + salesData.Card,
+                vatType = _vatType,
+                documentUUID = Guid.NewGuid().ToString(),
+                cashPayment = salesData.Cash,
+                cardPayment = salesData.Card,
+                bonusPayment = 0,
+                items = items,
+                cashierName = salesData.Cashier,
+                clientName = salesData.Customer == null ? null : $"{salesData.Customer?.Name} {salesData.Customer?.Surname} {salesData.Customer?.FatherName}",
+                rrn = salesData.Rrn,
+                moneyBackType = null
+            };
+
+            PrepaymentRequest.Root rootObject = new PrepaymentRequest.Root
+            {
+                data = data,
+            };
+
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(rootObject, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            });
+
+            var response = RequestPOST(salesData.IpAddress, json);
+
+            if (response != null)
+            {
+                if (response.message is "Success operation" || response.message is "Successful operation")
+                {
+                    DbProsedures.InsertPosSales(new PosSales
+                    {
+                        posNomre = response.data.number,
+                        longFiskalId = response.data.document_id,
+                        proccessNo = salesData.ProccessNo,
+                        Prepayment = salesData.Cash + salesData.Card,
+                        cash = salesData.Cash,
+                        card = salesData.Card,
+                        total = salesData.Total,
+                        json = json,
+                        shortFiskalId = response.data.short_document_id,
+                        rrn = response.data.rrn,
+                        customerId = salesData.Customer?.CustomerID,
+                        doctorId = salesData.Doctor?.Id,
+                    });
+
+                    if (MessageVisible)
+                    {
+                        ReadyMessages.SUCCESS_SALES_MESSAGE();
+                    }
+
+                    FormHelpers.Log($"Pos satışı uğurla edildi. Qəbz No: {response.data.number}");
+                    return true;
+                }
+                else if (response.message is "document: invalid shift duration")
+                {
+                    XtraMessageBox.Show("GÜN SONU (Z) HESABATI ÇIXARILMAYIB !\n\nZəhmət olmasa pos bağla düyməsinə vuraraq günü sonlandırın.", "Mesaj", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return false;
+                }
+                else
+                {
+                    ReadyMessages.ERROR_SALES_MESSAGE(response.message);
+                    FormHelpers.Log($"Pos satışı xətası - Xəta mesajı: {response.message}");
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static bool PrepaymentSale(SalesDto salesData, decimal pos_satis_main_id)
+        {
+            List<PrepaymentSaleRequest.Item> items = new List<PrepaymentSaleRequest.Item>();
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                con.Open();
+                string query = $@"SELECT 
+                              name,
+                              --Item.item_id,
+                              code,
+                              salePrice,
+                              quantity,
+                              discount,
+                              vatType,
+                              quantityType,
+                              salePrice*quantity as ssum
+                              FROM dbo.item WHERE user_id = {Properties.Settings.Default.UserID};";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            string name = dr["name"].ToString();
+                            string code = dr["code"].ToString();
+                            decimal salePrice = Convert.ToDecimal(dr["salePrice"]);
+                            double quantity = Convert.ToDouble(dr["quantity"]);
+                            int vatType = Convert.ToInt32(dr["vatType"]);
+                            int quantityType = Convert.ToInt32(dr["quantityType"]);
+                            decimal discount = Convert.ToDecimal(dr["discount"]);
+                            salePrice = Math.Round(salePrice, 2);
+                            PrepaymentSaleRequest.Item itemProduct = new PrepaymentSaleRequest.Item
+                            {
+                                name = name,
+                                code = code,
+                                salePrice = salePrice,
+                                quantity = quantity,
+                                vatType = vatType,
+                                codeType = 1,
+                                quantityType = quantityType
+                            };
+                            items.Add(itemProduct);
+                        }
+                    }
+                }
+            }
+
+            //if (salesData.PayType is PayType.Cash)
+            //{
+            //    salesData.Cash = salesData.Total - salesData.PrepaymentPay;
+            //}
+            //else if (salesData.PayType is PayType.Card)
+            //{
+            //    salesData.Card = salesData.Total - salesData.PrepaymentPay;
+            //}
+            //else if (salesData.PayType is PayType.CashCard)
+            //{
+
+            //}
+
+
+            PrepaymentSaleRequest.Data data = new PrepaymentSaleRequest.Data
+            { 
+                documentUUID = Guid.NewGuid().ToString(),
+                prepaymentDocumentId = salesData.FiscalId,
+                cashPayment = salesData.Cash,
+                cardPayment = salesData.Card,
+                depositPayment = salesData.PrepaymentPay,
+                bonusPayment = 0,
+                items = items,
+                cashierName = salesData.Cashier,
+                clientName = salesData.Customer == null ? null : $"{salesData.Customer?.Name} {salesData.Customer?.Surname} {salesData.Customer?.FatherName}",
+                rrn = salesData.Rrn,
+                moneyBackType = null
+            };
+
+            PrepaymentSaleRequest.Root rootObject = new PrepaymentSaleRequest.Root
+            {
+                data = data,
+            };
+
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(rootObject, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            });
+
+            var response = RequestPOST(salesData.IpAddress, json);
+
+            if (response != null)
+            {
+                if (response.message is "Success operation" || response.message is "Successful operation")
+                {
+                    using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+                    {
+                        string query = $"UPDATE [dbo].[pos_satis_check_main] SET NEGD_={salesData.Cash.ToString("N2").Replace(',', '.')}+NEGD_,KART_={salesData.Card.ToString("N2").Replace(',', '.')}+KART_, [PREdate_]=getdate(),PREfiscal_id='{response.data.short_document_id}' where pos_satis_check_main_id={pos_satis_main_id}";
+                        using (SqlCommand cmd = new SqlCommand(query, con))
+                        {
+                            con.Open();
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+
+                    if (MessageVisible)
+                    {
+                        ReadyMessages.SUCCESS_SALES_MESSAGE();
+                    }
+
+                    FormHelpers.Log($"Avans satışı uğurla edildi. Qəbz No: {response.data.number}");
+                    return true;
+                }
+                else if (response.message is "document: invalid shift duration")
+                {
+                    XtraMessageBox.Show("GÜN SONU (Z) HESABATI ÇIXARILMAYIB !\n\nZəhmət olmasa pos bağla düyməsinə vuraraq günü sonlandırın.", "Mesaj", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return false;
+                }
+                else
+                {
+                    ReadyMessages.ERROR_SALES_MESSAGE(response.message);
+                    FormHelpers.Log($"Avans satışı xətası - Xəta mesajı: {response.message}");
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         #region [..REQUEST CLASS..]
         public class Item
@@ -623,6 +871,97 @@ namespace WindowsFormsApp2.NKA
             public string username { get; set; } = "username";
             public string password { get; set; } = "password";
             public string cashierName { get; set; }
+        }
+
+        public class PrepaymentRequest
+        {
+            public class Data
+            {
+                public string documentUUID { get; set; } = null;
+                public decimal? sum { get; set; } = null;
+                public int vatType { get; set; }
+                public decimal? cashPayment { get; set; } = null;
+                public decimal? creditPayment { get; set; } = null;
+                public decimal? depositPayment { get; set; } = null;
+                public decimal? cardPayment { get; set; } = null;
+                public decimal? bonusPayment { get; set; } = null;
+                public List<Item> items { get; set; }
+                public string clientName { get; set; } = null;
+                public decimal? clientTotalBonus { get; set; } = null;
+                public decimal? clientEarnedBonus { get; set; } = null;
+                public string clientBonusCardNumber { get; set; } = null;
+                public string cashierName { get; set; }
+                public int? moneyBackType { get; set; } = null;
+                public string rrn { get; set; } = null;
+                public string currency { get; set; } = "AZN";
+                public string note { get; set; } = null;
+            }
+
+            public class Item
+            {
+                public string name { get; set; }
+                public string code { get; set; }
+                public double quantity { get; set; }
+                public decimal salePrice { get; set; }
+                public double? realPrice { get; set; } = null;
+                public decimal? purchasePrice { get; set; } = null;
+                public int? codeType { get; set; } = null;
+                public int quantityType { get; set; }
+                public int vatType { get; set; }
+            }
+
+            public class Root
+            {
+                public Data data { get; set; }
+                public string operation { get; set; } = "prepaymentProducts";
+                public string username { get; set; } = "username";
+                public string password { get; set; } = "password";
+            }
+        }
+
+        public class PrepaymentSaleRequest
+        {
+            public class Data
+            {
+                public string documentUUID { get; set; }
+                public string prepaymentDocumentId { get; set; }
+                public decimal? cashPayment { get; set; } = null;
+                public decimal? depositPayment { get; set; } = null;
+                public decimal? cardPayment { get; set; } = null;
+                public decimal? bonusPayment { get; set; } = null;
+                public List<Item> items { get; set; }
+                public string clientName { get; set; } = null;
+                public decimal? clientTotalBonus { get; set; } = null;
+                public decimal? clientEarnedBonus { get; set; } = null;
+                public string clientBonusCardNumber { get; set; } = null;
+                public string cashierName { get; set; }
+                public int? moneyBackType { get; set; } = null;
+                public string rrn { get; set; } = null;
+                public string currency { get; set; } = "AZN";
+                public string note { get; set; } = null;
+            }
+
+            public class Item
+            {
+                public string name { get; set; }
+                public string code { get; set; }
+                public double quantity { get; set; }
+                public decimal salePrice { get; set; }
+                public double? realPrice { get; set; } = null;
+                public decimal? purchasePrice { get; set; } = null;
+                public int? codeType { get; set; } = null;
+                public int quantityType { get; set; }
+                public int vatType { get; set; }
+                public decimal? discountAmount { get; set; } = null;
+            }
+
+            public class Root
+            {
+                public Data data { get; set; }
+                public string operation { get; set; } = "sale";
+                public string username { get; set; } = "username";
+                public string password { get; set; } = "password";
+            }
         }
         #endregion [..REQUEST CLASS..]
 

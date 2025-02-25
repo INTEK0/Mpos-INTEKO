@@ -212,7 +212,7 @@ namespace WindowsFormsApp2.Helpers
         {
             try
             {
-                string ip = null, model = null, merchantId = null;
+                string ip = null, model = null, merchantId = null, cashier = null;
                 using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
                 {
                     connection.Open();
@@ -220,15 +220,27 @@ namespace WindowsFormsApp2.Helpers
                     //NBA - 9898
                     //NBA BANK - 9999
 
-                    string query = $@"select model = case when kf.KASSA_FIRMALAR=N'SUNMI' then 1 when kf.KASSA_FIRMALAR=N'AzSMART' then 2 when kf.KASSA_FIRMALAR=N'OMNITECH' then 3 when kf.KASSA_FIRMALAR=N'DATAPAY'
-then 5 when kf.KASSA_FIRMALAR=N'NBA'then 6 when kf.KASSA_FIRMALAR=N'EKASAM' then 7 when kf.KASSA_FIRMALAR=N'XPRINTER' then 4 else  0 end , ip_ = case 
+                    string query = $@"select 
+u.AD as Cashier,
+model = case 
+when kf.KASSA_FIRMALAR=N'SUNMI' 
+then 1 when kf.KASSA_FIRMALAR=N'AzSMART' 
+then 2 when kf.KASSA_FIRMALAR=N'OMNITECH' 
+then 3 when kf.KASSA_FIRMALAR=N'DATAPAY'
+then 5 when kf.KASSA_FIRMALAR=N'NBA'
+then 6 when kf.KASSA_FIRMALAR=N'EKASAM' 
+then 7 when kf.KASSA_FIRMALAR=N'XPRINTER' 
+then 4 else  0 end , 
+ip_ = case 
 when kf.KASSA_FIRMALAR = N'SUNMI' THEN  'http://' + ki.IP_ADRESS + ':5544'
 when kf.KASSA_FIRMALAR = N'AzSMART' then 'http://' + ki.IP_ADRESS + ':10156' 
 when kf.KASSA_FIRMALAR = N'DATAPAY' then 'http://'+ ki.IP_ADRESS + ':2222'
 when kf.KASSA_FIRMALAR = N'NBA' then 'http://'+ ki.IP_ADRESS + ':{NBA.NBA_FISCAL_SERVICE_PORT}/api/v1'
 when kf.KASSA_FIRMALAR = N'OMNITECH' then 'http://'+ ki.IP_ADRESS + ':8989/v2'
 when kf.KASSA_FIRMALAR = N'EKASAM' then 'http://'+ ki.IP_ADRESS + ':9876/api/'
-else '' end  ,rtrim(ltrim(isnull(ki.merchant_id,'yox'))) merchant_id from KASSA_IP ki inner join KASSA_FIRMALAR kf on ki.KASSA_FIRMA_IP = kf.KASSA_FIRMALAR_ID
+else '' end  ,
+rtrim(ltrim(isnull(ki.merchant_id,'yox'))) merchant_id from KASSA_IP ki 
+inner join KASSA_FIRMALAR kf on ki.KASSA_FIRMA_IP = kf.KASSA_FIRMALAR_ID
 inner join userParol u on u.id = ki.KASSIR_ID where u.id = {Properties.Settings.Default.UserID}";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
@@ -240,13 +252,15 @@ inner join userParol u on u.id = ki.KASSIR_ID where u.id = {Properties.Settings.
                                 ip = dr["ip_"].ToString();
                                 model = dr["model"].ToString();
                                 merchantId = dr["merchant_id"].ToString();
+                                cashier = dr["Cashier"].ToString();
                             }
 
                             IpModel ıpModel = new IpModel
                             {
                                 Ip = ip,
                                 Model = model,
-                                MerchantId = merchantId
+                                MerchantId = merchantId,
+                                Cashier = cashier
                             };
 
                             return ıpModel;
@@ -417,6 +431,7 @@ inner join userParol u on u.id = ki.KASSIR_ID where u.id = {Properties.Settings.
             public string Model { get; set; }
             public string Ip { get; set; }
             public string MerchantId { get; set; } = null;
+            public string Cashier { get; set; } = null;
         }
     }
 }
