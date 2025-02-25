@@ -1891,7 +1891,6 @@ namespace WindowsFormsApp2
 
         public void deposit(decimal deposit)
         {
-
             try
             {
                 Cursor.Current = Cursors.WaitCursor;
@@ -1923,7 +1922,6 @@ namespace WindowsFormsApp2
                 gunfissayi = $"{weatherForecast.data.shift_document_number}".ToString();
 
 
-
                 PrintDocument pd = new PrintDocument();
                 pd.DefaultPageSettings = new PageSettings
                 {
@@ -1943,13 +1941,10 @@ namespace WindowsFormsApp2
                 pd.Print();
 
             }
-
             catch (Exception ex)
             {
                 ReadyMessages.ERROR_DEFAULT_MESSAGE(ex.Message);
             }
-
-
         }
 
         public void nba_X_Report(string _ip_, string keys)
@@ -2112,11 +2107,13 @@ namespace WindowsFormsApp2
 
         private void simpleButton4_Click(object sender, EventArgs e)
         {
-            prepaymentsales bt = new prepaymentsales(this);
-            if (bt.ShowDialog() is DialogResult.Cancel)
-            {
-                return;
-            }
+            fPrepayment f = new fPrepayment();
+            f.ShowDialog();
+            //prepaymentsales bt = new prepaymentsales(this);
+            //if (bt.ShowDialog() is DialogResult.Cancel)
+            //{
+            //    return;
+            //}
 
         }
 

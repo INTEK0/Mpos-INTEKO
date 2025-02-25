@@ -940,7 +940,6 @@ case A.VERGI_DERECESI
                 NullValueHandling = NullValueHandling.Ignore
             });
 
-
             var response = RequestPOST(ipAddress, json);
 
             if (response != null)

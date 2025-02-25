@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DevExpress.XtraGrid.GridLevelNode gridLevelNode1 = new DevExpress.XtraGrid.GridLevelNode();
+            DevExpress.XtraGrid.GridLevelNode gridLevelNode2 = new DevExpress.XtraGrid.GridLevelNode();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(fAvansReport));
             this.gridPay = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -46,6 +46,7 @@
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
             this.gridSale = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn21 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -54,7 +55,6 @@
             this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -64,8 +64,8 @@
             this.separatorControl1 = new DevExpress.XtraEditors.SeparatorControl();
             this.simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
             this.simpleButton2 = new DevExpress.XtraEditors.SimpleButton();
-            this.dateEdit2 = new DevExpress.XtraEditors.DateEdit();
-            this.dateEdit1 = new DevExpress.XtraEditors.DateEdit();
+            this.dateFinish = new DevExpress.XtraEditors.DateEdit();
+            this.dateStart = new DevExpress.XtraEditors.DateEdit();
             ((System.ComponentModel.ISupportInitialize)(this.gridPay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridSale)).BeginInit();
@@ -75,10 +75,10 @@
             this.groupControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lookReportType.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.separatorControl1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dateEdit2.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dateEdit2.Properties.CalendarTimeProperties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dateEdit1.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dateEdit1.Properties.CalendarTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dateFinish.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dateFinish.Properties.CalendarTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dateStart.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dateStart.Properties.CalendarTimeProperties)).BeginInit();
             this.SuspendLayout();
             // 
             // gridPay
@@ -220,10 +220,10 @@
             // 
             this.gridControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gridControl1.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
-            gridLevelNode1.LevelTemplate = this.gridPay;
-            gridLevelNode1.RelationName = "Level1";
+            gridLevelNode2.LevelTemplate = this.gridPay;
+            gridLevelNode2.RelationName = "Level1";
             this.gridControl1.LevelTree.Nodes.AddRange(new DevExpress.XtraGrid.GridLevelNode[] {
-            gridLevelNode1});
+            gridLevelNode2});
             this.gridControl1.Location = new System.Drawing.Point(4, 74);
             this.gridControl1.MainView = this.gridSale;
             this.gridControl1.Margin = new System.Windows.Forms.Padding(4);
@@ -269,6 +269,18 @@
             this.gridColumn11.FieldName = "Id";
             this.gridColumn11.Name = "gridColumn11";
             this.gridColumn11.OptionsColumn.AllowEdit = false;
+            // 
+            // gridColumn7
+            // 
+            this.gridColumn7.Caption = "SATIŞ TARİXİ";
+            this.gridColumn7.DisplayFormat.FormatString = "dd.MM.yyyy HH:mm.ss";
+            this.gridColumn7.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            this.gridColumn7.FieldName = "SaleDate";
+            this.gridColumn7.Name = "gridColumn7";
+            this.gridColumn7.OptionsColumn.AllowEdit = false;
+            this.gridColumn7.Visible = true;
+            this.gridColumn7.VisibleIndex = 0;
+            this.gridColumn7.Width = 118;
             // 
             // gridColumn21
             // 
@@ -348,18 +360,6 @@
             this.gridColumn6.VisibleIndex = 8;
             this.gridColumn6.Width = 137;
             // 
-            // gridColumn7
-            // 
-            this.gridColumn7.Caption = "SATIŞ TARİXİ";
-            this.gridColumn7.DisplayFormat.FormatString = "dd.MM.yyyy HH:mm.ss";
-            this.gridColumn7.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-            this.gridColumn7.FieldName = "SaleDate";
-            this.gridColumn7.Name = "gridColumn7";
-            this.gridColumn7.OptionsColumn.AllowEdit = false;
-            this.gridColumn7.Visible = true;
-            this.gridColumn7.VisibleIndex = 0;
-            this.gridColumn7.Width = 118;
-            // 
             // gridColumn8
             // 
             this.gridColumn8.Caption = "KASSİR";
@@ -406,8 +406,8 @@
             this.groupControl1.Controls.Add(this.separatorControl1);
             this.groupControl1.Controls.Add(this.simpleButton1);
             this.groupControl1.Controls.Add(this.simpleButton2);
-            this.groupControl1.Controls.Add(this.dateEdit2);
-            this.groupControl1.Controls.Add(this.dateEdit1);
+            this.groupControl1.Controls.Add(this.dateFinish);
+            this.groupControl1.Controls.Add(this.dateStart);
             this.groupControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupControl1.Location = new System.Drawing.Point(3, 3);
             this.groupControl1.LookAndFeel.SkinName = "WXI";
@@ -480,35 +480,35 @@
             this.simpleButton2.Text = "Çap et";
             this.simpleButton2.Click += new System.EventHandler(this.simpleButton2_Click);
             // 
-            // dateEdit2
+            // dateFinish
             // 
-            this.dateEdit2.EditValue = null;
-            this.dateEdit2.Location = new System.Drawing.Point(423, 16);
-            this.dateEdit2.Margin = new System.Windows.Forms.Padding(4);
-            this.dateEdit2.Name = "dateEdit2";
-            this.dateEdit2.Properties.Appearance.Font = new System.Drawing.Font("Verdana", 12F);
-            this.dateEdit2.Properties.Appearance.Options.UseFont = true;
-            this.dateEdit2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            this.dateFinish.EditValue = null;
+            this.dateFinish.Location = new System.Drawing.Point(423, 16);
+            this.dateFinish.Margin = new System.Windows.Forms.Padding(4);
+            this.dateFinish.Name = "dateFinish";
+            this.dateFinish.Properties.Appearance.Font = new System.Drawing.Font("Verdana", 12F);
+            this.dateFinish.Properties.Appearance.Options.UseFont = true;
+            this.dateFinish.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dateEdit2.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            this.dateFinish.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dateEdit2.Size = new System.Drawing.Size(172, 32);
-            this.dateEdit2.TabIndex = 1;
+            this.dateFinish.Size = new System.Drawing.Size(172, 32);
+            this.dateFinish.TabIndex = 1;
             // 
-            // dateEdit1
+            // dateStart
             // 
-            this.dateEdit1.EditValue = null;
-            this.dateEdit1.Location = new System.Drawing.Point(243, 16);
-            this.dateEdit1.Margin = new System.Windows.Forms.Padding(4);
-            this.dateEdit1.Name = "dateEdit1";
-            this.dateEdit1.Properties.Appearance.Font = new System.Drawing.Font("Verdana", 12F);
-            this.dateEdit1.Properties.Appearance.Options.UseFont = true;
-            this.dateEdit1.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            this.dateStart.EditValue = null;
+            this.dateStart.Location = new System.Drawing.Point(243, 16);
+            this.dateStart.Margin = new System.Windows.Forms.Padding(4);
+            this.dateStart.Name = "dateStart";
+            this.dateStart.Properties.Appearance.Font = new System.Drawing.Font("Verdana", 12F);
+            this.dateStart.Properties.Appearance.Options.UseFont = true;
+            this.dateStart.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dateEdit1.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            this.dateStart.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dateEdit1.Size = new System.Drawing.Size(172, 32);
-            this.dateEdit1.TabIndex = 1;
+            this.dateStart.Size = new System.Drawing.Size(172, 32);
+            this.dateStart.TabIndex = 1;
             // 
             // fAvansReport
             // 
@@ -516,6 +516,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(1198, 766);
             this.Controls.Add(this.tableLayoutPanel1);
+            this.IconOptions.Image = global::WindowsFormsApp2.Properties.Resources.Mpos_png1;
             this.MinimumSize = new System.Drawing.Size(800, 700);
             this.Name = "fAvansReport";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -531,10 +532,10 @@
             this.groupControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.lookReportType.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.separatorControl1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dateEdit2.Properties.CalendarTimeProperties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dateEdit2.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dateEdit1.Properties.CalendarTimeProperties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dateEdit1.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dateFinish.Properties.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dateFinish.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dateStart.Properties.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dateStart.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -546,8 +547,8 @@
         private DevExpress.XtraEditors.SeparatorControl separatorControl1;
         private DevExpress.XtraEditors.SimpleButton simpleButton1;
         private DevExpress.XtraEditors.SimpleButton simpleButton2;
-        private DevExpress.XtraEditors.DateEdit dateEdit2;
-        private DevExpress.XtraEditors.DateEdit dateEdit1;
+        private DevExpress.XtraEditors.DateEdit dateFinish;
+        private DevExpress.XtraEditors.DateEdit dateStart;
         private DevExpress.XtraGrid.GridControl gridControl1;
         private DevExpress.XtraGrid.Views.Grid.GridView gridSale;
         private DevExpress.XtraEditors.LookUpEdit lookReportType;

@@ -2,6 +2,8 @@
 using System;
 using System.Windows.Forms;
 using WindowsFormsApp2.Helpers;
+using WindowsFormsApp2.NKA;
+using static WindowsFormsApp2.Helpers.FormHelpers;
 
 namespace WindowsFormsApp2.Forms
 {
@@ -9,6 +11,7 @@ namespace WindowsFormsApp2.Forms
     {
         public decimal depositAmount = 0;
         private POS_LAYOUT_NEW _frm;
+        private readonly IpModel _IpModel = FormHelpers.GetIpModel();
         public fDeposit(POS_LAYOUT_NEW frm)
         {
             InitializeComponent();
@@ -62,8 +65,31 @@ namespace WindowsFormsApp2.Forms
                 decimal amount = Convert.ToDecimal(tPaid.EditValue.ToString());
                 if (amount > 0)
                 {
-                    depositAmount = amount;
-                    _frm.deposit(amount);
+                    switch (_IpModel.Model)
+                    {
+                        case "1": Sunmi.Deposit(new DTOs.DepositDto
+                        {
+                            Sum = amount,
+                            Cashier = _IpModel.Cashier,
+                            IpAddress = _IpModel.Ip
+                        });
+                            break;
+                        case "2": 
+                            break;
+                        case "3": 
+                            break;
+                        case "4": 
+                            break;
+                        case "5":
+                            break;
+                        case "6":
+                            depositAmount = amount;
+                            _frm.deposit(amount);
+                            break;
+                        case "7": 
+                            break;
+                    }
+
                     //DialogResult = System.Windows.Forms.DialogResult.OK;
                     this.Close();
                 }

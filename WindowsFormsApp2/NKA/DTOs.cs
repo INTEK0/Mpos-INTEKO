@@ -38,4 +38,20 @@ public static class DTOs
         public string Rrn { get; set; } = string.Empty;
         public Enums.PayType PayType { get; set; }
     }
+
+    public class DepositDto
+    {
+        public string IpAddress { get; set; }
+        public string AccessToken { get; set; }
+        public string Cashier { get; set; }
+        public decimal Sum { get; set; }
+    }
+
+    public class WithdrawDto
+    {
+        public string IpAddress { get; set; }
+        public string AccessToken { get; set; }
+        public string Cashier { get; set; }
+        public decimal Sum { get; set; }
+    }
 }

@@ -47,6 +47,11 @@ namespace WindowsFormsApp2.Helpers.Messages
             XtraMessageBox.Show(CommonData.SUCCESS_SALES, nameof(HeaderMessage.Mesaj), MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
+        public static void SUCCESS_ADVANCE_SALES_MESSAGE()
+        {
+            XtraMessageBox.Show(CommonData.SUCCESS_ADVANCE_SALES, nameof(HeaderMessage.Mesaj), MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
         public static void SUCCESS_RETURN_SALES_MESSAGE()
         {
             XtraMessageBox.Show(CommonData.SUCCESS_RETURN_SALES, nameof(HeaderMessage.Mesaj), MessageBoxButtons.OK, MessageBoxIcon.Information);

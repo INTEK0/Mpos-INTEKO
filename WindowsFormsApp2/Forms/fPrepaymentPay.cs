@@ -29,7 +29,6 @@ namespace WindowsFormsApp2.Forms
             public static decimal Total { get; set; }
         }
 
-
         public fPrepaymentPay(string fiscalId)
         {
             InitializeComponent();
@@ -56,13 +55,18 @@ namespace WindowsFormsApp2.Forms
 
         private void bCash_Click(object sender, EventArgs e)
         {
+            this.Text = "Ödəniş növü - NAĞD";
             this.Size = new System.Drawing.Size(460, 240);
             navigationFrame1.SelectedPage = pageCash;
             tCash_Total.EditValue = PrepaymentPay.Total - PrepaymentPay.Prepayment;
+            tCash_Paid.EditValue = PrepaymentPay.Total - PrepaymentPay.Prepayment;
+            tCash_Paid.Focus();
         }
 
         private void bCard_Click(object sender, EventArgs e)
         {
+            this.Text = "Ödəniş növü - KART";
+
             if (PrepaymentPay.PosMainId > 0)
             {
                 switch (_IpModel.Model)
@@ -94,8 +98,10 @@ namespace WindowsFormsApp2.Forms
 
         private void bCashCard_Click(object sender, EventArgs e)
         {
-            this.Size = new System.Drawing.Size(460, 300);
+            this.Text = "Ödəniş növü - NAĞD & KART";
+            this.Size = new System.Drawing.Size(460, 290);
             navigationFrame1.SelectedPage = pageCashCard;
+            tCashCard_Total.EditValue = PrepaymentPay.Total - PrepaymentPay.Prepayment;
         }
 
         private void bCash_Enter_Click(object sender, EventArgs e)
@@ -125,39 +131,31 @@ namespace WindowsFormsApp2.Forms
             else
             {
                 ReadyMessages.ERROR_DEFAULT_MESSAGE("Fiskal id nömrəsi düzgün daxil edilmədi");
+                return;
             }
         }
 
         private void tCashCard_Enter_Click(object sender, EventArgs e)
         {
-            string query = $@"SELECT pos_satis_check_main_id,
-                            Prepayment,
-                            fiscal_id
-                            FROM [pos_satis_check_main]
-                            where Prepayment>0
-                            and fiscalNum= '{_fiskalID}'";
-
-            var data = DbProsedures.ConvertToDataTable(query);
-            int number = data.Rows[0].Field<int>("pos_satis_check_main_id");
-            decimal prepay = data.Rows[0].Field<decimal>("Prepayment");
-            string fiskalid = data.Rows[0].Field<string>("fiscal_id");
-
-            if (number > 0)
+            if (PrepaymentPay.PosMainId > 0)
             {
                 switch (_IpModel.Model)
                 {
                     case "1":
-                        Sunmi.PrepaymentSale(new DTOs.SalesDto
+                         Sunmi.PrepaymentSale(new DTOs.SalesDto
                         {
                             IpAddress = _IpModel.Ip,
                             Cashier = _IpModel.Cashier,
-                            FiscalId = fiskalid,
-                            PrepaymentPay = prepay,
-                            PayType = Enums.PayType.Card
-                        }, number);
+                            FiscalId = PrepaymentPay.FiskalId,
+                            PrepaymentPay = PrepaymentPay.Prepayment,
+                            Cash = Convert.ToDecimal(tCashCard_Cash.EditValue),
+                            Card = Convert.ToDecimal(tCashCard_Card.EditValue),
+                            Total = PrepaymentPay.Total,
+                            PayType = Enums.PayType.CashCard
+                        }, PrepaymentPay.PosMainId);
                         break; /*SUNMI*/
                     case "3":
-                        Omnitech.PrepaymentSale(_IpModel.Ip, null, number, _IpModel.Cashier, fiskalid, prepay, Enums.PayType.CashCard);
+                        Omnitech.PrepaymentSale(_IpModel.Ip, null, PrepaymentPay.PosMainId, _IpModel.Cashier, PrepaymentPay.FiskalId, PrepaymentPay.Prepayment, Enums.PayType.CashCard);
                         break; /*OMNITECH*/
                 }
             }
@@ -175,10 +173,48 @@ namespace WindowsFormsApp2.Forms
             if (paid >= total)
             {
                 tCash_Balance.Text = balance.ToString();
+                lCash_Message.Visible = false;
+                this.Size = new System.Drawing.Size(460, 240);
             }
             else
             {
                 tCash_Balance.Text = 0.ToString("N2");
+                this.Size = new System.Drawing.Size(460, 255);
+                lCash_Message.Text = $" ÖDƏNİŞ MƏBLƏĞİ AZ DAXİL EDİLMİŞDİR. MİNİMUM NAĞD ÖDƏNİŞ : {total}";
+                lCash_Message.Visible = true;
+            }
+        }
+
+        private void tCashCard_Card_EditValueChanged(object sender, EventArgs e)
+        {
+            decimal total = Convert.ToDecimal(tCashCard_Total.Text);
+            decimal card = Convert.ToDecimal(tCashCard_Card.Text);
+            if (card < total)
+            {
+                tCashCard_Cash.EditValue = total - card;
+            }
+        }
+
+        private void tCashCard_Cash_EditValueChanged(object sender, EventArgs e)
+        {
+            decimal total = Convert.ToDecimal(tCashCard_Total.Text);
+            decimal card = Convert.ToDecimal(tCashCard_Card.Text);
+            decimal cash = Convert.ToDecimal(tCashCard_Cash.Text);
+
+            decimal cashTotal = total - card;
+
+            if (cash >= cashTotal)
+            {
+                tCashCard_Balance.EditValue = cash - cashTotal;
+                lCashCard_Message.Visible = false;
+                this.Size = new System.Drawing.Size(460, 290);
+            }
+            else
+            {
+                tCashCard_Balance.EditValue = 0.ToString();
+                this.Size = new System.Drawing.Size(460, 310);
+                lCashCard_Message.Text = $"NAĞD ÖDƏNİŞ MƏBLƏĞİ AZ DAXİL EDİLMİŞDİR. MİNİMUM NAĞD ÖDƏNİŞ : {cashTotal}";
+                lCashCard_Message.Visible = true;
             }
         }
     }

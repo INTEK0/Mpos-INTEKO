@@ -13,6 +13,7 @@
         public static readonly string SUCCESS_X_REPORT = "X HESABATI UĞURLA ÇIXARILDI";
         public static readonly string SUCCESS_LAST_DOCUMENT = "TƏKRAR QƏBZ UĞURLA ÇIXARILDI";
         public static readonly string SUCCESS_SALES= "SATIŞ UĞURLA TAMAMLANDI";
+        public static readonly string SUCCESS_ADVANCE_SALES = "AVANS SATIŞI UĞURLA TAMAMLANDI";
         public static readonly string SUCCESS_RETURN_SALES = "GERİ QAYTARMA UĞURLA TAMAMLANDI";
         public static readonly string SUCCESS_CREDIT_SALES = "KREDİT SATIŞI UĞURLA TAMAMLANDI";
         public static readonly string SUCCESS_CREDIT_PAYMENT = "KREDİT ÖDƏNİŞİ UĞURLA TAMAMLANDI";

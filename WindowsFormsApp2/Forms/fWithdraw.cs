@@ -1,6 +1,8 @@
 ﻿using DevExpress.XtraEditors;
 using System;
 using WindowsFormsApp2.Helpers;
+using static WindowsFormsApp2.Helpers.FormHelpers;
+using WindowsFormsApp2.NKA;
 
 namespace WindowsFormsApp2.Forms
 {
@@ -9,6 +11,7 @@ namespace WindowsFormsApp2.Forms
         public decimal depositAmount = 0;
         private readonly POS_LAYOUT_NEW frm1;
         decimal _total = default;
+        private readonly IpModel _IpModel = FormHelpers.GetIpModel();
         public static decimal asd;
         public fWithdraw(POS_LAYOUT_NEW frm)
         {
@@ -65,12 +68,33 @@ namespace WindowsFormsApp2.Forms
                 asd = amount;
                 if (amount > 0)
                 {
-                    depositAmount = amount;
-                    _total = amount;
-                    DialogResult = System.Windows.Forms.DialogResult.OK;
-
-
-                    Deposits();
+                    switch (_IpModel.Model)
+                    {
+                        case "1":
+                            Sunmi.Withdraw(new DTOs.WithdrawDto
+                            {
+                                Sum = amount,
+                                Cashier = _IpModel.Cashier,
+                                IpAddress = _IpModel.Ip
+                            });
+                            break;
+                        case "2":
+                            break;
+                        case "3":
+                            break;
+                        case "4":
+                            break;
+                        case "5":
+                            break;
+                        case "6":
+                            depositAmount = amount;
+                            _total = amount;
+                            DialogResult = System.Windows.Forms.DialogResult.OK;
+                            frm1.withdraw(asd); ;
+                            break;
+                        case "7":
+                            break;
+                    }
                     this.Close();
                 }
             }
@@ -83,9 +107,9 @@ namespace WindowsFormsApp2.Forms
 
         private void Deposits()
         {
+           
 
-
-            frm1.withdraw(asd);
+          
 
         }
     }

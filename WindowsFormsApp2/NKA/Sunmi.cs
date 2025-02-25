@@ -85,6 +85,100 @@ namespace WindowsFormsApp2.NKA
             }
         }
 
+        public static void Deposit(DepositDto _data)
+        {
+            DepositRequest.Data data = new DepositRequest.Data
+            {
+                cashierName = _data.Cashier,
+                sum = _data.Sum,
+            };
+
+            DepositRequest.Root root = new DepositRequest.Root
+            {
+                data = data
+            };
+
+            string json = JsonConvert.SerializeObject(root, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            });
+
+            RestClient rest = new RestClient();
+            RestRequest request = new RestRequest(_data.IpAddress, Method.Post);
+            request.AddHeader("Content-Type", "application/json;charset=utf-8");
+            request.AddStringBody(json, DataFormat.Json);
+            RestResponse response = rest.Execute(request);
+
+            if (response.ResponseStatus != ResponseStatus.Completed)
+            {
+                ReadyMessages.ERROR_SERVER_CONNECTION_MESSAGE();
+                FormHelpers.Log($"Kassa ilə əlaqə zamanı xəta yarandı\n\n {response.ErrorMessage}");
+                return;
+            }
+
+            DepositResponse.Root responseData = System.Text.Json.JsonSerializer.Deserialize<DepositResponse.Root>(response.Content);
+
+            if (responseData.message is "Successoperation" ||
+                responseData.message is "Success operation" ||
+                responseData.message is "Successful operation")
+            {
+                string message = $"Kassaya {_data.Sum} AZN uğurla mədaxil edildi";
+                ReadyMessages.SUCCESS_DEFAULT_MESSAGE(message);
+                FormHelpers.Log(message);
+            }
+            else
+            {
+                ReadyMessages.ERROR_DEFAULT_MESSAGE($"Xəta kodu: {responseData.code}\n\nMesaj: {responseData.message}");
+            }
+        }
+
+        public static void Withdraw(WithdrawDto _data)
+        {
+            WithdrawRequest.Data data = new WithdrawRequest.Data
+            {
+                cashierName = _data.Cashier,
+                sum = _data.Sum,
+            };
+
+            WithdrawRequest.Root root = new WithdrawRequest.Root
+            {
+                data = data
+            };
+
+            string json = JsonConvert.SerializeObject(root, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            });
+
+            RestClient rest = new RestClient();
+            RestRequest request = new RestRequest(_data.IpAddress, Method.Post);
+            request.AddHeader("Content-Type", "application/json;charset=utf-8");
+            request.AddStringBody(json, DataFormat.Json);
+            RestResponse response = rest.Execute(request);
+
+            if (response.ResponseStatus != ResponseStatus.Completed)
+            {
+                ReadyMessages.ERROR_SERVER_CONNECTION_MESSAGE();
+                FormHelpers.Log($"Kassa ilə əlaqə zamanı xəta yarandı\n\n {response.ErrorMessage}");
+                return;
+            }
+
+            WithdrawResponse.Root responseData = System.Text.Json.JsonSerializer.Deserialize<WithdrawResponse.Root>(response.Content);
+
+            if (responseData.message is "Successoperation" ||
+                responseData.message is "Success operation" ||
+                responseData.message is "Successful operation")
+            {
+                string message = $"Kassadan {_data.Sum} AZN uğurla məxaric edildi";
+                ReadyMessages.SUCCESS_DEFAULT_MESSAGE(message);
+                FormHelpers.Log(message);
+            }
+            else
+            {
+                ReadyMessages.ERROR_DEFAULT_MESSAGE($"Xəta kodu: {responseData.code}\n\nMesaj: {responseData.message}");
+            }
+        }
+
         public static void OpenShift(string ipAddress, string cashier)
         {
             RootObject root = new RootObject
@@ -740,22 +834,8 @@ namespace WindowsFormsApp2.NKA
                 }
             }
 
-            //if (salesData.PayType is PayType.Cash)
-            //{
-            //    salesData.Cash = salesData.Total - salesData.PrepaymentPay;
-            //}
-            //else if (salesData.PayType is PayType.Card)
-            //{
-            //    salesData.Card = salesData.Total - salesData.PrepaymentPay;
-            //}
-            //else if (salesData.PayType is PayType.CashCard)
-            //{
-
-            //}
-
-
             PrepaymentSaleRequest.Data data = new PrepaymentSaleRequest.Data
-            { 
+            {
                 documentUUID = Guid.NewGuid().ToString(),
                 prepaymentDocumentId = salesData.FiscalId,
                 cashPayment = salesData.Cash,
@@ -797,7 +877,7 @@ namespace WindowsFormsApp2.NKA
 
                     if (MessageVisible)
                     {
-                        ReadyMessages.SUCCESS_SALES_MESSAGE();
+                        ReadyMessages.SUCCESS_ADVANCE_SALES_MESSAGE();
                     }
 
                     FormHelpers.Log($"Avans satışı uğurla edildi. Qəbz No: {response.data.number}");
@@ -820,6 +900,7 @@ namespace WindowsFormsApp2.NKA
                 return false;
             }
         }
+
 
         #region [..REQUEST CLASS..]
         public class Item
@@ -963,6 +1044,44 @@ namespace WindowsFormsApp2.NKA
                 public string password { get; set; } = "password";
             }
         }
+
+        public class DepositRequest
+        {
+            public class Data
+            {
+                public string documentUUID { get; set; } = Guid.NewGuid().ToString();
+                public decimal sum { get; set; }
+                public string cashierName { get; set; }
+                public string currency { get; set; } = "AZN";
+            }
+
+            public class Root
+            {
+                public Data data { get; set; }
+                public string operation { get; set; } = "deposit";
+                public string username { get; set; } = "username";
+                public string password { get; set; } = "password";
+            }
+        }
+
+        public class WithdrawRequest
+        {
+            public class Data
+            {
+                public string documentUUID { get; set; } = Guid.NewGuid().ToString();
+                public decimal sum { get; set; }
+                public string cashierName { get; set; }
+                public string currency { get; set; } = "AZN";
+            }
+
+            public class Root
+            {
+                public Data data { get; set; }
+                public string operation { get; set; } = "deposit";
+                public string username { get; set; } = "username";
+                public string password { get; set; } = "password";
+            }
+        }
         #endregion [..REQUEST CLASS..]
 
 
@@ -1016,6 +1135,44 @@ namespace WindowsFormsApp2.NKA
                 public string qr_code_url { get; set; }
                 public string state { get; set; }
                 public string token_version { get; set; }
+            }
+        }
+
+        public class DepositResponse
+        {
+            public class Data
+            {
+                public string document_id { get; set; }
+                public string document_number { get; set; }
+                public string shift_document_number { get; set; }
+                public string short_document_id { get; set; }
+                public decimal totalSum { get; set; }
+            }
+
+            public class Root
+            {
+                public Data data { get; set; }
+                public string code { get; set; }
+                public string message { get; set; }
+            }
+        }
+
+        public class WithdrawResponse
+        {
+            public class Data
+            {
+                public string document_id { get; set; }
+                public string document_number { get; set; }
+                public string shift_document_number { get; set; }
+                public string short_document_id { get; set; }
+                public decimal totalSum { get; set; }
+            }
+
+            public class Root
+            {
+                public Data data { get; set; }
+                public string code { get; set; }
+                public string message { get; set; }
             }
         }
 

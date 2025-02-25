@@ -54,8 +54,8 @@ namespace WindowsFormsApp2.Forms
 
             DateTime dateTime = DateTime.UtcNow.Date;
 
-            dateEdit1.Text = dateTime.ToShortDateString();
-            dateEdit2.Text = dateTime.ToShortDateString();
+            dateStart.Text = dateTime.ToShortDateString();
+            dateFinish.Text = dateTime.ToShortDateString();
         }
 
         private void simpleButton1_Click(object sender, EventArgs e)
@@ -64,17 +64,17 @@ namespace WindowsFormsApp2.Forms
             switch (data)
             {
                 case ReportType.AvansSale:
-                    AvansSaleReport();
+                    AvansSaleReport(dateStart.DateTime, dateFinish.DateTime);
                     break;
                 case ReportType.AvansPay:
-                    AvansPayReport();
+                    AvansPayReport(dateStart.DateTime, dateFinish.DateTime);
                     break;
             }
         }
 
-        private void AvansSaleReport()
+        private void AvansSaleReport(DateTime start, DateTime finish)
         {
-            string query = @"SELECT 
+            string query = $@"SELECT 
 psm.pos_satis_check_main_id as Id, 
 psm.pos_nomre as pos_nomre, 
 psm.PREfiscal_id as fiscalId, 
@@ -94,14 +94,15 @@ INNER JOIN MAL_ALISI_MAIN man ON man.MAL_ALISI_MAIN_ID = mad.MAL_ALISI_MAIN_ID
 INNER JOIN COMPANY.TECHIZATCI t ON t.TECHIZATCI_ID = man.TECHIZATCI_ID
 LEFT JOIN MUSTERILER customer ON customer.MUSTERILER_ID = psm.CustomerId
 INNER JOIN userParol u ON u.id = psm.user_id_
-WHERE psm.Prepayment IS NOT NULL AND psm.PREfiscal_id IS NOT NULL";
+WHERE psm.Prepayment IS NOT NULL AND psm.PREfiscal_id IS NOT NULL
+AND CAST(psm.PREdate_ AS DATE) BETWEEN '{start.ToString("yyyy-MM-dd")}' AND '{finish.AddDays(1).ToString("yyyy-MM-dd")}';";
             var data = DbProsedures.ConvertToDataTable(query);
             gridControl1.DataSource = data;
         }
 
-        private void AvansPayReport()
+        private void AvansPayReport(DateTime start, DateTime finish)
         {
-            string query = @"SELECT 
+            string query = $@"SELECT 
 psm.pos_satis_check_main_id as Id, 
 psm.pos_nomre as pos_nomre, 
 psm.fiscal_id as fiscalId, 
@@ -121,7 +122,8 @@ INNER JOIN MAL_ALISI_MAIN man ON man.MAL_ALISI_MAIN_ID = mad.MAL_ALISI_MAIN_ID
 INNER JOIN COMPANY.TECHIZATCI t ON t.TECHIZATCI_ID = man.TECHIZATCI_ID
 LEFT JOIN MUSTERILER customer ON customer.MUSTERILER_ID = psm.CustomerId
 INNER JOIN userParol u ON u.id = psm.user_id_
-WHERE psm.Prepayment IS NOT NULL AND psm.PREfiscal_id IS NULL";
+WHERE psm.Prepayment IS NOT NULL AND psm.PREfiscal_id IS NULL
+AND CAST(psm.date_ AS DATE) BETWEEN '{start.ToString("yyyy-MM-dd")}' AND '{finish.AddDays(1).ToString("yyyy-MM-dd")}';";
             var data = DbProsedures.ConvertToDataTable(query);
             gridControl1.DataSource = data;
         }
@@ -137,7 +139,7 @@ WHERE psm.Prepayment IS NOT NULL AND psm.PREfiscal_id IS NULL";
                 case ReportType.AvansPay:
                     FormHelpers.ExcelExport(gridControl1, "Avans ödənişi hesabatı");
                     break;
-            }           
+            }
         }
 
         private void lookReportType_EditValueChanged(object sender, EventArgs e)
@@ -147,12 +149,12 @@ WHERE psm.Prepayment IS NOT NULL AND psm.PREfiscal_id IS NULL";
             {
                 gridControl1.MainView = gridSale;
             }
-            else if(data is ReportType.AvansPay)
+            else if (data is ReportType.AvansPay)
             {
                 gridControl1.MainView = gridPay;
             }
 
-            simpleButton1_Click(null,null);
+            simpleButton1_Click(null, null);
         }
     }
 }

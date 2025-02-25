@@ -22,7 +22,7 @@ namespace WindowsFormsApp2
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             FormHelpers.FolderControl();
-            Application.Run(new fPrepayment());
+            Application.Run(new avtorizasiya());
         }
     }
 }
