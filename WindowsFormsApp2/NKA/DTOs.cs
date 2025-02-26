@@ -23,6 +23,7 @@ public static class DTOs
         public Enums.PayType PayType { get; set; }
         public string FiscalId { get; set; } = null;
         public decimal PrepaymentPay { get; set; } //Avans ödənişləri üçün
+        public string CustomerNameManual { get; set; } = null;
     }
 
     public class RefundDto

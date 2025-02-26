@@ -55,7 +55,7 @@ INNER JOIN MAL_ALISI_MAIN man ON man.MAL_ALISI_MAIN_ID = mad.MAL_ALISI_MAIN_ID
 INNER JOIN COMPANY.TECHIZATCI t ON t.TECHIZATCI_ID = man.TECHIZATCI_ID
 LEFT JOIN MUSTERILER customer ON customer.MUSTERILER_ID = psm.CustomerId
 INNER JOIN userParol u ON u.id = psm.user_id_
-WHERE psm.Prepayment IS NOT NULL";
+WHERE psm.Prepayment IS NOT NULL AND psm.PREfiscal_id IS NULL";
                     break;
                 case SearchType.FiscalID:
                     query = $@"SELECT 
@@ -76,7 +76,7 @@ INNER JOIN MAL_ALISI_MAIN man ON man.MAL_ALISI_MAIN_ID = mad.MAL_ALISI_MAIN_ID
 INNER JOIN COMPANY.TECHIZATCI t ON t.TECHIZATCI_ID = man.TECHIZATCI_ID
 LEFT JOIN MUSTERILER customer ON customer.MUSTERILER_ID = psm.CustomerId
 INNER JOIN userParol u ON u.id = psm.user_id_
-WHERE psm.Prepayment IS NOT NULL AND psm.fiscalNum = N'{tSearch.Text.Trim()}'";
+WHERE psm.Prepayment IS NOT NULL AND psm.PREfiscal_id IS NULL AND psm.fiscalNum = N'{tSearch.Text.Trim()}'";
                     break;
                 case SearchType.ReceiptNo:
                     query = $@"SELECT 
@@ -97,7 +97,7 @@ INNER JOIN MAL_ALISI_MAIN man ON man.MAL_ALISI_MAIN_ID = mad.MAL_ALISI_MAIN_ID
 INNER JOIN COMPANY.TECHIZATCI t ON t.TECHIZATCI_ID = man.TECHIZATCI_ID
 LEFT JOIN MUSTERILER customer ON customer.MUSTERILER_ID = psm.CustomerId
 INNER JOIN userParol u ON u.id = psm.user_id_
-WHERE psm.Prepayment IS NOT NULL AND psm.pos_nomre = '{tSearch.Text.Trim()}'";
+WHERE psm.Prepayment IS NOT NULL AND psm.PREfiscal_id IS NULL AND psm.pos_nomre = '{tSearch.Text.Trim()}'";
                     break;
             }
 

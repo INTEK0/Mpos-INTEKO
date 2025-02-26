@@ -2539,7 +2539,7 @@ namespace WindowsFormsApp2
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "POS_LAYOUT_NEW";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = " ";
+            this.Text = " Mpos";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.POS_LAYOUT_NEW_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.POS_LAYOUT_NEW_KeyDown);

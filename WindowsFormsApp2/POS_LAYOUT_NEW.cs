@@ -2837,9 +2837,11 @@ namespace WindowsFormsApp2
                         {
                             IpAddress = lIpAdress.Text,
                             ProccessNo = textEdit1.Text,
-                            Cash = incomingSum,
+                            IncomingSum = incomingSum,
+                            Cash = cash_,
                             Card = card_,
                             Total = umumi_mebleg_,
+                            PrepaymentPay = cash_,
                             Cashier = tUsername.Text,
                             Customer = _customer,
                             Doctor = _doctor,
@@ -2901,7 +2903,7 @@ namespace WindowsFormsApp2
             if (data is Customer customer)
             {
                 _customer = customer;
-                tCustomer.Text = $"{customer.Name} {customer.Surname} - ({customer.DateBirth.ToString("dd.MM.yyyy")})";
+                tCustomer.Text = $"{customer.Name} {customer.Surname} {customer.FatherName}";
             }
             else if (data is Doctor doctor)
             {

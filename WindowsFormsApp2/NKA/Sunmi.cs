@@ -716,10 +716,10 @@ namespace WindowsFormsApp2.NKA
 
             PrepaymentRequest.Data data = new PrepaymentRequest.Data
             {
-                sum = salesData.Cash + salesData.Card,
+                sum = salesData.PrepaymentPay,
                 vatType = _vatType,
                 documentUUID = Guid.NewGuid().ToString(),
-                cashPayment = salesData.Cash,
+                cashPayment = salesData.IncomingSum,
                 cardPayment = salesData.Card,
                 bonusPayment = 0,
                 items = items,
@@ -750,10 +750,10 @@ namespace WindowsFormsApp2.NKA
                         posNomre = response.data.number,
                         longFiskalId = response.data.document_id,
                         proccessNo = salesData.ProccessNo,
-                        Prepayment = salesData.Cash + salesData.Card,
+                        total = salesData.Total,
+                        Prepayment = salesData.PrepaymentPay,
                         cash = salesData.Cash,
                         card = salesData.Card,
-                        total = salesData.Total,
                         json = json,
                         shortFiskalId = response.data.short_document_id,
                         rrn = response.data.rrn,
@@ -766,7 +766,7 @@ namespace WindowsFormsApp2.NKA
                         ReadyMessages.SUCCESS_SALES_MESSAGE();
                     }
 
-                    FormHelpers.Log($"Pos satışı uğurla edildi. Qəbz No: {response.data.number}");
+                    FormHelpers.Log($"Avans ödənişi uğurla edildi. Qəbz No: {response.data.number}");
                     return true;
                 }
                 else if (response.message is "document: invalid shift duration")
@@ -777,7 +777,7 @@ namespace WindowsFormsApp2.NKA
                 else
                 {
                     ReadyMessages.ERROR_SALES_MESSAGE(response.message);
-                    FormHelpers.Log($"Pos satışı xətası - Xəta mesajı: {response.message}");
+                    FormHelpers.Log($"Avans ödənişi xətası - Xəta mesajı: {response.message}");
                     return false;
                 }
             }
@@ -793,31 +793,31 @@ namespace WindowsFormsApp2.NKA
             using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
             {
                 con.Open();
-                string query = $@"SELECT 
-                              name,
-                              --Item.item_id,
-                              code,
-                              salePrice,
-                              quantity,
-                              discount,
-                              vatType,
-                              quantityType,
-                              salePrice*quantity as ssum
-                              FROM dbo.item WHERE user_id = {Properties.Settings.Default.UserID};";
+                string query = $@"select 
+       mad.MEHSUL_ADI as productName,
+       mad.BARKOD as barcode,
+	   mad.VERGI_DERECESI as taxType,
+       psd.count_,
+       psd.quantity_type as unitType,
+       psd.satis_giymet as salePrice,
+       psd.satis_giymet * psd.count_ as total
+from [pos_satis_check_details] psd
+inner join MAL_ALISI_DETAILS mad ON mad.MAL_ALISI_DETAILS_ID = psd.mal_alisi_details_id
+inner join MAL_ALISI_MAIN man on man.MAL_ALISI_MAIN_ID = mad.MAL_ALISI_MAIN_ID
+inner join pos_satis_check_main psm ON psm.pos_satis_check_main_id = {pos_satis_main_id}
+WHERE psd.pos_satis_check_main_id = {pos_satis_main_id} AND psm.user_id_ = {Properties.Settings.Default.UserID}";
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
                     using (SqlDataReader dr = cmd.ExecuteReader())
                     {
                         while (dr.Read())
                         {
-                            string name = dr["name"].ToString();
-                            string code = dr["code"].ToString();
+                            string name = dr["productName"].ToString();
+                            string code = dr["barcode"].ToString();
                             decimal salePrice = Convert.ToDecimal(dr["salePrice"]);
-                            double quantity = Convert.ToDouble(dr["quantity"]);
-                            int vatType = Convert.ToInt32(dr["vatType"]);
-                            int quantityType = Convert.ToInt32(dr["quantityType"]);
-                            decimal discount = Convert.ToDecimal(dr["discount"]);
-                            salePrice = Math.Round(salePrice, 2);
+                            double quantity = Convert.ToDouble(dr["count_"]);
+                            int vatType = Convert.ToInt32(dr["taxType"]);
+                            int quantityType = Convert.ToInt32(dr["unitType"]);
                             PrepaymentSaleRequest.Item itemProduct = new PrepaymentSaleRequest.Item
                             {
                                 name = name,
@@ -844,7 +844,7 @@ namespace WindowsFormsApp2.NKA
                 bonusPayment = 0,
                 items = items,
                 cashierName = salesData.Cashier,
-                clientName = salesData.Customer == null ? null : $"{salesData.Customer?.Name} {salesData.Customer?.Surname} {salesData.Customer?.FatherName}",
+                clientName = salesData.CustomerNameManual,
                 rrn = salesData.Rrn,
                 moneyBackType = null
             };
@@ -903,6 +903,7 @@ namespace WindowsFormsApp2.NKA
 
 
         #region [..REQUEST CLASS..]
+
         public class Item
         {
             public string name { get; set; }

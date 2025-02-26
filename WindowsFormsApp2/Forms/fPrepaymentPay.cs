@@ -27,6 +27,7 @@ namespace WindowsFormsApp2.Forms
             public static string FiskalId { get; set; }
             public static decimal Prepayment { get; set; }
             public static decimal Total { get; set; }
+            public static string CustomerName { get; set; } = null;
         }
 
         public fPrepaymentPay(string fiscalId)
@@ -37,13 +38,15 @@ namespace WindowsFormsApp2.Forms
 
         private void fPrepaymentPay_Load(object sender, EventArgs e)
         {
-            string query = $@"SELECT pos_satis_check_main_id,
-                            Prepayment,
-                            fiscal_id,
-                            UMUMI_MEBLEG
-                            FROM [pos_satis_check_main]
-                            where Prepayment>0
-                            and fiscalNum= '{_fiskalID}'";
+            string query = $@"SELECT psm.pos_satis_check_main_id,
+                            psm.Prepayment,
+                            psm.fiscal_id,
+                            psm.UMUMI_MEBLEG,
+                            m.AD + ' ' + m.SOYAD + ' ' + m.ATAADI as customerName
+                            FROM [pos_satis_check_main] psm
+                            LEFT join MUSTERILER m ON m.MUSTERILER_ID = psm.CustomerId
+                            WHERE Prepayment>0
+                            AND fiscalNum = '{_fiskalID}'";
 
             var data = DbProsedures.ConvertToDataTable(query);
 
@@ -51,6 +54,7 @@ namespace WindowsFormsApp2.Forms
             PrepaymentPay.Prepayment = data.Rows[0].Field<decimal>("Prepayment");
             PrepaymentPay.FiskalId = data.Rows[0].Field<string>("fiscal_id");
             PrepaymentPay.Total = data.Rows[0].Field<decimal>("UMUMI_MEBLEG");
+            PrepaymentPay.CustomerName = data.Rows[0].Field<string>("customerName");
         }
 
         private void bCash_Click(object sender, EventArgs e)
@@ -72,7 +76,7 @@ namespace WindowsFormsApp2.Forms
                 switch (_IpModel.Model)
                 {
                     case "1":
-                        Sunmi.PrepaymentSale(new DTOs.SalesDto
+                        bool isSuccess = Sunmi.PrepaymentSale(new DTOs.SalesDto
                         {
                             IpAddress = _IpModel.Ip,
                             Cashier = _IpModel.Cashier,
@@ -82,8 +86,14 @@ namespace WindowsFormsApp2.Forms
                             Total = PrepaymentPay.Total,
                             Cash = 0,
                             IncomingSum = 0,
+                            CustomerNameManual = PrepaymentPay.CustomerName,
                             PayType = Enums.PayType.Card
                         }, PrepaymentPay.PosMainId);
+
+                        if (isSuccess)
+                        {
+                            Close();
+                        }
                         break; /*SUNMI*/
                     case "3":
                         Omnitech.PrepaymentSale(_IpModel.Ip, null, PrepaymentPay.PosMainId, _IpModel.Cashier, PrepaymentPay.FiskalId, PrepaymentPay.Prepayment, Enums.PayType.Card);
@@ -111,7 +121,7 @@ namespace WindowsFormsApp2.Forms
                 switch (_IpModel.Model)
                 {
                     case "1":
-                        Sunmi.PrepaymentSale(new DTOs.SalesDto
+                       bool isSuccess = Sunmi.PrepaymentSale(new DTOs.SalesDto
                         {
                             IpAddress = _IpModel.Ip,
                             Cashier = _IpModel.Cashier,
@@ -120,8 +130,14 @@ namespace WindowsFormsApp2.Forms
                             Card = 0,
                             Total = PrepaymentPay.Total,
                             Cash = Convert.ToDecimal(tCash_Paid.EditValue),
-                            PayType = Enums.PayType.Cash
-                        }, PrepaymentPay.PosMainId);
+                            PayType = Enums.PayType.Cash,
+                            CustomerNameManual = PrepaymentPay.CustomerName
+                       }, PrepaymentPay.PosMainId);
+
+                        if (isSuccess)
+                        {
+                            Close();
+                        }
                         break; /*SUNMI*/
                     case "3":
                         Omnitech.PrepaymentSale(_IpModel.Ip, null, PrepaymentPay.PosMainId, _IpModel.Cashier, PrepaymentPay.FiskalId, PrepaymentPay.Prepayment, Enums.PayType.Cash);
@@ -142,7 +158,7 @@ namespace WindowsFormsApp2.Forms
                 switch (_IpModel.Model)
                 {
                     case "1":
-                         Sunmi.PrepaymentSale(new DTOs.SalesDto
+                      bool isSuccess =  Sunmi.PrepaymentSale(new DTOs.SalesDto
                         {
                             IpAddress = _IpModel.Ip,
                             Cashier = _IpModel.Cashier,
@@ -151,8 +167,14 @@ namespace WindowsFormsApp2.Forms
                             Cash = Convert.ToDecimal(tCashCard_Cash.EditValue),
                             Card = Convert.ToDecimal(tCashCard_Card.EditValue),
                             Total = PrepaymentPay.Total,
-                            PayType = Enums.PayType.CashCard
-                        }, PrepaymentPay.PosMainId);
+                            PayType = Enums.PayType.CashCard,
+                          CustomerNameManual = PrepaymentPay.CustomerName
+                      }, PrepaymentPay.PosMainId);
+
+                        if (isSuccess)
+                        {
+                            Close();
+                        }
                         break; /*SUNMI*/
                     case "3":
                         Omnitech.PrepaymentSale(_IpModel.Ip, null, PrepaymentPay.PosMainId, _IpModel.Cashier, PrepaymentPay.FiskalId, PrepaymentPay.Prepayment, Enums.PayType.CashCard);
