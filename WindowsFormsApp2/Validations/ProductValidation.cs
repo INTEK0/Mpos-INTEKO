@@ -14,7 +14,7 @@ namespace WindowsFormsApp2.Validations
             RuleFor(x => x.Quantity).NotEmpty().WithMessage("Miqdarını daxil edin");
             RuleFor(x => x.UnitName).NotEmpty().WithMessage("Vahid seçimi edilmədi");
             RuleFor(x => x.TaxName).NotEmpty().WithMessage("Vergi dərəcəsi təyin edilmədi");
-            RuleFor(x => x.SalePrice).GreaterThan(0).WithMessage("Satış qiyməti 0 və ya 0-dan kiçik olabilməz");
+            //RuleFor(x => x.SalePrice).GreaterThan(0).WithMessage("Satış qiyməti 0 və ya 0-dan kiçik olabilməz");
             RuleFor(x => x.Quantity).GreaterThan(0).WithMessage("Miqdar 0 və ya 0-dan kiçik olabilməz");
         }
     }

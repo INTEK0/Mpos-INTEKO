@@ -17,8 +17,8 @@ namespace WindowsFormsApp2.NKA
     public static class Omnitech
     {
         private static readonly bool MessageVisible = FormHelpers.SuccessMessageVisible();
-        private static readonly string Username = "Api";
-        private static readonly string Pin = "1";
+        private static readonly string Username = "SuperApi";
+        private static readonly string Pin = "123";
         private static OmnitechResponse RequestPOST(string ipAddress, string json)
         {
             try
