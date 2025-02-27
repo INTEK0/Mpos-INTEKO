@@ -318,6 +318,18 @@
     <Compile Include="Forms\fCategory.Designer.cs">
       <DependentUpon>fCategory.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\fCreditPay.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\fCreditPay.Designer.cs">
+      <DependentUpon>fCreditPay.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\fDeletedProductsReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\fDeletedProductsReport.Designer.cs">
+      <DependentUpon>fDeletedProductsReport.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\fDeposit.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1004,8 +1016,14 @@
     <EmbeddedResource Include="Forms\fCompany.resx">
       <DependentUpon>fCompany.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\fCreditPay.resx">
+      <DependentUpon>fCreditPay.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\fCustomers.resx">
       <DependentUpon>fCustomers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\fDeletedProductsReport.resx">
+      <DependentUpon>fDeletedProductsReport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fDeposit.resx">
       <DependentUpon>fDeposit.cs</DependentUpon>

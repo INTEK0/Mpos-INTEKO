@@ -86,7 +86,11 @@ psd.count_ as Amount,
 t.SIRKET_ADI as SupplierName,
 mad.MEHSUL_ADI as ProductName,
 mad.BARKOD as Barcode,
-customer.AD + ' ' + customer.SOYAD + ' ' + customer.ATAADI as CustomerName
+customer.AD + ' ' + customer.SOYAD + ' ' + customer.ATAADI as CustomerName,
+case
+when (psm.NEGD_>0.00 and psm.KART_ <=0.00) then N'NAĞD' 
+when (psm.KART_>0.00 and psm.NEGD_< =0.00) then N'KART'
+ELSE N'NAĞD-KART' END AS PayType
 FROM [pos_satis_check_main] psm
 INNER JOIN pos_satis_check_details psd ON psd.pos_satis_check_main_id = psm.pos_satis_check_main_id
 INNER JOIN MAL_ALISI_DETAILS mad ON mad.MAL_ALISI_DETAILS_ID = psd.mal_alisi_details_id
@@ -114,7 +118,11 @@ psd.count_ as Amount,
 t.SIRKET_ADI as SupplierName,
 mad.MEHSUL_ADI as ProductName,
 mad.BARKOD as Barcode,
-customer.AD + ' ' + customer.SOYAD + ' ' + customer.ATAADI as CustomerName
+customer.AD + ' ' + customer.SOYAD + ' ' + customer.ATAADI as CustomerName,
+case
+when (psm.NEGD_>0.00 and psm.KART_ <=0.00) then N'NAĞD' 
+when (psm.KART_>0.00 and psm.NEGD_< =0.00) then N'KART'
+ELSE N'NAĞD-KART' END AS PayType
 FROM [pos_satis_check_main] psm
 INNER JOIN pos_satis_check_details psd ON psd.pos_satis_check_main_id = psm.pos_satis_check_main_id
 INNER JOIN MAL_ALISI_DETAILS mad ON mad.MAL_ALISI_DETAILS_ID = psd.mal_alisi_details_id

@@ -190,7 +190,7 @@ namespace WindowsFormsApp2
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(999, 66, 650, 400);
             this.layoutControl1.Root = this.Root;
-            this.layoutControl1.Size = new System.Drawing.Size(1331, 937);
+            this.layoutControl1.Size = new System.Drawing.Size(1331, 822);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
@@ -267,7 +267,7 @@ namespace WindowsFormsApp2
             this.gridControl2.MainView = this.gridView2;
             this.gridControl2.Margin = new System.Windows.Forms.Padding(4);
             this.gridControl2.Name = "gridControl2";
-            this.gridControl2.Size = new System.Drawing.Size(1299, 317);
+            this.gridControl2.Size = new System.Drawing.Size(1299, 202);
             this.gridControl2.TabIndex = 28;
             this.gridControl2.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView2});
@@ -638,7 +638,7 @@ namespace WindowsFormsApp2
             this.layoutControlItem27,
             this.layoutControlItem28});
             this.Root.Name = "Root";
-            this.Root.Size = new System.Drawing.Size(1331, 937);
+            this.Root.Size = new System.Drawing.Size(1331, 822);
             this.Root.TextVisible = false;
             // 
             // layoutControlItem1
@@ -807,7 +807,7 @@ namespace WindowsFormsApp2
             this.layoutControlItem17.Control = this.gridControl2;
             this.layoutControlItem17.Location = new System.Drawing.Point(0, 588);
             this.layoutControlItem17.Name = "layoutControlItem17";
-            this.layoutControlItem17.Size = new System.Drawing.Size(1305, 323);
+            this.layoutControlItem17.Size = new System.Drawing.Size(1305, 208);
             this.layoutControlItem17.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem17.TextVisible = false;
             // 
@@ -835,7 +835,7 @@ namespace WindowsFormsApp2
             this.Appearance.Options.UseBackColor = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(1331, 937);
+            this.ClientSize = new System.Drawing.Size(1331, 822);
             this.Controls.Add(this.layoutControl1);
             this.IconOptions.Image = global::WindowsFormsApp2.Properties.Resources.Mpos_png1;
             this.LookAndFeel.SkinName = "WXI";

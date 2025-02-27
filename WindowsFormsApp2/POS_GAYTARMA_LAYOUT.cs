@@ -2251,7 +2251,7 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
                 {
                     if (string.IsNullOrEmpty(textEdit1.Text))
                     {
-                        MessageBox.Show("Emeliyyat nömrəsi boşdur");
+                        MessageBox.Show("Əməliyyat nömrəsi boşdur");
                     }
                     else
                     {
