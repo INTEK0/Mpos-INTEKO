@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormsApp2", "Windows
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Update", "Update\Update.csproj", "{CAD94F4E-81F4-423A-B8E5-B9F84F8911EE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fLicence", "fLicence\fLicence.csproj", "{3A495236-2AC1-4F0A-BB2A-060A4FBD434B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{CAD94F4E-81F4-423A-B8E5-B9F84F8911EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CAD94F4E-81F4-423A-B8E5-B9F84F8911EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CAD94F4E-81F4-423A-B8E5-B9F84F8911EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A495236-2AC1-4F0A-BB2A-060A4FBD434B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A495236-2AC1-4F0A-BB2A-060A4FBD434B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A495236-2AC1-4F0A-BB2A-060A4FBD434B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A495236-2AC1-4F0A-BB2A-060A4FBD434B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

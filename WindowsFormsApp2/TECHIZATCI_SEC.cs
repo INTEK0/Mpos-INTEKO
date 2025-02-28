@@ -10,6 +10,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WindowsFormsApp2.Helpers.DB;
+using WindowsFormsApp2.Helpers.Messages;
 using static WindowsFormsApp2.Helpers.FormHelpers;
 
 namespace WindowsFormsApp2
@@ -17,7 +19,7 @@ namespace WindowsFormsApp2
     public partial class TECHIZATCI_SEC : DevExpress.XtraEditors.XtraForm
     {
         private readonly GAIME_SATISI_LAYOUT frm1;
-   
+
         public TECHIZATCI_SEC(GAIME_SATISI_LAYOUT frm_)
         {
             InitializeComponent();
@@ -29,7 +31,7 @@ namespace WindowsFormsApp2
         private void TECHIZATCI_SEC_Load(object sender, EventArgs e)
         {
             int f_ = GETSTATUS();
-          //  XtraMessageBox.Show(f_.ToString());
+            //  XtraMessageBox.Show(f_.ToString());
             switch (f_)
             {
                 case 0:
@@ -41,43 +43,25 @@ namespace WindowsFormsApp2
                     getall_menfi_ACIG();
                     //getall();
                     break;
-                
+
             }
-           
+
         }
 
-        public int  GETSTATUS()
+        public int GETSTATUS()
         {
             try
             {
-                SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
-                string queryString = "SELECT STATUS FROM MENFI_AC_BAGLA ";
-                SqlCommand command = new SqlCommand(queryString, connection);
+                var data = DbProsedures.ConvertToDataTable("SELECT STATUS FROM MENFI_AC_BAGLA");
 
-
-                SqlDataAdapter da = new SqlDataAdapter(command);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-
-                int number = dt.Rows[0].Field<int>("STATUS");
-                // XtraMessageBox.Show(number.ToString());
-                //if (number > 0)
-                //{
-                //    checkBox1.Checked = true;
-                //    checkBox1.Text = "AÇIQDIR";
-                //}
-                //else
-                //{
-                //    checkBox1.Checked = false;
-                //    checkBox1.Text = "BAĞLIDIR";
-                //}
+                int number = data.Rows[0].Field<int>("STATUS");
 
                 return number;
 
             }
             catch (Exception e)
             {
-                
+
                 XtraMessageBox.Show("Xəta!\n" + e);
                 return -100;
             }
@@ -88,66 +72,34 @@ namespace WindowsFormsApp2
         {
             try
             {
-                SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
+                var data = DbProsedures.ConvertToDataTable("exec dbo.gaime_Satis_mal_load");
 
-
-                // Provide the query string with a parameter placeholder.
-                string queryString =
-              " exec dbo.gaime_Satis_mal_load ";
-
-
-
-                SqlCommand command = new SqlCommand(queryString, connection);
-                //command.Parameters.AddWithValue("@pricePoint", paramValue);
-                SqlDataAdapter da = new SqlDataAdapter(command);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-                gridControl1.DataSource = dt;
+                gridControl1.DataSource = data;
                 gridView1.Columns[0].Visible = false;
                 gridView1.Columns[2].Visible = false;
                 gridView1.Columns["EDV"].Visible = false;
-                //gridView1.OptionsSelection.MultiSelect = true;
-                //gridView1.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
-
 
             }
             catch (Exception e)
             {
-                Console.WriteLine("Xəta!\n" + e);
+                ReadyMessages.ERROR_DEFAULT_MESSAGE(e.Message);
             }
         }
         public void getall_menfi_bagli()
         {
             try
             {
-                SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
+                var data = DbProsedures.ConvertToDataTable("exec dbo.gaime_Satis_mal_menfi_bagli_load");
 
-
-                // Provide the query string with a parameter placeholder.
-                string queryString =
-              "exec dbo.gaime_Satis_mal_menfi_bagli_load ";
-
-
-
-                SqlCommand command = new SqlCommand(queryString, connection);
-                //command.Parameters.AddWithValue("@pricePoint", paramValue);
-                SqlDataAdapter da = new SqlDataAdapter(command);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-                gridControl1.DataSource = dt;
+                gridControl1.DataSource = data;
                 gridView1.Columns[0].Visible = false;
                 gridView1.Columns[2].Visible = false;
                 gridView1.Columns["EDV"].Visible = false;
-                //gridView1.Columns["VAHİD"].Visible = false;
-
-                //gridView1.OptionsSelection.MultiSelect = true;
-                //gridView1.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
-
 
             }
             catch (Exception e)
             {
-                Console.WriteLine("Xəta!\n" + e);
+                ReadyMessages.ERROR_DEFAULT_MESSAGE(e.Message);
             }
         }
 
@@ -164,8 +116,8 @@ namespace WindowsFormsApp2
 
         private void gridView1_RowCellClick(object sender, DevExpress.XtraGrid.Views.Grid.RowCellClickEventArgs e)
         {
-            frm1.techizatci_axtar(techizatci_adi, mehsul_adi, satis_giymeti,mal_det_id,anbar_g,edv_);
-           
+            frm1.techizatci_axtar(techizatci_adi, mehsul_adi, satis_giymeti, mal_det_id, anbar_g, edv_);
+
             // frm1.lookUpEdit8GEtData_yeni(mal_det_id);
 
             this.Close();

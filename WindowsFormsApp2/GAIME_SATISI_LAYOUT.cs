@@ -15,6 +15,8 @@ using System.Windows.Forms;
 using WindowsFormsApp2.Helpers;
 using DevExpress.XtraGrid.Localization;
 using static WindowsFormsApp2.Helpers.FormHelpers;
+using WindowsFormsApp2.Helpers.DB;
+using WindowsFormsApp2.Forms;
 
 namespace WindowsFormsApp2
 {
@@ -70,53 +72,19 @@ namespace WindowsFormsApp2
             textEdit2.Text = techizatci_adi.ToString();
             textEdit9.Text = Mehsul_ad.ToString();
             textEdit6.Text = satis_giymeti.ToString();
-            //    lookUpEdit8GEtData_yeni(Convert.ToInt32(mal_Details));
             mal_alisi_details_id = mal_Details.ToString();
             anbargalig = anbar_galig.ToString();
             edv = _edv_;
-
+            textEdit8.Text = "1";
         }
         public void MUSTERI(string ID, string MUSTERI_AD)
         {
             labelControl9.Text = ID;
             textEdit3.Text = MUSTERI_AD;
         }
-        private string qeryString = "EXEC   dbo.GAIME_SATISI_EMELIYYAT_NOMRE";
 
 
-        public void GETKOD()
-        {
-
-            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon))
-            {
-
-                SqlCommand command = new SqlCommand(qeryString, connection);
-
-
-                try
-                {
-                    connection.Open();
-                    SqlDataReader reader = command.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        //XtraMessageBox.Show(reader[0].ToString());
-
-                        textEdit5.Text = reader[0].ToString();
-
-
-                    }
-                    reader.Close();
-
-
-                }
-                catch (Exception ex)
-                {
-                    //Console.WriteLine(ex.Message);
-                    XtraMessageBox.Show(ex.Message);
-                }
-            }
-
-        }
+        
         private void GAIME_SATISI_LAYOUT_Load(object sender, EventArgs e)
         {
             clear();
@@ -129,7 +97,7 @@ namespace WindowsFormsApp2
             dateEdit1.Text = dateTime.ToShortDateString();
             gridControl1.TabStop = false;
             textEdit5.Enabled = false;
-            GETKOD();
+            textEdit5.Text = DbProsedures.GET_GaimeSalesProccessNo();
 
             //  lookUpEdit8GEtData_yeni();
             //ANBAR_LOAD();
@@ -571,7 +539,6 @@ namespace WindowsFormsApp2
             textEdit7.Text = "";
             textEdit13.Text = "";
             textEdit10.Text = "";
-            textEdit17.Text = "";
             textEdit1.Text = "";
             memoEdit1.Text = "";
         }
@@ -593,29 +560,6 @@ namespace WindowsFormsApp2
             //textEdit9.Enabled = false;
         }
 
-        private void barButtonItem4_ItemClick(object sender, ItemClickEventArgs e)
-        {
-
-            gridView1.ShowPrintPreview();
-
-        }
-
-        private void simpleButton3_Click(object sender, EventArgs e)
-        {
-            MUSTERI_AXTAR M = new MUSTERI_AXTAR(this);
-            M.Show();
-        }
-
-
-
-
-
-
-        private void simpleButton2_Click(object sender, EventArgs e)
-        {
-            //   gridView1.ShowPrintPreview();
-            // cap et
-        }
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -637,17 +581,7 @@ namespace WindowsFormsApp2
 
                     try
                     {
-                        string gaime_;
                         string mebleg_;
-                        if (string.IsNullOrEmpty(textEdit17.Text))
-                        {
-                            gaime_ = "a";
-                        }
-
-                        else
-                        {
-                            gaime_ = textEdit17.Text;
-                        }
 
                         if (string.IsNullOrEmpty(textEdit1.Text)) //əsas məbləğ
                         {
@@ -670,24 +604,21 @@ namespace WindowsFormsApp2
                             ed = "0.0";
                         }
 
-                        int ret = cgs.GAIME_SATISI_MAIN(textEdit5.Text,
-                            gaime_,
-                            mebleg_,
-                            Convert.ToDateTime(dateEdit1.Text),
-                            radio.Trim(),
-                            textEdit3.Text,
-                            _g_user_id,
-                            edv_siz,
-                            ed,
-                            Convert.ToInt32(labelControl9.Text));
-
-
-
-                        if (ret > 0)
+                        int result = DbProsedures.InsertGaimeMain(new DatabaseClasses.GaimeMain
                         {
+                            ProccessNo = textEdit5.Text,
+                            QaimeNomre = textEdit17.Text,
+                            TotalPaid = mebleg_,
+                            Date = Convert.ToDateTime(dateEdit1.Text),
+                            PaymentType = radio,
+                            Customer = textEdit3.Text,
+                            Edvsiz = edv_siz,
+                            Edvli = ed,
+                            CustomerId = Convert.ToInt32(labelControl9.Text)
+                        });
 
-                            string gaime_nomre = gaime_;
-
+                        if (result > 0)
+                        {
 
                             string an_galig = anbargalig.Replace('.', ',');
                             decimal anbar_ga = Convert.ToDecimal(an_galig);
@@ -703,21 +634,21 @@ namespace WindowsFormsApp2
                             {
                                 //icaze ver menfi aciqdir 
 
-                                int xx = cgs.GAIME_SATISI_DETAILS(ret,
+                                int xx = cgs.GAIME_SATISI_DETAILS(result,
                                     Convert.ToDateTime(dateEdit1.Text),
                                     textEdit5.Text,
                                     radio,
-                                    gaime_nomre,
+                                    textEdit17.Text,
                                     textEdit1.Text,
                                     Convert.ToInt32(mal_alisi_details_id),
                                     Convert.ToInt32(lookUpEdit1.EditValue.ToString()),
                                     0,
                                     textEdit8.Text,
-                                    textEdit6.Text,
+                                    Convert.ToDecimal(textEdit6.Text),
                                     textEdit7.EditValue.ToString(),
                                     textEdit13.Text,
                                     textEdit10.Text,
-                                    textEdit4.Text,
+                                    Convert.ToDecimal(textEdit4.Text),
                                     memoEdit1.Text,
                                     Convert.ToDateTime(dateEdit1.Text),
                                     textEdit1.Text,
@@ -744,21 +675,21 @@ namespace WindowsFormsApp2
                                 else
                                 {
                                     //satis
-                                    int xx = cgs.GAIME_SATISI_DETAILS(ret,
+                                    int xx = cgs.GAIME_SATISI_DETAILS(result,
                              Convert.ToDateTime(dateEdit1.Text),
                              textEdit5.Text,
                              radio,
-                             gaime_nomre,
-                             textEdit1.Text.ToString(),//mebleg
+                             textEdit17.Text,
+                             textEdit1.Text,//mebleg
                              Convert.ToInt32(mal_alisi_details_id),
                              Convert.ToInt32(lookUpEdit1.EditValue.ToString()),
                              0, 
                              textEdit8.Text, 
-                             textEdit6.Text, 
+                             Convert.ToDecimal(textEdit6.Text), 
                              textEdit7.Text,
                              textEdit13.Text,
                              textEdit10.Text,
-                             textEdit4.Text,
+                             Convert.ToDecimal(textEdit4.Text),
                              memoEdit1.Text, 
                              Convert.ToDateTime(dateEdit1.Text),
                              textEdit1.Text,
@@ -920,10 +851,11 @@ namespace WindowsFormsApp2
                     textEdit9.Text = "";
                     //  lookUpEdit1.EditValue = null;
                     textEdit3.Text = "";
-                    GETKOD();
+                    textEdit5.Text = DbProsedures.GET_GaimeSalesProccessNo();
                     textEdit12.Text = "";
                     textEdit14.Text = "";
                     textEdit2.Text = "";
+                    textEdit17.Text = null;
                 }
 
             }
@@ -934,17 +866,14 @@ namespace WindowsFormsApp2
         {
             clear();
 
-            //searchLookUpEdit1.EditValue = null;
             textEdit9.Text = "";
-            //lookUpEdit1.EditValue = null;
             textEdit3.Text = "";
             gridControl1.DataSource = null;
             textEdit6.Text = "";
             textEdit2.Text = "";
-            GETKOD();
+            textEdit5.Text = DbProsedures.GET_GaimeSalesProccessNo();
             textEdit14.Text = "";
             textEdit12.Text = "";
-            //InitLookUpEdit_();
         }
 
 
@@ -955,45 +884,13 @@ namespace WindowsFormsApp2
             M.ShowDialog();
         }
 
-        //MUSTERI_SIYAHISI M;
-        //private void barButtonItem2_ItemClick(object sender, ItemClickEventArgs e)
-        //{
-        //    //MUSTERI_SIYAHISI M = new MUSTERI_SIYAHISI();
-        //    //M.Show();
-        //    if (Application.OpenForms["MUSTERI_SIYAHISI"] != null)
-        //    {
-        //        var Main = Application.OpenForms["MUSTERI_SIYAHISI"] as MUSTERI_SIYAHISI;
-        //        if (Main != null)
-        //        {
-
-        //        }
-        //        // Main.Close();
-        //    }
-        //    else
-        //    {
-        //        M = new MUSTERI_SIYAHISI();
-        //        M.Show();
-        //    }
-        //}
-        GAIME_SATIS_DETAILS_LAYOUT gs;
+       
         private void simpleButton4_Click(object sender, EventArgs e)
         {
-            //GAIME_SATIS_DETAILS gs = new GAIME_SATIS_DETAILS(this);
-            //gs.Show();
-            if (Application.OpenForms["GAIME_SATIS_DETAILS_LAYOUT"] != null)
-            {
-                var Main = Application.OpenForms["GAIME_SATIS_DETAILS_LAYOUT"] as GAIME_SATIS_DETAILS_LAYOUT;
-                if (Main != null)
-                {
 
-                }
-                // Main.Close();
-            }
-            else
-            {
-                gs = new GAIME_SATIS_DETAILS_LAYOUT(this);
-                gs.Show();
-            }
+            FormHelpers.OpenForm<fQaimeSalesReport>(this);
+
+            
         }
 
         private void lookUpEdit7_TextChanged_1(object sender, EventArgs e)
@@ -1070,7 +967,7 @@ namespace WindowsFormsApp2
 
                         reader.Close();
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         //Console.WriteLine(ex.Message);
                     }

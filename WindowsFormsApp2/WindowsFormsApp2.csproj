@@ -378,6 +378,12 @@
     <Compile Include="Forms\fPrintBarcode.Designer.cs">
       <DependentUpon>fPrintBarcode.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\fQaimeSalesReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\fQaimeSalesReport.Designer.cs">
+      <DependentUpon>fQaimeSalesReport.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\fReceivedProducts.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -509,12 +515,6 @@
     </Compile>
     <Compile Include="GAIME_SATIS_DETAILS.Designer.cs">
       <DependentUpon>GAIME_SATIS_DETAILS.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GAIME_SATIS_DETAILS_LAYOUT.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GAIME_SATIS_DETAILS_LAYOUT.Designer.cs">
-      <DependentUpon>GAIME_SATIS_DETAILS_LAYOUT.cs</DependentUpon>
     </Compile>
     <Compile Include="gaytarilan_siyahi.cs">
       <SubType>Form</SubType>
@@ -1055,6 +1055,9 @@
     <EmbeddedResource Include="Forms\fPrintBarcode.resx">
       <DependentUpon>fPrintBarcode.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\fQaimeSalesReport.resx">
+      <DependentUpon>fQaimeSalesReport.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\fQuickSale.resx">
       <DependentUpon>fQuickSale.cs</DependentUpon>
     </EmbeddedResource>
@@ -1099,9 +1102,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GAIME_SATISI_LAYOUT.resx">
       <DependentUpon>GAIME_SATISI_LAYOUT.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GAIME_SATIS_DETAILS_LAYOUT.resx">
-      <DependentUpon>GAIME_SATIS_DETAILS_LAYOUT.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="gaytarilan_siyahi.resx">
       <DependentUpon>gaytarilan_siyahi.cs</DependentUpon>

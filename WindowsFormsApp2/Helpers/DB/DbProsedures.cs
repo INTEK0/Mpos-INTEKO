@@ -57,7 +57,9 @@ namespace WindowsFormsApp2.Helpers.DB
         private static readonly string DELETE_UserQuery = "userParol_delete";
         private static readonly string INSERT_ClinicDataQuery = "ClinicReportInsertData";
         public static readonly string GET_ClinicDataLoadQuery = $"EXEC [dbo].[ClinicReportDataLoad]@UserID = {Properties.Settings.Default.UserID}";
-
+        private static readonly string INSERT_GaimeSalesMainQuery = "INSERT_GAIME_SATISI_MAIN";
+        private static readonly string GET_GaimeSalesProccessNoQuery = "EXEC dbo.GAIME_SATISI_EMELIYYAT_NOMRE";
+        private static readonly string GET_GaimeRefundProccessNoQuery = "EXEC dbo.GAIME_SATISI_GAYTARMA";
 
         #endregion [...PROCEDURES QUERY...]
 
@@ -1830,6 +1832,86 @@ namespace WindowsFormsApp2.Helpers.DB
         #endregion [..CLINIC REPORT..]
 
 
+        #region [..GAİME SALES..]
+
+        public static string GET_GaimeSalesProccessNo()
+        {
+            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                connection.Open();
+                using (SqlCommand cmd = new SqlCommand(GET_GaimeSalesProccessNoQuery, connection))
+                {
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            return dr[0].ToString();
+                        }
+                        return null;
+                    }
+                }
+            }
+        }
+
+        public static string GET_GaimeRefundProccessNo()
+        {
+            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                connection.Open();
+                using (SqlCommand cmd = new SqlCommand(GET_GaimeRefundProccessNoQuery, connection))
+                {
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            return dr[0].ToString();
+                        }
+                        return null;
+                    }
+                }
+            }
+        }
+
+        public static int InsertGaimeMain(GaimeMain data)
+        {
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand(INSERT_GaimeSalesMainQuery, con))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    SqlParameter param;
+                    param = cmd.Parameters.Add("@EMELIYYAT_NOMRE", SqlDbType.NVarChar, 50);
+                    param.Value = data.ProccessNo;
+                    param = cmd.Parameters.Add("@GAIME_NOMRE", SqlDbType.NVarChar, 20);
+                    param.Value = data.QaimeNomre = string.IsNullOrWhiteSpace(data.QaimeNomre) ? data.ProccessNo.Replace("QS-","") : data.QaimeNomre;
+                    param = cmd.Parameters.Add("@ODENILEN_MEBLEG", SqlDbType.NVarChar, 100);
+                    param.Value = data.TotalPaid;
+                    param = cmd.Parameters.Add("@TARIX", SqlDbType.Date);
+                    param.Value = data.Date;
+                    param = cmd.Parameters.Add("@ODEME_TIPI", SqlDbType.NVarChar, 50);
+                    param.Value = data.PaymentType;
+                    param = cmd.Parameters.Add("@musteri", SqlDbType.NVarChar, 500);
+                    param.Value = data.Customer;
+                    param = cmd.Parameters.Add("@u_id", SqlDbType.Int);
+                    param.Value = Properties.Settings.Default.UserID;
+                    param = cmd.Parameters.Add("@ODENILEN_EDV_SIZ_MEBLEG", SqlDbType.NVarChar, 20);
+                    param.Value = data.Edvsiz;
+                    param = cmd.Parameters.Add("@ODENILEN_MEBLEG_EDV", SqlDbType.NVarChar, 20);
+                    param.Value = data.Edvli;
+                    param = cmd.Parameters.Add("@musteri_main_id", SqlDbType.Int);
+                    param.Value = data.CustomerId;
+
+                    param = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
+                    param.Direction = ParameterDirection.Output; ;
+
+                    cmd.ExecuteNonQuery();
+                    return Convert.ToInt32(param.Value);
+                }
+            }
+        }
+
+        #endregion [..GAİME SALES..]
 
         #endregion [...PROCEDURES METHODS...]
 

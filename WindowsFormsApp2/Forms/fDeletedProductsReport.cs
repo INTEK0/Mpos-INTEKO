@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
+using WindowsFormsApp2.Helpers.DB;
 
 namespace WindowsFormsApp2.Forms
 {
@@ -31,6 +32,13 @@ namespace WindowsFormsApp2.Forms
         private void bSearch_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void DataLoad(DateTime start, DateTime finish)
+        {
+            string query = $@"";
+            var data = DbProsedures.ConvertToDataTable(query);
+            gridControl1.DataSource = data;
         }
     }
 }

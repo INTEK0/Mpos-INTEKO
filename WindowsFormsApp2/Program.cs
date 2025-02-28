@@ -19,6 +19,14 @@ namespace WindowsFormsApp2
         [STAThread]
         static void Main()
         {
+            WebClient web = new WebClient();
+
+            var culture = new CultureInfo("az-AZ");
+            CultureInfo.DefaultThreadCurrentCulture = culture;
+            CultureInfo.DefaultThreadCurrentUICulture = culture;
+            CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator = ",";
+            CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator = ".";
+            CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol = "₼"; //₼
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             FormHelpers.FolderControl();

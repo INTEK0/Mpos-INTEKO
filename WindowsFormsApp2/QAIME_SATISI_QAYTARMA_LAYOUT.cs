@@ -13,6 +13,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApp2.Helpers;
+using WindowsFormsApp2.Helpers.DB;
+using WindowsFormsApp2.Helpers.Messages;
 using static WindowsFormsApp2.Helpers.FormHelpers;
 
 namespace WindowsFormsApp2
@@ -34,47 +36,13 @@ namespace WindowsFormsApp2
             DateTime dateTime = DateTime.UtcNow.Date;
 
             dateEdit4.Text = dateTime.ToShortDateString();
-            GETKOD();
+            textEdit6.Text = DbProsedures.GET_GaimeRefundProccessNo();
         }
 
-        private string qeryString = "EXEC   [dbo].[GAIME_SATISI_GAYTARMA] ";
 
 
-        public void GETKOD()
-        {
-
-            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon))
-            {
-
-                SqlCommand command = new SqlCommand(qeryString, connection);
-
-
-                try
-                {
-                    connection.Open();
-                    SqlDataReader reader = command.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        //XtraMessageBox.Show(reader[0].ToString());
-
-                        textEdit6.Text = reader[0].ToString();
-                        textEdit6.Enabled = false;
-
-                    }
-                    reader.Close();
-
-
-                }
-                catch (Exception ex)
-                {
-                    //Console.WriteLine(ex.Message);
-                    XtraMessageBox.Show(ex.Message);
-                }
-            }
-
-        }
+       
         CRUD_GAIME_SATISI CG = new CRUD_GAIME_SATISI();
-
         private void simpleButton6_Click(object sender, EventArgs e)
         {
             foreach (int i in gridView1.GetSelectedRows())
@@ -89,7 +57,7 @@ namespace WindowsFormsApp2
                         row[7].ToString(),
                             textEdit6.Text,
                             Convert.ToDateTime(dateEdit4.Text),
-                            memoEdit1.Text, gg_user_id);
+                            memoEdit1.Text);
 
                     FormHelpers.Log($"{row[1]} nömrəli satış qaiməsində {row[7]} ədəd {row[4]} məhsulu geri qaytarıldı");
 
@@ -102,7 +70,7 @@ namespace WindowsFormsApp2
             textEdit2.Text = "";
             textEdit5 = "";
             textEdit1.Text = "";
-            GETKOD();
+            textEdit6.Text = DbProsedures.GET_GaimeRefundProccessNo();
         }
         public static string textEdit5 = "";
         private void simpleButton2_Click(object sender, EventArgs e)
@@ -122,46 +90,52 @@ namespace WindowsFormsApp2
             textEdit5 = _emeliyyat_nomre_;
             GetallData_id_(_emeliyyat_nomre_);
         }
+
         public void GetallData_id_(string id_)
         {
-
             try
             {
-                SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
-                string queryString = "select  gd.GAIME_SATISI_DETAILS_ID, gm.EMELIIYYAT_NOMRE " +
-                    "AS N'SATIŞ ƏMƏLİYYAT №', " +
-                     " gm.TARIX AS N'TARİX',ct.SIRKET_ADI AS N'TƏCHİZATÇI ADI' " +
-                    " ,md.MEHSUL_ADI AS N'MƏHSUL ADI',gd.SATIS_GIYMETI as " +
-                    "'BİR VAHİDİN QİYMƏTİ',gd.MIGDARI -isnull(gdg.migdar,0.00) AS N'MİQDARI'  " +
-                    " ,0 AS N'QAYTARILACAQ MİQDAR' " +
-                    " from GAIME_SATISI_MAIN gm inner " +
-                    " join GAIME_SATISI_DETAILS gd " +
-                    " on gm.GAIME_SATISI_MAIN_ID = gd.GAIME_SATISI_MAIN_ID " +
-                    " left join " +
-                    " ( " +
-                    " (select gaime_satis_details_id, sum(isnull(migdar, 0.00)) migdar from gaime_satis_gaytarma " +
+                string queryString = $@"select gd.GAIME_SATISI_DETAILS_ID,
+       gm.EMELIIYYAT_NOMRE AS N'SATIŞ ƏMƏLİYYAT №',
+	   gm.TARIX AS N'TARİX',
+       ct.SIRKET_ADI AS N'TƏCHİZATÇI ADI',
+       md.MEHSUL_ADI AS N'MƏHSUL ADI',
+       gd.SATIS_GIYMETI as 'BİR VAHİDİN QİYMƏTİ',
+       gd.MIGDARI AS N'MİQDARI' ,
+       0 AS N'QAYTARILACAQ MİQDAR',
+	  gd.YEKUN_MEBLEG as N'YEKUN MƏBLƏĞ'
+from GAIME_SATISI_MAIN gm
+inner
+ join GAIME_SATISI_DETAILS gd on gm.GAIME_SATISI_MAIN_ID = gd.GAIME_SATISI_MAIN_ID
+left join (
+             (select gaime_satis_details_id,
+                     sum(isnull(migdar, 0.00)) migdar
+              from gaime_satis_gaytarma group  by gaime_satis_details_id)) gdg on gdg.gaime_satis_details_id=gd.GAIME_SATISI_DETAILS_ID
+inner join MAL_ALISI_DETAILS md on md.MAL_ALISI_DETAILS_ID = gd.MAL_DETAILS_ID
+inner join MAL_ALISI_MAIN mm on mm.MAL_ALISI_MAIN_ID = md.MAL_ALISI_MAIN_ID
+inner join COMPANY.TECHIZATCI ct on ct.TECHIZATCI_ID = mm.TECHIZATCI_ID
+WHERE GM.EMELIIYYAT_NOMRE = '{id_}'
+  and gd.MIGDARI -isnull(gdg.migdar, 0.00)>0";
 
-                    "  group  by gaime_satis_details_id) ) gdg on gdg.gaime_satis_details_id=gd.GAIME_SATISI_DETAILS_ID " +
-                    " inner join MAL_ALISI_DETAILS md on md.MAL_ALISI_DETAILS_ID = gd.MAL_DETAILS_ID " +
-                    " inner join MAL_ALISI_MAIN mm on mm.MAL_ALISI_MAIN_ID = md.MAL_ALISI_MAIN_ID " +
-                    " inner join COMPANY.TECHIZATCI ct on ct.TECHIZATCI_ID = mm.TECHIZATCI_ID " +
-                    " WHERE GM.EMELIIYYAT_NOMRE = @pricepoint " +
-                    "  and gd.MIGDARI -isnull(gdg.migdar,0.00)>0 ";
+                var data = DbProsedures.ConvertToDataTable(queryString);
 
-
-                SqlCommand command = new SqlCommand(queryString, connection);
-                command.Parameters.AddWithValue("@pricepoint", id_);
-                SqlDataAdapter da = new SqlDataAdapter(command);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-                gridControl1.DataSource = dt;
+                gridControl1.DataSource = data;
                 gridView1.Columns[0].Visible = false;
                 gridView1.OptionsSelection.MultiSelect = true;
                 gridView1.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
+
+                decimal toplam = 0;
+                for (int i = 0; i < gridView1.RowCount; i++)
+                    toplam += Convert.ToDecimal(gridView1.GetRowCellValue(i, "YEKUN MƏBLƏĞ"));
+
+
+                textEdit14.Text = toplam.ToString("C2");
+
+
             }
             catch (Exception e)
             {
-                Console.WriteLine("Xəta!\n" + e);
+                ReadyMessages.ERROR_DEFAULT_MESSAGE(e.Message);
             }
         }
     }

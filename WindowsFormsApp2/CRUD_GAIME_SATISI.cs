@@ -14,7 +14,6 @@ namespace WindowsFormsApp2
     public class CRUD_GAIME_SATISI
     {
         //string connectionString = "Data Source=.;Initial Catalog=NewInteko;Integrated Security=True";
-        string procedure = "INSERT_GAIME_SATISI_MAIN";
         string procedure2 = "INSERT_GAIME_SATIS_DAXIL";
         string procedure3 = "GAIME_SATISI_MAIN_delete";
         string procedure4 = "GAIME_SATIS_MAIN_DETAILS_UPDATE";
@@ -53,7 +52,7 @@ namespace WindowsFormsApp2
         }
 
         public int insert_gaime_satis_gaytarma_proc_(string gaime_satis_details_id, string migdar,
-            string emeliyyat_nomre, DateTime tarix_, string geyd_, int _user_id)
+            string emeliyyat_nomre, DateTime tarix_, string geyd_)
         {
             //SqlConnection con = new SqlConnection(Properties.Settings.Default.SqlCon);
             //SqlCommand cmd = new SqlCommand(insert_gaime_satis_gaytarma_proc, con);
@@ -100,9 +99,9 @@ namespace WindowsFormsApp2
                     cmd.Parameters.Add("@gaime_satis_details_id", SqlDbType.NVarChar, 100).Value = gaime_satis_details_id;
                     cmd.Parameters.Add("@migdar", SqlDbType.NVarChar, 100).Value = migdar;
                     cmd.Parameters.Add("@emeliyyat_nomre", SqlDbType.NVarChar, 100).Value = emeliyyat_nomre;
-                    cmd.Parameters.Add("@tarix_", SqlDbType.NVarChar, 100).Value = tarix_;
+                    cmd.Parameters.Add("@tarix_", SqlDbType.Date, 100).Value = tarix_;
                     cmd.Parameters.Add("@geyd", SqlDbType.NVarChar, 100).Value = geyd_;
-                    cmd.Parameters.Add("@user_id", SqlDbType.NVarChar, 100).Value = _user_id;
+                    cmd.Parameters.Add("@user_id", SqlDbType.Int, 100).Value = Properties.Settings.Default.UserID;
 
 
 
@@ -295,53 +294,9 @@ namespace WindowsFormsApp2
             return Convert.ToInt32(param.Value);
         }
 
-
-        public int GAIME_SATISI_MAIN(string EMELIYYAT_NOMRE, string GAIME_NOMRE,
-    string ODENILEN_MEBLEG, DateTime TARIX, string ODEME_TIPI, string musteri, int _u_id, string EDV_SIZ, string EDV_LI, int musteri_id_)
-        {
-            // Create ADO.NET objects.
-            SqlConnection con = new SqlConnection(Properties.Settings.Default.SqlCon);
-            SqlCommand cmd = new SqlCommand(procedure, con);
-            // Configure command and add input parameters.
-            cmd.CommandType = CommandType.StoredProcedure;
-            SqlParameter param;
-            param = cmd.Parameters.Add("@EMELIYYAT_NOMRE", SqlDbType.NVarChar, 50);
-            param.Value = EMELIYYAT_NOMRE;
-            param = cmd.Parameters.Add("@GAIME_NOMRE", SqlDbType.NVarChar, 20);
-            param.Value = GAIME_NOMRE;
-            param = cmd.Parameters.Add("@ODENILEN_MEBLEG", SqlDbType.NVarChar, 100);
-            param.Value = ODENILEN_MEBLEG;
-            param = cmd.Parameters.Add("@TARIX", SqlDbType.Date);
-            param.Value = TARIX;
-            param = cmd.Parameters.Add("@ODEME_TIPI", SqlDbType.NVarChar, 50);
-            param.Value = ODEME_TIPI;
-
-            param = cmd.Parameters.Add("@musteri", SqlDbType.NVarChar, 500);
-            param.Value = musteri;
-            param = cmd.Parameters.Add("@u_id", SqlDbType.Int);
-            param.Value = _u_id;
-            param = cmd.Parameters.Add("@ODENILEN_EDV_SIZ_MEBLEG", SqlDbType.NVarChar, 20);
-            param.Value = EDV_SIZ;
-            param = cmd.Parameters.Add("@ODENILEN_MEBLEG_EDV", SqlDbType.NVarChar, 20);
-            param.Value = EDV_LI;
-
-            param = cmd.Parameters.Add("@musteri_main_id", SqlDbType.Int);
-            param.Value = musteri_id_;
-
-            // Add the output parameter.
-            param = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
-            param.Direction = ParameterDirection.Output;
-            // Execute the command.
-            con.Open();
-            cmd.ExecuteNonQuery();
-            con.Close();
-            return Convert.ToInt32(param.Value);
-        }
-
-
         public int GAIME_SATISI_DETAILS(int GAIME_SATISI_MAIN_ID, DateTime TARIX, string EMMELIYYAT_NOMRE, string ODEME_TIPI, string GAIME_NOM,
-            string ODENILEN_MEBLEG, int MAL_DETAILS_ID, int MAGAZA, int ANBAR, string MIGDARI, string SATIS_GIYMETI, string ENDIRIM_FAIZ,
-            string ENDIRIM_AZN, string ENDIRIM_MEBLEGI, string YEKUN_MEBLEG, string GEYD, DateTime tarix_, string EDV_SIZ, string EDV_LI)
+            string ODENILEN_MEBLEG, int MAL_DETAILS_ID, int MAGAZA, int ANBAR, string MIGDARI, decimal SATIS_GIYMETI, string ENDIRIM_FAIZ,
+            string ENDIRIM_AZN, string ENDIRIM_MEBLEGI, decimal YEKUN_MEBLEG, string GEYD, DateTime tarix_, string EDV_SIZ, string EDV_LI)
         {
             // Create ADO.NET objects.
             SqlConnection con = new SqlConnection(Properties.Settings.Default.SqlCon);
@@ -369,7 +324,7 @@ namespace WindowsFormsApp2
             param.Value = ANBAR;
             param = cmd.Parameters.Add("@MIGDARI", SqlDbType.NVarChar, 100);
             param.Value = MIGDARI;
-            param = cmd.Parameters.Add("@SATIS_GIYMETI", SqlDbType.NVarChar, 100);
+            param = cmd.Parameters.Add("@SATIS_GIYMETI", SqlDbType.Decimal, 100);
             param.Value = SATIS_GIYMETI;
             param = cmd.Parameters.Add("@ENDIRIM_FAIZ", SqlDbType.NVarChar, 100);
             param.Value = ENDIRIM_FAIZ;
@@ -377,7 +332,7 @@ namespace WindowsFormsApp2
             param.Value = ENDIRIM_AZN;
             param = cmd.Parameters.Add("@ENDIRIM_MEBLEGI", SqlDbType.NVarChar, 100);
             param.Value = ENDIRIM_MEBLEGI;
-            param = cmd.Parameters.Add("@YEKUN_MEBLEG", SqlDbType.NVarChar, 100);
+            param = cmd.Parameters.Add("@YEKUN_MEBLEG", SqlDbType.Decimal, 100);
             param.Value = YEKUN_MEBLEG;
             param = cmd.Parameters.Add("@GEYD", SqlDbType.NVarChar, 100);
             param.Value = GEYD;

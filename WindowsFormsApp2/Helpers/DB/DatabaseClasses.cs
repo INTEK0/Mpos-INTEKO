@@ -258,5 +258,18 @@ namespace WindowsFormsApp2.Helpers.DB
             public string ResponseCode { get; set; } = string.Empty;
 
         }
+
+        public class  GaimeMain
+        {
+            public string ProccessNo { get; set; }
+            public string QaimeNomre { get; set; }
+            public DateTime Date { get; set; }
+            public string TotalPaid { get; set; }
+            public string PaymentType { get; set; }
+            public int CustomerId { get; set; }
+            public string Customer { get; set; }
+            public string Edvsiz { get; set; }
+            public string Edvli { get; set; }
+        }
     }
 }

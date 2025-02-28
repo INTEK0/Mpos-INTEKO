@@ -165,75 +165,57 @@ namespace WindowsFormsApp2
 
         private void accordionControlElement51_Click(object sender, EventArgs e)
         {
-            SqlConnection connection34 = new SqlConnection(Properties.Settings.Default.SqlCon);
-            SqlConnection conn234 = new SqlConnection();
-            SqlCommand cmd234 = new SqlCommand();
-            conn234.ConnectionString = Properties.Settings.Default.SqlCon;
-            conn234.Open();
-
             string message = "Excel faylına istəyə görə bütün məhsulları vəya KQ olan məhsulları yazdıra bilərsiniz.\n\n" +
-                "Yes/Да - Bütün məhsulları yazdır\n" +
-                "No/Нет - Vahidi KQ olan məhsulları yazdır\n" +
-                "Cancel/Отмена - Ləğv et";
+               "Yes/Да - Bütün məhsulları yazdır\n" +
+               "No/Нет - Vahidi KQ olan məhsulları yazdır\n" +
+               "Cancel/Отмена - Ləğv et";
 
             DialogResult result = MessageBox.Show(message, "Mesaj", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
             string query = string.Empty;
-            if (result is DialogResult.Cancel)
+
+            switch (result)
             {
-                return;
+                case DialogResult.Yes:
+                    query = "exec InsertIntoTerazimalzemeAllProducts";
+                    break;
+                case DialogResult.No:
+                    query = "exec InsertIntoTerazimalzemeFilteredByVahid";
+                    break;
+                default: return;
+
             }
-            else if (result is DialogResult.Yes)
+
+
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
             {
-                query = "exec InsertIntoTerazimalzemeAllProducts";
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.CommandTimeout = 60;
+                    cmd.ExecuteNonQuery();
+                    gridView2.ClearSelection();
+                    gridControl2.DataSource = null;
+                }
             }
-            else if (result is DialogResult.No)
+
+            string queryString = "SELECT  ROW_NUMBER() OVER(ORDER BY [MƏHSUL ADI]) AS Hotkey,REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE([MƏHSUL ADI],N'Ə','E'),N'ə','e'),N'ı','i'),N'ü','u'),N'ğ','g'),N'Ğ','G' ),N'Ü','U'),N'Ş','S'),N'ş','s'),N'Ç','C'),N'ç','c')  as Name  ,[MAL_ALISI_DETAILS_ID] as LFCode, [MAL_ALISI_DETAILS_ID] as Code ,7 AS [Barcode Type],[SATIŞ QİYMƏTİ] AS [Unit Price],4 AS [Unit Weight],0 AS [Unit Amount] ,21 AS [Department],0 AS [PT Weight],15 AS [Shelf Time],0 AS [Pack Type],0 AS [Tare],	0 AS [Error(%)],	0 AS [Message1],	0 AS [Message2],	0 AS [Label],	0 AS [Discount/Table],	0 AS [Account],	0 AS [sPluFieldTitle20],	0 AS [Account],	0 AS [Recommend days],	0 AS [nutrition],	0 AS [Ice(%)] FROM[terazimalzeme] ";
+
+            var data = DbProsedures.ConvertToDataTable(queryString);
+
+            gridControl2.DataSource = data;
+
+            using (SaveFileDialog saveFile = new SaveFileDialog
             {
-                query = "exec InsertIntoTerazimalzemeFilteredByVahid";
-            }
-
-            cmd234.Connection = conn234;
-            cmd234.CommandText = query;
-            cmd234.CommandTimeout = 60;
-            cmd234.ExecuteNonQuery();
-            conn234.Close();
-
-            gridView2.ClearSelection();
-            gridControl2.RefreshDataSource();
-            gridControl2.DataSource = null;
-
-
-            SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
-
-
-            // Provide the query string with a parameter placeholder.
-            string queryString =
-                 // " exec  dbo.chart_report ";
-
-                 " SELECT  ROW_NUMBER() OVER(ORDER BY [MƏHSUL ADI]) AS Hotkey,REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE([MƏHSUL ADI],N'Ə','E'),N'ə','e'),N'ı','i'),N'ü','u'),N'ğ','g'),N'Ğ','G' ),N'Ü','U'),N'Ş','S'),N'ş','s'),N'Ç','C'),N'ç','c')  as Name  ,[MAL_ALISI_DETAILS_ID] as LFCode, [MAL_ALISI_DETAILS_ID] as Code ,7 AS [Barcode Type],[SATIŞ QİYMƏTİ] AS [Unit Price],4 AS [Unit Weight],0 AS [Unit Amount] ,21 AS [Department],0 AS [PT Weight],15 AS [Shelf Time],0 AS [Pack Type],0 AS [Tare],	0 AS [Error(%)],	0 AS [Message1],	0 AS [Message2],	0 AS [Label],	0 AS [Discount/Table],	0 AS [Account],	0 AS [sPluFieldTitle20],	0 AS [Account],	0 AS [Recommend days],	0 AS [nutrition],	0 AS [Ice(%)] FROM[terazimalzeme] ";
-
-            SqlCommand command = new SqlCommand(queryString, connection);
-            //command.Parameters.AddWithValue("@pricepoint", D1_);
-            //command.Parameters.AddWithValue("@pricepoint1", D2_);
-            SqlDataAdapter da = new SqlDataAdapter(command);
-            DataTable dt = new DataTable();
-            da.Fill(dt);
-            //dataGridView1.DataSource= dt;
-            //gridView1.Columns[0].Visible = false;
-            //dataGridView1.Columns[2].Visible = false;
-            //dataGridView1.Columns[0].Visible = false;
-
-            gridControl2.DataSource = dt;
-
-
-
-            SaveFileDialog saveFile = new SaveFileDialog();
-            saveFile.Filter = "Excel faylı|*.xls";
-            saveFile.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            saveFile.OverwritePrompt = true; //varsa soruşmadan üstünə yazması üçün false olaraq qalmalıdır
-            saveFile.FileName = "TərəziData.xls";
-            if (saveFile.ShowDialog() is DialogResult.OK)
+                Filter = "Excel Faylı|*.xls",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                OverwritePrompt = true, //varsa soruşmadan üstünə yazması üçün false olaraq qalmalıdır
+                FileName = "TərəziData.xls"
+            })
             {
-                gridView2.ExportToCsv(saveFile.FileName, new DevExpress.XtraPrinting.CsvExportOptions { Separator = "\t" });
+                if (saveFile.ShowDialog() is DialogResult.OK)
+                {
+                    gridView2.ExportToCsv(saveFile.FileName, new DevExpress.XtraPrinting.CsvExportOptions { Separator = "\t" });
+                }
             }
         }
 
