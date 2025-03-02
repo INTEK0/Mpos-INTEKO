@@ -40,7 +40,8 @@ namespace WindowsFormsApp2.Forms
                 d.SATIS_GIYMETI as N'SATIŞ QİYMƏTİ',
                 d.BARKOD,
                 V.VAHIDLER_ID as N'VAHİD', 
-                TAX.EDV_ID AS 'VERGİ'
+                TAX.EDV_ID AS 'VERGİ',
+                d.SEKIL
                 from MAL_ALISI_MAIN M 
                 INNER JOIN MAL_ALISI_DETAILS D 
                 LEFT JOIN Vahidler V ON D.VAHID = V.VAHIDLER_ID 
@@ -65,6 +66,7 @@ namespace WindowsFormsApp2.Forms
                                 gridView1.Columns["BARKOD"].Visible = false;
                                 gridView1.Columns["VAHİD"].Visible = false;
                                 gridView1.Columns["VERGİ"].Visible = false;
+                                gridView1.Columns["SEKIL"].Visible = false;
                                 gridView1.OptionsSelection.MultiSelect = false;
                             }
                         }
@@ -98,6 +100,7 @@ namespace WindowsFormsApp2.Forms
                     Barocde = dr[5].ToString(),
                     UnitId = Convert.ToInt32(dr[6].ToString()),
                     TaxId = Convert.ToInt32(dr[7].ToString()),
+                    ProductImage = dr[8] != DBNull.Value ? (byte[])dr[8] : null,
                 };
 
                 if (parentForm.Name is "fAddProduct" && products != null)

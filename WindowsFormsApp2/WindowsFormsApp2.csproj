@@ -378,6 +378,12 @@
     <Compile Include="Forms\fPrintBarcode.Designer.cs">
       <DependentUpon>fPrintBarcode.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\fProductDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\fProductDetail.Designer.cs">
+      <DependentUpon>fProductDetail.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\fQaimeSalesReport.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1054,6 +1060,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fPrintBarcode.resx">
       <DependentUpon>fPrintBarcode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\fProductDetail.resx">
+      <DependentUpon>fProductDetail.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fQaimeSalesReport.resx">
       <DependentUpon>fQaimeSalesReport.cs</DependentUpon>

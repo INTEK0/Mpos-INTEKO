@@ -11,6 +11,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,7 +33,7 @@ namespace WindowsFormsApp2.Forms
         private int productID { get; set; }
         private int categoryID { get; set; }
         private DataTable _currentDataTable = new DataTable();
-
+        private byte[] imageBytes;
         public fAddProduct()
         {
             InitializeComponent();
@@ -137,7 +138,8 @@ namespace WindowsFormsApp2.Forms
                 TotalAmount = tTotalAmount.Text,
                 IstehsalTarixi = dateİstehsal.Text,
                 BitisTarixi = dateBitis.Text,
-                XeberdarEt = spinEdit1.Text
+                XeberdarEt = spinEdit1.Text,
+                imageBytes = imageBytes
             };
 
             var validator = new ProductValidation();
@@ -176,7 +178,6 @@ namespace WindowsFormsApp2.Forms
                         Clear();
                         GetAllData(tProccessNo.Text, ProductOperation.Add);
                         YeniBorcHesabla();
-                        
                     }
                 }
             }
@@ -283,7 +284,21 @@ namespace WindowsFormsApp2.Forms
                     tSalePrice.EditValue = product.SalePrice;
                     lookUnit.EditValue = product.UnitId;
                     lookTaxType.EditValue = product.TaxId;
+                    ImageFromByteArray(product.ProductImage);
                 }
+            }
+        }
+
+        private void ImageFromByteArray(byte[] imageData)
+        {
+            if (imageData == null || imageData.Length == 0)
+                return;
+
+            using (MemoryStream ms = new MemoryStream(imageData))
+            {
+                Image image = Image.FromStream(ms);
+                pictureProduct.Image = image;
+                imageBytes = imageData;
             }
         }
 
@@ -428,6 +443,7 @@ namespace WindowsFormsApp2.Forms
             dateİstehsal.Text = null;
             dateBitis.Text = null;
             spinEdit1.EditValue = 0;
+            pictureProduct.Image = null;
         }
 
         private void GetAllData(string proccessNo, ProductOperation operation)
@@ -657,6 +673,27 @@ namespace WindowsFormsApp2.Forms
             {
                 SupplierDataLoad();
             }
+        }
+
+        private void bAddImage_Click(object sender, EventArgs e)
+        {
+            Cursor.Current = Cursors.WaitCursor;
+            OpenFileDialog openFile = new OpenFileDialog();
+            if (openFile.ShowDialog() is DialogResult.OK)
+            {
+                pictureProduct.Image = Image.FromFile(openFile.FileName);
+                using (Stream stream = File.OpenRead(openFile.FileName))
+                {
+                    imageBytes = new byte[stream.Length];
+                    stream.Read(imageBytes, 0, imageBytes.Length);
+                }
+            }
+            else
+            {
+                pictureProduct.Image = null;
+                imageBytes = null;
+            }
+            Cursor.Current = Cursors.Default;
         }
     }
 }

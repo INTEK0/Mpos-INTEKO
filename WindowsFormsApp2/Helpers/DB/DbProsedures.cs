@@ -14,52 +14,53 @@ namespace WindowsFormsApp2.Helpers.DB
 
         #region [...PROCEDURES QUERY...]
 
-        private static readonly string INSERT_CompanyQuery = "INSERT_COMPANY";
-        private static readonly string INSERT_PosSalesQuery = "azmart_sale_insert";
-        private static readonly string INSERT_ItemQuery = "INSERT_Item";
-        private static readonly string DELETE_ItemQuery = "delete_item";
-        private static readonly string INSERT_HeaderQuery = "INSERT_header";
-        private static readonly string INSERT_HeaderQueryPre = "INSERT_headerpre";
-        private static readonly string INSERT_CalculationQuery = "insert_calculation";
-        private static readonly string INSERT_PosRefundQuery = "insert_pos_gaytarma_manual";
-        private static readonly string GET_PosSalesProccesNoQuery = "exec dbo.pos_emeliyyat_nomre";
-        private static readonly string GET_TotalSalesCountQuery = "select count(*) as say from pos_satis_check_main";
-        private static readonly string INSERT_PosBasketQuery = "InsertBasketData";
-        private static readonly string ExportPosBasketQuery = "ExportBasketDataToCalculation";
-        private static readonly string GET_BasketDataLoadQuery = "PosBasketDataLoad";
-        private static readonly string GET_CategoryExistsQuery = "SELECT_COUNT_KATEGORY";
-        private static readonly string INSERT_CategoryQuery = "SELECT_KATEGORY";
-        private static readonly string GET_ProductExistsQuery = "yoxlama_mehsul_kodu";
-        private static readonly string INSERT_MALALISIMAINQuery = "INSERT_MAL_ALISI_MAIN";
-        private static readonly string INSERT_IMPORT_MALALISIMAINQuery = "INSERT_IMPORT_MAL_ALISI_MAIN";
-        private static readonly string INSERT_MALALISIDETAILQuery = "INSERT_MAL_ALISI_DETAILS";
-        private static readonly string DELETE_MALALISIDETAILQuery = "DELETE_PRODUCT_MAL_ALIS_DETAILS";
-        private static readonly string GET_ProductProccesNoLQuery = "EXEC  dbo.MAL_ALISI_EMELIYYAT_NOMRE";
-        private static readonly string INSERT_CustomerQuery = "INSERT_MUSTERI";
-        private static readonly string INSERT_DoctorQuery = "INSERT_DOCTOR";
-        private static readonly string DELETE_CustomerQuery = "delete_customer";
-        private static readonly string DELETE_DoctorQuery = "delete_doctor";
-        private static readonly string GET_CustomerProccessNoQuery = "EXEC dbo.MUSTERI_EMELIYYAT_NOMRE";
-        private static readonly string GET_DoctorProccessNoQuery = "EXEC dbo.DOCTOR_EMELIYYAT_NOMRE";
-        private static readonly string UPDATE_CustomerDataQuery = "UPDATE_MUSTERI";
-        private static readonly string UPDATE_DoctorDataQuery = "UPDATE_DOCTOR";
-        private static readonly string GET_SupplierProccessNoQuery = "EXEC dbo.TECHIZATCI_NOMRE";
-        private static readonly string INSERT_SupplierQuery = "INSERT_TECHIZATCI";
-        private static readonly string UPDATE_SupplierQuery = "search_techizatci_update";
-        private static readonly string DELETE_SupplierQuery = "search_techizatci_delete";
-        private static readonly string GET_GuarantorProccessNoQuery = "EXEC dbo.ZAMIN_EMELIYYAT_NOMRE";
-        private static readonly string INSERT_GuarantorQuery = "INSERT_ZAMIN";
-        private static readonly string DELETE_GuarantorQuery = "delete_zamin";
-        private static readonly string UPDATE_GuarantorDataQuery = "UPDATE_ZAMIN";
-        private static readonly string GET_RefundProccesNoQuery = "EXEC dbo.POS_GAYTARMA";
-        private static readonly string INSERT_UserQuery = "userParol_insert";
-        private static readonly string UPDATE_UserQuery = "userParol_update";
-        private static readonly string DELETE_UserQuery = "userParol_delete";
-        private static readonly string INSERT_ClinicDataQuery = "ClinicReportInsertData";
+        private const string INSERT_CompanyQuery = "INSERT_COMPANY";
+        private const string INSERT_PosSalesQuery = "azmart_sale_insert";
+        private const string INSERT_ItemQuery = "INSERT_Item";
+        private const string DELETE_ItemQuery = "delete_item";
+        private const string INSERT_HeaderQuery = "INSERT_header";
+        private const string INSERT_HeaderQueryPre = "INSERT_headerpre";
+        private const string INSERT_CalculationQuery = "insert_calculation";
+        private const string INSERT_PosRefundQuery = "insert_pos_gaytarma_manual";
+        private const string GET_PosSalesProccesNoQuery = "exec dbo.pos_emeliyyat_nomre";
+        private const string GET_TotalSalesCountQuery = "select count(*) as say from pos_satis_check_main";
+        private const string INSERT_PosBasketQuery = "InsertBasketData";
+        private const string ExportPosBasketQuery = "ExportBasketDataToCalculation";
+        private const string GET_BasketDataLoadQuery = "PosBasketDataLoad";
+        private const string GET_CategoryExistsQuery = "SELECT_COUNT_KATEGORY";
+        private const string INSERT_CategoryQuery = "SELECT_KATEGORY";
+        private const string GET_ProductExistsQuery = "yoxlama_mehsul_kodu";
+        private const string INSERT_MALALISIMAINQuery = "INSERT_MAL_ALISI_MAIN";
+        private const string INSERT_IMPORT_MALALISIMAINQuery = "INSERT_IMPORT_MAL_ALISI_MAIN";
+        private const string INSERT_MALALISIDETAILQuery = "INSERT_MAL_ALISI_DETAILS";
+        private const string DELETE_MALALISIDETAILQuery = "DELETE_PRODUCT_MAL_ALIS_DETAILS";
+        private const string GET_ProductProccesNoLQuery = "EXEC  dbo.MAL_ALISI_EMELIYYAT_NOMRE";
+        private const string INSERT_CustomerQuery = "INSERT_MUSTERI";
+        private const string INSERT_DoctorQuery = "INSERT_DOCTOR";
+        private const string DELETE_CustomerQuery = "delete_customer";
+        private const string DELETE_DoctorQuery = "delete_doctor";
+        private const string GET_CustomerProccessNoQuery = "EXEC dbo.MUSTERI_EMELIYYAT_NOMRE";
+        private const string GET_DoctorProccessNoQuery = "EXEC dbo.DOCTOR_EMELIYYAT_NOMRE";
+        private const string UPDATE_CustomerDataQuery = "UPDATE_MUSTERI";
+        private const string UPDATE_DoctorDataQuery = "UPDATE_DOCTOR";
+        private const string GET_SupplierProccessNoQuery = "EXEC dbo.TECHIZATCI_NOMRE";
+        private const string INSERT_SupplierQuery = "INSERT_TECHIZATCI";
+        private const string UPDATE_SupplierQuery = "search_techizatci_update";
+        private const string DELETE_SupplierQuery = "search_techizatci_delete";
+        private const string GET_GuarantorProccessNoQuery = "EXEC dbo.ZAMIN_EMELIYYAT_NOMRE";
+        private const string INSERT_GuarantorQuery = "INSERT_ZAMIN";
+        private const string DELETE_GuarantorQuery = "delete_zamin";
+        private const string UPDATE_GuarantorDataQuery = "UPDATE_ZAMIN";
+        private const string GET_RefundProccesNoQuery = "EXEC dbo.POS_GAYTARMA";
+        private const string INSERT_UserQuery = "userParol_insert";
+        private const string UPDATE_UserQuery = "userParol_update";
+        private const string DELETE_UserQuery = "userParol_delete";
+        private const string INSERT_ClinicDataQuery = "ClinicReportInsertData";
         public static readonly string GET_ClinicDataLoadQuery = $"EXEC [dbo].[ClinicReportDataLoad]@UserID = {Properties.Settings.Default.UserID}";
-        private static readonly string INSERT_GaimeSalesMainQuery = "INSERT_GAIME_SATISI_MAIN";
+        private const string INSERT_GaimeSalesMainQuery = "INSERT_GAIME_SATISI_MAIN";
         private static readonly string GET_GaimeSalesProccessNoQuery = "EXEC dbo.GAIME_SATISI_EMELIYYAT_NOMRE";
         private static readonly string GET_GaimeRefundProccessNoQuery = "EXEC dbo.GAIME_SATISI_GAYTARMA";
+        private const string GET_GetProductSalesDataQuery = "GetProductSalesData";
 
         #endregion [...PROCEDURES QUERY...]
 
@@ -932,6 +933,8 @@ namespace WindowsFormsApp2.Helpers.DB
                         param.Value = item.XeberdarEt;
                         param = cmd.Parameters.Add("@ShowPosScreen", SqlDbType.Bit);
                         param.Value = false;
+                        param = cmd.Parameters.Add("@SEKIL", SqlDbType.VarBinary, int.MaxValue);
+                        param.Value = item.imageBytes;
 
                         param = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
                         param.Direction = ParameterDirection.Output;
@@ -1832,6 +1835,7 @@ namespace WindowsFormsApp2.Helpers.DB
         #endregion [..CLINIC REPORT..]
 
 
+
         #region [..GAİME SALES..]
 
         public static string GET_GaimeSalesProccessNo()
@@ -1884,7 +1888,7 @@ namespace WindowsFormsApp2.Helpers.DB
                     param = cmd.Parameters.Add("@EMELIYYAT_NOMRE", SqlDbType.NVarChar, 50);
                     param.Value = data.ProccessNo;
                     param = cmd.Parameters.Add("@GAIME_NOMRE", SqlDbType.NVarChar, 20);
-                    param.Value = data.QaimeNomre = string.IsNullOrWhiteSpace(data.QaimeNomre) ? data.ProccessNo.Replace("QS-","") : data.QaimeNomre;
+                    param.Value = data.QaimeNomre = string.IsNullOrWhiteSpace(data.QaimeNomre) ? data.ProccessNo.Replace("QS-", "") : data.QaimeNomre;
                     param = cmd.Parameters.Add("@ODENILEN_MEBLEG", SqlDbType.NVarChar, 100);
                     param.Value = data.TotalPaid;
                     param = cmd.Parameters.Add("@TARIX", SqlDbType.Date);
@@ -1913,21 +1917,40 @@ namespace WindowsFormsApp2.Helpers.DB
 
         #endregion [..GAİME SALES..]
 
-        #endregion [...PROCEDURES METHODS...]
 
 
+        #region [.. REPORTS ..]
 
-        /*
-         *using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
-          {
-          connection.Open();
-          using (SqlCommand cmd = new SqlCommand())
+        public static DataTable Get_ProductSalesData(string barcode)
+        {
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
             {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand(GET_GetProductSalesDataQuery, con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlParameter param;
 
+                    param = cmd.Parameters.Add("@Barcode", SqlDbType.NVarChar, 50);
+                    param.Value = barcode;
+
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    {
+                        using (DataTable dt = new DataTable())
+                        {
+                            da.Fill(dt);
+                            return dt;
+                        }
+                    }
+                }
             }
-          }
-         * 
-         * 
-         * */
+        }
+
+        #endregion [.. REPORTS ..]
+
+
+
+
+        #endregion [...PROCEDURES METHODS...]
     }
 }

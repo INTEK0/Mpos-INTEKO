@@ -336,9 +336,9 @@ namespace WindowsFormsApp2
             // 
             this.tableLayoutPanel1.ColumnCount = 4;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.30006F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 23.36495F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 43.33499F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 66.66666F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 248F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel1.Controls.Add(this.gridControl2, 1, 4);
             this.tableLayoutPanel1.Controls.Add(this.pictureEdit1, 3, 4);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel8, 3, 1);
@@ -349,18 +349,18 @@ namespace WindowsFormsApp2
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 5;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 13.04377F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 35.22988F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 29.54011F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.45272F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.733523F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 116F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40.5145F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.97124F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 18.92069F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 6.593573F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1157, 806);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // gridControl2
             // 
             this.gridControl2.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.gridControl2.Location = new System.Drawing.Point(25, 762);
+            this.gridControl2.Location = new System.Drawing.Point(25, 763);
             this.gridControl2.MainView = this.gridView2;
             this.gridControl2.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.gridControl2.Name = "gridControl2";
@@ -383,7 +383,7 @@ namespace WindowsFormsApp2
             // 
             this.pictureEdit1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureEdit1.EditValue = global::WindowsFormsApp2.Properties.Resources.Mpos_Logo_Text;
-            this.pictureEdit1.Location = new System.Drawing.Point(668, 761);
+            this.pictureEdit1.Location = new System.Drawing.Point(865, 762);
             this.pictureEdit1.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.pictureEdit1.MenuManager = this.fluentFormDefaultManager1;
             this.pictureEdit1.Name = "pictureEdit1";
@@ -397,7 +397,7 @@ namespace WindowsFormsApp2
             this.pictureEdit1.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
             this.pictureEdit1.Properties.ShowMenu = false;
             this.pictureEdit1.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Zoom;
-            this.pictureEdit1.Size = new System.Drawing.Size(484, 42);
+            this.pictureEdit1.Size = new System.Drawing.Size(287, 41);
             this.pictureEdit1.TabIndex = 4;
             // 
             // fluentFormDefaultManager1
@@ -431,13 +431,13 @@ namespace WindowsFormsApp2
             this.tableLayoutPanel8.Controls.Add(this.b15, 2, 1);
             this.tableLayoutPanel8.Controls.Add(this.b20, 3, 1);
             this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel8.Location = new System.Drawing.Point(663, 105);
+            this.tableLayoutPanel8.Location = new System.Drawing.Point(860, 116);
             this.tableLayoutPanel8.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel8.Name = "tableLayoutPanel8";
             this.tableLayoutPanel8.RowCount = 2;
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 85.2459F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.7541F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(494, 283);
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(297, 279);
             this.tableLayoutPanel8.TabIndex = 5;
             // 
             // gridControl1
@@ -449,7 +449,7 @@ namespace WindowsFormsApp2
             this.gridControl1.LookAndFeel.UseDefaultLookAndFeel = false;
             this.gridControl1.MainView = this.gridView1;
             this.gridControl1.Name = "gridControl1";
-            this.gridControl1.Size = new System.Drawing.Size(488, 235);
+            this.gridControl1.Size = new System.Drawing.Size(291, 231);
             this.gridControl1.TabIndex = 0;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
@@ -509,13 +509,13 @@ namespace WindowsFormsApp2
             this.b5.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(235)))), ((int)(((byte)(177)))));
             this.b5.Appearance.Options.UseBackColor = true;
             this.b5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.b5.Location = new System.Drawing.Point(5, 246);
+            this.b5.Location = new System.Drawing.Point(5, 242);
             this.b5.LookAndFeel.SkinName = "WXI";
             this.b5.LookAndFeel.UseDefaultLookAndFeel = false;
             this.b5.Margin = new System.Windows.Forms.Padding(5);
             this.b5.Name = "b5";
             this.b5.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.b5.Size = new System.Drawing.Size(113, 32);
+            this.b5.Size = new System.Drawing.Size(64, 32);
             this.b5.TabIndex = 1;
             this.b5.Text = "5";
             this.b5.Click += new System.EventHandler(this.BestSellingProductListCount);
@@ -526,13 +526,13 @@ namespace WindowsFormsApp2
             this.b10.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(158)))), ((int)(((byte)(204)))), ((int)(((byte)(253)))));
             this.b10.Appearance.Options.UseBackColor = true;
             this.b10.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.b10.Location = new System.Drawing.Point(128, 246);
+            this.b10.Location = new System.Drawing.Point(79, 242);
             this.b10.LookAndFeel.SkinName = "WXI";
             this.b10.LookAndFeel.UseDefaultLookAndFeel = false;
             this.b10.Margin = new System.Windows.Forms.Padding(5);
             this.b10.Name = "b10";
             this.b10.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.b10.Size = new System.Drawing.Size(113, 32);
+            this.b10.Size = new System.Drawing.Size(64, 32);
             this.b10.TabIndex = 1;
             this.b10.Text = "10";
             this.b10.Click += new System.EventHandler(this.BestSellingProductListCount);
@@ -543,13 +543,13 @@ namespace WindowsFormsApp2
             this.b15.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(215)))), ((int)(((byte)(195)))), ((int)(((byte)(241)))));
             this.b15.Appearance.Options.UseBackColor = true;
             this.b15.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.b15.Location = new System.Drawing.Point(251, 246);
+            this.b15.Location = new System.Drawing.Point(153, 242);
             this.b15.LookAndFeel.SkinName = "WXI";
             this.b15.LookAndFeel.UseDefaultLookAndFeel = false;
             this.b15.Margin = new System.Windows.Forms.Padding(5);
             this.b15.Name = "b15";
             this.b15.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.b15.Size = new System.Drawing.Size(113, 32);
+            this.b15.Size = new System.Drawing.Size(64, 32);
             this.b15.TabIndex = 1;
             this.b15.Text = "15";
             this.b15.Click += new System.EventHandler(this.BestSellingProductListCount);
@@ -560,13 +560,13 @@ namespace WindowsFormsApp2
             this.b20.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(251)))), ((int)(((byte)(233)))));
             this.b20.Appearance.Options.UseBackColor = true;
             this.b20.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.b20.Location = new System.Drawing.Point(374, 246);
+            this.b20.Location = new System.Drawing.Point(227, 242);
             this.b20.LookAndFeel.SkinName = "WXI";
             this.b20.LookAndFeel.UseDefaultLookAndFeel = false;
             this.b20.Margin = new System.Windows.Forms.Padding(5);
             this.b20.Name = "b20";
             this.b20.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.b20.Size = new System.Drawing.Size(115, 32);
+            this.b20.Size = new System.Drawing.Size(65, 32);
             this.b20.TabIndex = 1;
             this.b20.Text = "20";
             this.b20.Click += new System.EventHandler(this.BestSellingProductListCount);
@@ -578,12 +578,12 @@ namespace WindowsFormsApp2
             this.panelControl9.Controls.Add(this.gridControlProducts);
             this.panelControl9.Controls.Add(this.panelControl10);
             this.panelControl9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelControl9.Location = new System.Drawing.Point(3, 108);
+            this.panelControl9.Location = new System.Drawing.Point(3, 119);
             this.panelControl9.LookAndFeel.SkinName = "WXI";
             this.panelControl9.LookAndFeel.UseDefaultLookAndFeel = false;
             this.panelControl9.Name = "panelControl9";
             this.tableLayoutPanel1.SetRowSpan(this.panelControl9, 3);
-            this.panelControl9.Size = new System.Drawing.Size(657, 647);
+            this.panelControl9.Size = new System.Drawing.Size(854, 637);
             this.panelControl9.TabIndex = 6;
             // 
             // gridControlProducts
@@ -594,7 +594,7 @@ namespace WindowsFormsApp2
             this.gridControlProducts.LookAndFeel.UseDefaultLookAndFeel = false;
             this.gridControlProducts.MainView = this.gridProducts;
             this.gridControlProducts.Name = "gridControlProducts";
-            this.gridControlProducts.Size = new System.Drawing.Size(657, 614);
+            this.gridControlProducts.Size = new System.Drawing.Size(854, 604);
             this.gridControlProducts.TabIndex = 0;
             this.gridControlProducts.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridProducts});
@@ -627,7 +627,7 @@ namespace WindowsFormsApp2
             this.panelControl10.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelControl10.Location = new System.Drawing.Point(0, 0);
             this.panelControl10.Name = "panelControl10";
-            this.panelControl10.Size = new System.Drawing.Size(657, 33);
+            this.panelControl10.Size = new System.Drawing.Size(854, 33);
             this.panelControl10.TabIndex = 1;
             // 
             // chShowStock
@@ -677,7 +677,7 @@ namespace WindowsFormsApp2
             this.bGridExcelExport.Dock = System.Windows.Forms.DockStyle.Right;
             this.bGridExcelExport.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bGridExcelExport.ImageOptions.SvgImage")));
             this.bGridExcelExport.ImageOptions.SvgImageSize = new System.Drawing.Size(20, 20);
-            this.bGridExcelExport.Location = new System.Drawing.Point(566, 2);
+            this.bGridExcelExport.Location = new System.Drawing.Point(763, 2);
             this.bGridExcelExport.LookAndFeel.SkinName = "WXI";
             this.bGridExcelExport.LookAndFeel.UseDefaultLookAndFeel = false;
             this.bGridExcelExport.Margin = new System.Windows.Forms.Padding(5);
@@ -692,12 +692,12 @@ namespace WindowsFormsApp2
             // 
             this.groupControl1.Controls.Add(this.tableLayoutPanel7);
             this.groupControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupControl1.Location = new System.Drawing.Point(666, 629);
+            this.groupControl1.Location = new System.Drawing.Point(863, 632);
             this.groupControl1.LookAndFeel.SkinName = "WXI";
             this.groupControl1.LookAndFeel.UseDefaultLookAndFeel = false;
             this.groupControl1.Name = "groupControl1";
             this.groupControl1.ShowCaption = false;
-            this.groupControl1.Size = new System.Drawing.Size(488, 126);
+            this.groupControl1.Size = new System.Drawing.Size(291, 124);
             this.groupControl1.TabIndex = 7;
             this.groupControl1.Text = "groupControl1";
             // 
@@ -721,7 +721,7 @@ namespace WindowsFormsApp2
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(484, 122);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(287, 120);
             this.tableLayoutPanel7.TabIndex = 0;
             // 
             // labelControl12
@@ -740,7 +740,7 @@ namespace WindowsFormsApp2
             this.labelControl12.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.labelControl12.Name = "labelControl12";
             this.labelControl12.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.labelControl12.Size = new System.Drawing.Size(268, 36);
+            this.labelControl12.Size = new System.Drawing.Size(157, 34);
             this.labelControl12.TabIndex = 6;
             this.labelControl12.Text = "Mpos versiya :";
             // 
@@ -760,7 +760,7 @@ namespace WindowsFormsApp2
             this.labelControl17.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.labelControl17.Name = "labelControl17";
             this.labelControl17.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.labelControl17.Size = new System.Drawing.Size(268, 34);
+            this.labelControl17.Size = new System.Drawing.Size(157, 34);
             this.labelControl17.TabIndex = 4;
             this.labelControl17.Text = "Lisenziya :";
             // 
@@ -780,7 +780,7 @@ namespace WindowsFormsApp2
             this.labelControl19.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.labelControl19.Name = "labelControl19";
             this.labelControl19.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.labelControl19.Size = new System.Drawing.Size(268, 34);
+            this.labelControl19.Size = new System.Drawing.Size(157, 34);
             this.labelControl19.TabIndex = 5;
             this.labelControl19.Text = "Lisenziya versiya :";
             // 
@@ -796,10 +796,10 @@ namespace WindowsFormsApp2
             this.lLicenceStatus.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.lLicenceStatus.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.lLicenceStatus.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lLicenceStatus.Location = new System.Drawing.Point(274, 3);
+            this.lLicenceStatus.Location = new System.Drawing.Point(163, 3);
             this.lLicenceStatus.Name = "lLicenceStatus";
             this.lLicenceStatus.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.lLicenceStatus.Size = new System.Drawing.Size(207, 34);
+            this.lLicenceStatus.Size = new System.Drawing.Size(121, 34);
             this.lLicenceStatus.TabIndex = 5;
             this.lLicenceStatus.Text = "Aktivdir";
             // 
@@ -815,10 +815,10 @@ namespace WindowsFormsApp2
             this.lLicenceVersion.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.lLicenceVersion.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.lLicenceVersion.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lLicenceVersion.Location = new System.Drawing.Point(274, 43);
+            this.lLicenceVersion.Location = new System.Drawing.Point(163, 43);
             this.lLicenceVersion.Name = "lLicenceVersion";
             this.lLicenceVersion.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.lLicenceVersion.Size = new System.Drawing.Size(207, 34);
+            this.lLicenceVersion.Size = new System.Drawing.Size(121, 34);
             this.lLicenceVersion.TabIndex = 5;
             this.lLicenceVersion.Text = "-";
             // 
@@ -833,10 +833,10 @@ namespace WindowsFormsApp2
             this.lMposVersion.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.lMposVersion.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.lMposVersion.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lMposVersion.Location = new System.Drawing.Point(274, 83);
+            this.lMposVersion.Location = new System.Drawing.Point(163, 83);
             this.lMposVersion.Name = "lMposVersion";
             this.lMposVersion.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.lMposVersion.Size = new System.Drawing.Size(207, 36);
+            this.lMposVersion.Size = new System.Drawing.Size(121, 34);
             this.lMposVersion.TabIndex = 6;
             this.lMposVersion.Text = "-";
             // 
@@ -853,7 +853,7 @@ namespace WindowsFormsApp2
             this.groupControl2.LookAndFeel.SkinName = "WXI";
             this.groupControl2.LookAndFeel.UseDefaultLookAndFeel = false;
             this.groupControl2.Name = "groupControl2";
-            this.groupControl2.Size = new System.Drawing.Size(1151, 99);
+            this.groupControl2.Size = new System.Drawing.Size(1151, 110);
             this.groupControl2.TabIndex = 11;
             this.groupControl2.Text = "Cari hesabat";
             // 
@@ -873,9 +873,9 @@ namespace WindowsFormsApp2
             this.tableLayoutPanel2.Location = new System.Drawing.Point(2, 23);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 74F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 74F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1147, 74);
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 85F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 85F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1147, 85);
             this.tableLayoutPanel2.TabIndex = 1;
             // 
             // tableLayoutPanel6
@@ -891,7 +891,7 @@ namespace WindowsFormsApp2
             this.tableLayoutPanel6.RowCount = 1;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(283, 68);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(283, 79);
             this.tableLayoutPanel6.TabIndex = 3;
             // 
             // panelControl7
@@ -905,7 +905,7 @@ namespace WindowsFormsApp2
             this.panelControl7.Location = new System.Drawing.Point(3, 3);
             this.panelControl7.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.panelControl7.Name = "panelControl7";
-            this.panelControl7.Size = new System.Drawing.Size(200, 62);
+            this.panelControl7.Size = new System.Drawing.Size(200, 73);
             this.panelControl7.TabIndex = 0;
             // 
             // lStockCount
@@ -922,7 +922,7 @@ namespace WindowsFormsApp2
             this.lStockCount.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lStockCount.Location = new System.Drawing.Point(0, 26);
             this.lStockCount.Name = "lStockCount";
-            this.lStockCount.Size = new System.Drawing.Size(200, 36);
+            this.lStockCount.Size = new System.Drawing.Size(200, 47);
             this.lStockCount.TabIndex = 3;
             this.lStockCount.Text = "0";
             // 
@@ -955,7 +955,7 @@ namespace WindowsFormsApp2
             this.panelControl8.Location = new System.Drawing.Point(203, 3);
             this.panelControl8.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.panelControl8.Name = "panelControl8";
-            this.panelControl8.Size = new System.Drawing.Size(77, 62);
+            this.panelControl8.Size = new System.Drawing.Size(77, 73);
             this.panelControl8.TabIndex = 0;
             // 
             // lRefresh
@@ -966,7 +966,7 @@ namespace WindowsFormsApp2
             this.lRefresh.ImageOptions.SvgImageSize = new System.Drawing.Size(36, 36);
             this.lRefresh.Location = new System.Drawing.Point(0, 0);
             this.lRefresh.Name = "lRefresh";
-            this.lRefresh.Size = new System.Drawing.Size(77, 62);
+            this.lRefresh.Size = new System.Drawing.Size(77, 73);
             this.lRefresh.TabIndex = 3;
             this.lRefresh.Click += new System.EventHandler(this.lRefresh_Click);
             // 
@@ -983,7 +983,7 @@ namespace WindowsFormsApp2
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(280, 68);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(280, 79);
             this.tableLayoutPanel3.TabIndex = 2;
             // 
             // panelControl1
@@ -999,7 +999,7 @@ namespace WindowsFormsApp2
             this.panelControl1.LookAndFeel.UseDefaultLookAndFeel = false;
             this.panelControl1.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.panelControl1.Name = "panelControl1";
-            this.panelControl1.Size = new System.Drawing.Size(198, 62);
+            this.panelControl1.Size = new System.Drawing.Size(198, 73);
             this.panelControl1.TabIndex = 0;
             // 
             // lSalePriceTotal
@@ -1016,7 +1016,7 @@ namespace WindowsFormsApp2
             this.lSalePriceTotal.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lSalePriceTotal.Location = new System.Drawing.Point(0, 26);
             this.lSalePriceTotal.Name = "lSalePriceTotal";
-            this.lSalePriceTotal.Size = new System.Drawing.Size(198, 36);
+            this.lSalePriceTotal.Size = new System.Drawing.Size(198, 47);
             this.lSalePriceTotal.TabIndex = 3;
             this.lSalePriceTotal.Text = "0.00 AZN";
             // 
@@ -1052,7 +1052,7 @@ namespace WindowsFormsApp2
             this.panelControl2.LookAndFeel.UseDefaultLookAndFeel = false;
             this.panelControl2.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.panelControl2.Name = "panelControl2";
-            this.panelControl2.Size = new System.Drawing.Size(76, 62);
+            this.panelControl2.Size = new System.Drawing.Size(76, 73);
             this.panelControl2.TabIndex = 0;
             // 
             // lSalesCount
@@ -1070,7 +1070,7 @@ namespace WindowsFormsApp2
             this.lSalesCount.Location = new System.Drawing.Point(0, 26);
             this.lSalesCount.Name = "lSalesCount";
             this.lSalesCount.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
-            this.lSalesCount.Size = new System.Drawing.Size(76, 36);
+            this.lSalesCount.Size = new System.Drawing.Size(76, 47);
             this.lSalesCount.TabIndex = 2;
             this.lSalesCount.Text = "0";
             // 
@@ -1106,7 +1106,7 @@ namespace WindowsFormsApp2
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(280, 68);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(280, 79);
             this.tableLayoutPanel4.TabIndex = 3;
             // 
             // panelControl3
@@ -1120,7 +1120,7 @@ namespace WindowsFormsApp2
             this.panelControl3.Location = new System.Drawing.Point(3, 3);
             this.panelControl3.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.panelControl3.Name = "panelControl3";
-            this.panelControl3.Size = new System.Drawing.Size(198, 62);
+            this.panelControl3.Size = new System.Drawing.Size(198, 73);
             this.panelControl3.TabIndex = 0;
             // 
             // lRefuntPrice
@@ -1137,7 +1137,7 @@ namespace WindowsFormsApp2
             this.lRefuntPrice.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lRefuntPrice.Location = new System.Drawing.Point(0, 26);
             this.lRefuntPrice.Name = "lRefuntPrice";
-            this.lRefuntPrice.Size = new System.Drawing.Size(198, 36);
+            this.lRefuntPrice.Size = new System.Drawing.Size(198, 47);
             this.lRefuntPrice.TabIndex = 3;
             this.lRefuntPrice.Text = "0.00 AZN";
             // 
@@ -1171,7 +1171,7 @@ namespace WindowsFormsApp2
             this.panelControl4.Location = new System.Drawing.Point(201, 3);
             this.panelControl4.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.panelControl4.Name = "panelControl4";
-            this.panelControl4.Size = new System.Drawing.Size(76, 62);
+            this.panelControl4.Size = new System.Drawing.Size(76, 73);
             this.panelControl4.TabIndex = 0;
             // 
             // lRefundCount
@@ -1189,7 +1189,7 @@ namespace WindowsFormsApp2
             this.lRefundCount.Location = new System.Drawing.Point(0, 26);
             this.lRefundCount.Name = "lRefundCount";
             this.lRefundCount.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
-            this.lRefundCount.Size = new System.Drawing.Size(76, 36);
+            this.lRefundCount.Size = new System.Drawing.Size(76, 47);
             this.lRefundCount.TabIndex = 2;
             this.lRefundCount.Text = "0";
             // 
@@ -1225,7 +1225,7 @@ namespace WindowsFormsApp2
             this.tableLayoutPanel5.RowCount = 1;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(280, 68);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(280, 79);
             this.tableLayoutPanel5.TabIndex = 3;
             // 
             // panelControl5
@@ -1239,7 +1239,7 @@ namespace WindowsFormsApp2
             this.panelControl5.Location = new System.Drawing.Point(3, 3);
             this.panelControl5.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.panelControl5.Name = "panelControl5";
-            this.panelControl5.Size = new System.Drawing.Size(198, 62);
+            this.panelControl5.Size = new System.Drawing.Size(198, 73);
             this.panelControl5.TabIndex = 0;
             // 
             // lPurchaseTotalPrice
@@ -1256,7 +1256,7 @@ namespace WindowsFormsApp2
             this.lPurchaseTotalPrice.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lPurchaseTotalPrice.Location = new System.Drawing.Point(0, 26);
             this.lPurchaseTotalPrice.Name = "lPurchaseTotalPrice";
-            this.lPurchaseTotalPrice.Size = new System.Drawing.Size(198, 36);
+            this.lPurchaseTotalPrice.Size = new System.Drawing.Size(198, 47);
             this.lPurchaseTotalPrice.TabIndex = 3;
             this.lPurchaseTotalPrice.Text = "0.00 AZN";
             // 
@@ -1290,7 +1290,7 @@ namespace WindowsFormsApp2
             this.panelControl6.Location = new System.Drawing.Point(201, 3);
             this.panelControl6.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.panelControl6.Name = "panelControl6";
-            this.panelControl6.Size = new System.Drawing.Size(76, 62);
+            this.panelControl6.Size = new System.Drawing.Size(76, 73);
             this.panelControl6.TabIndex = 0;
             // 
             // lPurchaseCount
@@ -1308,7 +1308,7 @@ namespace WindowsFormsApp2
             this.lPurchaseCount.Location = new System.Drawing.Point(0, 38);
             this.lPurchaseCount.Name = "lPurchaseCount";
             this.lPurchaseCount.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
-            this.lPurchaseCount.Size = new System.Drawing.Size(76, 24);
+            this.lPurchaseCount.Size = new System.Drawing.Size(76, 35);
             this.lPurchaseCount.TabIndex = 2;
             this.lPurchaseCount.Text = "0";
             // 

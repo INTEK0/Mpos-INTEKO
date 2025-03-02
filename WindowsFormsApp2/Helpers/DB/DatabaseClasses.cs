@@ -201,6 +201,7 @@ namespace WindowsFormsApp2.Helpers.DB
             public string IstehsalTarixi { get; set; } = null;
             public string BitisTarixi { get; set; } = null;
             public string XeberdarEt { get; set; }
+            public byte[] imageBytes { get; set; } = null;
             public int IsDeleted { get; set; }
         }
 
@@ -219,6 +220,7 @@ namespace WindowsFormsApp2.Helpers.DB
             public decimal SalePrice { get; set; }
             public int UnitId { get; set; }
             public int TaxId { get; set; }
+            public byte[] ProductImage { get; set; }
         }
 
         public class User
@@ -270,6 +272,22 @@ namespace WindowsFormsApp2.Helpers.DB
             public string Customer { get; set; }
             public string Edvsiz { get; set; }
             public string Edvli { get; set; }
+        }
+
+        public class ProductDetail
+        {
+            public int SupplierId { get; set; }
+            public string SupplierName { get; set; }
+            public int ProductId { get; set; }
+            public string ProductName { get; set; }
+            public string ProductCode { get; set; }
+            public string Barcode { get; set; }
+            public string UnitName { get; set; }
+            public string TaxName { get; set; }
+            public decimal PurchasePrice { get; set; }
+            public decimal SalePrice { get; set; }
+            public byte[] ProductImage { get; set; }
+            public decimal StockAmount { get; set; }
         }
     }
 }

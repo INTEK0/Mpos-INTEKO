@@ -208,6 +208,8 @@
             this.lookUnit = new DevExpress.XtraEditors.LookUpEdit();
             this.labelControl14 = new DevExpress.XtraEditors.LabelControl();
             this.panelControl6 = new DevExpress.XtraEditors.PanelControl();
+            this.bDeleteImage = new DevExpress.XtraEditors.SimpleButton();
+            this.bAddImage = new DevExpress.XtraEditors.SimpleButton();
             this.labelControl28 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl27 = new DevExpress.XtraEditors.LabelControl();
             this.tDebtNew = new DevExpress.XtraEditors.TextEdit();
@@ -2384,6 +2386,8 @@
             // panelControl6
             // 
             this.panelControl6.AutoSize = true;
+            this.panelControl6.Controls.Add(this.bDeleteImage);
+            this.panelControl6.Controls.Add(this.bAddImage);
             this.panelControl6.Controls.Add(this.labelControl28);
             this.panelControl6.Controls.Add(this.labelControl27);
             this.panelControl6.Controls.Add(this.tDebtNew);
@@ -2397,6 +2401,35 @@
             this.panelControl6.Name = "panelControl6";
             this.panelControl6.Size = new System.Drawing.Size(296, 475);
             this.panelControl6.TabIndex = 1;
+            // 
+            // bDeleteImage
+            // 
+            this.bDeleteImage.AllowFocus = false;
+            this.bDeleteImage.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Danger;
+            this.bDeleteImage.Appearance.Options.UseBackColor = true;
+            this.bDeleteImage.Location = new System.Drawing.Point(5, 230);
+            this.bDeleteImage.Margin = new System.Windows.Forms.Padding(2);
+            this.bDeleteImage.Name = "bDeleteImage";
+            this.bDeleteImage.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bDeleteImage.Size = new System.Drawing.Size(91, 28);
+            this.bDeleteImage.TabIndex = 70;
+            this.bDeleteImage.Text = "ŞƏKİL SİL";
+            this.bDeleteImage.Click += new System.EventHandler(this.bNewSupplier_Click);
+            // 
+            // bAddImage
+            // 
+            this.bAddImage.AllowFocus = false;
+            this.bAddImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.bAddImage.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Primary;
+            this.bAddImage.Appearance.Options.UseBackColor = true;
+            this.bAddImage.Location = new System.Drawing.Point(152, 230);
+            this.bAddImage.Margin = new System.Windows.Forms.Padding(2);
+            this.bAddImage.Name = "bAddImage";
+            this.bAddImage.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bAddImage.Size = new System.Drawing.Size(140, 28);
+            this.bAddImage.TabIndex = 70;
+            this.bAddImage.Text = "ŞƏKİL ƏLAVƏ ET";
+            this.bAddImage.Click += new System.EventHandler(this.bAddImage_Click);
             // 
             // labelControl28
             // 
@@ -2479,8 +2512,9 @@
             this.pictureProduct.Name = "pictureProduct";
             this.pictureProduct.Properties.AllowFocused = false;
             this.pictureProduct.Properties.NullText = "Şəkil əlavə et";
-            this.pictureProduct.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
+            this.pictureProduct.Properties.ShowEditMenuItem = DevExpress.Utils.DefaultBoolean.False;
             this.pictureProduct.Properties.ShowMenu = false;
+            this.pictureProduct.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Zoom;
             this.pictureProduct.Size = new System.Drawing.Size(287, 220);
             this.pictureProduct.TabIndex = 0;
             // 
@@ -2966,5 +3000,7 @@
         private DevExpress.XtraEditors.TextEdit tPurchasePrice;
         private DevExpress.XtraEditors.TextEdit tSalePrice;
         private DevExpress.XtraEditors.SimpleButton bNewSupplier;
+        private DevExpress.XtraEditors.SimpleButton bDeleteImage;
+        private DevExpress.XtraEditors.SimpleButton bAddImage;
     }
 }
