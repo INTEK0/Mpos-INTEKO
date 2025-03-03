@@ -33,7 +33,7 @@ namespace WindowsFormsApp2.Forms
         private int productID { get; set; }
         private int categoryID { get; set; }
         private DataTable _currentDataTable = new DataTable();
-        private byte[] imageBytes;
+        private byte[] _imageBytes;
         public fAddProduct()
         {
             InitializeComponent();
@@ -114,7 +114,7 @@ namespace WindowsFormsApp2.Forms
             lookWarehouse.EditValue = 4;
         }
 
-        private void bAdd_Click(object sender, EventArgs e)
+        private async void bAdd_Click(object sender, EventArgs e)
         {
             var selectedPaymentType = panelControl3.Controls.OfType<CheckEdit>().FirstOrDefault(x => x.Checked);
 
@@ -139,8 +139,9 @@ namespace WindowsFormsApp2.Forms
                 IstehsalTarixi = dateİstehsal.Text,
                 BitisTarixi = dateBitis.Text,
                 XeberdarEt = spinEdit1.Text,
-                imageBytes = imageBytes
+                imageBytes = _imageBytes
             };
+
 
             var validator = new ProductValidation();
             var validateResult = validator.Validate(productsDetail);
@@ -172,7 +173,7 @@ namespace WindowsFormsApp2.Forms
                 if (addMainProduct > 0)
                 {
                     productsDetail.ProductMainId = addMainProduct;
-                    int? IsSuccess = DbProsedures.InsertProductDetails(productsDetail);
+                    int? IsSuccess = await DbProsedures.InsertProductDetails(productsDetail);
                     if (IsSuccess > 0)
                     {
                         Clear();
@@ -298,7 +299,7 @@ namespace WindowsFormsApp2.Forms
             {
                 Image image = Image.FromStream(ms);
                 pictureProduct.Image = image;
-                imageBytes = imageData;
+                _imageBytes = imageData;
             }
         }
 
@@ -681,17 +682,22 @@ namespace WindowsFormsApp2.Forms
             OpenFileDialog openFile = new OpenFileDialog();
             if (openFile.ShowDialog() is DialogResult.OK)
             {
-                pictureProduct.Image = Image.FromFile(openFile.FileName);
-                using (Stream stream = File.OpenRead(openFile.FileName))
+               // pictureProduct.Image = Image.FromFile(openFile.FileName);
+                using (FileStream stream = new FileStream(openFile.FileName, FileMode.Open, FileAccess.Read))
                 {
-                    imageBytes = new byte[stream.Length];
-                    stream.Read(imageBytes, 0, imageBytes.Length);
+                    _imageBytes = new byte[stream.Length];
+                    stream.Read(_imageBytes, 0, _imageBytes.Length);
+
+                    using (var imageTemp = Image.FromStream(stream, false, false))
+                    {
+                        pictureProduct.Image = new Bitmap(imageTemp);
+                    }
                 }
             }
             else
             {
                 pictureProduct.Image = null;
-                imageBytes = null;
+                _imageBytes = null;
             }
             Cursor.Current = Cursors.Default;
         }

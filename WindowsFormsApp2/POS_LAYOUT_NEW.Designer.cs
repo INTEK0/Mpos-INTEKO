@@ -1434,6 +1434,7 @@ namespace WindowsFormsApp2
             this.simpleButton26.StyleController = this.layoutControl1;
             this.simpleButton26.TabIndex = 103;
             this.simpleButton26.Text = "TAKSİT";
+            this.simpleButton26.Click += new System.EventHandler(this.simpleButton26_Click);
             // 
             // layoutControlItem52
             // 

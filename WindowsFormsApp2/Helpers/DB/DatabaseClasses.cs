@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace WindowsFormsApp2.Helpers.DB
 {
@@ -276,8 +277,19 @@ namespace WindowsFormsApp2.Helpers.DB
 
         public class ProductDetail
         {
-            public int SupplierId { get; set; }
-            public string SupplierName { get; set; }
+            public class Supplier
+            {
+                public string Id { get; set; }
+                public string Name { get; set; }
+            }
+
+            public class Unit
+            {
+                public string Name { get; set; }
+            }
+
+            public List<Supplier> Suppliers { get; set; } = new List<Supplier>();
+            public List<Unit> Units { get; set; } = new List<Unit>();
             public int ProductId { get; set; }
             public string ProductName { get; set; }
             public string ProductCode { get; set; }

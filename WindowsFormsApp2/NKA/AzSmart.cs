@@ -499,7 +499,7 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
             List<Item> items = new List<Item>();
             SqlConnection conn = new SqlConnection();
             SqlCommand cmd = new SqlCommand();
-            conn.ConnectionString = Properties.Settings.Default.SqlCon;
+            conn.ConnectionString = DbHelpers.DbConnectionString;
             conn.Open();
             string query = "select name,Item.item_id,salePrice,quantity, case vatType when 1 then '1800' when 4 then '200' when 5 then '800' else 0 end " +
                 "as TaxPrc, case vatType when 1 then N'ƏDV 18%' when 4 then 'SV-2%' when 5 then 'SV-8%'  when 3 then N'ƏDV-dən azad' end as TaxName,quantityType,salePrice*quantity as ssum from  dbo.item;";
@@ -516,9 +516,7 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
                 decimal quantity = Convert.ToDecimal(dr["quantity"]);
                 string taxName = dr["TaxName"].ToString();
                 int TaxPrc = Convert.ToInt32(dr["TaxPrc"]);
-                //int vatType = Convert.ToInt32(dr["vatType"]);
-                //int quantityType = Convert.ToInt32(dr["quantityType"]);
-                //double ssum = Convert.ToDouble(dr["ssum"]);
+
 
                 int price = Convert.ToInt32(salePrice * quantity) * 100;
                 int miqdar = Convert.ToInt32(quantity * 1000);
@@ -532,7 +530,6 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
                     taxPrc = TaxPrc,
                 };
                 taxs.Add(tax);
-
 
 
                 Item itemProduct = new Item

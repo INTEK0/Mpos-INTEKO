@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 using System.Web.UI.WebControls;
 using System.Windows.Forms;
 using WindowsFormsApp2.Helpers.Messages;
@@ -61,6 +62,7 @@ namespace WindowsFormsApp2.Helpers.DB
         private static readonly string GET_GaimeSalesProccessNoQuery = "EXEC dbo.GAIME_SATISI_EMELIYYAT_NOMRE";
         private static readonly string GET_GaimeRefundProccessNoQuery = "EXEC dbo.GAIME_SATISI_GAYTARMA";
         private const string GET_GetProductSalesDataQuery = "GetProductSalesData";
+        private const string GET_GetProductPurchaseDataQuery = "GetProductPurchaseData";
 
         #endregion [...PROCEDURES QUERY...]
 
@@ -99,8 +101,6 @@ namespace WindowsFormsApp2.Helpers.DB
                 return null;
             }
         }
-
-
 
         #region [..COMPANY..]
 
@@ -340,7 +340,6 @@ namespace WindowsFormsApp2.Helpers.DB
                         OperationType = OperationType.PosSales,
                         OperationId = Convert.ToInt32(parameter.Value)
                     });
-
 
 
                     return Convert.ToInt32(parameter.Value);
@@ -881,7 +880,7 @@ namespace WindowsFormsApp2.Helpers.DB
             }
         }
 
-        public static int? InsertProductDetails(ProductsDetail item)
+        public static async Task<int?> InsertProductDetails(ProductsDetail item)
         {
             try
             {
@@ -936,11 +935,24 @@ namespace WindowsFormsApp2.Helpers.DB
                         param = cmd.Parameters.Add("@SEKIL", SqlDbType.VarBinary, int.MaxValue);
                         param.Value = item.imageBytes;
 
-                        param = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
-                        param.Direction = ParameterDirection.Output;
+                        var empCountParam = new SqlParameter("@emp_count", SqlDbType.Int) { Direction = ParameterDirection.Output };
+                        var malDetailIdParam = new SqlParameter("@MalDetailId", SqlDbType.Int) { Direction = ParameterDirection.Output };
+
+                        cmd.Parameters.Add(empCountParam);
+                        cmd.Parameters.Add(malDetailIdParam);
+                       
                         cmd.ExecuteNonQuery();
+
+                        int empCount = (int)empCountParam.Value;
+                        int malDetailId = (int)malDetailIdParam.Value;
+
+                        if (item.imageBytes != null)
+                        {
+                           await UpdateProductImage(malDetailId, item.Barocde);
+                        }
+
                         FormHelpers.Log($"{item.ProductName} məhsulundan {item.Quantity} {item.UnitName} alış edildi");
-                        return Convert.ToInt32(param.Value);
+                        return Convert.ToInt32(empCount);
                     }
                 }
             }
@@ -948,6 +960,25 @@ namespace WindowsFormsApp2.Helpers.DB
             {
                 ReadyMessages.ERROR_DEFAULT_MESSAGE(e.Message);
                 return null;
+            }
+        }
+
+        private async static Task UpdateProductImage(int Id, string barcode)
+        {
+            //Məhsulda şəkil varsa yalnız bu kod işləyir
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                await con.OpenAsync();
+                string query = $@"
+IF EXISTS (SELECT 1 FROM MAL_ALISI_DETAILS WHERE MAL_ALISI_DETAILS_ID = {Id} AND SEKIL IS NOT NULL)
+
+UPDATE MAL_ALISI_DETAILS
+SET SEKIL = (SELECT SEKIL FROM MAL_ALISI_DETAILS WHERE MAL_ALISI_DETAILS_ID = {Id})
+WHERE BARKOD = '{barcode}'";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                   await cmd.ExecuteNonQueryAsync();
+                }
             }
         }
 
@@ -976,7 +1007,7 @@ namespace WindowsFormsApp2.Helpers.DB
                     return Convert.ToInt32(param.Value);
                 }
             }
-        }
+        }      
 
         public static string GET_ProductProcessNo()
         {
@@ -1921,26 +1952,41 @@ namespace WindowsFormsApp2.Helpers.DB
 
         #region [.. REPORTS ..]
 
-        public static DataTable Get_ProductSalesData(string barcode)
+        public static async Task<DataTable> Get_ProductSalesDataAsync(string barcode)
         {
             using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
             {
-                con.Open();
+                await con.OpenAsync();
                 using (SqlCommand cmd = new SqlCommand(GET_GetProductSalesDataQuery, con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    SqlParameter param;
+                    cmd.Parameters.Add("@Barcode", SqlDbType.NVarChar, 50).Value = barcode;
 
-                    param = cmd.Parameters.Add("@Barcode", SqlDbType.NVarChar, 50);
-                    param.Value = barcode;
-
-                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    using (var reader = await cmd.ExecuteReaderAsync())
                     {
-                        using (DataTable dt = new DataTable())
-                        {
-                            da.Fill(dt);
-                            return dt;
-                        }
+                        DataTable dt = new DataTable();
+                        dt.Load(reader);
+                        return dt;
+                    }
+                }
+            }
+        }
+
+        public static async Task<DataTable> Get_ProductPurchasesDataAsync(string barcode)
+        {
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                await con.OpenAsync();
+                using (SqlCommand cmd = new SqlCommand(GET_GetProductPurchaseDataQuery, con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add("@Barcode", SqlDbType.NVarChar, 50).Value = barcode;
+
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        DataTable dt = new DataTable();
+                        dt.Load(reader);
+                        return dt;
                     }
                 }
             }

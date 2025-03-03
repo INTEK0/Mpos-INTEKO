@@ -2201,6 +2201,11 @@ namespace WindowsFormsApp2
             f.ShowDialog();
         }
 
+        private void simpleButton26_Click(object sender, EventArgs e)
+        {
+            Payment(PayType.Installment);
+        }
+
         private void simpleButton3_Click_1(object sender, EventArgs e)
         {
             fWithdraw n = new fWithdraw(this);

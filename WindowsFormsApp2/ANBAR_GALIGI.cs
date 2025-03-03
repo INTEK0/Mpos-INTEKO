@@ -3,6 +3,8 @@ using DevExpress.XtraGrid.Localization;
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApp2.Forms;
 using WindowsFormsApp2.Helpers;
@@ -37,11 +39,11 @@ namespace WindowsFormsApp2
             }
             else
             {
-                getall( Convert.ToDateTime(dateEdit4.Text));
+                getall(Convert.ToDateTime(dateEdit4.Text));
             }
         }
 
-        private void getall( DateTime D2_)
+        private void getall(DateTime D2_)
         {
             try
             {
@@ -76,8 +78,78 @@ namespace WindowsFormsApp2
             //dateEdit3.Text = dateTime.ToShortDateString();
         }
 
-        private void gridView1_DoubleClick(object sender, EventArgs e)
+        private async void gridView1_DoubleClick(object sender, EventArgs e)
         {
+            await GetProduct();
+        }
+
+        private async Task GetProduct()
+        {
+            string barcode = gridView1.GetFocusedRowCellValue("BARKOD").ToString();
+
+            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                await connection.OpenAsync();
+                string query = $"EXEC SELECT_PRODUCT_DATA_LOAD '{barcode}'";
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                    {
+                        ProductDetail _detail = null;
+
+                        while (reader.Read())
+                        {
+                            if (_detail == null)
+                            {
+                                _detail = new ProductDetail
+                                {
+                                    ProductId = Convert.ToInt32(reader["ProductId"]),
+                                    ProductName = reader["ProductName"].ToString(),
+                                    ProductCode = reader["ProductCode"].ToString(),
+                                    Barcode = reader["Barcode"].ToString(),
+                                    //UnitName = reader["UnitName"].ToString(),
+                                    TaxName = reader["TaxName"].ToString(),
+                                    PurchasePrice = Convert.ToDecimal(reader["PurchasePrice"]),
+                                    SalePrice = Convert.ToDecimal(reader["SalePrice"]),
+                                    ProductImage = reader["ProductImage"] as byte[],
+                                    StockAmount = Convert.ToDecimal(reader["StockAmount"])
+                                };
+                            }
+
+                            string supplierId = reader["SupplierId"].ToString();
+                            if (!_detail.Suppliers.Exists(x=> x.Id == supplierId))
+                            {
+                                _detail.Suppliers.Add(new ProductDetail.Supplier
+                                {
+                                    Id = supplierId,
+                                    Name = reader["SupplierName"].ToString()
+                                });
+                            }
+
+
+                            string unitName = reader["UnitName"].ToString();
+                            if (!_detail.Units.Exists(x => x.Name == unitName))
+                            {
+                                _detail.Units.Add(new ProductDetail.Unit
+                                {
+                                    Name = unitName
+                                });
+                            }
+                        }
+
+                        if (_detail != null)
+                        {
+                            fProductDetail detail = new fProductDetail(_detail);
+                            detail.ShowDialog();
+                        }
+                    }
+                }
+            }
+        }
+
+        public void GetProductSingleSupplier()
+        {
+            //Asenkron olandan imtina edilərsə və bir neçə təchizatçının gəlməsindən imtina edilərsə bu kodu istifadə et
             string barcode = gridView1.GetFocusedRowCellValue("BARKOD").ToString();
 
             using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
@@ -91,7 +163,7 @@ namespace WindowsFormsApp2
                         if (reader.Read())
                         {
                             ProductDetail _detail = FormHelpers.MapReaderToObject<DatabaseClasses.ProductDetail>(reader);
-                            
+
                             fProductDetail detail = new fProductDetail(_detail);
                             detail.ShowDialog();
                         }
