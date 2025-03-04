@@ -120,10 +120,10 @@ namespace WindowsFormsApp2
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.Control;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(7, 139);
+            this.dataGridView1.Location = new System.Drawing.Point(13, 139);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(1116, 556);
+            this.dataGridView1.Size = new System.Drawing.Size(1216, 622);
             this.dataGridView1.TabIndex = 7;
             // 
             // chControlImport
@@ -135,6 +135,7 @@ namespace WindowsFormsApp2
             this.chControlImport.Properties.RadioGroupIndex = 1;
             this.chControlImport.Size = new System.Drawing.Size(217, 22);
             this.chControlImport.TabIndex = 8;
+            this.chControlImport.TabStop = false;
             this.chControlImport.Tag = "ExcelImport_Control";
             // 
             // chDirectControl
@@ -155,7 +156,7 @@ namespace WindowsFormsApp2
             this.Appearance.Options.UseBackColor = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(1128, 708);
+            this.ClientSize = new System.Drawing.Size(1242, 774);
             this.Controls.Add(this.chDirectControl);
             this.Controls.Add(this.chControlImport);
             this.Controls.Add(this.dataGridView1);

@@ -198,7 +198,30 @@ namespace WindowsFormsApp2
                 }
             }
 
-            string queryString = "SELECT  ROW_NUMBER() OVER(ORDER BY [MƏHSUL ADI]) AS Hotkey,REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE([MƏHSUL ADI],N'Ə','E'),N'ə','e'),N'ı','i'),N'ü','u'),N'ğ','g'),N'Ğ','G' ),N'Ü','U'),N'Ş','S'),N'ş','s'),N'Ç','C'),N'ç','c')  as Name  ,[MAL_ALISI_DETAILS_ID] as LFCode, [MAL_ALISI_DETAILS_ID] as Code ,7 AS [Barcode Type],[SATIŞ QİYMƏTİ] AS [Unit Price],4 AS [Unit Weight],0 AS [Unit Amount] ,21 AS [Department],0 AS [PT Weight],15 AS [Shelf Time],0 AS [Pack Type],0 AS [Tare],	0 AS [Error(%)],	0 AS [Message1],	0 AS [Message2],	0 AS [Label],	0 AS [Discount/Table],	0 AS [Account],	0 AS [sPluFieldTitle20],	0 AS [Account],	0 AS [Recommend days],	0 AS [nutrition],	0 AS [Ice(%)] FROM[terazimalzeme] ";
+            string queryString = @"SELECT  ROW_NUMBER() OVER(ORDER BY [MƏHSUL ADI]) AS Hotkey,
+REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE([MƏHSUL ADI],N'Ə','E'),N'ə','e'),N'ı','i'),N'ü','u'),N'ğ','g'),N'Ğ','G' ),N'Ü','U'),N'Ş','S'),N'ş','s'),N'Ç','C'),N'ç','c')  as Name  ,
+[MAL_ALISI_DETAILS_ID] as LFCode,
+[MAL_ALISI_DETAILS_ID] as Code ,
+7 AS [Barcode Type],
+[SATIŞ QİYMƏTİ] AS [Unit Price],
+4 AS [Unit Weight],
+0 AS [Unit Amount] ,
+21 AS [Department],
+0 AS [PT Weight],
+15 AS [Shelf Time],
+0 AS [Pack Type],
+0 AS [Tare],
+0 AS [Error(%)],
+0 AS [Message1],
+0 AS [Message2],
+0 AS [Label],
+0 AS [Discount/Table],
+0 AS [Account],
+0 AS [sPluFieldTitle20],
+0 AS [Account],	
+0 AS [Recommend days],
+0 AS [nutrition],
+0 AS [Ice(%)] FROM[terazimalzeme]";
 
             var data = DbProsedures.ConvertToDataTable(queryString);
 
