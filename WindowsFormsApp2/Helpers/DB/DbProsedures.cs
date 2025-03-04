@@ -63,6 +63,7 @@ namespace WindowsFormsApp2.Helpers.DB
         private static readonly string GET_GaimeRefundProccessNoQuery = "EXEC dbo.GAIME_SATISI_GAYTARMA";
         private const string GET_GetProductSalesDataQuery = "GetProductSalesData";
         private const string GET_GetProductPurchaseDataQuery = "GetProductPurchaseData";
+        private const string INSERT_IncomeAndExpenseDataQuery = "INSERT_INCOME_AND_EXPENSE";
 
         #endregion [...PROCEDURES QUERY...]
 
@@ -1995,6 +1996,43 @@ WHERE BARKOD = '{barcode}'";
         #endregion [.. REPORTS ..]
 
 
+
+        #region [.. INCOME AND EXPENSE..]
+
+        public static async Task<int> InsertIncomeAndExpense(IncomeAndExpense item)
+        {
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                await con.OpenAsync();
+                using (SqlCommand cmd = new SqlCommand(INSERT_IncomeAndExpenseDataQuery, con))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    SqlParameter param;
+                    param = cmd.Parameters.Add("@Type", SqlDbType.Int);
+                    param.Value = item.Type;
+                    param = cmd.Parameters.Add("@Header", SqlDbType.NVarChar, 200);
+                    param.Value = item.Header;
+                    param = cmd.Parameters.Add("@Amount", SqlDbType.Decimal);
+                    param.Value = item.Amount;
+                    param = cmd.Parameters.Add("@Comment", SqlDbType.NVarChar, 500);
+                    param.Value = item.Comment;
+                    param = cmd.Parameters.Add("@Date", SqlDbType.Date);
+                    param.Value = item.Date;
+                    param = cmd.Parameters.Add("@UserId", SqlDbType.Int);
+                    param.Value = Properties.Settings.Default.UserID;
+                    param = cmd.Parameters.Add("@LogDate", SqlDbType.DateTime);
+                    param.Value = DateTime.Now;
+
+                    param = cmd.Parameters.Add("@ResultId", SqlDbType.Int);
+                    param.Direction = ParameterDirection.Output;
+
+                    await cmd.ExecuteNonQueryAsync();
+                    return Convert.ToInt32(param.Value);
+                }
+            }
+        }
+
+        #endregion [.. INCOME AND EXPENSE ..]
 
 
         #endregion [...PROCEDURES METHODS...]

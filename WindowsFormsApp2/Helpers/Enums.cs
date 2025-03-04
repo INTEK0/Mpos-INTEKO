@@ -60,7 +60,11 @@ namespace WindowsFormsApp2.Helpers
             [Description("ZAMİN")]
             Guarantor,
             [Description("HƏKİM")]
-            Doctor
+            Doctor,
+            [Description("GƏLİR")]
+            Income,
+            [Description("XƏRC")]
+            Expense
         }
 
         public enum OperationType

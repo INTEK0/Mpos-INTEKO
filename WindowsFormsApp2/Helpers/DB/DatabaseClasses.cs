@@ -301,5 +301,18 @@ namespace WindowsFormsApp2.Helpers.DB
             public byte[] ProductImage { get; set; }
             public decimal StockAmount { get; set; }
         }
+
+        public class IncomeAndExpense
+        {
+            public int Id { get; set; }
+            public int IsDeleted { get; set; }
+            public Enums.SelectedDataType Type { get; set; }
+            public string Header { get; set; }
+            public decimal Amount { get; set; }
+            public string Comment { get; set; }
+            public DateTime Date { get; set; }
+            public DateTime LogDate { get; set; } = DateTime.Now;
+            public int UserId { get; set; }
+        }
     }
 }
