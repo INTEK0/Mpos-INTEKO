@@ -188,7 +188,10 @@ namespace WindowsFormsApp2
             con.ConnectionString = Properties.Settings.Default.SqlCon;
             cont.ConnectionString = Properties.Settings.Default.SqlCon;
 
-            string query = "SELECT count(*) AS COUNTS,TECHIZATCI_ADI \r\n  FROM [EXCELL_IMPORT_DATA_NEW]\r\n\r\n \r\n  WHERE TECHIZATCI_ADI NOT IN\r\n  (\r\n  SELECT  [SIRKET_ADI]\r\n    \r\n  FROM [NewIntekobir].[COMPANY].[TECHIZATCI] WHERE IsDeleted=0\r\n  )\r\n  group by TECHIZATCI_ADI";
+            string query = @"SELECT count(*) AS COUNTS,TECHIZATCI_ADI
+FROM [EXCELL_IMPORT_DATA_NEW]
+WHERE TECHIZATCI_ADI NOT IN ( SELECT  [SIRKET_ADI] FROM [COMPANY].[TECHIZATCI] WHERE IsDeleted=0) 
+group by TECHIZATCI_ADI";
 
             SqlCommand command = new SqlCommand(query, con);
 
@@ -213,19 +216,9 @@ namespace WindowsFormsApp2
                     command2.ExecuteNonQuery();
                     cont.Close();
                 }
-
-                else
-                {
-
-                }
-
-
             }
 
-
-            con.Close();
-
-
+           con.Close();
 
 
             // Kategori Acilmasi
@@ -285,16 +278,6 @@ namespace WindowsFormsApp2
             {
 
                 countstring = drfat["COUNTS"].ToString();
-
-
-                if (Convert.ToInt32(countstring) > 0)
-                {
-
-
-
-
-
-                }
             }
 
             con.Close();
@@ -311,7 +294,10 @@ namespace WindowsFormsApp2
             con.ConnectionString = Properties.Settings.Default.SqlCon;
             cont.ConnectionString = Properties.Settings.Default.SqlCon;
 
-            string querymalzeme = "SELECT *   ,\r\n\r\n CASE WHEN \r\n \r\n ( SELECT TOP 1 MEHSUL_ADI   FROM [MAL_ALISI_DETAILS] WHERE BARKOD=[EXCELL_IMPORT_DATA_NEW].BARKOD)=MEHSUL_ADI   \r\n THEN 1 ELSE    \r\n \r\n (   CASE WHEN    ( SELECT  TOP 1 MEHSUL_ADI   FROM [MAL_ALISI_DETAILS] WHERE MEHSUL_KODU=[EXCELL_IMPORT_DATA_NEW].MEHSUL_KODU)=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI    \r\n \r\n   THEN  1 else 0 end)   \r\n \r\n  END AS [KNTBARKODSTOK] ,\r\n  \r\n\r\n  CASE WHEN \r\n \r\n ( SELECT TOP 1 MEHSUL_ADI   FROM [MAL_ALISI_DETAILS] WHERE MEHSUL_ADI=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI)=MEHSUL_ADI   \r\n THEN 1 ELSE    \r\n 0 end MALZEMEADI\r\n  \r\n    \r\n   FROM [EXCELL_IMPORT_DATA_NEW] ";
+            string querymalzeme = @"SELECT *, 
+CASE WHEN ( SELECT TOP 1 MEHSUL_ADI FROM [MAL_ALISI_DETAILS] WHERE BARKOD=[EXCELL_IMPORT_DATA_NEW].BARKOD)=MEHSUL_ADI    THEN 1 ELSE   
+(CASE WHEN ( SELECT TOP 1 MEHSUL_ADI FROM [MAL_ALISI_DETAILS] WHERE MEHSUL_KODU=[EXCELL_IMPORT_DATA_NEW].MEHSUL_KODU)=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI THEN  1 
+else 0 end) END AS [KNTBARKODSTOK] , CASE WHEN ( SELECT TOP 1 MEHSUL_ADI FROM [MAL_ALISI_DETAILS] WHERE MEHSUL_ADI=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI)=MEHSUL_ADI THEN 1 ELSE 0 end MALZEMEADI FROM [EXCELL_IMPORT_DATA_NEW]";
 
             SqlCommand commandmalzeme = new SqlCommand(querymalzeme, con);
 
