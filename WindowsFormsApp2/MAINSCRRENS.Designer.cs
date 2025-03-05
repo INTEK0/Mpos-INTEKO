@@ -229,6 +229,7 @@ namespace WindowsFormsApp2
             this.tabModul = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.tileControl1 = new DevExpress.XtraEditors.TileControl();
             this.tileGroup1 = new DevExpress.XtraEditors.TileGroup();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.fluentDesignFormContainer1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl2)).BeginInit();
@@ -320,6 +321,7 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.panelControl15)).BeginInit();
             this.panelControl15.SuspendLayout();
             this.tabModul.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // fluentDesignFormContainer1
@@ -347,6 +349,7 @@ namespace WindowsFormsApp2
             this.tableLayoutPanel1.Controls.Add(this.panelControl9, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.groupControl1, 3, 3);
             this.tableLayoutPanel1.Controls.Add(this.groupControl2, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.dataGridView1, 2, 4);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -380,6 +383,8 @@ namespace WindowsFormsApp2
             this.gridView2.OptionsEditForm.PopupEditFormWidth = 1066;
             this.gridView2.OptionsPrint.PrintFooter = false;
             this.gridView2.OptionsPrint.PrintGroupFooter = false;
+            this.gridView2.OptionsView.ShowColumnHeaders = false;
+            this.gridView2.OptionsView.ShowGroupPanel = false;
             // 
             // pictureEdit1
             // 
@@ -1967,7 +1972,6 @@ namespace WindowsFormsApp2
             // 
             // pageDashboard
             // 
-            this.pageDashboard.Caption = "pageDashboard";
             this.pageDashboard.Controls.Add(this.fluentDesignFormContainer1);
             this.pageDashboard.Margin = new System.Windows.Forms.Padding(0);
             this.pageDashboard.Name = "pageDashboard";
@@ -1975,7 +1979,6 @@ namespace WindowsFormsApp2
             // 
             // pageProducts
             // 
-            this.pageProducts.Caption = "pageProducts";
             this.pageProducts.Controls.Add(this.tableLayoutPanel9);
             this.pageProducts.Margin = new System.Windows.Forms.Padding(0);
             this.pageProducts.Name = "pageProducts";
@@ -2283,7 +2286,6 @@ namespace WindowsFormsApp2
             // 
             // pageSettings
             // 
-            this.pageSettings.Caption = "pageSettings";
             this.pageSettings.Controls.Add(this.tabPaneSettings);
             this.pageSettings.Name = "pageSettings";
             this.pageSettings.Size = new System.Drawing.Size(1157, 806);
@@ -3045,6 +3047,14 @@ namespace WindowsFormsApp2
             this.tileGroup1.Name = "tileGroup1";
             this.tileGroup1.Text = "tileGroup1";
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(615, 762);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(240, 41);
+            this.dataGridView1.TabIndex = 12;
+            // 
             // MAINSCRRENS
             // 
             this.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(245)))), ((int)(((byte)(250)))));
@@ -3166,6 +3176,7 @@ namespace WindowsFormsApp2
             this.panelControl15.ResumeLayout(false);
             this.panelControl15.PerformLayout();
             this.tabModul.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -3368,6 +3379,7 @@ namespace WindowsFormsApp2
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement62;
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement29;
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement63;
+        private System.Windows.Forms.DataGridView dataGridView1;
     }
 }
 

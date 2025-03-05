@@ -53,7 +53,7 @@ namespace WindowsFormsApp2.Forms
                 int B = Convert.ToInt32(row[0].ToString());
                 if (B > 0)
                 {
-                    int x = KIC.DELETE_IPT(B);
+                    KIC.DELETE_IPT(B);
                     FormHelpers.Log($"{row[2]} ip adresli {row[1]} tərəzi silindi");
                 }
             }

@@ -115,11 +115,19 @@ namespace WindowsFormsApp2.NKA
 
             var data = JsonConvertBase64(json, merchantId);
 
-            var response = RequestPOST(ipAdress + "/close_shift", data);
 
-            if (response != null)
+            var client = new RestClient();
+            var request = new RestRequest(ipAdress + "/close_shift", Method.Post);
+            request.AddParameter("text/plain", data, ParameterType.RequestBody);
+            RestResponse response = client.Execute(request);
+
+            AzSmartResponse weatherForecast = System.Text.Json.JsonSerializer.Deserialize<AzSmartResponse>(response.Content);
+
+          //  var response = RequestPOST(ipAdress + "/close_shift", data);
+
+            if (weatherForecast != null)
             {
-                if (response.status is "success")
+                if (weatherForecast.status is "success")
                 {
                     if (MessageVisible)
                     {
@@ -130,8 +138,27 @@ namespace WindowsFormsApp2.NKA
                 }
                 else
                 {
-                    ReadyMessages.WARNING_DEFAULT_MESSAGE(response.message);
+                    ReadyMessages.WARNING_DEFAULT_MESSAGE(weatherForecast.message);
+                    FormHelpers.OperationLog(new OperationLogs
+                    {
+                        Message = "Z REPORT ERROR",
+                        OperationId = 0,
+                        OperationType = OperationType.ZReport,
+                        RequestCode = json,
+                        ResponseCode = response.Content
+                    });
                 }
+            }
+            else
+            {
+                FormHelpers.OperationLog(new OperationLogs
+                {
+                    Message = "Z REPORT ERROR",
+                    OperationId = 0,
+                    OperationType = OperationType.ZReport,
+                    RequestCode = json,
+                    ResponseCode = response.Content
+                });
             }
         }
 

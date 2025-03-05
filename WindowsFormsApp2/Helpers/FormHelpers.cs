@@ -73,7 +73,6 @@ namespace WindowsFormsApp2.Helpers
         {
             using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
             {
-
                 string query = "INSERT INTO OperationLogs (UserID, TypeId,OperationId, Tarix, Saat, Message,RequestCode,ResponseCode) VALUES (@UserID, @TypeId, @OperationId, @Date, @Time, @Message, @RequestCode, @ResponseCode)";
 
                 SqlCommand command = new SqlCommand(query, con);
@@ -139,7 +138,7 @@ namespace WindowsFormsApp2.Helpers
 
             if (gridView.RowCount is 0)
             {
-                FormHelpers.Alert("Çap ediləcək məlumat yoxdur", Enums.MessageType.Warning);
+                FormHelpers.Alert("Çap ediləcək məlumat yoxdur", Enums.MessageType.Info);
                 return;
             }
 

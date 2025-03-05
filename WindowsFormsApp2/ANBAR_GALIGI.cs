@@ -85,7 +85,7 @@ namespace WindowsFormsApp2
 
         private async Task GetProduct()
         {
-            string barcode = gridView1.GetFocusedRowCellValue("BARKOD").ToString();
+            string barcode = gridView1.GetFocusedRowCellValue("MƏHSUL KODU").ToString();
 
             using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
             {

@@ -176,7 +176,7 @@ namespace WindowsFormsApp2
             // gridColumn6
             // 
             this.gridColumn6.Caption = "BARKOD";
-            this.gridColumn6.FieldName = "BARKOD";
+            this.gridColumn6.FieldName = "MƏHSUL KODU";
             this.gridColumn6.Name = "gridColumn6";
             this.gridColumn6.OptionsColumn.AllowEdit = false;
             this.gridColumn6.Visible = true;

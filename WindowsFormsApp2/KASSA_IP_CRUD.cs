@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using WindowsFormsApp2.Helpers.DB;
 
 namespace WindowsFormsApp2
 {
@@ -59,26 +60,23 @@ namespace WindowsFormsApp2
             return Convert.ToInt32(param.Value);
         }
 
-        public int DELETE_IPT(int TERAZI_FIRMA_IP)
+        public void DELETE_IPT(int TERAZI_FIRMA_IP)
         {
-            // Create ADO.NET objects.
-            SqlConnection con = new SqlConnection(Properties.Settings.Default.SqlCon);
-            SqlCommand cmd = new SqlCommand(procedure_DELETE22, con);
-            // Configure command and add input parameters.
-            cmd.CommandType = CommandType.StoredProcedure;
-            SqlParameter param;
-            param = cmd.Parameters.Add("@TERAZI_IP_ID", SqlDbType.Int);
-            param.Value = TERAZI_FIRMA_IP;
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand(procedure_DELETE22,con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
 
-            // Add the output parameter.
-            param = cmd.Parameters.Add("@EMPCOUNT", SqlDbType.Int);
-            param.Direction = ParameterDirection.Output;
-            // Execute the command.
-            con.Open();
-            cmd.ExecuteNonQuery();
-            con.Close();
-            return Convert.ToInt32(param.Value);
+                    SqlParameter param;
+                    param = cmd.Parameters.Add("@TERAZI_IP_ID", SqlDbType.Int);
+                    param.Value = TERAZI_FIRMA_IP;
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
+
         public int Insert_IPT(int TERAZI_FIRMA_IP, string IP_ADRESS_)
         {
             // Create ADO.NET objects.
