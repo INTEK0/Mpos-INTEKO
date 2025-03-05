@@ -26,6 +26,8 @@ namespace WindowsFormsApp2.NKA
 {
     public static class AzSmart
     {
+        public const string FiskalPort = "8008";
+
         private static readonly bool MessageVisible = FormHelpers.SuccessMessageVisible();
         private static AzSmartResponse RequestPOST(string ipAddress, string data)
         {
@@ -133,7 +135,7 @@ namespace WindowsFormsApp2.NKA
             }
         }
 
-        public static bool Sales(string ipAddress, string merchantID, string proccessNo, decimal _total, decimal _cash, decimal _card, string cashier, string rrn = default)
+        public static bool Sales(DTOs.SalesDto salesData)
         {
             List<Item> items = new List<Item>();
             SqlConnection conn = new SqlConnection();
@@ -195,7 +197,6 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
 
                 List<ItemTax> taxs = new List<ItemTax>();
 
-
                 ItemTax tax = new ItemTax
                 {
                     fullName = taxName,
@@ -218,9 +219,9 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
                 items.Add(itemProduct);
             }
 
-            int cash = Convert.ToInt32(_cash * 100);
-            int card = Convert.ToInt32(_card * 100);
-            int total = Convert.ToInt32(_total * 100);
+            int cash = Convert.ToInt32(salesData.IncomingSum * 100);
+            int card = Convert.ToInt32(salesData.Card * 100);
+            int total = Convert.ToInt32(salesData.Total * 100);
 
             Payments payments = new Payments
             {
@@ -232,8 +233,8 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
 
             RootObject rootObject = new RootObject
             {
-                employeeName = cashier,
-                //rrn = rrn,
+                employeeName = salesData.Cashier,
+                rrn = salesData.Rrn,
                 items = items,
                 payments = payments,
                 amount = total,
@@ -245,9 +246,9 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
                 NullValueHandling = NullValueHandling.Ignore
             });
 
-            string hashData = JsonConvertBase64(json, merchantID);
+            string hashData = JsonConvertBase64(json, salesData.MerchantId);
 
-            var response = RequestPOST(ipAddress + "/sale", hashData);
+            var response = RequestPOST(salesData.IpAddress + "/sale", hashData);
 
             if (response != null)
             {
@@ -257,7 +258,7 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
                     {
                         posNomre = response.fiscalNum,
                         longFiskalId = response.fiscalID.ToString(),
-                        proccessNo = proccessNo,
+                        proccessNo = salesData.ProccessNo,
                         cash = cash,
                         card = card,
                         total = total,
@@ -296,7 +297,7 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
             decimal _total2 = default;
             List<Item> items = new List<Item>();
 
-            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
             {
                 connection.Open();
                 using (SqlCommand cmd = new SqlCommand(DbHelpers.GetPosGaytarmaManualQuery, connection))
@@ -327,6 +328,7 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
 
             using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon))
             {
+                connection.Open();
                 string query = $@"(SELECT md.MEHSUL_ADI AS name,
                        p.item_id AS code,
                        pl.say AS say,
@@ -497,12 +499,26 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
         public static bool InstallmentSales(string ipAddress, string merchantID, string processNo, decimal _total, string cashier)
         {
             List<Item> items = new List<Item>();
-            SqlConnection conn = new SqlConnection();
+            SqlConnection conn = new SqlConnection(DbHelpers.DbConnectionString);
             SqlCommand cmd = new SqlCommand();
-            conn.ConnectionString = DbHelpers.DbConnectionString;
             conn.Open();
-            string query = "select name,Item.item_id,salePrice,quantity, case vatType when 1 then '1800' when 4 then '200' when 5 then '800' else 0 end " +
-                "as TaxPrc, case vatType when 1 then N'ƏDV 18%' when 4 then 'SV-2%' when 5 then 'SV-8%'  when 3 then N'ƏDV-dən azad' end as TaxName,quantityType,salePrice*quantity as ssum from  dbo.item;";
+            string query = $@"select name,
+Item.item_id,
+salePrice,
+quantity,
+case vatType 
+when 1 then '1800' 
+when 4 then '200'
+when 5 then '800'
+else 0 end as TaxPrc, 
+case vatType 
+when 1 then N'ƏDV 18%' 
+when 4 then 'SV-2%' 
+when 5 then 'SV-8%' 
+when 3 then N'ƏDV-dən azad' end as TaxName,
+quantityType,
+salePrice*quantity as ssum
+FROM  dbo.item where user_id = {Properties.Settings.Default.UserID};";
 
             cmd.Connection = conn;
             cmd.CommandText = query;
@@ -685,11 +701,10 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
 
         private static string ReturnHeaderId()
         {
-            SqlConnection con = new SqlConnection();
+            SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString);
             SqlCommand cmd = new SqlCommand();
-            con.ConnectionString = Properties.Settings.Default.SqlCon;
             cmd.Connection = con;
-            cmd.CommandText = "select header_id from  dbo.header;";
+            cmd.CommandText = $"select header_id from  dbo.header where userId = {Properties.Settings.Default.UserID}";
             con.Open();
 
             var result = cmd.ExecuteScalar();
@@ -708,7 +723,7 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
         {
             string base_64 = Base64Encode(json);
             var data_ = base_64;
-            var convert_sign1 = data_ + merchantId;//"8c12504097cd4effb70319f29d319cc5";
+            var convert_sign1 = data_ + merchantId;
             var conver_sign2sha = sha1(convert_sign1);
             var convert_sign3 = Base64Encode(conver_sign2sha);
             var string_post = "data=" + data_.Replace("=", "%3D") + "&" + "sign=" + convert_sign3.Replace("=", "%3D");
@@ -771,7 +786,7 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
             public string parentDocID { get; set; } = null;
             public string checkNum { get; set; } = null;
             public int? originAmount { get; set; } = null;
-            //public string rrn { get; set; } = null;
+            public string rrn { get; set; } = null;
         }
 
         #endregion [..Request Classes..]

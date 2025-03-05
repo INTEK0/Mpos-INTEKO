@@ -198,6 +198,12 @@ namespace WindowsFormsApp2.Helpers
                 form = (T)Activator.CreateInstance(typeof(T), constructorArgs);
                 form.Show();
             }
+            else if (form.Tag.ToString() is "IncomeAndExpense")
+            {
+                form.Close();
+                form = (T)Activator.CreateInstance(typeof(T), constructorArgs);
+                form.Show();
+            }
             else
             {
                 form.WindowState = FormWindowState.Normal;
@@ -223,17 +229,16 @@ namespace WindowsFormsApp2.Helpers
                     string query = $@"select 
 u.AD as Cashier,
 model = case 
-when kf.KASSA_FIRMALAR=N'SUNMI' 
-then 1 when kf.KASSA_FIRMALAR=N'AzSMART' 
-then 2 when kf.KASSA_FIRMALAR=N'OMNITECH' 
-then 3 when kf.KASSA_FIRMALAR=N'DATAPAY'
-then 5 when kf.KASSA_FIRMALAR=N'NBA'
-then 6 when kf.KASSA_FIRMALAR=N'EKASAM' 
-then 7 when kf.KASSA_FIRMALAR=N'XPRINTER' 
-then 4 else  0 end , 
+when kf.KASSA_FIRMALAR=N'SUNMI' then 1 
+when kf.KASSA_FIRMALAR=N'AzSMART' then 2 
+when kf.KASSA_FIRMALAR=N'OMNITECH' then 3 
+when kf.KASSA_FIRMALAR=N'DATAPAY'then 5 
+when kf.KASSA_FIRMALAR=N'NBA'then 6 
+when kf.KASSA_FIRMALAR=N'EKASAM' then 7 
+when kf.KASSA_FIRMALAR=N'XPRINTER' then 4 else  0 end , 
 ip_ = case 
 when kf.KASSA_FIRMALAR = N'SUNMI' THEN  'http://' + ki.IP_ADRESS + ':5544'
-when kf.KASSA_FIRMALAR = N'AzSMART' then 'http://' + ki.IP_ADRESS + ':8008' 
+when kf.KASSA_FIRMALAR = N'AzSMART' then 'http://' + ki.IP_ADRESS + ':{AzSmart.FiskalPort}' 
 when kf.KASSA_FIRMALAR = N'DATAPAY' then 'http://'+ ki.IP_ADRESS + ':2222'
 when kf.KASSA_FIRMALAR = N'NBA' then 'http://'+ ki.IP_ADRESS + ':{NBA.NBA_FISCAL_SERVICE_PORT}/api/v1'
 when kf.KASSA_FIRMALAR = N'OMNITECH' then 'http://'+ ki.IP_ADRESS + ':8989/v2'
@@ -275,59 +280,45 @@ inner join userParol u on u.id = ki.KASSIR_ID where u.id = {Properties.Settings.
             }
         }
 
-        public static IpModel GetSclaesIpModel()
+        public static TereziModel GetTereziIpModel()
         {
             try
             {
-                string ip = null, model = null, merchantId = null, cashier = null;
                 using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
                 {
                     connection.Open();
 
-                    string query = $@"select 
-u.AD as Cashier,
-model = case 
-when kf.KASSA_FIRMALAR=N'SUNMI' 
-then 1 when kf.KASSA_FIRMALAR=N'AzSMART' 
-then 2 when kf.KASSA_FIRMALAR=N'OMNITECH' 
-then 3 when kf.KASSA_FIRMALAR=N'DATAPAY'
-then 5 when kf.KASSA_FIRMALAR=N'NBA'
-then 6 when kf.KASSA_FIRMALAR=N'EKASAM' 
-then 7 when kf.KASSA_FIRMALAR=N'XPRINTER' 
-then 4 else  0 end , 
-ip_ = case 
-when kf.KASSA_FIRMALAR = N'SUNMI' THEN  'http://' + ki.IP_ADRESS + ':5544'
-when kf.KASSA_FIRMALAR = N'AzSMART' then 'http://' + ki.IP_ADRESS + ':8008' 
-when kf.KASSA_FIRMALAR = N'DATAPAY' then 'http://'+ ki.IP_ADRESS + ':2222'
-when kf.KASSA_FIRMALAR = N'NBA' then 'http://'+ ki.IP_ADRESS + ':{NBA.NBA_FISCAL_SERVICE_PORT}/api/v1'
-when kf.KASSA_FIRMALAR = N'OMNITECH' then 'http://'+ ki.IP_ADRESS + ':8989/v2'
-when kf.KASSA_FIRMALAR = N'EKASAM' then 'http://'+ ki.IP_ADRESS + ':9876/api/'
-else '' end  ,
-rtrim(ltrim(isnull(ki.merchant_id,'yox'))) merchant_id from KASSA_IP ki 
-inner join KASSA_FIRMALAR kf on ki.KASSA_FIRMA_IP = kf.KASSA_FIRMALAR_ID
-inner join userParol u on u.id = ki.KASSIR_ID where u.id = {Properties.Settings.Default.UserID}";
+                    string query = $@"SELECT u.AD AS Cashier,
+       tf.TERAZI_FIRMALAR AS Model,
+       ti.IP_ADRESS AS IpAddress
+FROM TERAZI_IP ti
+INNER JOIN TERAZI_FIRMALAR tf ON tf.TERAZI_FIRMALAR_ID = ti.TERAZI_FIRMA_IP
+INNER JOIN userParol u ON u.id = ti.UserId
+WHERE u.id = {Properties.Settings.Default.UserID}";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
                         using (SqlDataReader dr = cmd.ExecuteReader())
                         {
-                            while (dr.Read())
+                            if (dr.Read())
                             {
-                                ip = dr["ip_"].ToString();
-                                model = dr["model"].ToString();
-                                merchantId = dr["merchant_id"].ToString();
-                                cashier = dr["Cashier"].ToString();
+                                string ip = dr["IpAddress"].ToString();
+                                string model = dr["Model"].ToString();
+                                string cashier = dr["Cashier"].ToString();
+
+                                TereziModel result = new TereziModel
+                                {
+                                    IpAddress = ip,
+                                    Model = model,
+                                    Cashier = cashier
+                                };
+                                return result;
+
                             }
-
-                            IpModel ıpModel = new IpModel
+                            else
                             {
-                                Ip = ip,
-                                Model = model,
-                                MerchantId = merchantId,
-                                Cashier = cashier
-                            };
-
-                            return ıpModel;
+                                return null;
+                            }
                         }
                     }
                 }
@@ -496,6 +487,13 @@ inner join userParol u on u.id = ki.KASSIR_ID where u.id = {Properties.Settings.
             public string Ip { get; set; }
             public string MerchantId { get; set; } = null;
             public string Cashier { get; set; } = null;
+        }
+
+        public class TereziModel
+        {
+            public string Cashier { get; set; } = null;
+            public string Model { get; set; }
+            public string IpAddress { get; set; }
         }
     }
 }

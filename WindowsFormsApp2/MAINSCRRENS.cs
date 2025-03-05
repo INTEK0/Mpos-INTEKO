@@ -198,7 +198,14 @@ namespace WindowsFormsApp2
                 }
             }
 
-            string queryString = @"SELECT  ROW_NUMBER() OVER(ORDER BY [MƏHSUL ADI]) AS Hotkey,
+            var terezi = FormHelpers.GetTereziIpModel();
+
+            string queryString = null;
+
+            switch (terezi.Model.Trim())
+            {
+                case "Rongta RLS 1100":
+                    queryString = @"SELECT  ROW_NUMBER() OVER(ORDER BY [MƏHSUL ADI]) AS Hotkey,
 REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE([MƏHSUL ADI],N'Ə','E'),N'ə','e'),N'ı','i'),N'ü','u'),N'ğ','g'),N'Ğ','G' ),N'Ü','U'),N'Ş','S'),N'ş','s'),N'Ç','C'),N'ç','c')  as Name  ,
 [MAL_ALISI_DETAILS_ID] as LFCode,
 [MAL_ALISI_DETAILS_ID] as Code ,
@@ -222,6 +229,32 @@ REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
 0 AS [Recommend days],
 0 AS [nutrition],
 0 AS [Ice(%)] FROM[terazimalzeme]";
+                    break;
+                case "MERC LB 1100":
+                    queryString = @"SELECT 
+REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE([MƏHSUL ADI],N'Ə','E'),N'ə','e'),N'ı','i'),N'ü','u'),N'ğ','g'),N'Ğ','G' ),N'Ü','U'),N'Ş','S'),N'ş','s'),N'Ç','C'),N'ç','c')  as Name  ,
+[MAL_ALISI_DETAILS_ID] as LFCode,
+[MAL_ALISI_DETAILS_ID] as Code ,
+7 AS [Barcode Type],
+[SATIŞ QİYMƏTİ] AS [Unit Price],
+'Kg' AS [Unit Weight/PCS],
+0 AS [PCS Type] ,
+21 AS [Deptment],
+0 AS [Tare Weight],
+0 AS [Shelf life],
+'Normal' AS [Package Type],
+0 AS [PackageWeight],
+0 AS [Package Tolerance(%)],
+0 AS [Message1],
+0 AS [Message2],
+0 AS [Label type],
+0 AS [Discount]
+FROM[terazimalzeme]";
+                    break;
+                
+                default:
+                    return;
+            }
 
             var data = DbProsedures.ConvertToDataTable(queryString);
 
@@ -232,7 +265,7 @@ REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
                 Filter = "Excel Faylı|*.xls",
                 InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                 OverwritePrompt = true, //varsa soruşmadan üstünə yazması üçün false olaraq qalmalıdır
-                FileName = "TərəziData.xls"
+                FileName = "Terezi_Mehsullar.xls"
             })
             {
                 if (saveFile.ShowDialog() is DialogResult.OK)
@@ -1103,6 +1136,21 @@ ORDER BY TotalAmount DESC;
         private void accordionControlElement61_Click(object sender, EventArgs e)
         {
             OpenForm<fAvansReport>();
+        }
+
+        private void accordionControlElement29_Click(object sender, EventArgs e)
+        {
+            OpenForm<fAddIncomeAndExpenses>(Enums.SelectedDataType.Income);
+        }
+
+        private void accordionControlElement62_Click(object sender, EventArgs e)
+        {
+            OpenForm<fAddIncomeAndExpenses>(Enums.SelectedDataType.Expense);
+        }
+
+        private void accordionControlElement63_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void chTerminalPrintReceipt_CheckedChanged(object sender, EventArgs e)

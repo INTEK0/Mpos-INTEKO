@@ -159,7 +159,7 @@ namespace WindowsFormsApp2
 
                 using (SqlCommand cmd = new SqlCommand(deleteQuery, conn))
                 {
-                    int rowsDeleted = cmd.ExecuteNonQuery();
+                    cmd.ExecuteNonQuery();
                 }
             }
         }
@@ -2646,7 +2646,18 @@ namespace WindowsFormsApp2
                         }
                         break; /*SUNMI*/
                     case "2":
-                        IsSuccess = AzSmart.Sales(lIpAdress.Text, lMerchantId.Text, textEdit1.Text, umumi_mebleg_, incomingSum, card_, tUsername.Text, bankttnminputdata);
+                        IsSuccess = AzSmart.Sales(new DTOs.SalesDto
+                        {
+                            IpAddress = lIpAdress.Text,
+                            MerchantId = lMerchantId.Text,
+                            ProccessNo = textEdit1.Text,
+                            Total = umumi_mebleg_,
+                            Cash = cash_,
+                            Card = card_,
+                            IncomingSum = incomingSum,
+                            Cashier = tUsername.Text,
+                            Rrn = bankttnminputdata
+                        });
 
                         if (IsSuccess)
                         {
@@ -2702,9 +2713,6 @@ namespace WindowsFormsApp2
                             Balance = _qaliq,
                             PayType = payType
                         });
-
-
-
                         break; /*NBA*/
                     case "7":
                         IsSuccess = EKASAM.Sales(new DTOs.SalesDto
@@ -2731,15 +2739,9 @@ namespace WindowsFormsApp2
                         break; /*EKASSAM*/
                 }
             }
-            catch (WebException ex) when (ex.Status is WebExceptionStatus.ConnectFailure)
+            catch (Exception ex)
             {
-                throw;
-                //ReadyMessages.ERROR_SERVER_CONNECTION_MESSAGE(ex.Message);
-            }
-            catch (WebException ex)
-            {
-                throw;
-                //ReadyMessages.ERROR_DEFAULT_MESSAGE(ex.Message);
+                ReadyMessages.ERROR_DEFAULT_MESSAGE(ex.Message);
             }
             finally
             {
