@@ -239,27 +239,7 @@ REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
 0 AS [Ice(%)] FROM[terazimalzeme]";
                     break;
                 case "MERC LB 1100":
-                    //                    queryString = @"SELECT 
-                    //REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE([MƏHSUL ADI],N'Ə','E'),N'ə','e'),N'ı','i'),N'ü','u'),N'ğ','g'),N'Ğ','G' ),N'Ü','U'),N'Ş','S'),N'ş','s'),N'Ç','C'),N'ç','c')  as Name  ,
-                    //[MAL_ALISI_DETAILS_ID] as LFCode,
-                    //[MAL_ALISI_DETAILS_ID] as Code ,
-                    //7 AS [Barcode Type],
-                    //[SATIŞ QİYMƏTİ] AS [Unit Price],
-                    //'Kg' AS [Unit Weight/PCS],
-                    //0 AS [PCS Type] ,
-                    //21 AS [Deptment],
-                    //0 AS [Tare Weight],
-                    //0 AS [Shelf life],
-                    //'Normal' AS [Package Type],
-                    //0 AS [PackageWeight],
-                    //0 AS [Package Tolerance(%)],
-                    //0 AS [Message1],
-                    //0 AS [Message2],
-                    //0 AS [Label type],
-                    //0 AS [Discount]
-                    //FROM[terazimalzeme]";
-
-                    queryString = @"SELECT 
+                     queryString = @"SELECT 
 REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE([MƏHSUL ADI],N'Ə','E'),N'ə','e'),N'ı','i'),N'ü','u'),N'ğ','g'),N'Ğ','G' ),N'Ü','U'),N'Ş','S'),N'ş','s'),N'Ç','C'),N'ç','c'),
 [MAL_ALISI_DETAILS_ID],
 [MAL_ALISI_DETAILS_ID]  ,
@@ -279,9 +259,6 @@ REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
 0
 FROM[terazimalzeme]";
                     break;
-
-                default:
-                    return;
             }
 
             var data = DbProsedures.ConvertToDataTable(queryString);
@@ -300,19 +277,26 @@ FROM[terazimalzeme]";
             {
                 if (saveFile.ShowDialog() is DialogResult.OK)
                 {
-                    using (StreamWriter sw = new StreamWriter(saveFile.FileName, false, System.Text.Encoding.Unicode))
+                    if (terezi.Model.Trim() == "Rongta RLS 1100")
                     {
-                        // GridView'deki satırlara erişiyoruz
-                        for (int i = 0; i < gridView2.RowCount; i++)
+                        gridView2.ExportToCsv(saveFile.FileName, new DevExpress.XtraPrinting.CsvExportOptions { Separator = "\t" });
+                    }
+                    else
+                    {
+                        using (StreamWriter sw = new StreamWriter(saveFile.FileName, false, System.Text.Encoding.Unicode))
                         {
-                            // Satırdaki veriyi alıyoruz
-                            var row = gridView2.GetDataRow(i);
+                            // GridView'deki satırlara erişiyoruz
+                            for (int i = 0; i < gridView2.RowCount; i++)
+                            {
+                                // Satırdaki veriyi alıyoruz
+                                var row = gridView2.GetDataRow(i);
 
-                            // Veriyi tab ile ayırarak birleştiriyoruz
-                            string rowData = string.Join("\t", row.ItemArray.Select(cell => cell?.ToString()));
+                                // Veriyi tab ile ayırarak birleştiriyoruz
+                                string rowData = string.Join("\t", row.ItemArray.Select(cell => cell?.ToString()));
 
-                            // Satırı CSV'ye yazıyoruz
-                            sw.WriteLine(rowData);
+                                // Satırı CSV'ye yazıyoruz
+                                sw.WriteLine(rowData);
+                            }
                         }
                     }
                     Alert("Tərəzi məhsulları excelə export edildi", MessageType.Success);
