@@ -35,6 +35,7 @@ namespace WindowsFormsApp2.Forms
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
             this.bPrint = new DevExpress.XtraEditors.SimpleButton();
+            this.bShowColumns = new DevExpress.XtraEditors.SimpleButton();
             this.bDelete = new DevExpress.XtraEditors.SimpleButton();
             this.bEdit = new DevExpress.XtraEditors.SimpleButton();
             this.tableLayoutPanel1.SuspendLayout();
@@ -91,6 +92,7 @@ namespace WindowsFormsApp2.Forms
             // panelControl1
             // 
             this.panelControl1.Controls.Add(this.bPrint);
+            this.panelControl1.Controls.Add(this.bShowColumns);
             this.panelControl1.Controls.Add(this.bDelete);
             this.panelControl1.Controls.Add(this.bEdit);
             this.panelControl1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -120,6 +122,25 @@ namespace WindowsFormsApp2.Forms
             this.bPrint.Text = "Çap et";
             this.bPrint.Click += new System.EventHandler(this.bPrint_Click);
             // 
+            // bShowColumns
+            // 
+            this.bShowColumns.AllowFocus = false;
+            this.bShowColumns.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Question;
+            this.bShowColumns.Appearance.Font = new System.Drawing.Font("Nunito", 12F, System.Drawing.FontStyle.Bold);
+            this.bShowColumns.Appearance.Options.UseBackColor = true;
+            this.bShowColumns.Appearance.Options.UseFont = true;
+            this.bShowColumns.ImageOptions.SvgImageSize = new System.Drawing.Size(24, 24);
+            this.bShowColumns.Location = new System.Drawing.Point(355, 4);
+            this.bShowColumns.LookAndFeel.SkinName = "WXI";
+            this.bShowColumns.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.bShowColumns.Name = "bShowColumns";
+            this.bShowColumns.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bShowColumns.Size = new System.Drawing.Size(190, 42);
+            this.bShowColumns.TabIndex = 2;
+            this.bShowColumns.TabStop = false;
+            this.bShowColumns.Text = "Göstəriləcək sütunlar";
+            this.bShowColumns.Click += new System.EventHandler(this.bShowColumns_Click);
+            // 
             // bDelete
             // 
             this.bDelete.AllowFocus = false;
@@ -146,6 +167,7 @@ namespace WindowsFormsApp2.Forms
             this.bEdit.Appearance.Font = new System.Drawing.Font("Nunito", 12F, System.Drawing.FontStyle.Bold);
             this.bEdit.Appearance.Options.UseBackColor = true;
             this.bEdit.Appearance.Options.UseFont = true;
+            this.bEdit.Enabled = false;
             this.bEdit.Location = new System.Drawing.Point(11, 4);
             this.bEdit.LookAndFeel.SkinName = "WXI";
             this.bEdit.LookAndFeel.UseDefaultLookAndFeel = false;
@@ -190,5 +212,6 @@ namespace WindowsFormsApp2.Forms
         private DevExpress.XtraEditors.SimpleButton bEdit;
         private DevExpress.XtraEditors.SimpleButton bPrint;
         private DevExpress.XtraEditors.SimpleButton bDelete;
+        private DevExpress.XtraEditors.SimpleButton bShowColumns;
     }
 }

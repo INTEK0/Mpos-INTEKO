@@ -168,6 +168,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tHeader.Location = new System.Drawing.Point(91, 12);
             this.tHeader.Name = "tHeader";
+            this.tHeader.Properties.ReadOnly = true;
             this.tHeader.Size = new System.Drawing.Size(395, 30);
             this.tHeader.TabIndex = 0;
             // 

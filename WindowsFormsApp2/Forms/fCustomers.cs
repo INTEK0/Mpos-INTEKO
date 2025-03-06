@@ -1,8 +1,13 @@
-﻿using DevExpress.XtraGrid.Localization;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Reflection;
+using System.IO;
+using System.Linq;
+using System.Windows.Forms;
+using DevExpress.Xpo.DB.Helpers;
+using DevExpress.XtraGrid.Localization;
+using Newtonsoft.Json;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
 using static WindowsFormsApp2.Helpers.FormHelpers;
@@ -13,6 +18,8 @@ namespace WindowsFormsApp2.Forms
     {
         private readonly TParent parentForm;
         private DatabaseClasses.Customer customer;
+        private readonly string filePath = $@"{Application.StartupPath}\LocalFiles\GridColumnsSettings.json";
+
 
         public fCustomers(TParent _parent)
         {
@@ -87,10 +94,52 @@ namespace WindowsFormsApp2.Forms
 
         private void CustomerDataLoad()
         {
-            var data = DbProsedures.ConvertToDataTable("SELECT * FROM dbo.fn_MUSTERI()");
-            gridControl1.DataSource = data;
-            gridView1.Columns[0].Visible = false;
-            gridView1.GroupPanelText = $"Müştəri sayı: {gridView1.RowCount}";
+            if (File.Exists(filePath))
+            {
+                string jsonData = File.ReadAllText(filePath);
+
+                var tables = JsonConvert.DeserializeObject<List<dynamic>>(jsonData);
+
+                var table = tables.FirstOrDefault(t => t.TableName == "Customers");
+                if (table != null)
+                {
+                    List<string> visibleColumns = new List<string>();
+                    foreach (var column in table.Columns)
+                    {
+                        if ((bool)column.Visible == true)
+                        {
+                            visibleColumns.Add(column.FieldName.ToString());  // Visible olan sütunları ekle
+                        }
+                    }
+
+                    if (visibleColumns != null)
+                    {
+                        
+                        var data = DbProsedures.ConvertToDataTable("SELECT * FROM dbo.fn_MUSTERI()");
+
+                        foreach (DataColumn column in data.Columns.Cast<DataColumn>().ToList())
+                        {
+                            // Eğer sütun visibleColumns içinde yoksa, sütunu gizle
+                            if (!visibleColumns.Contains(column.ColumnName))
+                            {
+                                data.Columns.Remove(column);
+                            }
+                        }
+
+
+                        gridControl1.DataSource = data;
+                        //gridView1.Columns[0].Visible = false;
+                        gridView1.GroupPanelText = $"Müştəri sayı: {gridView1.RowCount}";
+                    }
+                }
+            }
+            
+        }
+
+        private void bShowColumns_Click(object sender, EventArgs e)
+        {
+            fColumnSettings f = new fColumnSettings();
+            f.ShowDialog();
         }
     }
 }

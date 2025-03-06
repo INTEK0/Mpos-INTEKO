@@ -89,6 +89,18 @@ namespace WindowsFormsApp2.Helpers
             ZReport
         }
 
+        public enum BankType
+        {
+            [Description("YOXDUR")]
+            NONE,
+            [Description("KAPİTAL BANK")]
+            KAPITAL,
+            [Description("PAŞA BANK")]
+            PASHA,
+            [Description("ABB BANK")]
+            ABB,
+        }
+
         public static string GetEnumDescription(Enum value)
         {
             FieldInfo field = value.GetType().GetField(value.ToString());

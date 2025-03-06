@@ -197,12 +197,6 @@ namespace WindowsFormsApp2.Helpers
                 form = (T)Activator.CreateInstance(typeof(T), constructorArgs);
                 form.Show();
             }
-            else if (form.Tag.ToString() is "IncomeAndExpense")
-            {
-                form.Close();
-                form = (T)Activator.CreateInstance(typeof(T), constructorArgs);
-                form.Show();
-            }
             else
             {
                 form.WindowState = FormWindowState.Normal;

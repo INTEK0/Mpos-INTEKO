@@ -41,8 +41,7 @@ SELECT
     MEHSUL_ADI AS N'MƏHSUL ADI',
     SATIS_GIYMETI AS N'SATIŞ QİYMƏTİ'
 FROM RankedProducts
-WHERE rn = 1;
-";
+WHERE rn = 1;";
 
             var data = DbProsedures.ConvertToDataTable(query);
             gridControlProducts.DataSource = data;

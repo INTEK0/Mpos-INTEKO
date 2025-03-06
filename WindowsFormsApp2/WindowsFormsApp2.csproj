@@ -324,6 +324,12 @@
     <Compile Include="Forms\fCategory.Designer.cs">
       <DependentUpon>fCategory.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\fColumnSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\fColumnSettings.Designer.cs">
+      <DependentUpon>fColumnSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\fCreditPay.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -536,12 +542,6 @@
     </Compile>
     <Compile Include="Helpers\Enums.cs" />
     <Compile Include="Helpers\FormHelpers.cs" />
-    <Compile Include="Helpers\GenericFormHelpers\fCustomerDerived.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Helpers\GenericFormHelpers\fCustomerDerived.Designer.cs">
-      <DependentUpon>fCustomerDerived.cs</DependentUpon>
-    </Compile>
     <Compile Include="Helpers\Messages\CommonData.cs" />
     <Compile Include="Helpers\Messages\ErrorMessages.cs" />
     <Compile Include="Helpers\Messages\ReadyMessages.cs" />
@@ -636,12 +636,6 @@
     </Compile>
     <Compile Include="MUSTERIAXTARKREDIT.Designer.cs">
       <DependentUpon>MUSTERIAXTARKREDIT.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MUSTERILER_LAYOUT.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MUSTERILER_LAYOUT.Designer.cs">
-      <DependentUpon>MUSTERILER_LAYOUT.cs</DependentUpon>
     </Compile>
     <Compile Include="MUSTERI_AXTAR.cs">
       <SubType>Form</SubType>
@@ -840,12 +834,6 @@
       <DependentUpon>MEHSUL_ALİSİ.cs</DependentUpon>
     </Compile>
     <Compile Include="MEHSUL_GAYTARMA_AXTARIS_CRUD.cs" />
-    <Compile Include="MUSTERILER.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MUSTERILER.Designer.cs">
-      <DependentUpon>MUSTERILER.cs</DependentUpon>
-    </Compile>
     <Compile Include="bank.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -914,12 +902,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="anaEkranOLD.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="anaEkranOLD.Designer.cs">
-      <DependentUpon>anaEkranOLD.cs</DependentUpon>
-    </Compile>
     <Compile Include="satis_json.cs" />
     <Compile Include="TECHIZATCI_ODENILENLER.cs">
       <SubType>Form</SubType>
@@ -1028,6 +1010,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fCategory.resx">
       <DependentUpon>fCategory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\fColumnSettings.resx">
+      <DependentUpon>fColumnSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fCompany.resx">
       <DependentUpon>fCompany.cs</DependentUpon>
@@ -1182,14 +1167,8 @@
     <EmbeddedResource Include="MUSTERIAXTARKREDIT.resx">
       <DependentUpon>MUSTERIAXTARKREDIT.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MUSTERILER.resx">
-      <DependentUpon>MUSTERILER.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="bank.resx">
       <DependentUpon>bank.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MUSTERILER_LAYOUT.resx">
-      <DependentUpon>MUSTERILER_LAYOUT.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MUSTERI_AXTAR.resx">
       <DependentUpon>MUSTERI_AXTAR.cs</DependentUpon>
@@ -1250,10 +1229,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="anaEkranOLD.resx">
-      <DependentUpon>anaEkranOLD.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="QAIME_SATISI_QAYTARMA_LAYOUT.resx">
       <DependentUpon>QAIME_SATISI_QAYTARMA_LAYOUT.cs</DependentUpon>
     </EmbeddedResource>
@@ -1308,6 +1283,9 @@
     <EmbeddedResource Include="ZAMINKREDIT.resx">
       <DependentUpon>ZAMINKREDIT.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="LocalFiles\GridColumnsSettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="NewIntekobirDataSet.xsc">
       <DependentUpon>NewIntekobirDataSet.xsd</DependentUpon>
     </None>

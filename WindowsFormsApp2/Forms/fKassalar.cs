@@ -17,12 +17,14 @@ using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
+using static WindowsFormsApp2.Helpers.Enums;
 using static WindowsFormsApp2.Helpers.FormHelpers;
 
 namespace WindowsFormsApp2.Forms
 {
     public partial class fKassalar : DevExpress.XtraEditors.XtraForm
     {
+        private BankType _bankType = BankType.NONE;
         public fKassalar()
         {
             InitializeComponent();
@@ -37,6 +39,23 @@ namespace WindowsFormsApp2.Forms
             firma_main();
             magaza_main();
             GetallData();
+        }
+
+        private void BankDataLoad()
+        {
+            var data = Enum.GetValues(typeof(BankType))
+                       .Cast<BankType>()
+                       .Select(x => new
+                       {
+                           Value = GetEnumDescription(x)
+                       })
+                       .ToList();
+
+
+            lookBank.Properties.DataSource = data;
+            lookBank.Properties.DisplayMember = "Value";
+            lookBank.Properties.ForceInitialize();
+            lookBank.EditValue = _bankType;
         }
 
         private void magaza_main()
@@ -137,6 +156,10 @@ namespace WindowsFormsApp2.Forms
                 groupControl1.Height = 170;
                 groupControl2.Location = new Point(0, 176);
                 gridControl1.Location = new Point(5, 234);
+            }
+            else if (lookKassa.Text == "NBA")
+            {
+                BankDataLoad();    
             }
             else
             {

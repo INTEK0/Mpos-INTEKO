@@ -51,6 +51,7 @@ namespace WindowsFormsApp2.Helpers.DB
             public string BankAccountNumber { get; set; }
             public string BankCode { get; set; }
             public string BankSwift { get; set; }
+            public decimal Debt { get; set; }
             public int IsDeleted { get; set; }
         }
 

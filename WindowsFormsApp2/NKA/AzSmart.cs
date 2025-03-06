@@ -72,12 +72,12 @@ namespace WindowsFormsApp2.NKA
             request.AddParameter("text/plain", data, ParameterType.RequestBody);
             RestResponse response = client.Execute(request);
 
-            //if (response.ResponseStatus != ResponseStatus.Completed)
-            //{
-            //    ReadyMessages.ERROR_SERVER_CONNECTION_MESSAGE();
-            //    FormHelpers.Log($"Kassa ilə əlaqə zamanı xəta yarandı\n\n {response.ErrorMessage}");
-            //    return;
-            //}
+            if (response.ResponseStatus != ResponseStatus.Completed)
+            {
+                ReadyMessages.ERROR_SERVER_CONNECTION_MESSAGE();
+                FormHelpers.Log($"Kassa ilə əlaqə zamanı xəta yarandı\n\n {response.ErrorMessage}");
+                return;
+            }
 
             AzSmartResponseOpenShift weatherForecast = System.Text.Json.JsonSerializer.Deserialize<AzSmartResponseOpenShift>(response.Content);
             if (weatherForecast != null)
@@ -165,9 +165,8 @@ namespace WindowsFormsApp2.NKA
         public static bool Sales(DTOs.SalesDto salesData)
         {
             List<Item> items = new List<Item>();
-            SqlConnection conn = new SqlConnection();
+            SqlConnection conn = new SqlConnection(DbHelpers.DbConnectionString);
             SqlCommand cmd = new SqlCommand();
-            conn.ConnectionString = Properties.Settings.Default.SqlCon;
             conn.Open();
             string query = $@"
 SELECT 

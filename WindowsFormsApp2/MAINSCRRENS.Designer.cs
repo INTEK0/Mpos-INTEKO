@@ -35,6 +35,8 @@ namespace WindowsFormsApp2
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MAINSCRRENS));
             this.fluentDesignFormContainer1 = new DevExpress.XtraBars.FluentDesignSystem.FluentDesignFormContainer();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.gridControl4 = new DevExpress.XtraGrid.GridControl();
+            this.gridView5 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridControl2 = new DevExpress.XtraGrid.GridControl();
             this.gridView2 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.pictureEdit1 = new DevExpress.XtraEditors.PictureEdit();
@@ -233,6 +235,8 @@ namespace WindowsFormsApp2
             this.tileGroup1 = new DevExpress.XtraEditors.TileGroup();
             this.fluentDesignFormContainer1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControl4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit1.Properties)).BeginInit();
@@ -344,6 +348,7 @@ namespace WindowsFormsApp2
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 66.66666F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 248F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel1.Controls.Add(this.gridControl4, 3, 2);
             this.tableLayoutPanel1.Controls.Add(this.gridControl2, 1, 4);
             this.tableLayoutPanel1.Controls.Add(this.pictureEdit1, 3, 4);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel8, 3, 1);
@@ -356,12 +361,45 @@ namespace WindowsFormsApp2
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 5;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 116F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40.5145F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.97124F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 39.56522F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 34.78261F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 18.92069F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 6.593573F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1157, 806);
             this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // gridControl4
+            // 
+            this.gridControl4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gridControl4.Location = new System.Drawing.Point(863, 392);
+            this.gridControl4.LookAndFeel.SkinName = "WXI";
+            this.gridControl4.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.gridControl4.MainView = this.gridView5;
+            this.gridControl4.Name = "gridControl4";
+            this.gridControl4.Size = new System.Drawing.Size(291, 234);
+            this.gridControl4.TabIndex = 0;
+            this.gridControl4.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gridView5});
+            this.gridControl4.Visible = false;
+            // 
+            // gridView5
+            // 
+            this.gridView5.Appearance.EvenRow.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.gridView5.Appearance.EvenRow.Options.UseBackColor = true;
+            this.gridView5.Appearance.OddRow.BackColor = System.Drawing.Color.White;
+            this.gridView5.Appearance.OddRow.Options.UseBackColor = true;
+            this.gridView5.Appearance.ViewCaption.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
+            this.gridView5.Appearance.ViewCaption.Options.UseFont = true;
+            this.gridView5.DetailHeight = 294;
+            this.gridView5.GridControl = this.gridControl4;
+            this.gridView5.Name = "gridView5";
+            this.gridView5.OptionsBehavior.KeepFocusedRowOnUpdate = false;
+            this.gridView5.OptionsBehavior.ReadOnly = true;
+            this.gridView5.OptionsEditForm.PopupEditFormWidth = 1067;
+            this.gridView5.OptionsNavigation.AutoFocusNewRow = true;
+            this.gridView5.OptionsScrollAnnotations.ShowFocusedRow = DevExpress.Utils.DefaultBoolean.False;
+            this.gridView5.OptionsView.ShowGroupPanel = false;
+            this.gridView5.OptionsView.ShowIndicator = false;
             // 
             // gridControl2
             // 
@@ -445,7 +483,7 @@ namespace WindowsFormsApp2
             this.tableLayoutPanel8.RowCount = 2;
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 85.2459F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.7541F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(297, 279);
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(297, 273);
             this.tableLayoutPanel8.TabIndex = 5;
             // 
             // gridControl1
@@ -457,7 +495,7 @@ namespace WindowsFormsApp2
             this.gridControl1.LookAndFeel.UseDefaultLookAndFeel = false;
             this.gridControl1.MainView = this.gridView1;
             this.gridControl1.Name = "gridControl1";
-            this.gridControl1.Size = new System.Drawing.Size(291, 231);
+            this.gridControl1.Size = new System.Drawing.Size(291, 226);
             this.gridControl1.TabIndex = 0;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
@@ -517,13 +555,13 @@ namespace WindowsFormsApp2
             this.b5.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(235)))), ((int)(((byte)(177)))));
             this.b5.Appearance.Options.UseBackColor = true;
             this.b5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.b5.Location = new System.Drawing.Point(5, 242);
+            this.b5.Location = new System.Drawing.Point(5, 237);
             this.b5.LookAndFeel.SkinName = "WXI";
             this.b5.LookAndFeel.UseDefaultLookAndFeel = false;
             this.b5.Margin = new System.Windows.Forms.Padding(5);
             this.b5.Name = "b5";
             this.b5.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.b5.Size = new System.Drawing.Size(64, 32);
+            this.b5.Size = new System.Drawing.Size(64, 31);
             this.b5.TabIndex = 1;
             this.b5.Text = "5";
             this.b5.Click += new System.EventHandler(this.BestSellingProductListCount);
@@ -534,13 +572,13 @@ namespace WindowsFormsApp2
             this.b10.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(158)))), ((int)(((byte)(204)))), ((int)(((byte)(253)))));
             this.b10.Appearance.Options.UseBackColor = true;
             this.b10.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.b10.Location = new System.Drawing.Point(79, 242);
+            this.b10.Location = new System.Drawing.Point(79, 237);
             this.b10.LookAndFeel.SkinName = "WXI";
             this.b10.LookAndFeel.UseDefaultLookAndFeel = false;
             this.b10.Margin = new System.Windows.Forms.Padding(5);
             this.b10.Name = "b10";
             this.b10.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.b10.Size = new System.Drawing.Size(64, 32);
+            this.b10.Size = new System.Drawing.Size(64, 31);
             this.b10.TabIndex = 1;
             this.b10.Text = "10";
             this.b10.Click += new System.EventHandler(this.BestSellingProductListCount);
@@ -551,13 +589,13 @@ namespace WindowsFormsApp2
             this.b15.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(215)))), ((int)(((byte)(195)))), ((int)(((byte)(241)))));
             this.b15.Appearance.Options.UseBackColor = true;
             this.b15.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.b15.Location = new System.Drawing.Point(153, 242);
+            this.b15.Location = new System.Drawing.Point(153, 237);
             this.b15.LookAndFeel.SkinName = "WXI";
             this.b15.LookAndFeel.UseDefaultLookAndFeel = false;
             this.b15.Margin = new System.Windows.Forms.Padding(5);
             this.b15.Name = "b15";
             this.b15.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.b15.Size = new System.Drawing.Size(64, 32);
+            this.b15.Size = new System.Drawing.Size(64, 31);
             this.b15.TabIndex = 1;
             this.b15.Text = "15";
             this.b15.Click += new System.EventHandler(this.BestSellingProductListCount);
@@ -568,13 +606,13 @@ namespace WindowsFormsApp2
             this.b20.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(251)))), ((int)(((byte)(233)))));
             this.b20.Appearance.Options.UseBackColor = true;
             this.b20.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.b20.Location = new System.Drawing.Point(227, 242);
+            this.b20.Location = new System.Drawing.Point(227, 237);
             this.b20.LookAndFeel.SkinName = "WXI";
             this.b20.LookAndFeel.UseDefaultLookAndFeel = false;
             this.b20.Margin = new System.Windows.Forms.Padding(5);
             this.b20.Name = "b20";
             this.b20.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.b20.Size = new System.Drawing.Size(65, 32);
+            this.b20.Size = new System.Drawing.Size(65, 31);
             this.b20.TabIndex = 1;
             this.b20.Text = "20";
             this.b20.Click += new System.EventHandler(this.BestSellingProductListCount);
@@ -3089,6 +3127,8 @@ namespace WindowsFormsApp2
             this.fluentDesignFormContainer1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControl4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit1.Properties)).EndInit();
@@ -3390,6 +3430,8 @@ namespace WindowsFormsApp2
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement29;
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement63;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private DevExpress.XtraGrid.GridControl gridControl4;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView5;
     }
 }
 

@@ -43,6 +43,7 @@
             this.bDelete = new DevExpress.XtraEditors.SimpleButton();
             this.bPing = new DevExpress.XtraEditors.SimpleButton();
             this.bAdd = new DevExpress.XtraEditors.SimpleButton();
+            this.lookBank = new DevExpress.XtraEditors.LookUpEdit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
             this.groupControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tMerchantId.Properties)).BeginInit();
@@ -53,11 +54,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).BeginInit();
             this.groupControl2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.lookBank.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // groupControl1
             // 
             this.groupControl1.CaptionLocation = DevExpress.Utils.Locations.Top;
+            this.groupControl1.Controls.Add(this.lookBank);
             this.groupControl1.Controls.Add(this.labelControl1);
             this.groupControl1.Controls.Add(this.tMerchantId);
             this.groupControl1.Controls.Add(this.labelControl2);
@@ -75,13 +78,13 @@
             this.groupControl1.MinimumSize = new System.Drawing.Size(0, 130);
             this.groupControl1.Name = "groupControl1";
             this.groupControl1.ShowCaption = false;
-            this.groupControl1.Size = new System.Drawing.Size(871, 130);
+            this.groupControl1.Size = new System.Drawing.Size(881, 130);
             this.groupControl1.TabIndex = 16;
             this.groupControl1.Text = "layoutControlGroup1";
             // 
             // labelControl1
             // 
-            this.labelControl1.Location = new System.Drawing.Point(20, 134);
+            this.labelControl1.Location = new System.Drawing.Point(27, 134);
             this.labelControl1.Name = "labelControl1";
             this.labelControl1.Size = new System.Drawing.Size(91, 16);
             this.labelControl1.TabIndex = 0;
@@ -99,7 +102,7 @@
             // 
             // labelControl2
             // 
-            this.labelControl2.Location = new System.Drawing.Point(20, 96);
+            this.labelControl2.Location = new System.Drawing.Point(27, 96);
             this.labelControl2.Name = "labelControl2";
             this.labelControl2.Size = new System.Drawing.Size(83, 16);
             this.labelControl2.TabIndex = 10;
@@ -118,7 +121,7 @@
             // 
             // labelControl3
             // 
-            this.labelControl3.Location = new System.Drawing.Point(20, 20);
+            this.labelControl3.Location = new System.Drawing.Point(27, 20);
             this.labelControl3.Name = "labelControl3";
             this.labelControl3.Size = new System.Drawing.Size(59, 16);
             this.labelControl3.TabIndex = 11;
@@ -138,7 +141,7 @@
             // 
             // labelControl4
             // 
-            this.labelControl4.Location = new System.Drawing.Point(20, 58);
+            this.labelControl4.Location = new System.Drawing.Point(27, 58);
             this.labelControl4.Name = "labelControl4";
             this.labelControl4.Size = new System.Drawing.Size(62, 16);
             this.labelControl4.TabIndex = 12;
@@ -161,7 +164,7 @@
             this.gridControl1.Location = new System.Drawing.Point(5, 192);
             this.gridControl1.MainView = this.gridView1;
             this.gridControl1.Name = "gridControl1";
-            this.gridControl1.Size = new System.Drawing.Size(859, 504);
+            this.gridControl1.Size = new System.Drawing.Size(1075, 504);
             this.gridControl1.TabIndex = 4;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
@@ -194,7 +197,7 @@
             this.groupControl2.Location = new System.Drawing.Point(0, 134);
             this.groupControl2.Name = "groupControl2";
             this.groupControl2.ShowCaption = false;
-            this.groupControl2.Size = new System.Drawing.Size(871, 52);
+            this.groupControl2.Size = new System.Drawing.Size(1087, 52);
             this.groupControl2.TabIndex = 17;
             this.groupControl2.Text = "groupControl2";
             // 
@@ -221,7 +224,7 @@
             this.bPing.Appearance.Font = new System.Drawing.Font("Nunito", 12F, System.Drawing.FontStyle.Bold);
             this.bPing.Appearance.Options.UseBackColor = true;
             this.bPing.Appearance.Options.UseFont = true;
-            this.bPing.Location = new System.Drawing.Point(689, 5);
+            this.bPing.Location = new System.Drawing.Point(705, 5);
             this.bPing.Name = "bPing";
             this.bPing.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
             this.bPing.Size = new System.Drawing.Size(170, 40);
@@ -244,20 +247,36 @@
             this.bAdd.Text = "ƏLAVƏ ET";
             this.bAdd.Click += new System.EventHandler(this.bAdd_Click);
             // 
+            // lookBank
+            // 
+            this.lookBank.Location = new System.Drawing.Point(525, 13);
+            this.lookBank.Name = "lookBank";
+            this.lookBank.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.lookBank.Properties.DropDownRows = 4;
+            this.lookBank.Properties.NullText = "--Bank seçimi--";
+            this.lookBank.Properties.ShowFooter = false;
+            this.lookBank.Properties.ShowHeader = false;
+            this.lookBank.Properties.ShowLines = false;
+            this.lookBank.Size = new System.Drawing.Size(350, 30);
+            this.lookBank.TabIndex = 13;
+            // 
             // fKassalar
             // 
             this.Appearance.BackColor = System.Drawing.Color.White;
             this.Appearance.Options.UseBackColor = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(871, 699);
+            this.ClientSize = new System.Drawing.Size(881, 699);
             this.Controls.Add(this.gridControl1);
             this.Controls.Add(this.groupControl2);
             this.Controls.Add(this.groupControl1);
             this.IconOptions.Image = global::WindowsFormsApp2.Properties.Resources.Mpos_png1;
             this.LookAndFeel.SkinName = "WXI";
             this.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.MinimumSize = new System.Drawing.Size(667, 733);
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(883, 733);
+            this.MinimumSize = new System.Drawing.Size(883, 733);
             this.Name = "fKassalar";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Kassalar";
@@ -273,6 +292,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).EndInit();
             this.groupControl2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.lookBank.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -294,5 +314,6 @@
         private DevExpress.XtraEditors.SimpleButton bDelete;
         private DevExpress.XtraEditors.SimpleButton bAdd;
         private DevExpress.XtraEditors.SimpleButton bPing;
+        private DevExpress.XtraEditors.LookUpEdit lookBank;
     }
 }

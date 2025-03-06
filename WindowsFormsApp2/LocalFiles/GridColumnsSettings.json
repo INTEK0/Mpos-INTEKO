@@ -1,0 +1,95 @@
+[
+    {
+        "TableName": "Customers",
+        "Columns": [
+            {
+                "FieldName": "MÜŞTƏRİ №",
+                "Visible": true
+            },
+            {
+                "FieldName": "F/Ş - H/Ş ADI",
+                "Visible": true
+            },
+            {
+                "FieldName": "VÖEN",
+                "Visible": true
+            },
+            {
+                "FieldName": "AD SOYAD ATA ADI",
+                "Visible": true
+            },
+            {
+                "FieldName": "DOĞUM TARİXİ",
+                "Visible": true
+            },
+            {
+                "FieldName": "Ş/V SERİYASI",
+                "Visible": true
+            },
+            {
+                "FieldName": "FİNKOD",
+                "Visible": true
+            },
+            {
+                "FieldName": "ÜNVAN",
+                "Visible": true
+            },
+            {
+                "FieldName": "Ş/V VERİLMƏ TARİXİ",
+                "Visible": true
+            },
+            {
+                "FieldName": "Ş/V BİTMƏ TARİXİ",
+                "Visible": true
+            },
+            {
+                "FieldName": "FAKTİKİ YAŞAYIŞ ÜNVANI",
+                "Visible": true
+            },
+            {
+                "FieldName": "CİNSİ",
+                "Visible": true
+            },
+            {
+                "FieldName": "E-POÇT",
+                "Visible": true
+            },
+            {
+                "FieldName": "MOBIL",
+                "Visible": true
+            },
+            {
+                "FieldName": "EV",
+                "Visible": true
+            },
+            {
+                "FieldName": "BANK ADI",
+                "Visible": true
+            },
+            {
+                "FieldName": "BANK VÖEN",
+                "Visible": true
+            },
+            {
+                "FieldName": "HESAB №",
+                "Visible": true
+            },
+            {
+                "FieldName": "KOD",
+                "Visible": true
+            },
+            {
+                "FieldName": "SWIFT",
+                "Visible": true
+            },
+            {
+                "FieldName": "QEYD",
+                "Visible": true
+            },
+            {
+                "FieldName": "BORC",
+                "Visible": true
+            }
+        ]
+    }
+]

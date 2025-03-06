@@ -300,7 +300,7 @@ namespace WindowsFormsApp2.Helpers.DB
                     parameter = cmd.Parameters.Add("@user_id", SqlDbType.Int);
                     parameter.Value = Properties.Settings.Default.UserID;
 
-                    parameter = cmd.Parameters.Add("@emeliyyat_nomre", SqlDbType.NVarChar, 100);
+                    parameter = cmd.Parameters.Add("@emeliyyat_nomre", SqlDbType.NVarChar, 50);
                     parameter.Value = item.proccessNo;
 
                     parameter = cmd.Parameters.Add("@negd", SqlDbType.Decimal);

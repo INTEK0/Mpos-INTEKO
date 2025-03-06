@@ -130,23 +130,9 @@ namespace WindowsFormsApp2
         }
 
         //  MÜŞTƏRİLƏR MS;
-        MUSTERILER_LAYOUT MS;
         private void barButtonItem14_ItemClick(object sender, ItemClickEventArgs e)
         {
-            if (Application.OpenForms["MUSTERILER_LAYOUT"] != null)
-            {
-                var Main = Application.OpenForms["MUSTERILER_LAYOUT"] as MUSTERILER_LAYOUT;
-                if (Main != null)
-                {
 
-                }
-                // Main.Close();
-            }
-            else
-            {
-                MS = new MUSTERILER_LAYOUT();
-                MS.Show();
-            }
         }
 
         ANBARDAN_ANBARA AB;
@@ -1060,20 +1046,7 @@ namespace WindowsFormsApp2
 
         private void barButtonItem62_ItemClick(object sender, ItemClickEventArgs e)
         {
-            if (Application.OpenForms["MUSTERILER_LAYOUT"] != null)
-            {
-                var Main = Application.OpenForms["MUSTERILER_LAYOUT"] as MUSTERILER_LAYOUT;
-                if (Main != null)
-                {
 
-                }
-                // Main.Close();
-            }
-            else
-            {
-                MS = new MUSTERILER_LAYOUT();
-                MS.Show();
-            }
         }
 
         private void barButtonItem63_ItemClick(object sender, ItemClickEventArgs e)
