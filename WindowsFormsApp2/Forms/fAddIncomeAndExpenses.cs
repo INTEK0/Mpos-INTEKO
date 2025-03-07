@@ -9,10 +9,12 @@ namespace WindowsFormsApp2.Forms
     public partial class fAddIncomeAndExpenses : DevExpress.XtraEditors.XtraForm
     {
         private readonly Enums.SelectedDataType _type;
-        public fAddIncomeAndExpenses(Enums.SelectedDataType type)
+        private readonly string _headerName;
+        public fAddIncomeAndExpenses(Enums.SelectedDataType type, string header)
         {
             InitializeComponent();
             _type = type;
+            _headerName = header;
         }
 
         private void fAddIncomeAndExpenses_Load(object sender, EventArgs e)
@@ -21,10 +23,12 @@ namespace WindowsFormsApp2.Forms
             {
                 case Enums.SelectedDataType.Income:
                     lHeader.Text = "GƏLİR ƏLAVƏSİ";
+                    tHeader.Text = _headerName;
                     this.Text = lHeader.Text;
                     break;
                 case Enums.SelectedDataType.Expense:
                     lHeader.Text = "XƏRC ƏLAVƏSİ";
+                    tHeader.Text = _headerName;
                     this.Text = lHeader.Text;
                     break;
             }
@@ -69,6 +73,7 @@ namespace WindowsFormsApp2.Forms
                         break;
                     case Enums.SelectedDataType.Expense:
                         FormHelpers.Alert("Yeni xərc uğurla yaradıldı", Enums.MessageType.Success);
+                        DialogResult = System.Windows.Forms.DialogResult.OK;
                         break;
                 }
                 Clear();

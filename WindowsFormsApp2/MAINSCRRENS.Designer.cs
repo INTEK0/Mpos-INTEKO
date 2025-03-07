@@ -35,8 +35,10 @@ namespace WindowsFormsApp2
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MAINSCRRENS));
             this.fluentDesignFormContainer1 = new DevExpress.XtraBars.FluentDesignSystem.FluentDesignFormContainer();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.gridControl4 = new DevExpress.XtraGrid.GridControl();
-            this.gridView5 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.gridControlExpenses = new DevExpress.XtraGrid.GridControl();
+            this.gridExpenses = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridControl2 = new DevExpress.XtraGrid.GridControl();
             this.gridView2 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.pictureEdit1 = new DevExpress.XtraEditors.PictureEdit();
@@ -235,8 +237,8 @@ namespace WindowsFormsApp2
             this.tileGroup1 = new DevExpress.XtraEditors.TileGroup();
             this.fluentDesignFormContainer1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gridControl4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlExpenses)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridExpenses)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit1.Properties)).BeginInit();
@@ -348,7 +350,7 @@ namespace WindowsFormsApp2
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 66.66666F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 248F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel1.Controls.Add(this.gridControl4, 3, 2);
+            this.tableLayoutPanel1.Controls.Add(this.gridControlExpenses, 3, 2);
             this.tableLayoutPanel1.Controls.Add(this.gridControl2, 1, 4);
             this.tableLayoutPanel1.Controls.Add(this.pictureEdit1, 3, 4);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel8, 3, 1);
@@ -368,38 +370,62 @@ namespace WindowsFormsApp2
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1157, 806);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
-            // gridControl4
+            // gridControlExpenses
             // 
-            this.gridControl4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gridControl4.Location = new System.Drawing.Point(863, 392);
-            this.gridControl4.LookAndFeel.SkinName = "WXI";
-            this.gridControl4.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.gridControl4.MainView = this.gridView5;
-            this.gridControl4.Name = "gridControl4";
-            this.gridControl4.Size = new System.Drawing.Size(291, 234);
-            this.gridControl4.TabIndex = 0;
-            this.gridControl4.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.gridView5});
-            this.gridControl4.Visible = false;
+            this.gridControlExpenses.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gridControlExpenses.Location = new System.Drawing.Point(863, 392);
+            this.gridControlExpenses.LookAndFeel.SkinName = "WXI";
+            this.gridControlExpenses.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.gridControlExpenses.MainView = this.gridExpenses;
+            this.gridControlExpenses.Name = "gridControlExpenses";
+            this.gridControlExpenses.Size = new System.Drawing.Size(291, 234);
+            this.gridControlExpenses.TabIndex = 0;
+            this.gridControlExpenses.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gridExpenses});
             // 
-            // gridView5
+            // gridExpenses
             // 
-            this.gridView5.Appearance.EvenRow.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.gridView5.Appearance.EvenRow.Options.UseBackColor = true;
-            this.gridView5.Appearance.OddRow.BackColor = System.Drawing.Color.White;
-            this.gridView5.Appearance.OddRow.Options.UseBackColor = true;
-            this.gridView5.Appearance.ViewCaption.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
-            this.gridView5.Appearance.ViewCaption.Options.UseFont = true;
-            this.gridView5.DetailHeight = 294;
-            this.gridView5.GridControl = this.gridControl4;
-            this.gridView5.Name = "gridView5";
-            this.gridView5.OptionsBehavior.KeepFocusedRowOnUpdate = false;
-            this.gridView5.OptionsBehavior.ReadOnly = true;
-            this.gridView5.OptionsEditForm.PopupEditFormWidth = 1067;
-            this.gridView5.OptionsNavigation.AutoFocusNewRow = true;
-            this.gridView5.OptionsScrollAnnotations.ShowFocusedRow = DevExpress.Utils.DefaultBoolean.False;
-            this.gridView5.OptionsView.ShowGroupPanel = false;
-            this.gridView5.OptionsView.ShowIndicator = false;
+            this.gridExpenses.Appearance.EvenRow.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.gridExpenses.Appearance.EvenRow.Options.UseBackColor = true;
+            this.gridExpenses.Appearance.OddRow.BackColor = System.Drawing.Color.White;
+            this.gridExpenses.Appearance.OddRow.Options.UseBackColor = true;
+            this.gridExpenses.Appearance.ViewCaption.Font = new System.Drawing.Font("Verdana", 10F);
+            this.gridExpenses.Appearance.ViewCaption.Options.UseFont = true;
+            this.gridExpenses.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.gridColumn7,
+            this.gridColumn8});
+            this.gridExpenses.DetailHeight = 294;
+            this.gridExpenses.GridControl = this.gridControlExpenses;
+            this.gridExpenses.Name = "gridExpenses";
+            this.gridExpenses.OptionsBehavior.KeepFocusedRowOnUpdate = false;
+            this.gridExpenses.OptionsBehavior.ReadOnly = true;
+            this.gridExpenses.OptionsEditForm.PopupEditFormWidth = 1067;
+            this.gridExpenses.OptionsNavigation.AutoFocusNewRow = true;
+            this.gridExpenses.OptionsScrollAnnotations.ShowFocusedRow = DevExpress.Utils.DefaultBoolean.False;
+            this.gridExpenses.OptionsView.ShowGroupPanel = false;
+            this.gridExpenses.OptionsView.ShowIndicator = false;
+            this.gridExpenses.OptionsView.ShowViewCaption = true;
+            this.gridExpenses.ViewCaption = "XƏRCLƏR";
+            this.gridExpenses.RowClick += new DevExpress.XtraGrid.Views.Grid.RowClickEventHandler(this.gridExpenses_RowClick);
+            // 
+            // gridColumn7
+            // 
+            this.gridColumn7.Caption = "Başlıq";
+            this.gridColumn7.FieldName = "Header";
+            this.gridColumn7.Name = "gridColumn7";
+            this.gridColumn7.OptionsColumn.AllowEdit = false;
+            this.gridColumn7.Visible = true;
+            this.gridColumn7.VisibleIndex = 0;
+            // 
+            // gridColumn8
+            // 
+            this.gridColumn8.Caption = "Məbləğ";
+            this.gridColumn8.FieldName = "Amount";
+            this.gridColumn8.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.MiddleLeft;
+            this.gridColumn8.Name = "gridColumn8";
+            this.gridColumn8.OptionsColumn.AllowEdit = false;
+            this.gridColumn8.Visible = true;
+            this.gridColumn8.VisibleIndex = 1;
             // 
             // gridControl2
             // 
@@ -502,15 +528,14 @@ namespace WindowsFormsApp2
             // 
             // gridView1
             // 
-            this.gridView1.Appearance.EvenRow.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.gridView1.Appearance.EvenRow.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.gridView1.Appearance.EvenRow.Options.UseBackColor = true;
-            this.gridView1.Appearance.OddRow.BackColor = System.Drawing.Color.White;
-            this.gridView1.Appearance.OddRow.Options.UseBackColor = true;
-            this.gridView1.Appearance.ViewCaption.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
+            this.gridView1.Appearance.ViewCaption.Font = new System.Drawing.Font("Verdana", 10F);
             this.gridView1.Appearance.ViewCaption.Options.UseFont = true;
             this.gridView1.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
             this.gridColumn1,
             this.gridColumn2});
+            this.gridView1.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFullFocus;
             this.gridView1.GridControl = this.gridControl1;
             this.gridView1.Name = "gridView1";
             this.gridView1.OptionsBehavior.ReadOnly = true;
@@ -3127,8 +3152,8 @@ namespace WindowsFormsApp2
             this.fluentDesignFormContainer1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gridControl4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlExpenses)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridExpenses)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit1.Properties)).EndInit();
@@ -3430,8 +3455,10 @@ namespace WindowsFormsApp2
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement29;
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement63;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private DevExpress.XtraGrid.GridControl gridControl4;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridView5;
+        private DevExpress.XtraGrid.GridControl gridControlExpenses;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridExpenses;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn7;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn8;
     }
 }
 

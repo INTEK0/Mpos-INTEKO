@@ -100,6 +100,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tAmount.Location = new System.Drawing.Point(91, 48);
             this.tAmount.Name = "tAmount";
+            this.tAmount.Properties.AllowFocused = false;
             this.tAmount.Properties.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.NumericMaskManager));
             this.tAmount.Properties.MaskSettings.Set("MaskManagerSignature", "allowNull=False");
             this.tAmount.Properties.MaskSettings.Set("mask", "f");
@@ -115,6 +116,7 @@
             this.dateEdit1.EditValue = null;
             this.dateEdit1.Location = new System.Drawing.Point(91, 213);
             this.dateEdit1.Name = "dateEdit1";
+            this.dateEdit1.Properties.AllowFocused = false;
             this.dateEdit1.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dateEdit1.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -168,7 +170,8 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tHeader.Location = new System.Drawing.Point(91, 12);
             this.tHeader.Name = "tHeader";
-            this.tHeader.Properties.ReadOnly = true;
+            this.tHeader.Properties.AllowFocused = false;
+            this.tHeader.Properties.HideSelection = false;
             this.tHeader.Size = new System.Drawing.Size(395, 30);
             this.tHeader.TabIndex = 0;
             // 
@@ -178,6 +181,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tComment.Location = new System.Drawing.Point(91, 86);
             this.tComment.Name = "tComment";
+            this.tComment.Properties.AllowFocused = false;
             this.tComment.Size = new System.Drawing.Size(395, 121);
             this.tComment.TabIndex = 2;
             // 
@@ -289,6 +293,6 @@
         private DevExpress.XtraEditors.LabelControl labelControl5;
         private DevExpress.XtraEditors.LabelControl labelControl4;
         private DevExpress.XtraEditors.LabelControl labelControl3;
-        private DevExpress.XtraEditors.TextEdit tAmount;
+        public DevExpress.XtraEditors.TextEdit tAmount;
     }
 }

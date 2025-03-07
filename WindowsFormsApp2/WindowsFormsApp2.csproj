@@ -360,6 +360,12 @@
     <Compile Include="Forms\fGuarantors.Designer.cs">
       <DependentUpon>fGuarantors.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\fIncomeAndExpensesReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\fIncomeAndExpensesReport.Designer.cs">
+      <DependentUpon>fIncomeAndExpensesReport.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\fPOSRefundReport.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -929,6 +935,7 @@
     <Compile Include="Validations\IncomeAndExpenseValidation.cs" />
     <Compile Include="Validations\ProductValidation.cs" />
     <Compile Include="Validations\SupplierValidation.cs" />
+    <Compile Include="Validations\TerminalValidation.cs" />
     <Compile Include="Validations\UserValidation.cs" />
     <Compile Include="ZAMINKREDIT.cs">
       <SubType>Form</SubType>
@@ -1034,6 +1041,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fGuarantors.resx">
       <DependentUpon>fGuarantors.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\fIncomeAndExpensesReport.resx">
+      <DependentUpon>fIncomeAndExpensesReport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fKassalar.resx">
       <DependentUpon>fKassalar.cs</DependentUpon>

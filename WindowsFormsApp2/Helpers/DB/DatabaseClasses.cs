@@ -315,5 +315,21 @@ namespace WindowsFormsApp2.Helpers.DB
             public DateTime LogDate { get; set; } = DateTime.Now;
             public int UserId { get; set; }
         }
+
+        public class Terminal
+        {
+            public int ModelId { get; set; }
+            public string IpAddress { get; set; }
+            public string MerchantIdKey { get; set; }
+            public string BankName { get; set; } = null;
+            public int UserId { get; set; }
+        }
+
+        public class Terezi
+        {
+            public int ModelId { get; set; }
+            public string IpAddress { get; set; }
+            public int UserId { get; set; }
+        }
     }
 }

@@ -43,6 +43,7 @@
             this.bSave = new DevExpress.XtraEditors.SimpleButton();
             this.tCategoryName = new DevExpress.XtraEditors.TextEdit();
             this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
+            this.bDelete = new DevExpress.XtraEditors.SimpleButton();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bCategoryEdit)).BeginInit();
@@ -138,6 +139,7 @@
             // panelControl1
             // 
             this.tablePanel1.SetColumn(this.panelControl1, 0);
+            this.panelControl1.Controls.Add(this.bDelete);
             this.panelControl1.Controls.Add(this.bSave);
             this.panelControl1.Controls.Add(this.tCategoryName);
             this.panelControl1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -186,6 +188,19 @@
             this.tablePanel1.TabIndex = 3;
             this.tablePanel1.UseSkinIndents = true;
             // 
+            // bDelete
+            // 
+            this.bDelete.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Danger;
+            this.bDelete.Appearance.Options.UseBackColor = true;
+            this.bDelete.ImageOptions.SvgImageSize = new System.Drawing.Size(24, 24);
+            this.bDelete.Location = new System.Drawing.Point(516, 16);
+            this.bDelete.Margin = new System.Windows.Forms.Padding(4);
+            this.bDelete.Name = "bDelete";
+            this.bDelete.Size = new System.Drawing.Size(75, 30);
+            this.bDelete.TabIndex = 6;
+            this.bDelete.Text = "SİL";
+            this.bDelete.Visible = false;
+            // 
             // fCategory
             // 
             this.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(245)))), ((int)(((byte)(250)))));
@@ -226,5 +241,6 @@
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit bCategoryEdit;
         private DevExpress.XtraEditors.SimpleButton bSave;
         private DevExpress.Utils.Layout.TablePanel tablePanel1;
+        private DevExpress.XtraEditors.SimpleButton bDelete;
     }
 }

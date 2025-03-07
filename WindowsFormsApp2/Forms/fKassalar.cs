@@ -1,22 +1,16 @@
-﻿using DevExpress.Portable.Input.Internal;
-using DevExpress.XtraEditors;
-using DevExpress.XtraGrid.Localization;
-using DevExpress.XtraGrid.Views.Grid;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
-using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using DevExpress.XtraGrid.Localization;
+using DevExpress.XtraGrid.Views.Grid;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
+using WindowsFormsApp2.Validations;
+using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
+using static WindowsFormsApp2.Helpers.DB.DatabaseClasses.ProductDetail;
 using static WindowsFormsApp2.Helpers.Enums;
 using static WindowsFormsApp2.Helpers.FormHelpers;
 
@@ -86,7 +80,6 @@ namespace WindowsFormsApp2.Forms
 
         public void GetallData()
         {
-
             try
             {
                 SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
@@ -97,14 +90,11 @@ namespace WindowsFormsApp2.Forms
                           " left join userParol u on u.id = ki.KASSIR_ID ";
 
                 SqlCommand command = new SqlCommand(queryString, connection);
-                //command.Parameters.AddWithValue("@pricepoint", id);
                 SqlDataAdapter da = new SqlDataAdapter(command);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
                 gridControl1.DataSource = dt;
                 gridView1.Columns[0].Visible = false;
-                //gridView1.OptionsSelection.MultiSelect = true;
-                //gridView1.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
             }
             catch (Exception e)
             {
@@ -131,6 +121,32 @@ namespace WindowsFormsApp2.Forms
 
         private void bAdd_Click(object sender, EventArgs e)
         {
+            //Terminal terminal = new Terminal
+            //{
+            //    ModelId = lookKassa.EditValue == null ? 0 : Convert.ToInt32(lookKassa.EditValue.ToString()),
+            //    IpAddress = tIpAddress.Text.Trim(),
+            //    MerchantIdKey = tMerchantId.Text.Trim(),
+            //    BankName = lookBank.Text,
+            //    UserId = Convert.ToInt32(lookUser.EditValue.ToString())
+            //};
+
+
+            //var validator = new TerminalValidation();
+            //var validateResult = validator.Validate(terminal);
+
+            //if (!validateResult.IsValid)
+            //{
+            //    foreach (var error in validateResult.Errors)
+            //    {
+            //        FormHelpers.Alert(error.ErrorMessage, Enums.MessageType.Warning);
+            //        return;
+            //    }
+            //}
+
+            //DbProsedures.TerminalAdd(terminal);
+
+            //todo Terminal kodlarını əlavə et
+
             //DAXIL ET 
             if (string.IsNullOrEmpty(tIpAddress.Text.ToString()) || string.IsNullOrEmpty(lookKassa.EditValue.ToString())
                 || string.IsNullOrEmpty(lookUser.EditValue.ToString()))
@@ -139,8 +155,8 @@ namespace WindowsFormsApp2.Forms
             }
             else
             {
-                int A = KIC.Insert_IP(Convert.ToInt32(lookKassa.EditValue.ToString()), tIpAddress.Text.ToString(),
-               Convert.ToInt32(lookUser.EditValue.ToString()), tMerchantId.Text.ToString());
+                int A = KIC.Insert_IP(Convert.ToInt32(lookKassa.EditValue.ToString()), tIpAddress.Text,
+               Convert.ToInt32(lookUser.EditValue.ToString()), tMerchantId.Text);
                 FormHelpers.Log($"{tIpAddress.Text} ip adresli {lookKassa.Text} kassa əlavə edildi");
             }
             GetallData();

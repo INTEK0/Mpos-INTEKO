@@ -66,7 +66,7 @@ namespace WindowsFormsApp2.Forms
         {
             DatabaseClasses.Categories categories = null;
             string query = "select KATEGORIYA_ID,KATEGORIYA as  N'KATEQORİYA' from KATEGORIYA WHERE KATEGORIYA_ID = @categoryId";
-            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
             {
                 await connection.OpenAsync();
                 using (SqlCommand cmd = new SqlCommand(query, connection))

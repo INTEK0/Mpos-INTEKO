@@ -20,7 +20,6 @@ namespace WindowsFormsApp2.Helpers.DB
         private const string INSERT_ItemQuery = "INSERT_Item";
         private const string DELETE_ItemQuery = "delete_item";
         private const string INSERT_HeaderQuery = "INSERT_header";
-        private const string INSERT_HeaderQueryPre = "INSERT_headerpre";
         private const string INSERT_CalculationQuery = "insert_calculation";
         private const string INSERT_PosRefundQuery = "insert_pos_gaytarma_manual";
         private const string GET_PosSalesProccesNoQuery = "exec dbo.pos_emeliyyat_nomre";
@@ -64,6 +63,8 @@ namespace WindowsFormsApp2.Helpers.DB
         private const string GET_GetProductSalesDataQuery = "GetProductSalesData";
         private const string GET_GetProductPurchaseDataQuery = "GetProductPurchaseData";
         private const string INSERT_IncomeAndExpenseDataQuery = "INSERT_INCOME_AND_EXPENSE";
+        private const string INSERT_TerminalQuery = "KASSA_IP_INSERT";
+        private const string DELETE_TerminalQuery = "KASSA_IP_delete";
 
         #endregion [...PROCEDURES QUERY...]
 
@@ -102,6 +103,7 @@ namespace WindowsFormsApp2.Helpers.DB
                 return null;
             }
         }
+
 
         #region [..COMPANY..]
 
@@ -173,6 +175,10 @@ namespace WindowsFormsApp2.Helpers.DB
         }
 
         #endregion [..COMPANY..]
+
+
+
+        #region [.. USER ..]
 
         public static User GetUser()
         {
@@ -281,6 +287,12 @@ namespace WindowsFormsApp2.Helpers.DB
                 }
             }
         }
+
+        #endregion [.. USER ..]
+
+
+
+        #region [.. SALES AND REFUND..]
 
         public static int InsertPosSales(PosSales item)
         {
@@ -682,6 +694,9 @@ namespace WindowsFormsApp2.Helpers.DB
             }
         }
 
+        #endregion [.. SALES AND REFUND ..]
+
+
 
         #region [..CATEGORY..]
 
@@ -941,7 +956,7 @@ namespace WindowsFormsApp2.Helpers.DB
 
                         cmd.Parameters.Add(empCountParam);
                         cmd.Parameters.Add(malDetailIdParam);
-                       
+
                         cmd.ExecuteNonQuery();
 
                         int empCount = (int)empCountParam.Value;
@@ -949,7 +964,7 @@ namespace WindowsFormsApp2.Helpers.DB
 
                         if (item.imageBytes != null)
                         {
-                           await UpdateProductImage(malDetailId, item.Barocde);
+                            await UpdateProductImage(malDetailId, item.Barocde);
                         }
 
                         FormHelpers.Log($"{item.ProductName} məhsulundan {item.Quantity} {item.UnitName} alış edildi");
@@ -978,7 +993,7 @@ SET SEKIL = (SELECT SEKIL FROM MAL_ALISI_DETAILS WHERE MAL_ALISI_DETAILS_ID = {I
 WHERE BARKOD = '{barcode}'";
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
-                   await cmd.ExecuteNonQueryAsync();
+                    await cmd.ExecuteNonQueryAsync();
                 }
             }
         }
@@ -1008,7 +1023,7 @@ WHERE BARKOD = '{barcode}'";
                     return Convert.ToInt32(param.Value);
                 }
             }
-        }      
+        }
 
         public static string GET_ProductProcessNo()
         {
@@ -2033,6 +2048,85 @@ WHERE BARKOD = '{barcode}'";
         }
 
         #endregion [.. INCOME AND EXPENSE ..]
+
+
+
+        #region [.. TERMINALS ..]
+
+
+        public async static void TerminalAdd(Terminal item)
+        {
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                await con.OpenAsync();
+                using (SqlCommand cmd = new SqlCommand(INSERT_TerminalQuery, con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlParameter param;
+                    param = cmd.Parameters.Add("@KASSA_FIRMA_IP", SqlDbType.Int);
+                    param.Value = item.ModelId;
+                    param = cmd.Parameters.Add("@IP_ADRESS", SqlDbType.NVarChar, 100);
+                    param.Value = item.IpAddress;
+                    param = cmd.Parameters.Add("@BANK_NAME", SqlDbType.NVarChar, 100);
+                    param.Value = item.BankName;
+                    param = cmd.Parameters.Add("@KASSIR_ID", SqlDbType.Int);
+                    param.Value = item.UserId;
+                    param = cmd.Parameters.Add("@merchant_id", SqlDbType.NVarChar, 1000);
+                    param.Value = item.MerchantIdKey;
+
+                    param = cmd.Parameters.Add("@EMPCOUNT", SqlDbType.Int);
+                    param.Direction = ParameterDirection.Output;
+
+                    await cmd.ExecuteNonQueryAsync();
+                    int result = Convert.ToInt32(param.Value);
+                    if (result == 0)
+                    {
+                        FormHelpers.Alert($"Kassa daha öncə əlavə edilib", MessageType.Info);
+                        return;
+                    }
+                }
+            }
+        }
+
+        public static void TerminalRemove()
+        {
+
+        }
+
+        #endregion [.. TERMINALS ..]
+
+
+
+        #region [.. TƏRƏZİ ..]
+
+
+        public async static void TereziAdd(Terezi item)
+        {
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                await con.OpenAsync();
+                using (SqlCommand cmd = new SqlCommand(INSERT_TerminalQuery, con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlParameter param;
+                    param = cmd.Parameters.Add("@KASSA_FIRMA_IP", SqlDbType.Int);
+                    param.Value = item.ModelId;
+                    param = cmd.Parameters.Add("@IP_ADRESS", SqlDbType.NVarChar, 100);
+                    param.Value = item.IpAddress;
+                    param = cmd.Parameters.Add("@KASSIR_ID", SqlDbType.Int);
+                    param.Value = item.UserId;
+
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+        }
+
+        public static void TereziRemove()
+        {
+
+        }
+
+        #endregion [.. TƏRƏZİ ..]
 
 
         #endregion [...PROCEDURES METHODS...]

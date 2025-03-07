@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.groupControl1 = new DevExpress.XtraEditors.GroupControl();
+            this.lookBank = new DevExpress.XtraEditors.LookUpEdit();
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.tMerchantId = new DevExpress.XtraEditors.TextEdit();
             this.labelControl2 = new DevExpress.XtraEditors.LabelControl();
@@ -43,9 +44,9 @@
             this.bDelete = new DevExpress.XtraEditors.SimpleButton();
             this.bPing = new DevExpress.XtraEditors.SimpleButton();
             this.bAdd = new DevExpress.XtraEditors.SimpleButton();
-            this.lookBank = new DevExpress.XtraEditors.LookUpEdit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
             this.groupControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.lookBank.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tMerchantId.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lookUser.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lookKassa.Properties)).BeginInit();
@@ -54,7 +55,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).BeginInit();
             this.groupControl2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.lookBank.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // groupControl1
@@ -82,9 +82,23 @@
             this.groupControl1.TabIndex = 16;
             this.groupControl1.Text = "layoutControlGroup1";
             // 
+            // lookBank
+            // 
+            this.lookBank.Location = new System.Drawing.Point(519, 12);
+            this.lookBank.Name = "lookBank";
+            this.lookBank.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.lookBank.Properties.DropDownRows = 4;
+            this.lookBank.Properties.NullText = "--Bank seçimi--";
+            this.lookBank.Properties.ShowFooter = false;
+            this.lookBank.Properties.ShowHeader = false;
+            this.lookBank.Properties.ShowLines = false;
+            this.lookBank.Size = new System.Drawing.Size(350, 30);
+            this.lookBank.TabIndex = 13;
+            // 
             // labelControl1
             // 
-            this.labelControl1.Location = new System.Drawing.Point(27, 134);
+            this.labelControl1.Location = new System.Drawing.Point(28, 134);
             this.labelControl1.Name = "labelControl1";
             this.labelControl1.Size = new System.Drawing.Size(91, 16);
             this.labelControl1.TabIndex = 0;
@@ -102,7 +116,7 @@
             // 
             // labelControl2
             // 
-            this.labelControl2.Location = new System.Drawing.Point(27, 96);
+            this.labelControl2.Location = new System.Drawing.Point(12, 96);
             this.labelControl2.Name = "labelControl2";
             this.labelControl2.Size = new System.Drawing.Size(83, 16);
             this.labelControl2.TabIndex = 10;
@@ -116,12 +130,12 @@
             this.lookUser.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.lookUser.Properties.NullText = "--Seçin--";
-            this.lookUser.Size = new System.Drawing.Size(387, 30);
+            this.lookUser.Size = new System.Drawing.Size(364, 30);
             this.lookUser.TabIndex = 6;
             // 
             // labelControl3
             // 
-            this.labelControl3.Location = new System.Drawing.Point(27, 20);
+            this.labelControl3.Location = new System.Drawing.Point(12, 20);
             this.labelControl3.Name = "labelControl3";
             this.labelControl3.Size = new System.Drawing.Size(59, 16);
             this.labelControl3.TabIndex = 11;
@@ -135,13 +149,13 @@
             this.lookKassa.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.lookKassa.Properties.NullText = "--Seçin--";
-            this.lookKassa.Size = new System.Drawing.Size(387, 30);
+            this.lookKassa.Size = new System.Drawing.Size(364, 30);
             this.lookKassa.TabIndex = 6;
             this.lookKassa.TextChanged += new System.EventHandler(this.lookKassa_TextChanged);
             // 
             // labelControl4
             // 
-            this.labelControl4.Location = new System.Drawing.Point(27, 58);
+            this.labelControl4.Location = new System.Drawing.Point(12, 58);
             this.labelControl4.Name = "labelControl4";
             this.labelControl4.Size = new System.Drawing.Size(62, 16);
             this.labelControl4.TabIndex = 12;
@@ -152,7 +166,7 @@
             this.tIpAddress.Location = new System.Drawing.Point(119, 51);
             this.tIpAddress.Margin = new System.Windows.Forms.Padding(4);
             this.tIpAddress.Name = "tIpAddress";
-            this.tIpAddress.Size = new System.Drawing.Size(387, 30);
+            this.tIpAddress.Size = new System.Drawing.Size(364, 30);
             this.tIpAddress.TabIndex = 3;
             // 
             // gridControl1
@@ -164,7 +178,7 @@
             this.gridControl1.Location = new System.Drawing.Point(5, 192);
             this.gridControl1.MainView = this.gridView1;
             this.gridControl1.Name = "gridControl1";
-            this.gridControl1.Size = new System.Drawing.Size(1075, 504);
+            this.gridControl1.Size = new System.Drawing.Size(870, 504);
             this.gridControl1.TabIndex = 4;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
@@ -197,7 +211,7 @@
             this.groupControl2.Location = new System.Drawing.Point(0, 134);
             this.groupControl2.Name = "groupControl2";
             this.groupControl2.ShowCaption = false;
-            this.groupControl2.Size = new System.Drawing.Size(1087, 52);
+            this.groupControl2.Size = new System.Drawing.Size(875, 52);
             this.groupControl2.TabIndex = 17;
             this.groupControl2.Text = "groupControl2";
             // 
@@ -208,7 +222,7 @@
             this.bDelete.Appearance.Font = new System.Drawing.Font("Nunito", 12F, System.Drawing.FontStyle.Bold);
             this.bDelete.Appearance.Options.UseBackColor = true;
             this.bDelete.Appearance.Options.UseFont = true;
-            this.bDelete.Location = new System.Drawing.Point(180, 5);
+            this.bDelete.Location = new System.Drawing.Point(180, 6);
             this.bDelete.Name = "bDelete";
             this.bDelete.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
             this.bDelete.Size = new System.Drawing.Size(162, 40);
@@ -224,7 +238,7 @@
             this.bPing.Appearance.Font = new System.Drawing.Font("Nunito", 12F, System.Drawing.FontStyle.Bold);
             this.bPing.Appearance.Options.UseBackColor = true;
             this.bPing.Appearance.Options.UseFont = true;
-            this.bPing.Location = new System.Drawing.Point(705, 5);
+            this.bPing.Location = new System.Drawing.Point(699, 6);
             this.bPing.Name = "bPing";
             this.bPing.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
             this.bPing.Size = new System.Drawing.Size(170, 40);
@@ -246,20 +260,6 @@
             this.bAdd.TabIndex = 63;
             this.bAdd.Text = "ƏLAVƏ ET";
             this.bAdd.Click += new System.EventHandler(this.bAdd_Click);
-            // 
-            // lookBank
-            // 
-            this.lookBank.Location = new System.Drawing.Point(525, 13);
-            this.lookBank.Name = "lookBank";
-            this.lookBank.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.lookBank.Properties.DropDownRows = 4;
-            this.lookBank.Properties.NullText = "--Bank seçimi--";
-            this.lookBank.Properties.ShowFooter = false;
-            this.lookBank.Properties.ShowHeader = false;
-            this.lookBank.Properties.ShowLines = false;
-            this.lookBank.Size = new System.Drawing.Size(350, 30);
-            this.lookBank.TabIndex = 13;
             // 
             // fKassalar
             // 
@@ -284,6 +284,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).EndInit();
             this.groupControl1.ResumeLayout(false);
             this.groupControl1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.lookBank.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tMerchantId.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lookUser.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lookKassa.Properties)).EndInit();
@@ -292,7 +293,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).EndInit();
             this.groupControl2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.lookBank.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }

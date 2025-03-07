@@ -434,6 +434,30 @@ FROM[terazimalzeme]";
             SuccessMessageVisibleShow();
             Get_StockDecreasingAmountShow();
             //ClinicModuleShow();
+            ExpensesDataLoad();
+        }
+
+        private void ExpensesDataLoad()
+        {
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                con.Open();
+                string query = @"SELECT i.Header, SUM(i.Amount) as Amount FROM IncomeAndExpensesData i
+where i.Date = CAST(GETDATE() AS DATE)
+group by i.Header";
+                using (SqlCommand cmd = new SqlCommand(query,con))
+                {
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    {
+                        using (DataTable dt = new DataTable())
+                        {
+                            da.Fill(dt);
+                            gridControlExpenses.DataSource = dt;
+                       //     gridExpenses.ViewCaption = $"XƏRCLƏR - {DateTime.Now.ToString("dd.MM.yyyy")}";
+                        }
+                    }
+                }
+            }
         }
 
         private void BestsellingProducts(string count = "5")
@@ -1169,17 +1193,41 @@ ORDER BY TotalAmount DESC;
 
         private void accordionControlElement29_Click(object sender, EventArgs e)
         {
-            OpenForm<fAddIncomeAndExpenses>(Enums.SelectedDataType.Income);
+            fAddIncomeAndExpenses f = new fAddIncomeAndExpenses(SelectedDataType.Income, null);
+            if (f.ShowDialog() is DialogResult.OK)
+            {
+                ExpensesDataLoad();
+            }
         }
 
         private void accordionControlElement62_Click(object sender, EventArgs e)
         {
-            OpenForm<fAddIncomeAndExpenses>(Enums.SelectedDataType.Expense);
+            fAddIncomeAndExpenses f = new fAddIncomeAndExpenses(SelectedDataType.Expense, null);
+            if (f.ShowDialog() is DialogResult.OK)
+            {
+                ExpensesDataLoad();
+            }
         }
 
         private void accordionControlElement63_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void gridExpenses_RowClick(object sender, DevExpress.XtraGrid.Views.Grid.RowClickEventArgs e)
+        {
+            if (e.Button is MouseButtons.Left && e.Clicks is 2)
+            {
+                if (gridExpenses != null && gridExpenses.FocusedRowHandle >= 0)
+                {
+                    string Name = gridExpenses.GetFocusedRowCellValue("Header").ToString();
+                    fAddIncomeAndExpenses f = new fAddIncomeAndExpenses(SelectedDataType.Expense, Name);
+                    if (f.ShowDialog() is DialogResult.OK)
+                    {
+                        ExpensesDataLoad();
+                    };
+                }
+            }
         }
 
         private void chTerminalPrintReceipt_CheckedChanged(object sender, EventArgs e)
