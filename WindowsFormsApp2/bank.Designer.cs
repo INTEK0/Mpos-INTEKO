@@ -181,7 +181,6 @@ namespace WindowsFormsApp2
             this.Name = "bank";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "NAĞD ÖDƏNİŞ";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.nagd_FormClosing);
             this.Load += new System.EventHandler(this.nagd_Load);
             ((System.ComponentModel.ISupportInitialize)(this.tPaid.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tQaliq.Properties)).EndInit();

@@ -97,7 +97,7 @@ namespace WindowsFormsApp2
             tileproduct();
             BasketDataControl();
             PrintKassaOrPrinterShow();
-            //ClinicModule();
+            ClinicModule();
             tBarcode.Focus();
         }
 
@@ -137,18 +137,18 @@ namespace WindowsFormsApp2
             }
         }
 
-        //private void ClinicModule()
-        //{
-        //    bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("ClinicModule").ToString());
-        //    if (control)
-        //    {
-        //        layoutControlItem56.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
-        //    }
-        //    else
-        //    {
-        //        layoutControlItem56.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-        //    }
-        //}
+        private void ClinicModule()
+        {
+            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("ClinicModule").ToString());
+            if (control)
+            {
+                layoutControlItem56.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+            }
+            else
+            {
+                layoutControlItem56.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            }
+        }
 
         private void CalculationDelete()
         {
@@ -171,7 +171,6 @@ namespace WindowsFormsApp2
             DataTable dt = new DataTable();
 
             da.Fill(dt);
-            AutoCompleteStringCollection collection = new AutoCompleteStringCollection();
             if (dt.Rows.Count > 0)
             {
                 for (int i = 0; i < dt.Rows.Count; i++)
@@ -1258,27 +1257,27 @@ namespace WindowsFormsApp2
                         {
 
                             decimal f = Convert.ToDecimal(textEdit6.Text);
-                            //bool clinic = false;
-                            //DialogResult result = XtraMessageBox.Show("A4 sənədi çap edilsin ?", nameof(HeaderMessage.Mesaj), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                            //if (result is DialogResult.Yes)
-                            //{
-                            //    clinic = true;
-                            //}
+                            bool clinic = false;
+                            DialogResult result = XtraMessageBox.Show("A4 sənədi çap edilsin ?", nameof(HeaderMessage.Mesaj), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            if (result is DialogResult.Yes)
+                            {
+                                clinic = true;
+                            }
 
-                            gelen_data_negd_pos(0, f, f, 0, 0, false);
+                            gelen_data_negd_pos(0, f, f, 0, 0, clinic);
                         }
                     }
                     else
                     {
                         decimal f = Convert.ToDecimal(textEdit6.Text);
 
-                        //bool clinic = false;
-                        //DialogResult result = XtraMessageBox.Show("A4 sənədi çap edilsin ?", nameof(HeaderMessage.Mesaj), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                        //if (result is DialogResult.Yes)
-                        //{
-                        //    clinic = true;
-                        //}
-                        gelen_data_negd_pos(0, f, f, 0, 0, false);
+                        bool clinic = false;
+                        DialogResult result = XtraMessageBox.Show("A4 sənədi çap edilsin ?", nameof(HeaderMessage.Mesaj), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        if (result is DialogResult.Yes)
+                        {
+                            clinic = true;
+                        }
+                        gelen_data_negd_pos(0, f, f, 0, 0, clinic);
                     }
                 }
 
@@ -2146,7 +2145,7 @@ namespace WindowsFormsApp2
                     }
                     DbProsedures.Insert_ClinicData(tCustomer.Text, tDoctor.Text);
 
-                    printClinic zakaz = new printClinic();
+                    printXezerClinic zakaz = new printXezerClinic();
                     zakaz.Print();
 
                     CalculationDelete();
@@ -2182,7 +2181,7 @@ namespace WindowsFormsApp2
 
                     DbProsedures.Insert_ClinicData(tCustomer.Text, tDoctor.Text);
 
-                    printXezerClinic zakaz = new printXezerClinic();
+                    printMasterClinic zakaz = new printMasterClinic();
                     zakaz.Print();
                     return true;
                 }

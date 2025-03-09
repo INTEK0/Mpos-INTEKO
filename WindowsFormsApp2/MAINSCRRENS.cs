@@ -433,7 +433,7 @@ FROM[terazimalzeme]";
             OtherPayShow();
             SuccessMessageVisibleShow();
             Get_StockDecreasingAmountShow();
-            //ClinicModuleShow();
+            ClinicModuleShow();
             ExpensesDataLoad();
         }
 
@@ -442,9 +442,17 @@ FROM[terazimalzeme]";
             using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
             {
                 con.Open();
-                string query = @"SELECT i.Header, SUM(i.Amount) as Amount FROM IncomeAndExpensesData i
-where i.Date = CAST(GETDATE() AS DATE)
-group by i.Header";
+                string query = @"WITH Headers AS (
+    SELECT DISTINCT Header FROM IncomeAndExpensesData
+)
+SELECT 
+    h.Header, 
+    COALESCE(SUM(i.Amount), 0) AS Amount
+FROM Headers h
+LEFT JOIN IncomeAndExpensesData i 
+    ON h.Header = i.Header 
+    AND i.Date = CAST(GETDATE() AS DATE) AND i.Type = 4
+GROUP BY h.Header;";
                 using (SqlCommand cmd = new SqlCommand(query,con))
                 {
                     using (SqlDataAdapter da = new SqlDataAdapter(cmd))
@@ -453,7 +461,7 @@ group by i.Header";
                         {
                             da.Fill(dt);
                             gridControlExpenses.DataSource = dt;
-                       //     gridExpenses.ViewCaption = $"XƏRCLƏR - {DateTime.Now.ToString("dd.MM.yyyy")}";
+                            gridExpenses.ViewCaption = $"XƏRCLƏR - {DateTime.Now.ToString("dd.MM.yyyy")}";
                         }
                     }
                 }
@@ -829,6 +837,7 @@ ORDER BY TotalAmount DESC;
                 TotalRefundInformation();
                 TotalPurchaseInformation();
                 StockInformation();
+                ExpensesDataLoad();
             }
             catch (Exception ex)
             {
@@ -1045,22 +1054,22 @@ ORDER BY TotalAmount DESC;
             }
         }
 
-        //private void ClinicModuleShow()
-        //{
-        //    bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("ClinicModule").ToString());
-        //    if (control)
-        //    {
-        //        chClinicModul.Checked = true;
-        //        accordionControlElement49.Visible = true;
-        //        accordionControlElement49.VisibleInFooter = true;
-        //    }
-        //    else
-        //    {
-        //        chClinicModul.Checked = false;
-        //        accordionControlElement49.Visible = false;
-        //        accordionControlElement49.VisibleInFooter = false;
-        //    }
-        //}
+        private void ClinicModuleShow()
+        {
+            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("ClinicModule").ToString());
+            if (control)
+            {
+                chClinicModul.Checked = true;
+                accordionControlElement49.Visible = true;
+                accordionControlElement49.VisibleInFooter = true;
+            }
+            else
+            {
+                chClinicModul.Checked = false;
+                accordionControlElement49.Visible = false;
+                accordionControlElement49.VisibleInFooter = false;
+            }
+        }
 
         private void SuccessMessageVisibleShow()
         {
@@ -1211,7 +1220,7 @@ ORDER BY TotalAmount DESC;
 
         private void accordionControlElement63_Click(object sender, EventArgs e)
         {
-
+           OpenForm<fIncomeAndExpensesReport>();
         }
 
         private void gridExpenses_RowClick(object sender, DevExpress.XtraGrid.Views.Grid.RowClickEventArgs e)

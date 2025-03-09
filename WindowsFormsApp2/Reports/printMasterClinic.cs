@@ -6,9 +6,9 @@ using System.Drawing;
 
 namespace WindowsFormsApp2.Reports
 {
-    public partial class printTest : DevExpress.XtraReports.UI.XtraReport
+    public partial class printMasterClinic : DevExpress.XtraReports.UI.XtraReport
     {
-        public printTest()
+        public printMasterClinic()
         {
             InitializeComponent();
         }

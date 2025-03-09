@@ -395,13 +395,16 @@ namespace WindowsFormsApp2
             this.gridColumn7,
             this.gridColumn8});
             this.gridExpenses.DetailHeight = 294;
+            this.gridExpenses.FooterPanelHeight = 1;
             this.gridExpenses.GridControl = this.gridControlExpenses;
             this.gridExpenses.Name = "gridExpenses";
             this.gridExpenses.OptionsBehavior.KeepFocusedRowOnUpdate = false;
             this.gridExpenses.OptionsBehavior.ReadOnly = true;
             this.gridExpenses.OptionsEditForm.PopupEditFormWidth = 1067;
+            this.gridExpenses.OptionsMenu.EnableFooterMenu = false;
             this.gridExpenses.OptionsNavigation.AutoFocusNewRow = true;
             this.gridExpenses.OptionsScrollAnnotations.ShowFocusedRow = DevExpress.Utils.DefaultBoolean.False;
+            this.gridExpenses.OptionsView.ShowFooter = true;
             this.gridExpenses.OptionsView.ShowGroupPanel = false;
             this.gridExpenses.OptionsView.ShowIndicator = false;
             this.gridExpenses.OptionsView.ShowViewCaption = true;
@@ -424,6 +427,8 @@ namespace WindowsFormsApp2
             this.gridColumn8.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.MiddleLeft;
             this.gridColumn8.Name = "gridColumn8";
             this.gridColumn8.OptionsColumn.AllowEdit = false;
+            this.gridColumn8.Summary.AddRange(new DevExpress.XtraGrid.GridSummaryItem[] {
+            new DevExpress.XtraGrid.GridColumnSummaryItem(DevExpress.Data.SummaryItemType.Sum, "Amount", "C2")});
             this.gridColumn8.Visible = true;
             this.gridColumn8.VisibleIndex = 1;
             // 
@@ -2756,7 +2761,7 @@ namespace WindowsFormsApp2
             this.tabAllSettings.Name = "tabAllSettings";
             this.tabAllSettings.Properties.AppearanceCaption.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.tabAllSettings.Properties.AppearanceCaption.Options.UseFont = true;
-            this.tabAllSettings.Size = new System.Drawing.Size(1157, 761);
+            this.tabAllSettings.Size = new System.Drawing.Size(1157, 759);
             // 
             // panelControl13
             // 
@@ -2775,7 +2780,7 @@ namespace WindowsFormsApp2
             this.panelControl13.LookAndFeel.UseDefaultLookAndFeel = false;
             this.panelControl13.Margin = new System.Windows.Forms.Padding(1);
             this.panelControl13.Name = "panelControl13";
-            this.panelControl13.Size = new System.Drawing.Size(1157, 761);
+            this.panelControl13.Size = new System.Drawing.Size(1157, 759);
             this.panelControl13.TabIndex = 12;
             // 
             // chClinicModul

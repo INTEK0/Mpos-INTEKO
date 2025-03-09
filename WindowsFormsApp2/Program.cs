@@ -30,7 +30,7 @@ namespace WindowsFormsApp2
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             FormHelpers.FolderControl();
-            Application.Run(new fIncomeAndExpensesReport());
+            Application.Run(new avtorizasiya());
         }
     }
 }

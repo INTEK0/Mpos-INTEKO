@@ -41,21 +41,21 @@ namespace WindowsFormsApp2
 
         private void ClinicModule()
         {
-            //bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("ClinicModule").ToString());
-            //if (control)
-            //{
-            //    chClinicModul.Visible = true;
-            //    this.MaximumSize = new System.Drawing.Size(460, 270);
-            //    this.MinimumSize = new System.Drawing.Size(460, 270);
-            //    this.Size = new System.Drawing.Size(460, 270);
-            //}
-            //else
-            //{
-            //    chClinicModul.Visible = false;
-            //    this.MaximumSize = new System.Drawing.Size(460, 230);
-            //    this.MinimumSize = new System.Drawing.Size(460, 230);
-            //    this.Size = new System.Drawing.Size(460, 230);
-            //}
+            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("ClinicModule").ToString());
+            if (control)
+            {
+                chClinicModul.Visible = true;
+                this.MaximumSize = new System.Drawing.Size(460, 270);
+                this.MinimumSize = new System.Drawing.Size(460, 270);
+                this.Size = new System.Drawing.Size(460, 270);
+            }
+            else
+            {
+                chClinicModul.Visible = false;
+                this.MaximumSize = new System.Drawing.Size(460, 230);
+                this.MinimumSize = new System.Drawing.Size(460, 230);
+                this.Size = new System.Drawing.Size(460, 230);
+            }
         }
 
         public void getmebleg(string paramValue, string paramValue1)
@@ -82,15 +82,6 @@ namespace WindowsFormsApp2
         private void textEdit4_TextChanged(object sender, EventArgs e)
         {
             Calc();
-            //if (string.IsNullOrEmpty(tPaid.Text))
-            //{
-            //    // textEdit4.Text = "0.0";
-
-            //}
-            //else
-            //{
-            //    //getmebleg(tTotal.Text, tPaid.Text);
-            //}
         }
 
         private void Calc()
@@ -129,13 +120,6 @@ namespace WindowsFormsApp2
             {
                 getmebleg(tTotal.Text, tPaid.Text);
             }
-        }
-
-        private void nagd_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            ///
-
-
         }
 
         private void textEdit4_KeyDown(object sender, KeyEventArgs e)

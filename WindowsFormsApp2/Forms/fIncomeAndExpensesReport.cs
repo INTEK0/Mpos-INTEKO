@@ -37,6 +37,11 @@ namespace WindowsFormsApp2.Forms
 
         private void fIncomeAndExpensesReport_Load(object sender, EventArgs e)
         {
+            DateTime dateTime = DateTime.UtcNow.Date;
+
+            dateStart.Text = dateTime.ToShortDateString();
+            dateFinish.Text = dateTime.ToShortDateString();
+
             var data = Enum.GetValues(typeof(ReportType))
                                                 .Cast<ReportType>()
                                                 .Select(x => new
@@ -53,10 +58,6 @@ namespace WindowsFormsApp2.Forms
             lookReportType.Properties.Columns["Key"].Visible = false;
             lookReportType.EditValue = ReportType.Expenses;
 
-            DateTime dateTime = DateTime.UtcNow.Date;
-
-            dateStart.Text = dateTime.ToShortDateString();
-            dateFinish.Text = dateTime.ToShortDateString();
         }
 
         private void simpleButton2_Click(object sender, EventArgs e)
@@ -100,13 +101,31 @@ i.[Date],
 i.[UserId],
 i.[LogDate]
 FROM [IncomeAndExpensesData] i
-WHERE IsDeleted = 0 AND i.Date BETWEEN '2025-03-05' AND '2025-03-07';";
+WHERE IsDeleted = 0 AND i.Type = 3 AND i.Date BETWEEN '{dateTime1.ToString("yyyy.MM.dd")}' AND '{dateTime2.AddDays(1).ToString("yyyy.MM.dd")}';";
             var data = DbProsedures.ConvertToDataTable(query);
+            gridControl1.DataSource = null;
+            gridControl1.MainView = gridIncome;
+            gridControl1.DataSource = data;
         }
 
         private void ExpensesReport(DateTime dateTime1, DateTime dateTime2)
         {
-            throw new NotImplementedException();
+            string query = $@"SELECT 
+i.[Id],
+i.[IsDeleted],
+i.[Type],
+i.[Header],
+i.[Amount],
+i.[Comment],
+i.[Date],
+i.[UserId],
+i.[LogDate]
+FROM [IncomeAndExpensesData] i
+WHERE IsDeleted = 0 AND i.Type = 4 AND i.Date BETWEEN '{dateTime1.ToString("yyyy.MM.dd")}' AND '{dateTime2.AddDays(1).ToString("yyyy.MM.dd")}';";
+            var data = DbProsedures.ConvertToDataTable(query);
+            gridControl1.DataSource = null;
+            gridControl1.MainView = gridExpense;
+            gridControl1.DataSource = data;
         }
 
         private void lookReportType_EditValueChanged(object sender, EventArgs e)

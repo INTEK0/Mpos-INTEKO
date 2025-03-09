@@ -51,11 +51,11 @@ namespace WindowsFormsApp2.Forms
 
             string fullName = tNameSurname.Text.Trim();
             string[] nameParts = fullName.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            if (nameParts.Length >= 3)
+            if (nameParts.Length >= 2)
             {
                 name = nameParts[0];
                 surname = nameParts[1];
-                fatherName = nameParts[2];
+                fatherName = nameParts.Length > 2 ? nameParts[2] : string.Empty;
             }
             else
             {
@@ -105,8 +105,8 @@ namespace WindowsFormsApp2.Forms
             int response = DbProsedures.InsertCustomer(customer);
             if (response >= 0)
             {
-                FormHelpers.Alert($"{tCompanyName.Text} müştərisi uğurla yaradıldı", Enums.MessageType.Success);
-                FormHelpers.Log($"{tCompanyName.Text} müştərisi yaradıldı");
+                FormHelpers.Alert($"{tNameSurname.Text} müştərisi uğurla yaradıldı", Enums.MessageType.Success);
+                FormHelpers.Log($"{tNameSurname.Text} müştərisi yaradıldı");
                 Clear();
                 tProccessNo.Text = DbProsedures.GET_CustomerProccessNo();
             }

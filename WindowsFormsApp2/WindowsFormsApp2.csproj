@@ -727,17 +727,11 @@
     <Compile Include="QAIME_SATISI_QAYTARMA_LAYOUT.Designer.cs">
       <DependentUpon>QAIME_SATISI_QAYTARMA_LAYOUT.cs</DependentUpon>
     </Compile>
-    <Compile Include="Reports\printClinic.cs">
+    <Compile Include="Reports\printMasterClinic.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Reports\printClinic.Designer.cs">
-      <DependentUpon>printClinic.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Reports\printTest.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Reports\printTest.Designer.cs">
-      <DependentUpon>printTest.cs</DependentUpon>
+    <Compile Include="Reports\printMasterClinic.Designer.cs">
+      <DependentUpon>printMasterClinic.cs</DependentUpon>
     </Compile>
     <Compile Include="Reports\printXezerClinic.cs">
       <SubType>Component</SubType>
@@ -1242,11 +1236,8 @@
     <EmbeddedResource Include="QAIME_SATISI_QAYTARMA_LAYOUT.resx">
       <DependentUpon>QAIME_SATISI_QAYTARMA_LAYOUT.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\printClinic.resx">
-      <DependentUpon>printClinic.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Reports\printTest.resx">
-      <DependentUpon>printTest.cs</DependentUpon>
+    <EmbeddedResource Include="Reports\printMasterClinic.resx">
+      <DependentUpon>printMasterClinic.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\printXezerClinic.resx">
       <DependentUpon>printXezerClinic.cs</DependentUpon>
