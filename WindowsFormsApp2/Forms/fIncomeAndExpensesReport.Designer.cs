@@ -167,12 +167,16 @@
             this.gridExpense.DetailHeight = 431;
             this.gridExpense.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFullFocus;
             this.gridExpense.GridControl = this.gridControl1;
+            this.gridExpense.GroupCount = 1;
             this.gridExpense.Name = "gridExpense";
             this.gridExpense.OptionsBehavior.ReadOnly = true;
             this.gridExpense.OptionsEditForm.PopupEditFormWidth = 1067;
             this.gridExpense.OptionsView.EnableAppearanceEvenRow = true;
             this.gridExpense.OptionsView.EnableAppearanceOddRow = true;
+            this.gridExpense.OptionsView.ShowGroupPanel = false;
             this.gridExpense.OptionsView.ShowIndicator = false;
+            this.gridExpense.SortInfo.AddRange(new DevExpress.XtraGrid.Columns.GridColumnSortInfo[] {
+            new DevExpress.XtraGrid.Columns.GridColumnSortInfo(this.gridColumn2, DevExpress.Data.ColumnSortOrder.Ascending)});
             // 
             // gridColumn11
             // 
@@ -210,7 +214,7 @@
             this.gridColumn4.Name = "gridColumn4";
             this.gridColumn4.OptionsColumn.AllowEdit = false;
             this.gridColumn4.Visible = true;
-            this.gridColumn4.VisibleIndex = 2;
+            this.gridColumn4.VisibleIndex = 1;
             this.gridColumn4.Width = 596;
             // 
             // gridColumn3
@@ -227,7 +231,7 @@
             this.gridColumn3.Name = "gridColumn3";
             this.gridColumn3.OptionsColumn.AllowEdit = false;
             this.gridColumn3.Visible = true;
-            this.gridColumn3.VisibleIndex = 3;
+            this.gridColumn3.VisibleIndex = 2;
             this.gridColumn3.Width = 94;
             // 
             // tableLayoutPanel1

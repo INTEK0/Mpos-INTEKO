@@ -78,7 +78,7 @@ namespace WindowsFormsApp2
 [product_id],
 ilkinodenis,
 prd_qty 'MİQDAR'
-FROM [KREDIT_SATISI_MAIN]"; ;
+FROM [KREDIT_SATISI_MAIN]";
                 SqlCommand command = new SqlCommand(queryString, connection);
                 SqlDataAdapter da = new SqlDataAdapter(command);
                 DataTable dt = new DataTable();
@@ -144,10 +144,7 @@ FROM [KREDIT_SATISI_MAIN]"; ;
                 SqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
-                    ///grid load                              
-                    //model_ = Convert.ToInt32( dr["model"].ToString());
-                    // ip_ = dr["ip_"].ToString();
-
+          
                     label4.Text = dr["VAHID"].ToString();
 
                     label5.Text = dr["VERGI_DERECESI"].ToString();

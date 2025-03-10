@@ -152,6 +152,7 @@ namespace WindowsFormsApp2
             this.accordionControlElement56 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement61 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement60 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
+            this.accordionControlElement64 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement54 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement41 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement39 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
@@ -404,7 +405,6 @@ namespace WindowsFormsApp2
             this.gridExpenses.OptionsMenu.EnableFooterMenu = false;
             this.gridExpenses.OptionsNavigation.AutoFocusNewRow = true;
             this.gridExpenses.OptionsScrollAnnotations.ShowFocusedRow = DevExpress.Utils.DefaultBoolean.False;
-            this.gridExpenses.OptionsView.ShowFooter = true;
             this.gridExpenses.OptionsView.ShowGroupPanel = false;
             this.gridExpenses.OptionsView.ShowIndicator = false;
             this.gridExpenses.OptionsView.ShowViewCaption = true;
@@ -419,18 +419,22 @@ namespace WindowsFormsApp2
             this.gridColumn7.OptionsColumn.AllowEdit = false;
             this.gridColumn7.Visible = true;
             this.gridColumn7.VisibleIndex = 0;
+            this.gridColumn7.Width = 194;
             // 
             // gridColumn8
             // 
+            this.gridColumn8.AppearanceCell.Options.UseTextOptions = true;
+            this.gridColumn8.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.gridColumn8.AppearanceHeader.Options.UseTextOptions = true;
+            this.gridColumn8.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.gridColumn8.Caption = "Məbləğ";
             this.gridColumn8.FieldName = "Amount";
             this.gridColumn8.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.MiddleLeft;
             this.gridColumn8.Name = "gridColumn8";
             this.gridColumn8.OptionsColumn.AllowEdit = false;
-            this.gridColumn8.Summary.AddRange(new DevExpress.XtraGrid.GridSummaryItem[] {
-            new DevExpress.XtraGrid.GridColumnSummaryItem(DevExpress.Data.SummaryItemType.Sum, "Amount", "C2")});
             this.gridColumn8.Visible = true;
             this.gridColumn8.VisibleIndex = 1;
+            this.gridColumn8.Width = 95;
             // 
             // gridControl2
             // 
@@ -464,6 +468,7 @@ namespace WindowsFormsApp2
             this.pictureEdit1.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.pictureEdit1.MenuManager = this.fluentFormDefaultManager1;
             this.pictureEdit1.Name = "pictureEdit1";
+            this.pictureEdit1.Properties.AllowFocused = false;
             this.pictureEdit1.Properties.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(245)))), ((int)(((byte)(250)))));
             this.pictureEdit1.Properties.Appearance.Options.UseBackColor = true;
             this.pictureEdit1.Properties.Appearance.Options.UseTextOptions = true;
@@ -1810,7 +1815,8 @@ namespace WindowsFormsApp2
             this.accordionControlElement46,
             this.accordionControlElement56,
             this.accordionControlElement61,
-            this.accordionControlElement60});
+            this.accordionControlElement60,
+            this.accordionControlElement64});
             this.accordionControlElement30.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("accordionControlElement30.ImageOptions.SvgImage")));
             this.accordionControlElement30.Name = "accordionControlElement30";
             this.accordionControlElement30.Text = "Hesabatlar";
@@ -1932,8 +1938,16 @@ namespace WindowsFormsApp2
             // 
             this.accordionControlElement60.Name = "accordionControlElement60";
             this.accordionControlElement60.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
-            this.accordionControlElement60.Text = "Mahsul Maliyet Hesabatı";
+            this.accordionControlElement60.Text = "Məhsul Mənfəət Hesabatı";
             this.accordionControlElement60.Click += new System.EventHandler(this.accordionControlElement60_Click);
+            // 
+            // accordionControlElement64
+            // 
+            this.accordionControlElement64.Name = "accordionControlElement64";
+            this.accordionControlElement64.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
+            this.accordionControlElement64.Text = "Kassa mədaxil və məxaric Hesabatı";
+            this.accordionControlElement64.Visible = false;
+            this.accordionControlElement64.VisibleInFooter = false;
             // 
             // accordionControlElement54
             // 
@@ -3464,6 +3478,7 @@ namespace WindowsFormsApp2
         private DevExpress.XtraGrid.Views.Grid.GridView gridExpenses;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn7;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn8;
+        private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement64;
     }
 }
 

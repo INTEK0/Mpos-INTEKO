@@ -1,5 +1,6 @@
 ﻿using DevExpress.XtraBars.Navigation;
 using DevExpress.XtraEditors;
+using DevExpress.XtraGrid;
 using DevExpress.XtraGrid.Localization;
 using DevExpress.XtraPrinting;
 using Microsoft.Win32;
@@ -462,6 +463,15 @@ GROUP BY h.Header;";
                             da.Fill(dt);
                             gridControlExpenses.DataSource = dt;
                             gridExpenses.ViewCaption = $"XƏRCLƏR - {DateTime.Now.ToString("dd.MM.yyyy")}";
+                            gridExpenses.OptionsView.ShowFooter = true;
+                            gridExpenses.Columns["Amount"].Summary.Clear();
+                            GridColumnSummaryItem summaryItem = new GridColumnSummaryItem
+                            {
+                                FieldName = "Amount",
+                                SummaryType = DevExpress.Data.SummaryItemType.Sum,
+                                DisplayFormat = "{0:N2}"
+                            };
+                            gridExpenses.Columns["Amount"].Summary.Add(summaryItem);
                         }
                     }
                 }
