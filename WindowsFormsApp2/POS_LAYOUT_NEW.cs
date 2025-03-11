@@ -2718,8 +2718,8 @@ namespace WindowsFormsApp2
                             Card = card_,
                             Total = umumi_mebleg_,
                             Cashier = tUsername.Text,
-                            Customer = null,
-                            Doctor = null,
+                            Customer = _customer,
+                            Doctor = _doctor,
                             Rrn = bankttnminputdata
                         });
 
