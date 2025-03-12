@@ -66,7 +66,7 @@ namespace WindowsFormsApp2
             {
                 string id = dr[0].ToString();
                 ID = id;
-                aD = dr[1].ToString();
+                aD = dr[2].ToString();
             }
         }
     }

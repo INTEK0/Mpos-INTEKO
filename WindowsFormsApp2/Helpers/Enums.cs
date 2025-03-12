@@ -101,6 +101,14 @@ namespace WindowsFormsApp2.Helpers
             ABB,
         }
 
+        public enum CustomerDebtType
+        {
+            AvansPay = 1,
+            AvansSale,
+            CreditSale,
+            CreditPay
+        }
+
         public static string GetEnumDescription(Enum value)
         {
             FieldInfo field = value.GetType().GetField(value.ToString());

@@ -1318,6 +1318,24 @@ WHERE BARKOD = '{barcode}'";
             }
         }
 
+        public static void InsertCustomerDebt(CustomerDebtType type, DateTime date, int customerId, decimal amount)
+        {
+            string _date = date.ToString("yyyy-MM-dd HH:mm:ss");
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                string query = $@"INSERT INTO [MUSTERILER_DEBTS] (OperationType, OperationDate, CustomerId, Amount) VALUES (
+    {(int)type},
+    '{_date}',
+    {customerId},
+    {amount})";
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
         #endregion [..CUSTOMERS..]
 
 

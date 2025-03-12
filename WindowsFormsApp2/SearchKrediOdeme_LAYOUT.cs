@@ -496,7 +496,6 @@ FROM [KREDIT_SATISI_MAIN]";
                     creditPayer = textEdit5.Text,
                     clientName = textEdit5.Text,
                     items = new List<Sunmi.Item> { item }
-
                 };
 
                 Sunmi.RootObject root = new Sunmi.RootObject

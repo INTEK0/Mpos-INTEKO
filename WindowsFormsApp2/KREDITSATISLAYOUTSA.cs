@@ -23,6 +23,8 @@ using System.Printing;
 using WindowsFormsApp2.Helpers.Messages;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.NKA;
+using WindowsFormsApp2.Helpers.DB;
+using static WindowsFormsApp2.Helpers.Enums;
 
 namespace WindowsFormsApp2
 {
@@ -628,7 +630,7 @@ namespace WindowsFormsApp2
 
                             SqlDataReader dr416 = cmd.ExecuteReader();
                             dr416.Close();
-
+                           DbProsedures.InsertCustomerDebt( CustomerDebtType.CreditSale,DateTime.Now, Convert.ToInt32(musteri_id), Convert.ToDecimal(toplammeblag));
                             int indexa = textEdit5.Text.LastIndexOf('-');
                             int indexb = textEdit5.Text.Length;
                             string idnos = (textEdit5.Text.Substring(indexa + 1, indexb - indexa - 1));
@@ -676,7 +678,6 @@ namespace WindowsFormsApp2
 
                 }
             }
-
         }
 
         private void simpleButton1_Click(object sender, EventArgs e)
@@ -1628,7 +1629,8 @@ namespace WindowsFormsApp2
                             };
 
                             string json = Sunmi.CreditSale(root);
-
+                            ksatis();
+                            return;
 
                             var url =  label5.Text;
 

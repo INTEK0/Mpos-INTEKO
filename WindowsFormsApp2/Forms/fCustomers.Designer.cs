@@ -148,6 +148,7 @@ namespace WindowsFormsApp2.Forms
             this.bDelete.Appearance.Font = new System.Drawing.Font("Nunito", 12F, System.Drawing.FontStyle.Bold);
             this.bDelete.Appearance.Options.UseBackColor = true;
             this.bDelete.Appearance.Options.UseFont = true;
+            this.bDelete.Enabled = false;
             this.bDelete.ImageOptions.SvgImageSize = new System.Drawing.Size(24, 24);
             this.bDelete.Location = new System.Drawing.Point(183, 4);
             this.bDelete.LookAndFeel.SkinName = "WXI";
