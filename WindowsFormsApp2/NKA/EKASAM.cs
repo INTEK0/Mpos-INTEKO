@@ -327,7 +327,7 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
                             int quantityType = Convert.ToInt32(dr["quantityType"]);
                             decimal ssum = Convert.ToDecimal(dr["ssum"]);
 
-                            decimal marginSum = (salePrice - purchasePrice) * (decimal)quantity;
+                            decimal marginSum =  purchasePrice * (decimal)quantity;
 
                             if (vatTypeName != "TİCARƏT ƏLAVƏSİ 18%")
                             {
@@ -336,7 +336,6 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
                             }
 
                             if (vatTypeName == "TİCARƏT ƏLAVƏSİ 18%")
-
                             {
                                 Item item = new Item
                                 {
@@ -350,11 +349,12 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
                                     itemVatPercent = vatType,
                                     itemMarginPrice = purchasePrice,
                                     itemMarginSum = marginSum,
-
                                 };
                                 items.Add(item);
 
-                                vatSumFor18Percent += marginSum;
+                                vatSumFor18Percent +=   ssum - marginSum;
+
+
                             }
 
                             else
@@ -394,8 +394,15 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
                             }
                         }
 
+               
+
                         if (vatSumFor18Percent > 0)
                         {
+                            //vatAmounts.Add(new VatAmount
+                            //{
+                            //    vatSum = 2
+                            //});
+
                             vatAmounts.Add(new VatAmount
                             {
                                 vatPercent = 18,

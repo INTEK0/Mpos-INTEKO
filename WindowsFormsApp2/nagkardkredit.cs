@@ -9,18 +9,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WindowsFormsApp2.Forms;
 
 namespace WindowsFormsApp2
 {
     public partial class nagkardkredit : DevExpress.XtraEditors.XtraForm
     {
         private readonly SearchKrediOdeme_LAYOUT frm1;
+        private readonly fCreditPay _creditPay;
         public decimal h { get; set; }
-        public nagkardkredit(decimal a, SearchKrediOdeme_LAYOUT frm)
+        public nagkardkredit(decimal a, SearchKrediOdeme_LAYOUT frm, fCreditPay creditPay)
         {
             InitializeComponent();
             h = a;
             frm1 = frm;
+            _creditPay = creditPay;
         }
 
         private void nagkardkredit_Load(object sender, EventArgs e)
@@ -158,9 +161,17 @@ namespace WindowsFormsApp2
 
             if ((n_ + k_) >= Convert.ToDecimal(textEdit1.Text))
             {
-                //  MessageBox.Show(n_ + "/" + k_);
                 //yeri deyismemisden evvel   frm1.gelen_data_negd_pos(n_, k_,Convert.ToDecimal(_um_old));
-                frm1.gelen_data_negd_pos(n_, k_, total);
+
+                if (frm1 is null)
+                {
+                    _creditPay.gelen_data_negd_pos(n_, k_, total);
+                }
+                else
+                {
+                    frm1.gelen_data_negd_pos(n_, k_, total);
+                }
+               
                 this.Close();
             }
             else

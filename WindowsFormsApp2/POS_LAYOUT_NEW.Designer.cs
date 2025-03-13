@@ -197,6 +197,7 @@ namespace WindowsFormsApp2
             this.barSubItem1 = new DevExpress.XtraBars.BarSubItem();
             this.bDeposit = new DevExpress.XtraBars.BarButtonItem();
             this.bWithdraw = new DevExpress.XtraBars.BarButtonItem();
+            this.bControlTape = new DevExpress.XtraBars.BarButtonItem();
             this.bBarShotcurt = new DevExpress.XtraBars.BarButtonItem();
             this.bPrintClinic = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
@@ -2424,9 +2425,10 @@ namespace WindowsFormsApp2
             this.barSubItem1,
             this.bDeposit,
             this.bWithdraw,
-            this.bPrintClinic});
+            this.bPrintClinic,
+            this.bControlTape});
             this.barManager1.MainMenu = this.bar2;
-            this.barManager1.MaxItemId = 5;
+            this.barManager1.MaxItemId = 6;
             // 
             // bar2
             // 
@@ -2454,7 +2456,8 @@ namespace WindowsFormsApp2
             this.barSubItem1.Id = 1;
             this.barSubItem1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
             new DevExpress.XtraBars.LinkPersistInfo(this.bDeposit),
-            new DevExpress.XtraBars.LinkPersistInfo(this.bWithdraw)});
+            new DevExpress.XtraBars.LinkPersistInfo(this.bWithdraw),
+            new DevExpress.XtraBars.LinkPersistInfo(this.bControlTape)});
             this.barSubItem1.Name = "barSubItem1";
             // 
             // bDeposit
@@ -2472,6 +2475,15 @@ namespace WindowsFormsApp2
             this.bWithdraw.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bWithdraw.ImageOptions.SvgImage")));
             this.bWithdraw.Name = "bWithdraw";
             this.bWithdraw.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bWithdraw_ItemClick);
+            // 
+            // bControlTape
+            // 
+            this.bControlTape.Caption = "Nəzarət lenti";
+            this.bControlTape.Id = 5;
+            this.bControlTape.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bControlTape.ImageOptions.SvgImage")));
+            this.bControlTape.Name = "bControlTape";
+            this.bControlTape.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
+            this.bControlTape.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bControlTape_ItemClick);
             // 
             // bBarShotcurt
             // 
@@ -2808,5 +2820,6 @@ namespace WindowsFormsApp2
         private DevExpress.XtraEditors.SimpleButton simpleButton26;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem65;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
+        private DevExpress.XtraBars.BarButtonItem bControlTape;
     }
 }

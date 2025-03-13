@@ -1,4 +1,5 @@
 ﻿using ComponentFactory.Krypton.Toolkit;
+using DevExpress.DocumentServices.ServiceModel.DataContracts;
 using DevExpress.XtraEditors;
 using DevExpress.XtraMap.Native;
 using Newtonsoft.Json;
@@ -607,13 +608,62 @@ namespace WindowsFormsApp2.NKA
             }
         }
 
-        public static string CreditPay(RootObject rootObject)
+        public static bool CreditPay(RootObject rootObject, string IpAddress, string KREDIT_SATISI_AYLIK_ID)
         {
             string json = Newtonsoft.Json.JsonConvert.SerializeObject(rootObject, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
             });
-            return json;
+
+            RestClient rest = new RestClient();
+            RestRequest request = new RestRequest(IpAddress, Method.Post);
+            request.AddHeader("Content-Type", "application/json;charset=utf-8");
+            request.AddStringBody(json, DataFormat.Json);
+            RestResponse response = rest.Execute(request);
+
+            if (response.ResponseStatus != ResponseStatus.Completed)
+            {
+                ReadyMessages.ERROR_SERVER_CONNECTION_MESSAGE();
+                FormHelpers.Log($"Kassa ilə əlaqə zamanı xəta yarandı\n\n {response.ErrorMessage}");
+                return false;
+            }
+            else
+            {
+                CreditPayResponse payResponse = System.Text.Json.JsonSerializer.Deserialize<CreditPayResponse>(response.Content);
+
+                if (payResponse.message != "Successful operation" && payResponse.message != "Success operation")
+                {
+                    ReadyMessages.ERROR_DEFAULT_MESSAGE(payResponse.message);
+                    FormHelpers.Log($"Xəta mesajı: {payResponse.message}");
+                    return false;
+                }
+                else
+                {
+                    if (MessageVisible)
+                    {
+                        ReadyMessages.SUCCES_CREDIT_PAYMENT_MESSAGE();
+                    }
+                    
+                    FormHelpers.Log($"{rootObject.data.creditContract} nömrəli müqavilənin kredit ödənişi edildi.");
+
+                    using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+                    {
+                        string query = $@"UPDATE [dbo].[KREDIT_SATISI_AYLIKODEME] SET [DATE2_]=GETDATE(),
+[ODENILEN_MEBLEG]=[ODENILECEK_MEBLEG],
+[longids]=N'{payResponse.data.document_id}',
+[shortids]=N'{payResponse.data.short_document_id}'  
+WHERE KREDIT_SATISI_AYLIK_ID= {KREDIT_SATISI_AYLIK_ID}";
+                        con.Open();
+                        using (SqlCommand cmd = new SqlCommand(query, con))
+                        {
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+
+                   
+                    return true;
+                }
+            }
         }
 
         public static string CreditSale(RootObject rootObject)
@@ -760,6 +810,13 @@ namespace WindowsFormsApp2.NKA
                         customerId = salesData.Customer?.CustomerID,
                         doctorId = salesData.Doctor?.Id,
                     });
+
+                    if (salesData.Customer != null)
+                    {
+                        decimal debt = salesData.Total - salesData.PrepaymentPay;
+                        DbProsedures.InsertCustomerDebt(CustomerDebtType.AvansPay, DateTime.Now, salesData.Customer.CustomerID, debt);
+                    }
+                  
 
                     if (MessageVisible)
                     {
@@ -1087,6 +1144,7 @@ WHERE psd.pos_satis_check_main_id = {pos_satis_main_id} AND psm.user_id_ = {Prop
 
 
         #region [..RESPONSE CLASS..]
+
         public class ResponseDocumentData
         {
             public string document_id { get; set; }
@@ -1177,6 +1235,26 @@ WHERE psd.pos_satis_check_main_id = {pos_satis_main_id} AND psm.user_id_ = {Prop
             }
         }
 
+        public class CreditPayResponse
+        {
+            public class Data
+            {
+                public string approval_code { get; set; }
+                public string document_id { get; set; }
+                public int document_number { get; set; }
+                public string number { get; set; }
+                public string rrn { get; set; }
+                public int shift_document_number { get; set; }
+                public string short_document_id { get; set; }
+                public double totalSum { get; set; }
+                public string transaction_id { get; set; }
+                public string transaction_number { get; set; }
+            }
+
+            public Data data { get; set; }
+            public string code { get; set; }
+            public string message { get; set; }
+        }
         #endregion [..RESPONSE CLASS..]
     }
 }

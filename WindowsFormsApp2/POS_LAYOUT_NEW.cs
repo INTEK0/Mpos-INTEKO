@@ -2298,6 +2298,11 @@ namespace WindowsFormsApp2
             Payment(PayType.Installment);
         }
 
+        private void bControlTape_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            Omnitech.ControlTape(lIpAdress.Text, null);
+        }
+
         private void simpleButton3_Click_1(object sender, EventArgs e)
         {
             fWithdraw n = new fWithdraw(this);

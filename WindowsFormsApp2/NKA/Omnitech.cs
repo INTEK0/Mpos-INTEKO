@@ -1,4 +1,5 @@
-﻿using DevExpress.XtraEditors;
+﻿using DevExpress.Map.Native;
+using DevExpress.XtraEditors;
 using Newtonsoft.Json;
 using RestSharp;
 using System;
@@ -23,6 +24,7 @@ namespace WindowsFormsApp2.NKA
         {
             try
             {
+                Cursor.Current = Cursors.WaitCursor;
                 var client = new RestClient();
                 var request = new RestRequest(ipAddress, Method.Post);
                 request.AddHeader("Content-Type", "application/json;charset=utf-8");
@@ -46,7 +48,10 @@ namespace WindowsFormsApp2.NKA
                 ReadyMessages.ERROR_DEFAULT_MESSAGE(ex.Message);
                 return null;
             }
-
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+            }
         }
 
         public static string Login(string ipAddress)
@@ -787,7 +792,7 @@ case A.VERGI_DERECESI
   POS.pos_satis_check_main_id=D.pos_satis_check_main_id AND 
   A.[mal_alisi_details_id]=D.[mal_alisi_details_id]
   AND D.[pos_satis_check_main_id]={id}";
-                using (SqlCommand cmd = new SqlCommand(query,con))
+                using (SqlCommand cmd = new SqlCommand(query, con))
                 {
                     using (SqlDataReader dr = cmd.ExecuteReader())
                     {
@@ -949,7 +954,7 @@ case A.VERGI_DERECESI
                     using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
                     {
                         string query = $"UPDATE [dbo].[pos_satis_check_main] SET NEGD_={casha.ToString("N2").Replace(',', '.')}+NEGD_,KART_={carda.ToString("N2").Replace(',', '.')}+KART_, [PREdate_]=getdate(),PREfiscal_id='{response.short_id}' where pos_satis_check_main_id={id}";
-                        using (SqlCommand cmd = new SqlCommand(query,con))
+                        using (SqlCommand cmd = new SqlCommand(query, con))
                         {
                             con.Open();
                             cmd.ExecuteNonQuery();
@@ -1270,8 +1275,115 @@ case A.VERGI_DERECESI
             }
         }
 
+        public static void ControlTape(string ipAddress, string accessToken, DateTime start = default, DateTime end = default)
+        {
+            if (string.IsNullOrWhiteSpace(accessToken))
+            {
+                if (Login(ipAddress) != null)
+                {
+                    accessToken = Login(ipAddress);
+                }
+                else
+                {
+                    goto FinishCode;
+
+                }
+            }
+
+            string _start = start.ToString("2025-03-12 00:12:26");
+            //string _start = start.ToString("yyyy-MM-ddHH:mm:ss");
+            //string _end = start.ToString("yyyy-MM-ddHH:mm:ss");
+            string _end = start.ToString("2025-03-13 11:00:26");
+            ControlTapeRequest requestJson = new ControlTapeRequest
+            {
+                requestData = new ControlTapeRequest.RequestData
+                {
+                    access_token = accessToken,
+                    date_start = _start,
+                    date_end = _end,
+                    checkData = new ControlTapeRequest.CheckData
+                    {
+                        check_type = 17
+                    }
+                }
+            };
+
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(requestJson, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            });
+
+
+            using (var client = new RestClient())
+            {
+                var request = new RestRequest(ipAddress, Method.Post);
+                request.AddHeader("Content-Type", "application/json;charset=utf-8");
+                request.AddStringBody(json, DataFormat.Json);
+                RestResponse response = client.Execute(request);
+
+                if (response.ResponseStatus != ResponseStatus.Completed)
+                {
+                    ReadyMessages.ERROR_SERVER_CONNECTION_MESSAGE();
+                    FormHelpers.Log($"Kassa ilə əlaqə zamanı xəta yarandı\n\n {response.ErrorMessage}");
+
+                }
+                else
+                {
+                    OmnitechResponse weatherForecast = System.Text.Json.JsonSerializer.Deserialize<OmnitechResponse>(response.Content);
+                    if (weatherForecast.message == "Successful operation" || weatherForecast.message == "success")
+                    {
+                        string message = "Nəzarət lenti uğurla çap olundu";
+                        FormHelpers.Alert(message, MessageType.Success);
+                        FormHelpers.Log(message);
+                        FormHelpers.OperationLog(new OperationLogs
+                        {
+                            OperationType = OperationType.ControlTape,
+                            OperationId = 1,
+                            RequestCode = json,
+                            ResponseCode = response.Content,
+                            Message = Enums.GetEnumDescription(OperationType.ControlTape)
+                        });
+                    }
+                    else
+                    {
+                        ReadyMessages.ERROR_LAST_DOCUMENT_MESSAGE(weatherForecast.message);
+                        FormHelpers.Log($"Nəzarət lenti çap olunarkən xəta yarandı. Xəta mesajı: {weatherForecast.message}");
+                        FormHelpers.OperationLog(new OperationLogs
+                        {
+                            OperationType = OperationType.ControlTape,
+                            OperationId = 0,
+                            RequestCode = json,
+                            ResponseCode = response.Content,
+                            Message = Enums.GetEnumDescription(OperationType.ControlTape)
+                        });
+                    }
+                }
+            }
+
+        FinishCode:
+            string error;
+        }
+
 
         #region [..Request Classes..]
+
+        private class ControlTapeRequest
+        {
+            public class CheckData
+            {
+                public int check_type { get; set; } = 17;
+            }
+
+            public class RequestData
+            {
+                public string access_token { get; set; }
+                public string date_start { get; set; }
+                public string date_end { get; set; }
+                public CheckData checkData { get; set; }
+            }
+
+            public RequestData requestData { get; set; }
+        }
 
         private class Item
         {

@@ -4,7 +4,9 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.UI;
@@ -18,7 +20,9 @@ using DevExpress.XtraRichEdit.Model;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
+using WindowsFormsApp2.NKA;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
+using static WindowsFormsApp2.Helpers.Enums;
 using static WindowsFormsApp2.Helpers.FormHelpers;
 
 namespace WindowsFormsApp2.Forms
@@ -26,9 +30,19 @@ namespace WindowsFormsApp2.Forms
     public partial class fCreditPay : DevExpress.XtraEditors.XtraForm
     {
         public readonly IpModel _IpModel = FormHelpers.GetIpModel();
-        private string _unitName, _taxName, _productId, _CreditMainId;
+        private string _unitId, _taxId, _productId, _creditMainId, _customerId;
         private int index = 0;
+        private CreditPayData _creditPayData;
 
+
+        private class CreditPayData
+        {
+            public string KONTROL { get; set; }
+            public string KREDIT_SATISI_AYLIK_ID { get; set; }
+            public string KREDIT_AY { get; set; }
+            public string longidsana { get; set; }
+            public string AYLIQ_ODENIS { get; set; }
+        }
 
         public fCreditPay()
         {
@@ -52,6 +66,7 @@ namespace WindowsFormsApp2.Forms
                     string query = @"SELECT [KREDIT_SATISI_MAIN_ID] ID,
 [GAIME_NOMRE] 'MÜQAVİLƏ NÖMRƏSİ',
 [ODENILEN_MEBLEG] 'KREDİT MƏBLƏĞİ',
+[musteri_id] AS N'MÜŞTƏRİ ID',
 [MUSTERI] 'AD SOYAD ATA ADI',
 [ZAMIN] 'ZAMIN AD SOYAD',
 [personel] 'SATIŞ PERSONEL',
@@ -93,7 +108,7 @@ FROM [KREDIT_SATISI_MAIN]";
             }
         }
 
-        private void GetUnitData()
+        private void GetUnitAndTaxData()
         {
             try
             {
@@ -113,8 +128,8 @@ WHERE
                         {
                             if (dr.Read())
                             {
-                                _unitName = dr["VAHID"].ToString();
-                                _taxName = dr["VERGI_DERECESI"].ToString();
+                                _unitId = dr["VAHID"].ToString();
+                                _taxId = dr["VERGI_DERECESI"].ToString();
                             }
                         }
                     }
@@ -145,7 +160,7 @@ WHERE
 CASE WHEN [ODENILEN_MEBLEG]>=ODENILECEK_MEBLEG THEN 1 ELSE 0 END AS KONTROL,
 [longidsana]  
 FROM  [KREDIT_SATISI_AYLIKODEME] 
-where kredit_id={_CreditMainId}";
+where kredit_id={_creditMainId}";
 
                     using (SqlCommand cmd = new SqlCommand(queryString, con))
                     {
@@ -237,8 +252,17 @@ where kredit_id={_CreditMainId}";
                     double deger51 = Math.Round(Convert.ToDouble(deger5), 2);
                     decimal f = Convert.ToDecimal(deger51);
 
-                    //nagkardkredit nk = new nagkardkredit(f, this);
-                    //nk.ShowDialog();
+                    nagkardkredit nk = new nagkardkredit(f, null, this);
+                    nk.ShowDialog();
+
+                    _creditPayData = new CreditPayData
+                    {
+                        KONTROL = deger2,
+                        KREDIT_SATISI_AYLIK_ID = deger3,
+                        KREDIT_AY = deger6,
+                        longidsana = deger4,
+                        AYLIQ_ODENIS = deger5
+                    };
                 }
             }
         }
@@ -249,7 +273,8 @@ where kredit_id={_CreditMainId}";
             if (dr != null)
             {
                 int paramValue = Convert.ToInt32(dr[0]);
-                _CreditMainId = dr[0].ToString();
+                _creditMainId = dr[0].ToString();
+                _customerId = dr["MÜŞTƏRİ ID"].ToString();
                 tContractNo.Text = dr["MÜQAVİLƏ NÖMRƏSİ"].ToString();
                 tContractDate.Text = dr["MÜQAVİLƏ TARİXİ"].ToString();
                 tCustomerName.Text = dr["AD SOYAD ATA ADI"].ToString();
@@ -275,7 +300,7 @@ where kredit_id={_CreditMainId}";
                     tCreditBalance.Text = (Convert.ToDouble(tCreditAmount.Text) - Convert.ToDouble(tTotalPay.Text)).ToString();
                 }
                 _productId = dr["product_id"].ToString();
-                GetUnitData();
+                GetUnitAndTaxData();
                 PeriodicPayDataLoad();
             }
         }
@@ -290,6 +315,96 @@ where kredit_id={_CreditMainId}";
 
         }
 
+        public void gelen_data_negd_pos(decimal cash_, decimal card_, decimal umumi_mebleg_)
+        {
+            string casha = cash_.ToString();
+            string card = card_.ToString();
+            string umumi = umumi_mebleg_.ToString();
 
+            decimal deger51 = Math.Round(Convert.ToDecimal(_creditPayData.AYLIQ_ODENIS), 2);
+            double deger9 = Math.Round(Convert.ToDouble(_creditPayData.KREDIT_AY) * Convert.ToDouble(_creditPayData.AYLIQ_ODENIS), 2);
+
+            double degerodenena = Math.Round(Convert.ToDouble(_creditPayData.KREDIT_AY), 2);
+
+            double degeryek = Math.Round(Convert.ToDouble(tTotal.Text), 2);
+            double yekunodenens = Convert.ToDouble(tCreditBalance.Text) - deger9;
+            double yekunodenens2 = 0;
+            if (yekunodenens < 0)
+            {
+                yekunodenens2 = 0;
+            }
+            else
+            {
+                yekunodenens2 = Math.Round(yekunodenens, 2);
+            }
+
+            try
+            {
+                string uuid = Guid.NewGuid().ToString();
+
+                int vatType = Convert.ToInt16(_taxId);
+                int quantityType = Convert.ToInt16(_unitId);
+                decimal salePrice = Convert.ToDecimal(tSalePrice.Text);
+                Sunmi.Item item = new Sunmi.Item()
+                {
+                    name = tProductName.Text,
+                    code = _productId,
+                    quantity = 1,
+                    salePrice = deger51,
+                    realPrice = degeryek,
+                    vatType = vatType,
+                    quantityType = quantityType
+                };
+
+
+
+                Sunmi.Data data = new Sunmi.Data()
+                {
+                    documentUUID = uuid,
+                    parentDocumentId = _creditPayData.longidsana,
+                    cashPayment = cash_,
+                    cardPayment = card_,
+                    cashierName = _IpModel.Cashier,
+                    residue = yekunodenens2,
+                    paymentNumber = _creditPayData.KREDIT_AY,
+                    creditContract = tContractNo.Text,
+                    creditPayer = tCustomerName.Text,
+                    clientName = tCustomerName.Text,
+                    items = new List<Sunmi.Item> { item }
+                };
+
+                Sunmi.RootObject root = new Sunmi.RootObject
+                {
+                    data = data,
+                    operation = "credit"
+                };
+
+                bool result = Sunmi.CreditPay(root, _IpModel.Ip, _creditPayData.KREDIT_SATISI_AYLIK_ID);
+                if (result)
+                {
+                    CreditDataLoad();
+                    PeriodicPayDataLoad();
+                    DbProsedures.InsertCustomerDebt(CustomerDebtType.CreditPay, DateTime.Now, Convert.ToInt32(_customerId), deger51);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public class WeatherForecast
+        {
+            public string code { get; set; }
+            public string message { get; set; }
+            public sondata data { get; set; }
+        }
+
+
+        public class sondata
+        {
+            public string document_id { get; set; }
+            public string short_document_id { get; set; }
+        }
     }
 }

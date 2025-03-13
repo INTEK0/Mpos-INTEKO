@@ -14,6 +14,7 @@ using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using WindowsFormsApp2.NKA;
+using static WindowsFormsApp2.Helpers.Enums;
 using static WindowsFormsApp2.Helpers.FormHelpers;
 
 namespace WindowsFormsApp2
@@ -144,7 +145,7 @@ FROM [KREDIT_SATISI_MAIN]";
                 SqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
-          
+
                     label4.Text = dr["VAHID"].ToString();
 
                     label5.Text = dr["VERGI_DERECESI"].ToString();
@@ -176,9 +177,7 @@ FROM [KREDIT_SATISI_MAIN]";
                 SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
 
 
-                // Provide the query string with a parameter placeholder.
                 string queryString =
-                     // " exec  dbo.chart_report ";
 
                      "SELECT  [KREDIT_SATISI_AYLIK_ID] ,[kredit_id],[taksitno] AS \"KREDİT (AY)\",[DATEODEMEGUNU_] AS \"QRAFİK ÜZRƏ ÖDƏNİŞ TARİXİ\",[ODENILECEK_MEBLEG] AS \"AYLIQ ÖDƏNİŞ\" ,[ODENILEN_MEBLEG] \"ÖDƏNİŞ\",  case   WHEN [ODENILEN_MEBLEG]>=ODENILECEK_MEBLEG THEN 1 ELSE 0 END AS KONTROL,[longidsana]   FROM  [KREDIT_SATISI_AYLIKODEME] where kredit_id=" + labelControl4.Text;
 
@@ -237,7 +236,6 @@ FROM [KREDIT_SATISI_MAIN]";
         public int index = 0;
         void edit_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
-
             int[] selectedRows = gridView2.GetSelectedRows();
             foreach (var rowHandle in selectedRows)
             {
@@ -292,7 +290,7 @@ FROM [KREDIT_SATISI_MAIN]";
                     double deger51 = Math.Round(Convert.ToDouble(deger5), 2);
                     decimal f = Convert.ToDecimal(deger51);
 
-                    nagkardkredit nk = new nagkardkredit(f, this);
+                    nagkardkredit nk = new nagkardkredit(f, this, null);
                     nk.ShowDialog();
 
 
@@ -505,68 +503,26 @@ FROM [KREDIT_SATISI_MAIN]";
                 };
 
 
-
-                string json = Sunmi.CreditPay(root);
-
                 var url = "http://" + ip + ":5544";
 
-
-                var httpRequest = (HttpWebRequest)WebRequest.Create(url);
-                httpRequest.Method = "POST";
-
-                httpRequest.Accept = "application/json;charset=utf-8";
-                httpRequest.ContentType = "application/json;charset=utf-8";
+                bool result = Sunmi.CreditPay(root, url, deger3);
 
 
-                using (var streamWriter = new StreamWriter(httpRequest.GetRequestStream()))
+                if (result)
                 {
-                    streamWriter.Write(json);
+                    SqlConnection con = new SqlConnection(Properties.Settings.Default.SqlCon);
+
+                    SqlCommand cmdodeme = new SqlCommand();
+                    con.Open();
+                    cmdodeme.CommandText = "UPDATE [dbo].[KREDIT_SATISI_AYLIKODEME] SET [DATE2_]=GETDATE(),[ODENILEN_MEBLEG]=[ODENILECEK_MEBLEG],[longids]=N'" + fizid + "',[shortids]=N'" + fizid2 + "'  WHERE KREDIT_SATISI_AYLIK_ID=" + deger3;
+                    cmdodeme.Connection = con;
+                    cmdodeme.CommandType = CommandType.Text;
+                    cmdodeme.ExecuteNonQuery();
+
+                    con.Close();
+                    getall();
+                    getallodeme();
                 }
-
-                var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
-                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-                {
-                    var result = streamReader.ReadToEnd();
-
-                    WeatherForecast weatherForecast = System.Text.Json.JsonSerializer.Deserialize<WeatherForecast>(result);
-
-                    if ($"{weatherForecast.message}" == "Successful operation" || $"{weatherForecast.message}" == "Successfull operation")
-                    {
-
-                        ReadyMessages.SUCCES_CREDIT_PAYMENT_MESSAGE();
-
-                        FormHelpers.Log($"{textEdit2.Text} nömrəli müqavilənin '{textEdit6.Text}' kredit ödənişi edildi.");
-
-
-                        string a = weatherForecast.data.document_id;
-                        string b = weatherForecast.data.short_document_id;
-
-                        fizid = a;
-                        fizid2 = b;
-
-                        SqlConnection con = new SqlConnection(Properties.Settings.Default.SqlCon);
-
-                        SqlCommand cmdodeme = new SqlCommand();
-                        con.Open();
-                        cmdodeme.CommandText = "UPDATE [dbo].[KREDIT_SATISI_AYLIKODEME] SET [DATE2_]=GETDATE(),[ODENILEN_MEBLEG]=[ODENILECEK_MEBLEG],[longids]=N'" + fizid + "',[shortids]=N'" + fizid2 + "'  WHERE KREDIT_SATISI_AYLIK_ID=" + deger3;
-                        cmdodeme.Connection = con;
-                        cmdodeme.CommandType = CommandType.Text;
-                        cmdodeme.ExecuteNonQuery();
-                        
-        
-                        con.Close();
-                        getall();
-                        getallodeme();
-                        /*   st.insert_chec_pos_main(result, p_id, textEdit1.Text.ToString(), cash_, card_, umumi_mebleg_); */
-
-                    }
-                    else
-                    {
-
-                        XtraMessageBox.Show(weatherForecast.message);
-                    }
-                }
-
             }
             catch (Exception ex)
             {

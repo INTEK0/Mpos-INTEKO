@@ -145,12 +145,6 @@ namespace WindowsFormsApp2.NKA
             {
                 ReadyMessages.SUCCESS_OPEN_SHIFT_MESSAGE();
                 FormHelpers.Log(CommonData.SUCCESS_OPEN_SHIFT);
-                //      fDeposit f = new fDeposit();
-                //      if (f.ShowDialog() is DialogResult.OK)
-                //     {
-                //          decimal depositAmount = f.depositAmount;
-                //         Deposit(ipAddress, accessToken, depositAmount, "Kassir");
-                //   }
             }
         }
 

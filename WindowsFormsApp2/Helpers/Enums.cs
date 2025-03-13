@@ -86,7 +86,9 @@ namespace WindowsFormsApp2.Helpers
             [Description("Exceli birbaşa əlavə et")]
             ExcelImport_Direct,
             [Description("Z-Hesabat (Gün sonu)")]
-            ZReport
+            ZReport,
+            [Description("Nəzarət lenti")]
+            ControlTape,
         }
 
         public enum BankType

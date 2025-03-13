@@ -630,7 +630,11 @@ namespace WindowsFormsApp2
 
                             SqlDataReader dr416 = cmd.ExecuteReader();
                             dr416.Close();
-                           DbProsedures.InsertCustomerDebt( CustomerDebtType.CreditSale,DateTime.Now, Convert.ToInt32(musteri_id), Convert.ToDecimal(toplammeblag));
+
+
+                            DbProsedures.InsertCustomerDebt(CustomerDebtType.CreditSale, DateTime.Now, Convert.ToInt32(musteri_id), Convert.ToDecimal(toplammeblag));
+
+
                             int indexa = textEdit5.Text.LastIndexOf('-');
                             int indexb = textEdit5.Text.Length;
                             string idnos = (textEdit5.Text.Substring(indexa + 1, indexb - indexa - 1));
@@ -1474,7 +1478,7 @@ namespace WindowsFormsApp2
 
                             string json = Sunmi.CreditSale(root);
 
-                            var url =  label5.Text;
+                            var url = label5.Text;
 
 
                             var httpRequest = (HttpWebRequest)WebRequest.Create(url);
@@ -1588,7 +1592,7 @@ namespace WindowsFormsApp2
                             double cashab = Math.Round(Convert.ToDouble(tIlkinOdenis.Text), 2);
                             string personel = simpleLabelItem1.Text;
                             double control1 = Convert.ToDouble(idnos) + 115000;
-                            
+
 
 
                             double quantity = Convert.ToDouble(tQuantity.Text);
@@ -1629,10 +1633,9 @@ namespace WindowsFormsApp2
                             };
 
                             string json = Sunmi.CreditSale(root);
-                            ksatis();
-                            return;
+                           
 
-                            var url =  label5.Text;
+                            var url = label5.Text;
 
 
                             var httpRequest = (HttpWebRequest)WebRequest.Create(url);
@@ -1664,12 +1667,9 @@ namespace WindowsFormsApp2
 
                                     string a = weatherForecast.data.document_id;
                                     string b = weatherForecast.data.short_document_id;
-                                    /* textEdit3.Text = a; */
-                                    //MessageBox.Show(b);
                                     longids1 = weatherForecast.data.document_id;
                                     label6.Text = a;
                                     label7.Text = b;
-                                    //  MessageBox.Show(weatherForecast.data.document_id + weatherForecast.code+ weatherForecast.message);
                                     ksatis();
 
 
@@ -1801,7 +1801,7 @@ namespace WindowsFormsApp2
 
 
 
-                            var url =  label5.Text;
+                            var url = label5.Text;
 
 
                             var httpRequest = (HttpWebRequest)WebRequest.Create(url);

@@ -1328,7 +1328,7 @@ WHERE BARKOD = '{barcode}'";
     '{_date}',
     {customerId},
     {amount})";
-                con.Open();
+                 con.Open();
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
                     cmd.ExecuteNonQuery();
