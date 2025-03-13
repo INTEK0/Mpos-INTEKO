@@ -2295,7 +2295,7 @@ namespace WindowsFormsApp2
 
         private void simpleButton26_Click(object sender, EventArgs e)
         {
-            Payment(PayType.Installment);
+            if (lModel.Text is "2") { Payment(PayType.Installment); }
         }
 
         private void bControlTape_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
