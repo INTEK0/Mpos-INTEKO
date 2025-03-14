@@ -211,7 +211,7 @@ namespace WindowsFormsApp2.Helpers
         {
             try
             {
-                string ip = null, model = null, merchantId = null, cashier = null;
+                string ip = null, model = null, merchantId = null, cashier = null, bank = null;
                 using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
                 {
                     connection.Open();
@@ -237,7 +237,9 @@ when kf.KASSA_FIRMALAR = N'NBA' then 'http://'+ ki.IP_ADRESS + ':{NBA.NBA_FISCAL
 when kf.KASSA_FIRMALAR = N'OMNITECH' then 'http://'+ ki.IP_ADRESS + ':8989/v2'
 when kf.KASSA_FIRMALAR = N'EKASAM' then 'http://'+ ki.IP_ADRESS + ':9876/api/'
 else '' end  ,
-rtrim(ltrim(isnull(ki.merchant_id,'yox'))) merchant_id from KASSA_IP ki 
+rtrim(ltrim(isnull(ki.merchant_id,'yox'))) merchant_id,
+rtrim(ltrim(isnull(ki.Bank,''))) bank 
+FROM KASSA_IP ki 
 inner join KASSA_FIRMALAR kf on ki.KASSA_FIRMA_IP = kf.KASSA_FIRMALAR_ID
 inner join userParol u on u.id = ki.KASSIR_ID where u.id = {Properties.Settings.Default.UserID}";
 
@@ -251,6 +253,7 @@ inner join userParol u on u.id = ki.KASSIR_ID where u.id = {Properties.Settings.
                                 model = dr["model"].ToString();
                                 merchantId = dr["merchant_id"].ToString();
                                 cashier = dr["Cashier"].ToString();
+                                bank = dr["bank"].ToString();
                             }
 
                             IpModel ıpModel = new IpModel
@@ -258,7 +261,8 @@ inner join userParol u on u.id = ki.KASSIR_ID where u.id = {Properties.Settings.
                                 Ip = ip,
                                 Model = model,
                                 MerchantId = merchantId,
-                                Cashier = cashier
+                                Cashier = cashier,
+                                BankName = bank,
                             };
 
                             return ıpModel;
@@ -480,6 +484,7 @@ WHERE u.id = {Properties.Settings.Default.UserID}";
             public string Ip { get; set; }
             public string MerchantId { get; set; } = null;
             public string Cashier { get; set; } = null;
+            public string BankName { get; set; }
         }
 
         public class TereziModel

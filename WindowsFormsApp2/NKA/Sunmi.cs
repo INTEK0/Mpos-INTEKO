@@ -813,7 +813,7 @@ WHERE KREDIT_SATISI_AYLIK_ID= {KREDIT_SATISI_AYLIK_ID}";
 
                     if (salesData.Customer != null)
                     {
-                        decimal debt = salesData.Total - salesData.PrepaymentPay;
+                        decimal debt = salesData.Total - salesData.PrepaymentPay; //Qalan borcu
                         DbProsedures.InsertCustomerDebt(CustomerDebtType.AvansPay, DateTime.Now, salesData.Customer.CustomerID, debt);
                     }
                   
@@ -930,6 +930,12 @@ WHERE psd.pos_satis_check_main_id = {pos_satis_main_id} AND psm.user_id_ = {Prop
                             con.Open();
                             cmd.ExecuteNonQuery();
                         }
+                    }
+
+                    if (salesData.CustomerId != null)
+                    {
+                        decimal debt = salesData.Total - salesData.PrepaymentPay;
+                        DbProsedures.InsertCustomerDebt(CustomerDebtType.AvansSale, DateTime.Now, (int)salesData.CustomerId, debt);
                     }
 
                     if (MessageVisible)

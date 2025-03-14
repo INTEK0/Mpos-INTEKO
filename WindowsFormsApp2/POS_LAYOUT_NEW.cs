@@ -1257,27 +1257,27 @@ namespace WindowsFormsApp2
                         {
 
                             decimal f = Convert.ToDecimal(textEdit6.Text);
-                            bool clinic = false;
-                            DialogResult result = XtraMessageBox.Show("A4 sənədi çap edilsin ?", nameof(HeaderMessage.Mesaj), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                            if (result is DialogResult.Yes)
-                            {
-                                clinic = true;
-                            }
+                            //bool clinic = false;
+                            //DialogResult result = XtraMessageBox.Show("A4 sənədi çap edilsin ?", nameof(HeaderMessage.Mesaj), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            //if (result is DialogResult.Yes)
+                            //{
+                            //    clinic = true;
+                            //}
 
-                            gelen_data_negd_pos(0, f, f, 0, 0, clinic);
+                            gelen_data_negd_pos(0, f, f, 0, 0,false);
                         }
                     }
                     else
                     {
                         decimal f = Convert.ToDecimal(textEdit6.Text);
 
-                        bool clinic = false;
-                        DialogResult result = XtraMessageBox.Show("A4 sənədi çap edilsin ?", nameof(HeaderMessage.Mesaj), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                        if (result is DialogResult.Yes)
-                        {
-                            clinic = true;
-                        }
-                        gelen_data_negd_pos(0, f, f, 0, 0, clinic);
+                        //bool clinic = false;
+                        //DialogResult result = XtraMessageBox.Show("A4 sənədi çap edilsin ?", nameof(HeaderMessage.Mesaj), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        //if (result is DialogResult.Yes)
+                        //{
+                        //    clinic = true;
+                        //}
+                        gelen_data_negd_pos(0, f, f, 0, 0, false);
                     }
                 }
 
@@ -2620,6 +2620,7 @@ namespace WindowsFormsApp2
             lModel.Text = data.Model;
             lIpAdress.Text = data.Ip;
             lMerchantId.Text = data.MerchantId;
+            lBankName.Text = data.BankName;
         }
 
         private void simpleButton25_Click(object sender, EventArgs e)
@@ -3595,14 +3596,19 @@ from  dbo.item where user_id = {Properties.Settings.Default.UserID}";
                             {
                                 bankdizi.Add(item.line);
 
-                                //if (item.line.Contains("RRN") || item.line.Contains("rrn"))
-                                //{
-                                //    rrnCode = item.line.Split(':').Last().Trim();
-                                //}
-
-                                if (item.line.Contains("transactionId") || item.line.Contains("TRAN ID"))
+                                if (lBankName.Text == Enums.GetEnumDescription(BankType.KAPITAL))
                                 {
-                                    rrnCode = item.line.Split(':').Last().Trim();
+                                    if (item.line.Contains("transactionId") || item.line.Contains("TRAN ID"))
+                                    {
+                                        rrnCode = item.line.Split(':').Last().Trim();
+                                    }
+                                }
+                                else
+                                {
+                                    if (item.line.Contains("RRN") || item.line.Contains("rrn"))
+                                    {
+                                        rrnCode = item.line.Split(':').Last().Trim();
+                                    }
                                 }
                             }
 

@@ -1,6 +1,5 @@
-﻿using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
-using WindowsFormsApp2.Helpers;
-using static WindowsFormsApp2.Helpers.Enums;
+﻿using WindowsFormsApp2.Helpers;
+using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
 
 public static class DTOs
 {
@@ -24,6 +23,7 @@ public static class DTOs
         public string FiscalId { get; set; } = null;
         public decimal PrepaymentPay { get; set; } //Avans ödənişləri üçün
         public string CustomerNameManual { get; set; } = null;
+        public int? CustomerId { get; set; } = null;
     }
 
     public class RefundDto

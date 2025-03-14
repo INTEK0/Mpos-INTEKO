@@ -33,10 +33,12 @@ namespace WindowsFormsApp2.Forms
             firma_main();
             magaza_main();
             GetallData();
+
         }
 
         private void BankDataLoad()
         {
+            lookBank.Visible = true;
             var data = Enum.GetValues(typeof(BankType))
                        .Cast<BankType>()
                        .Select(x => new
@@ -49,6 +51,7 @@ namespace WindowsFormsApp2.Forms
             lookBank.Properties.DataSource = data;
             lookBank.Properties.DisplayMember = "Value";
             lookBank.Properties.ForceInitialize();
+            lookBank.EditValue = null;
             lookBank.EditValue = _bankType;
         }
 
@@ -56,7 +59,7 @@ namespace WindowsFormsApp2.Forms
         {
             string strQuery = "SELECT id,AD as N'KASSİR' FROM userParol where IsDeleted = 0";
             var data = DbProsedures.ConvertToDataTable(strQuery);
-   
+
             lookUser.Properties.DisplayMember = "KASSİR";
             lookUser.Properties.ValueMember = "id";
             lookUser.Properties.DataSource = data;
@@ -82,19 +85,19 @@ namespace WindowsFormsApp2.Forms
         {
             try
             {
-                SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
-                string queryString = " select KASSA_IP_ID, kf.KASSA_FIRMALAR AS N'KASSA MODELİNİN ADI'," +
-                    "ki.IP_ADRESS AS N'KASSANIN İP ADRESİ',isnull(ki.merchant_id,'') N'MERCHANT İD',isnull(u.AD,'') AS N'İSTİFADƏÇİ ADI'" +
-                           " from KASSA_IP ki inner join KASSA_FIRMALAR kf " +
-                           " on ki.KASSA_FIRMA_IP = kf.KASSA_FIRMALAR_ID " +
-                          " left join userParol u on u.id = ki.KASSIR_ID ";
-
-                SqlCommand command = new SqlCommand(queryString, connection);
-                SqlDataAdapter da = new SqlDataAdapter(command);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-                gridControl1.DataSource = dt;
-                gridView1.Columns[0].Visible = false;
+                string queryString = @"SELECT KASSA_IP_ID, 
+kf.KASSA_FIRMALAR AS N'KASSA MODELİNİN ADI',
+ki.IP_ADRESS AS N'KASSANIN İP ADRESİ',
+isnull(ki.merchant_id,'') N'MERCHANT İD',
+isnull(u.AD,'') AS N'İSTİFADƏÇİ ADI',
+isnull(ki.Bank,'') AS N'BANK ADI'
+FROM KASSA_IP ki inner join KASSA_FIRMALAR kf 
+ON ki.KASSA_FIRMA_IP = kf.KASSA_FIRMALAR_ID 
+LEFT JOIN userParol u ON u.id = ki.KASSIR_ID";
+                var data = DbProsedures.ConvertToDataTable(queryString);
+                gridControl1.DataSource = data;
+                gridView1.Columns["KASSA_IP_ID"].Visible = false;
+                gridView1.RefreshData();
             }
             catch (Exception e)
             {
@@ -121,45 +124,43 @@ namespace WindowsFormsApp2.Forms
 
         private void bAdd_Click(object sender, EventArgs e)
         {
-            //Terminal terminal = new Terminal
-            //{
-            //    ModelId = lookKassa.EditValue == null ? 0 : Convert.ToInt32(lookKassa.EditValue.ToString()),
-            //    IpAddress = tIpAddress.Text.Trim(),
-            //    MerchantIdKey = tMerchantId.Text.Trim(),
-            //    BankName = lookBank.Text,
-            //    UserId = Convert.ToInt32(lookUser.EditValue.ToString())
-            //};
-
-
-            //var validator = new TerminalValidation();
-            //var validateResult = validator.Validate(terminal);
-
-            //if (!validateResult.IsValid)
-            //{
-            //    foreach (var error in validateResult.Errors)
-            //    {
-            //        FormHelpers.Alert(error.ErrorMessage, Enums.MessageType.Warning);
-            //        return;
-            //    }
-            //}
-
-            //DbProsedures.TerminalAdd(terminal);
-
-            //todo Terminal kodlarını əlavə et
-
-            //DAXIL ET 
-            if (string.IsNullOrEmpty(tIpAddress.Text.ToString()) || string.IsNullOrEmpty(lookKassa.EditValue.ToString())
-                || string.IsNullOrEmpty(lookUser.EditValue.ToString()))
+            Terminal terminal = new Terminal
             {
+                ModelId = lookKassa.EditValue == null ? 0 : Convert.ToInt32(lookKassa.EditValue.ToString()),
+                IpAddress = tIpAddress.Text.Trim(),
+                MerchantIdKey = tMerchantId.Text.Trim(),
+                BankName = lookBank.Text,
+                UserId = lookUser.EditValue == null ? 0 : Convert.ToInt32(lookUser.EditValue.ToString())
+            };
 
-            }
-            else
+
+            var validator = new TerminalValidation();
+            var validateResult = validator.Validate(terminal);
+
+            if (!validateResult.IsValid)
             {
-                int A = KIC.Insert_IP(Convert.ToInt32(lookKassa.EditValue.ToString()), tIpAddress.Text,
-               Convert.ToInt32(lookUser.EditValue.ToString()), tMerchantId.Text);
-                FormHelpers.Log($"{tIpAddress.Text} ip adresli {lookKassa.Text} kassa əlavə edildi");
+                foreach (var error in validateResult.Errors)
+                {
+                    FormHelpers.Alert(error.ErrorMessage, Enums.MessageType.Warning);
+                    return;
+                }
             }
+
+            DbProsedures.TerminalAdd(terminal);
             GetallData();
+
+            ////DAXIL ET 
+            //if (string.IsNullOrEmpty(tIpAddress.Text.ToString()) || string.IsNullOrEmpty(lookKassa.EditValue.ToString())
+            //    || string.IsNullOrEmpty(lookUser.EditValue.ToString()))
+            //{
+
+            //}
+            //else
+            //{
+            //    int A = KIC.Insert_IP(Convert.ToInt32(lookKassa.EditValue.ToString()), tIpAddress.Text,
+            //   Convert.ToInt32(lookUser.EditValue.ToString()), tMerchantId.Text);
+            //    FormHelpers.Log($"{tIpAddress.Text} ip adresli {lookKassa.Text} kassa əlavə edildi");
+            //}
         }
 
         private void lookKassa_TextChanged(object sender, EventArgs e)
@@ -175,7 +176,7 @@ namespace WindowsFormsApp2.Forms
             }
             else if (lookKassa.Text == "NBA")
             {
-                BankDataLoad();    
+                BankDataLoad();
             }
             else
             {

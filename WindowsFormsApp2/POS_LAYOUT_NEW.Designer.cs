@@ -204,6 +204,7 @@ namespace WindowsFormsApp2
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.lBankName = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.textEdit13.Properties)).BeginInit();
@@ -2531,6 +2532,17 @@ namespace WindowsFormsApp2
             this.barDockControlRight.Manager = this.barManager1;
             this.barDockControlRight.Size = new System.Drawing.Size(0, 794);
             // 
+            // lBankName
+            // 
+            this.lBankName.AutoSize = true;
+            this.lBankName.Location = new System.Drawing.Point(981, 0);
+            this.lBankName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lBankName.Name = "lBankName";
+            this.lBankName.Size = new System.Drawing.Size(74, 16);
+            this.lBankName.TabIndex = 1;
+            this.lBankName.Text = "BankName";
+            this.lBankName.Visible = false;
+            // 
             // POS_LAYOUT_NEW
             // 
             this.Appearance.BackColor = System.Drawing.SystemColors.Control;
@@ -2539,6 +2551,7 @@ namespace WindowsFormsApp2
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1705, 832);
+            this.Controls.Add(this.lBankName);
             this.Controls.Add(this.lMerchantId);
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
@@ -2821,5 +2834,6 @@ namespace WindowsFormsApp2
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem65;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
         private DevExpress.XtraBars.BarButtonItem bControlTape;
+        private System.Windows.Forms.Label lBankName;
     }
 }

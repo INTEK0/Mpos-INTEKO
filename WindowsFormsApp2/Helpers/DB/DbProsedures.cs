@@ -2102,6 +2102,11 @@ WHERE BARKOD = '{barcode}'";
                         FormHelpers.Alert($"Kassa daha öncə əlavə edilib", MessageType.Info);
                         return;
                     }
+                    else
+                    {
+                        FormHelpers.Alert($"{item.IpAddress} ip adresli kassa sistemə əlavə edildi", MessageType.Success);
+                        FormHelpers.Log($"{item.IpAddress} ip adresli kassa sistemə əlavə edildi");
+                    }
                 }
             }
         }

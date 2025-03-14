@@ -95,10 +95,11 @@
             this.lookBank.Properties.ShowLines = false;
             this.lookBank.Size = new System.Drawing.Size(350, 30);
             this.lookBank.TabIndex = 13;
+            this.lookBank.Visible = false;
             // 
             // labelControl1
             // 
-            this.labelControl1.Location = new System.Drawing.Point(28, 134);
+            this.labelControl1.Location = new System.Drawing.Point(13, 134);
             this.labelControl1.Name = "labelControl1";
             this.labelControl1.Size = new System.Drawing.Size(91, 16);
             this.labelControl1.TabIndex = 0;
@@ -110,13 +111,13 @@
             this.tMerchantId.Location = new System.Drawing.Point(119, 127);
             this.tMerchantId.Margin = new System.Windows.Forms.Padding(4);
             this.tMerchantId.Name = "tMerchantId";
-            this.tMerchantId.Size = new System.Drawing.Size(387, 30);
+            this.tMerchantId.Size = new System.Drawing.Size(364, 30);
             this.tMerchantId.TabIndex = 9;
             this.tMerchantId.Visible = false;
             // 
             // labelControl2
             // 
-            this.labelControl2.Location = new System.Drawing.Point(12, 96);
+            this.labelControl2.Location = new System.Drawing.Point(13, 96);
             this.labelControl2.Name = "labelControl2";
             this.labelControl2.Size = new System.Drawing.Size(83, 16);
             this.labelControl2.TabIndex = 10;
@@ -135,7 +136,7 @@
             // 
             // labelControl3
             // 
-            this.labelControl3.Location = new System.Drawing.Point(12, 20);
+            this.labelControl3.Location = new System.Drawing.Point(13, 20);
             this.labelControl3.Name = "labelControl3";
             this.labelControl3.Size = new System.Drawing.Size(59, 16);
             this.labelControl3.TabIndex = 11;
@@ -155,7 +156,7 @@
             // 
             // labelControl4
             // 
-            this.labelControl4.Location = new System.Drawing.Point(12, 58);
+            this.labelControl4.Location = new System.Drawing.Point(13, 58);
             this.labelControl4.Name = "labelControl4";
             this.labelControl4.Size = new System.Drawing.Size(62, 16);
             this.labelControl4.TabIndex = 12;

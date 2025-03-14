@@ -28,6 +28,7 @@ namespace WindowsFormsApp2.Forms
             public static decimal Prepayment { get; set; }
             public static decimal Total { get; set; }
             public static string CustomerName { get; set; } = null;
+            public static int? CustomeId { get; set; }
         }
 
         public fPrepaymentPay(string fiscalId)
@@ -42,6 +43,7 @@ namespace WindowsFormsApp2.Forms
                             psm.Prepayment,
                             psm.fiscal_id,
                             psm.UMUMI_MEBLEG,
+                            psm.CustomerId,
                             m.AD + ' ' + m.SOYAD + ' ' + m.ATAADI as customerName
                             FROM [pos_satis_check_main] psm
                             LEFT join MUSTERILER m ON m.MUSTERILER_ID = psm.CustomerId
@@ -55,6 +57,8 @@ namespace WindowsFormsApp2.Forms
             PrepaymentPay.FiskalId = data.Rows[0].Field<string>("fiscal_id");
             PrepaymentPay.Total = data.Rows[0].Field<decimal>("UMUMI_MEBLEG");
             PrepaymentPay.CustomerName = data.Rows[0].Field<string>("customerName");
+            PrepaymentPay.CustomeId = data.Rows[0].Field<int?>("CustomerId");
+
         }
 
         private void bCash_Click(object sender, EventArgs e)
@@ -87,6 +91,7 @@ namespace WindowsFormsApp2.Forms
                             Cash = 0,
                             IncomingSum = 0,
                             CustomerNameManual = PrepaymentPay.CustomerName,
+                            CustomerId = PrepaymentPay.CustomeId,
                             PayType = Enums.PayType.Card
                         }, PrepaymentPay.PosMainId);
 
@@ -121,7 +126,7 @@ namespace WindowsFormsApp2.Forms
                 switch (_IpModel.Model)
                 {
                     case "1":
-                       bool isSuccess = Sunmi.PrepaymentSale(new DTOs.SalesDto
+                        bool isSuccess = Sunmi.PrepaymentSale(new DTOs.SalesDto
                         {
                             IpAddress = _IpModel.Ip,
                             Cashier = _IpModel.Cashier,
@@ -131,8 +136,9 @@ namespace WindowsFormsApp2.Forms
                             Total = PrepaymentPay.Total,
                             Cash = Convert.ToDecimal(tCash_Paid.EditValue),
                             PayType = Enums.PayType.Cash,
+                            CustomerId = PrepaymentPay.CustomeId,
                             CustomerNameManual = PrepaymentPay.CustomerName
-                       }, PrepaymentPay.PosMainId);
+                        }, PrepaymentPay.PosMainId);
 
                         if (isSuccess)
                         {
@@ -158,7 +164,7 @@ namespace WindowsFormsApp2.Forms
                 switch (_IpModel.Model)
                 {
                     case "1":
-                      bool isSuccess =  Sunmi.PrepaymentSale(new DTOs.SalesDto
+                        bool isSuccess = Sunmi.PrepaymentSale(new DTOs.SalesDto
                         {
                             IpAddress = _IpModel.Ip,
                             Cashier = _IpModel.Cashier,
@@ -168,8 +174,9 @@ namespace WindowsFormsApp2.Forms
                             Card = Convert.ToDecimal(tCashCard_Card.EditValue),
                             Total = PrepaymentPay.Total,
                             PayType = Enums.PayType.CashCard,
-                          CustomerNameManual = PrepaymentPay.CustomerName
-                      }, PrepaymentPay.PosMainId);
+                            CustomerNameManual = PrepaymentPay.CustomerName,
+                            CustomerId = PrepaymentPay.CustomeId,
+                        }, PrepaymentPay.PosMainId);
 
                         if (isSuccess)
                         {
