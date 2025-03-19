@@ -127,7 +127,7 @@ namespace WindowsFormsApp2
 
         public void del_migdarnewsa_calculation(string mal_id_, string say_, string emeliyyat_nomr_)
         {
-            SqlConnection con = new SqlConnection(Properties.Settings.Default.SqlCon);
+            SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString);
             SqlCommand cmd = new SqlCommand(del_migdarnewsa, con);
             cmd.CommandType = CommandType.StoredProcedure;
             SqlParameter param;

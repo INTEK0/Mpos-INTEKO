@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApp2.Helpers;
+using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using static WindowsFormsApp2.Helpers.FormHelpers;
 
@@ -47,46 +48,19 @@ namespace WindowsFormsApp2
         private void lookupedittextxhange_main()
         {
             string strQuery = "select TECHIZATCI_ID,SIRKET_ADI from COMPANY.TECHIZATCI WHERE IsDeleted = 0";
-            SqlCommand cmd = new SqlCommand(strQuery);
-            DataTable dt = GetData(cmd);
+ 
+            var data = DbProsedures.ConvertToDataTable(strQuery);
             lookUpEdit2.Properties.DisplayMember = "SIRKET_ADI";
             lookUpEdit2.Properties.ValueMember = "TECHIZATCI_ID";
-            lookUpEdit2.Properties.DataSource = dt;
+            lookUpEdit2.Properties.DataSource = data;
             //lookUpEdit2.Properties.NullText = "TƏCHİZATÇINI SEÇİN";
             lookUpEdit2.Properties.PopulateColumns();
             lookUpEdit2.Properties.Columns[0].Visible = false;
         }
-        private DataTable GetData(SqlCommand cmd)
-        {
-            DataTable dt = new DataTable();
-            SqlConnection con = new SqlConnection(Properties.Settings.Default.SqlCon);
-            SqlDataAdapter sda = new SqlDataAdapter();
-            cmd.CommandType = CommandType.Text;
-            cmd.Connection = con;
-            try
-            {
-                con.Open();
-                sda.SelectCommand = cmd;
-                sda.Fill(dt);
-                return dt;
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
-
-            finally
-            {
-                con.Close();
-                sda.Dispose();
-                con.Dispose();
-            }
-        }
-
 
         private void GETKOD()
         {
-            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
             {
                 SqlCommand command = new SqlCommand(qeryString, connection);
                 try
@@ -205,27 +179,29 @@ namespace WindowsFormsApp2
             memoEdit1.Text = "";
         }
 
-        private void getall1(string a)
+        private void getall1(string supplierName)
         {
-            string paramValue = a;
             try
             {
-                SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
+                string queryString = $@"SELECT [MAL_ALISI_DETAILS_ID] ,
+       [TARIX],
+       [TƏCHİZATÇI ADI],
+       [FAKTURA NÖMRƏSİ] ,
+       [MƏHSUL ADI],
+       [MƏHSUL KODU],
+       [VAHİD] ,
+       [MİQDARI],
+       [BİR VAHİDİN QİYMƏTİ] ,
+       [YERLƏŞDİYİ ANBAR],
+       [QAYTARILMALI MİQDAR]
+FROM[dbo].[gaytarilacag_mallar]
+WHERE[TƏCHİZATÇI ADI] = '{supplierName}'
+  AND[MİQDARI] > 0.00";
 
-                string queryString = " select [MAL_ALISI_DETAILS_ID]" +
-                                     ",[TARIX],[TƏCHİZATÇI ADI],[FAKTURA NÖMRƏSİ]" +
-                                     ",[MƏHSUL ADI],[MƏHSUL KODU],[VAHİD]" +
-                                     ",[MİQDARI],[BİR VAHİDİN QİYMƏTİ]" +
-                                     ",[YERLƏŞDİYİ ANBAR],[QAYTARILMALI MİQDAR]" +
-                                     "from[dbo].[gaytarilacag_mallar] where[TƏCHİZATÇI ADI] = @pricePoint " +
-                                     " and[MİQDARI] > 0.00   union all " +
-                    " select 0,'','','','','','',0.00,0.00,'',null ";
-                SqlCommand command = new SqlCommand(queryString, connection);
-                command.Parameters.AddWithValue("@pricePoint", paramValue);
-                SqlDataAdapter da = new SqlDataAdapter(command);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-                gridControl1.DataSource = dt;
+                var data = DbProsedures.ConvertToDataTable(queryString);
+                gridControl1.DataSource = data;
+
+               
                 gridView1.Columns[0].Visible = false;
                 gridView1.OptionsSelection.MultiSelect = true;
                 gridView1.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
@@ -233,23 +209,12 @@ namespace WindowsFormsApp2
             }
             catch (Exception e)
             {
-                Console.WriteLine("Xəta!\n" + e);
+               ReadyMessages.ERROR_DEFAULT_MESSAGE(e.Message);
             }
 
             lookupedittextxhange_main();
         }
 
-        public static int x_ = 0;
-        private int count_grid()
-        {
-            foreach (int i in gridView1.GetSelectedRows())
-            {
-
-                x_ = x_ + i;
-
-            }
-            return x_;
-        }
 
         private void simpleButton1_Click(object sender, EventArgs e)
         {
@@ -265,20 +230,17 @@ namespace WindowsFormsApp2
         {
             try
             {
-                SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
+                string query = " SELECT * FROM [dbo].[gaytarilacag_mallar] WHERE [MİQDARI]>0.00";
 
-                string queryString = " select * from [dbo].[gaytarilacag_mallar] where [MİQDARI]>0.00";
-                SqlCommand command = new SqlCommand(queryString, connection);
-                SqlDataAdapter da = new SqlDataAdapter(command);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-                gridControl1.DataSource = dt;
+                var data = DbProsedures.ConvertToDataTable(query);
+                
+                gridControl1.DataSource = data;
                 gridView1.Columns[0].Visible = false;
                 gridView1.Columns[1].Visible = false;
             }
             catch (Exception e)
             {
-                Console.WriteLine("Xəta!\n" + e);
+                ReadyMessages.ERROR_DEFAULT_MESSAGE(e.Message);
             }
 
             lookupedittextxhange_main();

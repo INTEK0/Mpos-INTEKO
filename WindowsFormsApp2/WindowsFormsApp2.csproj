@@ -348,6 +348,12 @@
     <Compile Include="Forms\fDeposit.Designer.cs">
       <DependentUpon>fDeposit.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\fDinarTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\fDinarTest.Designer.cs">
+      <DependentUpon>fDinarTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\fDoctors.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -691,6 +697,7 @@
     <Compile Include="NKA\NBA.cs" />
     <Compile Include="NKA\Omnitech.cs" />
     <Compile Include="NKA\Sunmi.cs" />
+    <Compile Include="NKA\Xprinter.cs" />
     <Compile Include="PASSWORDEMAIL.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1029,6 +1036,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fDeposit.resx">
       <DependentUpon>fDeposit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\fDinarTest.resx">
+      <DependentUpon>fDinarTest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fDoctors.resx">
       <DependentUpon>fDoctors.cs</DependentUpon>

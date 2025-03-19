@@ -343,7 +343,8 @@ FROM[terazimalzeme]";
 
         private void accordionControlElement25_Click(object sender, EventArgs e)
         {
-            OpenForm<SearchKrediOdeme_LAYOUT>(Properties.Settings.Default.UserID, this);
+            OpenForm<fCreditPay>();
+           // OpenForm<SearchKrediOdeme_LAYOUT>(Properties.Settings.Default.UserID, this);
         }
 
         private void accordionControlElement26_Click(object sender, EventArgs e)
@@ -454,7 +455,7 @@ LEFT JOIN IncomeAndExpensesData i
     ON h.Header = i.Header 
     AND i.Date = CAST(GETDATE() AS DATE) AND i.Type = 4
 GROUP BY h.Header;";
-                using (SqlCommand cmd = new SqlCommand(query,con))
+                using (SqlCommand cmd = new SqlCommand(query, con))
                 {
                     using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                     {

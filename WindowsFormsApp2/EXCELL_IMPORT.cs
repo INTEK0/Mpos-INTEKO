@@ -132,14 +132,13 @@ namespace WindowsFormsApp2
                 sqlBulkCopy.ColumnMappings.Add(dt.Columns[5].ColumnName, "MEHSUL_ADI");
                 sqlBulkCopy.ColumnMappings.Add(dt.Columns[6].ColumnName, "MEHSULUN_MIGDARI");
                 sqlBulkCopy.ColumnMappings.Add(dt.Columns[7].ColumnName, "VAHIDI");
-                sqlBulkCopy.ColumnMappings.Add(dt.Columns[8].ColumnName, "SATIS_GIYMETI");
-                sqlBulkCopy.ColumnMappings.Add(dt.Columns[9].ColumnName, "SATINALMA_GIYMETI");
+                sqlBulkCopy.ColumnMappings.Add(dt.Columns[8].ColumnName, "SATINALMA_GIYMETI");
+                sqlBulkCopy.ColumnMappings.Add(dt.Columns[9].ColumnName, "SATIS_GIYMETI");
                 sqlBulkCopy.ColumnMappings.Add(dt.Columns[10].ColumnName, "EDV");
                 sqlBulkCopy.ColumnMappings.Add(dt.Columns[11].ColumnName, "BARKOD");
                 sqlBulkCopy.ColumnMappings.Add(dt.Columns[12].ColumnName, "ISTEHSAL_TARIHI");
                 sqlBulkCopy.ColumnMappings.Add(dt.Columns[13].ColumnName, "SONISTIFADE_TARIHI");
                 sqlBulkCopy.ColumnMappings.Add(dt.Columns[14].ColumnName, "TESVIR");
-                //sqlBulkCopy.ColumnMappings.Add(dt.Columns[10].ColumnName, "terazi");
                 sqlConn.Open();
                 sqlBulkCopy.WriteToServer(dt);
             }
@@ -182,11 +181,9 @@ namespace WindowsFormsApp2
 
             // Tezhizatci Acilmasi
 
-            SqlConnection con = new SqlConnection();
-            SqlConnection cont = new SqlConnection();
+            SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString);
+            SqlConnection cont = new SqlConnection(DbHelpers.DbConnectionString);
 
-            con.ConnectionString = Properties.Settings.Default.SqlCon;
-            cont.ConnectionString = Properties.Settings.Default.SqlCon;
 
             string query = @"SELECT count(*) AS COUNTS,TECHIZATCI_ADI
 FROM [EXCELL_IMPORT_DATA_NEW]
@@ -267,14 +264,14 @@ group by TECHIZATCI_ADI";
             con.ConnectionString = Properties.Settings.Default.SqlCon;
             cont.ConnectionString = Properties.Settings.Default.SqlCon;
 
-            string queryfat = "SELECT COUNT(*) AS COUNTS FROM [EXCELL_IMPORT_DATA_NEW] WHERE\r\n\r\n(LEN(FAKTURA_NO)<2 OR LEN(FAKTURA_NO) IS NULL)";
+            string queryfat = "SELECT COUNT(*) AS COUNTS FROM [EXCELL_IMPORT_DATA_NEW] WHERE (LEN(FAKTURA_NO)<2 OR LEN(FAKTURA_NO) IS NULL)";
 
             SqlCommand commandfat = new SqlCommand(queryfat, con);
 
             con.Open();
             SqlDataReader drfat = commandfat.ExecuteReader();
 
-            while (drfat.Read())
+            if (drfat.Read())
             {
 
                 countstring = drfat["COUNTS"].ToString();
@@ -369,14 +366,14 @@ else 0 end) END AS [KNTBARKODSTOK] , CASE WHEN ( SELECT TOP 1 MEHSUL_ADI FROM [M
 
 
 
-                    string querymalzeme2 = "UPDATE  EXCELL_IMPORT_DATA_NEW  set KONTROL=1 where ID= (@id)";
+                    //string querymalzeme2 = "UPDATE  EXCELL_IMPORT_DATA_NEW  set KONTROL=1 where ID= (@id)";
 
-                    SqlCommand command3 = new SqlCommand(querymalzeme2, cont);
+                    //SqlCommand command3 = new SqlCommand(querymalzeme2, cont);
 
-                    command3.Parameters.AddWithValue("@id", id);
-                    cont.Open();
-                    command3.ExecuteNonQuery();
-                    cont.Close();
+                    //command3.Parameters.AddWithValue("@id", id);
+                    //cont.Open();
+                    //command3.ExecuteNonQuery();
+                    //cont.Close();
 
 
                 }
@@ -443,55 +440,82 @@ else 0 end) END AS [KNTBARKODSTOK] , CASE WHEN ( SELECT TOP 1 MEHSUL_ADI FROM [M
 
                 if (tarihkontrol > System.DateTime.Today)
                 {
-                    //MessageBox.Show("Yeni qaime hata tarih bugunden buyuktur. Lutfen gerekli duzenlemeyi yapiniz?");
                     ReadyMessages.WARNING_DEFAULT_MESSAGE($"Məhsul alış tarixi bugünün({DateTime.Now.ToString("dd.MM.yyyy")}) tarixindən böyük olabilməz");
-
                 }
 
-                string querydetailkayit = "INSERT INTO [MAL_ALISI_DETAILS] ([MAL_ALISI_MAIN_ID]\r\n           ,[KATEGORIYA]\r\n           ,[BARKOD]\r\n           ,[MEHSUL_ADI]\r\n           ,[MEHSUL_KODU]\r\n           ,[ANBAR_ID]\r\n           ,[MIGDARI]\r\n           ,[VAHID]\r\n           ,[VALYUTA]\r\n           ,[VERGI_DERECESI]\r\n           ,[SATIS_GIYMETI]\r\n           ,[ALIS_GIYMETI]\r\n           \r\n           ,[DiscountDate]\r\n ,[ISTEHSAL_TARIXI],[BITIS_TARIXI],[GEYD]         ) SELECT  \r\n\r\n(SELECT MAX(MAL_ALISI_MAIN_ID) FROM MAL_ALISI_MAIN)\r\n,(SELECT KATEGORIYA_ID FROM KATEGORIYA WHERE [KATEGORIYA]=[EXCELL_IMPORT_DATA_NEW].KATEGORIYA)\r\n   ,CASE WHEN [BARKOD] IS NULL THEN (SELECT TOP 1 BARKOD FROM MAL_ALISI_DETAILS WHERE MEHSUL_ADI=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI) \r\n   \r\n    WHEN BARKOD<>(SELECT TOP 1 BARKOD FROM MAL_ALISI_DETAILS WHERE MEHSUL_ADI=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI) THEN (SELECT TOP 1 BARKOD FROM MAL_ALISI_DETAILS WHERE MEHSUL_ADI=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI)    \r\n  \r\n   \r\n   ELSE BARKOD END\r\n     ,CASE WHEN [MEHSUL_ADI] IS NULL THEN  (SELECT TOP 1 MEHSUL_ADI FROM MAL_ALISI_DETAILS WHERE BARKOD=[EXCELL_IMPORT_DATA_NEW].BARKOD) ELSE [MEHSUL_ADI] END\r\n ,CASE WHEN \r\n (CASE WHEN [MEHSUL_KODU] IS NULL THEN (SELECT TOP 1 [MEHSUL_KODU] FROM MAL_ALISI_DETAILS WHERE BARKOD=[EXCELL_IMPORT_DATA_NEW].BARKOD) WHEN MEHSUL_KODU<>(SELECT TOP 1 [MEHSUL_KODU] FROM MAL_ALISI_DETAILS WHERE BARKOD=[EXCELL_IMPORT_DATA_NEW].BARKOD) THEN (SELECT TOP 1 [MEHSUL_KODU] FROM MAL_ALISI_DETAILS WHERE BARKOD=[EXCELL_IMPORT_DATA_NEW].BARKOD) ELSE MEHSUL_KODU END ) IS NULL \r\n \r\n THEN (CASE WHEN [MEHSUL_KODU] IS NULL THEN (SELECT TOP 1 [MEHSUL_KODU] FROM MAL_ALISI_DETAILS WHERE MEHSUL_ADI=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI) ELSE MEHSUL_KODU END )  \r\n \r\n \r\n WHEN MEHSUL_KODU<>(SELECT TOP 1 [MEHSUL_KODU] FROM MAL_ALISI_DETAILS WHERE MEHSUL_ADI=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI) THEN (SELECT TOP 1 [MEHSUL_KODU] FROM MAL_ALISI_DETAILS WHERE MEHSUL_ADI=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI)    \r\n  \r\n  ELSE MEHSUL_KODU\r\n\r\n  END\r\n\t   ,4\r\n\t     ,cast([MEHSULUN_MIGDARI] as decimal(9,2))\r\n\t\t ,CAST([VAHIDI] AS int)\r\n\t\t ,1\r\n\t\t   ,cast([EDV] as int)\r\n\t\t    ,cast(replace([SATINALMA_GIYMETI],',','.') as decimal(9,2))\r\n ,cast(replace([SATIS_GIYMETI],',','.') as decimal(9,2))\r\n     , GETDATE(),CONVERT(DATETIME, [ISTEHSAL_TARIHI], 104) ,CONVERT (DATETIME,[SONISTIFADE_TARIHI],104),  TESVIR    FROM [EXCELL_IMPORT_DATA_NEW]\r\n\r\n  WHERE  [KONTROL]=0\r\n\r\n  AND ALIS_TARIHI='" + ALIS_TARIHI + "'  AND FAKTURA_NO=N'" + FAKTURA_NO + "' AND TECHIZATCI_ADI=N'" + TECHIZATCI_ADI + "'";
-                string querydetailkayit2 = $@"DECLARE @ida INT, @barkod NVARCHAR(50), @a1 NVARCHAR(3), @a2 NVARCHAR(4), @a3 NVARCHAR(4), @kontrol1 INT
+                //Sonerin yazdığı
+                //string querydetailkayit = "INSERT INTO [MAL_ALISI_DETAILS] ([MAL_ALISI_MAIN_ID]\r\n           ,[KATEGORIYA]\r\n           ,[BARKOD]\r\n           ,[MEHSUL_ADI]\r\n           ,[MEHSUL_KODU]\r\n           ,[ANBAR_ID]\r\n           ,[MIGDARI]\r\n           ,[VAHID]\r\n           ,[VALYUTA]\r\n           ,[VERGI_DERECESI]\r\n           ,[SATIS_GIYMETI]\r\n           ,[ALIS_GIYMETI]\r\n           \r\n           ,[DiscountDate]\r\n ,[ISTEHSAL_TARIXI],[BITIS_TARIXI],[GEYD]         ) SELECT  \r\n\r\n(SELECT MAX(MAL_ALISI_MAIN_ID) FROM MAL_ALISI_MAIN)\r\n,(SELECT KATEGORIYA_ID FROM KATEGORIYA WHERE [KATEGORIYA]=[EXCELL_IMPORT_DATA_NEW].KATEGORIYA)\r\n   ,CASE WHEN [BARKOD] IS NULL THEN (SELECT TOP 1 BARKOD FROM MAL_ALISI_DETAILS WHERE MEHSUL_ADI=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI) \r\n   \r\n    WHEN BARKOD<>(SELECT TOP 1 BARKOD FROM MAL_ALISI_DETAILS WHERE MEHSUL_ADI=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI) THEN (SELECT TOP 1 BARKOD FROM MAL_ALISI_DETAILS WHERE MEHSUL_ADI=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI)    \r\n  \r\n   \r\n   ELSE BARKOD END\r\n     ,CASE WHEN [MEHSUL_ADI] IS NULL THEN  (SELECT TOP 1 MEHSUL_ADI FROM MAL_ALISI_DETAILS WHERE BARKOD=[EXCELL_IMPORT_DATA_NEW].BARKOD) ELSE [MEHSUL_ADI] END\r\n ,CASE WHEN \r\n (CASE WHEN [MEHSUL_KODU] IS NULL THEN (SELECT TOP 1 [MEHSUL_KODU] FROM MAL_ALISI_DETAILS WHERE BARKOD=[EXCELL_IMPORT_DATA_NEW].BARKOD) WHEN MEHSUL_KODU<>(SELECT TOP 1 [MEHSUL_KODU] FROM MAL_ALISI_DETAILS WHERE BARKOD=[EXCELL_IMPORT_DATA_NEW].BARKOD) THEN (SELECT TOP 1 [MEHSUL_KODU] FROM MAL_ALISI_DETAILS WHERE BARKOD=[EXCELL_IMPORT_DATA_NEW].BARKOD) ELSE MEHSUL_KODU END ) IS NULL \r\n \r\n THEN (CASE WHEN [MEHSUL_KODU] IS NULL THEN (SELECT TOP 1 [MEHSUL_KODU] FROM MAL_ALISI_DETAILS WHERE MEHSUL_ADI=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI) ELSE MEHSUL_KODU END )  \r\n \r\n \r\n WHEN MEHSUL_KODU<>(SELECT TOP 1 [MEHSUL_KODU] FROM MAL_ALISI_DETAILS WHERE MEHSUL_ADI=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI) THEN (SELECT TOP 1 [MEHSUL_KODU] FROM MAL_ALISI_DETAILS WHERE MEHSUL_ADI=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI)    \r\n  \r\n  ELSE MEHSUL_KODU\r\n\r\n  END\r\n\t   ,4\r\n\t     ,cast([MEHSULUN_MIGDARI] as decimal(9,2))\r\n\t\t ,CAST([VAHIDI] AS int)\r\n\t\t ,1\r\n\t\t   ,cast([EDV] as int)\r\n\t\t    ,cast(replace([SATINALMA_GIYMETI],',','.') as decimal(9,2))\r\n ,cast(replace([SATIS_GIYMETI],',','.') as decimal(9,2))\r\n     , GETDATE(),CONVERT(DATETIME, [ISTEHSAL_TARIHI], 104) ,CONVERT (DATETIME,[SONISTIFADE_TARIHI],104),  TESVIR    FROM [EXCELL_IMPORT_DATA_NEW]\r\n\r\n  WHERE  [KONTROL]=0\r\n\r\n  AND ALIS_TARIHI='" + ALIS_TARIHI + "'  AND FAKTURA_NO=N'" + FAKTURA_NO + "' AND TECHIZATCI_ADI=N'" + TECHIZATCI_ADI + "'";
+                string queryDetailKayitH = $@"INSERT INTO [MAL_ALISI_DETAILS] ([MAL_ALISI_MAIN_ID]
+           ,[KATEGORIYA]
+           ,[BARKOD]
+           ,[MEHSUL_ADI]
+           ,[MEHSUL_KODU]
+           ,[ANBAR_ID]
+           ,[MIGDARI]
+           ,[VAHID]
+           ,[VALYUTA]
+           ,[VERGI_DERECESI]
+           ,[SATIS_GIYMETI]
+           ,[ALIS_GIYMETI]
+           ,[DiscountDate]
+		   ,[ISTEHSAL_TARIXI]
+		   ,[BITIS_TARIXI]
+		   ,[GEYD]
+		   ,ENDIRIM_FAIZ
+		   ,ENDIRIM_AZN
+		   ,ENDIRIM_MEBLEGI
+		   ,YEKUN_MEBLEG) 
+SELECT  
+(SELECT MAX(MAL_ALISI_MAIN_ID) FROM MAL_ALISI_MAIN)
+,(SELECT KATEGORIYA_ID FROM KATEGORIYA WHERE [KATEGORIYA]=[EXCELL_IMPORT_DATA_NEW].KATEGORIYA)
+   ,
+   
+    CASE 
+        WHEN [BARKOD] IS NULL THEN 
+            ISNULL((SELECT TOP 1 BARKOD FROM MAL_ALISI_DETAILS 
+                    WHERE MEHSUL_ADI=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI 
+                    ORDER BY MAL_ALISI_DETAILS_ID DESC), 
+                   '994' + CAST((ABS(CHECKSUM(NEWID())) % 1000000000) AS NVARCHAR(50)))
+        WHEN BARKOD<>(SELECT TOP 1 BARKOD FROM MAL_ALISI_DETAILS 
+                      WHERE MEHSUL_ADI=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI) THEN 
+            ISNULL((SELECT TOP 1 BARKOD FROM MAL_ALISI_DETAILS 
+                    WHERE MEHSUL_ADI=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI 
+                    ORDER BY MAL_ALISI_DETAILS_ID DESC), 
+                   '994' + CAST((ABS(CHECKSUM(NEWID())) % 1000000000) AS NVARCHAR(50)))
+        ELSE [BARKOD] 
+   END,
 
--- Son ID alınması
-SELECT @ida = ISNULL(MAX([MAL_ALISI_DETAILS_ID]), 0) + 1 FROM [MAL_ALISI_DETAILS]
 
--- Barkod yaradılması
-SET @a1 = '994'
-SET @a2 = RIGHT(CAST(ABS(CHECKSUM(NEWID())) % 10000 AS VARCHAR(4)), 4)
-SET @a3 = RIGHT(CAST(ABS(CHECKSUM(NEWID())) % 10000 AS VARCHAR(4)), 4)
-SET @barkod = @a1 + CAST(@ida AS NVARCHAR) + @a2 + @a3
+   CASE WHEN [MEHSUL_ADI] IS NULL THEN  (SELECT TOP 1 MEHSUL_ADI FROM MAL_ALISI_DETAILS WHERE BARKOD=[EXCELL_IMPORT_DATA_NEW].BARKOD) ELSE [MEHSUL_ADI] END
+ ,CASE WHEN 
+ (CASE WHEN [MEHSUL_KODU] IS NULL THEN (SELECT TOP 1 [MEHSUL_KODU] FROM MAL_ALISI_DETAILS WHERE BARKOD=[EXCELL_IMPORT_DATA_NEW].BARKOD) WHEN MEHSUL_KODU<>(SELECT TOP 1 [MEHSUL_KODU] FROM MAL_ALISI_DETAILS WHERE BARKOD=[EXCELL_IMPORT_DATA_NEW].BARKOD) THEN (SELECT TOP 1 [MEHSUL_KODU] FROM MAL_ALISI_DETAILS WHERE BARKOD=[EXCELL_IMPORT_DATA_NEW].BARKOD) ELSE MEHSUL_KODU END ) IS NULL 
+ 
+ THEN (CASE WHEN [MEHSUL_KODU] IS NULL THEN (SELECT TOP 1 [MEHSUL_KODU] FROM MAL_ALISI_DETAILS WHERE MEHSUL_ADI=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI) ELSE MEHSUL_KODU END )  
+ 
+ 
+ WHEN MEHSUL_KODU<>(SELECT TOP 1 [MEHSUL_KODU] FROM MAL_ALISI_DETAILS WHERE MEHSUL_ADI=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI) THEN (SELECT TOP 1 [MEHSUL_KODU] FROM MAL_ALISI_DETAILS WHERE MEHSUL_ADI=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI)    
+  
+  ELSE MEHSUL_KODU
 
-DECLARE @sum INT = 0, @i INT = 1, @length INT = LEN(@barkod), @digit INT
+  END,
+	4,
+	cast(replace([MEHSULUN_MIGDARI],',','.') as decimal(9,3)),
+	CAST([VAHIDI] AS int),1,
+	cast([EDV] as int),
+	cast(replace([SATIS_GIYMETI],',','.') as decimal(9,3)),
+	cast(replace([SATINALMA_GIYMETI],',','.') as decimal(9,3)), 
+	GETDATE(),
+	CONVERT(DATETIME, [ISTEHSAL_TARIHI], 104) ,
+	CONVERT (DATETIME,[SONISTIFADE_TARIHI],104),  
+	TESVIR,
+	0,0,0,
+	cast(replace([SATINALMA_GIYMETI],',','.') as decimal(9,3)) * cast(replace([MEHSULUN_MIGDARI],',','.') as decimal(9,3))
+	FROM [EXCELL_IMPORT_DATA_NEW]
 
-WHILE @i <= @length
-BEGIN
-    SET @digit = CAST(SUBSTRING(REVERSE(@barkod), @i, 1) AS INT)
-    SET @sum = @sum + @digit * (CASE WHEN @i % 2 = 0 THEN 3 ELSE 1 END)
-    SET @i = @i + 1
-END
-
-SET @kontrol1 = (10 - @sum % 10) % 10
-SET @barkod = @barkod + CAST(@kontrol1 AS NVARCHAR)
-
--- Yeni datanın əlavə olunması
-INSERT INTO [MAL_ALISI_DETAILS] 
-    ([MAL_ALISI_MAIN_ID], [KATEGORIYA], [BARKOD], [MEHSUL_ADI], [MEHSUL_KODU], 
-     [ANBAR_ID], [MIGDARI], [VAHID], [VALYUTA], [VERGI_DERECESI], 
-     [SATIS_GIYMETI], [ALIS_GIYMETI], [DiscountDate], [ISTEHSAL_TARIXI], 
-     [BITIS_TARIXI], [GEYD]) 
-SELECT 
-    (SELECT MAX(MAL_ALISI_MAIN_ID) FROM MAL_ALISI_MAIN),
-    (SELECT KATEGORIYA_ID FROM KATEGORIYA WHERE [KATEGORIYA]=[EXCELL_IMPORT_DATA_NEW].KATEGORIYA), @barkod,
-    COALESCE([MEHSUL_ADI], (SELECT TOP 1 MEHSUL_ADI FROM MAL_ALISI_DETAILS WHERE BARKOD=[EXCELL_IMPORT_DATA_NEW].BARKOD)),4,
-	CAST([MEHSULUN_MIGDARI] AS DECIMAL(9,2)), CAST([VAHIDI] AS INT), 1,
-    CAST([EDV] AS INT), CAST(REPLACE([SATINALMA_GIYMETI], ',', '.') AS DECIMAL(9,2)), 
-    CAST(REPLACE([SATIS_GIYMETI], ',', '.') AS DECIMAL(9,2)), GETDATE(), 
-    CONVERT(DATETIME, [ISTEHSAL_TARIHI], 104), 
-    CONVERT(DATETIME, [SONISTIFADE_TARIHI], 104), TESVIR
-FROM [EXCELL_IMPORT_DATA_NEW]  
-WHERE [KONTROL]=1 
+  WHERE  [KONTROL]=0
   AND ALIS_TARIHI='{ALIS_TARIHI}' 
-  AND FAKTURA_NO='{FAKTURA_NO}'
-  AND TECHIZATCI_ADI='{TECHIZATCI_ADI}'";
+  AND FAKTURA_NO=N'{FAKTURA_NO}'
+  AND TECHIZATCI_ADI=N'{TECHIZATCI_ADI}'";
                 string queryambarmagazakontrol = "\r\ndelete from ANBAR_MAGAZA\r\n\r\n   INSERT INTO ANBAR_MAGAZA(ANBAR_ID,MAGAZA_ID,TARIX,EMELIYYAT_NOMRE,mal_details_id,migdar)\r\n\t\tselect 4, 1002,getdate(),1,MAL_ALISI_DETAILS_ID,MIGDARI from MAL_ALISI_DETAILS ";
 
                 int supplierId = Convert.ToInt32(TECHIZATCI_ID);
@@ -507,17 +531,17 @@ WHERE [KONTROL]=1
                 });
 
                 con.Open();
-                SqlCommand commandqaimeDETAILsave = new SqlCommand(querydetailkayit, con);
+                SqlCommand commandqaimeDETAILsave = new SqlCommand(queryDetailKayitH, con);
 
                 commandqaimeDETAILsave.ExecuteNonQuery();
                 con.Close();
 
 
-                con.Open();
-                SqlCommand commandqaimeDETAILsave2 = new SqlCommand(querydetailkayit2, con);
+                //con.Open();
+                //SqlCommand commandqaimeDETAILsave2 = new SqlCommand(queryDetailKayitH, con);
 
-                commandqaimeDETAILsave2.ExecuteNonQuery();
-                con.Close();
+                //commandqaimeDETAILsave2.ExecuteNonQuery();
+                //con.Close();
 
 
                 con.Open();

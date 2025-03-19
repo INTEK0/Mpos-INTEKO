@@ -238,11 +238,10 @@ when kf.KASSA_FIRMALAR = N'OMNITECH' then 'http://'+ ki.IP_ADRESS + ':8989/v2'
 when kf.KASSA_FIRMALAR = N'EKASAM' then 'http://'+ ki.IP_ADRESS + ':9876/api/'
 else '' end  ,
 rtrim(ltrim(isnull(ki.merchant_id,'yox'))) merchant_id,
-rtrim(ltrim(isnull(ki.Bank,''))) bank 
+rtrim(ltrim(isnull(ki.Bank, ''))) bank
 FROM KASSA_IP ki 
 inner join KASSA_FIRMALAR kf on ki.KASSA_FIRMA_IP = kf.KASSA_FIRMALAR_ID
 inner join userParol u on u.id = ki.KASSIR_ID where u.id = {Properties.Settings.Default.UserID}";
-
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
                         using (SqlDataReader dr = cmd.ExecuteReader())

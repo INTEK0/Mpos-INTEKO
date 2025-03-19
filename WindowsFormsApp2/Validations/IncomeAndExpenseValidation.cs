@@ -8,8 +8,8 @@ namespace WindowsFormsApp2.Validations
         public IncomeAndExpenseValidation()
         {
             RuleFor(x => x.Header).NotEmpty().WithMessage("Başlıq daxil edilmədi");
-            RuleFor(x => x.Amount).NotEmpty().WithMessage("Məbləğ daxil edilmədi");
-            RuleFor(x => x.Amount).GreaterThan(0).WithMessage("Məbləğ 0 və ya 0-dan kiçik olabilməz");
+            //RuleFor(x => x.Amount).NotEmpty().WithMessage("Məbləğ daxil edilmədi");
+            //RuleFor(x => x.Amount).GreaterThan(0).WithMessage("Məbləğ 0 və ya 0-dan kiçik olabilməz");
         }
     }
 }

@@ -72,8 +72,6 @@ namespace WindowsFormsApp2
 
         private void POS_LAYOUT_NEW_Load(object sender, EventArgs e)
         {
-
-
             textBox5.Text = "MƏHSUL ADI";
 
             textBox5.ForeColor = Color.LightGray;
@@ -82,7 +80,7 @@ namespace WindowsFormsApp2
             lModel.Visible = true;
             Auto();
             gridControl1.TabStop = true;
-            tUsername.Text = DbProsedures.GetUser().NameSurname;
+            tUsername.Text = DbProsedures.GetUser()?.NameSurname;
             textEdit2.Text = DateTime.Now.ToShortDateString();
 
             //st.del_tr();
@@ -193,165 +191,70 @@ namespace WindowsFormsApp2
                 string kg;
                 string gr;
                 string barkod;
-
+                string malDetailsID = null;
                 var terezi = FormHelpers.GetTereziIpModel();
 
 
-                if (kontrol.Substring(0, 1) == "0")
+                if (terezi != null)
                 {
-                    if (terezi != null)
+                    if (terezi.Model.Trim() is "Rongta RLS 1100")
                     {
-                        if (terezi.Model.Trim() is "Rongta RLS 1100")
+                        if (kontrol.Substring(0, 1) == "0" && kontrol.Count() is 12)
                         {
-                            if (kontrol.Substring(0, 1) == "0" && kontrol.Count() is 12)
+
+                            kontrol = "0" + kontrol;
+
+
+                            kod = kontrol.Substring(2, 5);
+                            kg = kontrol.Substring(7, 2);
+                            gr = kontrol.Substring(9, 3);
+
+                            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
                             {
-                                if (kontrol.Count() is 12)
+                                con.Open();
+                                //string query = $@"select BARKOD from [MAL_ALISI_DETAILS] where [MAL_ALISI_DETAILS_ID]={kod}";
+                                string query = $@"SELECT TOP 1 BARKOD,MAL_ALISI_DETAILS_ID 
+FROM MAL_ALISI_DETAILS 
+WHERE BARKOD IN (SELECT BARKOD FROM MAL_ALISI_DETAILS WHERE MAL_ALISI_DETAILS_ID = {kod})
+ORDER BY MAL_ALISI_DETAILS_ID DESC;";
+                                using (SqlCommand cmd = new SqlCommand(query, con))
                                 {
-                                    kontrol = "0" + kontrol;
-                                }
-
-                                kod = kontrol.Substring(2, 5);
-                                kg = kontrol.Substring(7, 2);
-                                gr = kontrol.Substring(9, 3);
-
-                                using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
-                                {
-                                    con.Open();
-                                    string query = $@"select BARKOD from [MAL_ALISI_DETAILS] where [MAL_ALISI_DETAILS_ID]={kod}";
-
-                                    using (SqlCommand cmd = new SqlCommand(query, con))
+                                    using (SqlDataReader dr = cmd.ExecuteReader())
                                     {
-                                        using (SqlDataReader dr = cmd.ExecuteReader())
+                                        if (dr.Read())
                                         {
-                                            while (dr.Read())
-                                            {
-                                                barkodsa = dr["BARKOD"].ToString();
-                                                barkod = dr["BARKOD"].ToString();
-                                                textEdit10.Text = kg + "," + gr;
-                                                getall(barkod);
-                                                get(textEdit1.Text);
+                                            barkodsa = dr["BARKOD"].ToString();
+                                            barkod = dr["BARKOD"].ToString();
+                                            malDetailsID = dr["MAL_ALISI_DETAILS_ID"].ToString();
+                                            textEdit10.Text = kg + "," + gr;
+                                            getall(barkod);
+                                            get(textEdit1.Text);
 
-                                                get_say_birmal(barkod, textEdit1.Text);
-                                            }
+                                            //get_say_birmal(barkod, textEdit1.Text);
                                         }
                                     }
                                 }
-
-                                int rowHandle = gridView1.LocateByValue("MAL_ALISI_DETAILS_ID", Int32.Parse(kod));
-                                if (rowHandle != DevExpress.XtraGrid.GridControl.InvalidRowHandle)
-                                    gridView1.FocusedRowHandle = rowHandle;
-                                gridView1.FocusedRowHandle = rowHandle;
-
-                                tBarcode.Text = string.Empty;
-                                textEdit10.Text = kg + "," + gr;
-                                get_cem(textEdit1.Text);
-
-                                int kayitsayisi = gridView1.RowCount;
-
-                                string productId = gridView1.GetFocusedRowCellValue("MAL_ALISI_DETAILS_ID").ToString();
-
-                                //string productId = gridView1.GetRowCellValue(rowHandle, "MAL_ALISI_DETAILS_ID").ToString();
-
-                                st.del_migdarnewsa_calculation(productId,
-                                                               textEdit10.Text,
-                                                               textEdit1.Text);
-
-
-                                get(textEdit1.Text);
-                                get_say_birmal(tBarcode.Text, textEdit1.Text);
-                                tBarcode.Text = string.Empty;
-                                //deyisilmis
-
-                                get_cem(textEdit1.Text);
-
-
-
-                                textEdit9.Text = "";
-                                textEdit10.Text = "";
-                                textEdit12.Text = "";
-                                textEdit13.Text = "";
                             }
-                            else
-                            {
-                                getall(tBarcode.Text);
-                                get(textEdit1.Text);
-                                get_say_birmal(tBarcode.Text, textEdit1.Text);
-                                get_cem(textEdit1.Text);
-                            }
-                        }
-                        else if (terezi.Model.Trim() is "MERC LB 1100")
-                        {
-                            if (kontrol.Substring(0, 1) == "0" && kontrol.Count() is 13)
-                            {
-                                kod = kontrol.Substring(2, 5);
-                                kg = kontrol.Substring(7, 2);
-                                gr = kontrol.Substring(9, 3);
+          
 
-                                using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
-                                {
-                                    con.Open();
-                                    string query = $@"select BARKOD from [MAL_ALISI_DETAILS] where [MAL_ALISI_DETAILS_ID]={kod}";
-
-                                    using (SqlCommand cmd = new SqlCommand(query, con))
-                                    {
-                                        using (SqlDataReader dr = cmd.ExecuteReader())
-                                        {
-                                            while (dr.Read())
-                                            {
-                                                barkodsa = dr["BARKOD"].ToString();
-                                                barkod = dr["BARKOD"].ToString();
-                                                textEdit10.Text = kg + "," + gr;
-                                                getall(barkod);
-                                                get(textEdit1.Text);
-
-                                                get_say_birmal(barkod, textEdit1.Text);
-                                            }
-                                        }
-                                    }
-                                }
-
-                                int rowHandle = gridView1.LocateByValue("MAL_ALISI_DETAILS_ID", Int32.Parse(kod));
-                                if (rowHandle != DevExpress.XtraGrid.GridControl.InvalidRowHandle)
-                                    gridView1.FocusedRowHandle = rowHandle;
-
-                                gridView1.FocusedRowHandle = rowHandle;
-
-                                tBarcode.Text = string.Empty;
-                                textEdit10.Text = kg + "," + gr;
-                                get_cem(textEdit1.Text);
-
-                                string productId = gridView1.GetFocusedRowCellValue("MAL_ALISI_DETAILS_ID").ToString();
+                            textEdit10.Text = kg + "," + gr;
+                          
+                            string Id = int.Parse(malDetailsID).ToString();
+                            st.del_migdarnewsa_calculation(Id,
+                                                           textEdit10.Text,
+                                                           textEdit1.Text);
 
 
-                                st.del_migdarnewsa_calculation(productId,
-                                                               textEdit10.Text,
-                                                               textEdit1.Text);
+                            get(textEdit1.Text);
+                            get_say_birmal(barkodsa, textEdit1.Text); 
+                            tBarcode.Text = string.Empty;
 
+                            get_cem(textEdit1.Text);
 
-                                get(textEdit1.Text);
-                                get_say_birmal(tBarcode.Text, textEdit1.Text);
-                                tBarcode.Text = string.Empty;
-                                //deyisilmis
-
-                                get_cem(textEdit1.Text);
-
-
-
-                                textEdit9.Text = "";
-                                textEdit10.Text = "";
-                                textEdit12.Text = "";
-                                textEdit13.Text = "";
-
-
-
-                            }
-                            else
-                            {
-                                getall(tBarcode.Text);
-                                get(textEdit1.Text);
-                                get_say_birmal(tBarcode.Text, textEdit1.Text);
-                                get_cem(textEdit1.Text);
-                            }
+                            textEdit9.Text = "";
+                            textEdit10.Text = "";
+                            textEdit12.Text = "";
+                            textEdit13.Text = "";
                         }
                         else
                         {
@@ -361,13 +264,99 @@ namespace WindowsFormsApp2
                             get_cem(textEdit1.Text);
                         }
                     }
+                    else if (terezi.Model.Trim() is "MERC LB 1100")
+                    {
+                        if (kontrol.Substring(0, 1) == "0" && kontrol.Count() is 13)
+                        {
+                            kod = kontrol.Substring(2, 5);
+                            kg = kontrol.Substring(7, 2);
+                            gr = kontrol.Substring(9, 3);
+
+                            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+                            {
+                                con.Open();
+                                string query = $@"select BARKOD from [MAL_ALISI_DETAILS] where [MAL_ALISI_DETAILS_ID]={kod}";
+
+                                using (SqlCommand cmd = new SqlCommand(query, con))
+                                {
+                                    using (SqlDataReader dr = cmd.ExecuteReader())
+                                    {
+                                        while (dr.Read())
+                                        {
+                                            barkodsa = dr["BARKOD"].ToString();
+                                            barkod = dr["BARKOD"].ToString();
+                                            textEdit10.Text = kg + "," + gr;
+                                            getall(barkod);
+                                            get(textEdit1.Text);
+
+                                            get_say_birmal(barkod, textEdit1.Text);
+                                        }
+                                    }
+                                }
+                            }
+
+                            int rowHandle = gridView1.LocateByValue("MAL_ALISI_DETAILS_ID", Int32.Parse(kod));
+                            if (rowHandle != DevExpress.XtraGrid.GridControl.InvalidRowHandle)
+                                gridView1.FocusedRowHandle = rowHandle;
+
+                            gridView1.FocusedRowHandle = rowHandle;
+
+                            tBarcode.Text = string.Empty;
+                            textEdit10.Text = kg + "," + gr;
+                            get_cem(textEdit1.Text);
+
+                            string productId = gridView1.GetFocusedRowCellValue("MAL_ALISI_DETAILS_ID").ToString();
+
+
+                            st.del_migdarnewsa_calculation(productId,
+                                                           textEdit10.Text,
+                                                           textEdit1.Text);
+
+
+                            get(textEdit1.Text);
+                            get_say_birmal(tBarcode.Text, textEdit1.Text);
+                            tBarcode.Text = string.Empty;
+                            //deyisilmis
+
+                            get_cem(textEdit1.Text);
+
+
+
+                            textEdit9.Text = "";
+                            textEdit10.Text = "";
+                            textEdit12.Text = "";
+                            textEdit13.Text = "";
+
+
+
+                        }
+                        else
+                        {
+                            getall(tBarcode.Text);
+                            get(textEdit1.Text);
+                            get_say_birmal(tBarcode.Text, textEdit1.Text);
+                            get_cem(textEdit1.Text);
+                        }
+                    }
+                    else
+                    {
+                        getall(tBarcode.Text);
+                        get(textEdit1.Text);
+                        get_say_birmal(tBarcode.Text, textEdit1.Text);
+                        get_cem(textEdit1.Text);
+                    }
+                }
+                else
+                {
+                    getall(tBarcode.Text);
+                    get(textEdit1.Text);
+                    get_say_birmal(tBarcode.Text, textEdit1.Text);
+                    get_cem(textEdit1.Text);
                 }
 
 
-                getall(tBarcode.Text);
-                get(textEdit1.Text);
-                get_say_birmal(tBarcode.Text, textEdit1.Text);
-                get_cem(textEdit1.Text);
+
+
 
 
 
@@ -668,7 +657,7 @@ namespace WindowsFormsApp2
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon))
+                using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
                 {
                     connection.Open();
                     string query = "exec CALC_SAY_CALCULATION @barkod=@pricepoint ,@emeliyyat_nomre=@pricepoint1,@userID=@userId";
@@ -743,7 +732,7 @@ namespace WindowsFormsApp2
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon))
+                using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
                 {
                     connection.Open();
                     string query = "SELECT * FROM  dbo.POS_SATIS(1,@pricePoint);";
@@ -787,7 +776,6 @@ namespace WindowsFormsApp2
             {
                 ReadyMessages.ERROR_DEFAULT_MESSAGE("Xəta!\n" + e.Message);
             }
-
         }
 
         public static int dele_migdar_mal_id;
@@ -1264,7 +1252,7 @@ namespace WindowsFormsApp2
                             //    clinic = true;
                             //}
 
-                            gelen_data_negd_pos(0, f, f, 0, 0,false);
+                            gelen_data_negd_pos(0, f, f, 0, 0, false);
                         }
                     }
                     else
@@ -2735,13 +2723,6 @@ namespace WindowsFormsApp2
                             textEdit11.Text = DbProsedures.GET_TotalSalesCount();
                             CalculationDelete();
                         }
-
-                        if (IsSuccess)
-                        {
-                            clear();
-                            textEdit11.Text = DbProsedures.GET_TotalSalesCount();
-                            CalculationDelete();
-                        }
                         break; /*SUNMI*/
                     case "2":
                         IsSuccess = AzSmart.Sales(new DTOs.SalesDto
@@ -2790,18 +2771,6 @@ namespace WindowsFormsApp2
                         paysales(cash_, card_, umumi_mebleg_);
                         break; /*DATAPAY*/
                     case "6":
-                        //NBA.Sales(new DTOs.SalesDto
-                        //{
-                        //    Cash = cash_,
-                        //    Card = card_,
-                        //    Total = umumi_mebleg_,
-                        //    IncomingSum = incomingSum,
-                        //    Balance = _qaliq,
-                        //    PayType = payType,
-                        //    IpAddress = lIpAdress.Text,
-                        //    AccessToken = textBox4.Text
-                        //});
-
                         nbasales(new DTOs.SalesDto
                         {
                             Cash = cash_,
@@ -2982,6 +2951,29 @@ namespace WindowsFormsApp2
                             CalculationDelete();
                         }
                         break; /*OMNITECH*/
+                    case "4":
+                        IsSuccess = Sunmi.Prepayment(new DTOs.SalesDto
+                        {
+                            IpAddress = lIpAdress.Text,
+                            ProccessNo = textEdit1.Text,
+                            IncomingSum = incomingSum,
+                            Cash = cash_,
+                            Card = card_,
+                            Total = umumi_mebleg_,
+                            PrepaymentPay = cash_,
+                            Cashier = tUsername.Text,
+                            Customer = _customer,
+                            Doctor = _doctor,
+                            Rrn = bankttnminputdata
+                        });
+
+                        if (IsSuccess)
+                        {
+                            clear();
+                            textEdit11.Text = DbProsedures.GET_TotalSalesCount();
+                            CalculationDelete();
+                        }
+                        break; /*XPRINTER*/
                 }
             }
             catch (WebException ex) when (ex.Status is WebExceptionStatus.ConnectFailure)

@@ -227,7 +227,6 @@ where kredit_id={_creditMainId}";
             string deger20 = "";
 
 
-
             if (index > 0)
             {
                 deger20 = gridView2.GetRowCellValue(index - 1, "KONTROL").ToString();
@@ -391,20 +390,6 @@ where kredit_id={_creditMainId}";
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        public class WeatherForecast
-        {
-            public string code { get; set; }
-            public string message { get; set; }
-            public sondata data { get; set; }
-        }
-
-
-        public class sondata
-        {
-            public string document_id { get; set; }
-            public string short_document_id { get; set; }
         }
     }
 }
