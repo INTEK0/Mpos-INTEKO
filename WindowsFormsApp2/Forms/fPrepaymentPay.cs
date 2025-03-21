@@ -103,6 +103,22 @@ namespace WindowsFormsApp2.Forms
                     case "3":
                         Omnitech.PrepaymentSale(_IpModel.Ip, null, PrepaymentPay.PosMainId, _IpModel.Cashier, PrepaymentPay.FiskalId, PrepaymentPay.Prepayment, Enums.PayType.Card);
                         break; /*OMNITECH*/
+                    case "4":
+                        Xprinter.PrepaymentSale(new DTOs.SalesDto
+                        {
+                            Cashier = _IpModel.Cashier,
+                            FiscalId = PrepaymentPay.FiskalId,
+                            PrepaymentPay = PrepaymentPay.Prepayment,
+                            Card = PrepaymentPay.Total - PrepaymentPay.Prepayment,
+                            Total = PrepaymentPay.Total,
+                            Cash = 0,
+                            IncomingSum = 0,
+                            CustomerNameManual = PrepaymentPay.CustomerName,
+                            CustomerId = PrepaymentPay.CustomeId,
+                            PayType = Enums.PayType.Card
+                        }, PrepaymentPay.PosMainId);
+                        DialogResult = DialogResult.OK;
+                        break; /*XPRINTER*/
                 }
             }
             else
@@ -142,12 +158,27 @@ namespace WindowsFormsApp2.Forms
 
                         if (isSuccess)
                         {
-                            Close();
+                           DialogResult = DialogResult.OK;
                         }
                         break; /*SUNMI*/
                     case "3":
                         Omnitech.PrepaymentSale(_IpModel.Ip, null, PrepaymentPay.PosMainId, _IpModel.Cashier, PrepaymentPay.FiskalId, PrepaymentPay.Prepayment, Enums.PayType.Cash);
                         break; /*OMNITECH*/
+                    case "4":
+                        Xprinter.PrepaymentSale(new DTOs.SalesDto
+                        {
+                            Cashier = _IpModel.Cashier,
+                            FiscalId = PrepaymentPay.FiskalId,
+                            PrepaymentPay = PrepaymentPay.Prepayment,
+                            Card = 0,
+                            Total = PrepaymentPay.Total,
+                            Cash = Convert.ToDecimal(tCash_Paid.EditValue),
+                            PayType = Enums.PayType.Cash,
+                            CustomerId = PrepaymentPay.CustomeId,
+                            CustomerNameManual = PrepaymentPay.CustomerName
+                        }, PrepaymentPay.PosMainId);
+                        DialogResult = DialogResult.OK;
+                        break; /*XPRINTER*/
                 }
             }
             else
@@ -186,6 +217,21 @@ namespace WindowsFormsApp2.Forms
                     case "3":
                         Omnitech.PrepaymentSale(_IpModel.Ip, null, PrepaymentPay.PosMainId, _IpModel.Cashier, PrepaymentPay.FiskalId, PrepaymentPay.Prepayment, Enums.PayType.CashCard);
                         break; /*OMNITECH*/
+                    case "4":
+                        Xprinter.PrepaymentSale(new DTOs.SalesDto
+                        {
+                            Cashier = _IpModel.Cashier,
+                            FiscalId = PrepaymentPay.FiskalId,
+                            PrepaymentPay = PrepaymentPay.Prepayment,
+                            Cash = Convert.ToDecimal(tCashCard_Cash.EditValue),
+                            Card = Convert.ToDecimal(tCashCard_Card.EditValue),
+                            Total = PrepaymentPay.Total,
+                            PayType = Enums.PayType.CashCard,
+                            CustomerNameManual = PrepaymentPay.CustomerName,
+                            CustomerId = PrepaymentPay.CustomeId,
+                        }, PrepaymentPay.PosMainId);
+                        DialogResult = DialogResult.OK;
+                        break; /*XPRINTER*/
                 }
             }
             else

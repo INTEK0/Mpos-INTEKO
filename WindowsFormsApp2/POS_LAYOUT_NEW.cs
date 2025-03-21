@@ -235,10 +235,10 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                                     }
                                 }
                             }
-          
+
 
                             textEdit10.Text = kg + "," + gr;
-                          
+
                             string Id = int.Parse(malDetailsID).ToString();
                             st.del_migdarnewsa_calculation(Id,
                                                            textEdit10.Text,
@@ -246,7 +246,7 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
 
 
                             get(textEdit1.Text);
-                            get_say_birmal(barkodsa, textEdit1.Text); 
+                            get_say_birmal(barkodsa, textEdit1.Text);
                             tBarcode.Text = string.Empty;
 
                             get_cem(textEdit1.Text);
@@ -2915,7 +2915,7 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                             Cash = cash_,
                             Card = card_,
                             Total = umumi_mebleg_,
-                            PrepaymentPay = cash_,
+                            PrepaymentPay = cash_ + card_,
                             Cashier = tUsername.Text,
                             Customer = _customer,
                             Doctor = _doctor,
@@ -2952,27 +2952,22 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                         }
                         break; /*OMNITECH*/
                     case "4":
-                        IsSuccess = Sunmi.Prepayment(new DTOs.SalesDto
+                        Xprinter.PrepaymentPay(new DTOs.SalesDto
                         {
-                            IpAddress = lIpAdress.Text,
                             ProccessNo = textEdit1.Text,
                             IncomingSum = incomingSum,
                             Cash = cash_,
                             Card = card_,
                             Total = umumi_mebleg_,
-                            PrepaymentPay = cash_,
+                            PrepaymentPay = cash_ + card_,
                             Cashier = tUsername.Text,
                             Customer = _customer,
                             Doctor = _doctor,
-                            Rrn = bankttnminputdata
                         });
 
-                        if (IsSuccess)
-                        {
-                            clear();
-                            textEdit11.Text = DbProsedures.GET_TotalSalesCount();
-                            CalculationDelete();
-                        }
+                        clear();
+                        textEdit11.Text = DbProsedures.GET_TotalSalesCount();
+                        CalculationDelete();
                         break; /*XPRINTER*/
                 }
             }
@@ -4131,7 +4126,7 @@ from  dbo.item where user_id = {Properties.Settings.Default.UserID}";
         {
             try
             {
-                SqlConnection conn2 = new SqlConnection(Properties.Settings.Default.SqlCon);
+                SqlConnection conn2 = new SqlConnection(DbHelpers.DbConnectionString);
                 SqlCommand cmd2 = new SqlCommand();
                 conn2.Open();
                 string query2 = DbHelpers.GetHeaderDataQuery;

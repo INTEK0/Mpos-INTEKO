@@ -1327,7 +1327,7 @@ WHERE BARKOD = '{barcode}'";
     {(int)type},
     '{_date}',
     {customerId},
-    {amount})";
+    {amount.ToString().Replace(",",".")})";
                  con.Open();
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {

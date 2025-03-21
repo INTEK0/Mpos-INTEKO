@@ -24,11 +24,6 @@ namespace WindowsFormsApp2.Forms
             ReceiptNo
         }
 
-        private void fPrepayment_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void AvansPayDataLoad(SearchType type)
         {
             gridControlAvans.DataSource = null;
@@ -143,7 +138,7 @@ WHERE psm.Prepayment IS NOT NULL AND psm.PREfiscal_id IS NULL AND psm.pos_nomre 
             fPrepaymentPay f = new fPrepaymentPay(fiskal.ToString());
             if (f.ShowDialog() is System.Windows.Forms.DialogResult.OK)
             {
-
+                bSearch_Click(sender, null);
             }
         }
 
