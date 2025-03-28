@@ -29,8 +29,6 @@
         private void InitializeComponent()
         {
             this.groupControl1 = new DevExpress.XtraEditors.GroupControl();
-            this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
-            this.tMerchantId = new DevExpress.XtraEditors.TextEdit();
             this.labelControl3 = new DevExpress.XtraEditors.LabelControl();
             this.lookTerezi = new DevExpress.XtraEditors.LookUpEdit();
             this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
@@ -41,22 +39,27 @@
             this.bAdd = new DevExpress.XtraEditors.SimpleButton();
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.labelControl2 = new DevExpress.XtraEditors.LabelControl();
+            this.lookUser = new DevExpress.XtraEditors.LookUpEdit();
+            this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
             this.groupControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tMerchantId.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lookTerezi.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tIpAddress.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).BeginInit();
             this.groupControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lookUser.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // groupControl1
             // 
             this.groupControl1.CaptionLocation = DevExpress.Utils.Locations.Top;
-            this.groupControl1.Controls.Add(this.labelControl1);
-            this.groupControl1.Controls.Add(this.tMerchantId);
+            this.groupControl1.Controls.Add(this.labelControl2);
+            this.groupControl1.Controls.Add(this.lookUser);
             this.groupControl1.Controls.Add(this.labelControl3);
             this.groupControl1.Controls.Add(this.lookTerezi);
             this.groupControl1.Controls.Add(this.labelControl4);
@@ -68,27 +71,9 @@
             this.groupControl1.LookAndFeel.UseDefaultLookAndFeel = false;
             this.groupControl1.Name = "groupControl1";
             this.groupControl1.ShowCaption = false;
-            this.groupControl1.Size = new System.Drawing.Size(871, 90);
+            this.groupControl1.Size = new System.Drawing.Size(871, 132);
             this.groupControl1.TabIndex = 17;
             this.groupControl1.Text = "layoutControlGroup1";
-            // 
-            // labelControl1
-            // 
-            this.labelControl1.Location = new System.Drawing.Point(16, 134);
-            this.labelControl1.Name = "labelControl1";
-            this.labelControl1.Size = new System.Drawing.Size(91, 16);
-            this.labelControl1.TabIndex = 0;
-            this.labelControl1.Text = "MERCHANT ID";
-            this.labelControl1.Visible = false;
-            // 
-            // tMerchantId
-            // 
-            this.tMerchantId.Location = new System.Drawing.Point(119, 127);
-            this.tMerchantId.Margin = new System.Windows.Forms.Padding(4);
-            this.tMerchantId.Name = "tMerchantId";
-            this.tMerchantId.Size = new System.Drawing.Size(387, 30);
-            this.tMerchantId.TabIndex = 9;
-            this.tMerchantId.Visible = false;
             // 
             // labelControl3
             // 
@@ -132,7 +117,7 @@
             this.groupControl2.Controls.Add(this.bDelete);
             this.groupControl2.Controls.Add(this.bPing);
             this.groupControl2.Controls.Add(this.bAdd);
-            this.groupControl2.Location = new System.Drawing.Point(0, 97);
+            this.groupControl2.Location = new System.Drawing.Point(0, 138);
             this.groupControl2.Name = "groupControl2";
             this.groupControl2.ShowCaption = false;
             this.groupControl2.Size = new System.Drawing.Size(871, 52);
@@ -191,10 +176,10 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gridControl1.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
-            this.gridControl1.Location = new System.Drawing.Point(5, 156);
+            this.gridControl1.Location = new System.Drawing.Point(5, 196);
             this.gridControl1.MainView = this.gridView1;
             this.gridControl1.Name = "gridControl1";
-            this.gridControl1.Size = new System.Drawing.Size(859, 540);
+            this.gridControl1.Size = new System.Drawing.Size(859, 500);
             this.gridControl1.TabIndex = 19;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
@@ -205,6 +190,10 @@
             this.gridView1.Appearance.EvenRow.Options.UseBackColor = true;
             this.gridView1.Appearance.OddRow.BackColor = System.Drawing.Color.White;
             this.gridView1.Appearance.OddRow.Options.UseBackColor = true;
+            this.gridView1.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.gridColumn3,
+            this.gridColumn1,
+            this.gridColumn2});
             this.gridView1.DetailHeight = 431;
             this.gridView1.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFullFocus;
             this.gridView1.GridControl = this.gridControl1;
@@ -215,6 +204,56 @@
             this.gridView1.OptionsView.EnableAppearanceOddRow = true;
             this.gridView1.OptionsView.ShowGroupPanel = false;
             this.gridView1.OptionsView.ShowIndicator = false;
+            // 
+            // labelControl2
+            // 
+            this.labelControl2.Location = new System.Drawing.Point(14, 96);
+            this.labelControl2.Name = "labelControl2";
+            this.labelControl2.Size = new System.Drawing.Size(83, 16);
+            this.labelControl2.TabIndex = 14;
+            this.labelControl2.Text = "İSTİFADƏÇİ ";
+            // 
+            // lookUser
+            // 
+            this.lookUser.Location = new System.Drawing.Point(119, 89);
+            this.lookUser.Margin = new System.Windows.Forms.Padding(4);
+            this.lookUser.Name = "lookUser";
+            this.lookUser.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.lookUser.Properties.NullText = "--Seçin--";
+            this.lookUser.Size = new System.Drawing.Size(387, 30);
+            this.lookUser.TabIndex = 13;
+            // 
+            // gridColumn1
+            // 
+            this.gridColumn1.Caption = "TƏRƏZİ MODELİNİN ADI";
+            this.gridColumn1.FieldName = "ModelName";
+            this.gridColumn1.Name = "gridColumn1";
+            this.gridColumn1.OptionsColumn.AllowEdit = false;
+            this.gridColumn1.OptionsFilter.AllowAutoFilter = false;
+            this.gridColumn1.OptionsFilter.AllowFilter = false;
+            this.gridColumn1.Visible = true;
+            this.gridColumn1.VisibleIndex = 0;
+            // 
+            // gridColumn2
+            // 
+            this.gridColumn2.Caption = "TƏRƏZİNİN İP ÜNVANI";
+            this.gridColumn2.FieldName = "IpAddress";
+            this.gridColumn2.Name = "gridColumn2";
+            this.gridColumn2.OptionsColumn.AllowEdit = false;
+            this.gridColumn2.OptionsFilter.AllowAutoFilter = false;
+            this.gridColumn2.OptionsFilter.AllowFilter = false;
+            this.gridColumn2.Visible = true;
+            this.gridColumn2.VisibleIndex = 1;
+            // 
+            // gridColumn3
+            // 
+            this.gridColumn3.Caption = "Id";
+            this.gridColumn3.FieldName = "TERAZI_IP_ID";
+            this.gridColumn3.Name = "gridColumn3";
+            this.gridColumn3.OptionsColumn.AllowEdit = false;
+            this.gridColumn3.OptionsFilter.AllowAutoFilter = false;
+            this.gridColumn3.OptionsFilter.AllowFilter = false;
             // 
             // fTereziler
             // 
@@ -235,13 +274,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).EndInit();
             this.groupControl1.ResumeLayout(false);
             this.groupControl1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tMerchantId.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lookTerezi.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tIpAddress.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).EndInit();
             this.groupControl2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lookUser.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -249,8 +288,6 @@
         #endregion
 
         private DevExpress.XtraEditors.GroupControl groupControl1;
-        private DevExpress.XtraEditors.LabelControl labelControl1;
-        private DevExpress.XtraEditors.TextEdit tMerchantId;
         private DevExpress.XtraEditors.LabelControl labelControl3;
         private DevExpress.XtraEditors.LookUpEdit lookTerezi;
         private DevExpress.XtraEditors.LabelControl labelControl4;
@@ -261,5 +298,10 @@
         private DevExpress.XtraEditors.SimpleButton bAdd;
         private DevExpress.XtraGrid.GridControl gridControl1;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
+        private DevExpress.XtraEditors.LabelControl labelControl2;
+        private DevExpress.XtraEditors.LookUpEdit lookUser;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn1;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn2;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn3;
     }
 }

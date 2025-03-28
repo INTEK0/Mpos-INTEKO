@@ -570,7 +570,6 @@
     <Compile Include="IZAHLI_MEHSUL_SATISI.Designer.cs">
       <DependentUpon>IZAHLI_MEHSUL_SATISI.cs</DependentUpon>
     </Compile>
-    <Compile Include="KASSA_IP_CRUD.cs" />
     <Compile Include="kategoriyalar.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -936,6 +935,7 @@
     <Compile Include="Validations\IncomeAndExpenseValidation.cs" />
     <Compile Include="Validations\ProductValidation.cs" />
     <Compile Include="Validations\SupplierValidation.cs" />
+    <Compile Include="Validations\TereziValidation.cs" />
     <Compile Include="Validations\TerminalValidation.cs" />
     <Compile Include="Validations\UserValidation.cs" />
     <Compile Include="ZAMINKREDIT.cs">

@@ -199,12 +199,9 @@ namespace WindowsFormsApp2
                 {
                     if (terezi.Model.Trim() is "Rongta RLS 1100")
                     {
-                        if (kontrol.Substring(0, 1) == "0" && kontrol.Count() is 12)
+                        kontrol = "0" + kontrol;
+                        if (kontrol.Substring(0, 1) == "0" && kontrol.Count() is 13)
                         {
-
-                            kontrol = "0" + kontrol;
-
-
                             kod = kontrol.Substring(2, 5);
                             kg = kontrol.Substring(7, 2);
                             gr = kontrol.Substring(9, 3);
@@ -1813,6 +1810,7 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
         {
             string SendJson = null;
             string ResponseJson = null;
+            string TerminalResponseJson = null;
             try
             {
                 var responseData = NBA.CloseShift(lIpAdress.Text, textBox1.Text);
@@ -1891,21 +1889,15 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                 var requestbankdetail = new RestRequest(urlbankcontrol, Method.Post);
 
 
-                string bankid;
-
-
-
                 requestbankdetail.AddHeader("Accept", "application/json");
                 requestbankdetail.AddHeader("apikey", "87903e62-9643-4e46-bb6f-3920be587332");
+                requestbankdetail.AddHeader("Content-Type", "application/json; charset=utf-8");
 
                 var body2 = "{}";
                 requestbankdetail.AddStringBody(body2, DataFormat.Json);
-
+            ZReport:
                 RestResponse response2 = client2.Execute(requestbankdetail);
-
-
-
-
+                TerminalResponseJson = response2.Content;
 
                 string dataccontrolsa = response2.Content;
                 string data2 = System.Text.RegularExpressions.Regex.Unescape(dataccontrolsa);
@@ -1945,6 +1937,52 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
 
                     pd.Print();
                 }
+                else if (statusa == "not approved")
+                {
+                    goto ZReport;
+
+
+
+                    if (weatherForecastbankdetail.errorreceipt != null)
+                    {
+                        foreach (var item in weatherForecastbankdetail.errorreceipt)
+                        {
+                            bankdizi.Add(item.line);
+                        }
+                    }
+                    ReadyMessages.ERROR_BANK_MESSAGE(weatherForecastbankdetail.responsecodeText);
+
+
+                    #region [..XƏZİNƏDAR QƏBZİ..]
+
+
+                    PrintDocument pd = new PrintDocument();
+                    pd.DefaultPageSettings = new PageSettings
+                    {
+                        PaperSize = new PrinterSettings().DefaultPageSettings.PaperSize
+                    };
+
+                    pd.PrintPage += new PrintPageEventHandler(nba_bankprint);
+
+                    pagesCount = 1;
+
+
+                    PrintDialog PrintDialog1 = new PrintDialog
+                    {
+                        Document = pd
+                    };
+
+                    pd.Print();
+
+
+                    #endregion [..XƏZİNƏDAR QƏBZİ..]
+
+
+                }
+                else
+                {
+                    goto ZReport;
+                }
             }
             catch (Exception e)
             {
@@ -1956,9 +1994,18 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                 {
                     OperationType = Enums.OperationType.ZReport,
                     OperationId = 0,
-                    Message = "Z Report request/response json",
+                    Message = "Kassa Z Report request/response json",
                     RequestCode = SendJson,
                     ResponseCode = ResponseJson,
+                });
+
+                FormHelpers.OperationLog(new OperationLogs
+                {
+                    OperationType = Enums.OperationType.ZReport,
+                    OperationId = 0,
+                    Message = "Bank Terminal Z Report request/response json",
+                    RequestCode = "{}",
+                    ResponseCode = TerminalResponseJson,
                 });
             }
         }
@@ -3556,7 +3603,7 @@ from  dbo.item where user_id = {Properties.Settings.Default.UserID}";
 
                             bankid = $"{weatherForecastbank.trnid}";
                         }
-                        Thread.Sleep(3000);
+                        Thread.Sleep(3500);
 
 
                     bankstart:

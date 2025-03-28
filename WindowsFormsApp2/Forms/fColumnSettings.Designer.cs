@@ -74,6 +74,7 @@
             this.gridView1.OptionsView.ShowViewCaption = true;
             this.gridView1.PaintStyleName = "Skin";
             this.gridView1.ViewCaption = "Göstəriləcək müştəri məlumatları";
+            this.gridView1.ShowingEditor += new System.ComponentModel.CancelEventHandler(this.gridView1_ShowingEditor);
             // 
             // gridColumn1
             // 

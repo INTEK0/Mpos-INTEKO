@@ -208,7 +208,6 @@ namespace WindowsFormsApp2.Forms
                 tBankCode.Text = customer.BankCode;
                 tBankSwift.Text = customer.BankSwift;
                 bAdd.Text = Enums.GetEnumDescription(Enums.Operation.Update);
-                tCompanyName.Enabled = false;
             }
         }
 

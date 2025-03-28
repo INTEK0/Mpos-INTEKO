@@ -148,7 +148,6 @@ namespace WindowsFormsApp2.Forms
             this.bDelete.Appearance.Font = new System.Drawing.Font("Nunito", 12F, System.Drawing.FontStyle.Bold);
             this.bDelete.Appearance.Options.UseBackColor = true;
             this.bDelete.Appearance.Options.UseFont = true;
-            this.bDelete.Enabled = false;
             this.bDelete.ImageOptions.SvgImageSize = new System.Drawing.Size(24, 24);
             this.bDelete.Location = new System.Drawing.Point(183, 4);
             this.bDelete.LookAndFeel.SkinName = "WXI";
@@ -168,7 +167,6 @@ namespace WindowsFormsApp2.Forms
             this.bEdit.Appearance.Font = new System.Drawing.Font("Nunito", 12F, System.Drawing.FontStyle.Bold);
             this.bEdit.Appearance.Options.UseBackColor = true;
             this.bEdit.Appearance.Options.UseFont = true;
-            this.bEdit.Enabled = false;
             this.bEdit.Location = new System.Drawing.Point(11, 4);
             this.bEdit.LookAndFeel.SkinName = "WXI";
             this.bEdit.LookAndFeel.UseDefaultLookAndFeel = false;

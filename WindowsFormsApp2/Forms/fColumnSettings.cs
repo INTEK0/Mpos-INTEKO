@@ -52,6 +52,7 @@ namespace WindowsFormsApp2.Forms
                     for (int i = 0; i < gridView1.RowCount; i++)
                     {
                         bool isVisible = (bool)gridView1.GetRowCellValue(i, "Visible");
+
                         if (isVisible)
                         {
                             gridView1.SelectRow(i);
@@ -103,6 +104,15 @@ namespace WindowsFormsApp2.Forms
         private void simpleButton1_Click(object sender, EventArgs e)
         {
             SaveSettings();
+        }
+
+        private void gridView1_ShowingEditor(object sender, CancelEventArgs e)
+        {
+            string fieldName = gridView1.GetRowCellValue(gridView1.FocusedRowHandle, "FieldName").ToString();
+            if (fieldName == "MUSTERILER_ID")
+            {
+                e.Cancel = true;  // Düzenlemeyi iptal et
+            }
         }
     }
 }

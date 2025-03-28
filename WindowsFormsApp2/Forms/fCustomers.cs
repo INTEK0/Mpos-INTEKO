@@ -42,15 +42,15 @@ namespace WindowsFormsApp2.Forms
             {
                 var row = gridView1.GetDataRow(item);
                 if (row == null) { return; }
-                int customerID = Convert.ToInt32(row[0].ToString());
-                string companyName = row[0].ToString();
-                if (!string.IsNullOrWhiteSpace(customerID.ToString()))
+                int customerId = Convert.ToInt32(row["MUSTERILER_ID"].ToString());
+                string nameSurname = row["AD SOYAD ATA ADI"].ToString();
+                if (!string.IsNullOrWhiteSpace(customerId.ToString()))
                 {
-                    bool response = DbProsedures.DeleteCustomer(customerID);
+                    bool response = DbProsedures.DeleteCustomer(customerId);
                     if (response is true)
                     {
-                        Alert($"{companyName} müştərisi uğurla silindi", Enums.MessageType.Success);
-                        Log($"{companyName} müştərisi silindi");
+                        Alert($"{nameSurname} müştərisi uğurla silindi", Enums.MessageType.Success);
+                        Log($"{nameSurname} müştərisi silindi");
                         CustomerDataLoad();
                     }
                 }
@@ -128,7 +128,7 @@ namespace WindowsFormsApp2.Forms
 
 
                         gridControl1.DataSource = data;
-                        //gridView1.Columns[0].Visible = false;
+                        gridView1.Columns["MUSTERILER_ID"].Visible = false;
                         gridView1.GroupPanelText = $"Müştəri sayı: {gridView1.RowCount}";
                     }
                 }

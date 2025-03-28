@@ -1207,7 +1207,7 @@ WHERE BARKOD = '{barcode}'";
             }
         }
 
-        public static bool DeleteCustomer(int customerID)
+        public static bool DeleteCustomer(int customerId)
         {
             using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
             {
@@ -1216,7 +1216,7 @@ WHERE BARKOD = '{barcode}'";
                     cmd.CommandType = CommandType.StoredProcedure;
                     SqlParameter param;
                     param = cmd.Parameters.Add("@id", SqlDbType.Int);
-                    param.Value = customerID;
+                    param.Value = customerId;
                     param = cmd.Parameters.Add("@emp_count", SqlDbType.Bit);
                     param.Direction = ParameterDirection.Output;
 
@@ -1327,8 +1327,8 @@ WHERE BARKOD = '{barcode}'";
     {(int)type},
     '{_date}',
     {customerId},
-    {amount.ToString().Replace(",",".")})";
-                 con.Open();
+    {amount.ToString().Replace(",", ".")})";
+                con.Open();
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
                     cmd.ExecuteNonQuery();
@@ -2072,11 +2072,11 @@ WHERE BARKOD = '{barcode}'";
         #region [.. TERMINALS ..]
 
 
-        public async static void TerminalAdd(Terminal item)
+        public static int TerminalAdd(Terminal item)
         {
             using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
             {
-                await con.OpenAsync();
+                con.Open();
                 using (SqlCommand cmd = new SqlCommand(INSERT_TerminalQuery, con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -2095,25 +2095,23 @@ WHERE BARKOD = '{barcode}'";
                     param = cmd.Parameters.Add("@EMPCOUNT", SqlDbType.Int);
                     param.Direction = ParameterDirection.Output;
 
-                    await cmd.ExecuteNonQueryAsync();
-                    int result = Convert.ToInt32(param.Value);
-                    if (result == 0)
-                    {
-                        FormHelpers.Alert($"Kassa daha öncə əlavə edilib", MessageType.Info);
-                        return;
-                    }
-                    else
-                    {
-                        FormHelpers.Alert($"{item.IpAddress} ip adresli kassa sistemə əlavə edildi", MessageType.Success);
-                        FormHelpers.Log($"{item.IpAddress} ip adresli kassa sistemə əlavə edildi");
-                    }
+                    cmd.ExecuteNonQuery();
+                    return Convert.ToInt32(param.Value);
                 }
             }
         }
 
-        public static void TerminalRemove()
+        public static void TerminalRemove(int Id)
         {
-
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                string query = $"DELETE FROM KASSA_IP WHERE KASSA_IP_ID ={Id}";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         #endregion [.. TERMINALS ..]
@@ -2123,30 +2121,47 @@ WHERE BARKOD = '{barcode}'";
         #region [.. TƏRƏZİ ..]
 
 
-        public async static void TereziAdd(Terezi item)
+        public static bool TereziAdd(Terezi item)
         {
             using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
             {
-                await con.OpenAsync();
-                using (SqlCommand cmd = new SqlCommand(INSERT_TerminalQuery, con))
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("TERAZI_IP_INSERT", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     SqlParameter param;
-                    param = cmd.Parameters.Add("@KASSA_FIRMA_IP", SqlDbType.Int);
+                    param = cmd.Parameters.Add("@TERAZI_FIRMA_IP", SqlDbType.Int);
                     param.Value = item.ModelId;
                     param = cmd.Parameters.Add("@IP_ADRESS", SqlDbType.NVarChar, 100);
                     param.Value = item.IpAddress;
-                    param = cmd.Parameters.Add("@KASSIR_ID", SqlDbType.Int);
+                    param = cmd.Parameters.Add("@UserID", SqlDbType.Int);
                     param.Value = item.UserId;
 
-                    await cmd.ExecuteNonQueryAsync();
+                    param = cmd.Parameters.Add("@EMPCOUNT", SqlDbType.Int);
+                    param.Direction = ParameterDirection.Output;
+
+                    cmd.ExecuteNonQuery();
+                    int result = Convert.ToInt32(param.Value);
+                    if (result > 0)
+                    {
+                        return true;
+                    }
+                    return false;
                 }
             }
         }
 
-        public static void TereziRemove()
+        public static void TereziRemove(int Id)
         {
-
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                string query = $"DELETE FROM TERAZI_IP WHERE TERAZI_IP_ID={Id}";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         #endregion [.. TƏRƏZİ ..]

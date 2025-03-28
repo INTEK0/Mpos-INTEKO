@@ -1,21 +1,18 @@
 ﻿using DevExpress.XtraGrid.Localization;
 using System;
 using System.Data;
-using System.Data.SqlClient;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
-using WindowsFormsApp2.Helpers.Messages;
+using WindowsFormsApp2.Validations;
 using static WindowsFormsApp2.Helpers.FormHelpers;
 
 namespace WindowsFormsApp2.Forms
 {
     public partial class fTereziler : DevExpress.XtraEditors.XtraForm
     {
-        KASSA_IP_CRUD KIC = new KASSA_IP_CRUD();
-
         public fTereziler()
         {
             InitializeComponent();
@@ -27,20 +24,49 @@ namespace WindowsFormsApp2.Forms
         {
             TereziDataLoad();
             TereziFirmaLoad();
+            UserDataLoad();
+        }
+
+        private void UserDataLoad()
+        {
+            string strQuery = "SELECT id,AD as N'KASSİR' FROM userParol where IsDeleted = 0";
+            var data = DbProsedures.ConvertToDataTable(strQuery);
+
+            lookUser.Properties.DisplayMember = "KASSİR";
+            lookUser.Properties.ValueMember = "id";
+            lookUser.Properties.DataSource = data;
+            lookUser.Properties.NullText = "--Seçin--";
+            lookUser.Properties.PopulateColumns();
+            lookUser.Properties.Columns[0].Visible = false;
         }
 
         private void bAdd_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(tIpAddress.Text) || string.IsNullOrWhiteSpace(lookTerezi.EditValue.ToString()))
+            DatabaseClasses.Terezi terezi = new DatabaseClasses.Terezi
             {
-                FormHelpers.Alert("Ip adresi və ya Tərəzi seçimi edilmədi", Enums.MessageType.Warning);
-                return;
+                IpAddress = tIpAddress.Text,
+                ModelId = lookTerezi.EditValue == null ? 0 : Convert.ToInt32(lookTerezi.EditValue.ToString()),
+                UserId = lookUser.EditValue == null ? 0 : Convert.ToInt32(lookUser.EditValue.ToString())
+            };
+
+            var validator = new TereziValidation();
+            var validateResult = validator.Validate(terezi);
+
+            if (!validateResult.IsValid)
+            {
+                foreach (var error in validateResult.Errors)
+                {
+                    FormHelpers.Alert(error.ErrorMessage, Enums.MessageType.Warning);
+                    return;
+                }
             }
-            else
+
+            if (DbProsedures.TereziAdd(terezi))
             {
-                int A = KIC.Insert_IPT(Convert.ToInt32(lookTerezi.EditValue.ToString()), tIpAddress.Text);
+                Alert($"{tIpAddress.Text} ip adresli {lookTerezi.Text} tərəzi əlavə edildi", Enums.MessageType.Success);
                 FormHelpers.Log($"{tIpAddress.Text} ip adresli {lookTerezi.Text} tərəzi əlavə edildi");
             }
+
             TereziDataLoad();
         }
 
@@ -50,10 +76,11 @@ namespace WindowsFormsApp2.Forms
             {
                 DataRow row = gridView1.GetDataRow(i);
 
-                int B = Convert.ToInt32(row[0].ToString());
+                int B = Convert.ToInt32(row["TERAZI_IP_ID"].ToString());
                 if (B > 0)
                 {
-                    KIC.DELETE_IPT(B);
+                    DbProsedures.TereziRemove(B);
+                    Alert($"{row[2]} ip adresli {row[1]} tərəzi silindi", Enums.MessageType.Success);
                     FormHelpers.Log($"{row[2]} ip adresli {row[1]} tərəzi silindi");
                 }
             }
@@ -100,24 +127,16 @@ namespace WindowsFormsApp2.Forms
 
         private void TereziDataLoad()
         {
-            try
-            {
-                SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
-                string queryString = " select TERAZI_IP_ID, kf.TERAZI_FIRMALAR AS N'TƏRƏZİ MODELİNİN ADI', ki.IP_ADRESS AS N'TƏRƏZİNİN İP ÜNVANI' from TERAZI_IP ki inner join TERAZI_FIRMALAR kf    on ki.TERAZI_FIRMA_IP = kf.TERAZI_FIRMALAR_ID";
+            string queryString = @"SELECT TERAZI_IP_ID, 
+kf.TERAZI_FIRMALAR AS N'ModelName',
+ki.IP_ADRESS AS N'IpAddress' 
+FROM TERAZI_IP ki 
+INNER JOIN TERAZI_FIRMALAR kf ON ki.TERAZI_FIRMA_IP = kf.TERAZI_FIRMALAR_ID";
 
-                SqlCommand command = new SqlCommand(queryString, connection);
-                SqlDataAdapter da = new SqlDataAdapter(command);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-                gridControl1.DataSource = dt;
-                gridView1.Columns[0].Visible = false;
-                //gridView1.OptionsSelection.MultiSelect = false;
-                //gridView1.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
-            }
-            catch (Exception e)
-            {
-                ReadyMessages.ERROR_DATALOAD_MESSAGE(e.Message);
-            }
+            var data = DbProsedures.ConvertToDataTable(queryString);
+
+            gridControl1.DataSource = data;
+            gridView1.Columns["TERAZI_IP_ID"].Visible = false;
         }
 
         private void TereziFirmaLoad()
@@ -131,7 +150,6 @@ namespace WindowsFormsApp2.Forms
             lookTerezi.Properties.NullText = "--Seçin--";
             lookTerezi.Properties.PopulateColumns();
             lookTerezi.Properties.Columns[0].Visible = false;
-            //}
         }
     }
 }

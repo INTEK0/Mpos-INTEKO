@@ -420,8 +420,8 @@ FROM[terazimalzeme]";
 
         private void MainScreen_Load(object sender, EventArgs e)
         {
-            lMposVersion.Text = Application.ProductVersion;
-            lLicenceVersion.Text = "Yoxdur";
+            //lMposVersion.Text = Application.ProductVersion;
+            //lLicenceVersion.Text = "Yoxdur";
             BestsellingProducts();
             TotalSalesInformation();
             TotalRefundInformation();

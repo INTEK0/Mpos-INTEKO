@@ -26,12 +26,10 @@ namespace WindowsFormsApp2.Forms
             GridLocalizer.Active = new MyGridLocalizer();
         }
 
-        KASSA_IP_CRUD KIC = new KASSA_IP_CRUD();
-
         private void fKassalar_Load(object sender, EventArgs e)
         {
             firma_main();
-            magaza_main();
+            UserDataLoad();
             GetallData();
 
         }
@@ -55,7 +53,7 @@ namespace WindowsFormsApp2.Forms
             lookBank.EditValue = _bankType;
         }
 
-        private void magaza_main()
+        private void UserDataLoad()
         {
             string strQuery = "SELECT id,AD as N'KASSİR' FROM userParol where IsDeleted = 0";
             var data = DbProsedures.ConvertToDataTable(strQuery);
@@ -81,7 +79,7 @@ namespace WindowsFormsApp2.Forms
             lookKassa.Properties.Columns[0].Visible = false;
         }
 
-        public void GetallData()
+        private void GetallData()
         {
             try
             {
@@ -114,7 +112,7 @@ LEFT JOIN userParol u ON u.id = ki.KASSIR_ID";
                 int B = Convert.ToInt32(row[0].ToString());
                 if (B > 0)
                 {
-                    int x = KIC.DELETE_IP(B);
+                    DbProsedures.TerminalRemove(B);
                     FormHelpers.Log($"{row[2]} ip adresli {row[1]} kassası silindi");
 
                 }
@@ -146,21 +144,18 @@ LEFT JOIN userParol u ON u.id = ki.KASSIR_ID";
                 }
             }
 
-            DbProsedures.TerminalAdd(terminal);
+           int result = DbProsedures.TerminalAdd(terminal);
+            if (result == 0)
+            {
+                FormHelpers.Alert($"Kassa daha öncə əlavə edilib", MessageType.Info);
+                return;
+            }
+            else
+            {
+                FormHelpers.Alert($"{tIpAddress.Text} ip adresli {lookKassa.Text} kassası sistemə əlavə edildi", MessageType.Success);
+                FormHelpers.Log($"{tIpAddress.Text} ip adresli {lookKassa.Text} kassası sistemə əlavə edildi");
+            }
             GetallData();
-
-            ////DAXIL ET 
-            //if (string.IsNullOrEmpty(tIpAddress.Text.ToString()) || string.IsNullOrEmpty(lookKassa.EditValue.ToString())
-            //    || string.IsNullOrEmpty(lookUser.EditValue.ToString()))
-            //{
-
-            //}
-            //else
-            //{
-            //    int A = KIC.Insert_IP(Convert.ToInt32(lookKassa.EditValue.ToString()), tIpAddress.Text,
-            //   Convert.ToInt32(lookUser.EditValue.ToString()), tMerchantId.Text);
-            //    FormHelpers.Log($"{tIpAddress.Text} ip adresli {lookKassa.Text} kassa əlavə edildi");
-            //}
         }
 
         private void lookKassa_TextChanged(object sender, EventArgs e)

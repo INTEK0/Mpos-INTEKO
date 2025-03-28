@@ -107,7 +107,11 @@ namespace WindowsFormsApp2
             this.gridView1.OptionsEditForm.PopupEditFormWidth = 1066;
             this.gridView1.OptionsView.EnableAppearanceEvenRow = true;
             this.gridView1.OptionsView.EnableAppearanceOddRow = true;
+            this.gridView1.OptionsView.ShowFooter = true;
             this.gridView1.OptionsView.ShowIndicator = false;
+            this.gridView1.RowHeight = 100;
+            this.gridView1.CustomDrawFooterCell += new DevExpress.XtraGrid.Views.Grid.FooterCellCustomDrawEventHandler(this.gridView1_CustomDrawFooterCell);
+            this.gridView1.CustomDrawFooter += new DevExpress.XtraGrid.Views.Base.RowObjectCustomDrawEventHandler(this.gridView1_CustomDrawFooter);
             this.gridView1.DoubleClick += new System.EventHandler(this.gridView1_DoubleClick);
             // 
             // gridColumn1
@@ -345,7 +349,6 @@ namespace WindowsFormsApp2
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1198, 766);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.IconOptions.Image = global::WindowsFormsApp2.Properties.Resources.Mpos_png1;
             this.LookAndFeel.SkinName = "WXI";
             this.LookAndFeel.UseDefaultLookAndFeel = false;
             this.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);

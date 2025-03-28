@@ -1,8 +1,10 @@
 ﻿using DevExpress.XtraEditors;
+using DevExpress.XtraGrid;
 using DevExpress.XtraGrid.Localization;
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -47,6 +49,7 @@ namespace WindowsFormsApp2
         {
             try
             {
+                Cursor.Current = Cursors.WaitCursor;
                 using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
                 {
                     string queryString = "gaime_Satis_mal_load_tarixle  @d1 = @pricepoint1 ";
@@ -61,6 +64,26 @@ namespace WindowsFormsApp2
                                 gridControl1.DataSource = dt;
                                 gridView1.Columns["TECHIZATCI_ID"].Visible = false;
                                 gridView1.Columns["MAL_ALISI_DETAILS_ID"].Visible = false;
+
+                                gridView1.OptionsView.ShowFooter = true;
+                                gridView1.Columns["ANBAR QALIĞI"].Summary.Clear();
+                                gridView1.Columns["ALIŞ QİYMƏTİ"].Summary.Clear();
+                                GridColumnSummaryItem stockSum = new GridColumnSummaryItem
+                                {
+                                    FieldName = "ANBAR QALIĞI",
+                                    SummaryType = DevExpress.Data.SummaryItemType.Sum,
+                                    DisplayFormat = "{0:N2}"
+                                };
+                                GridColumnSummaryItem PuchaseSum = new GridColumnSummaryItem
+                                {
+                                    FieldName = "ALIŞ QİYMƏTİ",
+                                    SummaryType = DevExpress.Data.SummaryItemType.Sum,
+                                    DisplayFormat = "{0:N2}",
+
+                                };
+                                gridView1.Columns["ANBAR QALIĞI"].Summary.Add(stockSum);
+                                gridView1.Columns["ALIŞ QİYMƏTİ"].Summary.Add(PuchaseSum);
+
                             }
                         }
                     }
@@ -69,6 +92,10 @@ namespace WindowsFormsApp2
             catch (Exception e)
             {
                 ReadyMessages.ERROR_DEFAULT_MESSAGE("Xəta!\n" + e);
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
             }
         }
 
@@ -117,7 +144,7 @@ namespace WindowsFormsApp2
                             }
 
                             string supplierId = reader["SupplierId"].ToString();
-                            if (!_detail.Suppliers.Exists(x=> x.Id == supplierId))
+                            if (!_detail.Suppliers.Exists(x => x.Id == supplierId))
                             {
                                 _detail.Suppliers.Add(new ProductDetail.Supplier
                                 {
@@ -169,6 +196,22 @@ namespace WindowsFormsApp2
                         }
                     }
                 }
+            }
+        }
+
+        private void gridView1_CustomDrawFooter(object sender, DevExpress.XtraGrid.Views.Base.RowObjectCustomDrawEventArgs e)
+        {
+          
+        }
+
+        private void gridView1_CustomDrawFooterCell(object sender, DevExpress.XtraGrid.Views.Grid.FooterCellCustomDrawEventArgs e)
+        {
+            if (e.Column.SummaryItem.SummaryType == DevExpress.Data.SummaryItemType.Sum)
+            {
+                e.Handled = true;
+                e.Appearance.BackColor = Color.Yellow;
+                e.Appearance.DrawBackground(e.Cache, e.Bounds);
+                e.Appearance.DrawString(e.Cache, e.Info.DisplayText, e.Bounds);
             }
         }
     }
