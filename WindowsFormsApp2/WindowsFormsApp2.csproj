@@ -414,6 +414,12 @@
     <Compile Include="Forms\fQaimeSalesReport.Designer.cs">
       <DependentUpon>fQaimeSalesReport.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\fQuickAddProduct.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\fQuickAddProduct.Designer.cs">
+      <DependentUpon>fQuickAddProduct.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\fReceivedProducts.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1075,6 +1081,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fQaimeSalesReport.resx">
       <DependentUpon>fQaimeSalesReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\fQuickAddProduct.resx">
+      <DependentUpon>fQuickAddProduct.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fQuickSale.resx">
       <DependentUpon>fQuickSale.cs</DependentUpon>

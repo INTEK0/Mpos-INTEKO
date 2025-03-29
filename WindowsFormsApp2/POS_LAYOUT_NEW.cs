@@ -352,11 +352,6 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                 }
 
 
-
-
-
-
-
                 textBox5.Text = string.Empty;
                 tCustomer.Text = string.Empty;
                 tBarcode.Text = string.Empty;
