@@ -173,7 +173,6 @@
             this.gridExpense.OptionsEditForm.PopupEditFormWidth = 1067;
             this.gridExpense.OptionsView.EnableAppearanceEvenRow = true;
             this.gridExpense.OptionsView.EnableAppearanceOddRow = true;
-            this.gridExpense.OptionsView.ShowGroupPanel = false;
             this.gridExpense.OptionsView.ShowIndicator = false;
             this.gridExpense.SortInfo.AddRange(new DevExpress.XtraGrid.Columns.GridColumnSortInfo[] {
             new DevExpress.XtraGrid.Columns.GridColumnSortInfo(this.gridColumn2, DevExpress.Data.ColumnSortOrder.Ascending)});

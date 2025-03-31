@@ -34,6 +34,7 @@ namespace WindowsFormsApp2.Forms
             public string UnitName { get; set; }
             public decimal PurchasePrice { get; set; }
             public decimal TotalPurchaseAmount { get => Amount * PurchasePrice; }
+            public decimal Percent { get; set; }
             public decimal SalePrice { get; set; }
             public decimal TotalSaleAmount { get => Amount * SalePrice; }
             //public decimal Gain { get => TotalSaleAmount - TotalPurchaseAmount; }
