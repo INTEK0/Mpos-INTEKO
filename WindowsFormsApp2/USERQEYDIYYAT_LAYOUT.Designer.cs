@@ -34,6 +34,7 @@ namespace WindowsFormsApp2
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.simpleButton3 = new DevExpress.XtraEditors.SimpleButton();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.chToPosSale = new System.Windows.Forms.CheckBox();
             this.chSaveMe = new System.Windows.Forms.CheckBox();
             this.simpleButton2 = new DevExpress.XtraEditors.SimpleButton();
             this.simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
@@ -66,6 +67,7 @@ namespace WindowsFormsApp2
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem16 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
@@ -99,6 +101,7 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).BeginInit();
             this.SuspendLayout();
             // 
             // gridControl1
@@ -108,7 +111,7 @@ namespace WindowsFormsApp2
             this.gridControl1.MainView = this.gridView1;
             this.gridControl1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gridControl1.Name = "gridControl1";
-            this.gridControl1.Size = new System.Drawing.Size(638, 451);
+            this.gridControl1.Size = new System.Drawing.Size(638, 477);
             this.gridControl1.TabIndex = 99;
             this.gridControl1.TabStop = false;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -131,7 +134,7 @@ namespace WindowsFormsApp2
             this.simpleButton3.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Danger;
             this.simpleButton3.Appearance.Options.UseBackColor = true;
             this.simpleButton3.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("simpleButton3.ImageOptions.SvgImage")));
-            this.simpleButton3.Location = new System.Drawing.Point(327, 473);
+            this.simpleButton3.Location = new System.Drawing.Point(327, 499);
             this.simpleButton3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.simpleButton3.Name = "simpleButton3";
             this.simpleButton3.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
@@ -143,6 +146,7 @@ namespace WindowsFormsApp2
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.chToPosSale);
             this.layoutControl1.Controls.Add(this.chSaveMe);
             this.layoutControl1.Controls.Add(this.gridControl1);
             this.layoutControl1.Controls.Add(this.simpleButton3);
@@ -167,6 +171,16 @@ namespace WindowsFormsApp2
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
+            // chToPosSale
+            // 
+            this.chToPosSale.Location = new System.Drawing.Point(25, 464);
+            this.chToPosSale.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.chToPosSale.Name = "chToPosSale";
+            this.chToPosSale.Size = new System.Drawing.Size(450, 20);
+            this.chToPosSale.TabIndex = 100;
+            this.chToPosSale.Text = "Sadəcə satış səhifəsinə daxil olsun";
+            this.chToPosSale.UseVisualStyleBackColor = true;
+            // 
             // chSaveMe
             // 
             this.chSaveMe.Location = new System.Drawing.Point(25, 434);
@@ -182,7 +196,7 @@ namespace WindowsFormsApp2
             this.simpleButton2.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Primary;
             this.simpleButton2.Appearance.Options.UseBackColor = true;
             this.simpleButton2.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("simpleButton2.ImageOptions.SvgImage")));
-            this.simpleButton2.Location = new System.Drawing.Point(182, 473);
+            this.simpleButton2.Location = new System.Drawing.Point(182, 499);
             this.simpleButton2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.simpleButton2.Name = "simpleButton2";
             this.simpleButton2.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.True;
@@ -197,7 +211,7 @@ namespace WindowsFormsApp2
             this.simpleButton1.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Success;
             this.simpleButton1.Appearance.Options.UseBackColor = true;
             this.simpleButton1.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("simpleButton1.ImageOptions.SvgImage")));
-            this.simpleButton1.Location = new System.Drawing.Point(16, 473);
+            this.simpleButton1.Location = new System.Drawing.Point(16, 499);
             this.simpleButton1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.simpleButton1.Name = "simpleButton1";
             this.simpleButton1.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
@@ -342,7 +356,7 @@ namespace WindowsFormsApp2
             // layoutControlItem11
             // 
             this.layoutControlItem11.Control = this.simpleButton1;
-            this.layoutControlItem11.Location = new System.Drawing.Point(0, 457);
+            this.layoutControlItem11.Location = new System.Drawing.Point(0, 483);
             this.layoutControlItem11.MaxSize = new System.Drawing.Size(166, 48);
             this.layoutControlItem11.MinSize = new System.Drawing.Size(166, 48);
             this.layoutControlItem11.Name = "layoutControlItem11";
@@ -354,7 +368,7 @@ namespace WindowsFormsApp2
             // layoutControlItem12
             // 
             this.layoutControlItem12.Control = this.simpleButton2;
-            this.layoutControlItem12.Location = new System.Drawing.Point(166, 457);
+            this.layoutControlItem12.Location = new System.Drawing.Point(166, 483);
             this.layoutControlItem12.MaxSize = new System.Drawing.Size(145, 48);
             this.layoutControlItem12.MinSize = new System.Drawing.Size(145, 48);
             this.layoutControlItem12.Name = "layoutControlItem12";
@@ -366,9 +380,9 @@ namespace WindowsFormsApp2
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 505);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 531);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(1118, 202);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(1118, 176);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem14
@@ -376,14 +390,14 @@ namespace WindowsFormsApp2
             this.layoutControlItem14.Control = this.gridControl1;
             this.layoutControlItem14.Location = new System.Drawing.Point(474, 0);
             this.layoutControlItem14.Name = "layoutControlItem14";
-            this.layoutControlItem14.Size = new System.Drawing.Size(644, 457);
+            this.layoutControlItem14.Size = new System.Drawing.Size(644, 483);
             this.layoutControlItem14.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem14.TextVisible = false;
             // 
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(474, 457);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(474, 483);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
             this.emptySpaceItem2.Size = new System.Drawing.Size(644, 48);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
@@ -391,7 +405,7 @@ namespace WindowsFormsApp2
             // layoutControlItem13
             // 
             this.layoutControlItem13.Control = this.simpleButton3;
-            this.layoutControlItem13.Location = new System.Drawing.Point(311, 457);
+            this.layoutControlItem13.Location = new System.Drawing.Point(311, 483);
             this.layoutControlItem13.MaxSize = new System.Drawing.Size(163, 48);
             this.layoutControlItem13.MinSize = new System.Drawing.Size(163, 48);
             this.layoutControlItem13.Name = "layoutControlItem13";
@@ -412,12 +426,13 @@ namespace WindowsFormsApp2
             this.layoutControlItem7,
             this.layoutControlItem9,
             this.layoutControlItem8,
-            this.layoutControlItem15,
-            this.layoutControlItem10});
+            this.layoutControlItem10,
+            this.layoutControlItem16,
+            this.layoutControlItem15});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(5, 5, 5, 5);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(474, 457);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(474, 483);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem1
@@ -573,6 +588,15 @@ namespace WindowsFormsApp2
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem10.TextVisible = false;
             // 
+            // layoutControlItem16
+            // 
+            this.layoutControlItem16.Control = this.chToPosSale;
+            this.layoutControlItem16.Location = new System.Drawing.Point(0, 439);
+            this.layoutControlItem16.Name = "layoutControlItem16";
+            this.layoutControlItem16.Size = new System.Drawing.Size(456, 26);
+            this.layoutControlItem16.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem16.TextVisible = false;
+            // 
             // USERQEYDIYYAT_LAYOUT
             // 
             this.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(245)))), ((int)(((byte)(250)))));
@@ -624,6 +648,7 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -664,6 +689,8 @@ namespace WindowsFormsApp2
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem12;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem14;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem13;
+        private System.Windows.Forms.CheckBox chToPosSale;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem15;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem16;
     }
 }

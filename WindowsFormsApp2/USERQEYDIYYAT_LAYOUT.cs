@@ -34,11 +34,13 @@ TELEFON as 'Telefon',
 SV_NO as N'ŞV No',
 UNVAN as N'Ünvan',
 DOGUM_TARIXI as N'Doğum tarixi',
-GAN_GRUPU as 'Qan qrupu'
+GAN_GRUPU as 'Qan qrupu',
+PosSales
 FROM userParol where IsDeleted = 0";
             var data = DbProsedures.ConvertToDataTable(query);
             gridControl1.DataSource = data;
             gridView1.Columns[0].Visible = false;
+            gridView1.Columns["PosSales"].Visible = false;
         }
 
         private void USERQEYDIYYAT_LAYOUT_Load(object sender, EventArgs e)
@@ -70,6 +72,7 @@ FROM userParol where IsDeleted = 0";
                     Address = tAddress.Text.Trim(),
                     DateBirth = dateBirth.DateTime,
                     BloodType = tBloodType.Text.Trim(),
+                    PosSaleScreen = chToPosSale.Checked
                 };
 
                 var validator = new UserValidation();
@@ -127,54 +130,61 @@ FROM userParol where IsDeleted = 0";
 
         private void simpleButton2_Click(object sender, EventArgs e)
         {
-                DatabaseClasses.User user = new DatabaseClasses.User()
-                {
-                    Id = id_,
-                    Username = tUsername.Text.Trim(),
-                    Password = tPassword.Text.Trim(),
-                    NameSurname = tNameSurname.Text.Trim(),
-                    IsAdmin = checkBox1.Checked,
-                    Email = tEmail.Text.Trim(),
-                    Phone = tPhone.Text.Trim(),
-                    SvNo = tSvNo.Text.Trim(),
-                    Address = tAddress.Text.Trim(),
-                    DateBirth = dateBirth.DateTime,
-                    BloodType = tBloodType.Text.Trim(),
-                };
+            DatabaseClasses.User user = new DatabaseClasses.User()
+            {
+                Id = id_,
+                Username = tUsername.Text.Trim(),
+                Password = tPassword.Text.Trim(),
+                NameSurname = tNameSurname.Text.Trim(),
+                IsAdmin = checkBox1.Checked,
+                Email = tEmail.Text.Trim(),
+                Phone = tPhone.Text.Trim(),
+                SvNo = tSvNo.Text.Trim(),
+                Address = tAddress.Text.Trim(),
+                DateBirth = dateBirth.DateTime,
+                BloodType = tBloodType.Text.Trim(),
+                PosSaleScreen = chToPosSale.Checked
+            };
 
-                var validator = new UserValidation();
-                var validateResult = validator.Validate(user);
+            if (checkBox1.Checked is false && chToPosSale.Checked is true)
+            {
+                user.PosSaleScreen = chToPosSale.Checked;
+            }
 
-                if (!validateResult.IsValid)
+            var validator = new UserValidation();
+            var validateResult = validator.Validate(user);
+
+            if (!validateResult.IsValid)
+            {
+                foreach (var error in validateResult.Errors)
                 {
-                    foreach (var error in validateResult.Errors)
-                    {
-                        FormHelpers.Alert(error.ErrorMessage, Enums.MessageType.Warning);
-                        return;
-                    }
+                    FormHelpers.Alert(error.ErrorMessage, Enums.MessageType.Warning);
+                    return;
                 }
+            }
 
-                DbProsedures.UpdatetUser(user);
+            DbProsedures.UpdatetUser(user);
 
-                FormHelpers.Alert("istifadəçidə düzəliş edildi", Enums.MessageType.Success);
-                FormHelpers.Log($"{user.Id} id nömrəsinə sahib istifadəçidə düzəliş edildi");
+            FormHelpers.Alert("istifadəçidə düzəliş edildi", Enums.MessageType.Success);
+            FormHelpers.Log($"{user.Id} id nömrəsinə sahib istifadəçidə düzəliş edildi");
 
-                if (chSaveMe.Checked)
-                {
-                    Properties.Settings.Default.Username = tUsername.Text;
-                    Properties.Settings.Default.Password = tPassword.Text;
-                    Properties.Settings.Default.SaveMe = true;
-                    Properties.Settings.Default.Save();
-                }
-                else
-                {
-                    Properties.Settings.Default.Username = null;
-                    Properties.Settings.Default.Password = null;
-                    Properties.Settings.Default.SaveMe = false;
-                    Properties.Settings.Default.Save();
-                }
+            if (chSaveMe.Checked)
+            {
+                Properties.Settings.Default.Username = tUsername.Text;
+                Properties.Settings.Default.Password = tPassword.Text;
+                Properties.Settings.Default.SaveMe = true;
+                Properties.Settings.Default.Save();
+            }
+            else
+            {
+                Properties.Settings.Default.Username = null;
+                Properties.Settings.Default.Password = null;
+                Properties.Settings.Default.SaveMe = false;
+                Properties.Settings.Default.Save();
+            }
 
-                getall();
+
+            getall();
         }
 
         private void simpleButton3_Click(object sender, EventArgs e)
@@ -207,7 +217,7 @@ FROM userParol where IsDeleted = 0";
                 tAddress.Text = dr[8].ToString();
                 dateBirth.Text = dr[9].ToString();
                 tBloodType.Text = dr[10].ToString();
-
+                chToPosSale.Checked = Convert.ToBoolean(dr["PosSales"].ToString());
                 if (iu > 0)
                 {
                     checkBox1.Checked = true;

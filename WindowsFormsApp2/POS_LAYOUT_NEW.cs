@@ -47,7 +47,7 @@ namespace WindowsFormsApp2
         private int za;
         private DataTable dt;
         private SqlDataAdapter da;
-
+        private User _user = DbProsedures.GetUser();
         public string customer, customervoen, obyektkod, obyetname, obyektadres, nkamodel, nkanumber, nkarnumber, barkodsa, bankttnmd, bankttnminputdata;
         public string YekunMebleg, zdocument, nacilma, ndoc, firstDocNumber, lastDocNumber, saleCount, saleSum, saleCashSum, saleCashlessSum, salePrepaymentSum, saleCreditSum, saleBonusSum, saleVatAmounts, depositCount, moneyBackCount, moneyBackSum, moneyBackCashSum, moneyBackCashlessSum, moneyBackVatAmounts, vatPercent, vatPercentm, vatSuma, vatSumma, rno, sdocumentid, fissayi, gunfissayi, odenen, qaliq, edvdenazada1, edvhesap1, edvdenazada2, edvhesap2, deposita, withdrawa, nhtarix, depositSum;
 
@@ -80,7 +80,7 @@ namespace WindowsFormsApp2
             lModel.Visible = true;
             Auto();
             gridControl1.TabStop = true;
-            tUsername.Text = DbProsedures.GetUser()?.NameSurname;
+            tUsername.Text = _user?.NameSurname;
             textEdit2.Text = DateTime.Now.ToShortDateString();
 
             //st.del_tr();
@@ -263,6 +263,7 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                     }
                     else if (terezi.Model.Trim() is "MERC LB 1100")
                     {
+                        kontrol = "0" + kontrol;
                         if (kontrol.Substring(0, 1) == "0" && kontrol.Count() is 13)
                         {
                             kod = kontrol.Substring(2, 5);
@@ -272,7 +273,10 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                             using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
                             {
                                 con.Open();
-                                string query = $@"select BARKOD from [MAL_ALISI_DETAILS] where [MAL_ALISI_DETAILS_ID]={kod}";
+                                string query = $@"SELECT TOP 1 BARKOD,MAL_ALISI_DETAILS_ID 
+FROM MAL_ALISI_DETAILS 
+WHERE BARKOD IN (SELECT BARKOD FROM MAL_ALISI_DETAILS WHERE MAL_ALISI_DETAILS_ID = {kod})
+ORDER BY MAL_ALISI_DETAILS_ID DESC;";
 
                                 using (SqlCommand cmd = new SqlCommand(query, con))
                                 {
@@ -282,47 +286,68 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                                         {
                                             barkodsa = dr["BARKOD"].ToString();
                                             barkod = dr["BARKOD"].ToString();
+                                            malDetailsID = dr["MAL_ALISI_DETAILS_ID"].ToString();
                                             textEdit10.Text = kg + "," + gr;
                                             getall(barkod);
                                             get(textEdit1.Text);
 
-                                            get_say_birmal(barkod, textEdit1.Text);
+                                           // get_say_birmal(barkod, textEdit1.Text);
                                         }
                                     }
                                 }
                             }
 
-                            int rowHandle = gridView1.LocateByValue("MAL_ALISI_DETAILS_ID", Int32.Parse(kod));
-                            if (rowHandle != DevExpress.XtraGrid.GridControl.InvalidRowHandle)
-                                gridView1.FocusedRowHandle = rowHandle;
 
-                            gridView1.FocusedRowHandle = rowHandle;
-
-                            tBarcode.Text = string.Empty;
                             textEdit10.Text = kg + "," + gr;
-                            get_cem(textEdit1.Text);
 
-                            string productId = gridView1.GetFocusedRowCellValue("MAL_ALISI_DETAILS_ID").ToString();
-
-
-                            st.del_migdarnewsa_calculation(productId,
+                            string Id = int.Parse(malDetailsID).ToString();
+                            st.del_migdarnewsa_calculation(Id,
                                                            textEdit10.Text,
                                                            textEdit1.Text);
 
 
                             get(textEdit1.Text);
-                            get_say_birmal(tBarcode.Text, textEdit1.Text);
+                            get_say_birmal(barkodsa, textEdit1.Text);
                             tBarcode.Text = string.Empty;
-                            //deyisilmis
 
                             get_cem(textEdit1.Text);
-
-
 
                             textEdit9.Text = "";
                             textEdit10.Text = "";
                             textEdit12.Text = "";
                             textEdit13.Text = "";
+
+                            //int rowHandle = gridView1.LocateByValue("MAL_ALISI_DETAILS_ID", Int32.Parse(kod));
+                            //if (rowHandle != DevExpress.XtraGrid.GridControl.InvalidRowHandle)
+                            //    gridView1.FocusedRowHandle = rowHandle;
+
+                            //gridView1.FocusedRowHandle = rowHandle;
+
+                            //tBarcode.Text = string.Empty;
+                            //textEdit10.Text = kg + "," + gr;
+                            //get_cem(textEdit1.Text);
+
+                            //string productId = gridView1.GetFocusedRowCellValue("MAL_ALISI_DETAILS_ID").ToString();
+
+
+                            //st.del_migdarnewsa_calculation(productId,
+                            //                               textEdit10.Text,
+                            //                               textEdit1.Text);
+
+
+                            //get(textEdit1.Text);
+                            //get_say_birmal(tBarcode.Text, textEdit1.Text);
+                            //tBarcode.Text = string.Empty;
+                            ////deyisilmis
+
+                            //get_cem(textEdit1.Text);
+
+
+
+                            //textEdit9.Text = "";
+                            //textEdit10.Text = "";
+                            //textEdit12.Text = "";
+                            //textEdit13.Text = "";
 
 
 
@@ -2595,6 +2620,17 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                     break;
                 case Keys.F9:
                     simpleButton25_Click(null, null);
+                    break;
+                case Keys.F12:
+                    if (_user.IsAdmin)
+                    {
+                        fQuickAddProduct f = new fQuickAddProduct();
+                        f.Show();
+                    }
+                    else
+                    {
+                        Alert("Sizin icazəniz yoxdur", MessageType.Info);
+                    }
                     break;
             }
         }

@@ -34,7 +34,6 @@ namespace WindowsFormsApp2.Helpers.DB
         private const string INSERT_IMPORT_MALALISIMAINQuery = "INSERT_IMPORT_MAL_ALISI_MAIN";
         private const string INSERT_MALALISIDETAILQuery = "INSERT_MAL_ALISI_DETAILS";
         private const string DELETE_MALALISIDETAILQuery = "DELETE_PRODUCT_MAL_ALIS_DETAILS";
-        private const string GET_ProductProccesNoLQuery = "EXEC  dbo.MAL_ALISI_EMELIYYAT_NOMRE";
         private const string INSERT_CustomerQuery = "INSERT_MUSTERI";
         private const string INSERT_DoctorQuery = "INSERT_DOCTOR";
         private const string DELETE_CustomerQuery = "delete_customer";
@@ -1029,7 +1028,8 @@ WHERE BARKOD = '{barcode}'";
         {
             using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
             {
-                using (SqlCommand cmd = new SqlCommand(GET_ProductProccesNoLQuery, connection))
+                string query = "EXEC dbo.MAL_ALISI_EMELIYYAT_NOMRE";
+                using (SqlCommand cmd = new SqlCommand(query, connection))
                 {
                     connection.Open();
                     using (SqlDataReader dr = cmd.ExecuteReader())

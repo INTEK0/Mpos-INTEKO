@@ -240,21 +240,22 @@ REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
 0 AS [Ice(%)] FROM[terazimalzeme]";
                     break;
                 case "MERC LB 1100":
-                     queryString = @"SELECT 
+                    queryString = @"SELECT 
 REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE([MƏHSUL ADI],N'Ə','E'),N'ə','e'),N'ı','i'),N'ü','u'),N'ğ','g'),N'Ğ','G' ),N'Ü','U'),N'Ş','S'),N'ş','s'),N'Ç','C'),N'ç','c'),
 [MAL_ALISI_DETAILS_ID],
-[MAL_ALISI_DETAILS_ID]  ,
+[MAL_ALISI_DETAILS_ID],
 7,
 [SATIŞ QİYMƏTİ],
-'Kg' ,
-0  ,
-21 ,
-0 ,
+'4',
+21,
+0,
+0,
 0,
 'Normal',
-0 ,
-0 ,
-0 ,
+0,
+0,
+0,
+0,
 0,
 0,
 0
@@ -300,7 +301,7 @@ FROM[terazimalzeme]";
                             }
                         }
                     }
-                    Alert("Tərəzi məhsulları excelə export edildi", MessageType.Success);
+                    Alert($"{terezi.Model} tərəzisinin məhsulları excelə export edildi", MessageType.Success);
                 }
             }
         }
@@ -344,7 +345,7 @@ FROM[terazimalzeme]";
         private void accordionControlElement25_Click(object sender, EventArgs e)
         {
             OpenForm<fCreditPay>();
-           // OpenForm<SearchKrediOdeme_LAYOUT>(Properties.Settings.Default.UserID, this);
+            // OpenForm<SearchKrediOdeme_LAYOUT>(Properties.Settings.Default.UserID, this);
         }
 
         private void accordionControlElement26_Click(object sender, EventArgs e)
@@ -406,22 +407,25 @@ FROM[terazimalzeme]";
 
         private void MainScreen_FormClosing(object sender, FormClosingEventArgs e)
         {
-            switch (e.CloseReason)
-            {
-                case CloseReason.UserClosing:
-                case CloseReason.TaskManagerClosing:
-                case CloseReason.FormOwnerClosing:
-                case CloseReason.ApplicationExitCall:
-                    FormHelpers.Log("Sistemdən çıxış etdi");
-                    Application.Exit();
-                    break;
-            }
+            //switch (e.CloseReason)
+            //{
+            //    case CloseReason.UserClosing:
+            //    case CloseReason.TaskManagerClosing:
+            //    case CloseReason.FormOwnerClosing:
+            //    case CloseReason.ApplicationExitCall:
+            //        FormHelpers.Log("Sistemdən çıxış etdi");
+            //        if (Application.OpenForms.Count >= 1)
+            //        {
+            //            Application.Exit();
+            //        }
+            //        break;
+            //}
         }
 
         private void MainScreen_Load(object sender, EventArgs e)
         {
-            //lMposVersion.Text = Application.ProductVersion;
-            //lLicenceVersion.Text = "Yoxdur";
+            lMposVersion.Text = Application.ProductVersion;
+            lLicenceVersion.Text = "Yoxdur";
             BestsellingProducts();
             TotalSalesInformation();
             TotalRefundInformation();
@@ -766,7 +770,7 @@ ORDER BY TotalAmount DESC;
             Cursor.Current = Cursors.WaitCursor;
             gridProducts.ViewCaption = "Anbar qalığı";
 
-            using (SqlConnection con = new SqlConnection(Properties.Settings.Default.SqlCon))
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
             {
                 string query = "EXEC dbo.gaime_Satis_mal_load;";
 
@@ -1231,7 +1235,7 @@ ORDER BY TotalAmount DESC;
 
         private void accordionControlElement63_Click(object sender, EventArgs e)
         {
-           OpenForm<fIncomeAndExpensesReport>();
+            OpenForm<fIncomeAndExpensesReport>();
         }
 
         private void gridExpenses_RowClick(object sender, DevExpress.XtraGrid.Views.Grid.RowClickEventArgs e)
@@ -1247,6 +1251,47 @@ ORDER BY TotalAmount DESC;
                         ExpensesDataLoad();
                     };
                 }
+            }
+        }
+
+        private void accordionControlElement65_Click(object sender, EventArgs e)
+        {
+            OpenForm<fQuickAddProduct>("");
+        }
+
+        private void MAINSCRRENS_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode is Keys.F12)
+            {
+                OpenForm<fQuickAddProduct>("");
+            }
+        }
+
+        private void MAINSCRRENS_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            switch (e.CloseReason)
+            {
+                case CloseReason.UserClosing:
+                case CloseReason.TaskManagerClosing:
+                case CloseReason.FormOwnerClosing:
+                case CloseReason.ApplicationExitCall:
+                    FormHelpers.Log("Sistemdən çıxış etdi");
+                    foreach (Form form in Application.OpenForms.Cast<Form>().ToList())
+                    {
+                        form.Close();
+                    }
+
+                    Application.Exit();
+                    break;
+            }
+        }
+
+        private void gridProducts_DoubleClick(object sender, EventArgs e)
+        {
+            if (gridProducts.GetFocusedDataRow() != null)
+            {
+                string barcode = gridProducts.GetFocusedRowCellValue("MƏHSUL BARKOD").ToString();
+                OpenForm<fQuickAddProduct>(barcode);
             }
         }
 

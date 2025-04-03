@@ -420,6 +420,12 @@
     <Compile Include="Forms\fQuickAddProduct.Designer.cs">
       <DependentUpon>fQuickAddProduct.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\fQuickProductList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\fQuickProductList.Designer.cs">
+      <DependentUpon>fQuickProductList.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\fReceivedProducts.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1084,6 +1090,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fQuickAddProduct.resx">
       <DependentUpon>fQuickAddProduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\fQuickProductList.resx">
+      <DependentUpon>fQuickProductList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fQuickSale.resx">
       <DependentUpon>fQuickSale.cs</DependentUpon>

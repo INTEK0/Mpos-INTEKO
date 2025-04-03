@@ -238,6 +238,7 @@ namespace WindowsFormsApp2.Helpers.DB
             public string Address { get; set; }
             public DateTime DateBirth { get; set; }
             public string BloodType { get; set; }
+            public bool PosSaleScreen { get; set; } = false;
         }
 
         public class Doctor

@@ -95,17 +95,33 @@ namespace WindowsFormsApp2
             {
                 if (user.IsAdmin)
                 {
-                    //admin kimi daxil ol
                     this.Hide();
                     MAINSCRRENS f2 = new MAINSCRRENS(1);
                     f2.Show();
                 }
                 else
                 {
-                    // istifadeci kimi daxil ol
                     this.Hide();
-                    MAINSCRRENS f2 = new MAINSCRRENS(0);
-                    f2.Show();
+                    if (user.PosSaleScreen)
+                    {
+                        POS_LAYOUT_NEW f = new POS_LAYOUT_NEW();
+                        f.Show();
+                        f.FormClosed += (s, args) =>
+                        {
+                            FormHelpers.Log("Sistemdən çıxış etdi");
+                            Application.Exit();
+                        };
+                    }
+                    else
+                    {
+                        MAINSCRRENS f2 = new MAINSCRRENS(0);
+                        f2.Show();
+                        f2.FormClosed += (s, args) =>
+                        {
+                            FormHelpers.Log("Sistemdən çıxış etdi");
+                            Application.Exit();
+                        };
+                    }
                 }
                 Properties.Settings.Default.UserID = user.Id;
                 Properties.Settings.Default.Save();
