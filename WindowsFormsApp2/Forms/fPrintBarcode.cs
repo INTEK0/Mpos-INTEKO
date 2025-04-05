@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApp2.Helpers;
+using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using Zen.Barcode;
@@ -79,35 +80,39 @@ namespace WindowsFormsApp2.Forms
         {
             int[] selectedRows = gridProducts.GetSelectedRows();
 
+
+
             foreach (var rowHandle in selectedRows)
             {
                 string barcode = gridProducts.GetRowCellValue(rowHandle, colBarcode).ToString();
                 string name = gridProducts.GetRowCellValue(rowHandle, colProductName).ToString();
-                string salesPrice = gridProducts.GetRowCellValue(rowHandle, coLSalePrice).ToString();
+                string salesPrice = Convert.ToDouble(gridProducts.GetRowCellValue(rowHandle, coLSalePrice).ToString()).ToString("N2");
 
-                _productName = name;
-                _salePrice = salesPrice;
-                _barcode = barcode;
+                PrinterCacheData.PrintLabel("XAN MARKET",name.Trim(),salesPrice,barcode.Trim());
 
-                _printType = (PrintType)lookPrintType.EditValue;
-                _barcodeImage = GenerateBarcode(_barcode, 0, _productName, _salePrice);
+                //_productName = name;
+                //_salePrice = salesPrice;
+                //_barcode = barcode;
 
-                PrintDocument pd = new PrintDocument();
-                pd.DefaultPageSettings = new PageSettings
-                {
-                    PaperSize = new PrinterSettings().DefaultPageSettings.PaperSize
-                };
-                pd.DocumentName = $"Name_{name} - Barkod_{barcode}";
-                pd.PrintPage += new PrintPageEventHandler(printbarkod);
-                pd.PrinterSettings.PrinterName = new System.Drawing.Printing.PrinterSettings().PrinterName;
+                //_printType = (PrintType)lookPrintType.EditValue;
+                //_barcodeImage = GenerateBarcode(_barcode, 0, _productName, _salePrice);
+
+                //PrintDocument pd = new PrintDocument();
+                //pd.DefaultPageSettings = new PageSettings
+                //{
+                //    PaperSize = new PrinterSettings().DefaultPageSettings.PaperSize
+                //};
+                //pd.DocumentName = $"Name_{name} - Barkod_{barcode}";
+                //pd.PrintPage += new PrintPageEventHandler(printbarkod);
+                //pd.PrinterSettings.PrinterName = new System.Drawing.Printing.PrinterSettings().PrinterName;
 
 
-                PrintDialog PrintDialog1 = new PrintDialog
-                {
-                    Document = pd
-                };
+                //PrintDialog PrintDialog1 = new PrintDialog
+                //{
+                //    Document = pd
+                //};
 
-                pd.Print();
+                //pd.Print();
             }
             this.Show();
         }
@@ -118,31 +123,33 @@ namespace WindowsFormsApp2.Forms
 
             string barcode = gridProducts.GetRowCellValue(rowHandle, colBarcode).ToString();
             string name = gridProducts.GetRowCellValue(rowHandle, colProductName).ToString();
-            string salesPrice = gridProducts.GetRowCellValue(rowHandle, coLSalePrice).ToString();
+            string salesPrice = Convert.ToDouble(gridProducts.GetRowCellValue(rowHandle, coLSalePrice).ToString()).ToString("N2");
 
-            _productName = name;
-            _salePrice = salesPrice;
-            _barcode = barcode;
+            PrinterCacheData.PrintLabel("AKAY MARKET", name.Trim(), salesPrice, barcode.Trim());
 
-            _printType = (PrintType)lookPrintType.EditValue;
-            _barcodeImage = GenerateBarcode(_barcode, 0, _productName, _salePrice);
+            //_productName = name;
+            //_salePrice = salesPrice;
+            //_barcode = barcode;
 
-            PrintDocument pd = new PrintDocument();
-            pd.DefaultPageSettings = new PageSettings
-            {
-                PaperSize = new PrinterSettings().DefaultPageSettings.PaperSize
-            };
-            pd.DocumentName = $"Name_{name} - Barkod_{barcode}";
-            pd.PrintPage += new PrintPageEventHandler(printbarkod);
-            pd.PrinterSettings.PrinterName = new System.Drawing.Printing.PrinterSettings().PrinterName;
+            //_printType = (PrintType)lookPrintType.EditValue;
+            //_barcodeImage = GenerateBarcode(_barcode, 0, _productName, _salePrice);
+
+            //PrintDocument pd = new PrintDocument();
+            //pd.DefaultPageSettings = new PageSettings
+            //{
+            //    PaperSize = new PrinterSettings().DefaultPageSettings.PaperSize
+            //};
+            //pd.DocumentName = $"Name_{name} - Barkod_{barcode}";
+            //pd.PrintPage += new PrintPageEventHandler(printbarkod);
+            //pd.PrinterSettings.PrinterName = new System.Drawing.Printing.PrinterSettings().PrinterName;
 
 
-            PrintDialog PrintDialog1 = new PrintDialog
-            {
-                Document = pd
-            };
+            //PrintDialog PrintDialog1 = new PrintDialog
+            //{
+            //    Document = pd
+            //};
 
-            pd.Print();
+            //pd.Print();
         }
 
         void printbarkod(System.Object sender, System.Drawing.Printing.PrintPageEventArgs e)

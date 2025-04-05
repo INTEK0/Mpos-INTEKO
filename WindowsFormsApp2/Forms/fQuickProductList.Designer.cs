@@ -45,9 +45,9 @@
             this.bDeleteRow = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.panelControl9 = new DevExpress.XtraEditors.PanelControl();
             this.panelControl10 = new DevExpress.XtraEditors.PanelControl();
-            this.bAdd = new DevExpress.XtraEditors.SimpleButton();
-            this.bCreate = new DevExpress.XtraEditors.SimpleButton();
             this.bRefresh = new DevExpress.XtraEditors.SimpleButton();
+            this.bCreate = new DevExpress.XtraEditors.SimpleButton();
+            this.bAdd = new DevExpress.XtraEditors.SimpleButton();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bDeleteRow)).BeginInit();
@@ -87,9 +87,11 @@
             this.gridColumn5,
             this.gridColumn4});
             this.gridView1.DetailHeight = 431;
+            this.gridView1.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFullFocus;
             this.gridView1.GridControl = this.gridControl1;
             this.gridView1.GroupCount = 1;
             this.gridView1.Name = "gridView1";
+            this.gridView1.OptionsBehavior.Editable = false;
             this.gridView1.OptionsEditForm.PopupEditFormWidth = 1067;
             this.gridView1.OptionsSelection.MultiSelect = true;
             this.gridView1.OptionsSelection.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.CheckBoxRowSelect;
@@ -149,7 +151,7 @@
             this.gridColumn6.FieldName = "PurchasePrice";
             this.gridColumn6.Name = "gridColumn6";
             this.gridColumn6.Visible = true;
-            this.gridColumn6.VisibleIndex = 4;
+            this.gridColumn6.VisibleIndex = 3;
             this.gridColumn6.Width = 97;
             // 
             // gridColumn8
@@ -165,7 +167,7 @@
             this.gridColumn8.FieldName = "SalePrice";
             this.gridColumn8.Name = "gridColumn8";
             this.gridColumn8.Visible = true;
-            this.gridColumn8.VisibleIndex = 5;
+            this.gridColumn8.VisibleIndex = 4;
             this.gridColumn8.Width = 91;
             // 
             // gridColumn5
@@ -179,8 +181,6 @@
             this.gridColumn5.FieldName = "UnitName";
             this.gridColumn5.Name = "gridColumn5";
             this.gridColumn5.OptionsColumn.AllowEdit = false;
-            this.gridColumn5.Visible = true;
-            this.gridColumn5.VisibleIndex = 3;
             this.gridColumn5.Width = 74;
             // 
             // gridColumn4
@@ -197,7 +197,7 @@
             this.gridColumn4.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.MiddleLeft;
             this.gridColumn4.Name = "gridColumn4";
             this.gridColumn4.Visible = true;
-            this.gridColumn4.VisibleIndex = 6;
+            this.gridColumn4.VisibleIndex = 5;
             this.gridColumn4.Width = 97;
             // 
             // bDeleteRow
@@ -237,20 +237,18 @@
             this.panelControl10.Size = new System.Drawing.Size(1188, 37);
             this.panelControl10.TabIndex = 1;
             // 
-            // bAdd
+            // bRefresh
             // 
-            this.bAdd.AllowFocus = false;
-            this.bAdd.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Success;
-            this.bAdd.Appearance.Options.UseBackColor = true;
-            this.bAdd.Location = new System.Drawing.Point(11, 4);
-            this.bAdd.Margin = new System.Windows.Forms.Padding(2);
-            this.bAdd.Name = "bAdd";
-            this.bAdd.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.bAdd.Size = new System.Drawing.Size(79, 28);
-            this.bAdd.TabIndex = 5;
-            this.bAdd.TabStop = false;
-            this.bAdd.Text = "Əlavə et";
-            this.bAdd.Click += new System.EventHandler(this.bAdd_Click);
+            this.bRefresh.AllowFocus = false;
+            this.bRefresh.Location = new System.Drawing.Point(235, 4);
+            this.bRefresh.Margin = new System.Windows.Forms.Padding(2);
+            this.bRefresh.Name = "bRefresh";
+            this.bRefresh.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bRefresh.Size = new System.Drawing.Size(82, 28);
+            this.bRefresh.TabIndex = 6;
+            this.bRefresh.TabStop = false;
+            this.bRefresh.Text = "Yenilə";
+            this.bRefresh.Click += new System.EventHandler(this.bRefresh_Click);
             // 
             // bCreate
             // 
@@ -265,18 +263,20 @@
             this.bCreate.Text = "Yeni məhsul yarat";
             this.bCreate.Click += new System.EventHandler(this.bCreate_Click);
             // 
-            // bRefresh
+            // bAdd
             // 
-            this.bRefresh.AllowFocus = false;
-            this.bRefresh.Location = new System.Drawing.Point(235, 4);
-            this.bRefresh.Margin = new System.Windows.Forms.Padding(2);
-            this.bRefresh.Name = "bRefresh";
-            this.bRefresh.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.bRefresh.Size = new System.Drawing.Size(82, 28);
-            this.bRefresh.TabIndex = 6;
-            this.bRefresh.TabStop = false;
-            this.bRefresh.Text = "Yenilə";
-            this.bRefresh.Click += new System.EventHandler(this.bRefresh_Click);
+            this.bAdd.AllowFocus = false;
+            this.bAdd.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Success;
+            this.bAdd.Appearance.Options.UseBackColor = true;
+            this.bAdd.Location = new System.Drawing.Point(11, 4);
+            this.bAdd.Margin = new System.Windows.Forms.Padding(2);
+            this.bAdd.Name = "bAdd";
+            this.bAdd.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bAdd.Size = new System.Drawing.Size(79, 28);
+            this.bAdd.TabIndex = 5;
+            this.bAdd.TabStop = false;
+            this.bAdd.Text = "Əlavə et";
+            this.bAdd.Click += new System.EventHandler(this.bAdd_Click);
             // 
             // fQuickProductList
             // 

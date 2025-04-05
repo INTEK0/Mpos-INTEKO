@@ -163,6 +163,7 @@ namespace WindowsFormsApp2
             this.accordionControlElement50 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement53 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement52 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
+            this.accordionControlElement66 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.fluentDesignFormControl1 = new DevExpress.XtraBars.FluentDesignSystem.FluentDesignFormControl();
             this.accordionControlElement1 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.gridView3 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -1993,7 +1994,8 @@ namespace WindowsFormsApp2
             this.accordionControlElement48,
             this.accordionControlElement50,
             this.accordionControlElement53,
-            this.accordionControlElement52});
+            this.accordionControlElement52,
+            this.accordionControlElement66});
             this.accordionControlElement39.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("accordionControlElement39.ImageOptions.SvgImage")));
             this.accordionControlElement39.Name = "accordionControlElement39";
             this.accordionControlElement39.Text = "Sazlamalar";
@@ -2041,6 +2043,12 @@ namespace WindowsFormsApp2
             this.accordionControlElement52.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
             this.accordionControlElement52.Text = "Bank TTNM";
             this.accordionControlElement52.Click += new System.EventHandler(this.accordionControlElement52_Click);
+            // 
+            // accordionControlElement66
+            // 
+            this.accordionControlElement66.Name = "accordionControlElement66";
+            this.accordionControlElement66.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
+            this.accordionControlElement66.Text = "Printer ayarları";
             // 
             // fluentDesignFormControl1
             // 
@@ -2786,7 +2794,7 @@ namespace WindowsFormsApp2
             this.tabAllSettings.Name = "tabAllSettings";
             this.tabAllSettings.Properties.AppearanceCaption.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.tabAllSettings.Properties.AppearanceCaption.Options.UseFont = true;
-            this.tabAllSettings.Size = new System.Drawing.Size(1157, 759);
+            this.tabAllSettings.Size = new System.Drawing.Size(1157, 761);
             // 
             // panelControl13
             // 
@@ -2805,7 +2813,7 @@ namespace WindowsFormsApp2
             this.panelControl13.LookAndFeel.UseDefaultLookAndFeel = false;
             this.panelControl13.Margin = new System.Windows.Forms.Padding(1);
             this.panelControl13.Name = "panelControl13";
-            this.panelControl13.Size = new System.Drawing.Size(1157, 759);
+            this.panelControl13.Size = new System.Drawing.Size(1157, 761);
             this.panelControl13.TabIndex = 12;
             // 
             // chClinicModul
@@ -3494,6 +3502,7 @@ namespace WindowsFormsApp2
         private DevExpress.XtraEditors.LabelControl lLicenceVersion;
         private DevExpress.XtraEditors.LabelControl lMposVersion;
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement65;
+        private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement66;
     }
 }
 
