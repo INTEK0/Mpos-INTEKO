@@ -332,5 +332,15 @@ namespace WindowsFormsApp2.Helpers.DB
             public string IpAddress { get; set; }
             public int UserId { get; set; }
         }
+
+        public class Printer
+        {
+            public int Id { get; set; }
+            public string PrinterName { get; set; }
+            public string PortName { get; set; }
+            public string IpAddress { get; set; }
+            public string PrintType { get; set; }
+            public int UserId { get; set; }
+        }
     }
 }

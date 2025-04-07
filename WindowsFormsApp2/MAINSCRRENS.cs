@@ -441,6 +441,7 @@ FROM[terazimalzeme]";
             Get_StockDecreasingAmountShow();
             ClinicModuleShow();
             ExpensesDataLoad();
+            SysAdminControl();
         }
 
         private void ExpensesDataLoad()
@@ -726,6 +727,15 @@ ORDER BY TotalAmount DESC;
         {
             navigationFrame1.SelectedPage = pageDashboard;
         }
+
+        private void SysAdminControl()
+        {
+            if (Properties.Settings.Default.UserID is 0)
+            {
+                accordionControlElement66.Visible = true;//Printer module
+            }
+        }
+
 
         private void accordionControlElement58_Click(object sender, EventArgs e)
         {
@@ -1293,6 +1303,11 @@ ORDER BY TotalAmount DESC;
                 string barcode = gridProducts.GetFocusedRowCellValue("MƏHSUL BARKOD").ToString();
                 OpenForm<fQuickAddProduct>(barcode);
             }
+        }
+
+        private void accordionControlElement66_Click(object sender, EventArgs e)
+        {
+            OpenForm<fPrinterSettings>();
         }
 
         private void chTerminalPrintReceipt_CheckedChanged(object sender, EventArgs e)

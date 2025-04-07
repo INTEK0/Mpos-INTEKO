@@ -6086,24 +6086,47 @@ WHERE rn = 1;";
                     string supplier = dr2["TƏCHİZATÇI ADI"].ToString();
                     double price = Convert.ToDouble(dr2["SATIŞ QİYMƏTİ"].ToString());
 
-                    // Supplier
-                    TileItemElement titleElement = new TileItemElement();
-                    titleElement.Text = supplier;
-                    titleElement.TextAlignment = TileItemContentAlignment.TopLeft;
-                    titleElement.Appearance.Normal.Font = new Font("Tahoma", 10, FontStyle.Regular);
-
                     // Product Name
                     TileItemElement productElement = new TileItemElement();
                     productElement.Text = productName;
-                    productElement.TextAlignment = TileItemContentAlignment.MiddleCenter;
+                    productElement.TextAlignment = TileItemContentAlignment.TopLeft;
                     productElement.MaxWidth = 120;
                     productElement.Appearance.Normal.Font = new Font("Nunito", 10);
+
 
                     // Price
                     TileItemElement priceElement = new TileItemElement();
                     priceElement.Text = price.ToString("C2");
-                    priceElement.TextAlignment = TileItemContentAlignment.BottomRight;
-                    priceElement.Appearance.Normal.Font = new Font("Tahoma", 10);
+                    priceElement.TextAlignment = TileItemContentAlignment.MiddleCenter;
+                    priceElement.Appearance.Normal.Font = new Font("Tahoma", 12);
+
+
+                    // Supplier
+                    TileItemElement titleElement = new TileItemElement();
+                    titleElement.Text = supplier;
+                    titleElement.TextAlignment = TileItemContentAlignment.BottomLeft;
+                    titleElement.Appearance.Normal.Font = new Font("Tahoma", 10, FontStyle.Regular);
+
+
+
+                    //// Supplier
+                    //TileItemElement titleElement = new TileItemElement();
+                    //titleElement.Text = supplier;
+                    //titleElement.TextAlignment = TileItemContentAlignment.TopLeft;
+                    //titleElement.Appearance.Normal.Font = new Font("Tahoma", 10, FontStyle.Regular);
+
+                    //// Product Name
+                    //TileItemElement productElement = new TileItemElement();
+                    //productElement.Text = productName;
+                    //productElement.TextAlignment = TileItemContentAlignment.MiddleCenter;
+                    //productElement.MaxWidth = 120;
+                    //productElement.Appearance.Normal.Font = new Font("Nunito", 10);
+
+                    //// Price
+                    //TileItemElement priceElement = new TileItemElement();
+                    //priceElement.Text = price.ToString("C2");
+                    //priceElement.TextAlignment = TileItemContentAlignment.BottomRight;
+                    //priceElement.Appearance.Normal.Font = new Font("Tahoma", 10);
 
 
                     tileItem.Elements.Add(titleElement);

@@ -469,11 +469,11 @@ namespace WindowsFormsApp2
             // tileControl1
             // 
             this.tileControl1.Groups.Add(this.tileGroup1);
-            this.tileControl1.Location = new System.Drawing.Point(1271, 426);
+            this.tileControl1.Location = new System.Drawing.Point(1271, 403);
             this.tileControl1.MaxId = 5;
             this.tileControl1.Name = "tileControl1";
             this.tileControl1.Padding = new System.Windows.Forms.Padding(3);
-            this.tileControl1.Size = new System.Drawing.Size(426, 94);
+            this.tileControl1.Size = new System.Drawing.Size(426, 117);
             this.tileControl1.TabIndex = 67;
             this.tileControl1.Text = "tileControl1";
             this.tileControl1.ItemClick += new DevExpress.XtraEditors.TileItemClickEventHandler(this.tileControl1_ItemClick);
@@ -1989,7 +1989,7 @@ namespace WindowsFormsApp2
             this.emptySpaceItem2.Location = new System.Drawing.Point(1263, 369);
             this.emptySpaceItem2.MinSize = new System.Drawing.Size(106, 26);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(432, 49);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(432, 26);
             this.emptySpaceItem2.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
@@ -2124,10 +2124,10 @@ namespace WindowsFormsApp2
             // layoutControlItem60
             // 
             this.layoutControlItem60.Control = this.tileControl1;
-            this.layoutControlItem60.Location = new System.Drawing.Point(1263, 418);
+            this.layoutControlItem60.Location = new System.Drawing.Point(1263, 395);
             this.layoutControlItem60.MinSize = new System.Drawing.Size(106, 26);
             this.layoutControlItem60.Name = "layoutControlItem60";
-            this.layoutControlItem60.Size = new System.Drawing.Size(432, 100);
+            this.layoutControlItem60.Size = new System.Drawing.Size(432, 123);
             this.layoutControlItem60.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem60.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem60.TextVisible = false;

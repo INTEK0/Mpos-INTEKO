@@ -48,7 +48,8 @@ namespace WindowsFormsApp2.Forms
                 LEFT JOIN VERGI_DERECESI TAX ON D.VERGI_DERECESI = TAX.EDV_ID ON M.MAL_ALISI_MAIN_ID = D.MAL_ALISI_MAIN_ID 
                 WHERE M.TECHIZATCI_ID = @pricePoint
                 AND d.KATEGORIYA = @categoryID
-                AND D.IsDeleted = 0";
+                AND D.IsDeleted = 0
+";
 
                 using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
                 {

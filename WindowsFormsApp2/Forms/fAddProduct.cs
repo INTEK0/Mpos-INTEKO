@@ -194,7 +194,7 @@ namespace WindowsFormsApp2.Forms
         {
             string query = @"
             SELECT 
-            cast(sum(isnull(d.ALIS_GIYMETI,0.00)*isnull(d.MIGDARI,0.00)) as decimal(9,2)) as yeni_borc
+            cast(sum(isnull(d.ALIS_GIYMETI,0.00)*isnull(d.MIGDARI,0.00)) as decimal(18,2)) as yeni_borc
             from MAL_ALISI_MAIN m inner join MAL_ALISI_DETAILS d on m.MAL_ALISI_MAIN_ID = d.MAL_ALISI_MAIN_ID 
             AND m.TECHIZATCI_ID=@pricePoint1 
             where m.EMELIYYAT_NOMRE = @pricePoint";
@@ -220,12 +220,12 @@ namespace WindowsFormsApp2.Forms
         private void QaliqBorcHesabla(int supplierId)
         {
             string query = @"
-            SELECT Y.BORC - X.GAYTARMA_MEBLEG AS BORC FROM( select 1 AS ID, cast(sum(isnull(BORC, 0.00)) as decimal(9, 2)) as BORC
+            SELECT Y.BORC - X.GAYTARMA_MEBLEG AS BORC FROM( select 1 AS ID, cast(sum(isnull(BORC, 0.00)) as decimal(18, 2)) as BORC
             FROM (SELECT f.MAL_ALISI_MAIN_ID, f.[FAKTURA NÖMRƏ],f.TARIX, f.QİYMƏT - isnull(t.odenis, 0.00) BORC,0 AS 'ÖDƏNİŞ'
             FROM dbo.fn_TECHIZATCI_BORC(@pricePoint) f 
             left join(select  MAL_ALISI_MAIN_ID, sum(ODENIS) odenis FROM TECHIZATCI_ODENIS
             group by MAL_ALISI_MAIN_ID)t  on f.MAL_ALISI_MAIN_ID = t.MAL_ALISI_MAIN_ID)o )Y
-            LEFT JOIN(SELECT 1 AS ID, ISNULL(CAST(SUM(MD.ALIS_GIYMETI * D.MIGDARI) AS decimal(9, 2)), 0.00)
+            LEFT JOIN(SELECT 1 AS ID, ISNULL(CAST(SUM(MD.ALIS_GIYMETI * D.MIGDARI) AS decimal(18, 2)), 0.00)
             AS GAYTARMA_MEBLEG FROM MAL_GEYTARMA_MAIN M
             INNER JOIN  MAL_GEYTARMA_DETAILS D ON
             M.MAL_GEYTARMA_MAIN_ID = D.MAL_GEYTARMA_MAIN_ID

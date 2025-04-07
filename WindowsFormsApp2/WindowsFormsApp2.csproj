@@ -953,6 +953,7 @@
     <Compile Include="Validations\DoctorValidation.cs" />
     <Compile Include="Validations\GuarantorValidation.cs" />
     <Compile Include="Validations\IncomeAndExpenseValidation.cs" />
+    <Compile Include="Validations\PrinterValidation.cs" />
     <Compile Include="Validations\ProductValidation.cs" />
     <Compile Include="Validations\SupplierValidation.cs" />
     <Compile Include="Validations\TereziValidation.cs" />

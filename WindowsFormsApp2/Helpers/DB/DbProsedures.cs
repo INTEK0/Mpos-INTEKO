@@ -2167,6 +2167,55 @@ WHERE BARKOD = '{barcode}'";
         #endregion [.. TƏRƏZİ ..]
 
 
+
+        #region [.. PRINTERS ..]
+
+
+        public static int PrinterAdd(Printer item)
+        {
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                string query = "PRINTER_INSERT";
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlParameter param;
+                    param = cmd.Parameters.Add("@PrinterName", SqlDbType.NVarChar, 100);
+                    param.Value = item.PrinterName;
+                    param = cmd.Parameters.Add("@PortName", SqlDbType.NVarChar, 100);
+                    param.Value = item.PortName;
+                    //param = cmd.Parameters.Add("@IpAddress", SqlDbType.NVarChar, 100);
+                    //param.Value = item.IpAddress;
+                    param = cmd.Parameters.Add("@PrintType", SqlDbType.NVarChar, 100);
+                    param.Value = item.PrintType;
+                    param = cmd.Parameters.Add("@UserId", SqlDbType.Int);
+                    param.Value = item.UserId;
+
+                    param = cmd.Parameters.Add("@EMPCOUNT", SqlDbType.Int);
+                    param.Direction = ParameterDirection.Output;
+
+                    cmd.ExecuteNonQuery();
+                    return Convert.ToInt32(param.Value);
+                }
+            }
+        }
+
+        public static void PrinterRemove(int Id)
+        {
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                string query = $"DELETE FROM PRINTERS WHERE Id ={Id}";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        #endregion [.. PRINTERS ..]
+
         #endregion [...PROCEDURES METHODS...]
     }
 }
