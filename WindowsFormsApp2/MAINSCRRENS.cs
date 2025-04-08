@@ -272,7 +272,7 @@ FROM[terazimalzeme]";
             var data = DbProsedures.ConvertToDataTable(queryString);
 
             gridControl2.DataSource = data;
-            dataGridView1.DataSource = data;
+
             gridView2.OptionsView.ShowColumnHeaders = false;
 
 

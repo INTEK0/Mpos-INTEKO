@@ -31,7 +31,6 @@ namespace WindowsFormsApp2
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MAINSCRRENS));
             this.fluentDesignFormContainer1 = new DevExpress.XtraBars.FluentDesignSystem.FluentDesignFormContainer();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -93,7 +92,6 @@ namespace WindowsFormsApp2
             this.panelControl6 = new DevExpress.XtraEditors.PanelControl();
             this.lPurchaseCount = new DevExpress.XtraEditors.LabelControl();
             this.labelControl11 = new DevExpress.XtraEditors.LabelControl();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.gridControlExpenses = new DevExpress.XtraGrid.GridControl();
             this.gridExpenses = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -279,7 +277,6 @@ namespace WindowsFormsApp2
             this.panelControl5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl6)).BeginInit();
             this.panelControl6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlExpenses)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridExpenses)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.accordionControl1)).BeginInit();
@@ -359,7 +356,6 @@ namespace WindowsFormsApp2
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel8, 3, 1);
             this.tableLayoutPanel1.Controls.Add(this.panelControl9, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.groupControl2, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.dataGridView1, 2, 4);
             this.tableLayoutPanel1.Controls.Add(this.gridControlExpenses, 3, 2);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
@@ -1351,23 +1347,6 @@ namespace WindowsFormsApp2
             this.labelControl11.Size = new System.Drawing.Size(76, 38);
             this.labelControl11.TabIndex = 2;
             this.labelControl11.Text = "Alınan məhsul sayı";
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Verdana", 9.75F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(36)))), ((int)(((byte)(36)))));
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle1;
-            this.dataGridView1.Location = new System.Drawing.Point(615, 761);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(240, 41);
-            this.dataGridView1.TabIndex = 12;
-            this.dataGridView1.Visible = false;
             // 
             // gridControlExpenses
             // 
@@ -3238,7 +3217,6 @@ namespace WindowsFormsApp2
             this.panelControl5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.panelControl6)).EndInit();
             this.panelControl6.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlExpenses)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridExpenses)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.accordionControl1)).EndInit();
@@ -3490,7 +3468,6 @@ namespace WindowsFormsApp2
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement62;
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement29;
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement63;
-        private System.Windows.Forms.DataGridView dataGridView1;
         private DevExpress.XtraGrid.GridControl gridControlExpenses;
         private DevExpress.XtraGrid.Views.Grid.GridView gridExpenses;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn7;
