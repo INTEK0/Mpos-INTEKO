@@ -93,6 +93,10 @@ namespace WindowsFormsApp2
             var user = UserValidation.ValidateUser(textEdit1.Text.Trim(), textEdit2.Text.Trim());
             if (user != null)
             {
+                Properties.Settings.Default.UserID = user.Id;
+                Properties.Settings.Default.Save();
+                FormHelpers.Log("Sistemə daxil oldu");
+
                 if (user.IsAdmin)
                 {
                     this.Hide();
@@ -123,9 +127,6 @@ namespace WindowsFormsApp2
                         };
                     }
                 }
-                Properties.Settings.Default.UserID = user.Id;
-                Properties.Settings.Default.Save();
-                FormHelpers.Log("Sistemə daxil oldu");
             }
             else
             {

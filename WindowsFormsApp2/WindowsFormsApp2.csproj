@@ -529,6 +529,7 @@
       <DependentUpon>fTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\DB\DatabaseClasses.cs" />
+    <Compile Include="Helpers\DB\DTOs.cs" />
     <Compile Include="Helpers\FormComponents\controlModule.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -1709,6 +1710,8 @@
   <ItemGroup>
     <None Include="Resources\Mpos_Logo_Text.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Forms\PrintPages\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

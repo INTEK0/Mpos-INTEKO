@@ -45,6 +45,7 @@ namespace WindowsFormsApp2.Forms
             DatabaseClasses.Terezi terezi = new DatabaseClasses.Terezi
             {
                 IpAddress = tIpAddress.Text,
+                FilePath = tFilePath.Text,
                 ModelId = lookTerezi.EditValue == null ? 0 : Convert.ToInt32(lookTerezi.EditValue.ToString()),
                 UserId = lookUser.EditValue == null ? 0 : Convert.ToInt32(lookUser.EditValue.ToString())
             };
@@ -150,6 +151,18 @@ INNER JOIN TERAZI_FIRMALAR kf ON ki.TERAZI_FIRMA_IP = kf.TERAZI_FIRMALAR_ID";
             lookTerezi.Properties.NullText = "--Seçin--";
             lookTerezi.Properties.PopulateColumns();
             lookTerezi.Properties.Columns[0].Visible = false;
+        }
+
+        private void tFilePath_Properties_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            using (OpenFileDialog openFile = new OpenFileDialog())
+            {
+                openFile.Title = "İNTEKO - MPOS";
+                if (openFile.ShowDialog() is DialogResult.OK)
+                {
+                    tFilePath.Text = openFile.FileName;
+                }
+            }
         }
     }
 }

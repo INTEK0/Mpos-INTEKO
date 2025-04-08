@@ -192,12 +192,12 @@ namespace WindowsFormsApp2
                 string gr;
                 string barkod;
                 string malDetailsID = null;
-                var terezi = FormHelpers.GetTereziIpModel();
+                var terezi =DbProsedures.GetTerezi();
 
 
                 if (terezi != null)
                 {
-                    if (terezi.Model.Trim() is "Rongta RLS 1100")
+                    if (terezi.ModelName.Trim() is "Rongta RLS 1100")
                     {
                         kontrol = "0" + kontrol;
                         if (kontrol.Substring(0, 1) == "0" && kontrol.Count() is 13)
@@ -261,7 +261,7 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                             get_cem(textEdit1.Text);
                         }
                     }
-                    else if (terezi.Model.Trim() is "MERC LB 1100")
+                    else if (terezi.ModelName.Trim() is "MERC LB 1100")
                     {
                         kontrol = "0" + kontrol;
                         if (kontrol.Substring(0, 1) == "0" && kontrol.Count() is 13)

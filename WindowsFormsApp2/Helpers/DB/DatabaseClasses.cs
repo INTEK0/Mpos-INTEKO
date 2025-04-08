@@ -330,6 +330,7 @@ namespace WindowsFormsApp2.Helpers.DB
         {
             public int ModelId { get; set; }
             public string IpAddress { get; set; }
+            public string FilePath { get; set; }
             public int UserId { get; set; }
         }
 

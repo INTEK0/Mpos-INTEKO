@@ -277,56 +277,6 @@ inner join userParol u on u.id = ki.KASSIR_ID where u.id = {Properties.Settings.
             }
         }
 
-        public static TereziModel GetTereziIpModel()
-        {
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
-                {
-                    connection.Open();
-
-                    string query = $@"SELECT u.AD AS Cashier,
-       tf.TERAZI_FIRMALAR AS Model,
-       ti.IP_ADRESS AS IpAddress
-FROM TERAZI_IP ti
-INNER JOIN TERAZI_FIRMALAR tf ON tf.TERAZI_FIRMALAR_ID = ti.TERAZI_FIRMA_IP
-INNER JOIN userParol u ON u.id = ti.UserId
-WHERE u.id = {Properties.Settings.Default.UserID}";
-
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        using (SqlDataReader dr = cmd.ExecuteReader())
-                        {
-                            if (dr.Read())
-                            {
-                                string ip = dr["IpAddress"].ToString();
-                                string model = dr["Model"].ToString();
-                                string cashier = dr["Cashier"].ToString();
-
-                                TereziModel result = new TereziModel
-                                {
-                                    IpAddress = ip,
-                                    Model = model,
-                                    Cashier = cashier
-                                };
-                                return result;
-
-                            }
-                            else
-                            {
-                                return null;
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                ReadyMessages.ERROR_DEFAULT_MESSAGE(e.Message);
-                return null;
-            }
-        }
-
         public static void FolderControl()
         {
             #region [..BankTTNM DOCUMENT..]
@@ -504,13 +454,6 @@ WHERE u.id = {Properties.Settings.Default.UserID}";
             public string MerchantId { get; set; } = null;
             public string Cashier { get; set; } = null;
             public string BankName { get; set; }
-        }
-
-        public class TereziModel
-        {
-            public string Cashier { get; set; } = null;
-            public string Model { get; set; }
-            public string IpAddress { get; set; }
         }
     }
 }

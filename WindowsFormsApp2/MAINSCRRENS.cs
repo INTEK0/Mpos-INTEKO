@@ -5,11 +5,15 @@ using DevExpress.XtraGrid.Localization;
 using DevExpress.XtraPrinting;
 using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using System.Web.UI.WebControls;
 using System.Windows.Forms;
 using WindowsFormsApp2.Forms;
 using WindowsFormsApp2.Helpers;
@@ -201,7 +205,7 @@ namespace WindowsFormsApp2
                 }
             }
 
-            var terezi = FormHelpers.GetTereziIpModel();
+            var terezi = DbProsedures.GetTerezi();
 
             if (terezi == null)
             {
@@ -211,7 +215,7 @@ namespace WindowsFormsApp2
 
             string queryString = null;
 
-            switch (terezi.Model.Trim())
+            switch (terezi.ModelName.Trim())
             {
                 case "Rongta RLS 1100":
                     queryString = @"SELECT  ROW_NUMBER() OVER(ORDER BY [MƏHSUL ADI]) AS Hotkey,
@@ -240,25 +244,27 @@ REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
 0 AS [Ice(%)] FROM[terazimalzeme]";
                     break;
                 case "MERC LB 1100":
-                    queryString = @"SELECT 
+                    queryString = @"SELECT
+[MAL_ALISI_DETAILS_ID], 
 REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE([MƏHSUL ADI],N'Ə','E'),N'ə','e'),N'ı','i'),N'ü','u'),N'ğ','g'),N'Ğ','G' ),N'Ü','U'),N'Ş','S'),N'ş','s'),N'Ç','C'),N'ç','c'),
 [MAL_ALISI_DETAILS_ID],
 [MAL_ALISI_DETAILS_ID],
-7,
-[SATIŞ QİYMƏTİ],
-'4',
+07,
+CAST([SATIŞ QİYMƏTİ] * 100 AS INT) AS SALEPRİCE,
+4,
 21,
 0,
+000,
+15,
 0,
 0,
-'Normal',
+000,
+0,
+1,
 0,
 0,
 0,
-0,
-0,
-0,
-0
+4
 FROM[terazimalzeme]";
                     break;
             }
@@ -269,40 +275,69 @@ FROM[terazimalzeme]";
             dataGridView1.DataSource = data;
             gridView2.OptionsView.ShowColumnHeaders = false;
 
-            using (SaveFileDialog saveFile = new SaveFileDialog
+
+
+            if (terezi.ModelName.Trim() is "Rongta RLS 1100")
             {
-                Filter = "Excel Faylı|*.xls",
-                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
-                OverwritePrompt = true, //varsa soruşmadan üstünə yazması üçün false olaraq qalmalıdır
-                FileName = "Terezi_Mehsullar.xls"
-            })
-            {
-                if (saveFile.ShowDialog() is DialogResult.OK)
+                using (SaveFileDialog saveFile = new SaveFileDialog())
                 {
-                    if (terezi.Model.Trim() == "Rongta RLS 1100")
+                    saveFile.Filter = "Excel Faylı|*.xls";
+                    saveFile.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                    saveFile.OverwritePrompt = true;
+                    saveFile.FileName = "Terezi_Mehsullar.xls";
+                    if (saveFile.ShowDialog() is DialogResult.OK)
                     {
                         gridView2.ExportToCsv(saveFile.FileName, new DevExpress.XtraPrinting.CsvExportOptions { Separator = "\t" });
+                        Alert($"{terezi.ModelName} tərəzisinin məhsulları export edildi", MessageType.Success);
                     }
-                    else
+                }
+            }
+            else
+            {
+                string filePath = string.Empty;
+
+                if (!string.IsNullOrWhiteSpace(terezi.FilePath))
+                {
+                    string directoryPath = Path.GetDirectoryName(terezi.FilePath); //plu.exe ni almadan filePath alır
+                    string parentPath = Directory.GetParent(directoryPath).FullName; //bin folderindəndə çıxaraq  LB-MNE papkasının içində olur
+                    filePath = $@"{parentPath}\demos\PLU.CSV";
+                }
+                else
+                {
+                    using (SaveFileDialog saveFile = new SaveFileDialog())
                     {
-                        using (StreamWriter sw = new StreamWriter(saveFile.FileName, false, System.Text.Encoding.Unicode))
+                        saveFile.Filter = "CSV Faylı|*.csv";
+                        saveFile.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                        saveFile.OverwritePrompt = true;
+                        saveFile.FileName = "PLU.csv";
+                        if (saveFile.ShowDialog() is DialogResult.OK)
                         {
-                            // GridView'deki satırlara erişiyoruz
-                            for (int i = 0; i < gridView2.RowCount; i++)
-                            {
-                                // Satırdaki veriyi alıyoruz
-                                var row = gridView2.GetDataRow(i);
-
-                                // Veriyi tab ile ayırarak birleştiriyoruz
-                                string rowData = string.Join("\t", row.ItemArray.Select(cell => cell?.ToString()));
-
-                                // Satırı CSV'ye yazıyoruz
-                                sw.WriteLine(rowData);
-                            }
+                            filePath = saveFile.FileName;
                         }
                     }
-                    Alert($"{terezi.Model} tərəzisinin məhsulları excelə export edildi", MessageType.Success);
                 }
+
+                using (StreamWriter writer = new StreamWriter(filePath, false, Encoding.UTF8))
+                {
+                    for (int i = 0; i < gridView2.RowCount; i++)
+                    {
+                        var values = new List<string>();
+                        for (int j = 0; j < gridView2.VisibleColumns.Count; j++)
+                        {
+                            var value = gridView2.GetRowCellValue(i, gridView2.VisibleColumns[j])?.ToString()?.Trim() ?? "";
+                            values.Add(value);
+                        }
+                        string line = string.Join(",", values);
+                        writer.WriteLine(line);
+                    }
+                }
+                if (!string.IsNullOrWhiteSpace(terezi.FilePath))
+                {
+                    Cursor.Current = Cursors.WaitCursor;
+                    Process.Start(terezi.FilePath);
+                    Cursor.Current = Cursors.Default;
+                }
+                Alert($"{terezi.ModelName} tərəzisinin məhsulları export edildi", MessageType.Success);
             }
         }
 

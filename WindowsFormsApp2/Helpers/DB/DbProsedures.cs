@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApp2.Helpers.Messages;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
+using static WindowsFormsApp2.Helpers.DB.DTOs;
 using static WindowsFormsApp2.Helpers.Enums;
+using static WindowsFormsApp2.Helpers.FormHelpers;
 
 namespace WindowsFormsApp2.Helpers.DB
 {
@@ -2092,7 +2094,6 @@ WHERE BARKOD = '{barcode}'";
 
         #region [.. TERMINALS ..]
 
-
         public static int TerminalAdd(Terminal item)
         {
             using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
@@ -2141,7 +2142,6 @@ WHERE BARKOD = '{barcode}'";
 
         #region [.. TƏRƏZİ ..]
 
-
         public static bool TereziAdd(Terezi item)
         {
             using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
@@ -2157,7 +2157,8 @@ WHERE BARKOD = '{barcode}'";
                     param.Value = item.IpAddress;
                     param = cmd.Parameters.Add("@UserID", SqlDbType.Int);
                     param.Value = item.UserId;
-
+                    param = cmd.Parameters.Add("@FILEPATH", SqlDbType.NVarChar, int.MaxValue);
+                    param.Value = item.FilePath;
                     param = cmd.Parameters.Add("@EMPCOUNT", SqlDbType.Int);
                     param.Direction = ParameterDirection.Output;
 
@@ -2181,6 +2182,36 @@ WHERE BARKOD = '{barcode}'";
                 {
                     con.Open();
                     cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public static TeraziDTO GetTerezi()
+        {
+            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                string query = $@"SELECT 
+TERAZI_IP_ID AS Id,
+tf.TERAZI_FIRMALAR AS ModelName,
+ti.IP_ADRESS AS IpAddress,
+FilePath,
+UserId
+FROM TERAZI_IP ti
+INNER JOIN TERAZI_FIRMALAR tf ON tf.TERAZI_FIRMALAR_ID = ti.TERAZI_FIRMA_IP
+WHERE UserId = {Properties.Settings.Default.UserID}";
+                connection.Open();
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    //cmd.Parameters.AddWithValue("@userID", Properties.Settings.Default.UserID);
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            var data = FormHelpers.MapReaderToObject<TeraziDTO>(dr);
+                            return data;
+                        }
+                        return null;
+                    }
                 }
             }
         }
