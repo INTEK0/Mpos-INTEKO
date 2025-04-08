@@ -4,6 +4,7 @@ using DevExpress.XtraGrid.Localization;
 using DevExpress.XtraGrid.Views.Grid;
 using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
@@ -453,6 +454,25 @@ WHERE u.id = {Properties.Settings.Default.UserID}";
                 }
             }
             return obj;
+        }
+
+        public static List<T> MapReaderToList<T>(IDataReader reader) where T : new()
+        {
+            List<T> list = new List<T>();
+
+            while (reader.Read())
+            {
+                T obj = new T();
+                foreach (PropertyInfo property in typeof(T).GetProperties())
+                {
+                    if (reader.GetOrdinal(property.Name) >= 0 && !reader.IsDBNull(reader.GetOrdinal(property.Name)))
+                    {
+                        property.SetValue(obj, reader[property.Name], null);
+                    }
+                }
+                list.Add(obj);
+            }
+            return list;
         }
 
         public static bool SuccessMessageVisible()

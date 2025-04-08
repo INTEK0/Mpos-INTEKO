@@ -1,7 +1,7 @@
 ﻿using System;
-using System.IO;
-using System.Runtime.InteropServices;
 using System.Drawing.Printing;
+using System.Runtime.InteropServices;
+using WindowsFormsApp2.Helpers;
 
 public class RawPrinterHelper
 {
@@ -34,8 +34,39 @@ public class RawPrinterHelper
     [DllImport("winspool.Drv", EntryPoint = "WritePrinter")]
     public static extern bool WritePrinter(IntPtr hPrinter, IntPtr pBytes, int dwCount, out int dwWritten);
 
+    public static string GetPrinterDetailedStatus(string printerName)
+    {
+        var query = new System.Management.SelectQuery("SELECT * FROM Win32_Printer WHERE Name = '" + printerName.Replace("\\", "\\\\") + "'");
+        using (var searcher = new System.Management.ManagementObjectSearcher(query))
+        {
+            foreach (System.Management.ManagementObject printer in searcher.Get())
+            {
+                return printer["WorkOffline"].ToString().ToLower() == "true" ? "Offline" : "Online";
+            }
+        }
+        return "Unknown";
+    }
+
+    public static bool IsPrinterAvailable(string printerName)
+    {
+        foreach (string installedPrinter in PrinterSettings.InstalledPrinters)
+        {
+            if (installedPrinter.Equals(printerName, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static bool SendStringToPrinter(string printerName, string command)
     {
+        if (!IsPrinterAvailable(printerName))
+        {
+            FormHelpers.Alert("Printer sistemdə təyin edilmədi", Enums.MessageType.Error);
+            return false;
+        }
+
         IntPtr pBytes;
         int dwCount = command.Length;
         pBytes = Marshal.StringToCoTaskMemAnsi(command);

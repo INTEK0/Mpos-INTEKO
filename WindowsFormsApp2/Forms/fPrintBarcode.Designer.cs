@@ -29,13 +29,14 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(fPrintBarcode));
-            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions5 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions3 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
             this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
             this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
+            this.lookPrintType = new DevExpress.XtraEditors.LookUpEdit();
             this.bRefresh = new DevExpress.XtraEditors.SimpleButton();
             this.bPrint = new DevExpress.XtraEditors.SimpleButton();
             this.gridControlProducts = new DevExpress.XtraGrid.GridControl();
@@ -51,15 +52,16 @@
             this.colEdv = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colPrintButton = new DevExpress.XtraGrid.Columns.GridColumn();
             this.bGridPrint = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.lookPrintType = new DevExpress.XtraEditors.LookUpEdit();
+            this.lookPrinters = new DevExpress.XtraEditors.LookUpEdit();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).BeginInit();
             this.tablePanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).BeginInit();
             this.panelControl2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.lookPrintType.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlProducts)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridProducts)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bGridPrint)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lookPrintType.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lookPrinters.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // tablePanel1
@@ -83,6 +85,7 @@
             // 
             this.tablePanel1.SetColumn(this.panelControl2, 0);
             this.tablePanel1.SetColumnSpan(this.panelControl2, 2);
+            this.panelControl2.Controls.Add(this.lookPrinters);
             this.panelControl2.Controls.Add(this.lookPrintType);
             this.panelControl2.Controls.Add(this.bRefresh);
             this.panelControl2.Controls.Add(this.bPrint);
@@ -93,6 +96,21 @@
             this.tablePanel1.SetRow(this.panelControl2, 0);
             this.panelControl2.Size = new System.Drawing.Size(1209, 55);
             this.panelControl2.TabIndex = 3;
+            // 
+            // lookPrintType
+            // 
+            this.lookPrintType.Location = new System.Drawing.Point(228, 14);
+            this.lookPrintType.Name = "lookPrintType";
+            this.lookPrintType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.lookPrintType.Properties.DropDownRows = 3;
+            this.lookPrintType.Properties.NullText = "ÇAP ÖLÇÜLƏRİ";
+            this.lookPrintType.Properties.ShowFooter = false;
+            this.lookPrintType.Properties.ShowHeader = false;
+            this.lookPrintType.Properties.ShowLines = false;
+            this.lookPrintType.Size = new System.Drawing.Size(202, 30);
+            this.lookPrintType.TabIndex = 2;
+            this.lookPrintType.Visible = false;
             // 
             // bRefresh
             // 
@@ -262,24 +280,24 @@
             // 
             this.bGridPrint.AutoHeight = false;
             this.bGridPrint.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "ÇAP ET", -1, true, true, false, editorButtonImageOptions5, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "ÇAP ET", -1, true, true, false, editorButtonImageOptions3, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.bGridPrint.Name = "bGridPrint";
             this.bGridPrint.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.bGridPrint.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.bGridPrint_ButtonClick);
             // 
-            // lookPrintType
+            // lookPrinters
             // 
-            this.lookPrintType.Location = new System.Drawing.Point(10, 14);
-            this.lookPrintType.Name = "lookPrintType";
-            this.lookPrintType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            this.lookPrinters.Location = new System.Drawing.Point(10, 14);
+            this.lookPrinters.Name = "lookPrinters";
+            this.lookPrinters.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.lookPrintType.Properties.DropDownRows = 3;
-            this.lookPrintType.Properties.NullText = "ÇAP ÖLÇÜLƏRİ";
-            this.lookPrintType.Properties.ShowFooter = false;
-            this.lookPrintType.Properties.ShowHeader = false;
-            this.lookPrintType.Properties.ShowLines = false;
-            this.lookPrintType.Size = new System.Drawing.Size(202, 30);
-            this.lookPrintType.TabIndex = 2;
+            this.lookPrinters.Properties.DropDownRows = 3;
+            this.lookPrinters.Properties.NullText = "PRİNTER SEÇİMİ";
+            this.lookPrinters.Properties.ShowFooter = false;
+            this.lookPrinters.Properties.ShowHeader = false;
+            this.lookPrinters.Properties.ShowLines = false;
+            this.lookPrinters.Size = new System.Drawing.Size(202, 30);
+            this.lookPrinters.TabIndex = 2;
             // 
             // fPrintBarcode
             // 
@@ -292,14 +310,16 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "BARKOD ÇAP";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.fPrintBarcode_Load);
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).EndInit();
             this.tablePanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).EndInit();
             this.panelControl2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.lookPrintType.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlProducts)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridProducts)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bGridPrint)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lookPrintType.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lookPrinters.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -324,5 +344,6 @@
         private DevExpress.XtraGrid.Columns.GridColumn colPrintButton;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit bGridPrint;
         private DevExpress.XtraEditors.LookUpEdit lookPrintType;
+        private DevExpress.XtraEditors.LookUpEdit lookPrinters;
     }
 }

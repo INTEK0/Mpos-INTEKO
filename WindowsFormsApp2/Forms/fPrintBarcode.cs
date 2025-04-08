@@ -1,4 +1,5 @@
 ﻿using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraPrinting.BarCode;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,11 @@ namespace WindowsFormsApp2.Forms
 {
     public partial class fPrintBarcode : DevExpress.XtraEditors.XtraForm
     {
+        private readonly DatabaseClasses.Company _company = DbProsedures.GetCompany();
+        //private readonly DatabaseClasses.User _user = DbProsedures.GetUser();
+        private List<DatabaseClasses.Printer> _printers = DbProsedures.GetSelectedPrinter();
+
+
         private string _productName,
                        _salePrice,
                        _barcode,
@@ -36,8 +42,31 @@ namespace WindowsFormsApp2.Forms
         public fPrintBarcode()
         {
             InitializeComponent();
+        }
+
+        private void fPrintBarcode_Load(object sender, EventArgs e)
+        {
+            PrintersLoad();
             GridDataLoad();
-            PrintTypeLoad();
+            // PrintTypeLoad();
+        }
+
+        private void PrintersLoad()
+        {
+            _printers = _printers.Where(x => x.PrintType == "Etiket").ToList();
+            if (_printers != null)
+            {
+                lookPrinters.Properties.DataSource = _printers;
+                lookPrinters.Properties.DisplayMember = "PrinterName";
+                lookPrinters.Properties.ValueMember = "Id";
+                lookPrinters.Properties.Columns.Clear();
+                lookPrinters.Properties.Columns.Add(new LookUpColumnInfo("PrinterName", "Printer Adı"));
+                lookPrinters.Properties.Columns.Add(new LookUpColumnInfo("Id", 0) { Visible = false });
+            }
+            else
+            {
+                FormHelpers.Alert("Printer təyin edilməyib", MessageType.Warning);
+            }
         }
 
         private void PrintTypeLoad()
@@ -71,24 +100,35 @@ namespace WindowsFormsApp2.Forms
             GridDataLoad();
         }
 
-        private void bPrintToExcel_Click(object sender, EventArgs e)
-        {
-            FormHelpers.ExcelExport(gridControlProducts, "Anbar Qalığı");
-        }
-
         private void bPrint_Click(object sender, EventArgs e)
         {
             int[] selectedRows = gridProducts.GetSelectedRows();
 
-
-
             foreach (var rowHandle in selectedRows)
             {
+                string companyName = _company.CompanyName;
                 string barcode = gridProducts.GetRowCellValue(rowHandle, colBarcode).ToString();
                 string name = gridProducts.GetRowCellValue(rowHandle, colProductName).ToString();
                 string salesPrice = Convert.ToDouble(gridProducts.GetRowCellValue(rowHandle, coLSalePrice).ToString()).ToString("N2");
 
-                PrinterCacheData.PrintLabel("XAN MARKET",name.Trim(),salesPrice,barcode.Trim());
+                if (string.IsNullOrWhiteSpace(lookPrinters.Text) || lookPrinters.Text is "PRİNTER SEÇİMİ")
+                {
+                    FormHelpers.Alert("Printer seçimi edilmədi", MessageType.Warning);
+                }
+                else
+                {
+                    string status = RawPrinterHelper.GetPrinterDetailedStatus(lookPrinters.Text);
+                    if (status is "Online")
+                    {
+                        PrinterCacheData.PrintLabel(companyName, name.Trim(), salesPrice, barcode.Trim(), lookPrinters.Text);
+                    }
+                    else
+                    {
+                        FormHelpers.Alert($"({lookPrinters.Text}) Printerinə qoşulmaq alınmadı. - {status} -", MessageType.Error);
+                        FormHelpers.Log($"{lookPrinters.Text} - Etiket çapı xətası: {status}");
+                        return;
+                    }
+                }
 
                 //_productName = name;
                 //_salePrice = salesPrice;
@@ -106,7 +146,6 @@ namespace WindowsFormsApp2.Forms
                 //pd.PrintPage += new PrintPageEventHandler(printbarkod);
                 //pd.PrinterSettings.PrinterName = new System.Drawing.Printing.PrinterSettings().PrinterName;
 
-
                 //PrintDialog PrintDialog1 = new PrintDialog
                 //{
                 //    Document = pd
@@ -121,11 +160,29 @@ namespace WindowsFormsApp2.Forms
         {
             int rowHandle = gridProducts.FocusedRowHandle;
 
+            string companyName = _company.CompanyName;
             string barcode = gridProducts.GetRowCellValue(rowHandle, colBarcode).ToString();
             string name = gridProducts.GetRowCellValue(rowHandle, colProductName).ToString();
             string salesPrice = Convert.ToDouble(gridProducts.GetRowCellValue(rowHandle, coLSalePrice).ToString()).ToString("N2");
 
-            PrinterCacheData.PrintLabel("AKAY MARKET", name.Trim(), salesPrice, barcode.Trim());
+            if (string.IsNullOrWhiteSpace(lookPrinters.Text) || lookPrinters.Text is "PRİNTER SEÇİMİ")
+            {
+                FormHelpers.Alert("Printer seçimi edilmədi", MessageType.Warning);
+            }
+            else
+            {
+                string status = RawPrinterHelper.GetPrinterDetailedStatus(lookPrinters.Text);
+                if (status is "Online")
+                {
+                    PrinterCacheData.PrintLabel(companyName, name.Trim(), salesPrice, barcode.Trim(), lookPrinters.Text);
+                }
+                else
+                {
+                    FormHelpers.Alert($"({lookPrinters.Text}) Printerinə qoşulmaq alınmadı. - {status} -", MessageType.Error);
+                    FormHelpers.Log($"{lookPrinters.Text} - Etiket çapı xətası: {status}");
+                    return;
+                }
+            }
 
             //_productName = name;
             //_salePrice = salesPrice;
@@ -151,6 +208,8 @@ namespace WindowsFormsApp2.Forms
 
             //pd.Print();
         }
+
+
 
         void printbarkod(System.Object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {

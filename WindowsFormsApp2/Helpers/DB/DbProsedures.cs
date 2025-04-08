@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
-using System.Web.UI.WebControls;
 using System.Windows.Forms;
 using WindowsFormsApp2.Helpers.Messages;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
@@ -15,7 +15,6 @@ namespace WindowsFormsApp2.Helpers.DB
 
         #region [...PROCEDURES QUERY...]
 
-        private const string INSERT_CompanyQuery = "INSERT_COMPANY";
         private const string INSERT_PosSalesQuery = "azmart_sale_insert";
         private const string INSERT_ItemQuery = "INSERT_Item";
         private const string DELETE_ItemQuery = "delete_item";
@@ -63,7 +62,6 @@ namespace WindowsFormsApp2.Helpers.DB
         private const string GET_GetProductPurchaseDataQuery = "GetProductPurchaseData";
         private const string INSERT_IncomeAndExpenseDataQuery = "INSERT_INCOME_AND_EXPENSE";
         private const string INSERT_TerminalQuery = "KASSA_IP_INSERT";
-        private const string DELETE_TerminalQuery = "KASSA_IP_delete";
 
         #endregion [...PROCEDURES QUERY...]
 
@@ -110,7 +108,8 @@ namespace WindowsFormsApp2.Helpers.DB
         {
             using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
             {
-                using (SqlCommand cmd = new SqlCommand(INSERT_CompanyQuery, connection))
+                string query = "INSERT_COMPANY";
+                using (SqlCommand cmd = new SqlCommand(query, connection))
                 {
                     connection.Open();
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
@@ -169,6 +168,28 @@ namespace WindowsFormsApp2.Helpers.DB
                     cmd.ExecuteNonQuery();
 
                     return Convert.ToInt32(param.Value);
+                }
+            }
+        }
+
+        public static Company GetCompany()
+        {
+            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                string query = "SELECT *  FROM SELECT_COMPANY_DATA_LOAD(@userID)";
+                connection.Open();
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@userID", Properties.Settings.Default.UserID);
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            var data = FormHelpers.MapReaderToObject<Company>(dr);
+                            return data;
+                        }
+                        return null;
+                    }
                 }
             }
         }
@@ -2170,7 +2191,6 @@ WHERE BARKOD = '{barcode}'";
 
         #region [.. PRINTERS ..]
 
-
         public static int PrinterAdd(Printer item)
         {
             using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
@@ -2214,7 +2234,34 @@ WHERE BARKOD = '{barcode}'";
             }
         }
 
+        public static List<Printer> GetSelectedPrinter()
+        {
+            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                string query = "SELECT *  FROM SELECT_PRINTER_DATA_LOAD(@userID)";
+                connection.Open();
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@userID", Properties.Settings.Default.UserID);
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        List<Printer> data = FormHelpers.MapReaderToList<Printer>(dr);
+                        return data;
+                        //if (dr.Read())
+                        //{
+
+                        //    var data = FormHelpers.MapReaderToList<Printer>(dr);
+                        //    return data;
+                        //}
+                        //return null;
+                    }
+                }
+            }
+        }
+
         #endregion [.. PRINTERS ..]
+
+
 
         #endregion [...PROCEDURES METHODS...]
     }
