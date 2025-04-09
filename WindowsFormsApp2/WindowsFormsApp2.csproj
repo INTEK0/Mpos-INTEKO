@@ -52,6 +52,15 @@
   <PropertyGroup>
     <ApplicationIcon>Mpos.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accessibility" />
     <Reference Include="ComponentFactory.Krypton.Toolkit">
@@ -467,6 +476,12 @@
     </Compile>
     <Compile Include="Forms\fWithdraw.Designer.cs">
       <DependentUpon>fWithdraw.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\PrintPages\fTereziStockPrint.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\PrintPages\fTereziStockPrint.Designer.cs">
+      <DependentUpon>fTereziStockPrint.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\BaseForm.cs">
       <SubType>Form</SubType>
@@ -1134,6 +1149,9 @@
     <EmbeddedResource Include="Forms\fWithdraw.resx">
       <DependentUpon>fWithdraw.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PrintPages\fTereziStockPrint.resx">
+      <DependentUpon>fTereziStockPrint.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="fTest.resx">
       <DependentUpon>fTest.cs</DependentUpon>
     </EmbeddedResource>
@@ -1406,6 +1424,7 @@
       <DependentUpon>NewIntekoDataSet5.xsd</DependentUpon>
     </None>
     <None Include="packages.config" />
+    <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -1625,6 +1644,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Mpos.ico" />
+    <None Include="Resources\cancel_16x16.png" />
+    <None Include="Resources\cancel_32x322.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\deletelist2_32x32.png" />
@@ -1710,8 +1731,6 @@
   <ItemGroup>
     <None Include="Resources\Mpos_Logo_Text.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Forms\PrintPages\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

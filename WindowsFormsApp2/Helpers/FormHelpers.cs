@@ -1,6 +1,7 @@
 ﻿using DevExpress.Xpo.Logger.Transport;
 using DevExpress.XtraGrid;
 using DevExpress.XtraGrid.Localization;
+using DevExpress.XtraPrinting.Localization;
 using DevExpress.XtraGrid.Views.Grid;
 using Microsoft.Win32;
 using System;
@@ -302,11 +303,11 @@ inner join userParol u on u.id = ki.KASSIR_ID where u.id = {Properties.Settings.
             {
                 Directory.CreateDirectory(backupFolderPath);
             }
-            else
-            {
-                Directory.Delete(backupFolderPath, true);
-                Directory.CreateDirectory(backupFolderPath);
-            }
+            //else
+            //{
+            //    Directory.Delete(backupFolderPath, true);
+            //    Directory.CreateDirectory(backupFolderPath);
+            //}
 
             #endregion [..BACKUP FOLDER..]
 
@@ -334,6 +335,11 @@ inner join userParol u on u.id = ki.KASSIR_ID where u.id = {Properties.Settings.
             if (Registry.GetValue(@"HKEY_CURRENT_USER\Mpos\", "SendToKassa", null) == null)
             {
                 Registry.CurrentUser.CreateSubKey("Mpos").SetValue("SendToKassa", false);
+            }
+
+            if (Registry.GetValue(@"HKEY_CURRENT_USER\Mpos\", "IsReceipt", null) == null)
+            {
+                Registry.CurrentUser.CreateSubKey("Mpos").SetValue("IsReceipt", false);
             }
 
             if (Registry.GetValue(@"HKEY_CURRENT_USER\Mpos\", "TerminalCashierPrint", null) == null)

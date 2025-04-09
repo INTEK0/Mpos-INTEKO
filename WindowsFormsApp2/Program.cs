@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Net;
 using System.Windows.Forms;
+using WindowsFormsApp2.Forms.PrintPages;
 using WindowsFormsApp2.Helpers;
 
 namespace WindowsFormsApp2

@@ -48,7 +48,7 @@
             this.panelControl1.Controls.Add(this.bClose);
             this.panelControl1.Controls.Add(this.bOk);
             this.panelControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelControl1.Location = new System.Drawing.Point(0, 691);
+            this.panelControl1.Location = new System.Drawing.Point(0, 546);
             this.panelControl1.LookAndFeel.SkinName = "WXI";
             this.panelControl1.LookAndFeel.UseDefaultLookAndFeel = false;
             this.panelControl1.Name = "panelControl1";
@@ -121,7 +121,7 @@
             this.gridControl1.MainView = this.gridView1;
             this.gridControl1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gridControl1.Name = "gridControl1";
-            this.gridControl1.Size = new System.Drawing.Size(774, 691);
+            this.gridControl1.Size = new System.Drawing.Size(774, 546);
             this.gridControl1.TabIndex = 17;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
@@ -154,7 +154,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(774, 749);
+            this.ClientSize = new System.Drawing.Size(774, 604);
             this.Controls.Add(this.gridControl1);
             this.Controls.Add(this.panelControl1);
             this.IconOptions.Image = global::WindowsFormsApp2.Properties.Resources.Mpos_png1;

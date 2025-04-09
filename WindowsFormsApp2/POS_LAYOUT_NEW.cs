@@ -42,7 +42,7 @@ namespace WindowsFormsApp2
     public partial class POS_LAYOUT_NEW : BaseForm
     {
         private readonly bool MessageVisible = FormHelpers.SuccessMessageVisible();
-
+        private bool _IsReceipt;
         private int pagesCount = 1;
         private int za;
         private DataTable dt;
@@ -125,6 +125,7 @@ namespace WindowsFormsApp2
                 layoutControlItem15.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                 layoutControlItem14.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                 chSendToKassa.Checked = true;
+                _IsReceipt = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("IsReceipt").ToString());
             }
             else
             {
@@ -4272,7 +4273,11 @@ from  dbo.item where user_id = {Properties.Settings.Default.UserID}";
                 clear();
                 textEdit11.Text = DbProsedures.GET_TotalSalesCount();
                 CalculationDelete();
-                PrintTest();
+
+                if (_IsReceipt)
+                {
+                    PrintTest();
+                }
             }
             catch (Exception e)
             {
