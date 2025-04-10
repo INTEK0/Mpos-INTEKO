@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using DevExpress.XtraReports.UI;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
@@ -21,7 +22,7 @@ namespace WindowsFormsApp2.Helpers.CacheData
                 .Replace("ə", "e").Replace("Ə", "E");
         }
 
-        public static void PrintLabel(string _company, string _product, string _price, string _barcode, string printerName)
+        public static void PrintLabel60x40(string _company, string _product, string _price, string _barcode, string printerName)
         {
             string companyName = ReplaceChars(_company);
             string productName = ReplaceChars(_product);
@@ -67,7 +68,6 @@ namespace WindowsFormsApp2.Helpers.CacheData
             #endregion [..MƏHSUL ADINDA LİMİT OLMAYAN KOD (Uzun olduqda alt sətirə keçmir)..]
 
 
-
             List<string> productLines = SplitProductName(productName, 27);
             string tsplCommand = $@"
 SIZE 60 mm, 40 mm
@@ -103,6 +103,54 @@ TEXT 15,{aznY},""4"",0,1,1,""AZN""
 
 REM === Barcode at bottom-right ===
 BARCODE  180,200,""128"",80,1,0,2,2,""{_barcode}""
+PRINT 1,1
+";
+
+
+            bool result = RawPrinterHelper.SendStringToPrinter(printerName, tsplCommand);
+        }
+
+        public static void PrintLabel30x20(string _product, string _price, string _barcode, string printerName, Enums.BarcodeType barcodeType)
+        {
+            string productName = ReplaceChars(_product);
+
+            //double productY = 10;
+            //if (productName.Length > 16)
+            //{
+            //    productY += 15;
+            //}
+
+            List<string> productLines = SplitProductName(productName, 16);
+            if (productLines.Count > 2)
+                productLines = productLines.Take(2).ToList();
+
+            double productY = 10;
+            int lineSpacing = 22;
+
+            string tsplCommand = $@"
+SIZE 30 mm, 20 mm
+GAP 2 mm, 0
+DENSITY 10
+SPEED 4
+DIRECTION 1
+CLS";
+            // Məhsulun adını hər sətir üçün yazdırılır. (Maksimum 2 sətir)
+            for (int i = 0; i < productLines.Count; i++)
+            {
+                tsplCommand += $@"
+REM === Product name, line {i + 1}, left aligned ===
+TEXT 5,{productY + (i * lineSpacing)},""2"",0,1,1,""{productLines[i]}""
+";
+            }
+
+            // Qiyməti və AZN yazdırılır
+            tsplCommand += $@"
+REM === Price ===
+TEXT 55,135,""2"",0,1,1,""{_price} AZN""
+
+REM === Barcode ===
+BARCODE  7,60,""{Enums.GetEnumDescription(barcodeType)}"",40,1,0,2,2,""{_barcode}""
+
 PRINT 1,1
 ";
 

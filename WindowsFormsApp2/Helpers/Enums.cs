@@ -45,12 +45,20 @@ namespace WindowsFormsApp2.Helpers
 
         public enum PrintType
         {
-            [Description("KİÇİK")]
+            [Description("30x20")]
             minimum = 0,
-            [Description("ORTA")]
+            [Description("60x40")]
             medium,
             [Description("ÜFÜQİ (Geyim mağazası üçün)")]
             maximum
+        }
+
+        public enum BarcodeType
+        {
+            [Description("EAN13")]
+            EAN13,
+            [Description("128")]
+            Code128
         }
 
         public enum SelectedDataType
