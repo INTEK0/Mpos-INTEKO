@@ -122,7 +122,7 @@ namespace WindowsFormsApp2
 
             }
 
-            catch (Exception ex)
+            catch (Exception)
 
             {
 

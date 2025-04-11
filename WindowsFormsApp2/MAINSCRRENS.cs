@@ -631,26 +631,55 @@ ORDER BY TotalAmount DESC;
             using (SqlConnection con = new SqlConnection(Properties.Settings.Default.SqlCon))
             {
                 con.Open();
+
+                //Əvvəlki kod. Nerolidəki müştərinin bildirdiyi problemdən etibarən kodda düzəliş edildi
+                #region
+                //string query = $@"SELECT 
+                //ISNULL(SUM(t.TotalSalePrice), 0) AS TotalSalePrice,
+                //ISNULL(SUM(t.SalesCount), 0) AS TotalSalesCount
+                //FROM (
+                //-- pos_satis_check_details cədvəlindəki datalar
+                //SELECT 
+                //ISNULL(SUM(CAST(p.count_ AS DECIMAL(18, 3)) * CAST(p.satis_giymet AS DECIMAL(18, 3))),0) AS TotalSalePrice,
+                //ISNULL(SUM(CAST(p.count_ AS DECIMAL(18, 3))),0) AS SalesCount
+                //FROM [dbo].[pos_satis_check_details] p
+                //JOIN [dbo].[pos_satis_check_main] pm ON p.[pos_satis_check_main_id] = pm.[pos_satis_check_main_id]
+                //WHERE CAST(pm.date_ AS DATE) = CAST(GETDATE() AS DATE)
+
+                //UNION ALL
+
+                //-- GAIME_SATISI_DETAILS cədvəlindəki datalar
+                //SELECT 
+                //ISNULL(SUM(CAST(g.YEKUN_MEBLEG AS DECIMAL(18, 3))),0) AS TotalSalePrice,
+                //ISNULL(SUM(CAST(g.MIGDARI AS DECIMAL(18, 3))),0) AS SalesCount
+                //FROM [dbo].[GAIME_SATISI_DETAILS] g
+                //WHERE CAST(g.TARIX AS DATE) = CAST(GETDATE() AS DATE)) t;";
+
+                #endregion
+
                 string query = $@"SELECT 
-                ISNULL(SUM(t.TotalSalePrice), 0) AS TotalSalePrice,
-                ISNULL(SUM(t.SalesCount), 0) AS TotalSalesCount
-                FROM (
-                -- pos_satis_check_details cədvəlindəki datalar
-                SELECT 
-                ISNULL(SUM(CAST(p.count_ AS DECIMAL(18, 2)) * CAST(p.satis_giymet AS DECIMAL(18, 2))),0) AS TotalSalePrice,
-                ISNULL(SUM(CAST(p.count_ AS DECIMAL(18, 2))),0) AS SalesCount
-                FROM [dbo].[pos_satis_check_details] p
-                JOIN [dbo].[pos_satis_check_main] pm ON p.[pos_satis_check_main_id] = pm.[pos_satis_check_main_id]
-                WHERE CAST(pm.date_ AS DATE) = CAST(GETDATE() AS DATE)
+    ROUND(SUM(t.TotalSalePrice), 2, 1) AS TotalSalePrice,
+    ROUND(SUM(t.SalesCount), 2, 1) AS TotalSalesCount
+FROM (
+    -- pos_satis_check_details cədvəlindəki datalar
+    SELECT 
+        ISNULL(SUM(CAST(p.count_ AS DECIMAL(18, 5)) * CAST(p.satis_giymet AS DECIMAL(18, 5))), 0) AS TotalSalePrice,
+        ISNULL(SUM(CAST(p.count_ AS DECIMAL(18, 3))), 0) AS SalesCount
+    FROM [dbo].[pos_satis_check_details] p
+    JOIN [dbo].[pos_satis_check_main] pm 
+        ON p.[pos_satis_check_main_id] = pm.[pos_satis_check_main_id]
+    WHERE CAST(pm.date_ AS DATE) = CAST(GETDATE() AS DATE)
 
-                UNION ALL
+    UNION ALL
 
-                -- GAIME_SATISI_DETAILS cədvəlindəki datalar
-                SELECT 
-                ISNULL(SUM(CAST(g.YEKUN_MEBLEG AS DECIMAL(18, 2))),0) AS TotalSalePrice,
-                ISNULL(SUM(CAST(g.MIGDARI AS DECIMAL(18, 2))),0) AS SalesCount
-                FROM [dbo].[GAIME_SATISI_DETAILS] g
-                WHERE CAST(g.TARIX AS DATE) = CAST(GETDATE() AS DATE)) t;";
+    -- GAIME_SATISI_DETAILS cədvəlindəki datalar
+    SELECT 
+        ISNULL(SUM(CAST(g.YEKUN_MEBLEG AS DECIMAL(18, 5))), 0) AS TotalSalePrice,
+        ISNULL(SUM(CAST(g.MIGDARI AS DECIMAL(18, 3))), 0) AS SalesCount
+    FROM [dbo].[GAIME_SATISI_DETAILS] g
+    WHERE CAST(g.TARIX AS DATE) = CAST(GETDATE() AS DATE)
+) t;
+";
 
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
@@ -659,7 +688,7 @@ ORDER BY TotalAmount DESC;
                         while (dr.Read())
                         {
                             lSalePriceTotal.Text = Convert.ToDecimal(dr["TotalSalePrice"]).ToString("C2");
-                            lSalesCount.Text = dr["TotalSalesCount"].ToString();
+                            lSalesCount.Text = Convert.ToDecimal(dr["TotalSalesCount"]).ToString("N2");
                         }
                     }
                 }

@@ -21,9 +21,9 @@ namespace WindowsFormsApp2.NKA
 {
     public class NBA
     {
-        public static readonly string NBA_FISCAL_SERVICE_PORT = "9898"; //9898 prod port - 9847 test port
-        public static readonly string NBA_BANK_SERVICE_PORT = "9999"; //9999 prod port - 9944 test port
-        private static readonly string NBA_LOGIN_PIN = "12348765"; //12348765 prod pin - 23264544 test pin
+        public static readonly string NBA_FISCAL_SERVICE_PORT = "9847"; //9898 prod port - 9847 test port
+        public static readonly string NBA_BANK_SERVICE_PORT = "9944"; //9999 prod port - 9944 test port
+        private static readonly string NBA_LOGIN_PIN = "23264544"; //12348765 prod pin - 23264544 test pin
 
         /* return olunacaq json, edvHesap1, edvHesap2, edvdenazad2,odenen,qaliq */
 

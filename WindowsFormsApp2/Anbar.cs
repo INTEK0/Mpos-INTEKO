@@ -291,7 +291,7 @@ namespace WindowsFormsApp2
                         }
                         reader.Close();
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         //Console.WriteLine(ex.Message);
                     }

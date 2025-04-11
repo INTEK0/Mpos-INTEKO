@@ -287,6 +287,8 @@ namespace WindowsFormsApp2.NKA
             if (string.IsNullOrWhiteSpace(token))
             {
                 token = Login(ipAddress);
+                if (string.IsNullOrWhiteSpace(token))
+                    return false;
             }
 
             List<Item> items = new List<Item>();

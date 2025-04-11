@@ -200,9 +200,10 @@ namespace WindowsFormsApp2
                 {
                     if (terezi.ModelName.Trim() is "Rongta RLS 1100")
                     {
-                        kontrol = "0" + kontrol;
                         if (kontrol.Substring(0, 1) == "0" && kontrol.Count() is 13)
                         {
+                            kontrol = "0" + kontrol;
+
                             kod = kontrol.Substring(2, 5);
                             kg = kontrol.Substring(7, 2);
                             gr = kontrol.Substring(9, 3);
@@ -601,15 +602,39 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon))
+                using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
                 {
                     connection.Open();
+                    //Əvvəlki kod. Nerolidəki müştərinin bildirdiyi problemdən etibarən kodda düzəliş edildi
+
+                    //string query = @"
+                    //select cast ((sum(s - (s*ISNULL(pg.endirim_faiz,0.00))/100.00 - ISNULL(pg.endiriz_azn,0.00))) as decimal(9,2)) as cem 
+                    //from (select mal_alisi_details_id, satis_qiymeti * count(*)*(case when sum(isnull(kg_,0.00))!=0.00 then sum(isnull(kg_,0.00)) else 1 end ) s 
+                    //from calculation where  emeliyyat_nomre =  @pricePoint AND userId = @userID
+                    //group by satis_qiymeti  ,mal_alisi_details_id) tx 
+                    //left join pos_guzest pg on pg.mal_details_id = tx.mal_alisi_details_id and pg.emeliyyat_nomre = @pricePoint";
+
+
+
                     string query = @"
-                    select cast ((sum(s - (s*ISNULL(pg.endirim_faiz,0.00))/100.00 - ISNULL(pg.endiriz_azn,0.00))) as decimal(9,2)) as cem 
-                    from (select mal_alisi_details_id, satis_qiymeti * count(*)*(case when sum(isnull(kg_,0.00))!=0.00 then sum(isnull(kg_,0.00)) else 1 end ) s 
-                    from calculation where  emeliyyat_nomre =  @pricePoint AND userId = @userID
-                    group by satis_qiymeti  ,mal_alisi_details_id) tx 
-                    left join pos_guzest pg on pg.mal_details_id = tx.mal_alisi_details_id and pg.emeliyyat_nomre = @pricePoint";
+                  select CAST(
+    ROUND(
+        sum(s - (s * ISNULL(pg.endirim_faiz, 0.00)) / 100.00 - ISNULL(pg.endiriz_azn, 0.00)), 
+        2, 
+        1
+    ) 
+    AS decimal(9,2)
+) as cem
+from (
+    select mal_alisi_details_id, 
+           satis_qiymeti * count(*) * 
+           (case when sum(isnull(kg_, 0.00)) != 0.00 then sum(isnull(kg_, 0.00)) else 1 end) s 
+    from calculation 
+    where emeliyyat_nomre = @pricePoint AND userId = @userID
+    group by satis_qiymeti, mal_alisi_details_id
+) tx 
+left join pos_guzest pg 
+    on pg.mal_details_id = tx.mal_alisi_details_id and pg.emeliyyat_nomre = @pricePoint";
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
                         cmd.Parameters.AddWithValue("@pricePoint", emeliyyat_n);

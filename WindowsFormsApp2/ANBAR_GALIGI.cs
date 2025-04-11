@@ -20,7 +20,6 @@ namespace WindowsFormsApp2
 {
     public partial class ANBAR_GALIGI : BaseForm
     {
-        private ProductDetail _productDetail;
         public ANBAR_GALIGI()
         {
             InitializeComponent();

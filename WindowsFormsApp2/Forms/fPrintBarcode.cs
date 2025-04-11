@@ -120,7 +120,7 @@ namespace WindowsFormsApp2.Forms
                         if ((PrintType)lookPrintType.EditValue is PrintType.minimum)
                         {
                             Enums.BarcodeType barcodeType = Enums.BarcodeType.Code128;
-                            if (barcode.Length is 12 || barcode.Length is 13)
+                            if (barcode.Length is 13)
                             {
                                 barcodeType = BarcodeType.EAN13;
                             }
@@ -190,7 +190,7 @@ namespace WindowsFormsApp2.Forms
                     if ((PrintType)lookPrintType.EditValue is PrintType.minimum)
                     {
                         Enums.BarcodeType barcodeType = Enums.BarcodeType.Code128;
-                        if (barcode.Length is 12 || barcode.Length is 13)
+                        if (barcode.Length is 13)
                         {
                             barcodeType = BarcodeType.EAN13;
                         }

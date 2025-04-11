@@ -222,6 +222,7 @@ namespace WindowsFormsApp2
             this.panelControl14 = new DevExpress.XtraEditors.PanelControl();
             this.chOtherPay = new DevExpress.XtraEditors.CheckEdit();
             this.chTerminalPrintReceipt = new DevExpress.XtraEditors.CheckEdit();
+            this.chIsReceipt = new DevExpress.XtraEditors.CheckEdit();
             this.chSendToKassa = new DevExpress.XtraEditors.CheckEdit();
             this.chPosSalesMessage = new DevExpress.XtraEditors.CheckEdit();
             this.bKassaPing = new DevExpress.XtraEditors.SimpleButton();
@@ -237,7 +238,6 @@ namespace WindowsFormsApp2
             this.tabModul = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.tileControl1 = new DevExpress.XtraEditors.TileControl();
             this.tileGroup1 = new DevExpress.XtraEditors.TileGroup();
-            this.chIsReceipt = new DevExpress.XtraEditors.CheckEdit();
             this.fluentDesignFormContainer1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
@@ -325,13 +325,13 @@ namespace WindowsFormsApp2
             this.panelControl14.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chOtherPay.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chTerminalPrintReceipt.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chIsReceipt.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chSendToKassa.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chPosSalesMessage.Properties)).BeginInit();
             this.tabLicence.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl15)).BeginInit();
             this.panelControl15.SuspendLayout();
             this.tabModul.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chIsReceipt.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // fluentDesignFormContainer1
@@ -2086,6 +2086,7 @@ namespace WindowsFormsApp2
             // 
             // pageDashboard
             // 
+            this.pageDashboard.Caption = "pageDashboard";
             this.pageDashboard.Controls.Add(this.fluentDesignFormContainer1);
             this.pageDashboard.Margin = new System.Windows.Forms.Padding(0);
             this.pageDashboard.Name = "pageDashboard";
@@ -2093,6 +2094,7 @@ namespace WindowsFormsApp2
             // 
             // pageProducts
             // 
+            this.pageProducts.Caption = "pageProducts";
             this.pageProducts.Controls.Add(this.tableLayoutPanel9);
             this.pageProducts.Margin = new System.Windows.Forms.Padding(0);
             this.pageProducts.Name = "pageProducts";
@@ -2399,6 +2401,7 @@ namespace WindowsFormsApp2
             // 
             // pageSettings
             // 
+            this.pageSettings.Caption = "pageSettings";
             this.pageSettings.Controls.Add(this.tabPaneSettings);
             this.pageSettings.Name = "pageSettings";
             this.pageSettings.Size = new System.Drawing.Size(1157, 806);
@@ -2962,6 +2965,23 @@ namespace WindowsFormsApp2
             this.chTerminalPrintReceipt.TabIndex = 25;
             this.chTerminalPrintReceipt.CheckedChanged += new System.EventHandler(this.chTerminalPrintReceipt_CheckedChanged);
             // 
+            // chIsReceipt
+            // 
+            this.chIsReceipt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.chIsReceipt.Enabled = false;
+            this.chIsReceipt.Location = new System.Drawing.Point(8, 162);
+            this.chIsReceipt.Name = "chIsReceipt";
+            this.chIsReceipt.Properties.Appearance.Font = new System.Drawing.Font("Verdana", 11F);
+            this.chIsReceipt.Properties.Appearance.Options.UseFont = true;
+            this.chIsReceipt.Properties.Caption = "Yönləndirilən Xprinterdən çap et";
+            this.chIsReceipt.Properties.CheckBoxOptions.Style = DevExpress.XtraEditors.Controls.CheckBoxStyle.SvgToggle1;
+            this.chIsReceipt.Properties.CheckBoxOptions.SvgImageSize = new System.Drawing.Size(32, 28);
+            this.chIsReceipt.Properties.GlyphAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.chIsReceipt.Size = new System.Drawing.Size(1137, 32);
+            this.chIsReceipt.TabIndex = 25;
+            this.chIsReceipt.CheckedChanged += new System.EventHandler(this.chIsReceipt_CheckedChanged);
+            // 
             // chSendToKassa
             // 
             this.chSendToKassa.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -3161,23 +3181,6 @@ namespace WindowsFormsApp2
             this.tileGroup1.Name = "tileGroup1";
             this.tileGroup1.Text = "tileGroup1";
             // 
-            // chIsReceipt
-            // 
-            this.chIsReceipt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.chIsReceipt.Enabled = false;
-            this.chIsReceipt.Location = new System.Drawing.Point(8, 162);
-            this.chIsReceipt.Name = "chIsReceipt";
-            this.chIsReceipt.Properties.Appearance.Font = new System.Drawing.Font("Verdana", 11F);
-            this.chIsReceipt.Properties.Appearance.Options.UseFont = true;
-            this.chIsReceipt.Properties.Caption = "Yönləndirilən Xprinterdən çap et";
-            this.chIsReceipt.Properties.CheckBoxOptions.Style = DevExpress.XtraEditors.Controls.CheckBoxStyle.SvgToggle1;
-            this.chIsReceipt.Properties.CheckBoxOptions.SvgImageSize = new System.Drawing.Size(32, 28);
-            this.chIsReceipt.Properties.GlyphAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.chIsReceipt.Size = new System.Drawing.Size(1137, 32);
-            this.chIsReceipt.TabIndex = 25;
-            this.chIsReceipt.CheckedChanged += new System.EventHandler(this.chIsReceipt_CheckedChanged);
-            // 
             // MAINSCRRENS
             // 
             this.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(245)))), ((int)(((byte)(250)))));
@@ -3297,6 +3300,7 @@ namespace WindowsFormsApp2
             this.panelControl14.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chOtherPay.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chTerminalPrintReceipt.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chIsReceipt.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chSendToKassa.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chPosSalesMessage.Properties)).EndInit();
             this.tabLicence.ResumeLayout(false);
@@ -3304,7 +3308,6 @@ namespace WindowsFormsApp2
             this.panelControl15.ResumeLayout(false);
             this.panelControl15.PerformLayout();
             this.tabModul.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.chIsReceipt.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }
