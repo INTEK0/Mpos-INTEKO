@@ -200,6 +200,7 @@
             this.colPrintButton});
             this.gridProducts.DetailHeight = 294;
             this.gridProducts.GridControl = this.gridControlProducts;
+            this.gridProducts.GroupCount = 1;
             this.gridProducts.Name = "gridProducts";
             this.gridProducts.OptionsBehavior.KeepFocusedRowOnUpdate = false;
             this.gridProducts.OptionsBehavior.ReadOnly = true;
@@ -209,6 +210,8 @@
             this.gridProducts.OptionsSelection.MultiSelect = true;
             this.gridProducts.OptionsSelection.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.CheckBoxRowSelect;
             this.gridProducts.OptionsView.ShowIndicator = false;
+            this.gridProducts.SortInfo.AddRange(new DevExpress.XtraGrid.Columns.GridColumnSortInfo[] {
+            new DevExpress.XtraGrid.Columns.GridColumnSortInfo(this.colSupplierName, DevExpress.Data.ColumnSortOrder.Ascending)});
             // 
             // colSupplierId
             // 
@@ -225,6 +228,9 @@
             this.colSupplierName.Name = "colSupplierName";
             this.colSupplierName.OptionsColumn.AllowEdit = false;
             this.colSupplierName.OptionsColumn.ReadOnly = true;
+            this.colSupplierName.Visible = true;
+            this.colSupplierName.VisibleIndex = 1;
+            this.colSupplierName.Width = 148;
             // 
             // colProductId
             // 

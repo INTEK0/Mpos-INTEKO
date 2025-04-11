@@ -29,11 +29,11 @@ namespace WindowsFormsApp2.Helpers.CacheData
 
             double priceY = 220;
             double aznY = priceY + 40;
-            double productY = 55;
-            if (productName.Length > 27)
-            {
-                productY += 20;
-            }
+            //double productY = 55;
+            //if (productName.Length > 19)
+            //{
+            //    productY += 25;
+            //}      
 
             #region [..MƏHSUL ADINDA LİMİT OLMAYAN KOD (Uzun olduqda alt sətirə keçmir)..]
             //            string tsplCommand = $@"
@@ -68,7 +68,13 @@ namespace WindowsFormsApp2.Helpers.CacheData
             #endregion [..MƏHSUL ADINDA LİMİT OLMAYAN KOD (Uzun olduqda alt sətirə keçmir)..]
 
 
-            List<string> productLines = SplitProductName(productName, 27);
+            List<string> productLines = SplitProductName(productName, 15);
+            if (productLines.Count > 2)
+                productLines = productLines.Take(2).ToList();
+            
+            double productY = 55;
+            int lineSpacing = 40;
+
             string tsplCommand = $@"
 SIZE 60 mm, 40 mm
 GAP 2 mm, 0
@@ -89,7 +95,7 @@ BAR 0,45,580,2
             {
                 tsplCommand += $@"
 REM === Product name, line {i + 1}, left aligned ===
-TEXT 10,{productY + (i * 30)},""3"",0,1,1,""{productLines[i]}""
+TEXT 10,{productY + (i * lineSpacing)},""4"",0,1,1,""{productLines[i]}""
 ";
             }
 
