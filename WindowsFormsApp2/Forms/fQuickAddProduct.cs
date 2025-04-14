@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
-using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
@@ -14,8 +12,10 @@ namespace WindowsFormsApp2.Forms
     public partial class fQuickAddProduct : DevExpress.XtraEditors.XtraForm
     {
         private BindingList<Product> _products = new BindingList<Product>();
+        private BindingList<TestProduct> _TestProduct = new BindingList<TestProduct>();
         private int _rowCount = 1;
         private readonly string _barcode;
+        private decimal _stockAmount;
         public fQuickAddProduct(string barcode = null)
         {
             InitializeComponent();
@@ -30,6 +30,7 @@ namespace WindowsFormsApp2.Forms
             public string CategoryName { get; set; }
             public string ProductName { get; set; }
             public string Barcode { get; set; }
+            public decimal StockAmount { get; set; }
             public decimal Amount { get; set; }
             public string UnitName { get; set; }
             public string TaxName { get; set; }
@@ -50,11 +51,80 @@ namespace WindowsFormsApp2.Forms
             public decimal GainAmount { get => TotalSaleAmount - TotalPurchaseAmount; }
         }
 
+        private class TestProduct
+        {
+            public int Id { get; set; }
+            public string SupplierName { get; set; }
+            public string CategoryName { get; set; }
+            public string ProductName { get; set; }
+            public string Barcode { get; set; }
+            public decimal PurchasePrice { get; set; }
+            public decimal SalePrice { get; set; }
+            public string UnitName { get; set; }
+            public string TaxName { get; set; }
+            public decimal Amount { get; set; }
+        }
+
+        private void StockListDataLoad()
+        {
+            string query = @"
+DECLARE @Result TABLE (
+TECHIZATCI_ID int,
+TECHIZATCI NVARCHAR(100),
+MAL_ALIS_DETAILS_ID int,
+PRODUCTNAME NVARCHAR(500),
+PRODUCTCODE NVARCHAR(100),
+PURCHASEPRICE decimal(18, 3),
+SALEPRICE decimal(18, 3),
+STOCK decimal(9,2),
+BARCODE NVARCHAR(100),
+EDV NVARCHAR(50));
+INSERT INTO @Result
+EXEC dbo.gaime_Satis_mal_load;
+
+SELECT 
+MAL_ALIS_DETAILS_ID AS Id,
+TECHIZATCI AS SupplierName,
+k.KATEGORIYA AS CategoryName, 
+PRODUCTNAME AS ProductName,
+BARCODE AS Barcode,
+v.VAHIDLER_NAME AS UnitName,
+PURCHASEPRICE AS PurchasePrice,
+SALEPRICE AS SalePrice,
+vd.EDV AS TaxName,
+STOCK AS Amount
+FROM @Result r 
+INNER JOIN MAL_ALISI_DETAILS mad ON mad.MAL_ALISI_DETAILS_ID = r.MAL_ALIS_DETAILS_ID
+INNER JOIN KATEGORIYA k ON k.KATEGORIYA_ID = mad.KATEGORIYA
+INNER JOIN VAHIDLER v ON v.VAHIDLER_ID = mad.VAHID
+INNER JOIN VERGI_DERECESI vd ON vd.EDV_ID = mad.VERGI_DERECESI
+";
+            var data = DbProsedures.ConvertToDataTable(query);
+
+            foreach (DataRow item in data.Rows)
+            {
+                TestProduct product = new TestProduct();
+                product.Id = Convert.ToInt32(item["Id"].ToString());
+                product.SupplierName = item["SupplierName"].ToString();
+                product.ProductName = item["ProductName"].ToString();
+                product.CategoryName = item["CategoryName"].ToString();
+                product.Barcode = item["Barcode"].ToString();
+                product.TaxName = item["TaxName"].ToString();
+                product.UnitName = item["UnitName"].ToString();
+                product.PurchasePrice = Convert.ToDecimal(item["PurchasePrice"].ToString());
+                product.SalePrice = Convert.ToDecimal(item["SalePrice"].ToString());
+                product.Amount = Convert.ToDecimal(item["Amount"].ToString());
+                _TestProduct.Add(product);
+            }
+
+        }
+
         private void fQuickAddProduct_Load(object sender, EventArgs e)
         {
+            StockListDataLoad();
+
             dateTarix.DateTime = DateTime.Now;
             gridControl1.DataSource = _products;
-
             if (!string.IsNullOrWhiteSpace(_barcode))
             {
                 tBarcode.Text = _barcode;
@@ -74,7 +144,40 @@ namespace WindowsFormsApp2.Forms
                 e.SuppressKeyPress = true;
                 e.Handled = true;
 
+                var data = _TestProduct.FirstOrDefault(x => x.Barcode == tBarcode.Text.Trim());
 
+                if (data != null)
+                {
+                    var existingProduct = _products.FirstOrDefault(X=> X.Barcode == data.Barcode);
+                    if (existingProduct!= null)
+                    {
+                        existingProduct.Amount += 1;
+                    }
+                    else
+                    {
+                        Product product = new Product
+                        {
+                            No = _rowCount,
+                            Id = data.Id,
+                            SupplierName = data.SupplierName,
+                            CategoryName = data.CategoryName,
+                            ProductName = data.ProductName,
+                            Barcode = data.Barcode,
+                            StockAmount = data.Amount,
+                            Amount = 1,
+                            UnitName = data.UnitName,
+                            TaxName = data.TaxName,
+                            PurchasePrice = data.PurchasePrice,
+                            SalePrice = data.SalePrice
+                        };
+                        _products.Add(product);
+                        _rowCount++;
+                    }
+
+                }
+                
+
+#if BEFORE_CODE
                 string query = $@"SELECT TOP 1 
 m.MAL_ALISI_DETAILS_ID AS Id,
 t.SIRKET_ADI AS SupplierName,
@@ -84,13 +187,15 @@ m.BARKOD AS Barcode,
 m.ALIS_GIYMETI AS PurchasePrice,
 m.SATIS_GIYMETI AS SalePrice,
 v.VAHIDLER_NAME AS UnitName,
-vd.EDV AS TaxName
+vd.EDV AS TaxName,
+a.migdar AS StockAmount
 FROM MAL_ALISI_DETAILS m
 INNER JOIN VAHIDLER v ON v.VAHIDLER_ID = m.VAHID
 INNER JOIN VERGI_DERECESI vd ON vd.EDV_ID  = m.VERGI_DERECESI
 INNER JOIN KATEGORIYA k ON k.KATEGORIYA_ID = m.KATEGORIYA
 INNER JOIN MAL_ALISI_MAIN ma ON ma.MAL_ALISI_MAIN_ID = m.MAL_ALISI_MAIN_ID
 INNER JOIN COMPANY.TECHIZATCI t ON t.TECHIZATCI_ID = ma.TECHIZATCI_ID
+INNER JOIN ANBAR_MAGAZA a ON m.MAL_ALISI_DETAILS_ID = a.mal_details_id
 WHERE BARKOD IN (SELECT BARKOD FROM MAL_ALISI_DETAILS WHERE BARKOD =  N'{tBarcode.Text}')
 ORDER BY MAL_ALISI_DETAILS_ID DESC;";
 
@@ -115,6 +220,7 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                             CategoryName = row["CategoryName"].ToString(),
                             ProductName = row["ProductName"].ToString(),
                             Barcode = row["Barcode"].ToString(),
+                            StockAmount = Convert.ToDecimal(row["StockAmount"].ToString()),
                             Amount = 1,
                             UnitName = row["UnitName"].ToString(),
                             TaxName = row["TaxName"].ToString(),
@@ -128,8 +234,8 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                     //gridControl1.RefreshDataSource();
                     gridView1.RefreshData();
                 }
-
-
+#endif
+                gridView1.RefreshData();
                 tBarcode.Text = null;
                 tBarcode.Focus();
             }
@@ -148,7 +254,7 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
         {
             if (gridView1.RowCount > 0)
             {
-               
+
                 int[] selectedRows = gridView1.GetSelectedRows();
                 gridView1.CloseEditor();
                 gridView1.UpdateCurrentRow();

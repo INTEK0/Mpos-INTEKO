@@ -119,7 +119,18 @@ namespace WindowsFormsApp2
 
         private void accordionControlElement41_Click(object sender, EventArgs e)
         {
-            OpenForm<POS_LAYOUT_NEW>();
+            POS_LAYOUT_NEW f = Application.OpenForms.OfType<POS_LAYOUT_NEW>().FirstOrDefault();
+            if (f != null)
+            {
+                f.WindowState = FormWindowState.Maximized;
+                f.BringToFront();
+                f.Activate();
+            }
+            else
+            {
+                f = new POS_LAYOUT_NEW();
+                f.Show();
+            }
         }
 
         private void accordionControlElement31_Click(object sender, EventArgs e)
@@ -805,6 +816,7 @@ FROM (
                 MAL_ALIS_DETAILS_ID int,
                 PRODUCTNAME NVARCHAR(500),
                 PRODUCTCODE NVARCHAR(100),
+                PURCHASEPRICE decimal(18, 3),
                 SALEPRICE decimal(18, 3),
                 STOCK decimal(9,2),
                 BARCODE NVARCHAR(100),

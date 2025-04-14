@@ -657,12 +657,15 @@ namespace WindowsFormsApp2.Forms
 
         private void fAddProduct_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (e.CloseReason is CloseReason.UserClosing)
+            if (gridView1.RowCount > 0)
             {
-                DialogResult result = XtraMessageBox.Show("SƏHİFƏDƏN ÇIXMAQ İSTƏDİYİNİZƏ ƏMİNSİNİZ ?", nameof(HeaderMessage.Xəbərdarlıq), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (result is DialogResult.No)
+                if (e.CloseReason is CloseReason.UserClosing)
                 {
-                    e.Cancel = true;
+                    DialogResult result = XtraMessageBox.Show("SƏHİFƏDƏN ÇIXMAQ İSTƏDİYİNİZƏ ƏMİNSİNİZ ?", nameof(HeaderMessage.Xəbərdarlıq), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (result is DialogResult.No)
+                    {
+                        e.Cancel = true;
+                    }
                 }
             }
         }

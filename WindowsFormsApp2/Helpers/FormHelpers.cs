@@ -201,8 +201,7 @@ namespace WindowsFormsApp2.Helpers
             }
             else
             {
-                form.WindowState = FormWindowState.Normal;
-                form.StartPosition = FormStartPosition.CenterScreen;
+                form.WindowState = FormWindowState.Maximized;
                 form.BringToFront();
             }
 

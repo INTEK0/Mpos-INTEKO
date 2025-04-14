@@ -185,7 +185,7 @@ namespace WindowsFormsApp2
             textBox5.AutoCompleteSource = AutoCompleteSource.CustomSource;
         }
 
-        
+
         private void tBarcode_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode is Keys.Enter)
@@ -269,7 +269,7 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                     }
                     else if (_terezi.ModelName.Trim() is "MERC LB 1100")
                     {
-                        
+
                         if (kontrol.Substring(0, 1) == "0")
                         {
                             if (kontrol.Count() is 12)
@@ -302,7 +302,7 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                                             getall(barkod);
                                             get(textEdit1.Text);
 
-                                           // get_say_birmal(barkod, textEdit1.Text);
+                                            // get_say_birmal(barkod, textEdit1.Text);
                                         }
                                     }
                                 }
@@ -793,14 +793,14 @@ left join pos_guzest pg
                         cmd.Parameters.AddWithValue("@pricePoint", barcode);
                         using (SqlDataReader dr = cmd.ExecuteReader())
                         {
-                            while (dr.Read())
+                            if (dr.Read())
                             {
-                                if (string.IsNullOrEmpty(tBarcode.Text))
-                                {
-                                    tBarcode.Text = dr["BARKOD"].ToString();
-                                }
+                                //if (string.IsNullOrEmpty(tBarcode.Text))
+                                //{
+                                //    tBarcode.Text = dr["BARKOD"].ToString();
+                                //}
 
-                                textBox5.Text = dr["MƏHSUL ADI"].ToString();
+                                //textBox5.Text = dr["MƏHSUL ADI"].ToString();
 
                                 for (int i = 0; i < Convert.ToInt32(dr["say"]); i++)
                                 {
@@ -2581,10 +2581,10 @@ left join pos_guzest pg
                 getall(tBarcode.Text);
                 get(textEdit1.Text);
                 get_say_birmal(tBarcode.Text, textEdit1.Text);
-                tBarcode.Text = string.Empty;
 
                 get_cem(textEdit1.Text);
                 textBox5.Text = "";
+                tBarcode.Text = null;
             }
         }
 
