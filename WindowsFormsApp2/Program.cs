@@ -24,7 +24,7 @@ namespace WindowsFormsApp2
             CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator = ".";
             CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol = "₼"; //₼
             Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            //Application.SetCompatibleTextRenderingDefault(false);
             FormHelpers.FolderControl();
             Application.Run(new avtorizasiya());
         }

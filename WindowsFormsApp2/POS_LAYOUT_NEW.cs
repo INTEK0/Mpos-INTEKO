@@ -33,6 +33,7 @@ using WindowsFormsApp2.NKA;
 using WindowsFormsApp2.Reports;
 using static System.Runtime.CompilerServices.RuntimeHelpers;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
+using static WindowsFormsApp2.Helpers.DB.DTOs;
 using static WindowsFormsApp2.Helpers.Enums;
 using static WindowsFormsApp2.Helpers.FormHelpers;
 using Method = RestSharp.Method;
@@ -48,6 +49,7 @@ namespace WindowsFormsApp2
         private DataTable dt;
         private SqlDataAdapter da;
         private User _user = DbProsedures.GetUser();
+        private TeraziDTO _terezi = DbProsedures.GetTerezi();
         public string customer, customervoen, obyektkod, obyetname, obyektadres, nkamodel, nkanumber, nkarnumber, barkodsa, bankttnmd, bankttnminputdata;
         public string YekunMebleg, zdocument, nacilma, ndoc, firstDocNumber, lastDocNumber, saleCount, saleSum, saleCashSum, saleCashlessSum, salePrepaymentSum, saleCreditSum, saleBonusSum, saleVatAmounts, depositCount, moneyBackCount, moneyBackSum, moneyBackCashSum, moneyBackCashlessSum, moneyBackVatAmounts, vatPercent, vatPercentm, vatSuma, vatSumma, rno, sdocumentid, fissayi, gunfissayi, odenen, qaliq, edvdenazada1, edvhesap1, edvdenazada2, edvhesap2, deposita, withdrawa, nhtarix, depositSum;
 
@@ -183,6 +185,7 @@ namespace WindowsFormsApp2
             textBox5.AutoCompleteSource = AutoCompleteSource.CustomSource;
         }
 
+        
         private void tBarcode_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode is Keys.Enter)
@@ -193,16 +196,17 @@ namespace WindowsFormsApp2
                 string gr;
                 string barkod;
                 string malDetailsID = null;
-                var terezi =DbProsedures.GetTerezi();
 
-
-                if (terezi != null)
+                if (_terezi != null)
                 {
-                    if (terezi.ModelName.Trim() is "Rongta RLS 1100")
+                    if (_terezi.ModelName.Trim() is "Rongta RLS 1100")
                     {
-                        if (kontrol.Substring(0, 1) == "0" && kontrol.Count() is 13)
+                        if (kontrol.Substring(0, 1) == "0")
                         {
-                            kontrol = "0" + kontrol;
+                            if (kontrol.Count() is 12)
+                            {
+                                kontrol = "0" + kontrol;
+                            }
 
                             kod = kontrol.Substring(2, 5);
                             kg = kontrol.Substring(7, 2);
@@ -227,7 +231,7 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                                             malDetailsID = dr["MAL_ALISI_DETAILS_ID"].ToString();
                                             textEdit10.Text = kg + "," + gr;
                                             getall(barkod);
-                                            get(textEdit1.Text);
+                                            //get(textEdit1.Text);
 
                                             //get_say_birmal(barkod, textEdit1.Text);
                                         }
@@ -263,11 +267,16 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                             get_cem(textEdit1.Text);
                         }
                     }
-                    else if (terezi.ModelName.Trim() is "MERC LB 1100")
+                    else if (_terezi.ModelName.Trim() is "MERC LB 1100")
                     {
-                        kontrol = "0" + kontrol;
-                        if (kontrol.Substring(0, 1) == "0" && kontrol.Count() is 13)
+                        
+                        if (kontrol.Substring(0, 1) == "0")
                         {
+                            if (kontrol.Count() is 12)
+                            {
+                                kontrol = "0" + kontrol;
+                            }
+
                             kod = kontrol.Substring(2, 5);
                             kg = kontrol.Substring(7, 2);
                             gr = kontrol.Substring(9, 3);
