@@ -965,6 +965,7 @@ namespace WindowsFormsApp2
             this.layoutControlItem18.Name = "layoutControlItem18";
             this.layoutControlItem18.Size = new System.Drawing.Size(1202, 36);
             this.layoutControlItem18.TextSize = new System.Drawing.Size(139, 16);
+            this.layoutControlItem18.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // emptySpaceItem11
             // 

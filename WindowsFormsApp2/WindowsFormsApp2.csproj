@@ -363,6 +363,12 @@
     <Compile Include="Forms\fDinarTest.Designer.cs">
       <DependentUpon>fDinarTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\fDiscountProduct.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\fDiscountProduct.Designer.cs">
+      <DependentUpon>fDiscountProduct.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\fDoctors.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -966,6 +972,7 @@
     </Compile>
     <Compile Include="Validations\CompanyValidation.cs" />
     <Compile Include="Validations\CustomerValidation.cs" />
+    <Compile Include="Validations\DiscountProductValidation.cs" />
     <Compile Include="Validations\DoctorValidation.cs" />
     <Compile Include="Validations\GuarantorValidation.cs" />
     <Compile Include="Validations\IncomeAndExpenseValidation.cs" />
@@ -1076,6 +1083,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fDinarTest.resx">
       <DependentUpon>fDinarTest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\fDiscountProduct.resx">
+      <DependentUpon>fDiscountProduct.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fDoctors.resx">
       <DependentUpon>fDoctors.cs</DependentUpon>

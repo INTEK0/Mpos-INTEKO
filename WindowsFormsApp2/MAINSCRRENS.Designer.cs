@@ -2086,7 +2086,6 @@ namespace WindowsFormsApp2
             // 
             // pageDashboard
             // 
-            this.pageDashboard.Caption = "pageDashboard";
             this.pageDashboard.Controls.Add(this.fluentDesignFormContainer1);
             this.pageDashboard.Margin = new System.Windows.Forms.Padding(0);
             this.pageDashboard.Name = "pageDashboard";
@@ -2094,7 +2093,6 @@ namespace WindowsFormsApp2
             // 
             // pageProducts
             // 
-            this.pageProducts.Caption = "pageProducts";
             this.pageProducts.Controls.Add(this.tableLayoutPanel9);
             this.pageProducts.Margin = new System.Windows.Forms.Padding(0);
             this.pageProducts.Name = "pageProducts";
@@ -2401,7 +2399,6 @@ namespace WindowsFormsApp2
             // 
             // pageSettings
             // 
-            this.pageSettings.Caption = "pageSettings";
             this.pageSettings.Controls.Add(this.tabPaneSettings);
             this.pageSettings.Name = "pageSettings";
             this.pageSettings.Size = new System.Drawing.Size(1157, 806);

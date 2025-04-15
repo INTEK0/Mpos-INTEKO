@@ -343,5 +343,28 @@ namespace WindowsFormsApp2.Helpers.DB
             public string PrintType { get; set; }
             public int UserId { get; set; }
         }
+
+        public class PosDiscount
+        {
+            public string ProccessNo { get; set; }
+            public int ProductId { get; set; }
+            public string DiscountPercent { get; set; }
+            public string DiscountAmount { get; set; }
+            public int UserId { get; set; } = Properties.Settings.Default.UserID;
+        }
+
+        public class DiscountProduct
+        {
+            public int Id { get; set; }
+            public int ProductId { get; set; }
+            public decimal DiscountPercent { get; set; }
+            public decimal DiscountAmount { get; set; }
+            public decimal DiscountTotal { get; set; }
+            public DateTime StartDate { get; set; }
+            public DateTime EndDate { get; set; }
+            public bool Status { get; set; }
+            public int UserId { get; set; }
+            public int IsDeleted { get; set; }
+        }
     }
 }

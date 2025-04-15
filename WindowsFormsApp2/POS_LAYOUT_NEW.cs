@@ -1,19 +1,5 @@
-﻿using DevExpress.CodeParser;
-using DevExpress.DashboardCommon.Viewer;
-using DevExpress.Data.Linq.Helpers;
-using DevExpress.Map.Native;
-using DevExpress.Pdf.Native.BouncyCastle.Utilities.Net;
-using DevExpress.PivotGrid.PivotQuery;
-using DevExpress.XtraBars.Navigation;
-using DevExpress.XtraEditors;
-using DevExpress.XtraGrid.Localization;
-using DevExpress.XtraGrid.Views.Grid;
-using Microsoft.Win32;
-using Newtonsoft.Json.Linq;
-using RestSharp;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -21,17 +7,24 @@ using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Security.Policy;
 using System.Text.Json;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using DevExpress.Data.Linq.Helpers;
+using DevExpress.XtraBars.Navigation;
+using DevExpress.XtraEditors;
+using DevExpress.XtraGrid.Localization;
+using DevExpress.XtraGrid.Views.Grid;
+using Microsoft.Win32;
+using Newtonsoft.Json.Linq;
+using RestSharp;
 using WindowsFormsApp2.Forms;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using WindowsFormsApp2.NKA;
 using WindowsFormsApp2.Reports;
-using static System.Runtime.CompilerServices.RuntimeHelpers;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
 using static WindowsFormsApp2.Helpers.DB.DTOs;
 using static WindowsFormsApp2.Helpers.Enums;
@@ -54,7 +47,6 @@ namespace WindowsFormsApp2
         public string YekunMebleg, zdocument, nacilma, ndoc, firstDocNumber, lastDocNumber, saleCount, saleSum, saleCashSum, saleCashlessSum, salePrepaymentSum, saleCreditSum, saleBonusSum, saleVatAmounts, depositCount, moneyBackCount, moneyBackSum, moneyBackCashSum, moneyBackCashlessSum, moneyBackVatAmounts, vatPercent, vatPercentm, vatSuma, vatSumma, rno, sdocumentid, fissayi, gunfissayi, odenen, qaliq, edvdenazada1, edvhesap1, edvdenazada2, edvhesap2, deposita, withdrawa, nhtarix, depositSum;
 
 
-        AutoCompleteStringCollection coll_ = new AutoCompleteStringCollection();
         public string casha2, tota2;
         public int clmns, height;
 
@@ -70,22 +62,13 @@ namespace WindowsFormsApp2
             GridLocalizer.Active = new MyGridLocalizer();
         }
 
-
-
-        private void POS_LAYOUT_NEW_Load(object sender, EventArgs e)
+        private async void POS_LAYOUT_NEW_Load(object sender, EventArgs e)
         {
-            textBox5.Text = "MƏHSUL ADI";
-
-            textBox5.ForeColor = Color.LightGray;
-            textBox5.Font = new Font("Tahoma", 16, FontStyle.Bold);
-            //labelControl21.Text = "ALIŞ";
-            lModel.Visible = true;
-            Auto();
-            gridControl1.TabStop = true;
+            lModel.Visible = false;
+            await AutoAsync();
             tUsername.Text = _user?.NameSurname;
             textEdit2.Text = DateTime.Now.ToShortDateString();
 
-            //st.del_tr();
             textEdit1.Text = DbProsedures.GET_SalesProcessNo();
             textEdit11.Text = DbProsedures.GET_TotalSalesCount();
             get_ip_model();
@@ -98,6 +81,7 @@ namespace WindowsFormsApp2
             BasketDataControl();
             PrintKassaOrPrinterShow();
             ClinicModule();
+            await PosDiscountDeleteAsync();
             tBarcode.Focus();
         }
 
@@ -165,26 +149,48 @@ namespace WindowsFormsApp2
             }
         }
 
-        private void Auto()
+        private async Task PosDiscountDeleteAsync()
         {
-            da = new SqlDataAdapter("select * from dbo.POS_autocomplete_search_mehsul_Adi_distinct()", DbHelpers.DbConnectionString);
-
-            DataTable dt = new DataTable();
-
-            da.Fill(dt);
-            if (dt.Rows.Count > 0)
+            await Task.Run(() =>
             {
-                for (int i = 0; i < dt.Rows.Count; i++)
+                using (SqlConnection conn = new SqlConnection(DbHelpers.DbConnectionString))
                 {
-                    coll_.Add(dt.Rows[i]["MEHSUL_ADI"].ToString());
+                    conn.Open();
+                    string deleteQuery = $"DELETE FROM pos_guzest WHERE userId = {Properties.Settings.Default.UserID}";
+
+                    using (SqlCommand cmd = new SqlCommand(deleteQuery, conn))
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
                 }
-            }
+            });
+        }
+
+        private async Task AutoAsync()
+        {
+            AutoCompleteStringCollection coll_ = new AutoCompleteStringCollection();
+
+            await Task.Run(() =>
+            {
+                using (SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM dbo.POS_autocomplete_search_mehsul_Adi_distinct()", DbHelpers.DbConnectionString))
+                {
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        if (row["MEHSUL_ADI"] != DBNull.Value)
+                        {
+                            coll_.Add(row["MEHSUL_ADI"].ToString());
+                        }
+                    }
+                }
+            });
 
             textBox5.AutoCompleteCustomSource = coll_;
             textBox5.AutoCompleteMode = AutoCompleteMode.Suggest;
             textBox5.AutoCompleteSource = AutoCompleteSource.CustomSource;
         }
-
 
         private void tBarcode_KeyDown(object sender, KeyEventArgs e)
         {
@@ -674,7 +680,7 @@ left join pos_guzest pg
             {
                 using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon))
                 {
-                    string queryString = " SELECT * FROM  dbo.fn_POS_SATIS_LOAD(@EMELIYYAT_NOMRE,@userID)";
+                    string queryString = "SELECT * FROM  dbo.fn_POS_SATIS_LOAD(@EMELIYYAT_NOMRE,@userID)";
                     connection.Open();
                     using (SqlCommand command = new SqlCommand(queryString, connection))
                     {
@@ -834,6 +840,7 @@ left join pos_guzest pg
 
         private void textEdit10_KeyPress(object sender, KeyPressEventArgs e)
         {
+            //Update Quantity
             if (e.KeyChar == (char)13)
             {
                 if (string.IsNullOrEmpty(textEdit10.Text))
@@ -846,7 +853,6 @@ left join pos_guzest pg
                     get(textEdit1.Text);
                     get_say_birmal(tBarcode.Text, textEdit1.Text);
                     tBarcode.Text = string.Empty;
-                    //deyisilmis
 
                     get_cem(textEdit1.Text);
 
@@ -857,8 +863,6 @@ left join pos_guzest pg
 
                 }
             }
-
-
             else if (e.KeyChar == (char)27)
             {
                 this.Close();
@@ -868,6 +872,7 @@ left join pos_guzest pg
 
         private void textEdit9_KeyPress(object sender, KeyPressEventArgs e)
         {
+            //Update Sale Price
             if (e.KeyChar == (char)13)
             {
                 if (string.IsNullOrEmpty(textEdit9.Text))
@@ -876,21 +881,13 @@ left join pos_guzest pg
                 }
                 else
                 {
-                    //int a_ = Convert.ToInt32(textEdit10.Text.ToString());
-                    //if (a_ > 0 && dele_migdar_mal_id > 0)
-                    //{
-                    // st.del_migdar_calculation(dele_migdar_mal_id, Convert.ToInt32(textEdit10.Text.ToString()));
-                    st.update_satis_giymeti_(dele_migdar_mal_id, Convert.ToDecimal(textEdit9.Text.ToString()));
-                    //}
-                    //   getall(1, textEdit4.Text.ToString());
-                    get(textEdit1.Text.ToString());
-                    get_say_birmal(tBarcode.Text.ToString(), textEdit1.Text.ToString());
+                    st.update_satis_giymeti_(dele_migdar_mal_id, Convert.ToDecimal(textEdit9.Text));
+                    get(textEdit1.Text);
+                    get_say_birmal(tBarcode.Text, textEdit1.Text);
+
+                    get_cem(textEdit1.Text);
+
                     tBarcode.Text = string.Empty;
-                    //deyisilmis
-
-                    get_cem(textEdit1.Text.ToString());
-
-
                     textEdit9.Text = "";
                     textEdit10.Text = "";
                     textEdit12.Text = "";
@@ -909,49 +906,37 @@ left join pos_guzest pg
 
         private void textEdit12_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == (char)13)
+            //Discount Percent
+            if (e.KeyChar == (char)13 && !string.IsNullOrEmpty(textEdit12.Text))
             {
-                if (string.IsNullOrEmpty(textEdit12.Text))
+                try
                 {
+                    DbProsedures.INSERT_PosDiscount(new PosDiscount
+                    {
+                        ProccessNo = textEdit1.Text,
+                        ProductId = dele_migdar_mal_id,
+                        DiscountPercent = textEdit12.Text,
+                        DiscountAmount = textEdit13.Text,
+                    });
 
+                    get(textEdit1.Text);
+
+                    get_say_birmal(tBarcode.Text.Trim(), textEdit1.Text);
+
+                    get_cem(textEdit1.Text);
+
+                    tBarcode.Text = string.Empty;
+                    textEdit9.Text = "";
+                    textEdit10.Text = "";
+                    textEdit12.Text = "0";
+                    textEdit13.Text = "0";
                 }
-                else
+                catch
                 {
-                    try
-                    {
-
-
-                        //   int a_ = Convert.ToInt32(textEdit10.Text.ToString());
-                        //if (a_ > 0 && dele_migdar_mal_id > 0)
-                        //{
-                        // st.del_migdar_calculation(dele_migdar_mal_id, Convert.ToInt32(textEdit10.Text.ToString()));
-                        //if (string.IsNullOrEmpty(textEdit12.Text) || string.IsNullOrEmpty(textEdit13.Text))
-                        st.pos_guzest_insert_(textEdit1.Text.ToString(),
-                            dele_migdar_mal_id, textEdit12.Text.ToString(), textEdit13.Text.ToString());
-                        //}
-                        //   getall(1, textEdit4.Text.ToString());
-                        get(textEdit1.Text.ToString());
-                        get_say_birmal(tBarcode.Text.ToString(), textEdit1.Text.ToString());
-                        tBarcode.Text = string.Empty;
-                        //deyisilmis
-
-                        get_cem(textEdit1.Text.ToString());
-
-
-                        textEdit9.Text = "";
-                        textEdit10.Text = "";
-                        textEdit12.Text = "0";
-                        textEdit13.Text = "0";
-                    }
-                    catch
-                    {
-                        XtraMessageBox.Show("ƏMƏLİYYATDA SƏHV- FAİZ MƏBLƏĞİNİ DÜZGÜN DAXİL EDİN ");
-                    }
+                    Alert("FAİZ MƏBLƏĞİ DÜZGÜN DAXİL EDİLMƏDİ", MessageType.Error);
+                    return;
                 }
-
             }
-
-
             else if (e.KeyChar == (char)27)
             {
                 this.Close();
@@ -960,50 +945,37 @@ left join pos_guzest pg
 
         private void textEdit13_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == (char)13)
+            //Discount AZN
+            if (e.KeyChar == (char)13 && !string.IsNullOrEmpty(textEdit13.Text))
             {
-                if (string.IsNullOrEmpty(textEdit13.Text))
+                try
                 {
+                    DbProsedures.INSERT_PosDiscount(new PosDiscount
+                    {
+                        ProccessNo = textEdit1.Text,
+                        ProductId = dele_migdar_mal_id,
+                        DiscountPercent = textEdit12.Text,
+                        DiscountAmount = textEdit13.Text,
+                    });
 
+                    get(textEdit1.Text);
+
+                    get_say_birmal(tBarcode.Text.Trim(), textEdit1.Text);
+
+                    get_cem(textEdit1.Text);
+
+                    tBarcode.Text = string.Empty;
+                    textEdit9.Text = "";
+                    textEdit10.Text = "";
+                    textEdit12.Text = "0";
+                    textEdit13.Text = "0";
                 }
-                else
+                catch
                 {
-                    try
-                    {
-
-
-                        //    int a_ = Convert.ToInt32(textEdit10.Text.ToString());
-                        //if (a_ > 0 && dele_migdar_mal_id > 0)
-                        //{
-                        // st.del_migdar_calculation(dele_migdar_mal_id, Convert.ToInt32(textEdit10.Text.ToString()));
-                        //if (string.IsNullOrEmpty(textEdit12.Text) || string.IsNullOrEmpty(textEdit13.Text))
-                        st.pos_guzest_insert_(textEdit1.Text.ToString(),
-                            dele_migdar_mal_id, textEdit12.Text.ToString(), textEdit13.Text.ToString());
-                        //}
-                        //   getall(1, textEdit4.Text.ToString());
-                        get(textEdit1.Text.ToString());
-                        get_say_birmal(tBarcode.Text.ToString(), textEdit1.Text.ToString());
-                        tBarcode.Text = string.Empty;
-                        //deyisilmis
-
-                        get_cem(textEdit1.Text.ToString());
-
-
-                        textEdit9.Text = "";
-                        textEdit10.Text = "";
-                        textEdit12.Text = "0";
-                        textEdit13.Text = "0";
-                    }
-
-                    catch
-                    {
-                        XtraMessageBox.Show("ƏMƏLİYYATDA SƏHV- MƏBLƏĞİ DÜZGÜN DAXİL EDİN ");
-                    }
+                    Alert("FAİZ MƏBLƏĞİ DÜZGÜN DAXİL EDİLMƏDİ", MessageType.Error);
+                    return;
                 }
-
             }
-
-
             else if (e.KeyChar == (char)27)
             {
                 this.Close();

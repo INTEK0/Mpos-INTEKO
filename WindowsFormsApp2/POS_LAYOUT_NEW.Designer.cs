@@ -305,6 +305,7 @@ namespace WindowsFormsApp2
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.lModel);
             this.layoutControl1.Controls.Add(this.simpleButton15);
             this.layoutControl1.Controls.Add(this.simpleButton4);
             this.layoutControl1.Controls.Add(this.chSendToKassa);
@@ -318,7 +319,6 @@ namespace WindowsFormsApp2
             this.layoutControl1.Controls.Add(this.label3);
             this.layoutControl1.Controls.Add(this.lIpAdress);
             this.layoutControl1.Controls.Add(this.labelControl4);
-            this.layoutControl1.Controls.Add(this.lModel);
             this.layoutControl1.Controls.Add(this.simpleButton25);
             this.layoutControl1.Controls.Add(this.simpleButton24);
             this.layoutControl1.Controls.Add(this.simpleButton23);
@@ -488,12 +488,14 @@ namespace WindowsFormsApp2
             this.textBox5.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.textBox5.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.textBox5.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox5.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Bold);
+            this.textBox5.Font = new System.Drawing.Font("Tahoma", 16F, System.Drawing.FontStyle.Bold);
+            this.textBox5.ForeColor = System.Drawing.Color.LightGray;
             this.textBox5.Location = new System.Drawing.Point(8, 198);
             this.textBox5.Margin = new System.Windows.Forms.Padding(5, 3, 3, 3);
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(328, 37);
             this.textBox5.TabIndex = 58;
+            this.textBox5.Text = "MƏHSUL ADI";
             this.textBox5.TextChanged += new System.EventHandler(this.textBox5_TextChanged);
             this.textBox5.Enter += new System.EventHandler(this.textBox5_Enter);
             this.textBox5.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox5_KeyDown);
@@ -903,6 +905,7 @@ namespace WindowsFormsApp2
             this.gridControl1.Name = "gridControl1";
             this.gridControl1.Size = new System.Drawing.Size(1257, 475);
             this.gridControl1.TabIndex = 16;
+            this.gridControl1.TabStop = false;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
             // 

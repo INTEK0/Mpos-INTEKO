@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Net;
 using System.Windows.Forms;
+using WindowsFormsApp2.Forms;
 using WindowsFormsApp2.Forms.PrintPages;
 using WindowsFormsApp2.Helpers;
 
@@ -24,9 +25,9 @@ namespace WindowsFormsApp2
             CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator = ".";
             CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol = "₼"; //₼
             Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
+            Application.SetCompatibleTextRenderingDefault(false);
             FormHelpers.FolderControl();
-            Application.Run(new avtorizasiya());
+            Application.Run(new fDiscountProduct());
         }
     }
 }

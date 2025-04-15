@@ -8,7 +8,6 @@ using WindowsFormsApp2.Helpers.Messages;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
 using static WindowsFormsApp2.Helpers.DB.DTOs;
 using static WindowsFormsApp2.Helpers.Enums;
-using static WindowsFormsApp2.Helpers.FormHelpers;
 
 namespace WindowsFormsApp2.Helpers.DB
 {
@@ -712,6 +711,35 @@ namespace WindowsFormsApp2.Helpers.DB
                         }
                         return null;
                     }
+                }
+            }
+        }
+
+        public static void INSERT_PosDiscount(PosDiscount item)
+        {
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("pos_guzest_insert", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlParameter param;
+                    param = cmd.Parameters.Add("@emeliyyat_nomre", SqlDbType.NVarChar, 100);
+                    param.Value = item.ProccessNo;
+
+                    param = cmd.Parameters.Add("@mal_details_id", SqlDbType.Int);
+                    param.Value = item.ProductId;
+
+                    param = cmd.Parameters.Add("@endirim_faiz", SqlDbType.NVarChar, 100);
+                    param.Value = item.DiscountPercent;
+
+                    param = cmd.Parameters.Add("@endirim_azn", SqlDbType.NVarChar, 100);
+                    param.Value = item.DiscountAmount;
+
+                    param = cmd.Parameters.Add("@userId", SqlDbType.Int);
+                    param.Value = item.UserId;
+
+                    con.Open();
+                    cmd.ExecuteNonQuery();
                 }
             }
         }
@@ -2292,6 +2320,67 @@ WHERE UserId = {Properties.Settings.Default.UserID}";
 
         #endregion [.. PRINTERS ..]
 
+
+
+        #region [.. DISCOUNT PRODUCT ..]
+
+        public async static Task INSERT_DiscountProduct(List<DiscountProduct> items)
+        {
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                await con.OpenAsync();
+                foreach (DiscountProduct item in items)
+                {
+                    string query = $@"INSERT INTO [dbo].[DISCOUNT_PRODUCTS]
+           ([ProductId]
+           ,[DiscountPercent]
+           ,[DiscountAmount]
+           ,[DiscountTotal]
+           ,[StartDate]
+           ,[EndDate]
+           ,[Status]
+           ,[UserId])
+     VALUES(@ProductId,@DiscountPercent,@DiscountAmount,@DiscountTotal,@StartDate,@EndDate,@Status,@UserId)";
+                    /*
+                    string query2 = $@"INSERT INTO [dbo].[DISCOUNT_PRODUCTS]
+           ([ProductId]
+           ,[DiscountPercent]
+           ,[DiscountAmount]
+           ,[DiscountTotal]
+           ,[StartDate]
+           ,[EndDate]
+           ,[Status]
+           ,[UserId])
+     VALUES(
+            {item.ProductId},
+            {item.DiscountPercent},
+            {item.DiscountAmount},
+            {item.DiscountTotal},
+            {item.StartDate},
+            {item.EndDate},
+            {item.Status},
+            {item.UserId})
+";
+
+*/
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        cmd.Parameters.AddWithValue("@ProductId", item.ProductId);
+                        cmd.Parameters.AddWithValue("@DiscountPercent", item.DiscountPercent);
+                        cmd.Parameters.AddWithValue("@DiscountAmount", item.DiscountAmount);
+                        cmd.Parameters.AddWithValue("@DiscountTotal", item.DiscountTotal);
+                        cmd.Parameters.AddWithValue("@StartDate", item.StartDate);
+                        cmd.Parameters.AddWithValue("@EndDate", item.EndDate);
+                        cmd.Parameters.AddWithValue("@Status", item.Status);
+                        cmd.Parameters.AddWithValue("@UserId", item.UserId);
+
+                        await cmd.ExecuteNonQueryAsync();
+                    }
+                }
+            }
+        }
+
+        #endregion [.. DISCOUNT PRODUCT ..]
 
 
         #endregion [...PROCEDURES METHODS...]

@@ -40,14 +40,15 @@ BARCODE NVARCHAR(100),
 EDV NVARCHAR(50));
 INSERT INTO @Result
 EXEC dbo.gaime_Satis_mal_load;
+
 SELECT 
 MAL_ALIS_DETAILS_ID,
 TECHIZATCI AS SupplierName,
- PRODUCTNAME AS ProductName,
- BARCODE AS Barcode,
- PURCHASEPRICE AS PurchasePrice,
- SALEPRICE AS SalePrice,
- STOCK AS Amount
+PRODUCTNAME AS ProductName,
+BARCODE AS Barcode,
+PURCHASEPRICE AS PurchasePrice,
+SALEPRICE AS SalePrice,
+STOCK AS Amount
 FROM @Result";
 
             var data = DbProsedures.ConvertToDataTable(query);
