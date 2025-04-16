@@ -807,14 +807,14 @@ FROM (
         /// </summary>
         private void StockInformation()
         {
-            using (SqlConnection con = new SqlConnection(Properties.Settings.Default.SqlCon))
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
             {
                 string query = $@"
                 DECLARE @Result TABLE (
                 TECHIZATCI_ID int,
                 TECHIZATCI NVARCHAR(100),
                 MAL_ALIS_DETAILS_ID int,
-                PRODUCTNAME NVARCHAR(500),
+                PRODUCTNAME NVARCHAR(MAX),
                 PRODUCTCODE NVARCHAR(100),
                 PURCHASEPRICE decimal(18, 3),
                 SALEPRICE decimal(18, 3),

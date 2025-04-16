@@ -55,6 +55,7 @@ namespace WindowsFormsApp2
         List<string> bankdizis = new List<string>();
         private Customer _customer;
         private Doctor _doctor;
+        private List<DiscountProduct> _discountProducts = new List<DiscountProduct>();
 
         public POS_LAYOUT_NEW()
         {
@@ -81,7 +82,8 @@ namespace WindowsFormsApp2
             BasketDataControl();
             PrintKassaOrPrinterShow();
             ClinicModule();
-            await PosDiscountDeleteAsync();
+            await Task.Run(() => PosDiscountDeleteAsync());
+            await Task.Run(() => DiscountProductsLoad());
             tBarcode.Focus();
         }
 
@@ -149,6 +151,9 @@ namespace WindowsFormsApp2
             }
         }
 
+        /// <summary>
+        /// Pos guzest cədvəlini təmizləyir
+        /// </summary>
         private async Task PosDiscountDeleteAsync()
         {
             await Task.Run(() =>
@@ -388,6 +393,7 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                 else
                 {
                     getall(tBarcode.Text);
+                    //discount control işə düşəcək
                     get(textEdit1.Text);
                     get_say_birmal(tBarcode.Text, textEdit1.Text);
                     get_cem(textEdit1.Text);
@@ -398,6 +404,58 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                 tCustomer.Text = string.Empty;
                 tBarcode.Text = string.Empty;
             }
+        }
+
+        /// <summary>
+        /// Endirimli məhsulların siyahısını listə doldurur
+        /// </summary>
+        private async Task DiscountProductsLoad()
+        {
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                await con.OpenAsync();
+                string query = @"
+SELECT [Id]
+      ,[ProductId]
+      ,ISNULL([DiscountPercent],0) AS DiscountPercent
+      ,ISNULL([DiscountAmount],0) AS DiscountAmount
+      ,ISNULL([DiscountTotal],0) AS DiscountTotal
+      ,[StartDate]
+      ,[EndDate]
+      ,[Status]
+      ,[IsDeleted]
+      ,[UserId]
+  FROM [DISCOUNT_PRODUCTS]";
+                using (SqlCommand cmd = new SqlCommand(query,con))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            DateTime? dateValue = reader.IsDBNull(6) ? (DateTime?)null : reader.GetDateTime(6);
+                            DiscountProduct product = new DiscountProduct
+                            {
+                                Id = reader.GetInt32(0),
+                                ProductId = reader.GetInt32(1),
+                                DiscountPercent = reader.GetDecimal(2),
+                                DiscountAmount = reader.GetDecimal(3),
+                                DiscountTotal = reader.GetDecimal(4),
+                                StartDate = reader.GetDateTime(5),
+                                EndDate = dateValue,
+                                Status = reader.GetBoolean(7),
+                                IsDeleted = reader.GetInt32(8),
+                                UserId = reader.GetInt32(9),
+                            };
+                            _discountProducts.Add(product);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void Get_DiscountProductControl()
+        {
+
         }
 
         private void textEdit4_KeyPress(object sender, KeyPressEventArgs e)
@@ -678,7 +736,7 @@ left join pos_guzest pg
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon))
+                using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
                 {
                     string queryString = "SELECT * FROM  dbo.fn_POS_SATIS_LOAD(@EMELIYYAT_NOMRE,@userID)";
                     connection.Open();
@@ -786,6 +844,10 @@ left join pos_guzest pg
 
         }
 
+        /// <summary>
+        /// insert calculation əməliyyatını edir
+        /// </summary>
+        /// <param name="barcode"></param>
         public void getall(string barcode)
         {
             try
@@ -814,11 +876,13 @@ left join pos_guzest pg
                                     decimal salePrice = Convert.ToDecimal(dr["SATIŞ QİYMƏTİ"].ToString());
                                     decimal purchasePrice = Convert.ToDecimal(dr["ALIŞ QİYMƏTİ"].ToString());
 
+
+
                                     DbProsedures.InsertCalculation(new Calculation
                                     {
                                         proccessNo = textEdit1.Text,
                                         ProductID = productID,
-                                        Barcode = dr["BARKOD"].ToString(),
+                                        Barcode = /*dr["BARKOD"].ToString(),*/ barcode.Trim(),
                                         ProductName = dr["MƏHSUL ADI"].ToString(),
                                         SalePrice = salePrice,
                                         PurchasePrice = purchasePrice
@@ -3367,9 +3431,6 @@ left join pos_guzest pg
                 Log(CommonData.SUCCESS_LAST_DOCUMENT);
             }
         }
-
-
-
 
         public void withdraw(decimal deposit)
         {

@@ -31,7 +31,7 @@ namespace WindowsFormsApp2.Forms
         {
             [Description("Hamısı")]
             All,
-            [Description("Endrimli məhsullar")]
+            [Description("Endirimli məhsullar")]
             DiscountProduct
         }
 
