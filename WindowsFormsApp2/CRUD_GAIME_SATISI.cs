@@ -21,9 +21,6 @@ namespace WindowsFormsApp2
         string procedure6 = "insert_gaime_satisi_gaytarma_main";
         string DELETE_GAIME = "GAIME_SATISI_DETAILS_DELETE";
         string update_gaime_satisi = "upda_gaime_satisi_details";
-
-        string update_check_status = "update_gaime_satis";
-
         string insert_gaime_satis_gaytarma_proc = "insert_gaime_satis_gaytarma";
         string proceduretest = "test_musteriA_di";
 

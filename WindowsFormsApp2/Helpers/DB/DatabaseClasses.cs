@@ -126,6 +126,7 @@ namespace WindowsFormsApp2.Helpers.DB
             public int vatType { get; set; }
             public int QuantityType { get; set; }
             public int ProductId { get; set; }
+            public decimal Discount { get; set; }
         }
 
         public class Calculation
@@ -356,7 +357,7 @@ namespace WindowsFormsApp2.Helpers.DB
         public class DiscountProduct
         {
             public int Id { get; set; }
-            public int ProductId { get; set; }
+            public string Barcode { get; set; }
             public decimal DiscountPercent { get; set; }
             public decimal DiscountAmount { get; set; }
             public decimal DiscountTotal { get; set; }

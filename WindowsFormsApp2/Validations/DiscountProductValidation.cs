@@ -8,7 +8,7 @@ namespace WindowsFormsApp2.Validations
     {
         public DiscountProductValidation()
         {
-            RuleFor(x=> x.ProductId).NotEmpty().WithMessage("Məhsul seçimi edilmədi");
+            RuleFor(x=> x.Barcode).NotEmpty().WithMessage("Məhsul seçimi edilmədi");
             RuleFor(x=> x.DiscountTotal).NotEmpty().WithMessage("Endirim məbləği təyin edilmədi");
             RuleFor(x => x.StartDate).Custom((data, context) =>
             {
@@ -17,6 +17,16 @@ namespace WindowsFormsApp2.Validations
                     context.InstanceToValidate.StartDate = DateTime.Now;
                 }
             });
+            RuleFor(x => x.EndDate).Custom((data, context) =>
+            {
+                if (data == DateTime.MinValue)
+                {
+                    context.InstanceToValidate.EndDate = null;
+                }
+            });
+            RuleFor(x => x.DiscountTotal)
+             .GreaterThanOrEqualTo(0)
+             .WithMessage("Endirim məbləği sıfırdan kiçik ola bilməz");
         }
     }
 }

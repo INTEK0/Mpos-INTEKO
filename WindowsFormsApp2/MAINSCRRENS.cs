@@ -1476,6 +1476,11 @@ FROM (
             }
         }
 
+        private void accordionControlElement68_Click(object sender, EventArgs e)
+        {
+            OpenForm<fDiscountProduct>();
+        }
+
         private void chTerminalPrintReceipt_CheckedChanged(object sender, EventArgs e)
         {
             if (chTerminalPrintReceipt.Checked)

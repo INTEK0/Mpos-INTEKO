@@ -109,6 +109,7 @@ namespace WindowsFormsApp2
             this.accordionControlElement8 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement65 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement9 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
+            this.accordionControlElement68 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement55 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement51 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement67 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
@@ -1556,6 +1557,7 @@ namespace WindowsFormsApp2
             this.accordionControlElement8,
             this.accordionControlElement65,
             this.accordionControlElement9,
+            this.accordionControlElement68,
             this.accordionControlElement55,
             this.accordionControlElement51,
             this.accordionControlElement67});
@@ -1592,6 +1594,19 @@ namespace WindowsFormsApp2
             this.accordionControlElement9.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
             this.accordionControlElement9.Text = "Məhsul Qaytarma";
             this.accordionControlElement9.Click += new System.EventHandler(this.accordionControlElement9_Click);
+            // 
+            // accordionControlElement68
+            // 
+            this.accordionControlElement68.HeaderTemplate.AddRange(new DevExpress.XtraBars.Navigation.HeaderElementInfo[] {
+            new DevExpress.XtraBars.Navigation.HeaderElementInfo(DevExpress.XtraBars.Navigation.HeaderElementType.Image),
+            new DevExpress.XtraBars.Navigation.HeaderElementInfo(DevExpress.XtraBars.Navigation.HeaderElementType.Text),
+            new DevExpress.XtraBars.Navigation.HeaderElementInfo(DevExpress.XtraBars.Navigation.HeaderElementType.ContextButtons),
+            new DevExpress.XtraBars.Navigation.HeaderElementInfo(DevExpress.XtraBars.Navigation.HeaderElementType.HeaderControl)});
+            this.accordionControlElement68.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("accordionControlElement68.ImageOptions.SvgImage")));
+            this.accordionControlElement68.Name = "accordionControlElement68";
+            this.accordionControlElement68.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
+            this.accordionControlElement68.Text = "Endirim";
+            this.accordionControlElement68.Click += new System.EventHandler(this.accordionControlElement68_Click);
             // 
             // accordionControlElement55
             // 
@@ -3516,6 +3531,7 @@ namespace WindowsFormsApp2
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement66;
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement67;
         private DevExpress.XtraEditors.CheckEdit chIsReceipt;
+        private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement68;
     }
 }
 

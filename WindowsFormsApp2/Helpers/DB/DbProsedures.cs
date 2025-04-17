@@ -17,7 +17,6 @@ namespace WindowsFormsApp2.Helpers.DB
         #region [...PROCEDURES QUERY...]
 
         private const string INSERT_PosSalesQuery = "azmart_sale_insert";
-        private const string INSERT_ItemQuery = "INSERT_Item";
         private const string DELETE_ItemQuery = "delete_item";
         private const string INSERT_HeaderQuery = "INSERT_header";
         private const string INSERT_CalculationQuery = "insert_calculation";
@@ -385,12 +384,13 @@ namespace WindowsFormsApp2.Helpers.DB
         {
             using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
             {
-                using (SqlCommand cmd = new SqlCommand(INSERT_ItemQuery, connection))
+                string query = "INSERT_Item";
+                using (SqlCommand cmd = new SqlCommand(query, connection))
                 {
                     connection.Open();
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlParameter param;
-                    param = cmd.Parameters.Add("@name", SqlDbType.NVarChar, 500);
+                    param = cmd.Parameters.Add("@name", SqlDbType.NVarChar, int.MaxValue);
                     param.Value = item.Name;
 
                     param = cmd.Parameters.Add("@code", SqlDbType.NVarChar, 500);
@@ -401,6 +401,9 @@ namespace WindowsFormsApp2.Helpers.DB
 
                     param = cmd.Parameters.Add("@salePrice", SqlDbType.Decimal);
                     param.Value = item.SalePrice;
+
+                    param = cmd.Parameters.Add("@discount", SqlDbType.Decimal);
+                    param.Value = item.Discount;
 
                     param = cmd.Parameters.Add("@purchasePrice", SqlDbType.Decimal);
                     param.Value = item.PurchasePrice;
@@ -2332,7 +2335,7 @@ WHERE UserId = {Properties.Settings.Default.UserID}";
                 foreach (DiscountProduct item in items)
                 {
                     string query = $@"INSERT INTO [dbo].[DISCOUNT_PRODUCTS]
-           ([ProductId]
+           ([Barcode]
            ,[DiscountPercent]
            ,[DiscountAmount]
            ,[DiscountTotal]
@@ -2340,7 +2343,7 @@ WHERE UserId = {Properties.Settings.Default.UserID}";
            ,[EndDate]
            ,[Status]
            ,[UserId])
-     VALUES(@ProductId,@DiscountPercent,@DiscountAmount,@DiscountTotal,@StartDate,@EndDate,@Status,@UserId)";
+     VALUES(@Barcode,@DiscountPercent,@DiscountAmount,@DiscountTotal,@StartDate,@EndDate,@Status,@UserId)";
                     /*
                     string query2 = $@"INSERT INTO [dbo].[DISCOUNT_PRODUCTS]
            ([ProductId]
@@ -2365,12 +2368,12 @@ WHERE UserId = {Properties.Settings.Default.UserID}";
 */
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
-                        cmd.Parameters.AddWithValue("@ProductId", item.ProductId);
+                        cmd.Parameters.AddWithValue("@Barcode", item.Barcode);
                         cmd.Parameters.AddWithValue("@DiscountPercent", item.DiscountPercent);
                         cmd.Parameters.AddWithValue("@DiscountAmount", item.DiscountAmount);
                         cmd.Parameters.AddWithValue("@DiscountTotal", item.DiscountTotal);
                         cmd.Parameters.AddWithValue("@StartDate", item.StartDate);
-                        cmd.Parameters.AddWithValue("@EndDate", item.EndDate);
+                        cmd.Parameters.AddWithValue("@EndDate", (object)item.EndDate ?? DBNull.Value);
                         cmd.Parameters.AddWithValue("@Status", item.Status);
                         cmd.Parameters.AddWithValue("@UserId", item.UserId);
 

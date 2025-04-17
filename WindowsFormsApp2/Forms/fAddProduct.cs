@@ -573,7 +573,7 @@ namespace WindowsFormsApp2.Forms
             @endirim_azn =@pricePoint3";
             try
             {
-                using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon))
+                using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
                 {
                     connection.Open();
                     using (SqlCommand cmd = new SqlCommand(query, connection))

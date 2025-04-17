@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -9,12 +10,15 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraGrid.Localization;
 using FluentValidation;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
+using WindowsFormsApp2.Helpers.Messages;
 using WindowsFormsApp2.Validations;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
 using static WindowsFormsApp2.Helpers.Enums;
+using static WindowsFormsApp2.Helpers.FormHelpers;
 
 namespace WindowsFormsApp2.Forms
 {
@@ -25,6 +29,8 @@ namespace WindowsFormsApp2.Forms
         public fDiscountProduct()
         {
             InitializeComponent();
+            GridLocalizer.Active = new MyGridLocalizer();
+            GridPanelText(gridView1);
         }
 
         private enum SearchType
@@ -32,7 +38,9 @@ namespace WindowsFormsApp2.Forms
             [Description("Hamısı")]
             All,
             [Description("Endirimli məhsullar")]
-            DiscountProduct
+            DiscountProduct,
+            [Description("Endirimsiz məhsullar")]
+            NotDiscountProduct
         }
 
         private void fDiscountProduct_Load(object sender, EventArgs e)
@@ -61,16 +69,20 @@ namespace WindowsFormsApp2.Forms
             lookSearchType.EditValue = SearchType.All;
         }
 
-        private void ProductsDataLoad()
+        private void ProductsDataLoad(SearchType type = SearchType.All)
         {
             Cursor.Current = Cursors.WaitCursor;
             gridControl1.DataSource = null;
-            string query = @"
+            string query = null;
+            switch (type)
+            {
+                case SearchType.All:
+                    query = @"
 DECLARE @Result TABLE (
 TECHIZATCI_ID int,
 TECHIZATCI NVARCHAR(100),
 MAL_ALIS_DETAILS_ID int,
-PRODUCTNAME NVARCHAR(500),
+PRODUCTNAME NVARCHAR(MAX),
 PRODUCTCODE NVARCHAR(100),
 PURCHASEPRICE decimal(18, 3),
 SALEPRICE decimal(18, 3),
@@ -81,19 +93,76 @@ INSERT INTO @Result
 EXEC dbo.gaime_Satis_mal_load;
 
 SELECT 
-MAL_ALIS_DETAILS_ID AS Id,
-TECHIZATCI AS SupplierName,
-PRODUCTNAME AS ProductName,
-BARCODE AS Barcode,
-PURCHASEPRICE AS PurchasePrice,
-SALEPRICE AS SalePrice,
+rs.TECHIZATCI AS SupplierName,
+rs.PRODUCTNAME AS ProductName,
+rs.BARCODE AS Barcode,
+rs.PURCHASEPRICE AS PurchasePrice,
+rs.SALEPRICE AS SalePrice,
 ISNULL(dp.DiscountTotal,0) AS DiscountTotal,
 dp.StartDate,
 dp.EndDate,
 ISNULL(dp.Status,0) AS [Status]
 FROM @Result rs
-LEFT JOIN DISCOUNT_PRODUCTS dp ON dp.ProductId = rs.MAL_ALIS_DETAILS_ID ";
+LEFT JOIN DISCOUNT_PRODUCTS dp ON dp.Barcode = rs.BARCODE";
+                    break;
+                case SearchType.DiscountProduct:
+                    query = @"
+DECLARE @Result TABLE (
+TECHIZATCI_ID int,
+TECHIZATCI NVARCHAR(100),
+MAL_ALIS_DETAILS_ID int,
+PRODUCTNAME NVARCHAR(MAX),
+PRODUCTCODE NVARCHAR(100),
+PURCHASEPRICE decimal(18, 3),
+SALEPRICE decimal(18, 3),
+STOCK decimal(9,2),
+BARCODE NVARCHAR(100),
+EDV NVARCHAR(50));
+INSERT INTO @Result
+EXEC dbo.gaime_Satis_mal_load;
 
+SELECT 
+rs.TECHIZATCI AS SupplierName,
+rs.PRODUCTNAME AS ProductName,
+rs.BARCODE AS Barcode,
+rs.PURCHASEPRICE AS PurchasePrice,
+rs.SALEPRICE AS SalePrice,
+ISNULL(dp.DiscountTotal,0) AS DiscountTotal,
+dp.StartDate,
+dp.EndDate,
+ISNULL(dp.Status,0) AS [Status]
+FROM @Result rs
+INNER JOIN DISCOUNT_PRODUCTS dp ON dp.Barcode = rs.BARCODE";
+                    break;
+                    case SearchType.NotDiscountProduct:
+                    query = @"
+DECLARE @Result TABLE (
+TECHIZATCI_ID int,
+TECHIZATCI NVARCHAR(100),
+MAL_ALIS_DETAILS_ID int,
+PRODUCTNAME NVARCHAR(MAX),
+PRODUCTCODE NVARCHAR(100),
+PURCHASEPRICE decimal(18, 3),
+SALEPRICE decimal(18, 3),
+STOCK decimal(9,2),
+BARCODE NVARCHAR(100),
+EDV NVARCHAR(50));
+INSERT INTO @Result
+EXEC dbo.gaime_Satis_mal_load;
+
+SELECT 
+rs.TECHIZATCI AS SupplierName,
+rs.PRODUCTNAME AS ProductName,
+rs.BARCODE AS Barcode,
+rs.PURCHASEPRICE AS PurchasePrice,
+rs.SALEPRICE AS SalePrice,
+0 AS DiscountTotal,
+'' AS StartDate,
+'' AS EndDate,
+0 AS [Status]
+FROM @Result rs";
+                    break;
+            }
 
             var data = DbProsedures.ConvertToDataTable(query);
             gridControl1.DataSource = data;
@@ -117,14 +186,28 @@ LEFT JOIN DISCOUNT_PRODUCTS dp ON dp.ProductId = rs.MAL_ALIS_DETAILS_ID ";
                 {
                     var row = gridView1.GetDataRow(item);
 
+
+                    decimal salePrice = Convert.ToDecimal(row["SalePrice"].ToString());
+                    decimal totalDiscount = 0;
+                    if (Decimal.Parse(tPercent.Text) > 0)
+                    {
+                        totalDiscount = (salePrice * Decimal.Parse(tPercent.Text)) / 100;
+                    }
+                    else
+                    {
+                        totalDiscount = salePrice - Decimal.Parse(tAmount.Text);
+                    }
+
+
+
                     _product = new DiscountProduct();
-                    _product.ProductId = Convert.ToInt32(row["Id"].ToString());
-                    _product.DiscountPercent = (decimal)tPercent.EditValue;
-                    _product.DiscountAmount = (decimal)tAmount.EditValue;
-                    _product.DiscountTotal = (decimal)tTotal.EditValue;
+                    _product.Barcode = row["Barcode"].ToString();
+                    _product.DiscountPercent = Decimal.Parse(tPercent.Text);
+                    _product.DiscountAmount = Decimal.Parse(tAmount.Text);
+                    _product.DiscountTotal = totalDiscount;
                     _product.StartDate = dateStart.DateTime;
                     _product.EndDate = dateEnd.DateTime;
-                    _product.Status = Convert.ToBoolean(row["Id"].ToString());
+                    _product.Status = toggleStatus.IsOn;
                     _product.UserId = Properties.Settings.Default.UserID;
 
                     var validator = new DiscountProductValidation();
@@ -145,8 +228,49 @@ LEFT JOIN DISCOUNT_PRODUCTS dp ON dp.ProductId = rs.MAL_ALIS_DETAILS_ID ";
                 if (_products.Count > 0)
                 {
                     await Task.Run(() => DbProsedures.INSERT_DiscountProduct(_products));
+                    Clear();
+                    ProductsDataLoad();
                 }
             }
+        }
+
+        private void Clear()
+        {
+            tPercent.EditValue = 0;
+            tAmount.EditValue = 0;
+            dateStart.Clear();
+            dateEnd.Clear();
+        }
+
+        private void tPercent_EditValueChanged(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(tPercent.Text) && Decimal.Parse(tPercent.Text) > 0)
+            {
+                tAmount.EditValue = 0;
+            }
+        }
+
+        private void tAmount_EditValueChanged(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(tAmount.Text) && Decimal.Parse(tAmount.Text) > 0)
+            {
+                tPercent.EditValue = 0;
+            }
+        }
+
+        private void lookSearchType_EditValueChanged(object sender, EventArgs e)
+        {
+            ProductsDataLoad((SearchType)lookSearchType.EditValue);
+        }
+
+        private void chStatus_EditValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void bEdit_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+
         }
     }
 }

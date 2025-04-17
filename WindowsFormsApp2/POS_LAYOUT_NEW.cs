@@ -393,7 +393,6 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                 else
                 {
                     getall(tBarcode.Text);
-                    //discount control işə düşəcək
                     get(textEdit1.Text);
                     get_say_birmal(tBarcode.Text, textEdit1.Text);
                     get_cem(textEdit1.Text);
@@ -416,7 +415,7 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                 await con.OpenAsync();
                 string query = @"
 SELECT [Id]
-      ,[ProductId]
+      ,[Barcode]
       ,ISNULL([DiscountPercent],0) AS DiscountPercent
       ,ISNULL([DiscountAmount],0) AS DiscountAmount
       ,ISNULL([DiscountTotal],0) AS DiscountTotal
@@ -436,7 +435,7 @@ SELECT [Id]
                             DiscountProduct product = new DiscountProduct
                             {
                                 Id = reader.GetInt32(0),
-                                ProductId = reader.GetInt32(1),
+                                Barcode = reader.GetString(1),
                                 DiscountPercent = reader.GetDecimal(2),
                                 DiscountAmount = reader.GetDecimal(3),
                                 DiscountTotal = reader.GetDecimal(4),
@@ -453,9 +452,23 @@ SELECT [Id]
             }
         }
 
-        private void Get_DiscountProductControl()
+        private void DiscountProductControl(string barcode, int productId)
         {
+            var data = _discountProducts.FirstOrDefault(x => x.Barcode == barcode);
 
+            if (data != null && data.DiscountTotal != 0 && data.Status is true)
+            {
+                if (data.EndDate == null || data.EndDate > DateTime.Now || data.EndDate != DateTime.MinValue )
+                {
+                    DbProsedures.INSERT_PosDiscount(new PosDiscount
+                    {
+                        ProccessNo = textEdit1.Text,
+                        ProductId = productId,
+                        DiscountPercent = data.DiscountPercent.ToString(),
+                        DiscountAmount = data.DiscountAmount.ToString(),
+                    });
+                }
+            }
         }
 
         private void textEdit4_KeyPress(object sender, KeyPressEventArgs e)
@@ -845,7 +858,7 @@ left join pos_guzest pg
         }
 
         /// <summary>
-        /// insert calculation əməliyyatını edir
+        /// insert calculation əməliyyatını və məhsula öncədən endirim tətbiq edilib edilmədiyni kontrol edir
         /// </summary>
         /// <param name="barcode"></param>
         public void getall(string barcode)
@@ -876,8 +889,6 @@ left join pos_guzest pg
                                     decimal salePrice = Convert.ToDecimal(dr["SATIŞ QİYMƏTİ"].ToString());
                                     decimal purchasePrice = Convert.ToDecimal(dr["ALIŞ QİYMƏTİ"].ToString());
 
-
-
                                     DbProsedures.InsertCalculation(new Calculation
                                     {
                                         proccessNo = textEdit1.Text,
@@ -887,6 +898,8 @@ left join pos_guzest pg
                                         SalePrice = salePrice,
                                         PurchasePrice = purchasePrice
                                     });
+
+                                    DiscountProductControl(barcode,productID);
                                 }
                             }
                         }
@@ -2803,7 +2816,8 @@ left join pos_guzest pg
                         PurchasePrice = purchasePrice,
                         vatType = vatType,
                         QuantityType = quantityType,
-                        ProductId = productId
+                        ProductId = productId,
+                        Discount = _discount
                     });
                 }
 
@@ -3137,7 +3151,6 @@ left join pos_guzest pg
 
             tBarcode.Focus();
         }
-
 
         public override void ReceiveData<T>(T data)
         {
