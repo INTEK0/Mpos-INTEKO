@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DevExpress.XtraReports.UI;
 using WindowsFormsApp2.Helpers.Messages;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
 using static WindowsFormsApp2.Helpers.DB.DTOs;
@@ -2327,7 +2328,7 @@ WHERE UserId = {Properties.Settings.Default.UserID}";
 
         #region [.. DISCOUNT PRODUCT ..]
 
-        public async static Task INSERT_DiscountProduct(List<DiscountProduct> items)
+        public async static Task INSERT_DiscountProductAsync(List<DiscountProduct> items)
         {
             using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
             {
@@ -2344,28 +2345,6 @@ WHERE UserId = {Properties.Settings.Default.UserID}";
            ,[Status]
            ,[UserId])
      VALUES(@Barcode,@DiscountPercent,@DiscountAmount,@DiscountTotal,@StartDate,@EndDate,@Status,@UserId)";
-                    /*
-                    string query2 = $@"INSERT INTO [dbo].[DISCOUNT_PRODUCTS]
-           ([ProductId]
-           ,[DiscountPercent]
-           ,[DiscountAmount]
-           ,[DiscountTotal]
-           ,[StartDate]
-           ,[EndDate]
-           ,[Status]
-           ,[UserId])
-     VALUES(
-            {item.ProductId},
-            {item.DiscountPercent},
-            {item.DiscountAmount},
-            {item.DiscountTotal},
-            {item.StartDate},
-            {item.EndDate},
-            {item.Status},
-            {item.UserId})
-";
-
-*/
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         cmd.Parameters.AddWithValue("@Barcode", item.Barcode);
@@ -2376,6 +2355,58 @@ WHERE UserId = {Properties.Settings.Default.UserID}";
                         cmd.Parameters.AddWithValue("@EndDate", (object)item.EndDate ?? DBNull.Value);
                         cmd.Parameters.AddWithValue("@Status", item.Status);
                         cmd.Parameters.AddWithValue("@UserId", item.UserId);
+
+                        await cmd.ExecuteNonQueryAsync();
+                    }
+                }
+            }
+        }
+
+        public async static Task UPDATE_DiscountProductAsync(DiscountProduct item)
+        {
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                await con.OpenAsync();
+
+                string query = $@"UPDATE [DISCOUNT_PRODUCTS]
+SET 
+    [DiscountPercent] = @DiscountPercent,
+    [DiscountAmount] = @DiscountAmount,
+    [DiscountTotal] = @DiscountTotal,
+    [StartDate] = @StartDate,
+    [EndDate] = @EndDate,
+    [Status] = @Status,
+    [UserId] = @UserId
+WHERE 
+    [Barcode] = @Barcode";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@Barcode", item.Barcode);
+                    cmd.Parameters.AddWithValue("@DiscountPercent", item.DiscountPercent);
+                    cmd.Parameters.AddWithValue("@DiscountAmount", item.DiscountAmount);
+                    cmd.Parameters.AddWithValue("@DiscountTotal", item.DiscountTotal);
+                    cmd.Parameters.AddWithValue("@StartDate", item.StartDate);
+                    cmd.Parameters.AddWithValue("@EndDate", (object)item.EndDate ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Status", item.Status);
+                    cmd.Parameters.AddWithValue("@UserId", item.UserId);
+
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+        }
+
+        public async static Task DELETE_DiscountProductAsync(List<DiscountProduct> items)
+        {
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                await con.OpenAsync();
+                foreach (DiscountProduct item in items)
+                {
+                    string query = $@"DELETE FROM DISCOUNT_PRODUCTS WHERE Barcode = @Barcode";
+
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        cmd.Parameters.AddWithValue("@Barcode", item.Barcode);
 
                         await cmd.ExecuteNonQueryAsync();
                     }

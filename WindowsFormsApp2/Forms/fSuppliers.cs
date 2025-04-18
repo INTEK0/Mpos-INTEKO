@@ -17,7 +17,6 @@ namespace WindowsFormsApp2.Forms
             parentForm = _parent;
             InitializeComponent();
             GridPanelText(gridView1);
-            GridLocalizer.Active = new MyGridLocalizer();
         }
 
         private void fSuppliers_Load(object sender, EventArgs e)

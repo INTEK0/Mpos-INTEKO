@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Globalization;
-using System.Net;
 using System.Windows.Forms;
-using WindowsFormsApp2.Forms;
-using WindowsFormsApp2.Forms.PrintPages;
+using DevExpress.XtraGrid.Localization;
+using DevExpress.XtraReports.Design;
 using WindowsFormsApp2.Helpers;
+using static WindowsFormsApp2.Helpers.FormHelpers;
 
 namespace WindowsFormsApp2
 {
@@ -16,7 +16,8 @@ namespace WindowsFormsApp2
         [STAThread]
         static void Main()
         {
-            WebClient web = new WebClient();
+            DevExpress.XtraEditors.Controls.Localizer.Active = new CustomLocalizer();
+            GridLocalizer.Active = new MyGridLocalizer();
 
             var culture = new CultureInfo("az-AZ");
             CultureInfo.DefaultThreadCurrentCulture = culture;

@@ -604,7 +604,7 @@ CASE
             con.ConnectionString = Properties.Settings.Default.SqlCon;
             cont.ConnectionString = Properties.Settings.Default.SqlCon;
 
-            string query = "SELECT count(*) AS COUNTS,TECHIZATCI_ADI \r\n  FROM [EXCELL_IMPORT_DATA_NEW]\r\n\r\n \r\n  WHERE TECHIZATCI_ADI NOT IN\r\n  (\r\n  SELECT  [SIRKET_ADI]\r\n    \r\n  FROM [NewIntekobir].[COMPANY].[TECHIZATCI] WHERE IsDeleted=0\r\n  )\r\n  group by TECHIZATCI_ADI";
+            string query = "SELECT count(*) AS COUNTS,TECHIZATCI_ADI FROM [EXCELL_IMPORT_DATA_NEW] WHERE TECHIZATCI_ADI NOT IN (SELECT  [SIRKET_ADI] FROM [COMPANY].[TECHIZATCI] WHERE IsDeleted=0) group by TECHIZATCI_ADI";
 
             SqlCommand command = new SqlCommand(query, con);
 

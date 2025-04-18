@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,25 +12,27 @@ using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraGrid.Localization;
+using DevExpress.XtraReports.Design;
 using FluentValidation;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using WindowsFormsApp2.Validations;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
+using static WindowsFormsApp2.Helpers.DB.DatabaseClasses.ProductDetail;
 using static WindowsFormsApp2.Helpers.Enums;
 using static WindowsFormsApp2.Helpers.FormHelpers;
 
 namespace WindowsFormsApp2.Forms
 {
-    public partial class fDiscountProduct : DevExpress.XtraEditors.XtraForm
+    public partial class fDiscountProduct : BaseForm
     {
         private List<DiscountProduct> _products = new List<DiscountProduct>();
         private DiscountProduct _product;
+        private Enums.Operation _operation = Operation.Add;
         public fDiscountProduct()
         {
             InitializeComponent();
-            GridLocalizer.Active = new MyGridLocalizer();
             GridPanelText(gridView1);
         }
 
@@ -74,6 +77,7 @@ namespace WindowsFormsApp2.Forms
             Cursor.Current = Cursors.WaitCursor;
             gridControl1.DataSource = null;
             string query = null;
+
             switch (type)
             {
                 case SearchType.All:
@@ -134,7 +138,7 @@ ISNULL(dp.Status,0) AS [Status]
 FROM @Result rs
 INNER JOIN DISCOUNT_PRODUCTS dp ON dp.Barcode = rs.BARCODE";
                     break;
-                    case SearchType.NotDiscountProduct:
+                case SearchType.NotDiscountProduct:
                     query = @"
 DECLARE @Result TABLE (
 TECHIZATCI_ID int,
@@ -168,16 +172,25 @@ FROM @Result rs";
             gridControl1.DataSource = data;
             Cursor.Current = Cursors.Default;
         }
-        
+
         private void bAdd_Click(object sender, EventArgs e)
         {
-            Add();
+            switch (_operation)
+            {
+                case Operation.Add:
+                    Add();
+                    break;
+                case Operation.Update:
+                //    Edit();
+                    break;
+            }
         }
 
         private async void Add()
         {
             if (gridView1.RowCount > 0)
             {
+                _products.Clear();
                 Cursor.Current = Cursors.WaitCursor;
                 gridView1.CloseEditor();
                 gridView1.UpdateCurrentRow();
@@ -189,21 +202,21 @@ FROM @Result rs";
 
                     decimal salePrice = Convert.ToDecimal(row["SalePrice"].ToString());
                     decimal totalDiscount = 0;
-                    if (Decimal.Parse(tPercent.Text) > 0)
+                    if (Decimal.Parse(tPercent.Text, NumberStyles.Any, new CultureInfo("az-AZ")) > 0)
                     {
                         totalDiscount = (salePrice * Decimal.Parse(tPercent.Text)) / 100;
                     }
                     else
                     {
-                        totalDiscount = salePrice - Decimal.Parse(tAmount.Text);
+                        totalDiscount = salePrice - Decimal.Parse(tAmount.Text, NumberStyles.Any, new CultureInfo("az-AZ"));
                     }
 
 
 
                     _product = new DiscountProduct();
                     _product.Barcode = row["Barcode"].ToString();
-                    _product.DiscountPercent = Decimal.Parse(tPercent.Text);
-                    _product.DiscountAmount = Decimal.Parse(tAmount.Text);
+                    _product.DiscountPercent = Decimal.Parse(tPercent.Text, NumberStyles.Any, new CultureInfo("az-AZ"));
+                    _product.DiscountAmount = Decimal.Parse(tAmount.Text, NumberStyles.Any, new CultureInfo("az-AZ"));
                     _product.DiscountTotal = totalDiscount;
                     _product.StartDate = dateStart.DateTime;
                     _product.EndDate = dateEnd.DateTime;
@@ -227,11 +240,61 @@ FROM @Result rs";
 
                 if (_products.Count > 0)
                 {
-                    await Task.Run(() => DbProsedures.INSERT_DiscountProduct(_products));
+                    await Task.Run(() => DbProsedures.INSERT_DiscountProductAsync(_products));
                     Clear();
-                    ProductsDataLoad();
+                    ProductsDataLoad((SearchType)lookSearchType.EditValue);
                 }
             }
+        }
+
+        private async void Edit()
+        {
+            //if (gridView1.GetFocusedDataRow() != null)
+            //{
+            //    bAdd.Text = "Düzəliş et";
+            //    var row = gridView1.GetFocusedDataRow();
+            //}
+            //Cursor.Current = Cursors.WaitCursor;
+
+            //decimal salePrice = Convert.ToDecimal(row["SalePrice"].ToString());
+            //decimal totalDiscount = 0;
+            //if (Decimal.Parse(tPercent.Text, NumberStyles.Any, new CultureInfo("az-AZ")) > 0)
+            //{
+            //    totalDiscount = (salePrice * Decimal.Parse(tPercent.Text)) / 100;
+            //}
+            //else
+            //{
+            //    totalDiscount = salePrice - Decimal.Parse(tAmount.Text, NumberStyles.Any, new CultureInfo("az-AZ"));
+            //}
+
+
+
+            //_product = new DiscountProduct();
+            //_product.Barcode = row["Barcode"].ToString();
+            //_product.DiscountPercent = Decimal.Parse(tPercent.Text, NumberStyles.Any, new CultureInfo("az-AZ"));
+            //_product.DiscountAmount = Decimal.Parse(tAmount.Text, NumberStyles.Any, new CultureInfo("az-AZ"));
+            //_product.DiscountTotal = totalDiscount;
+            //_product.StartDate = dateStart.DateTime;
+            //_product.EndDate = dateEnd.DateTime;
+            //_product.Status = toggleStatus.IsOn;
+            //_product.UserId = Properties.Settings.Default.UserID;
+
+            //var validator = new DiscountProductValidation();
+            //var validateResult = validator.Validate(_product);
+
+            //if (!validateResult.IsValid)
+            //{
+            //    foreach (var error in validateResult.Errors)
+            //    {
+            //        FormHelpers.Alert(error.ErrorMessage, Enums.MessageType.Warning);
+            //        return;
+            //    }
+            //}
+
+            //await Task.Run(() => DbProsedures.UPDATE_DiscountProductAsync(_product));
+            //Clear();
+            //ProductsDataLoad((SearchType)lookSearchType.EditValue);
+
         }
 
         private void Clear()
@@ -270,7 +333,59 @@ FROM @Result rs";
 
         private void bEdit_ButtonClick(object sender, ButtonPressedEventArgs e)
         {
+            int Id = Convert.ToInt32(gridView1.GetFocusedRowCellValue("Id").ToString());
 
+            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                connection.Open();
+                string query = "SELECT * FROM SELECT_TECHIZATCI_DATA_LOAD(@SupplierID)";
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@SupplierID", Id);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            _product = FormHelpers.MapReaderToObject<DiscountProduct>(reader);
+                        }
+                    }
+                }
+            }
+
+
+            //var method = parentForm.GetType().GetMethod("ReceiveData");
+            //if (method != null)
+            //{
+            //    method.MakeGenericMethod(_product.GetType()).Invoke(parentForm, new object[] { _product });
+            //    this.Close();
+            //}
+        }
+
+        private async void bDelete_Click(object sender, EventArgs e)
+        {
+            if (gridView1.RowCount > 0)
+            {
+                _products.Clear();
+                Cursor.Current = Cursors.WaitCursor;
+                gridView1.CloseEditor();
+                gridView1.UpdateCurrentRow();
+                int[] selectedRows = gridView1.GetSelectedRows();
+                foreach (var item in selectedRows)
+                {
+                    var row = gridView1.GetDataRow(item);
+
+                    _product = new DiscountProduct();
+                    _product.Barcode = row["Barcode"].ToString();
+                    _products.Add(_product);
+                }
+
+                if (_products.Count > 0)
+                {
+                    await Task.Run(() => DbProsedures.DELETE_DiscountProductAsync(_products));
+                    Clear();
+                    ProductsDataLoad((SearchType)lookSearchType.EditValue);
+                }
+            }
         }
     }
 }

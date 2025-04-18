@@ -60,7 +60,6 @@ namespace WindowsFormsApp2
         public POS_LAYOUT_NEW()
         {
             InitializeComponent();
-            GridLocalizer.Active = new MyGridLocalizer();
         }
 
         private async void POS_LAYOUT_NEW_Load(object sender, EventArgs e)
@@ -425,26 +424,27 @@ SELECT [Id]
       ,[IsDeleted]
       ,[UserId]
   FROM [DISCOUNT_PRODUCTS]";
-                using (SqlCommand cmd = new SqlCommand(query,con))
+                using (SqlCommand cmd = new SqlCommand(query, con))
                 {
                     using (var reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
                             DateTime? dateValue = reader.IsDBNull(6) ? (DateTime?)null : reader.GetDateTime(6);
-                            DiscountProduct product = new DiscountProduct
-                            {
-                                Id = reader.GetInt32(0),
-                                Barcode = reader.GetString(1),
-                                DiscountPercent = reader.GetDecimal(2),
-                                DiscountAmount = reader.GetDecimal(3),
-                                DiscountTotal = reader.GetDecimal(4),
-                                StartDate = reader.GetDateTime(5),
-                                EndDate = dateValue,
-                                Status = reader.GetBoolean(7),
-                                IsDeleted = reader.GetInt32(8),
-                                UserId = reader.GetInt32(9),
-                            };
+                            DiscountProduct product = new DiscountProduct();
+
+
+
+                            product.Id = reader.GetInt32(0);
+                            product.Barcode = reader.GetString(1);
+                            product.DiscountPercent = reader.GetDecimal(2);
+                            product.DiscountAmount = reader.GetDecimal(3);
+                            product.DiscountTotal = reader.GetDecimal(4);
+                            product.StartDate = reader.GetDateTime(5);
+                            product.EndDate = dateValue;
+                            product.Status = reader.GetBoolean(7);
+                            product.UserId = reader.GetInt32(9);
+
                             _discountProducts.Add(product);
                         }
                     }
@@ -458,7 +458,7 @@ SELECT [Id]
 
             if (data != null && data.DiscountTotal != 0 && data.Status is true)
             {
-                if (data.EndDate == null || data.EndDate > DateTime.Now || data.EndDate != DateTime.MinValue )
+                if (data.EndDate == null || data.EndDate > DateTime.Now || data.EndDate != DateTime.MinValue)
                 {
                     DbProsedures.INSERT_PosDiscount(new PosDiscount
                     {
@@ -899,7 +899,7 @@ left join pos_guzest pg
                                         PurchasePrice = purchasePrice
                                     });
 
-                                    DiscountProductControl(barcode,productID);
+                                    DiscountProductControl(barcode, productID);
                                 }
                             }
                         }

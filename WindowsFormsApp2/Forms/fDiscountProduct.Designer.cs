@@ -1,4 +1,6 @@
-﻿namespace WindowsFormsApp2.Forms
+﻿using System;
+
+namespace WindowsFormsApp2.Forms
 {
     partial class fDiscountProduct
     {
@@ -28,6 +30,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(fDiscountProduct));
             DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions1 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -43,8 +46,9 @@
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(fDiscountProduct));
             this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
+            this.bDelete = new DevExpress.XtraEditors.SimpleButton();
+            this.bActive = new DevExpress.XtraEditors.SimpleButton();
             this.lookSearchType = new DevExpress.XtraEditors.LookUpEdit();
             this.bAdd = new DevExpress.XtraEditors.SimpleButton();
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
@@ -75,8 +79,6 @@
             this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.chStatus = new DevExpress.XtraEditors.Repository.RepositoryItemToggleSwitch();
             this.bDeactive = new DevExpress.XtraEditors.SimpleButton();
-            this.bActive = new DevExpress.XtraEditors.SimpleButton();
-            this.bDelete = new DevExpress.XtraEditors.SimpleButton();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).BeginInit();
             this.tablePanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lookSearchType.Properties)).BeginInit();
@@ -122,6 +124,43 @@
             this.tablePanel1.Size = new System.Drawing.Size(1235, 793);
             this.tablePanel1.TabIndex = 1;
             this.tablePanel1.UseSkinIndents = true;
+            // 
+            // bDelete
+            // 
+            this.bDelete.AllowFocus = false;
+            this.bDelete.AutoSize = true;
+            this.tablePanel1.SetColumn(this.bDelete, 3);
+            this.bDelete.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.bDelete.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bDelete.ImageOptions.SvgImage")));
+            this.bDelete.ImageOptions.SvgImageSize = new System.Drawing.Size(24, 24);
+            this.bDelete.Location = new System.Drawing.Point(308, 127);
+            this.bDelete.Margin = new System.Windows.Forms.Padding(2);
+            this.bDelete.Name = "bDelete";
+            this.tablePanel1.SetRow(this.bDelete, 1);
+            this.bDelete.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bDelete.Size = new System.Drawing.Size(103, 32);
+            this.bDelete.TabIndex = 22;
+            this.bDelete.TabStop = false;
+            this.bDelete.Text = "Endirimi sil";
+            this.bDelete.Click += new System.EventHandler(this.bDelete_Click);
+            // 
+            // bActive
+            // 
+            this.bActive.AllowFocus = false;
+            this.bActive.AutoSize = true;
+            this.tablePanel1.SetColumn(this.bActive, 2);
+            this.bActive.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.bActive.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bActive.ImageOptions.SvgImage")));
+            this.bActive.ImageOptions.SvgImageSize = new System.Drawing.Size(24, 24);
+            this.bActive.Location = new System.Drawing.Point(216, 127);
+            this.bActive.Margin = new System.Windows.Forms.Padding(2);
+            this.bActive.Name = "bActive";
+            this.tablePanel1.SetRow(this.bActive, 1);
+            this.bActive.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bActive.Size = new System.Drawing.Size(88, 32);
+            this.bActive.TabIndex = 22;
+            this.bActive.TabStop = false;
+            this.bActive.Text = "Aktiv et";
             // 
             // lookSearchType
             // 
@@ -220,6 +259,7 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dateStart.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dateStart.Properties.MinDate = new System.DateTime(2025, 4, 18, 0, 0, 0, 0);
             this.dateStart.Size = new System.Drawing.Size(146, 30);
             this.dateStart.TabIndex = 0;
             this.dateStart.TabStop = false;
@@ -569,7 +609,7 @@
             this.bDeactive.AutoSize = true;
             this.tablePanel1.SetColumn(this.bDeactive, 1);
             this.bDeactive.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.bDeactive.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("simpleButton1.ImageOptions.SvgImage1")));
+            this.bDeactive.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bDeactive.ImageOptions.SvgImage")));
             this.bDeactive.ImageOptions.SvgImageSize = new System.Drawing.Size(24, 24);
             this.bDeactive.Location = new System.Drawing.Point(108, 127);
             this.bDeactive.Margin = new System.Windows.Forms.Padding(2);
@@ -580,42 +620,6 @@
             this.bDeactive.TabIndex = 5;
             this.bDeactive.TabStop = false;
             this.bDeactive.Text = "Deaktiv et";
-            // 
-            // bActive
-            // 
-            this.bActive.AllowFocus = false;
-            this.bActive.AutoSize = true;
-            this.tablePanel1.SetColumn(this.bActive, 2);
-            this.bActive.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.bActive.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("simpleButton2.ImageOptions.SvgImage")));
-            this.bActive.ImageOptions.SvgImageSize = new System.Drawing.Size(24, 24);
-            this.bActive.Location = new System.Drawing.Point(216, 127);
-            this.bActive.Margin = new System.Windows.Forms.Padding(2);
-            this.bActive.Name = "bActive";
-            this.tablePanel1.SetRow(this.bActive, 1);
-            this.bActive.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.bActive.Size = new System.Drawing.Size(88, 32);
-            this.bActive.TabIndex = 22;
-            this.bActive.TabStop = false;
-            this.bActive.Text = "Aktiv et";
-            // 
-            // bDelete
-            // 
-            this.bDelete.AllowFocus = false;
-            this.bDelete.AutoSize = true;
-            this.tablePanel1.SetColumn(this.bDelete, 3);
-            this.bDelete.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.bDelete.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("simpleButton1.ImageOptions.SvgImage")));
-            this.bDelete.ImageOptions.SvgImageSize = new System.Drawing.Size(24, 24);
-            this.bDelete.Location = new System.Drawing.Point(308, 127);
-            this.bDelete.Margin = new System.Windows.Forms.Padding(2);
-            this.bDelete.Name = "bDelete";
-            this.tablePanel1.SetRow(this.bDelete, 1);
-            this.bDelete.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.bDelete.Size = new System.Drawing.Size(103, 32);
-            this.bDelete.TabIndex = 22;
-            this.bDelete.TabStop = false;
-            this.bDelete.Text = "Endirimi sil";
             // 
             // fDiscountProduct
             // 

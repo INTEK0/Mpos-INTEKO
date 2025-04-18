@@ -361,11 +361,11 @@ namespace WindowsFormsApp2.Helpers.DB
             public decimal DiscountPercent { get; set; }
             public decimal DiscountAmount { get; set; }
             public decimal DiscountTotal { get; set; }
-            public DateTime StartDate { get; set; }
+            public DateTime? StartDate { get; set; }
             public DateTime? EndDate { get; set; }
             public bool Status { get; set; }
             public int UserId { get; set; }
-            public int IsDeleted { get; set; }
+            public string IsDeleted { get; set; }
         }
     }
 }
