@@ -1055,7 +1055,6 @@ namespace WindowsFormsApp2
             this.tBarcode.StyleController = this.layoutControl1;
             this.tBarcode.TabIndex = 5;
             this.tBarcode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tBarcode_KeyDown);
-            this.tBarcode.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textEdit4_KeyPress);
             // 
             // tUsername
             // 

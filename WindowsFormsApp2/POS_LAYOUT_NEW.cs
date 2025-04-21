@@ -196,7 +196,7 @@ namespace WindowsFormsApp2
             textBox5.AutoCompleteSource = AutoCompleteSource.CustomSource;
         }
 
-        private void tBarcode_KeyDown(object sender, KeyEventArgs e)
+        private async void tBarcode_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode is Keys.Enter)
             {
@@ -240,7 +240,7 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                                             barkod = dr["BARKOD"].ToString();
                                             malDetailsID = dr["MAL_ALISI_DETAILS_ID"].ToString();
                                             textEdit10.Text = kg + "," + gr;
-                                            getall(barkod);
+                                            await getall(barkod);
                                             //get(textEdit1.Text);
 
                                             //get_say_birmal(barkod, textEdit1.Text);
@@ -258,7 +258,7 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                                                            textEdit1.Text);
 
 
-                            get(textEdit1.Text);
+                            await get(textEdit1.Text);
                             get_say_birmal(barkodsa, textEdit1.Text);
                             tBarcode.Text = string.Empty;
 
@@ -271,8 +271,8 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                         }
                         else
                         {
-                            getall(tBarcode.Text);
-                            get(textEdit1.Text);
+                            await getall(tBarcode.Text);
+                            await get(textEdit1.Text);
                             get_say_birmal(tBarcode.Text, textEdit1.Text);
                             get_cem(textEdit1.Text);
                         }
@@ -309,8 +309,8 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                                             barkod = dr["BARKOD"].ToString();
                                             malDetailsID = dr["MAL_ALISI_DETAILS_ID"].ToString();
                                             textEdit10.Text = kg + "," + gr;
-                                            getall(barkod);
-                                            get(textEdit1.Text);
+                                            await getall(barkod);
+                                            await get(textEdit1.Text);
 
                                             // get_say_birmal(barkod, textEdit1.Text);
                                         }
@@ -327,7 +327,7 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                                                            textEdit1.Text);
 
 
-                            get(textEdit1.Text);
+                            await get(textEdit1.Text);
                             get_say_birmal(barkodsa, textEdit1.Text);
                             tBarcode.Text = string.Empty;
 
@@ -375,24 +375,24 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                         }
                         else
                         {
-                            getall(tBarcode.Text);
-                            get(textEdit1.Text);
+                            await getall(tBarcode.Text);
+                            await get(textEdit1.Text);
                             get_say_birmal(tBarcode.Text, textEdit1.Text);
                             get_cem(textEdit1.Text);
                         }
                     }
                     else
                     {
-                        getall(tBarcode.Text);
-                        get(textEdit1.Text);
+                        await getall(tBarcode.Text);
+                        await get(textEdit1.Text);
                         get_say_birmal(tBarcode.Text, textEdit1.Text);
                         get_cem(textEdit1.Text);
                     }
                 }
                 else
                 {
-                    getall(tBarcode.Text);
-                    get(textEdit1.Text);
+                    await getall(tBarcode.Text);
+                    await get(textEdit1.Text);
                     get_say_birmal(tBarcode.Text, textEdit1.Text);
                     get_cem(textEdit1.Text);
                 }
@@ -471,219 +471,6 @@ SELECT [Id]
             }
         }
 
-        private void textEdit4_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            //string kontrol = tBarcode.Text;
-            //string kod;
-            //string kg;
-            //string gr;
-            //string barkod;
-
-
-            //if (e.KeyChar == (char)13)
-            //{
-            //    if (kontrol.Substring(0, 1) == "0")
-            //    {
-            //        if (kontrol.Count() is 12)
-            //        {
-            //            kontrol = "0" + kontrol;
-            //        }
-            //        kod = kontrol.Substring(2, 5);
-            //        kg = kontrol.Substring(7, 2);
-            //        gr = kontrol.Substring(9, 3);
-
-
-            //        SqlConnection conn = new SqlConnection();
-            //        SqlCommand cmd = new SqlCommand();
-            //        conn.ConnectionString = Properties.Settings.Default.SqlCon;
-            //        conn.Open();
-
-            //        string query = $@"select BARKOD from [MAL_ALISI_DETAILS] where [MAL_ALISI_DETAILS_ID]={ kod}";
-            //        cmd.Connection = conn;
-            //        cmd.CommandText = query;
-
-            //        SqlDataReader dr = cmd.ExecuteReader();
-            //        while (dr.Read())
-            //        {
-            //            barkodsa = dr["BARKOD"].ToString();
-            //            barkod = dr["BARKOD"].ToString();
-            //            textEdit10.Text = kg + "," + gr;
-            //            getall(1, barkod);
-            //            get(textEdit1.Text.ToString());
-
-            //            get_say_birmal(barkod, textEdit1.Text.ToString());
-            //        }
-
-
-            //        int rowHandle = gridView1.LocateByValue("MAL_ALISI_DETAILS_ID", Int32.Parse(kod));
-            //        if (rowHandle != DevExpress.XtraGrid.GridControl.InvalidRowHandle)
-            //            gridView1.FocusedRowHandle = rowHandle;
-            //        gridView1.SelectRow(rowHandle);
-
-            //        tBarcode.Text = string.Empty;
-            //        //deyisilmis
-            //        textEdit10.Text = kg + "," + gr;
-            //        get_cem(textEdit1.Text.ToString());
-
-            //        int kayitsayisi = gridView1.RowCount;
-            //        //  gridView1.MoveLast();
-
-
-
-            //        st.del_migdarnewsa_calculation(gridView1.GetRowCellValue(rowHandle, "MAL_ALISI_DETAILS_ID").ToString(), textEdit10.Text.ToString(),
-            //          textEdit1.Text.ToString());
-
-
-            //        get(textEdit1.Text.ToString());
-            //        get_say_birmal(tBarcode.Text.ToString(), textEdit1.Text.ToString());
-            //        tBarcode.Text = string.Empty;
-            //        //deyisilmis
-
-            //        get_cem(textEdit1.Text.ToString());
-
-
-
-            //        textEdit9.Text = "";
-            //        textEdit10.Text = "";
-            //        textEdit12.Text = "";
-            //        textEdit13.Text = "";
-
-
-            //    }
-            //    else
-            //    {
-            //        //MessageBox.Show("ENTER has been pressed!");
-            //        getall(1, tBarcode.Text.ToString());
-            //        get(textEdit1.Text.ToString());
-            //        get_say_birmal(tBarcode.Text.ToString(), textEdit1.Text.ToString());
-            //        tBarcode.Text = string.Empty;
-            //        //deyisilmis
-
-            //        get_cem(textEdit1.Text.ToString());
-            //        //tCustomer.Text = string.Empty;
-            //    }
-            //}
-
-
-            //else if (e.KeyChar == (char)27)
-            //{
-            //    this.Close();
-            //}
-            //tCustomer.Text = string.Empty;
-            //tBarcode.Text = string.Empty;
-
-
-            #region OLD CODE
-            //string kontrol = tBarcode.Text;
-            //string kod;
-            //string kg;
-            //string gr;
-            //string barkod;
-            //if (e.KeyChar == (char)13)
-            //{
-
-
-
-            //    if (kontrol.Substring(0, 1) == "0")
-            //    {
-            //        kod = kontrol.Substring(2, 4);
-            //        kg = kontrol.Substring(6, 2);
-            //        gr = kontrol.Substring(8, 3);
-            //        // MessageBox.Show(kod);
-            //        //  MessageBox.Show(kg);
-
-            //        SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
-
-            //        SqlConnection conn = new SqlConnection();
-            //        SqlCommand cmd = new SqlCommand();
-            //        conn.ConnectionString = Properties.Settings.Default.SqlCon;
-            //        conn.Open();
-
-
-
-
-            //        string query = $@"select BARKOD from [MAL_ALISI_DETAILS] where [MAL_ALISI_DETAILS_ID]={ kod}";
-
-
-            //        cmd.Connection = conn;
-            //        cmd.CommandText = query;
-            //        SqlDataReader dr = cmd.ExecuteReader();
-            //        while (dr.Read())
-            //        {
-            //            ///grid load                              
-            //            //model_ = Convert.ToInt32( dr["model"].ToString());
-            //            // ip_ = dr["ip_"].ToString();
-
-            //            barkod = dr["BARKOD"].ToString();
-            //            textEdit10.Text = kg + "," + gr;
-            //            getall(1, barkod);
-            //            get(textEdit1.Text.ToString());
-
-            //            get_say_birmal(barkod, textEdit1.Text.ToString());
-
-            //            int rowHandle = gridView1.LocateByValue("Barkod", barkod);
-            //            if (rowHandle != DevExpress.XtraGrid.GridControl.InvalidRowHandle)
-            //                gridView1.FocusedRowHandle = rowHandle;
-
-            //        }
-
-            //        gridView1.SelectRows(0, 4);
-
-            //        //textEdit10.Text = kg;
-            //        tBarcode.Text = string.Empty;
-            //        //deyisilmis
-            //        textEdit10.Text = kg + "," + gr;
-            //        get_cem(textEdit1.Text.ToString());
-
-            //        int kayitsayisi = gridView1.RowCount;
-            //        //  gridView1.MoveLast();
-
-
-
-            //        st.del_migdarnewsa_calculation(dele_migdar_mal_id.ToString(), textEdit10.Text.ToString(),
-            //          textEdit1.Text.ToString());
-            //        //}
-            //        //   getall(1, textEdit4.Text.ToString());
-
-            //        get(textEdit1.Text.ToString());
-            //        get_say_birmal(tBarcode.Text.ToString(), textEdit1.Text.ToString());
-            //        tBarcode.Text = string.Empty;
-            //        //deyisilmis
-
-            //        get_cem(textEdit1.Text.ToString());
-
-
-
-            //        textEdit9.Text = "";
-            //        textEdit10.Text = "";
-            //        textEdit12.Text = "";
-            //        textEdit13.Text = "";
-
-
-            //    }
-            //    else
-            //    {
-            //        //MessageBox.Show("ENTER has been pressed!");
-            //        getall(1, tBarcode.Text.ToString());
-            //        get(textEdit1.Text.ToString());
-            //        get_say_birmal(tBarcode.Text.ToString(), textEdit1.Text.ToString());
-            //        tBarcode.Text = string.Empty;
-            //        //deyisilmis
-
-            //        get_cem(textEdit1.Text.ToString());
-            //        //tCustomer.Text = string.Empty;
-            //    }
-            //}
-
-
-            //else if (e.KeyChar == (char)27)
-            //{
-            //    this.Close();
-            //}
-            //tCustomer.Text = string.Empty;
-            #endregion
-        }
-
         public void get_cem(string emeliyyat_n)
         {
             try
@@ -745,33 +532,81 @@ left join pos_guzest pg
             }
         }
 
-        private void get(string proccessNo)
+        /// <summary>
+        /// Əlavə olunan məhsulların griddə göstərilməsi üçün istifadə olunur
+        /// </summary>
+        /// <param name="proccessNo">Əməliyyat nömrəsi</param>
+        /// <returns></returns>
+        private async Task get(string proccessNo)
         {
             try
             {
+                /*
                 using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
                 {
                     string queryString = "SELECT * FROM  dbo.fn_POS_SATIS_LOAD(@EMELIYYAT_NOMRE,@userID)";
-                    connection.Open();
+                    Start:
+                    if (connection.State == ConnectionState.Open)
+                    {
+                        using (SqlCommand command = new SqlCommand(queryString, connection))
+                        {
+                            command.Parameters.AddWithValue("@EMELIYYAT_NOMRE", proccessNo);
+                            command.Parameters.AddWithValue("@userID", Properties.Settings.Default.UserID);
+                            using (SqlDataAdapter da = new SqlDataAdapter(command))
+                            {
+                                using (DataTable dt = new DataTable())
+                                {
+                                    da.Fill(dt);
+                                    gridControl1.DataSource = dt;
+                                    gridView1.OptionsSelection.MultiSelect = true;
+                                    gridView1.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
+
+                                    gridView1.Columns[0].Visible = false;
+                                    gridView1.Columns[8].Visible = false;
+                                    gridView1.Columns[9].Visible = false;
+                                    gridView1.Columns["ALIŞ QİYMƏTİ"].Visible = false;
+                                    gridView1.Columns["BARKOD"].Visible = false;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        await connection.OpenAsync();
+                        goto Start;
+                    }
+                }
+                */
+
+                Cursor.Current = Cursors.WaitCursor;
+                using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+                {
+                    await connection.OpenAsync();
+
+                    string queryString = "SELECT * FROM dbo.fn_POS_SATIS_LOAD(@EMELIYYAT_NOMRE, @userID)";
+
                     using (SqlCommand command = new SqlCommand(queryString, connection))
                     {
                         command.Parameters.AddWithValue("@EMELIYYAT_NOMRE", proccessNo);
                         command.Parameters.AddWithValue("@userID", Properties.Settings.Default.UserID);
-                        using (SqlDataAdapter da = new SqlDataAdapter(command))
-                        {
-                            using (DataTable dt = new DataTable())
-                            {
-                                da.Fill(dt);
-                                gridControl1.DataSource = dt;
-                                gridView1.OptionsSelection.MultiSelect = true;
-                                gridView1.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
 
-                                gridView1.Columns[0].Visible = false;
-                                gridView1.Columns[8].Visible = false;
-                                gridView1.Columns[9].Visible = false;
+                        using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                        {
+                            DataTable dt = new DataTable();
+                            dt.Load(reader); // reader'dan datayı alıp tabloya yükler
+                            gridControl1.DataSource = dt;
+
+                            gridView1.OptionsSelection.MultiSelect = true;
+                            gridView1.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
+
+                            if (dt.Columns.Contains("ALIŞ QİYMƏTİ"))
                                 gridView1.Columns["ALIŞ QİYMƏTİ"].Visible = false;
+                            if (dt.Columns.Contains("BARKOD"))
                                 gridView1.Columns["BARKOD"].Visible = false;
-                            }
+
+                            gridView1.Columns[0].Visible = false;
+                            gridView1.Columns[8].Visible = false;
+                            gridView1.Columns[9].Visible = false;
                         }
                     }
                 }
@@ -779,6 +614,10 @@ left join pos_guzest pg
             catch (Exception e)
             {
                 ReadyMessages.ERROR_DEFAULT_MESSAGE("Xəta!\n" + e.Message);
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
             }
         }
 
@@ -861,8 +700,9 @@ left join pos_guzest pg
         /// insert calculation əməliyyatını və məhsula öncədən endirim tətbiq edilib edilmədiyni kontrol edir
         /// </summary>
         /// <param name="barcode"></param>
-        public void getall(string barcode)
+        public async Task getall(string barcode)
         {
+            /*
             try
             {
                 using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
@@ -876,13 +716,6 @@ left join pos_guzest pg
                         {
                             if (dr.Read())
                             {
-                                //if (string.IsNullOrEmpty(tBarcode.Text))
-                                //{
-                                //    tBarcode.Text = dr["BARKOD"].ToString();
-                                //}
-
-                                //textBox5.Text = dr["MƏHSUL ADI"].ToString();
-
                                 for (int i = 0; i < Convert.ToInt32(dr["say"]); i++)
                                 {
                                     int productID = Convert.ToInt32(dr["mal_details_id"].ToString());
@@ -893,7 +726,7 @@ left join pos_guzest pg
                                     {
                                         proccessNo = textEdit1.Text,
                                         ProductID = productID,
-                                        Barcode = /*dr["BARKOD"].ToString(),*/ barcode.Trim(),
+                                        Barcode =  barcode.Trim(),
                                         ProductName = dr["MƏHSUL ADI"].ToString(),
                                         SalePrice = salePrice,
                                         PurchasePrice = purchasePrice
@@ -911,11 +744,64 @@ left join pos_guzest pg
             {
                 ReadyMessages.ERROR_DEFAULT_MESSAGE("Xəta!\n" + e.Message);
             }
+*/
+
+            try
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+                {
+                    await connection.OpenAsync();
+
+                    string query = "SELECT * FROM dbo.POS_SATIS(1, @pricePoint);";
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@pricePoint", barcode);
+
+                        using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
+                        {
+                            if (await dr.ReadAsync())
+                            {
+                                int count = Convert.ToInt32(dr["say"]);
+
+                                for (int i = 0; i < count; i++)
+                                {
+                                    int productID = Convert.ToInt32(dr["mal_details_id"]);
+                                    decimal salePrice = Convert.ToDecimal(dr["SATIŞ QİYMƏTİ"]);
+                                    decimal purchasePrice = Convert.ToDecimal(dr["ALIŞ QİYMƏTİ"]);
+
+                                    
+                                        DbProsedures.InsertCalculation(new Calculation
+                                        {
+                                            proccessNo = textEdit1.Text,
+                                            ProductID = productID,
+                                            Barcode = barcode.Trim(),
+                                            ProductName = dr["MƏHSUL ADI"].ToString(),
+                                            SalePrice = salePrice,
+                                            PurchasePrice = purchasePrice
+                                        });
+
+                                        DiscountProductControl(barcode, productID);
+                                   
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                ReadyMessages.ERROR_DEFAULT_MESSAGE("Xəta!\n" + e.Message);
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+            }
         }
 
         public static int dele_migdar_mal_id;
 
-        private void textEdit10_KeyPress(object sender, KeyPressEventArgs e)
+        private async void textEdit10_KeyPress(object sender, KeyPressEventArgs e)
         {
             //Update Quantity
             if (e.KeyChar == (char)13)
@@ -927,7 +813,7 @@ left join pos_guzest pg
                 else
                 {
                     st.del_migdar_calculation(dele_migdar_mal_id.ToString(), textEdit10.Text, textEdit1.Text);
-                    get(textEdit1.Text);
+                   await get(textEdit1.Text);
                     get_say_birmal(tBarcode.Text, textEdit1.Text);
                     tBarcode.Text = string.Empty;
 
@@ -947,7 +833,7 @@ left join pos_guzest pg
 
         }
 
-        private void textEdit9_KeyPress(object sender, KeyPressEventArgs e)
+        private async void textEdit9_KeyPress(object sender, KeyPressEventArgs e)
         {
             //Update Sale Price
             if (e.KeyChar == (char)13)
@@ -959,7 +845,7 @@ left join pos_guzest pg
                 else
                 {
                     st.update_satis_giymeti_(dele_migdar_mal_id, Convert.ToDecimal(textEdit9.Text));
-                    get(textEdit1.Text);
+                   await get(textEdit1.Text);
                     get_say_birmal(tBarcode.Text, textEdit1.Text);
 
                     get_cem(textEdit1.Text);
@@ -981,7 +867,7 @@ left join pos_guzest pg
 
         }
 
-        private void textEdit12_KeyPress(object sender, KeyPressEventArgs e)
+        private async void textEdit12_KeyPress(object sender, KeyPressEventArgs e)
         {
             //Discount Percent
             if (e.KeyChar == (char)13 && !string.IsNullOrEmpty(textEdit12.Text))
@@ -996,7 +882,7 @@ left join pos_guzest pg
                         DiscountAmount = textEdit13.Text,
                     });
 
-                    get(textEdit1.Text);
+                  await  get(textEdit1.Text);
 
                     get_say_birmal(tBarcode.Text.Trim(), textEdit1.Text);
 
@@ -1020,7 +906,7 @@ left join pos_guzest pg
             }
         }
 
-        private void textEdit13_KeyPress(object sender, KeyPressEventArgs e)
+        private async void textEdit13_KeyPress(object sender, KeyPressEventArgs e)
         {
             //Discount AZN
             if (e.KeyChar == (char)13 && !string.IsNullOrEmpty(textEdit13.Text))
@@ -1035,7 +921,7 @@ left join pos_guzest pg
                         DiscountAmount = textEdit13.Text,
                     });
 
-                    get(textEdit1.Text);
+                   await get(textEdit1.Text);
 
                     get_say_birmal(tBarcode.Text.Trim(), textEdit1.Text);
 
@@ -1186,7 +1072,7 @@ left join pos_guzest pg
 
         }
 
-        private void DeleteButton()
+        private async void DeleteButton()
         {
             foreach (int i in gridView1.GetSelectedRows())
             {
@@ -1199,7 +1085,7 @@ left join pos_guzest pg
                 }
             }
 
-            get(textEdit1.Text);
+           await get(textEdit1.Text);
             get_say_birmal(tBarcode.Text, textEdit1.Text);
             tBarcode.Text = string.Empty;
 
@@ -2623,12 +2509,12 @@ left join pos_guzest pg
             getbarkod_mehsuladi(textBox5.Text);
         }
 
-        private void textBox5_KeyDown(object sender, KeyEventArgs e)
+        private async void textBox5_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
-                getall(tBarcode.Text);
-                get(textEdit1.Text);
+                await getall(tBarcode.Text);
+                await get(textEdit1.Text);
                 get_say_birmal(tBarcode.Text, textEdit1.Text);
 
                 get_cem(textEdit1.Text);
@@ -6230,13 +6116,13 @@ WHERE rn = 1;";
             }
         }
 
-        private void tileControl1_ItemClick(object sender, TileItemEventArgs e)
+        private async void tileControl1_ItemClick(object sender, TileItemEventArgs e)
         {
             string clicks = e.Item.Elements[1].Text;
             getbarkod_mehsuladi(clicks);
 
-            getall(tBarcode.Text);
-            get(textEdit1.Text);
+          await  getall(tBarcode.Text);
+           await get(textEdit1.Text);
             get_say_birmal(tBarcode.Text, textEdit1.Text);
             tBarcode.Text = string.Empty;
 
@@ -6260,7 +6146,7 @@ WHERE rn = 1;";
             }
         }
 
-        private void Basket_Click(object sender, EventArgs e)
+        private async void Basket_Click(object sender, EventArgs e)
         {
             SimpleButton btn = (SimpleButton)sender;
 
@@ -6277,7 +6163,7 @@ WHERE rn = 1;";
                 if (f.ShowDialog() is DialogResult.OK)
                 {
                     string code = DbProsedures.GET_SalesProcessNo();
-                    get(code);
+                   await get(code);
                     get_cem(code);
                     gridView1.GroupPanelText = $"Məhsul sayı: {gridView1.RowCount}";
                     FormHelpers.Alert("Məhsullar səbətdən çıxarıldı", MessageType.Success);

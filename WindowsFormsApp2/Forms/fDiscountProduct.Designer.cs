@@ -47,6 +47,8 @@ namespace WindowsFormsApp2.Forms
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
             this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
+            this.bEditCancel = new DevExpress.XtraEditors.SimpleButton();
+            this.bRefresh = new DevExpress.XtraEditors.SimpleButton();
             this.bDelete = new DevExpress.XtraEditors.SimpleButton();
             this.bActive = new DevExpress.XtraEditors.SimpleButton();
             this.lookSearchType = new DevExpress.XtraEditors.LookUpEdit();
@@ -72,12 +74,13 @@ namespace WindowsFormsApp2.Forms
             this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colNewSalePrice = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colStatus = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.tStatus = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
             this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.bEdit = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.chStatus = new DevExpress.XtraEditors.Repository.RepositoryItemToggleSwitch();
             this.bDeactive = new DevExpress.XtraEditors.SimpleButton();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).BeginInit();
             this.tablePanel1.SuspendLayout();
@@ -93,19 +96,23 @@ namespace WindowsFormsApp2.Forms
             ((System.ComponentModel.ISupportInitialize)(this.tPercent.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tStatus)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bEdit)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chStatus)).BeginInit();
             this.SuspendLayout();
             // 
             // tablePanel1
             // 
             this.tablePanel1.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 55F),
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 50F, false),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 50F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 50F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 50F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 78.75F),
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 50F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 21.25F)});
+            this.tablePanel1.Controls.Add(this.bEditCancel);
+            this.tablePanel1.Controls.Add(this.bRefresh);
             this.tablePanel1.Controls.Add(this.bDelete);
             this.tablePanel1.Controls.Add(this.bActive);
             this.tablePanel1.Controls.Add(this.lookSearchType);
@@ -125,15 +132,57 @@ namespace WindowsFormsApp2.Forms
             this.tablePanel1.TabIndex = 1;
             this.tablePanel1.UseSkinIndents = true;
             // 
+            // bEditCancel
+            // 
+            this.bEditCancel.AllowFocus = false;
+            this.bEditCancel.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Danger;
+            this.bEditCancel.Appearance.Options.UseBackColor = true;
+            this.bEditCancel.AutoSize = true;
+            this.tablePanel1.SetColumn(this.bEditCancel, 1);
+            this.bEditCancel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.bEditCancel.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bEditCancel.ImageOptions.SvgImage")));
+            this.bEditCancel.ImageOptions.SvgImageSize = new System.Drawing.Size(24, 24);
+            this.bEditCancel.Location = new System.Drawing.Point(108, 127);
+            this.bEditCancel.Margin = new System.Windows.Forms.Padding(2);
+            this.bEditCancel.Name = "bEditCancel";
+            this.tablePanel1.SetRow(this.bEditCancel, 1);
+            this.bEditCancel.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bEditCancel.Size = new System.Drawing.Size(135, 32);
+            this.bEditCancel.TabIndex = 23;
+            this.bEditCancel.TabStop = false;
+            this.bEditCancel.Text = "Düzəlişi ləğv et";
+            this.bEditCancel.Click += new System.EventHandler(this.bEditCancel_Click);
+            // 
+            // bRefresh
+            // 
+            this.bRefresh.AllowFocus = false;
+            this.bRefresh.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Question;
+            this.bRefresh.Appearance.Options.UseBackColor = true;
+            this.bRefresh.AutoSize = true;
+            this.tablePanel1.SetColumn(this.bRefresh, 6);
+            this.bRefresh.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.bRefresh.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bRefresh.ImageOptions.SvgImage")));
+            this.bRefresh.ImageOptions.SvgImageSize = new System.Drawing.Size(20, 20);
+            this.bRefresh.Location = new System.Drawing.Point(976, 127);
+            this.bRefresh.Margin = new System.Windows.Forms.Padding(2);
+            this.bRefresh.Name = "bRefresh";
+            this.tablePanel1.SetRow(this.bRefresh, 1);
+            this.bRefresh.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bRefresh.Size = new System.Drawing.Size(71, 32);
+            this.bRefresh.TabIndex = 22;
+            this.bRefresh.TabStop = false;
+            this.bRefresh.Text = "Yenilə";
+            this.bRefresh.Click += new System.EventHandler(this.bRefresh_Click);
+            // 
             // bDelete
             // 
             this.bDelete.AllowFocus = false;
             this.bDelete.AutoSize = true;
-            this.tablePanel1.SetColumn(this.bDelete, 3);
+            this.tablePanel1.SetColumn(this.bDelete, 4);
             this.bDelete.Dock = System.Windows.Forms.DockStyle.Fill;
             this.bDelete.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bDelete.ImageOptions.SvgImage")));
             this.bDelete.ImageOptions.SvgImageSize = new System.Drawing.Size(24, 24);
-            this.bDelete.Location = new System.Drawing.Point(308, 127);
+            this.bDelete.Location = new System.Drawing.Point(447, 127);
             this.bDelete.Margin = new System.Windows.Forms.Padding(2);
             this.bDelete.Name = "bDelete";
             this.tablePanel1.SetRow(this.bDelete, 1);
@@ -148,11 +197,11 @@ namespace WindowsFormsApp2.Forms
             // 
             this.bActive.AllowFocus = false;
             this.bActive.AutoSize = true;
-            this.tablePanel1.SetColumn(this.bActive, 2);
+            this.tablePanel1.SetColumn(this.bActive, 3);
             this.bActive.Dock = System.Windows.Forms.DockStyle.Fill;
             this.bActive.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bActive.ImageOptions.SvgImage")));
             this.bActive.ImageOptions.SvgImageSize = new System.Drawing.Size(24, 24);
-            this.bActive.Location = new System.Drawing.Point(216, 127);
+            this.bActive.Location = new System.Drawing.Point(355, 127);
             this.bActive.Margin = new System.Windows.Forms.Padding(2);
             this.bActive.Name = "bActive";
             this.tablePanel1.SetRow(this.bActive, 1);
@@ -161,10 +210,11 @@ namespace WindowsFormsApp2.Forms
             this.bActive.TabIndex = 22;
             this.bActive.TabStop = false;
             this.bActive.Text = "Aktiv et";
+            this.bActive.Click += new System.EventHandler(this.bActive_Click);
             // 
             // lookSearchType
             // 
-            this.tablePanel1.SetColumn(this.lookSearchType, 5);
+            this.tablePanel1.SetColumn(this.lookSearchType, 7);
             this.lookSearchType.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lookSearchType.Location = new System.Drawing.Point(1052, 128);
             this.lookSearchType.Name = "lookSearchType";
@@ -204,7 +254,7 @@ namespace WindowsFormsApp2.Forms
             // panelControl1
             // 
             this.tablePanel1.SetColumn(this.panelControl1, 0);
-            this.tablePanel1.SetColumnSpan(this.panelControl1, 6);
+            this.tablePanel1.SetColumnSpan(this.panelControl1, 8);
             this.panelControl1.Controls.Add(this.toggleStatus);
             this.panelControl1.Controls.Add(this.dateEnd);
             this.panelControl1.Controls.Add(this.dateStart);
@@ -347,7 +397,7 @@ namespace WindowsFormsApp2.Forms
             // gridControl1
             // 
             this.tablePanel1.SetColumn(this.gridControl1, 0);
-            this.tablePanel1.SetColumnSpan(this.gridControl1, 6);
+            this.tablePanel1.SetColumnSpan(this.gridControl1, 8);
             this.gridControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gridControl1.EmbeddedNavigator.AutoSize = true;
             this.gridControl1.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(5);
@@ -355,8 +405,8 @@ namespace WindowsFormsApp2.Forms
             this.gridControl1.MainView = this.gridView1;
             this.gridControl1.Name = "gridControl1";
             this.gridControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
-            this.chStatus,
-            this.bEdit});
+            this.bEdit,
+            this.tStatus});
             this.tablePanel1.SetRow(this.gridControl1, 2);
             this.gridControl1.Size = new System.Drawing.Size(1227, 625);
             this.gridControl1.TabIndex = 3;
@@ -381,10 +431,11 @@ namespace WindowsFormsApp2.Forms
             this.gridColumn6,
             this.gridColumn8,
             this.gridColumn1,
+            this.colNewSalePrice,
             this.gridColumn4,
             this.gridColumn7,
-            this.gridColumn10,
-            this.gridColumn9});
+            this.colStatus,
+            this.gridColumn10});
             this.gridView1.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFullFocus;
             this.gridView1.GridControl = this.gridControl1;
             this.gridView1.Name = "gridView1";
@@ -400,6 +451,7 @@ namespace WindowsFormsApp2.Forms
             this.gridView1.OptionsView.RowAutoHeight = true;
             this.gridView1.OptionsView.ShowIndicator = false;
             this.gridView1.PaintStyleName = "Skin";
+            this.gridView1.RowCellStyle += new DevExpress.XtraGrid.Views.Grid.RowCellStyleEventHandler(this.gridView1_RowCellStyle);
             // 
             // gridColumn13
             // 
@@ -411,7 +463,7 @@ namespace WindowsFormsApp2.Forms
             this.gridColumn13.OptionsColumn.AllowEdit = false;
             this.gridColumn13.Visible = true;
             this.gridColumn13.VisibleIndex = 1;
-            this.gridColumn13.Width = 124;
+            this.gridColumn13.Width = 110;
             // 
             // gridColumn3
             // 
@@ -424,7 +476,7 @@ namespace WindowsFormsApp2.Forms
             this.gridColumn3.OptionsColumn.AllowEdit = false;
             this.gridColumn3.Visible = true;
             this.gridColumn3.VisibleIndex = 3;
-            this.gridColumn3.Width = 115;
+            this.gridColumn3.Width = 111;
             // 
             // gridColumn2
             // 
@@ -438,7 +490,7 @@ namespace WindowsFormsApp2.Forms
             this.gridColumn2.OptionsColumn.FixedWidth = true;
             this.gridColumn2.Visible = true;
             this.gridColumn2.VisibleIndex = 2;
-            this.gridColumn2.Width = 150;
+            this.gridColumn2.Width = 162;
             // 
             // gridColumn14
             // 
@@ -482,7 +534,7 @@ namespace WindowsFormsApp2.Forms
             this.gridColumn6.OptionsColumn.AllowEdit = false;
             this.gridColumn6.Visible = true;
             this.gridColumn6.VisibleIndex = 4;
-            this.gridColumn6.Width = 109;
+            this.gridColumn6.Width = 103;
             // 
             // gridColumn8
             // 
@@ -499,7 +551,7 @@ namespace WindowsFormsApp2.Forms
             this.gridColumn8.OptionsColumn.AllowEdit = false;
             this.gridColumn8.Visible = true;
             this.gridColumn8.VisibleIndex = 5;
-            this.gridColumn8.Width = 85;
+            this.gridColumn8.Width = 113;
             // 
             // gridColumn1
             // 
@@ -511,7 +563,21 @@ namespace WindowsFormsApp2.Forms
             this.gridColumn1.OptionsColumn.AllowEdit = false;
             this.gridColumn1.Visible = true;
             this.gridColumn1.VisibleIndex = 6;
-            this.gridColumn1.Width = 99;
+            this.gridColumn1.Width = 92;
+            // 
+            // colNewSalePrice
+            // 
+            this.colNewSalePrice.AppearanceCell.Options.UseTextOptions = true;
+            this.colNewSalePrice.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.colNewSalePrice.Caption = "Endirimli satış qiyməti";
+            this.colNewSalePrice.DisplayFormat.FormatString = "C2";
+            this.colNewSalePrice.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.colNewSalePrice.FieldName = "NewSalePrice";
+            this.colNewSalePrice.Name = "colNewSalePrice";
+            this.colNewSalePrice.OptionsColumn.AllowEdit = false;
+            this.colNewSalePrice.Visible = true;
+            this.colNewSalePrice.VisibleIndex = 7;
+            this.colNewSalePrice.Width = 96;
             // 
             // gridColumn4
             // 
@@ -522,8 +588,8 @@ namespace WindowsFormsApp2.Forms
             this.gridColumn4.Name = "gridColumn4";
             this.gridColumn4.OptionsColumn.AllowEdit = false;
             this.gridColumn4.Visible = true;
-            this.gridColumn4.VisibleIndex = 7;
-            this.gridColumn4.Width = 99;
+            this.gridColumn4.VisibleIndex = 8;
+            this.gridColumn4.Width = 82;
             // 
             // gridColumn7
             // 
@@ -534,8 +600,40 @@ namespace WindowsFormsApp2.Forms
             this.gridColumn7.Name = "gridColumn7";
             this.gridColumn7.OptionsColumn.AllowEdit = false;
             this.gridColumn7.Visible = true;
-            this.gridColumn7.VisibleIndex = 8;
-            this.gridColumn7.Width = 103;
+            this.gridColumn7.VisibleIndex = 9;
+            this.gridColumn7.Width = 89;
+            // 
+            // colStatus
+            // 
+            this.colStatus.AppearanceCell.Options.UseTextOptions = true;
+            this.colStatus.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.colStatus.AppearanceHeader.Font = new System.Drawing.Font("Nunito", 10F, System.Drawing.FontStyle.Bold);
+            this.colStatus.AppearanceHeader.Options.UseFont = true;
+            this.colStatus.AppearanceHeader.Options.UseTextOptions = true;
+            this.colStatus.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.colStatus.Caption = "Status";
+            this.colStatus.ColumnEdit = this.tStatus;
+            this.colStatus.FieldName = "StatusName";
+            this.colStatus.Name = "colStatus";
+            this.colStatus.OptionsColumn.AllowEdit = false;
+            this.colStatus.OptionsColumn.FixedWidth = true;
+            this.colStatus.Visible = true;
+            this.colStatus.VisibleIndex = 10;
+            this.colStatus.Width = 130;
+            // 
+            // tStatus
+            // 
+            this.tStatus.Appearance.Font = new System.Drawing.Font("Nunito", 10F, System.Drawing.FontStyle.Bold);
+            this.tStatus.Appearance.Options.UseFont = true;
+            this.tStatus.AppearanceDisabled.Font = new System.Drawing.Font("Nunito", 10F, System.Drawing.FontStyle.Bold);
+            this.tStatus.AppearanceDisabled.Options.UseFont = true;
+            this.tStatus.AppearanceFocused.Font = new System.Drawing.Font("Nunito", 10F, System.Drawing.FontStyle.Bold);
+            this.tStatus.AppearanceFocused.Options.UseFont = true;
+            this.tStatus.AppearanceReadOnly.Font = new System.Drawing.Font("Nunito", 10F, System.Drawing.FontStyle.Bold);
+            this.tStatus.AppearanceReadOnly.Options.UseFont = true;
+            this.tStatus.AutoHeight = false;
+            this.tStatus.Name = "tStatus";
+            this.tStatus.ReadOnly = true;
             // 
             // gridColumn10
             // 
@@ -549,11 +647,12 @@ namespace WindowsFormsApp2.Forms
             this.gridColumn10.Name = "gridColumn10";
             this.gridColumn10.OptionsColumn.AllowMove = false;
             this.gridColumn10.OptionsColumn.FixedWidth = true;
+            this.gridColumn10.OptionsColumn.ShowCaption = false;
             this.gridColumn10.OptionsFilter.AllowAutoFilter = false;
             this.gridColumn10.OptionsFilter.AllowFilter = false;
             this.gridColumn10.Visible = true;
-            this.gridColumn10.VisibleIndex = 9;
-            this.gridColumn10.Width = 100;
+            this.gridColumn10.VisibleIndex = 11;
+            this.gridColumn10.Width = 62;
             // 
             // bEdit
             // 
@@ -568,50 +667,15 @@ namespace WindowsFormsApp2.Forms
             this.bEdit.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.bEdit.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.bEdit_ButtonClick);
             // 
-            // gridColumn9
-            // 
-            this.gridColumn9.AppearanceHeader.Font = new System.Drawing.Font("Nunito", 10F, System.Drawing.FontStyle.Bold);
-            this.gridColumn9.AppearanceHeader.Options.UseFont = true;
-            this.gridColumn9.AppearanceHeader.Options.UseTextOptions = true;
-            this.gridColumn9.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.gridColumn9.Caption = "Status";
-            this.gridColumn9.ColumnEdit = this.chStatus;
-            this.gridColumn9.FieldName = "Status";
-            this.gridColumn9.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.MiddleLeft;
-            this.gridColumn9.Name = "gridColumn9";
-            this.gridColumn9.OptionsColumn.AllowMove = false;
-            this.gridColumn9.OptionsColumn.AllowShowHide = false;
-            this.gridColumn9.OptionsColumn.AllowSize = false;
-            this.gridColumn9.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
-            this.gridColumn9.OptionsColumn.FixedWidth = true;
-            this.gridColumn9.OptionsColumn.TabStop = false;
-            this.gridColumn9.OptionsFilter.AllowAutoFilter = false;
-            this.gridColumn9.OptionsFilter.AllowFilter = false;
-            this.gridColumn9.OptionsFilter.ImmediateUpdateAutoFilter = false;
-            this.gridColumn9.OptionsFilter.ShowEmptyDateFilter = false;
-            this.gridColumn9.UnboundDataType = typeof(bool);
-            this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 10;
-            this.gridColumn9.Width = 91;
-            // 
-            // chStatus
-            // 
-            this.chStatus.AllowFocused = false;
-            this.chStatus.Name = "chStatus";
-            this.chStatus.OffText = "Off";
-            this.chStatus.OnText = "On";
-            this.chStatus.ShowText = false;
-            this.chStatus.EditValueChanged += new System.EventHandler(this.chStatus_EditValueChanged);
-            // 
             // bDeactive
             // 
             this.bDeactive.AllowFocus = false;
             this.bDeactive.AutoSize = true;
-            this.tablePanel1.SetColumn(this.bDeactive, 1);
+            this.tablePanel1.SetColumn(this.bDeactive, 2);
             this.bDeactive.Dock = System.Windows.Forms.DockStyle.Fill;
             this.bDeactive.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bDeactive.ImageOptions.SvgImage")));
             this.bDeactive.ImageOptions.SvgImageSize = new System.Drawing.Size(24, 24);
-            this.bDeactive.Location = new System.Drawing.Point(108, 127);
+            this.bDeactive.Location = new System.Drawing.Point(247, 127);
             this.bDeactive.Margin = new System.Windows.Forms.Padding(2);
             this.bDeactive.Name = "bDeactive";
             this.tablePanel1.SetRow(this.bDeactive, 1);
@@ -620,6 +684,7 @@ namespace WindowsFormsApp2.Forms
             this.bDeactive.TabIndex = 5;
             this.bDeactive.TabStop = false;
             this.bDeactive.Text = "Deaktiv et";
+            this.bDeactive.Click += new System.EventHandler(this.bDeactive_Click);
             // 
             // fDiscountProduct
             // 
@@ -649,8 +714,8 @@ namespace WindowsFormsApp2.Forms
             ((System.ComponentModel.ISupportInitialize)(this.tPercent.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tStatus)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bEdit)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chStatus)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -681,8 +746,6 @@ namespace WindowsFormsApp2.Forms
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn1;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn4;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn7;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumn9;
-        private DevExpress.XtraEditors.Repository.RepositoryItemToggleSwitch chStatus;
         private DevExpress.XtraEditors.ToggleSwitch toggleStatus;
         private DevExpress.XtraEditors.LabelControl labelControl6;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn10;
@@ -690,5 +753,10 @@ namespace WindowsFormsApp2.Forms
         private DevExpress.XtraEditors.SimpleButton bDeactive;
         private DevExpress.XtraEditors.SimpleButton bActive;
         private DevExpress.XtraEditors.SimpleButton bDelete;
+        private DevExpress.XtraEditors.SimpleButton bEditCancel;
+        private DevExpress.XtraGrid.Columns.GridColumn colNewSalePrice;
+        private DevExpress.XtraEditors.SimpleButton bRefresh;
+        private DevExpress.XtraGrid.Columns.GridColumn colStatus;
+        private DevExpress.XtraEditors.Repository.RepositoryItemTextEdit tStatus;
     }
 }

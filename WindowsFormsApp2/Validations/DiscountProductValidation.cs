@@ -36,15 +36,21 @@ namespace WindowsFormsApp2.Validations
 
             //Null deyilsə bitiş tarixi başlanğıc tarixindən kiçik olabilməz validasiyası işləyəcək.
             RuleFor(x => x.EndDate)
-     .GreaterThanOrEqualTo(x => x.StartDate)
-     .WithMessage("Bitiş tarixi, başlanğıc tarixindən kiçik ola bilməz")
-     .When(x => x.EndDate.HasValue);
+           .GreaterThanOrEqualTo(x => x.StartDate)
+           .WithMessage("Bitiş tarixi, başlanğıc tarixindən kiçik ola bilməz")
+           .When(x => x.EndDate.HasValue);
 
 
 
             RuleFor(x => x.DiscountTotal)
-             .GreaterThanOrEqualTo(0)
-             .WithMessage("Endirim məbləği sıfır vəya sıfırdan kiçik ola bilməz");
+           .GreaterThanOrEqualTo(0)
+           .WithMessage("Endirim məbləği sıfır vəya sıfırdan kiçik ola bilməz");
+
+
+            RuleFor(x => x.DiscountTotal)
+           .LessThanOrEqualTo(x => x.SalePrice)
+           .WithMessage("Endirim məbləği satış qiymətindən çox ola bilməz !");
+
         }
     }
 }

@@ -401,11 +401,19 @@ inner join userParol u on u.id = ki.KASSIR_ID where u.id = {Properties.Settings.
         public static T MapReaderToObject<T>(IDataRecord record) where T : new()
         {
             T obj = new T();
+
+            var columns = Enumerable.Range(0, record.FieldCount)
+                        .Select(i => record.GetName(i))
+                        .ToHashSet(StringComparer.OrdinalIgnoreCase); // böyük-kiçik hərf həssaslığı üçün
+
             foreach (PropertyInfo property in typeof(T).GetProperties())
             {
-                if (!record.IsDBNull(record.GetOrdinal(property.Name)))
+                if (columns.Contains(property.Name))
                 {
-                    property.SetValue(obj, record[property.Name], null);
+                    if (!record.IsDBNull(record.GetOrdinal(property.Name)))
+                    {
+                        property.SetValue(obj, record[property.Name], null);
+                    }
                 }
             }
             return obj;

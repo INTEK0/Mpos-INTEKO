@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DevExpress.Xpo.DB.Helpers;
 using DevExpress.XtraReports.UI;
 using WindowsFormsApp2.Helpers.Messages;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
@@ -2410,6 +2411,23 @@ WHERE
 
                         await cmd.ExecuteNonQueryAsync();
                     }
+                }
+            }
+        }
+
+        public async static Task DiscountProduct_UpdateStatusAsync(string barcode, bool status)
+        {
+            string query = "UPDATE DISCOUNT_PRODUCTS SET Status = @Status WHERE Barcode = @barcode";
+
+            using (SqlConnection conn = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Status", status);
+                    cmd.Parameters.AddWithValue("@Barcode", barcode);
+
+                    await conn.OpenAsync();
+                    await cmd.ExecuteNonQueryAsync();
                 }
             }
         }

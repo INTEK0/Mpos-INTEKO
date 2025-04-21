@@ -366,6 +366,7 @@ namespace WindowsFormsApp2.Helpers.DB
             public bool Status { get; set; }
             public int UserId { get; set; }
             public string IsDeleted { get; set; }
+            public virtual decimal SalePrice { get; set; }
         }
     }
 }
