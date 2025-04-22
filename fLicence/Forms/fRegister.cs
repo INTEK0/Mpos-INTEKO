@@ -5,13 +5,15 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using DevExpress.XtraEditors;
 
-namespace fLicence
+namespace fLicence.Forms
 {
-    public partial class Form1 : DevExpress.XtraEditors.XtraForm
+    public partial class fRegister : DevExpress.XtraEditors.XtraForm
     {
-        public Form1()
+        public fRegister()
         {
             InitializeComponent();
         }

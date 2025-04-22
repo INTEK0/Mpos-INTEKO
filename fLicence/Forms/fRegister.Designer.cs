@@ -1,6 +1,6 @@
-﻿namespace fLicence
+﻿namespace fLicence.Forms
 {
-    partial class Form1
+    partial class fRegister
     {
         /// <summary>
         /// Required designer variable.
@@ -28,22 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(fRegister));
             this.SuspendLayout();
             // 
-            // Form1
+            // fRegister
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(895, 618);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.ClientSize = new System.Drawing.Size(1118, 706);
+            this.IconOptions.Image = ((System.Drawing.Image)(resources.GetObject("fRegister.IconOptions.Image")));
+            this.Name = "fRegister";
+            this.Text = "Müştəri qeydiyyatı";
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
     }
 }
-
