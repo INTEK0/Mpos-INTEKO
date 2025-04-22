@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.IO;
@@ -596,17 +597,17 @@ left join pos_guzest pg
                             dt.Load(reader); // reader'dan datayı alıp tabloya yükler
                             gridControl1.DataSource = dt;
 
-                            gridView1.OptionsSelection.MultiSelect = true;
-                            gridView1.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
+                            //gridView1.OptionsSelection.MultiSelect = true;
+                            //gridView1.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
 
-                            if (dt.Columns.Contains("ALIŞ QİYMƏTİ"))
-                                gridView1.Columns["ALIŞ QİYMƏTİ"].Visible = false;
-                            if (dt.Columns.Contains("BARKOD"))
-                                gridView1.Columns["BARKOD"].Visible = false;
+                            //if (dt.Columns.Contains("ALIŞ QİYMƏTİ"))
+                            //    gridView1.Columns["ALIŞ QİYMƏTİ"].Visible = false;
+                            //if (dt.Columns.Contains("BARKOD"))
+                            //    gridView1.Columns["BARKOD"].Visible = false;
 
-                            gridView1.Columns[0].Visible = false;
-                            gridView1.Columns[8].Visible = false;
-                            gridView1.Columns[9].Visible = false;
+                            //gridView1.Columns[0].Visible = false;
+                            //gridView1.Columns[8].Visible = false;
+                            //gridView1.Columns[9].Visible = false;
                         }
                     }
                 }
@@ -945,132 +946,6 @@ left join pos_guzest pg
             }
         }
 
-        static TextEdit textboxname;
-
-        private void textEdit9_Click(object sender, EventArgs e)
-        {
-            textboxname = textEdit9;
-        }
-
-        private void textEdit10_Click(object sender, EventArgs e)
-        {
-            textboxname = textEdit10;
-        }
-
-        private void textEdit12_Click(object sender, EventArgs e)
-        {
-            textboxname = textEdit12;
-        }
-
-        private void textEdit13_Click(object sender, EventArgs e)
-        {
-            textboxname = textEdit13;
-        }
-
-        private void textEdit7_Click(object sender, EventArgs e)
-        {
-            textboxname = textEdit7;
-        }
-
-        private void simpleButton16_Click(object sender, EventArgs e)
-        {
-
-            if (textboxname != null)
-            {
-                textboxname.Text = textboxname.Text + "1";
-            }
-
-        }
-
-        private void simpleButton17_Click(object sender, EventArgs e)
-        {
-            if (textboxname != null)
-            {
-                textboxname.Text = textboxname.Text + "2";
-            }
-
-        }
-
-        private void simpleButton171_Click(object sender, EventArgs e)
-        {
-            if (textboxname != null)
-            {
-                textboxname.Text = textboxname.Text + "3";
-            }
-
-        }
-
-        private void simpleButton12_Click(object sender, EventArgs e)
-        {
-            if (textboxname != null)
-            {
-                textboxname.Text = textboxname.Text + "4";
-            }
-
-        }
-
-        private void simpleButton13_Click(object sender, EventArgs e)
-        {
-            if (textboxname != null)
-            {
-                textboxname.Text = textboxname.Text + "5";
-            }
-
-        }
-
-        private void simpleButton14_Click(object sender, EventArgs e)
-        {
-            if (textboxname != null)
-            {
-                textboxname.Text = textboxname.Text + "6";
-            }
-
-        }
-
-        private void simpleButton8_Click(object sender, EventArgs e)
-        {
-            if (textboxname != null)
-            {
-                textboxname.Text = textboxname.Text + "7";
-            }
-
-        }
-
-        private void simpleButton9_Click(object sender, EventArgs e)
-        {
-            if (textboxname != null)
-            {
-                textboxname.Text = textboxname.Text + "8";
-            }
-
-        }
-
-        private void simpleButton10_Click(object sender, EventArgs e)
-        {
-            if (textboxname != null)
-            {
-                textboxname.Text = textboxname.Text + "9";
-            }
-
-        }
-
-        private void simpleButton19_Click(object sender, EventArgs e)
-        {
-            if (textboxname != null)
-            {
-                textboxname.Text = textboxname.Text + "0";
-            }
-
-        }
-
-        private void simpleButton20_Click(object sender, EventArgs e)
-        {
-            if (textboxname != null)
-            {
-                textboxname.Text = textboxname.Text + ".";
-            }
-
-        }
 
         private async void DeleteButton()
         {
@@ -1103,11 +978,6 @@ left join pos_guzest pg
         private void simpleButton11_Click(object sender, EventArgs e)
         {
             DeleteButton();
-        }
-
-        private void simpleButton18_Click(object sender, EventArgs e)
-        {
-            textboxname = null;
         }
 
         void Payment(Enums.PayType type)
@@ -2328,11 +2198,58 @@ left join pos_guzest pg
             Omnitech.ControlTape(lIpAdress.Text, null);
         }
 
-        private void simpleButton3_Click_1(object sender, EventArgs e)
+        private void bAddProduct_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            fWithdraw n = new fWithdraw(this);
+            var control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("HotSalesShow").ToString());
+            if (control)
+            {
+                fQuickSale f = new fQuickSale();
+                f.ShowDialog();
+                tileproduct();
+            }
+            else
+            {
+                FormHelpers.Alert("İsti satışlar bölməsi aktiv deyil", MessageType.Info);
+                return;
+            }
+        }
 
-            n.ShowDialog();
+        private async void bRowDelete_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            if (gridView1.GetFocusedDataRow() != null)
+            {
+                var row = gridView1.GetFocusedDataRow();
+
+                int result = Convert.ToInt32(row[0].ToString());
+                if (result > 0)
+                {
+                    st_.del_grid_data(result, textEdit1.Text);
+                }
+                //foreach (int i in gridView1.GetSelectedRows())
+                //{
+                //    DataRow row1 = gridView1.GetDataRow(i);
+
+                //    int B = Convert.ToInt32(row[0].ToString());
+                //    if (B > 0)
+                //    {
+                //        st_.del_grid_data(B, textEdit1.Text);
+                //    }
+                //}
+
+                await get(textEdit1.Text);
+                get_say_birmal(tBarcode.Text, textEdit1.Text);
+                tBarcode.Text = string.Empty;
+
+                get_cem(textEdit1.Text);
+
+                textEdit9.Text = "";
+                textEdit10.Text = "";
+                textEdit12.Text = "";
+                textEdit13.Text = "";
+                tCustomer.Text = "";
+                textBox5.Text = "";
+                tBarcode.Focus();
+            }
         }
 
         public void nba_X_Reportaylik(string _ip_)
@@ -2563,6 +2480,10 @@ left join pos_guzest pg
             {
                 gridView1.SelectAll();
                 DeleteButton();
+            }
+            else if (e.Modifiers is Keys.Control && e.KeyCode is Keys.K)
+            {
+                Process.Start("osk.exe");
             }
 
             switch (e.KeyCode)
@@ -5961,21 +5882,6 @@ FROM  dbo.item WHERE user_id = {Properties.Settings.Default.UserID}";
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             //Font font4 = new System.Drawing.Font("Times New Roman", 9f, FontStyle.Regular);
 
             //int offset2 = 10;
@@ -6128,22 +6034,6 @@ WHERE rn = 1;";
 
             get_cem(textEdit1.Text);
             textBox5.Text = "";
-        }
-
-        private void bAddPosScreen_Click(object sender, EventArgs e)
-        {
-            var control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("HotSalesShow").ToString());
-            if (control)
-            {
-                fQuickSale f = new fQuickSale();
-                f.ShowDialog();
-                tileproduct();
-            }
-            else
-            {
-                FormHelpers.Alert("İsti satışlar bölməsi aktiv deyil. Sazlamalardan aktiv edin.", MessageType.Info);
-                return;
-            }
         }
 
         private async void Basket_Click(object sender, EventArgs e)
