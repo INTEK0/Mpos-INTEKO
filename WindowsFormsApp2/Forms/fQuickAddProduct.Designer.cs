@@ -111,7 +111,7 @@
             this.bAdd.Name = "bAdd";
             this.tablePanel1.SetRow(this.bAdd, 1);
             this.bAdd.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.bAdd.Size = new System.Drawing.Size(88, 28);
+            this.bAdd.Size = new System.Drawing.Size(67, 28);
             this.bAdd.TabIndex = 4;
             this.bAdd.TabStop = false;
             this.bAdd.Text = "Yadda saxla";
@@ -125,12 +125,12 @@
             this.bSelectedProducts.AutoSize = true;
             this.tablePanel1.SetColumn(this.bSelectedProducts, 1);
             this.bSelectedProducts.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.bSelectedProducts.Location = new System.Drawing.Point(95, 123);
+            this.bSelectedProducts.Location = new System.Drawing.Point(74, 123);
             this.bSelectedProducts.Margin = new System.Windows.Forms.Padding(2);
             this.bSelectedProducts.Name = "bSelectedProducts";
             this.tablePanel1.SetRow(this.bSelectedProducts, 1);
             this.bSelectedProducts.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.bSelectedProducts.Size = new System.Drawing.Size(154, 28);
+            this.bSelectedProducts.Size = new System.Drawing.Size(113, 28);
             this.bSelectedProducts.TabIndex = 4;
             this.bSelectedProducts.TabStop = false;
             this.bSelectedProducts.Text = "Toplu məhsul əlavə et";
@@ -164,7 +164,7 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dateTarix.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dateTarix.Size = new System.Drawing.Size(246, 30);
+            this.dateTarix.Size = new System.Drawing.Size(246, 28);
             this.dateTarix.TabIndex = 0;
             this.dateTarix.TabStop = false;
             // 
@@ -172,7 +172,7 @@
             // 
             this.labelControl1.Location = new System.Drawing.Point(8, 12);
             this.labelControl1.Name = "labelControl1";
-            this.labelControl1.Size = new System.Drawing.Size(40, 16);
+            this.labelControl1.Size = new System.Drawing.Size(30, 13);
             this.labelControl1.TabIndex = 3;
             this.labelControl1.Text = "TARİX";
             // 
@@ -180,7 +180,7 @@
             // 
             this.labelControl2.Location = new System.Drawing.Point(8, 84);
             this.labelControl2.Name = "labelControl2";
-            this.labelControl2.Size = new System.Drawing.Size(44, 16);
+            this.labelControl2.Size = new System.Drawing.Size(33, 13);
             this.labelControl2.TabIndex = 3;
             this.labelControl2.Text = "Barkod";
             // 
@@ -188,7 +188,7 @@
             // 
             this.labelControl3.Location = new System.Drawing.Point(8, 48);
             this.labelControl3.Name = "labelControl3";
-            this.labelControl3.Size = new System.Drawing.Size(80, 16);
+            this.labelControl3.Size = new System.Drawing.Size(62, 13);
             this.labelControl3.TabIndex = 3;
             this.labelControl3.Text = "FAKTURA №";
             // 
@@ -196,7 +196,7 @@
             // 
             this.tInvoiceNo.Location = new System.Drawing.Point(106, 41);
             this.tInvoiceNo.Name = "tInvoiceNo";
-            this.tInvoiceNo.Size = new System.Drawing.Size(246, 30);
+            this.tInvoiceNo.Size = new System.Drawing.Size(246, 28);
             this.tInvoiceNo.TabIndex = 1;
             this.tInvoiceNo.TabStop = false;
             // 
@@ -211,7 +211,7 @@
             this.tBarcode.Properties.Appearance.ForeColor = System.Drawing.Color.Black;
             this.tBarcode.Properties.Appearance.Options.UseBackColor = true;
             this.tBarcode.Properties.Appearance.Options.UseForeColor = true;
-            this.tBarcode.Size = new System.Drawing.Size(246, 30);
+            this.tBarcode.Size = new System.Drawing.Size(246, 28);
             this.tBarcode.TabIndex = 2;
             this.tBarcode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tBarcode_KeyDown);
             // 
@@ -442,7 +442,7 @@
             this.gridColumn8.Name = "gridColumn8";
             this.gridColumn8.Visible = true;
             this.gridColumn8.VisibleIndex = 11;
-            this.gridColumn8.Width = 65;
+            this.gridColumn8.Width = 84;
             // 
             // gridColumn11
             // 
@@ -473,7 +473,7 @@
             this.gridColumn9.OptionsColumn.AllowEdit = false;
             this.gridColumn9.Visible = true;
             this.gridColumn9.VisibleIndex = 12;
-            this.gridColumn9.Width = 117;
+            this.gridColumn9.Width = 98;
             // 
             // gridColumn10
             // 
@@ -526,12 +526,12 @@
             this.bDelete.AutoSize = true;
             this.tablePanel1.SetColumn(this.bDelete, 2);
             this.bDelete.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.bDelete.Location = new System.Drawing.Point(253, 123);
+            this.bDelete.Location = new System.Drawing.Point(191, 123);
             this.bDelete.Margin = new System.Windows.Forms.Padding(2);
             this.bDelete.Name = "bDelete";
             this.tablePanel1.SetRow(this.bDelete, 1);
             this.bDelete.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.bDelete.Size = new System.Drawing.Size(130, 28);
+            this.bDelete.Size = new System.Drawing.Size(94, 28);
             this.bDelete.TabIndex = 4;
             this.bDelete.TabStop = false;
             this.bDelete.Text = "Seçili məhsulları sil";

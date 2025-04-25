@@ -27,7 +27,7 @@ namespace WindowsFormsApp2.Forms
     {
         private readonly DatabaseClasses.Company _company = DbProsedures.GetCompany();
         private List<DatabaseClasses.Printer> _printers = DbProsedures.GetSelectedPrinter();
-
+        private BindingList<GridData> _data = new BindingList<GridData>();
 
         private string _productName,
                        _salePrice,
@@ -85,11 +85,41 @@ namespace WindowsFormsApp2.Forms
             lookPrintType.EditValue = PrintType.minimum;
         }
 
+        private class GridData
+        {
+            public int SupplierId { get; set; }
+            public string SupplierName { get; set; }
+            public int ProductId { get; set; }
+            public string ProductName { get; set; }
+            public string ProductCode { get; set; }
+            public Decimal PurchasePrice { get; set; }
+            public Decimal SalePrice { get; set; }
+            public Decimal StockAmount { get; set; }
+            public string Barcode { get; set; }
+            public string TaxName { get; set; }
+            public int PrintCount { get; set; } = 1;
+        }
+
         private void GridDataLoad()
         {
             var data = DbProsedures.ConvertToDataTable("exec dbo.gaime_Satis_mal_load");
-            gridControlProducts.DataSource = data;
-            gridProducts.GroupPanelText = $"Məhsul sayı: {data.Rows.Count}";
+            foreach (DataRow row in data.Rows)
+            {
+                GridData gridData = new GridData();
+                gridData.SupplierId = Convert.ToInt32(row[0].ToString());
+                gridData.SupplierName = row[1].ToString();
+                gridData.ProductId = Convert.ToInt32(row[2].ToString());
+                gridData.ProductName = row[3].ToString();
+                gridData.ProductCode = row[4].ToString();
+                gridData.PurchasePrice = Convert.ToDecimal(row[5].ToString());
+                gridData.SalePrice = Convert.ToDecimal(row[6].ToString());
+                gridData.StockAmount = Convert.ToDecimal(row[7].ToString());
+                gridData.Barcode = row[8].ToString();
+                gridData.TaxName = row[9].ToString();
+                _data.Add(gridData);
+            }
+            gridControlProducts.DataSource = _data;
+            gridProducts.GroupPanelText = $"Məhsul sayı: {_data.Count}";
         }
 
         private void bRefresh_Click(object sender, EventArgs e)
@@ -103,10 +133,11 @@ namespace WindowsFormsApp2.Forms
 
             foreach (var rowHandle in selectedRows)
             {
-                string companyName = _company.CompanyName;
+                string companyName = _company?.CompanyName;
                 string barcode = gridProducts.GetRowCellValue(rowHandle, colBarcode).ToString();
                 string name = gridProducts.GetRowCellValue(rowHandle, colProductName).ToString();
                 string salesPrice = Convert.ToDouble(gridProducts.GetRowCellValue(rowHandle, coLSalePrice).ToString()).ToString("N2");
+                int printCount = Convert.ToInt32(gridProducts.GetRowCellValue(rowHandle, colPrintCount).ToString());
 
                 if (string.IsNullOrWhiteSpace(lookPrinters.Text) || lookPrinters.Text is "PRİNTER SEÇİMİ")
                 {
@@ -128,11 +159,18 @@ namespace WindowsFormsApp2.Forms
                             {
                                 barcodeType = BarcodeType.Code128;
                             }
-                            PrinterCacheData.PrintLabel30x20(name.Trim(), salesPrice, barcode.Trim(), lookPrinters.Text, barcodeType);
+
+                            for (int i = 0; i < printCount; i++)
+                            {
+                                PrinterCacheData.PrintLabel30x20(name.Trim(), salesPrice, barcode.Trim(), lookPrinters.Text, barcodeType);
+                            }
                         }
                         else
                         {
-                            PrinterCacheData.PrintLabel60x40(companyName, name.Trim(), salesPrice, barcode.Trim(), lookPrinters.Text);
+                            for (int i = 0; i < printCount; i++)
+                            {
+                                PrinterCacheData.PrintLabel60x40(companyName, name.Trim(), salesPrice, barcode.Trim(), lookPrinters.Text);
+                            }
                         }
                     }
                     else
@@ -173,7 +211,7 @@ namespace WindowsFormsApp2.Forms
         {
             int rowHandle = gridProducts.FocusedRowHandle;
 
-            string companyName = _company.CompanyName;
+            string companyName = _company?.CompanyName;
             string barcode = gridProducts.GetRowCellValue(rowHandle, colBarcode).ToString();
             string name = gridProducts.GetRowCellValue(rowHandle, colProductName).ToString();
             string salesPrice = Convert.ToDouble(gridProducts.GetRowCellValue(rowHandle, coLSalePrice).ToString()).ToString("N2");
@@ -236,6 +274,12 @@ namespace WindowsFormsApp2.Forms
             //};
 
             //pd.Print();
+        }
+
+        private void gridProducts_InvalidValueException(object sender, InvalidValueExceptionEventArgs e)
+        {
+            e.ErrorText = "Dəstəklənməyən simvol !";
+            e.ExceptionMode = DevExpress.XtraEditors.Controls.ExceptionMode.DisplayError;
         }
 
         void printbarkod(System.Object sender, System.Drawing.Printing.PrintPageEventArgs e)

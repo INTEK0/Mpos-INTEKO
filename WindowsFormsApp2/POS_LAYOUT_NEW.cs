@@ -479,36 +479,49 @@ SELECT [Id]
                 using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
                 {
                     connection.Open();
-                    //Əvvəlki kod. Nerolidəki müştərinin bildirdiyi problemdən etibarən kodda düzəliş edildi
 
-                    //string query = @"
-                    //select cast ((sum(s - (s*ISNULL(pg.endirim_faiz,0.00))/100.00 - ISNULL(pg.endiriz_azn,0.00))) as decimal(9,2)) as cem 
-                    //from (select mal_alisi_details_id, satis_qiymeti * count(*)*(case when sum(isnull(kg_,0.00))!=0.00 then sum(isnull(kg_,0.00)) else 1 end ) s 
-                    //from calculation where  emeliyyat_nomre =  @pricePoint AND userId = @userID
-                    //group by satis_qiymeti  ,mal_alisi_details_id) tx 
-                    //left join pos_guzest pg on pg.mal_details_id = tx.mal_alisi_details_id and pg.emeliyyat_nomre = @pricePoint";
+                    //Yuvarlama etdiyi üçün bu kod deaktiv edilmiştir
+                    //                    string query = @"
+                    //                  select CAST(
+                    //    ROUND(
+                    //        sum(s - (s * ISNULL(pg.endirim_faiz, 0.00)) / 100.00 - ISNULL(pg.endiriz_azn, 0.00)), 
+                    //        2, 
+                    //        1
+                    //    ) 
+                    //    AS decimal(9,2)
+                    //) as cem
+                    //from (
+                    //    select mal_alisi_details_id, 
+                    //           satis_qiymeti * count(*) * 
+                    //           (case when sum(isnull(kg_, 0.00)) != 0.00 then sum(isnull(kg_, 0.00)) else 1 end) s 
+                    //    from calculation 
+                    //    where emeliyyat_nomre = @pricePoint AND userId = @userID
+                    //    group by satis_qiymeti, mal_alisi_details_id
+                    //) tx 
+                    //left join pos_guzest pg 
+                    //    on pg.mal_details_id = tx.mal_alisi_details_id and pg.emeliyyat_nomre = @pricePoint";
+
 
 
 
                     string query = @"
-                  select CAST(
+                  SELECT CAST(
     ROUND(
-        sum(s - (s * ISNULL(pg.endirim_faiz, 0.00)) / 100.00 - ISNULL(pg.endiriz_azn, 0.00)), 
-        2, 
-        1
+        SUM(s - (s * ISNULL(pg.endirim_faiz, 0.00)) / 100.00 - ISNULL(pg.endiriz_azn, 0.00)), 
+        2
     ) 
     AS decimal(9,2)
-) as cem
-from (
-    select mal_alisi_details_id, 
-           satis_qiymeti * count(*) * 
-           (case when sum(isnull(kg_, 0.00)) != 0.00 then sum(isnull(kg_, 0.00)) else 1 end) s 
-    from calculation 
-    where emeliyyat_nomre = @pricePoint AND userId = @userID
-    group by satis_qiymeti, mal_alisi_details_id
+) AS cem
+FROM (
+    SELECT mal_alisi_details_id, 
+           satis_qiymeti * COUNT(*) * 
+           (CASE WHEN SUM(ISNULL(kg_, 0.00)) != 0.00 THEN SUM(ISNULL(kg_, 0.00)) ELSE 1 END) s 
+    FROM calculation 
+    WHERE emeliyyat_nomre = @pricePoint AND userId = @userID
+    GROUP BY satis_qiymeti, mal_alisi_details_id
 ) tx 
-left join pos_guzest pg 
-    on pg.mal_details_id = tx.mal_alisi_details_id and pg.emeliyyat_nomre = @pricePoint";
+LEFT JOIN pos_guzest pg 
+    ON pg.mal_details_id = tx.mal_alisi_details_id AND pg.emeliyyat_nomre = @pricePoint";
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
                         cmd.Parameters.AddWithValue("@pricePoint", emeliyyat_n);
@@ -771,19 +784,19 @@ left join pos_guzest pg
                                     decimal salePrice = Convert.ToDecimal(dr["SATIŞ QİYMƏTİ"]);
                                     decimal purchasePrice = Convert.ToDecimal(dr["ALIŞ QİYMƏTİ"]);
 
-                                    
-                                        DbProsedures.InsertCalculation(new Calculation
-                                        {
-                                            proccessNo = textEdit1.Text,
-                                            ProductID = productID,
-                                            Barcode = barcode.Trim(),
-                                            ProductName = dr["MƏHSUL ADI"].ToString(),
-                                            SalePrice = salePrice,
-                                            PurchasePrice = purchasePrice
-                                        });
 
-                                        DiscountProductControl(barcode, productID);
-                                   
+                                    DbProsedures.InsertCalculation(new Calculation
+                                    {
+                                        proccessNo = textEdit1.Text,
+                                        ProductID = productID,
+                                        Barcode = barcode.Trim(),
+                                        ProductName = dr["MƏHSUL ADI"].ToString(),
+                                        SalePrice = salePrice,
+                                        PurchasePrice = purchasePrice
+                                    });
+
+                                    DiscountProductControl(barcode, productID);
+
                                 }
                             }
                         }
@@ -814,7 +827,7 @@ left join pos_guzest pg
                 else
                 {
                     st.del_migdar_calculation(dele_migdar_mal_id.ToString(), textEdit10.Text, textEdit1.Text);
-                   await get(textEdit1.Text);
+                    await get(textEdit1.Text);
                     get_say_birmal(tBarcode.Text, textEdit1.Text);
                     tBarcode.Text = string.Empty;
 
@@ -846,7 +859,7 @@ left join pos_guzest pg
                 else
                 {
                     st.update_satis_giymeti_(dele_migdar_mal_id, Convert.ToDecimal(textEdit9.Text));
-                   await get(textEdit1.Text);
+                    await get(textEdit1.Text);
                     get_say_birmal(tBarcode.Text, textEdit1.Text);
 
                     get_cem(textEdit1.Text);
@@ -875,19 +888,27 @@ left join pos_guzest pg
             {
                 try
                 {
-                    DbProsedures.INSERT_PosDiscount(new PosDiscount
+                    int[] selectedRows = gridView1.GetSelectedRows();
+                    foreach (int row in selectedRows)
                     {
-                        ProccessNo = textEdit1.Text,
-                        ProductId = dele_migdar_mal_id,
-                        DiscountPercent = textEdit12.Text,
-                        DiscountAmount = textEdit13.Text,
-                    });
+                        DataRow dr = gridView1.GetDataRow(row);
+                        int productId = Convert.ToInt32( dr[0].ToString());
+                        string barcode = dr[11].ToString();
 
-                  await  get(textEdit1.Text);
+                        DbProsedures.INSERT_PosDiscount(new PosDiscount
+                        {
+                            ProccessNo = textEdit1.Text,
+                            ProductId = productId, //dele_migdar_mal_id - əvvəlki kodda buradan gələn id ilə əməliyyat aparırdı
+                            DiscountPercent = textEdit12.Text,
+                            DiscountAmount = textEdit13.Text,
+                        });
 
-                    get_say_birmal(tBarcode.Text.Trim(), textEdit1.Text);
+                        await get(textEdit1.Text);
 
-                    get_cem(textEdit1.Text);
+                        get_say_birmal(barcode, textEdit1.Text); //barcode hissəsi isə tBarcode.text dən gələn datanı alırdı
+
+                        get_cem(textEdit1.Text);
+                    }
 
                     tBarcode.Text = string.Empty;
                     textEdit9.Text = "";
@@ -914,19 +935,27 @@ left join pos_guzest pg
             {
                 try
                 {
-                    DbProsedures.INSERT_PosDiscount(new PosDiscount
+                    int[] selectedRows = gridView1.GetSelectedRows();
+                    foreach (int row in selectedRows)
                     {
-                        ProccessNo = textEdit1.Text,
-                        ProductId = dele_migdar_mal_id,
-                        DiscountPercent = textEdit12.Text,
-                        DiscountAmount = textEdit13.Text,
-                    });
+                        DataRow dr = gridView1.GetDataRow(row);
+                        int productId = Convert.ToInt32(dr[0].ToString());
+                        string barcode = dr[11].ToString();
 
-                   await get(textEdit1.Text);
+                        DbProsedures.INSERT_PosDiscount(new PosDiscount
+                        {
+                            ProccessNo = textEdit1.Text,
+                            ProductId = productId, //dele_migdar_mal_id - əvvəlki kodda buradan gələn id ilə əməliyyat aparırdı
+                            DiscountPercent = textEdit12.Text,
+                            DiscountAmount = textEdit13.Text,
+                        });
 
-                    get_say_birmal(tBarcode.Text.Trim(), textEdit1.Text);
+                        await get(textEdit1.Text);
 
-                    get_cem(textEdit1.Text);
+                        get_say_birmal(barcode, textEdit1.Text); //barcode hissəsi isə tBarcode.text dən gələn datanı alırdı
+
+                        get_cem(textEdit1.Text);
+                    }
 
                     tBarcode.Text = string.Empty;
                     textEdit9.Text = "";
@@ -960,7 +989,7 @@ left join pos_guzest pg
                 }
             }
 
-           await get(textEdit1.Text);
+            await get(textEdit1.Text);
             get_say_birmal(tBarcode.Text, textEdit1.Text);
             tBarcode.Text = string.Empty;
 
@@ -6027,8 +6056,8 @@ WHERE rn = 1;";
             string clicks = e.Item.Elements[1].Text;
             getbarkod_mehsuladi(clicks);
 
-          await  getall(tBarcode.Text);
-           await get(textEdit1.Text);
+            await getall(tBarcode.Text);
+            await get(textEdit1.Text);
             get_say_birmal(tBarcode.Text, textEdit1.Text);
             tBarcode.Text = string.Empty;
 
@@ -6053,7 +6082,7 @@ WHERE rn = 1;";
                 if (f.ShowDialog() is DialogResult.OK)
                 {
                     string code = DbProsedures.GET_SalesProcessNo();
-                   await get(code);
+                    await get(code);
                     get_cem(code);
                     gridView1.GroupPanelText = $"Məhsul sayı: {gridView1.RowCount}";
                     FormHelpers.Alert("Məhsullar səbətdən çıxarıldı", MessageType.Success);

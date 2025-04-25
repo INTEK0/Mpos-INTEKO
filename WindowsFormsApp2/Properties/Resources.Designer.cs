@@ -163,6 +163,16 @@ namespace WindowsFormsApp2.Properties {
         /// <summary>
         ///   Looks up a localized resource of type DevExpress.Utils.Svg.SvgImage.
         /// </summary>
+        internal static DevExpress.Utils.Svg.SvgImage actions_envelopeclose {
+            get {
+                object obj = ResourceManager.GetObject("actions_envelopeclose", resourceCulture);
+                return ((DevExpress.Utils.Svg.SvgImage)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type DevExpress.Utils.Svg.SvgImage.
+        /// </summary>
         internal static DevExpress.Utils.Svg.SvgImage actions_user {
             get {
                 object obj = ResourceManager.GetObject("actions_user", resourceCulture);
@@ -826,6 +836,16 @@ namespace WindowsFormsApp2.Properties {
         internal static DevExpress.Utils.Svg.SvgImage newemployee {
             get {
                 object obj = ResourceManager.GetObject("newemployee", resourceCulture);
+                return ((DevExpress.Utils.Svg.SvgImage)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type DevExpress.Utils.Svg.SvgImage.
+        /// </summary>
+        internal static DevExpress.Utils.Svg.SvgImage percentstyle {
+            get {
+                object obj = ResourceManager.GetObject("percentstyle", resourceCulture);
                 return ((DevExpress.Utils.Svg.SvgImage)(obj));
             }
         }

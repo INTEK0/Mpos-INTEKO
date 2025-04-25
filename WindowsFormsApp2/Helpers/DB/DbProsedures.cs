@@ -2302,22 +2302,15 @@ WHERE UserId = {Properties.Settings.Default.UserID}";
         {
             using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
             {
-                string query = "SELECT *  FROM SELECT_PRINTER_DATA_LOAD(@userID)";
+                string query = "SELECT * FROM SELECT_PRINTER_DATA_LOAD(@userID)";
                 connection.Open();
                 using (SqlCommand cmd = new SqlCommand(query, connection))
                 {
-                    cmd.Parameters.AddWithValue("@userID", Properties.Settings.Default.UserID);
+                    cmd.Parameters.AddWithValue("@userID", Properties.Settings.Default.UserID); 
                     using (SqlDataReader dr = cmd.ExecuteReader())
                     {
                         List<Printer> data = FormHelpers.MapReaderToList<Printer>(dr);
                         return data;
-                        //if (dr.Read())
-                        //{
-
-                        //    var data = FormHelpers.MapReaderToList<Printer>(dr);
-                        //    return data;
-                        //}
-                        //return null;
                     }
                 }
             }

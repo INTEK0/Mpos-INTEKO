@@ -454,7 +454,7 @@ inner join userParol u on u.id = ki.KASSIR_ID where u.id = {Properties.Settings.
         private static class Emaildata
         {
             public static string Email { get; set; } = "support@inteko.az";
-            public static string Password { get; set; } = "123456";
+            public static string Password { get; set; } = "Hh143268842800";
             public static int Port { get; set; } = 587;
             public static string SMTPAdress { get; set; } = "mail.inteko.az";
             public static string Header { get; set; } = "MPOS - İNTEKO";

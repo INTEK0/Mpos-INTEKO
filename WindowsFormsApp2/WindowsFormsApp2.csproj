@@ -1654,6 +1654,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Mpos.ico" />
+    <None Include="Resources\actions_envelopeclose.svg" />
+    <None Include="Resources\percentstyle.svg" />
     <None Include="Resources\cancel_16x16.png" />
     <None Include="Resources\cancel_32x322.png" />
   </ItemGroup>

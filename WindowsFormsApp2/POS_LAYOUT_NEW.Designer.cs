@@ -328,13 +328,13 @@ namespace WindowsFormsApp2
             this.layoutControlItem48,
             this.layoutControlItem49,
             this.layoutControlItem13});
-            this.layoutControl1.Location = new System.Drawing.Point(0, 35);
+            this.layoutControl1.Location = new System.Drawing.Point(0, 38);
             this.layoutControl1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(524, 344, 975, 600);
             this.layoutControl1.OptionsSerialization.StoreSpaceOptions = DevExpress.Utils.DefaultBoolean.True;
             this.layoutControl1.Root = this.Root;
-            this.layoutControl1.Size = new System.Drawing.Size(1384, 719);
+            this.layoutControl1.Size = new System.Drawing.Size(1384, 716);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
@@ -431,7 +431,7 @@ namespace WindowsFormsApp2
             this.tileControl1.MaxId = 5;
             this.tileControl1.Name = "tileControl1";
             this.tileControl1.Padding = new System.Windows.Forms.Padding(3);
-            this.tileControl1.Size = new System.Drawing.Size(426, 212);
+            this.tileControl1.Size = new System.Drawing.Size(426, 209);
             this.tileControl1.TabIndex = 67;
             this.tileControl1.Text = "tileControl1";
             this.tileControl1.ItemClick += new DevExpress.XtraEditors.TileItemClickEventHandler(this.tileControl1_ItemClick);
@@ -461,10 +461,10 @@ namespace WindowsFormsApp2
             // 
             // textBox4
             // 
-            this.textBox4.Location = new System.Drawing.Point(137, 691);
+            this.textBox4.Location = new System.Drawing.Point(158, 688);
             this.textBox4.Margin = new System.Windows.Forms.Padding(4);
             this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(1239, 20);
+            this.textBox4.Size = new System.Drawing.Size(1218, 20);
             this.textBox4.TabIndex = 55;
             this.textBox4.Visible = false;
             // 
@@ -534,7 +534,7 @@ namespace WindowsFormsApp2
             this.simpleButton25.Appearance.Options.UseBackColor = true;
             this.simpleButton25.Appearance.Options.UseFont = true;
             this.simpleButton25.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("simpleButton25.ImageOptions.SvgImage")));
-            this.simpleButton25.Location = new System.Drawing.Point(1110, 603);
+            this.simpleButton25.Location = new System.Drawing.Point(1110, 600);
             this.simpleButton25.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.simpleButton25.Name = "simpleButton25";
             this.simpleButton25.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
@@ -552,7 +552,7 @@ namespace WindowsFormsApp2
             this.simpleButton24.Appearance.Options.UseBackColor = true;
             this.simpleButton24.Appearance.Options.UseFont = true;
             this.simpleButton24.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("simpleButton24.ImageOptions.SvgImage")));
-            this.simpleButton24.Location = new System.Drawing.Point(1246, 603);
+            this.simpleButton24.Location = new System.Drawing.Point(1246, 600);
             this.simpleButton24.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.simpleButton24.Name = "simpleButton24";
             this.simpleButton24.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
@@ -570,7 +570,7 @@ namespace WindowsFormsApp2
             this.simpleButton23.Appearance.Options.UseBackColor = true;
             this.simpleButton23.Appearance.Options.UseFont = true;
             this.simpleButton23.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("simpleButton23.ImageOptions.SvgImage")));
-            this.simpleButton23.Location = new System.Drawing.Point(950, 647);
+            this.simpleButton23.Location = new System.Drawing.Point(950, 644);
             this.simpleButton23.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.simpleButton23.Name = "simpleButton23";
             this.simpleButton23.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
@@ -588,7 +588,7 @@ namespace WindowsFormsApp2
             this.simpleButton22.Appearance.Options.UseBackColor = true;
             this.simpleButton22.Appearance.Options.UseFont = true;
             this.simpleButton22.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("simpleButton22.ImageOptions.SvgImage")));
-            this.simpleButton22.Location = new System.Drawing.Point(950, 603);
+            this.simpleButton22.Location = new System.Drawing.Point(950, 600);
             this.simpleButton22.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.simpleButton22.Name = "simpleButton22";
             this.simpleButton22.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
@@ -600,35 +600,35 @@ namespace WindowsFormsApp2
             // 
             // textEdit13
             // 
-            this.textEdit13.Location = new System.Drawing.Point(1079, 194);
+            this.textEdit13.Location = new System.Drawing.Point(1100, 194);
             this.textEdit13.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textEdit13.Name = "textEdit13";
             this.textEdit13.Properties.NullText = "0";
-            this.textEdit13.Size = new System.Drawing.Size(297, 28);
+            this.textEdit13.Size = new System.Drawing.Size(276, 30);
             this.textEdit13.StyleController = this.layoutControl1;
             this.textEdit13.TabIndex = 20;
             this.textEdit13.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textEdit13_KeyPress);
             // 
             // textEdit12
             // 
-            this.textEdit12.Location = new System.Drawing.Point(1079, 158);
+            this.textEdit12.Location = new System.Drawing.Point(1100, 158);
             this.textEdit12.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textEdit12.Name = "textEdit12";
             this.textEdit12.Properties.NullText = "0";
-            this.textEdit12.Size = new System.Drawing.Size(297, 28);
+            this.textEdit12.Size = new System.Drawing.Size(276, 30);
             this.textEdit12.StyleController = this.layoutControl1;
             this.textEdit12.TabIndex = 19;
             this.textEdit12.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textEdit12_KeyPress);
             // 
             // textEdit10
             // 
-            this.textEdit10.Location = new System.Drawing.Point(1079, 122);
+            this.textEdit10.Location = new System.Drawing.Point(1100, 122);
             this.textEdit10.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textEdit10.Name = "textEdit10";
             this.textEdit10.Properties.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.NumericMaskManager));
             this.textEdit10.Properties.MaskSettings.Set("MaskManagerSignature", "allowNull=False");
             this.textEdit10.Properties.MaskSettings.Set("mask", "f3");
-            this.textEdit10.Size = new System.Drawing.Size(297, 28);
+            this.textEdit10.Size = new System.Drawing.Size(276, 30);
             this.textEdit10.StyleController = this.layoutControl1;
             this.textEdit10.TabIndex = 18;
             this.textEdit10.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textEdit10_KeyPress);
@@ -642,7 +642,7 @@ namespace WindowsFormsApp2
             this.gridControl1.Name = "gridControl1";
             this.gridControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.bRowDelete});
-            this.gridControl1.Size = new System.Drawing.Size(936, 400);
+            this.gridControl1.Size = new System.Drawing.Size(936, 397);
             this.gridControl1.TabIndex = 16;
             this.gridControl1.TabStop = false;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -905,41 +905,41 @@ namespace WindowsFormsApp2
             // 
             // tUsername
             // 
-            this.tUsername.Location = new System.Drawing.Point(137, 116);
+            this.tUsername.Location = new System.Drawing.Point(158, 116);
             this.tUsername.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tUsername.Name = "tUsername";
             this.tUsername.Properties.ReadOnly = true;
-            this.tUsername.Size = new System.Drawing.Size(199, 28);
+            this.tUsername.Size = new System.Drawing.Size(178, 30);
             this.tUsername.StyleController = this.layoutControl1;
             this.tUsername.TabIndex = 4;
             // 
             // textEdit1
             // 
-            this.textEdit1.Location = new System.Drawing.Point(137, 80);
+            this.textEdit1.Location = new System.Drawing.Point(158, 80);
             this.textEdit1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textEdit1.Name = "textEdit1";
             this.textEdit1.Properties.ReadOnly = true;
-            this.textEdit1.Size = new System.Drawing.Size(199, 28);
+            this.textEdit1.Size = new System.Drawing.Size(178, 30);
             this.textEdit1.StyleController = this.layoutControl1;
             this.textEdit1.TabIndex = 3;
             // 
             // textEdit2
             // 
-            this.textEdit2.Location = new System.Drawing.Point(137, 8);
+            this.textEdit2.Location = new System.Drawing.Point(158, 8);
             this.textEdit2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textEdit2.Name = "textEdit2";
             this.textEdit2.Properties.ReadOnly = true;
-            this.textEdit2.Size = new System.Drawing.Size(199, 28);
+            this.textEdit2.Size = new System.Drawing.Size(178, 30);
             this.textEdit2.StyleController = this.layoutControl1;
             this.textEdit2.TabIndex = 0;
             // 
             // textEdit11
             // 
-            this.textEdit11.Location = new System.Drawing.Point(137, 44);
+            this.textEdit11.Location = new System.Drawing.Point(158, 44);
             this.textEdit11.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textEdit11.Name = "textEdit11";
             this.textEdit11.Properties.ReadOnly = true;
-            this.textEdit11.Size = new System.Drawing.Size(199, 28);
+            this.textEdit11.Size = new System.Drawing.Size(178, 30);
             this.textEdit11.StyleController = this.layoutControl1;
             this.textEdit11.TabIndex = 3;
             // 
@@ -953,7 +953,7 @@ namespace WindowsFormsApp2
             this.bSendMail.Appearance.TextOptions.Trimming = DevExpress.Utils.Trimming.EllipsisCharacter;
             this.bSendMail.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.bSendMail.Cursor = System.Windows.Forms.Cursors.No;
-            this.bSendMail.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bSendMail.ImageOptions.SvgImage")));
+            this.bSendMail.ImageOptions.SvgImage = global::WindowsFormsApp2.Properties.Resources.actions_envelopeclose;
             this.bSendMail.Location = new System.Drawing.Point(342, 153);
             this.bSendMail.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.bSendMail.Name = "bSendMail";
@@ -1000,12 +1000,12 @@ namespace WindowsFormsApp2
             // 
             // textEdit9
             // 
-            this.textEdit9.Location = new System.Drawing.Point(1079, 86);
+            this.textEdit9.Location = new System.Drawing.Point(1100, 86);
             this.textEdit9.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textEdit9.Name = "textEdit9";
             this.textEdit9.Properties.Appearance.ForeColor = System.Drawing.Color.Red;
             this.textEdit9.Properties.Appearance.Options.UseForeColor = true;
-            this.textEdit9.Size = new System.Drawing.Size(297, 28);
+            this.textEdit9.Size = new System.Drawing.Size(276, 30);
             this.textEdit9.StyleController = this.layoutControl1;
             this.textEdit9.TabIndex = 17;
             this.textEdit9.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textEdit9_KeyPress);
@@ -1072,7 +1072,7 @@ namespace WindowsFormsApp2
             this.simpleButton21.Appearance.Options.UseBackColor = true;
             this.simpleButton21.Appearance.Options.UseFont = true;
             this.simpleButton21.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("simpleButton21.ImageOptions.SvgImage")));
-            this.simpleButton21.Location = new System.Drawing.Point(1110, 647);
+            this.simpleButton21.Location = new System.Drawing.Point(1110, 644);
             this.simpleButton21.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.simpleButton21.Name = "simpleButton21";
             this.simpleButton21.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
@@ -1087,7 +1087,7 @@ namespace WindowsFormsApp2
             this.textBox3.Location = new System.Drawing.Point(1748, 149);
             this.textBox3.Margin = new System.Windows.Forms.Padding(4);
             this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(49, 21);
+            this.textBox3.Size = new System.Drawing.Size(49, 23);
             this.textBox3.TabIndex = 3;
             this.textBox3.Visible = false;
             // 
@@ -1096,7 +1096,7 @@ namespace WindowsFormsApp2
             this.textBox1.Location = new System.Drawing.Point(1747, 116);
             this.textBox1.Margin = new System.Windows.Forms.Padding(4);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(65, 21);
+            this.textBox1.Size = new System.Drawing.Size(65, 23);
             this.textBox1.TabIndex = 2;
             this.textBox1.Visible = false;
             // 
@@ -1108,7 +1108,7 @@ namespace WindowsFormsApp2
             this.bBasket5.Appearance.Options.UseBackColor = true;
             this.bBasket5.Appearance.Options.UseFont = true;
             this.bBasket5.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bBasket5.ImageOptions.SvgImage")));
-            this.bBasket5.Location = new System.Drawing.Point(762, 647);
+            this.bBasket5.Location = new System.Drawing.Point(762, 644);
             this.bBasket5.Name = "bBasket5";
             this.bBasket5.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
             this.bBasket5.Size = new System.Drawing.Size(182, 38);
@@ -1125,7 +1125,7 @@ namespace WindowsFormsApp2
             this.bBasket4.Appearance.Options.UseBackColor = true;
             this.bBasket4.Appearance.Options.UseFont = true;
             this.bBasket4.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bBasket4.ImageOptions.SvgImage")));
-            this.bBasket4.Location = new System.Drawing.Point(574, 647);
+            this.bBasket4.Location = new System.Drawing.Point(574, 644);
             this.bBasket4.Name = "bBasket4";
             this.bBasket4.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
             this.bBasket4.Size = new System.Drawing.Size(182, 38);
@@ -1142,7 +1142,7 @@ namespace WindowsFormsApp2
             this.bBasket3.Appearance.Options.UseBackColor = true;
             this.bBasket3.Appearance.Options.UseFont = true;
             this.bBasket3.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bBasket3.ImageOptions.SvgImage")));
-            this.bBasket3.Location = new System.Drawing.Point(385, 647);
+            this.bBasket3.Location = new System.Drawing.Point(385, 644);
             this.bBasket3.Name = "bBasket3";
             this.bBasket3.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
             this.bBasket3.Size = new System.Drawing.Size(183, 38);
@@ -1159,7 +1159,7 @@ namespace WindowsFormsApp2
             this.bBasket2.Appearance.Options.UseBackColor = true;
             this.bBasket2.Appearance.Options.UseFont = true;
             this.bBasket2.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bBasket2.ImageOptions.SvgImage")));
-            this.bBasket2.Location = new System.Drawing.Point(197, 647);
+            this.bBasket2.Location = new System.Drawing.Point(197, 644);
             this.bBasket2.Name = "bBasket2";
             this.bBasket2.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
             this.bBasket2.Size = new System.Drawing.Size(182, 38);
@@ -1176,7 +1176,7 @@ namespace WindowsFormsApp2
             this.bBasket1.Appearance.Options.UseBackColor = true;
             this.bBasket1.Appearance.Options.UseFont = true;
             this.bBasket1.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bBasket1.ImageOptions.SvgImage")));
-            this.bBasket1.Location = new System.Drawing.Point(8, 647);
+            this.bBasket1.Location = new System.Drawing.Point(8, 644);
             this.bBasket1.Name = "bBasket1";
             this.bBasket1.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
             this.bBasket1.Size = new System.Drawing.Size(183, 38);
@@ -1214,7 +1214,7 @@ namespace WindowsFormsApp2
             this.tDoctor.Properties.NullValuePrompt = "Həkim adı";
             this.tDoctor.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
             this.tDoctor.Properties.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.tDoctor_Properties_ButtonClick);
-            this.tDoctor.Size = new System.Drawing.Size(443, 28);
+            this.tDoctor.Size = new System.Drawing.Size(443, 30);
             this.tDoctor.StyleController = this.layoutControl1;
             this.tDoctor.TabIndex = 100;
             // 
@@ -1234,7 +1234,7 @@ namespace WindowsFormsApp2
             this.tCustomer.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
             this.tCustomer.Properties.UseMaskAsDisplayFormat = true;
             this.tCustomer.Properties.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.tCustomer_Properties_ButtonClick);
-            this.tCustomer.Size = new System.Drawing.Size(443, 28);
+            this.tCustomer.Size = new System.Drawing.Size(443, 30);
             this.tCustomer.StyleController = this.layoutControl1;
             this.tCustomer.TabIndex = 99;
             this.tCustomer.TabStop = false;
@@ -1380,7 +1380,7 @@ namespace WindowsFormsApp2
             this.emptySpaceItem1});
             this.Root.Name = "Root";
             this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(5, 5, 5, 5);
-            this.Root.Size = new System.Drawing.Size(1384, 719);
+            this.Root.Size = new System.Drawing.Size(1384, 716);
             this.Root.TextVisible = false;
             // 
             // layoutControlItem1
@@ -1395,7 +1395,7 @@ namespace WindowsFormsApp2
             this.layoutControlItem1.Size = new System.Drawing.Size(334, 36);
             this.layoutControlItem1.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem1.Text = "TARİX:";
-            this.layoutControlItem1.TextSize = new System.Drawing.Size(113, 16);
+            this.layoutControlItem1.TextSize = new System.Drawing.Size(134, 16);
             // 
             // layoutControlItem2
             // 
@@ -1409,7 +1409,7 @@ namespace WindowsFormsApp2
             this.layoutControlItem2.Size = new System.Drawing.Size(334, 36);
             this.layoutControlItem2.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem2.Text = "ƏMƏLİYYAT №: ";
-            this.layoutControlItem2.TextSize = new System.Drawing.Size(113, 16);
+            this.layoutControlItem2.TextSize = new System.Drawing.Size(134, 16);
             // 
             // layoutControlItem11
             // 
@@ -1465,7 +1465,7 @@ namespace WindowsFormsApp2
             this.layoutControlItem18.Size = new System.Drawing.Size(432, 36);
             this.layoutControlItem18.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem18.Text = "SATIŞ QİYMƏTİ";
-            this.layoutControlItem18.TextSize = new System.Drawing.Size(113, 16);
+            this.layoutControlItem18.TextSize = new System.Drawing.Size(134, 16);
             // 
             // layoutControlItem19
             // 
@@ -1479,7 +1479,7 @@ namespace WindowsFormsApp2
             this.layoutControlItem19.Size = new System.Drawing.Size(432, 36);
             this.layoutControlItem19.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem19.Text = "MİQDARI";
-            this.layoutControlItem19.TextSize = new System.Drawing.Size(113, 16);
+            this.layoutControlItem19.TextSize = new System.Drawing.Size(134, 16);
             // 
             // layoutControlItem20
             // 
@@ -1493,7 +1493,7 @@ namespace WindowsFormsApp2
             this.layoutControlItem20.Size = new System.Drawing.Size(432, 36);
             this.layoutControlItem20.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem20.Text = "GÜZƏŞT %";
-            this.layoutControlItem20.TextSize = new System.Drawing.Size(113, 16);
+            this.layoutControlItem20.TextSize = new System.Drawing.Size(134, 16);
             // 
             // layoutControlItem21
             // 
@@ -1507,7 +1507,7 @@ namespace WindowsFormsApp2
             this.layoutControlItem21.Size = new System.Drawing.Size(432, 36);
             this.layoutControlItem21.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem21.Text = "GÜZƏŞT AZN";
-            this.layoutControlItem21.TextSize = new System.Drawing.Size(113, 16);
+            this.layoutControlItem21.TextSize = new System.Drawing.Size(134, 16);
             // 
             // layoutControlItem22
             // 
@@ -1558,7 +1558,7 @@ namespace WindowsFormsApp2
             this.layoutControlItem17.Location = new System.Drawing.Point(0, 233);
             this.layoutControlItem17.MinSize = new System.Drawing.Size(106, 26);
             this.layoutControlItem17.Name = "layoutControlItem17";
-            this.layoutControlItem17.Size = new System.Drawing.Size(942, 406);
+            this.layoutControlItem17.Size = new System.Drawing.Size(942, 403);
             this.layoutControlItem17.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem17.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem17.TextVisible = false;
@@ -1576,10 +1576,10 @@ namespace WindowsFormsApp2
             // layoutControlItem51
             // 
             this.layoutControlItem51.Control = this.textBox4;
-            this.layoutControlItem51.Location = new System.Drawing.Point(0, 683);
+            this.layoutControlItem51.Location = new System.Drawing.Point(0, 680);
             this.layoutControlItem51.Name = "layoutControlItem51";
             this.layoutControlItem51.Size = new System.Drawing.Size(1374, 26);
-            this.layoutControlItem51.TextSize = new System.Drawing.Size(113, 13);
+            this.layoutControlItem51.TextSize = new System.Drawing.Size(134, 16);
             this.layoutControlItem51.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // layoutControlItem3
@@ -1596,7 +1596,7 @@ namespace WindowsFormsApp2
             this.layoutControlItem3.Size = new System.Drawing.Size(334, 36);
             this.layoutControlItem3.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem3.Text = "SATIŞ SAYI: ";
-            this.layoutControlItem3.TextSize = new System.Drawing.Size(113, 16);
+            this.layoutControlItem3.TextSize = new System.Drawing.Size(134, 16);
             // 
             // simpleSeparator1
             // 
@@ -1618,7 +1618,7 @@ namespace WindowsFormsApp2
             // layoutControlItem40
             // 
             this.layoutControlItem40.Control = this.simpleButton22;
-            this.layoutControlItem40.Location = new System.Drawing.Point(942, 595);
+            this.layoutControlItem40.Location = new System.Drawing.Point(942, 592);
             this.layoutControlItem40.MaxSize = new System.Drawing.Size(0, 44);
             this.layoutControlItem40.MinSize = new System.Drawing.Size(106, 44);
             this.layoutControlItem40.Name = "layoutControlItem40";
@@ -1630,7 +1630,7 @@ namespace WindowsFormsApp2
             // layoutControlItem43
             // 
             this.layoutControlItem43.Control = this.simpleButton25;
-            this.layoutControlItem43.Location = new System.Drawing.Point(1102, 595);
+            this.layoutControlItem43.Location = new System.Drawing.Point(1102, 592);
             this.layoutControlItem43.MaxSize = new System.Drawing.Size(0, 44);
             this.layoutControlItem43.MinSize = new System.Drawing.Size(136, 44);
             this.layoutControlItem43.Name = "layoutControlItem43";
@@ -1642,7 +1642,7 @@ namespace WindowsFormsApp2
             // layoutControlItem39
             // 
             this.layoutControlItem39.Control = this.simpleButton21;
-            this.layoutControlItem39.Location = new System.Drawing.Point(1102, 639);
+            this.layoutControlItem39.Location = new System.Drawing.Point(1102, 636);
             this.layoutControlItem39.MaxSize = new System.Drawing.Size(136, 0);
             this.layoutControlItem39.MinSize = new System.Drawing.Size(136, 44);
             this.layoutControlItem39.Name = "layoutControlItem39";
@@ -1654,7 +1654,7 @@ namespace WindowsFormsApp2
             // layoutControlItem42
             // 
             this.layoutControlItem42.Control = this.simpleButton24;
-            this.layoutControlItem42.Location = new System.Drawing.Point(1238, 595);
+            this.layoutControlItem42.Location = new System.Drawing.Point(1238, 592);
             this.layoutControlItem42.MaxSize = new System.Drawing.Size(0, 88);
             this.layoutControlItem42.MinSize = new System.Drawing.Size(136, 88);
             this.layoutControlItem42.Name = "layoutControlItem42";
@@ -1666,7 +1666,7 @@ namespace WindowsFormsApp2
             // layoutControlItem41
             // 
             this.layoutControlItem41.Control = this.simpleButton23;
-            this.layoutControlItem41.Location = new System.Drawing.Point(942, 639);
+            this.layoutControlItem41.Location = new System.Drawing.Point(942, 636);
             this.layoutControlItem41.MaxSize = new System.Drawing.Size(160, 44);
             this.layoutControlItem41.MinSize = new System.Drawing.Size(160, 44);
             this.layoutControlItem41.Name = "layoutControlItem41";
@@ -1678,7 +1678,7 @@ namespace WindowsFormsApp2
             // layoutControlItem10
             // 
             this.layoutControlItem10.Control = this.bBasket5;
-            this.layoutControlItem10.Location = new System.Drawing.Point(754, 639);
+            this.layoutControlItem10.Location = new System.Drawing.Point(754, 636);
             this.layoutControlItem10.MinSize = new System.Drawing.Size(113, 44);
             this.layoutControlItem10.Name = "layoutControlItem10";
             this.layoutControlItem10.Size = new System.Drawing.Size(188, 44);
@@ -1689,7 +1689,7 @@ namespace WindowsFormsApp2
             // layoutControlItem44
             // 
             this.layoutControlItem44.Control = this.bBasket4;
-            this.layoutControlItem44.Location = new System.Drawing.Point(566, 639);
+            this.layoutControlItem44.Location = new System.Drawing.Point(566, 636);
             this.layoutControlItem44.MinSize = new System.Drawing.Size(113, 44);
             this.layoutControlItem44.Name = "layoutControlItem44";
             this.layoutControlItem44.Size = new System.Drawing.Size(188, 44);
@@ -1700,7 +1700,7 @@ namespace WindowsFormsApp2
             // layoutControlItem45
             // 
             this.layoutControlItem45.Control = this.bBasket3;
-            this.layoutControlItem45.Location = new System.Drawing.Point(377, 639);
+            this.layoutControlItem45.Location = new System.Drawing.Point(377, 636);
             this.layoutControlItem45.MinSize = new System.Drawing.Size(113, 44);
             this.layoutControlItem45.Name = "layoutControlItem45";
             this.layoutControlItem45.Size = new System.Drawing.Size(189, 44);
@@ -1711,7 +1711,7 @@ namespace WindowsFormsApp2
             // layoutControlItem57
             // 
             this.layoutControlItem57.Control = this.bBasket2;
-            this.layoutControlItem57.Location = new System.Drawing.Point(189, 639);
+            this.layoutControlItem57.Location = new System.Drawing.Point(189, 636);
             this.layoutControlItem57.MinSize = new System.Drawing.Size(113, 44);
             this.layoutControlItem57.Name = "layoutControlItem57";
             this.layoutControlItem57.Size = new System.Drawing.Size(188, 44);
@@ -1722,7 +1722,7 @@ namespace WindowsFormsApp2
             // layoutControlItem58
             // 
             this.layoutControlItem58.Control = this.bBasket1;
-            this.layoutControlItem58.Location = new System.Drawing.Point(0, 639);
+            this.layoutControlItem58.Location = new System.Drawing.Point(0, 636);
             this.layoutControlItem58.MaxSize = new System.Drawing.Size(0, 44);
             this.layoutControlItem58.MinSize = new System.Drawing.Size(113, 44);
             this.layoutControlItem58.Name = "layoutControlItem58";
@@ -1737,7 +1737,7 @@ namespace WindowsFormsApp2
             this.layoutControlItem60.Location = new System.Drawing.Point(942, 377);
             this.layoutControlItem60.MinSize = new System.Drawing.Size(106, 26);
             this.layoutControlItem60.Name = "layoutControlItem60";
-            this.layoutControlItem60.Size = new System.Drawing.Size(432, 218);
+            this.layoutControlItem60.Size = new System.Drawing.Size(432, 215);
             this.layoutControlItem60.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem60.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem60.TextVisible = false;
@@ -1838,7 +1838,7 @@ namespace WindowsFormsApp2
             this.layoutControlItem4.Size = new System.Drawing.Size(334, 36);
             this.layoutControlItem4.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem4.Text = "KASSİR:";
-            this.layoutControlItem4.TextSize = new System.Drawing.Size(113, 16);
+            this.layoutControlItem4.TextSize = new System.Drawing.Size(134, 16);
             // 
             // layoutControlItem14
             // 
@@ -1934,7 +1934,7 @@ namespace WindowsFormsApp2
             this.lMerchantId.Location = new System.Drawing.Point(928, 0);
             this.lMerchantId.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lMerchantId.Name = "lMerchantId";
-            this.lMerchantId.Size = new System.Drawing.Size(35, 13);
+            this.lMerchantId.Size = new System.Drawing.Size(45, 16);
             this.lMerchantId.TabIndex = 1;
             this.lMerchantId.Text = "label2";
             this.lMerchantId.Visible = false;
@@ -2073,7 +2073,7 @@ namespace WindowsFormsApp2
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
             this.barDockControlTop.Manager = this.barManager1;
-            this.barDockControlTop.Size = new System.Drawing.Size(1384, 35);
+            this.barDockControlTop.Size = new System.Drawing.Size(1384, 38);
             // 
             // barDockControlBottom
             // 
@@ -2087,17 +2087,17 @@ namespace WindowsFormsApp2
             // 
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 35);
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 38);
             this.barDockControlLeft.Manager = this.barManager1;
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 719);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 716);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1384, 35);
+            this.barDockControlRight.Location = new System.Drawing.Point(1384, 38);
             this.barDockControlRight.Manager = this.barManager1;
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 719);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 716);
             // 
             // lBankName
             // 
@@ -2105,7 +2105,7 @@ namespace WindowsFormsApp2
             this.lBankName.Location = new System.Drawing.Point(981, 0);
             this.lBankName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lBankName.Name = "lBankName";
-            this.lBankName.Size = new System.Drawing.Size(57, 13);
+            this.lBankName.Size = new System.Drawing.Size(74, 16);
             this.lBankName.TabIndex = 1;
             this.lBankName.Text = "BankName";
             this.lBankName.Visible = false;

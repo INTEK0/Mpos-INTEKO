@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Windows.Forms;
 using DevExpress.XtraGrid.Localization;
 using DevExpress.XtraReports.Design;
+using WindowsFormsApp2.Forms;
 using WindowsFormsApp2.Helpers;
 using static WindowsFormsApp2.Helpers.FormHelpers;
 

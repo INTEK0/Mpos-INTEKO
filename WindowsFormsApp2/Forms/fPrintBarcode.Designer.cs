@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(fPrintBarcode));
-            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions1 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions2 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
             this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
             this.lookPrinters = new DevExpress.XtraEditors.LookUpEdit();
@@ -51,8 +51,7 @@
             this.colAmount = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colBarcode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colEdv = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.bPrintCount = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
+            this.colPrintCount = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colPrintButton = new DevExpress.XtraGrid.Columns.GridColumn();
             this.bGridPrint = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).BeginInit();
@@ -63,7 +62,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.lookPrintType.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlProducts)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridProducts)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bPrintCount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bGridPrint)).BeginInit();
             this.SuspendLayout();
             // 
@@ -80,7 +78,7 @@
             this.tablePanel1.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 57F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
-            this.tablePanel1.Size = new System.Drawing.Size(955, 634);
+            this.tablePanel1.Size = new System.Drawing.Size(1201, 768);
             this.tablePanel1.TabIndex = 0;
             this.tablePanel1.UseSkinIndents = true;
             // 
@@ -97,7 +95,7 @@
             this.panelControl2.Margin = new System.Windows.Forms.Padding(1);
             this.panelControl2.Name = "panelControl2";
             this.tablePanel1.SetRow(this.panelControl2, 0);
-            this.panelControl2.Size = new System.Drawing.Size(951, 55);
+            this.panelControl2.Size = new System.Drawing.Size(1197, 55);
             this.panelControl2.TabIndex = 3;
             // 
             // lookPrinters
@@ -137,7 +135,7 @@
             this.bRefresh.Appearance.Options.UseFont = true;
             this.bRefresh.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bRefresh.ImageOptions.SvgImage")));
             this.bRefresh.ImageOptions.SvgImageSize = new System.Drawing.Size(32, 32);
-            this.bRefresh.Location = new System.Drawing.Point(656, 6);
+            this.bRefresh.Location = new System.Drawing.Point(902, 6);
             this.bRefresh.Name = "bRefresh";
             this.bRefresh.Size = new System.Drawing.Size(138, 46);
             this.bRefresh.TabIndex = 0;
@@ -153,7 +151,7 @@
             this.bPrint.Appearance.Options.UseFont = true;
             this.bPrint.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bPrint.ImageOptions.SvgImage")));
             this.bPrint.ImageOptions.SvgImageSize = new System.Drawing.Size(32, 32);
-            this.bPrint.Location = new System.Drawing.Point(802, 6);
+            this.bPrint.Location = new System.Drawing.Point(1048, 6);
             this.bPrint.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.bPrint.Name = "bPrint";
             this.bPrint.Size = new System.Drawing.Size(145, 46);
@@ -171,10 +169,9 @@
             this.gridControlProducts.MainView = this.gridProducts;
             this.gridControlProducts.Name = "gridControlProducts";
             this.gridControlProducts.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
-            this.bGridPrint,
-            this.bPrintCount});
+            this.bGridPrint});
             this.tablePanel1.SetRow(this.gridControlProducts, 1);
-            this.gridControlProducts.Size = new System.Drawing.Size(947, 569);
+            this.gridControlProducts.Size = new System.Drawing.Size(1193, 703);
             this.gridControlProducts.TabIndex = 1;
             this.gridControlProducts.TabStop = false;
             this.gridControlProducts.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -196,27 +193,24 @@
             this.colAmount,
             this.colBarcode,
             this.colEdv,
-            this.gridColumn1,
+            this.colPrintCount,
             this.colPrintButton});
             this.gridProducts.DetailHeight = 294;
             this.gridProducts.GridControl = this.gridControlProducts;
-            this.gridProducts.GroupCount = 1;
             this.gridProducts.Name = "gridProducts";
             this.gridProducts.OptionsBehavior.KeepFocusedRowOnUpdate = false;
-            this.gridProducts.OptionsBehavior.ReadOnly = true;
             this.gridProducts.OptionsEditForm.PopupEditFormWidth = 1067;
             this.gridProducts.OptionsNavigation.AutoFocusNewRow = true;
             this.gridProducts.OptionsScrollAnnotations.ShowFocusedRow = DevExpress.Utils.DefaultBoolean.False;
             this.gridProducts.OptionsSelection.MultiSelect = true;
             this.gridProducts.OptionsSelection.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.CheckBoxRowSelect;
             this.gridProducts.OptionsView.ShowIndicator = false;
-            this.gridProducts.SortInfo.AddRange(new DevExpress.XtraGrid.Columns.GridColumnSortInfo[] {
-            new DevExpress.XtraGrid.Columns.GridColumnSortInfo(this.colSupplierName, DevExpress.Data.ColumnSortOrder.Ascending)});
+            this.gridProducts.InvalidValueException += new DevExpress.XtraEditors.Controls.InvalidValueExceptionEventHandler(this.gridProducts_InvalidValueException);
             // 
             // colSupplierId
             // 
             this.colSupplierId.Caption = "TECHIZATCI_ID";
-            this.colSupplierId.FieldName = "TECHIZATCI_ID";
+            this.colSupplierId.FieldName = "SupplierId";
             this.colSupplierId.Name = "colSupplierId";
             this.colSupplierId.OptionsColumn.AllowEdit = false;
             this.colSupplierId.OptionsColumn.ReadOnly = true;
@@ -224,18 +218,18 @@
             // colSupplierName
             // 
             this.colSupplierName.Caption = "TƏCHİZATÇI";
-            this.colSupplierName.FieldName = "TƏCHİZATÇI";
+            this.colSupplierName.FieldName = "SupplierName";
             this.colSupplierName.Name = "colSupplierName";
             this.colSupplierName.OptionsColumn.AllowEdit = false;
             this.colSupplierName.OptionsColumn.ReadOnly = true;
             this.colSupplierName.Visible = true;
             this.colSupplierName.VisibleIndex = 1;
-            this.colSupplierName.Width = 148;
+            this.colSupplierName.Width = 220;
             // 
             // colProductId
             // 
             this.colProductId.Caption = "MAL_ALISI_DETAILS_ID";
-            this.colProductId.FieldName = "MAL_ALISI_DETAILS_ID";
+            this.colProductId.FieldName = "ProductId";
             this.colProductId.Name = "colProductId";
             this.colProductId.OptionsColumn.AllowEdit = false;
             this.colProductId.OptionsColumn.ReadOnly = true;
@@ -243,18 +237,18 @@
             // colProductName
             // 
             this.colProductName.Caption = "MƏHSUL ADI";
-            this.colProductName.FieldName = "MƏHSUL ADI";
+            this.colProductName.FieldName = "ProductName";
             this.colProductName.Name = "colProductName";
             this.colProductName.OptionsColumn.AllowEdit = false;
             this.colProductName.OptionsColumn.ReadOnly = true;
             this.colProductName.Visible = true;
-            this.colProductName.VisibleIndex = 1;
-            this.colProductName.Width = 363;
+            this.colProductName.VisibleIndex = 2;
+            this.colProductName.Width = 348;
             // 
             // colProductCode
             // 
             this.colProductCode.Caption = "MƏHSUL KODU";
-            this.colProductCode.FieldName = "MƏHSUL KODU";
+            this.colProductCode.FieldName = "ProductCode";
             this.colProductCode.Name = "colProductCode";
             this.colProductCode.OptionsColumn.AllowEdit = false;
             this.colProductCode.OptionsColumn.ReadOnly = true;
@@ -266,18 +260,18 @@
             this.coLSalePrice.Caption = "SATIŞ QİYMƏTİ";
             this.coLSalePrice.DisplayFormat.FormatString = "C2";
             this.coLSalePrice.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
-            this.coLSalePrice.FieldName = "SATIŞ QİYMƏTİ";
+            this.coLSalePrice.FieldName = "SalePrice";
             this.coLSalePrice.Name = "coLSalePrice";
             this.coLSalePrice.OptionsColumn.AllowEdit = false;
             this.coLSalePrice.OptionsColumn.ReadOnly = true;
             this.coLSalePrice.Visible = true;
-            this.coLSalePrice.VisibleIndex = 3;
-            this.coLSalePrice.Width = 233;
+            this.coLSalePrice.VisibleIndex = 4;
+            this.coLSalePrice.Width = 133;
             // 
             // colAmount
             // 
             this.colAmount.Caption = "ANBAR QALIĞI";
-            this.colAmount.FieldName = "ANBAR QALIĞI";
+            this.colAmount.FieldName = "StockAmount";
             this.colAmount.Name = "colAmount";
             this.colAmount.OptionsColumn.AllowEdit = false;
             this.colAmount.OptionsColumn.ReadOnly = true;
@@ -285,39 +279,35 @@
             // colBarcode
             // 
             this.colBarcode.Caption = "MƏHSUL BARKOD";
-            this.colBarcode.FieldName = "MƏHSUL BARKOD";
+            this.colBarcode.FieldName = "Barcode";
             this.colBarcode.Name = "colBarcode";
             this.colBarcode.OptionsColumn.AllowEdit = false;
             this.colBarcode.OptionsColumn.ReadOnly = true;
             this.colBarcode.Visible = true;
-            this.colBarcode.VisibleIndex = 2;
-            this.colBarcode.Width = 260;
+            this.colBarcode.VisibleIndex = 3;
+            this.colBarcode.Width = 165;
             // 
             // colEdv
             // 
             this.colEdv.Caption = "ƏDV";
-            this.colEdv.FieldName = "EDV";
+            this.colEdv.FieldName = "TaxName";
             this.colEdv.Name = "colEdv";
             this.colEdv.OptionsColumn.AllowEdit = false;
             this.colEdv.OptionsColumn.ReadOnly = true;
             // 
-            // gridColumn1
+            // colPrintCount
             // 
-            this.gridColumn1.AppearanceCell.Options.UseTextOptions = true;
-            this.gridColumn1.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.gridColumn1.AppearanceHeader.Options.UseTextOptions = true;
-            this.gridColumn1.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.gridColumn1.Caption = "ÇAP SAYI";
-            this.gridColumn1.ColumnEdit = this.bPrintCount;
-            this.gridColumn1.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
-            this.gridColumn1.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.MiddleLeft;
-            this.gridColumn1.Name = "gridColumn1";
-            this.gridColumn1.Width = 139;
-            // 
-            // bPrintCount
-            // 
-            this.bPrintCount.AutoHeight = false;
-            this.bPrintCount.Name = "bPrintCount";
+            this.colPrintCount.AppearanceCell.Options.UseTextOptions = true;
+            this.colPrintCount.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.colPrintCount.AppearanceHeader.Options.UseTextOptions = true;
+            this.colPrintCount.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.colPrintCount.Caption = "ÇAP SAYI";
+            this.colPrintCount.FieldName = "PrintCount";
+            this.colPrintCount.Name = "colPrintCount";
+            this.colPrintCount.OptionsColumn.FixedWidth = true;
+            this.colPrintCount.Visible = true;
+            this.colPrintCount.VisibleIndex = 5;
+            this.colPrintCount.Width = 119;
             // 
             // colPrintButton
             // 
@@ -325,16 +315,17 @@
             this.colPrintButton.ColumnEdit = this.bGridPrint;
             this.colPrintButton.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.MiddleLeft;
             this.colPrintButton.Name = "colPrintButton";
+            this.colPrintButton.OptionsColumn.FixedWidth = true;
             this.colPrintButton.OptionsColumn.ShowCaption = false;
             this.colPrintButton.Visible = true;
-            this.colPrintButton.VisibleIndex = 4;
-            this.colPrintButton.Width = 133;
+            this.colPrintButton.VisibleIndex = 6;
+            this.colPrintButton.Width = 131;
             // 
             // bGridPrint
             // 
             this.bGridPrint.AutoHeight = false;
             this.bGridPrint.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "ÇAP ET", -1, true, true, false, editorButtonImageOptions1, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "ÇAP ET", -1, true, true, false, editorButtonImageOptions2, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.bGridPrint.Name = "bGridPrint";
             this.bGridPrint.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.bGridPrint.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.bGridPrint_ButtonClick);
@@ -343,7 +334,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(955, 634);
+            this.ClientSize = new System.Drawing.Size(1201, 768);
             this.Controls.Add(this.tablePanel1);
             this.IconOptions.Image = global::WindowsFormsApp2.Properties.Resources.Mpos_png1;
             this.Name = "fPrintBarcode";
@@ -358,7 +349,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.lookPrintType.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlProducts)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridProducts)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bPrintCount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bGridPrint)).EndInit();
             this.ResumeLayout(false);
 
@@ -385,7 +375,6 @@
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit bGridPrint;
         private DevExpress.XtraEditors.LookUpEdit lookPrintType;
         private DevExpress.XtraEditors.LookUpEdit lookPrinters;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumn1;
-        private DevExpress.XtraEditors.Repository.RepositoryItemTextEdit bPrintCount;
+        private DevExpress.XtraGrid.Columns.GridColumn colPrintCount;
     }
 }
