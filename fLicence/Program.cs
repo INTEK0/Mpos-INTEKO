@@ -5,6 +5,8 @@ using System.Windows.Forms;
 using DevExpress.LookAndFeel;
 using DevExpress.Skins;
 using DevExpress.UserSkins;
+using DevExpress.XtraGrid.Localization;
+using static fLicence.Helpers.FormHelpers;
 
 namespace fLicence
 {
@@ -16,6 +18,7 @@ namespace fLicence
         [STAThread]
         static void Main()
         {
+          
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Forms.fRegister());
