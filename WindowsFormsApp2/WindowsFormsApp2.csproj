@@ -303,6 +303,12 @@
     <Compile Include="Forms\fAddSupplier.Designer.cs">
       <DependentUpon>fAddSupplier.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\fAddSupplierDebt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\fAddSupplierDebt.Designer.cs">
+      <DependentUpon>fAddSupplierDebt.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\fAdminPassword.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1048,6 +1054,9 @@
     <EmbeddedResource Include="Forms\fAddSupplier.resx">
       <DependentUpon>fAddSupplier.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\fAddSupplierDebt.resx">
+      <DependentUpon>fAddSupplierDebt.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\fAdminPassword.resx">
       <DependentUpon>fAdminPassword.cs</DependentUpon>
     </EmbeddedResource>
@@ -1654,6 +1663,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Mpos.ico" />
+    <None Include="Resources\bo_order_item1.svg" />
     <None Include="Resources\actions_envelopeclose.svg" />
     <None Include="Resources\percentstyle.svg" />
     <None Include="Resources\cancel_16x16.png" />

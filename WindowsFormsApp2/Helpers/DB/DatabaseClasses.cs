@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using WindowsFormsApp2.Helpers.Messages;
 
 namespace WindowsFormsApp2.Helpers.DB
 {
@@ -367,6 +368,18 @@ namespace WindowsFormsApp2.Helpers.DB
             public int UserId { get; set; }
             public string IsDeleted { get; set; }
             public virtual decimal SalePrice { get; set; }
+        }
+
+        public class SupplierDebt
+        {
+            public int Id { get; set; }
+            public int IsDeleted { get; set; }
+            public string SupplierName { get; set; }
+            public decimal Amount { get; set; }
+            public string Comment { get; set; }
+            public DateTime Date { get; set; }
+            public DateTime LogDate { get; set; } = DateTime.Now;
+            public int UserId { get; set; }
         }
     }
 }

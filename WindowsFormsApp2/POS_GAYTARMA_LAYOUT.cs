@@ -378,7 +378,26 @@ namespace WindowsFormsApp2
         {
             string json = Omnitech.Refund(_url, textBox1.Text, type, Cashier, textEdit1.Text);
 
+            var response = Omnitech.RequestPOST(_url, json);
+            if ($"{response.message}" == "Successful operation" || $"{response.message}" == "Successful operation")
+            {
+                if (MessageVisible)
+                {
+                    ReadyMessages.SUCCESS_RETURN_SALES_MESSAGE();
+                }
 
+                FormHelpers.Log($"Qəbz geri qaytarması edildi Qəbz №: {response.document_number}");
+                textEdit1.Text = DbProsedures.GET_RefundProccessNo();
+                gridControl1.RefreshDataSource();
+                /* textEdit3.Text = a; */
+
+            }
+            else
+            {
+                XtraMessageBox.Show(response.message);
+                FormHelpers.Log($"Pos satış qaytarma xətası. Xəta mesajı: {response.message}");
+            }
+            return;
             var url = _url.Replace("\n", "");
 
             var httpRequest = (HttpWebRequest)WebRequest.Create(url);
@@ -409,198 +428,198 @@ namespace WindowsFormsApp2
 
             try
             {
-                SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
-                SqlConnection conn2 = new SqlConnection();
-                SqlCommand cmd2 = new SqlCommand();
-                conn2.ConnectionString = Properties.Settings.Default.SqlCon;
-                conn2.Open();
-                string query2 = "SELECT  [pos_satis_check_main_id],[pos_nomre],[fiscal_id],[date_] ,[user_id_] ," +
-                    "[emeliyyat_nomre],[NEGD_],[KART_],[UMUMI_MEBLEG] ,[json_] ,[fiscalNum],[documentID]" +
-                    "  FROM [pos_satis_check_main] WHERE[pos_satis_check_main_id] IN(SELECT[pos_satis_check_main_id]  " +
-                    " FROM [pos_gaytarma_manual] where [pos_gaytarma_manual_id] =(select max([pos_gaytarma_manual_id]) " +
-                    "from [pos_gaytarma_manual])); ";
+//                SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
+//                SqlConnection conn2 = new SqlConnection();
+//                SqlCommand cmd2 = new SqlCommand();
+//                conn2.ConnectionString = Properties.Settings.Default.SqlCon;
+//                conn2.Open();
+//                string query2 = "SELECT  [pos_satis_check_main_id],[pos_nomre],[fiscal_id],[date_] ,[user_id_] ," +
+//                    "[emeliyyat_nomre],[NEGD_],[KART_],[UMUMI_MEBLEG] ,[json_] ,[fiscalNum],[documentID]" +
+//                    "  FROM [pos_satis_check_main] WHERE[pos_satis_check_main_id] IN(SELECT[pos_satis_check_main_id]  " +
+//                    " FROM [pos_gaytarma_manual] where [pos_gaytarma_manual_id] =(select max([pos_gaytarma_manual_id]) " +
+//                    "from [pos_gaytarma_manual])); ";
 
 
 
 
 
-                cmd2.Connection = conn2;
-                cmd2.CommandText = query2;
+//                cmd2.Connection = conn2;
+//                cmd2.CommandText = query2;
 
-                SqlDataReader dr2 = cmd2.ExecuteReader();
+//                SqlDataReader dr2 = cmd2.ExecuteReader();
 
-                while (dr2.Read())
-                {
-
-
-                    string cash = dr2["NEGD_"].ToString();
-                    string card = dr2["KART_"].ToString();
+//                while (dr2.Read())
+//                {
 
 
-                    string fiscal_id = dr2["fiscal_id"].ToString();
-                    string fiscalNum = dr2["fiscalNum"].ToString();
+//                    string cash = dr2["NEGD_"].ToString();
+//                    string card = dr2["KART_"].ToString();
 
 
-
-
-                    dataheadersa4 = "\"lastOperationAtUtc\":\"\", " +
-                        "\"parentDocument\":\"" + fiscal_id + "\", " +
-                       " \"prepaymentSum\":0.0," +
-"\"refund_document_number\":\"1\", \"refund_short_document_id\":\"" + fiscalNum + "\", ";
-
-
-                }
-
-
-                SqlConnection conn = new SqlConnection();
-                SqlCommand cmd = new SqlCommand();
-                conn.ConnectionString = Properties.Settings.Default.SqlCon;
-                conn.Open();
-
-
-                string query = $@"(SELECT md.MEHSUL_ADI AS name,
-                       p.item_id AS code,
-                       pl.say AS say,
-                       p.satis_giymet AS satis_giymet,
-					    pl.say * p.satis_giymet as tutar,
-                       p.quantity_type AS quantity_type,
-                       md.VERGI_DERECESI AS vtypes
-              FROM pos_satis_check_details p
-                       INNER JOIN MAL_ALISI_DETAILS md ON p.mal_alisi_details_id = md.MAL_ALISI_DETAILS_ID
-                       INNER JOIN pos_gaytarma_manual pl ON p.pos_satis_check_details_id = pl.pos_satis_check_details
-              WHERE pl.emeliyyat_nomre = '{textEdit1.Text}')";
+//                    string fiscal_id = dr2["fiscal_id"].ToString();
+//                    string fiscalNum = dr2["fiscalNum"].ToString();
 
 
 
 
-                cmd.Connection = conn;
-                cmd.CommandText = query;
-
-                SqlDataReader dr = cmd.ExecuteReader();
-                while (dr.Read())
-                {
-                    string name = dr["name"].ToString();
-                    string code = dr["code"].ToString();
-                    string sprice = dr["satis_giymet"].ToString();
-                    string qty = dr["say"].ToString();
-                    string vat = dr["vtypes"].ToString();
-                    string qunit = dr["quantity_type"].ToString();
-                    string ssum = dr["tutar"].ToString();
-
-                    p = p + "{\"itemName\":\"" + name + "\",\"itemCodeType\":0,\"itemCode\":\"" + code + "\",\"itemQuantityType\":" + qunit + ",\"itemQuantity\":" + qty.Replace(",", ".") + ",\"itemPrice\":" + sprice.Replace(",", ".") + ",\"itemSum\":" + ssum.Replace(",", ".") + ",\"itemVatPercent\":" + vat.Replace(",", ".") + ",\"discount\":0.0" + "},";
-                    vatkonts2 = vat;
-                }
-                string pnew = p.Substring(0, p.Length - 1);
-                SqlConnection conn4 = new SqlConnection();
-                SqlCommand cmd4 = new SqlCommand();
-                conn4.ConnectionString = Properties.Settings.Default.SqlCon;
-                conn4.Open();
-                //  string query4 = "SELECT SUM(tutar) as tut,sum(edv) as edvs from (SELECT    SUM( (M.say)*[satis_giymet]) as tutar, SUM((M.say)*[satis_giymet])*0.18 as edv FROM  [pos_satis_check_details] AS T,[pos_gaytarma_manual] AS M  WHERE T.[pos_satis_check_details_id]=M.[pos_satis_check_details] and  m.[pos_gaytarma_manual_id] =(select max([pos_gaytarma_manual_id]) from [pos_gaytarma_manual])) z";// position column from position table
-                string query4 = "SELECT SUM(tutar) as tut,sum(edv) as edvs from  " +
-                    "(SELECT    SUM((M.say) *[satis_giymet]) as tutar, SUM((M.say) *[satis_giymet]) * 0.18 as edv " +
-                    " FROM [pos_satis_check_details] AS T,[pos_gaytarma_manual] AS M " +
-                     " WHERE T.[pos_satis_check_details_id] = M.[pos_satis_check_details] and m.[pos_gaytarma_manual_id] IN(" +
-                     " SELECT [pos_gaytarma_manual_id] FROM [pos_gaytarma_manual] WHERE  convert(varchar, DATE_, 20) = (" +
-                     " SELECT convert(varchar, DATE_, 20)  FROM [pos_gaytarma_manual] WHERE[pos_gaytarma_manual_id] = (" +
-                     " SELECT  MAX([pos_gaytarma_manual_id]) FROM [pos_gaytarma_manual])))) Z";
-
-                cmd4.Connection = conn4;
-                cmd4.CommandText = query4;
-
-                SqlDataReader dr4 = cmd4.ExecuteReader();
-
-                if (type is PayType.Cash)
-                {
-                    while (dr4.Read())
-                    {
+//                    dataheadersa4 = "\"lastOperationAtUtc\":\"\", " +
+//                        "\"parentDocument\":\"" + fiscal_id + "\", " +
+//                       " \"prepaymentSum\":0.0," +
+//"\"refund_document_number\":\"1\", \"refund_short_document_id\":\"" + fiscalNum + "\", ";
 
 
-                        string tutara = dr4["tut"].ToString();
-                        string edvsa = dr4["edvs"].ToString();
-
-                        tutkontrol = $@"
-                        ""bonusSum"": 0.0,
-                        ""cashSum"": {tutara.Replace(",", ".")},
-                        ""cashier"": Kassir,
-                        ""cashlessSum"": 0.0,
-                        ""creditSum"": 0.0,
-                        ""currency"": ""AZN"",
-                        ""firstOperationAtUtc"": """",";
-
-                        edvlikisimsa = $@"
-                        ""sum"": {tutara.Replace(",", ".")},
-                        ""vatAmounts"": [
-                            {{
-                                ""vatPercent"": {vatkonts2},
-                                ""vatSum"": {tutara.Replace(",", ".")}
-                            }}
-                        ]";
-                    }
-                }
-                else if (type is PayType.Card)
-                {
-                    while (dr4.Read())
-                    {
-                        string tutara = dr4["tut"].ToString();
-                        string edvsa = dr4["edvs"].ToString();
-
-                        tutkontrol = $@"
-                        ""bonusSum"": 0.0,
-                        ""cashSum"": 0.0,
-                        ""cashier"": Kassir,
-                        ""cashlessSum"": {tutara.Replace(",", ".")},
-                        ""creditSum"": 0.0,
-                        ""currency"": ""AZN"",
-                        ""firstOperationAtUtc"": """",";
-
-                        edvlikisimsa = $@"
-                        ""sum"": {tutara.Replace(",", ".")},
-                        ""vatAmounts"": [
-                            {{
-                                ""vatPercent"": {vatkonts2},
-                                ""vatSum"": {tutara.Replace(",", ".")}
-                            }}
-                        ]";
-
-                    }
-                }
-
-                //            else if (type is PayType.CashCard)
-                //            {
-                //                while (dr4.Read())
-                //                {
+//                }
 
 
-                //                    string tutara = dr4["tut"].ToString();
-                //                    string edvsa = dr4["edvs"].ToString();
-
-                //                    tutkontrol = "" +
-                //                        "\"bonusSum\":0.0, " +
-                //"\"cashSum\":" + tutara.Replace(",", ".") + ", " +
-                //"\"cashier\":" + Cashier + ", \"cashlessSum\":0.0, \"creditSum\":0.0," +
-                //"\"currency\":\"AZN\", \"firstOperationAtUtc\":\"\",";
-
-                //                    edvlikisimsa = "\"sum\":" + tutara.Replace(",", ".") + "," +
-                //                    "\"vatAmounts\":[" +
-                //                    "{ \"vatPercent\":" + vatkonts2 + ", \"vatSum\": " + tutara.Replace(",", ".") + " }]},";
-
-                //                }
-                //            }
+//                SqlConnection conn = new SqlConnection();
+//                SqlCommand cmd = new SqlCommand();
+//                conn.ConnectionString = Properties.Settings.Default.SqlCon;
+//                conn.Open();
 
 
-                string footernews =
-            '\u0022' + "doc_type" + '\u0022' + ": " + '\u0022' + "money_back" + '\u0022' + "" +
+//                string query = $@"(SELECT md.MEHSUL_ADI AS name,
+//                       p.item_id AS code,
+//                       pl.say AS say,
+//                       p.satis_giymet AS satis_giymet,
+//					    pl.say * p.satis_giymet as tutar,
+//                       p.quantity_type AS quantity_type,
+//                       md.VERGI_DERECESI AS vtypes
+//              FROM pos_satis_check_details p
+//                       INNER JOIN MAL_ALISI_DETAILS md ON p.mal_alisi_details_id = md.MAL_ALISI_DETAILS_ID
+//                       INNER JOIN pos_gaytarma_manual pl ON p.pos_satis_check_details_id = pl.pos_satis_check_details
+//              WHERE pl.emeliyyat_nomre = '{textEdit1.Text}')";
 
-            "}," +
-             " \"version\"  : 1" +
-              "}," +
-            " \"checkData\" : { " +
 
-                " \"check_type\" : 100 " +
-            "}" +
- "}" +
- "}";
-                alldata = dataheader + tutkontrol + productsa + pnew + p2 + dataheadersa4 + edvlikisimsa + footernews;
+
+
+//                cmd.Connection = conn;
+//                cmd.CommandText = query;
+
+//                SqlDataReader dr = cmd.ExecuteReader();
+//                while (dr.Read())
+//                {
+//                    string name = dr["name"].ToString();
+//                    string code = dr["code"].ToString();
+//                    string sprice = dr["satis_giymet"].ToString();
+//                    string qty = dr["say"].ToString();
+//                    string vat = dr["vtypes"].ToString();
+//                    string qunit = dr["quantity_type"].ToString();
+//                    string ssum = dr["tutar"].ToString();
+
+//                    p = p + "{\"itemName\":\"" + name + "\",\"itemCodeType\":0,\"itemCode\":\"" + code + "\",\"itemQuantityType\":" + qunit + ",\"itemQuantity\":" + qty.Replace(",", ".") + ",\"itemPrice\":" + sprice.Replace(",", ".") + ",\"itemSum\":" + ssum.Replace(",", ".") + ",\"itemVatPercent\":" + vat.Replace(",", ".") + ",\"discount\":0.0" + "},";
+//                    vatkonts2 = vat;
+//                }
+//                string pnew = p.Substring(0, p.Length - 1);
+//                SqlConnection conn4 = new SqlConnection();
+//                SqlCommand cmd4 = new SqlCommand();
+//                conn4.ConnectionString = Properties.Settings.Default.SqlCon;
+//                conn4.Open();
+//                //  string query4 = "SELECT SUM(tutar) as tut,sum(edv) as edvs from (SELECT    SUM( (M.say)*[satis_giymet]) as tutar, SUM((M.say)*[satis_giymet])*0.18 as edv FROM  [pos_satis_check_details] AS T,[pos_gaytarma_manual] AS M  WHERE T.[pos_satis_check_details_id]=M.[pos_satis_check_details] and  m.[pos_gaytarma_manual_id] =(select max([pos_gaytarma_manual_id]) from [pos_gaytarma_manual])) z";// position column from position table
+//                string query4 = "SELECT SUM(tutar) as tut,sum(edv) as edvs from  " +
+//                    "(SELECT    SUM((M.say) *[satis_giymet]) as tutar, SUM((M.say) *[satis_giymet]) * 0.18 as edv " +
+//                    " FROM [pos_satis_check_details] AS T,[pos_gaytarma_manual] AS M " +
+//                     " WHERE T.[pos_satis_check_details_id] = M.[pos_satis_check_details] and m.[pos_gaytarma_manual_id] IN(" +
+//                     " SELECT [pos_gaytarma_manual_id] FROM [pos_gaytarma_manual] WHERE  convert(varchar, DATE_, 20) = (" +
+//                     " SELECT convert(varchar, DATE_, 20)  FROM [pos_gaytarma_manual] WHERE[pos_gaytarma_manual_id] = (" +
+//                     " SELECT  MAX([pos_gaytarma_manual_id]) FROM [pos_gaytarma_manual])))) Z";
+
+//                cmd4.Connection = conn4;
+//                cmd4.CommandText = query4;
+
+//                SqlDataReader dr4 = cmd4.ExecuteReader();
+
+//                if (type is PayType.Cash)
+//                {
+//                    while (dr4.Read())
+//                    {
+
+
+//                        string tutara = dr4["tut"].ToString();
+//                        string edvsa = dr4["edvs"].ToString();
+
+//                        tutkontrol = $@"
+//                        ""bonusSum"": 0.0,
+//                        ""cashSum"": {tutara.Replace(",", ".")},
+//                        ""cashier"": Kassir,
+//                        ""cashlessSum"": 0.0,
+//                        ""creditSum"": 0.0,
+//                        ""currency"": ""AZN"",
+//                        ""firstOperationAtUtc"": """",";
+
+//                        edvlikisimsa = $@"
+//                        ""sum"": {tutara.Replace(",", ".")},
+//                        ""vatAmounts"": [
+//                            {{
+//                                ""vatPercent"": {vatkonts2},
+//                                ""vatSum"": {tutara.Replace(",", ".")}
+//                            }}
+//                        ]";
+//                    }
+//                }
+//                else if (type is PayType.Card)
+//                {
+//                    while (dr4.Read())
+//                    {
+//                        string tutara = dr4["tut"].ToString();
+//                        string edvsa = dr4["edvs"].ToString();
+
+//                        tutkontrol = $@"
+//                        ""bonusSum"": 0.0,
+//                        ""cashSum"": 0.0,
+//                        ""cashier"": Kassir,
+//                        ""cashlessSum"": {tutara.Replace(",", ".")},
+//                        ""creditSum"": 0.0,
+//                        ""currency"": ""AZN"",
+//                        ""firstOperationAtUtc"": """",";
+
+//                        edvlikisimsa = $@"
+//                        ""sum"": {tutara.Replace(",", ".")},
+//                        ""vatAmounts"": [
+//                            {{
+//                                ""vatPercent"": {vatkonts2},
+//                                ""vatSum"": {tutara.Replace(",", ".")}
+//                            }}
+//                        ]";
+
+//                    }
+//                }
+
+//                //            else if (type is PayType.CashCard)
+//                //            {
+//                //                while (dr4.Read())
+//                //                {
+
+
+//                //                    string tutara = dr4["tut"].ToString();
+//                //                    string edvsa = dr4["edvs"].ToString();
+
+//                //                    tutkontrol = "" +
+//                //                        "\"bonusSum\":0.0, " +
+//                //"\"cashSum\":" + tutara.Replace(",", ".") + ", " +
+//                //"\"cashier\":" + Cashier + ", \"cashlessSum\":0.0, \"creditSum\":0.0," +
+//                //"\"currency\":\"AZN\", \"firstOperationAtUtc\":\"\",";
+
+//                //                    edvlikisimsa = "\"sum\":" + tutara.Replace(",", ".") + "," +
+//                //                    "\"vatAmounts\":[" +
+//                //                    "{ \"vatPercent\":" + vatkonts2 + ", \"vatSum\": " + tutara.Replace(",", ".") + " }]},";
+
+//                //                }
+//                //            }
+
+
+//                string footernews =
+//            '\u0022' + "doc_type" + '\u0022' + ": " + '\u0022' + "money_back" + '\u0022' + "" +
+
+//            "}," +
+//             " \"version\"  : 1" +
+//              "}," +
+//            " \"checkData\" : { " +
+
+//                " \"check_type\" : 100 " +
+//            "}" +
+// "}" +
+// "}";
+//                alldata = dataheader + tutkontrol + productsa + pnew + p2 + dataheadersa4 + edvlikisimsa + footernews;
                 httpRequest.Method = "POST";
 
                 httpRequest.Accept = "application/json;charset=utf-8";

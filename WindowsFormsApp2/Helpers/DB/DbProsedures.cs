@@ -1904,6 +1904,38 @@ WHERE BARKOD = '{barcode}'";
             }
         }
 
+        public static async Task<int> InsertSupplierDebt(SupplierDebt item)
+        {
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                string query = $@"";
+                await con.OpenAsync();
+                using (SqlCommand cmd = new SqlCommand(INSERT_IncomeAndExpenseDataQuery, con))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    SqlParameter param;
+                    param = cmd.Parameters.Add("@SupplierName", SqlDbType.NVarChar, 200);
+                    param.Value = item.SupplierName;
+                    param = cmd.Parameters.Add("@Amount", SqlDbType.Decimal);
+                    param.Value = item.Amount;
+                    param = cmd.Parameters.Add("@Comment", SqlDbType.NVarChar, int.MaxValue);
+                    param.Value = item.Comment;
+                    param = cmd.Parameters.Add("@Date", SqlDbType.Date);
+                    param.Value = item.Date;
+                    param = cmd.Parameters.Add("@UserId", SqlDbType.Int);
+                    param.Value = Properties.Settings.Default.UserID;
+                    param = cmd.Parameters.Add("@LogDate", SqlDbType.DateTime);
+                    param.Value = DateTime.Now;
+
+                    param = cmd.Parameters.Add("@ResultId", SqlDbType.Int);
+                    param.Direction = ParameterDirection.Output;
+
+                    await cmd.ExecuteNonQueryAsync();
+                    return Convert.ToInt32(param.Value);
+                }
+            }
+        }
+
         #endregion [..SUPPLİERS..]
 
 

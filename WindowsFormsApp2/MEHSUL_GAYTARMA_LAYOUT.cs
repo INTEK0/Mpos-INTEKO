@@ -195,7 +195,7 @@ namespace WindowsFormsApp2
        [YERLƏŞDİYİ ANBAR],
        [QAYTARILMALI MİQDAR]
 FROM[dbo].[gaytarilacag_mallar]
-WHERE[TƏCHİZATÇI ADI] = '{supplierName}'
+WHERE[TƏCHİZATÇI ADI] = N'{supplierName}'
   AND[MİQDARI] > 0.00";
 
                 var data = DbProsedures.ConvertToDataTable(queryString);

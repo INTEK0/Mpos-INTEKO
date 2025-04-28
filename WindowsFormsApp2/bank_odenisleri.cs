@@ -134,23 +134,38 @@ namespace WindowsFormsApp2
             int paramValue = A;
             try
             {
-                SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
+                SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString);
 
 
-                string queryString = "  select MAL_ALISI_MAIN_ID, [FAKTURA NÖMRƏ] , TARIX  , " +
-                 " cast(sum(isnull(ESAS_BORC, 0.00)) as decimal(9, 2)) N'ƏSAS BORC' , " +
-                 " cast(sum(isnull(EDV_BORC, 0.00)) as decimal(9, 2))  N'ƏDV BORC' " +
-                  " ,  cast(sum(isnull(BORC, 0.00)) as decimal(9, 2)) as N'YEKUN BORC' " +
-                 " ,0.00 AS N'ƏDV ÖDƏ',0.00 AS N'YEKUN BORC ÖDƏ' from( " +
-               " SELECT f.MAL_ALISI_MAIN_ID, f.[FAKTURA NÖMRƏ], f.TARIX, f.QİYMƏT - isnull(t.odenis, 0.00) N'BORC', " +
-               " isnull(f.ESAS_BORC, 0.00) - isnull(t.ESAS_BORC_ODENIS, 0.00) as ESAS_BORC, isnull(f.VERGI, 0.00) -  " +
-               " isnull(t.EDV_BORC, 0.00) as EDV_BORC, " +
-               "  0 AS 'ÖDƏNİŞ' FROM dbo.fn_TECHIZATCI_BORC(@pricePoint) f  " +
-               " left join(select  MAL_ALISI_MAIN_ID, (SUM(ISNULL(ESAS_BORC_ODENIS, 0.00)) + " +
-               "  SUM(ISNULL(EDV_BORC, 0.00))) AS odenis, SUM(ISNULL(ESAS_BORC_ODENIS, 0.00))ESAS_BORC_ODENIS, " +
-               " SUM(ISNULL(EDV_BORC, 0.00))EDV_BORC " +
-               "  from TECHIZATCI_ODENIS group by MAL_ALISI_MAIN_ID)t on f.MAL_ALISI_MAIN_ID = t.MAL_ALISI_MAIN_ID)o where  BORC > 0.00 " +
-               " group by MAL_ALISI_MAIN_ID, [FAKTURA NÖMRƏ] ,    TARIX ";
+                string queryString = @"
+SELECT MAL_ALISI_MAIN_ID,
+       [FAKTURA NÖMRƏ],
+       TARIX ,
+       cast(sum(isnull(ESAS_BORC, 0.00)) AS decimal(9, 2)) N'ƏSAS BORC',
+	   cast(sum(isnull(EDV_BORC, 0.00)) AS decimal(9, 2)) N'ƏDV BORC',
+       cast(sum(isnull(BORC, 0.00)) AS decimal(9, 2)) AS N'YEKUN BORC',
+       0.00 AS N'ƏDV ÖDƏ',
+       0.00 AS N'YEKUN BORC ÖDƏ'
+FROM
+  (SELECT f.MAL_ALISI_MAIN_ID,
+          f.[FAKTURA NÖMRƏ],
+          f.TARIX,
+          f.QİYMƏT - isnull(t.odenis, 0.00) N'BORC',
+		  isnull(f.ESAS_BORC, 0.00) - isnull(t.ESAS_BORC_ODENIS, 0.00) AS ESAS_BORC,
+		  isnull(f.VERGI, 0.00) - isnull(t.EDV_BORC, 0.00) AS EDV_BORC,
+		  0 AS 'ÖDƏNİŞ'
+   FROM dbo.fn_TECHIZATCI_BORC(@pricePoint) f
+   LEFT JOIN
+     (SELECT MAL_ALISI_MAIN_ID,
+             (SUM(ISNULL(ESAS_BORC_ODENIS, 0.00)) + SUM(ISNULL(EDV_BORC, 0.00))) AS odenis,
+             SUM(ISNULL(ESAS_BORC_ODENIS, 0.00))ESAS_BORC_ODENIS,
+             SUM(ISNULL(EDV_BORC, 0.00))EDV_BORC
+      FROM TECHIZATCI_ODENIS
+      GROUP BY MAL_ALISI_MAIN_ID)t ON f.MAL_ALISI_MAIN_ID = t.MAL_ALISI_MAIN_ID)o
+WHERE BORC > 0.00
+GROUP BY MAL_ALISI_MAIN_ID,
+         [FAKTURA NÖMRƏ],
+         TARIX";
 
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Parameters.AddWithValue("@pricePoint", paramValue);

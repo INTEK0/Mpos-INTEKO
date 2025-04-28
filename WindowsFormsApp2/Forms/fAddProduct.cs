@@ -233,7 +233,7 @@ namespace WindowsFormsApp2.Forms
             INNER JOIN MAL_ALISI_MAIN MM ON MM.MAL_ALISI_MAIN_ID = MD.MAL_ALISI_MAIN_ID
             WHERE MM.TECHIZATCI_ID = @pricePoint)X ON X.ID = Y.ID";
 
-            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
             {
                 connection.Open();
                 using (SqlCommand cmd = new SqlCommand(query, connection))

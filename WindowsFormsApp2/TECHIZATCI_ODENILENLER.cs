@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WindowsFormsApp2.Helpers.DB;
 
 namespace WindowsFormsApp2
 {
@@ -31,7 +32,7 @@ namespace WindowsFormsApp2
             DataTable dt = new DataTable();
 
 
-            SqlConnection con = new SqlConnection(Properties.Settings.Default.SqlCon);
+            SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString);
 
             SqlDataAdapter sda = new SqlDataAdapter();
 
@@ -78,22 +79,15 @@ namespace WindowsFormsApp2
         }
         private void lookUpEdit8GEtData_yeni_anbar()
         {
-            //int id = Convert.ToInt32(lookUpEdit7.EditValue.ToString());
-
-
-
-            //string strQuery = "SELECT STOREID,OBYEKT    FROM [dbo].[fn_MAGAZA_ANBAR_LOAD] ('')";
             string strQuery = " select DISTINCT( M.TECHIZATCI_ID),CT.SIRKET_ADI AS N'TƏCHİZATÇI ADI' from TECHIZATCI_ODENIS T " +
                  " INNER JOIN MAL_ALISI_MAIN M ON T.MAL_ALISI_MAIN_ID=M.MAL_ALISI_MAIN_ID " +
                  " INNER JOIN COMPANY.TECHIZATCI CT ON CT.TECHIZATCI_ID=M.TECHIZATCI_ID ";
             SqlCommand cmd = new SqlCommand(strQuery);
+            var data = DbProsedures.ConvertToDataTable(strQuery);
 
-            //cmd.Parameters.AddWithValue("@IDD", a);
-
-            DataTable dt = GetData(cmd);
             lookUpEdit1.Properties.DisplayMember = "TƏCHİZATÇI ADI";
             lookUpEdit1.Properties.ValueMember = "TECHIZATCI_ID";
-            lookUpEdit1.Properties.DataSource = dt;
+            lookUpEdit1.Properties.DataSource = data;
             lookUpEdit1.Properties.NullText = "--Seçin--";
             lookUpEdit1.Properties.PopulateColumns();
             lookUpEdit1.Properties.Columns[0].Visible = false;

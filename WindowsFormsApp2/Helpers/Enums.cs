@@ -72,7 +72,9 @@ namespace WindowsFormsApp2.Helpers
             [Description("GƏLİR")]
             Income,
             [Description("XƏRC")]
-            Expense
+            Expense,
+            [Description("TƏCHİZATÇI")]
+            Supplier
         }
 
         public enum OperationType

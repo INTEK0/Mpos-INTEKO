@@ -635,11 +635,11 @@ ORDER BY TotalAmount DESC;
         }
 
         /// <summary>
-        /// SATIŞ HESABATI
+        /// CARİ SATIŞ HESABATI
         /// </summary>
         private void TotalSalesInformation()
         {
-            using (SqlConnection con = new SqlConnection(Properties.Settings.Default.SqlCon))
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
             {
                 con.Open();
 
@@ -707,11 +707,11 @@ FROM (
         }
 
         /// <summary>
-        /// QAYTARMA HESABATI
+        /// CARİ QAYTARMA HESABATI
         /// </summary>
         private void TotalRefundInformation()
         {
-            using (SqlConnection con = new SqlConnection(Properties.Settings.Default.SqlCon))
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
             {
                 con.Open();
                 string query = $@"SELECT 
@@ -751,11 +751,11 @@ FROM (
         }
 
         /// <summary>
-        /// ALIŞ HESABATI
+        /// CARİ ALIŞ HESABATI
         /// </summary>
         private void TotalPurchaseInformation()
         {
-            using (SqlConnection con = new SqlConnection(Properties.Settings.Default.SqlCon))
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
             {
                 con.Open();
                 string query = $@"SELECT 
@@ -960,7 +960,7 @@ FROM (
             if (chStockAmount.Checked)
             {
                 gridProducts.ViewCaption = "Miqdarı az olan məhsullar";
-                using (SqlConnection con = new SqlConnection(Properties.Settings.Default.SqlCon))
+                using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
                 {
                     string query = $@"exec [StockDecreasingAmount]";
 
@@ -991,13 +991,13 @@ FROM (
             try
             {
                 Cursor = Cursors.WaitCursor;
-                BestsellingProducts();
-                StockDecreasingAmountLoad();
-                TotalSalesInformation();
-                TotalRefundInformation();
-                TotalPurchaseInformation();
-                StockInformation();
-                ExpensesDataLoad();
+                BestsellingProducts(); //Ən çox satılan məhsullar
+                StockDecreasingAmountLoad(); //Miqdarı az olan məhsullar
+                TotalSalesInformation(); //Cari satış hesabatı
+                TotalRefundInformation(); //Cari qaytarma hesabatı
+                TotalPurchaseInformation(); //Cari alış hesabatı
+                StockInformation(); //Anbar qalığı məlumatları
+                ExpensesDataLoad(); //Cari xərclər
             }
             catch (Exception ex)
             {
@@ -1479,6 +1479,11 @@ FROM (
         private void accordionControlElement68_Click(object sender, EventArgs e)
         {
             OpenForm<fDiscountProduct>();
+        }
+
+        private void MAINSCRRENS_Activated(object sender, EventArgs e)
+        {
+            lRefresh_Click(null,null);
         }
 
         private void chTerminalPrintReceipt_CheckedChanged(object sender, EventArgs e)

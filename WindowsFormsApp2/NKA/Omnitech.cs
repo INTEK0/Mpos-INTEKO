@@ -5,6 +5,7 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Windows.Forms;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
@@ -20,7 +21,7 @@ namespace WindowsFormsApp2.NKA
         private static readonly bool MessageVisible = FormHelpers.SuccessMessageVisible();
         private static readonly string Username = "SuperApi";
         private static readonly string Pin = "123";
-        private static OmnitechResponse RequestPOST(string ipAddress, string json)
+        public static OmnitechResponse RequestPOST(string ipAddress, string json)
         {
             try
             {
@@ -1052,7 +1053,7 @@ case A.VERGI_DERECESI
             string _fiskallID = "", _shortFiskallID = "", _checkNum = "";
             decimal _cash = default, _card = default, _total2 = default;
 
-            using (SqlConnection conn2 = new SqlConnection(Properties.Settings.Default.SqlCon))
+            using (SqlConnection conn2 = new SqlConnection(DbHelpers.DbConnectionString))
             {
                 conn2.Open();
                 string query2 = $@"SELECT [pos_satis_check_main_id],
@@ -1187,9 +1188,9 @@ case A.VERGI_DERECESI
 
             Data data = new Data
             {
-                sum = _total2,
+                sum = items.Sum(x=> x.itemSum),
                 cashSum = (payType == PayType.Cash) ? _total2 : 0,
-                cashlessSum = (payType == PayType.Card) ? _card : 0,
+                cashlessSum = (payType == PayType.Card) ? items.Sum(x => x.itemSum) : 0,
                 incomingSum = (payType == PayType.CashCard) ? _cash : 0,
                 cashier = cashier,
                 vatAmounts = vatAmounts,
@@ -1201,9 +1202,9 @@ case A.VERGI_DERECESI
 
             Parameters parameters = new Parameters { doc_type = "money_back", data = data };
             TokenData tokenData = new TokenData { parameters = parameters };
-            CheckData checkData = new CheckData { check_type = 100 };
+            CheckData checkData = new CheckData { check_type = 100, payment_change = null };
 
-            RequestData requestData = new RequestData { access_token = accessToken, tokenData = tokenData, checkData = checkData };
+            RequestData requestData = new RequestData { access_token = accessToken, tokenData = tokenData, int_ref = null, checkData = checkData };
             RootObject rootObject = new RootObject { requestData = requestData };
 
             string json = Newtonsoft.Json.JsonConvert.SerializeObject(rootObject, new JsonSerializerSettings

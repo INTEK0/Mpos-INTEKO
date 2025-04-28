@@ -239,6 +239,8 @@ namespace WindowsFormsApp2
             this.tabModul = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.tileControl1 = new DevExpress.XtraEditors.TileControl();
             this.tileGroup1 = new DevExpress.XtraEditors.TileGroup();
+            this.accordionControlElement69 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
+            this.accordionControlElement70 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.fluentDesignFormContainer1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
@@ -1521,9 +1523,12 @@ namespace WindowsFormsApp2
             // 
             this.accordionControlElement5.Appearance.Normal.ForeColor = System.Drawing.Color.White;
             this.accordionControlElement5.Appearance.Normal.Options.UseForeColor = true;
-            this.accordionControlElement5.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("accordionControlElement5.ImageOptions.SvgImage")));
+            this.accordionControlElement5.Elements.AddRange(new DevExpress.XtraBars.Navigation.AccordionControlElement[] {
+            this.accordionControlElement69,
+            this.accordionControlElement70});
+            this.accordionControlElement5.Expanded = true;
+            this.accordionControlElement5.ImageOptions.SvgImage = global::WindowsFormsApp2.Properties.Resources.bo_order_item1;
             this.accordionControlElement5.Name = "accordionControlElement5";
-            this.accordionControlElement5.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
             this.accordionControlElement5.Text = "Təchizatçı";
             this.accordionControlElement5.Click += new System.EventHandler(this.accordionControlElement5_Click);
             // 
@@ -1901,6 +1906,8 @@ namespace WindowsFormsApp2
             this.accordionControlElement42.Name = "accordionControlElement42";
             this.accordionControlElement42.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
             this.accordionControlElement42.Text = "Məhsul alışı qaytarma hesabatı";
+            this.accordionControlElement42.Visible = false;
+            this.accordionControlElement42.VisibleInFooter = false;
             this.accordionControlElement42.Click += new System.EventHandler(this.accordionControlElement42_Click);
             // 
             // accordionControlElement43
@@ -3192,6 +3199,18 @@ namespace WindowsFormsApp2
             this.tileGroup1.Name = "tileGroup1";
             this.tileGroup1.Text = "tileGroup1";
             // 
+            // accordionControlElement69
+            // 
+            this.accordionControlElement69.Name = "accordionControlElement69";
+            this.accordionControlElement69.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
+            this.accordionControlElement69.Text = "Yeni borc əlavəsi";
+            // 
+            // accordionControlElement70
+            // 
+            this.accordionControlElement70.Name = "accordionControlElement70";
+            this.accordionControlElement70.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
+            this.accordionControlElement70.Text = "Qalıq borc ödənişləri";
+            // 
             // MAINSCRRENS
             // 
             this.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(245)))), ((int)(((byte)(250)))));
@@ -3212,6 +3231,7 @@ namespace WindowsFormsApp2
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MPOS  Anbar və Satış Proqramı";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Activated += new System.EventHandler(this.MAINSCRRENS_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainScreen_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MAINSCRRENS_FormClosed);
             this.Load += new System.EventHandler(this.MainScreen_Load);
@@ -3531,6 +3551,8 @@ namespace WindowsFormsApp2
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement67;
         private DevExpress.XtraEditors.CheckEdit chIsReceipt;
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement68;
+        private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement69;
+        private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement70;
     }
 }
 

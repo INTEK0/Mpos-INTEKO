@@ -285,7 +285,7 @@ namespace WindowsFormsApp2
             this.layoutControlItem1.Name = "layoutControlItem1";
             this.layoutControlItem1.Size = new System.Drawing.Size(623, 36);
             this.layoutControlItem1.Text = "TARİX";
-            this.layoutControlItem1.TextSize = new System.Drawing.Size(115, 16);
+            this.layoutControlItem1.TextSize = new System.Drawing.Size(115, 13);
             // 
             // layoutControlItem2
             // 
@@ -294,7 +294,7 @@ namespace WindowsFormsApp2
             this.layoutControlItem2.Name = "layoutControlItem2";
             this.layoutControlItem2.Size = new System.Drawing.Size(623, 36);
             this.layoutControlItem2.Text = "ƏMƏLİYYAT №";
-            this.layoutControlItem2.TextSize = new System.Drawing.Size(115, 16);
+            this.layoutControlItem2.TextSize = new System.Drawing.Size(115, 13);
             // 
             // layoutControlItem3
             // 
@@ -303,7 +303,7 @@ namespace WindowsFormsApp2
             this.layoutControlItem3.Name = "layoutControlItem3";
             this.layoutControlItem3.Size = new System.Drawing.Size(623, 36);
             this.layoutControlItem3.Text = "TƏCHİZATÇI ADI";
-            this.layoutControlItem3.TextSize = new System.Drawing.Size(115, 16);
+            this.layoutControlItem3.TextSize = new System.Drawing.Size(115, 13);
             // 
             // layoutControlItem4
             // 
@@ -312,7 +312,7 @@ namespace WindowsFormsApp2
             this.layoutControlItem4.Name = "layoutControlItem4";
             this.layoutControlItem4.Size = new System.Drawing.Size(623, 86);
             this.layoutControlItem4.Text = "QEYD";
-            this.layoutControlItem4.TextSize = new System.Drawing.Size(115, 16);
+            this.layoutControlItem4.TextSize = new System.Drawing.Size(115, 13);
             // 
             // emptySpaceItem7
             // 
