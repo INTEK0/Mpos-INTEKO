@@ -6,11 +6,13 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Security.Policy;
 using System.Windows.Forms;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using static DTOs;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
 using static WindowsFormsApp2.Helpers.Enums;
 
@@ -19,8 +21,8 @@ namespace WindowsFormsApp2.NKA
     public static class Omnitech
     {
         private static readonly bool MessageVisible = FormHelpers.SuccessMessageVisible();
-        private static readonly string Username = "SuperApi";
-        private static readonly string Pin = "123";
+        private static readonly string Username = "Api";
+        private static readonly string Pin = "1";
         public static OmnitechResponse RequestPOST(string ipAddress, string json)
         {
             try
@@ -312,13 +314,15 @@ select
         when 3 then '0'
         when 4 then '2' 
         when 5 then '8'
+        when 6 then '2'
     end as vatType, 
 		case t.vatType 
         when 1 then '18%' 
 		when 2 then N'TİCARƏT ƏLAVƏSİ 18%'
         when 3 then N'ƏDV-SİZ' 
         when 4 then 'SV-2%' 
-        when 5 then '8%' 
+        when 5 then '8%'
+		when 6 then 'SV-2%' 
     end as vatTypeName,
     t.quantityType,
     t.salePrice * t.quantity as ssum
@@ -1043,7 +1047,7 @@ case A.VERGI_DERECESI
             }
         }
 
-        public static string Refund(string ipAddress, string accessToken, PayType payType, string cashier, string proccesNo)
+        public static bool Refund(string ipAddress, string accessToken, PayType payType, string cashier, string proccesNo)
         {
             if (string.IsNullOrWhiteSpace(accessToken))
             {
@@ -1084,9 +1088,7 @@ case A.VERGI_DERECESI
 
 
             List<Item> items = new List<Item>();
-            decimal totalMarginSum = 0;  // Toplam itemMarginSum'u tutacak
-            decimal totalItemSum = 0;    // Toplam itemSum'u tutacak
-
+            items.Clear();
             using (SqlConnection conn = new SqlConnection(DbHelpers.DbConnectionString))
             {
                 conn.Open();
@@ -1120,7 +1122,7 @@ case A.VERGI_DERECESI
                         decimal ssum = Convert.ToDecimal(dr["tutar"]);
                         decimal? marginSum = purchasePrice * (decimal)qty;
 
-                        // item bilgilerini oluşturma
+
                         Item item = new Item
                         {
                             itemName = dr["name"].ToString(),
@@ -1135,63 +1137,93 @@ case A.VERGI_DERECESI
                         };
                         items.Add(item);
 
-                        // Toplam margin sum ve item sum ekleniyor
-                        totalMarginSum += marginSum ?? 0;
-                        totalItemSum += ssum;
                     }
                 }
             }
 
-            // KDV hesaplamaları için iki farklı toplam
-            decimal vatSumFor18Percent = 0;
-            decimal vatSumFor0Percent = 0;
-
-
-            // VatPercent'e göre toplama işlemi
-            foreach (var item in items)
-            {
-                if (item.itemVatPercent == 18)
-                {
-                    vatSumFor18Percent += item.itemSum;
-                }
-                else if (item.itemVatPercent == 0)
-                {
-                    vatSumFor0Percent += item.itemSum;
-                }
-            }
-
-
-
             List<VatAmount> vatAmounts = new List<VatAmount>();
 
-            // Eğer vatSumFor18Percent değeri sıfırdan büyükse ekle
-            if (vatSumFor18Percent > 0)
+
+            #region Ticarət əlavəsi olanların alış məbləğlərinin toplamı
+            var vat18Items = items.Where(i => i.itemVatPercent == 18);
+            decimal marginSum18 = vat18Items.Where(i => i.itemMarginSum.HasValue).Sum(i => i.itemMarginSum.Value);
+            decimal vatSum18 = items.Where(i => i.itemVatPercent == 18)
+                                    .Sum(i => i.itemMarginSum.HasValue ? i.itemMarginSum.Value : i.itemSum);
+            if (vatSum18 > 0)
             {
                 vatAmounts.Add(new VatAmount
                 {
-                    vatPercent = 18,
-                    vatSum = vatSumFor18Percent
+                    vatSum = Truncate2Decimals(vatSum18),
+                    vatPercent = 18
                 });
             }
+            #endregion Ticarət əlavəsi olanların alış məbləğlərinin toplamı 
 
-            // Eğer vatSumFor0Percent değeri sıfırdan büyükse ekle
-            if (vatSumFor0Percent > 0)
+
+            #region ƏDV-siz olan məhsulların satış məbləğlərinin toplamı
+            var vat0Items = items.Where(i => i.itemVatPercent == 0);
+            decimal priceSum0 = vat0Items.Sum(i => i.itemSum);
+
+            if (priceSum0 > 0)
             {
                 vatAmounts.Add(new VatAmount
                 {
-                    vatPercent = 0,
-                    vatSum = vatSumFor0Percent
+                    vatSum = Truncate2Decimals(priceSum0),
+                    vatPercent = 0
                 });
             }
+            #endregion ƏDV-siz olan məhsulların satış məbləğlərinin toplamı
 
 
+            #region %18 ƏDV'li bütün məhsulların itemSumların toplanması (sadəcə marginSum yazanların)
+            decimal sumOfItemSum18 = vat18Items.Where(x => x.itemVatPercent == 18 && x.itemMarginSum.HasValue).Sum(i => i.itemSum);
+            decimal totalMarginSum = vat18Items.Where(i => i.itemMarginSum.HasValue).Sum(i => i.itemMarginSum.Value);
+            decimal vatDifference = Truncate2Decimals(sumOfItemSum18 - totalMarginSum);
 
+            if (vatDifference > 0)
+            {
+                vatAmounts.Add(new VatAmount
+                {
+                    vatSum = vatDifference
+                });
+            }
+            #endregion %18 ƏDV'li bütün məhsulların itemSumların toplanması (sadəcə marginSum yazanların)
+
+
+            #region SV-2 olanların itemSumlarının toplanması
+            var vat2Items = items.Where(x => x.itemVatPercent == 2);
+            decimal priceSum2 = vat2Items.Sum(x => x.itemSum);
+            if (priceSum2 > 0)
+            {
+                vatAmounts.Add(new VatAmount
+                {
+                    vatSum = Truncate2Decimals(priceSum2),
+                    vatPercent = 2
+                });
+            }
+            #endregion SV-2 olanların itemSumlarının toplanması
+
+
+            #region SV-8 olanların itemSumlarının toplanması
+            var vat8Items = items.Where(x => x.itemVatPercent == 8);
+            decimal priceSum8 = vat2Items.Sum(x => x.itemSum);
+            if (priceSum2 > 0)
+            {
+                vatAmounts.Add(new VatAmount
+                {
+                    vatSum = Truncate2Decimals(priceSum2),
+                    vatPercent = 8
+                });
+            }
+            #endregion SV-8 olanların itemSumlarının toplanması
+
+
+            decimal totalSum = items.Sum(x => x.itemSum);
             Data data = new Data
             {
-                sum = items.Sum(x=> x.itemSum),
-                cashSum = (payType == PayType.Cash) ? _total2 : 0,
-                cashlessSum = (payType == PayType.Card) ? items.Sum(x => x.itemSum) : 0,
-                incomingSum = (payType == PayType.CashCard) ? _cash : 0,
+                sum = totalSum,
+                cashSum = (payType == PayType.Cash) ? totalSum : 0,
+                cashlessSum = (payType == PayType.Card) ? totalSum : 0,
                 cashier = cashier,
                 vatAmounts = vatAmounts,
                 items = items,
@@ -1211,8 +1243,24 @@ case A.VERGI_DERECESI
             {
                 NullValueHandling = NullValueHandling.Ignore
             });
+            var response = Omnitech.RequestPOST(ipAddress, json);
 
-            return json;
+            if ($"{response.message}" == "Successful operation" || $"{response.message}" == "Successful operation")
+            {
+                if (MessageVisible)
+                {
+                    ReadyMessages.SUCCESS_RETURN_SALES_MESSAGE();
+                }
+
+                FormHelpers.Log($"Qəbz geri qaytarması edildi Qəbz №: {response.document_number}");
+                return true;
+            }
+            else
+            {
+                XtraMessageBox.Show(response.message);
+                FormHelpers.Log($"Qəbz geri qaytarma xətası. Xəta mesajı: {response.message}");
+                return false;
+            }
         }
 
         public static void LastReceiptCopy(string ipAdress, string accessToken)
@@ -1367,6 +1415,11 @@ case A.VERGI_DERECESI
             string error;
         }
 
+        private static decimal Truncate2Decimals(decimal value)
+        {
+            return Math.Truncate(value * 100) / 100;
+        }
+
 
         #region [..Request Classes..]
 
@@ -1406,7 +1459,7 @@ case A.VERGI_DERECESI
         private class VatAmount
         {
             public decimal vatSum { get; set; }
-            public decimal? vatPercent { get; set; }
+            public int? vatPercent { get; set; }
         }
 
         private class Data

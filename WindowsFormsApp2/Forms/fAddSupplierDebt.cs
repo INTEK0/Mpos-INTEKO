@@ -35,21 +35,36 @@ namespace WindowsFormsApp2.Forms
             Add();
         }
 
-        private void Add()
+        private async void Add()
         {
-            if (string.IsNullOrWhiteSpace(lookSupplier.Text) || lookSupplier.EditValue is null)
+            try
             {
-                FormHelpers.Alert("Təchizatçı seçimi edilmədi", MessageType.Success);
-                return;
+                if (string.IsNullOrWhiteSpace(lookSupplier.Text) || lookSupplier.EditValue is null)
+                {
+                    FormHelpers.Alert("Təchizatçı seçimi edilmədi", MessageType.Success);
+                    return;
+                }
+
+                SupplierDebt debt = new SupplierDebt()
+                {
+                    SupplierId = Convert.ToInt32(lookSupplier.EditValue.ToString()),
+                    ContractNo = tContractNo.Text.Trim(),
+                    Amount = Convert.ToDecimal(tAmount.Text),
+                    Comment = tComment.Text.Trim(),
+                    ContractDate = dateEdit1.DateTime,
+                };
+
+                int IsSuccess = await DbProsedures.InsertSupplierDebt(debt);
+                if (IsSuccess > 0)
+                {
+                    FormHelpers.Alert($"{lookSupplier.Text} təchizatçısına {tAmount.Text} AZN borc uğurla yaradıldı", MessageType.Success);
+                    Clear();
+                }
             }
-            
-            SupplierDebt debt = new SupplierDebt()
+            catch (Exception)
             {
-                SupplierName = lookSupplier.Text,
-                Amount = Convert.ToDecimal(tAmount.Text),
-                Comment = tComment.Text.Trim(),
-                Date = dateEdit1.DateTime,
-            };
+
+            }
         }
 
         private void SupplierLoad()
@@ -63,12 +78,31 @@ namespace WindowsFormsApp2.Forms
             lookSupplier.Properties.Columns[0].Visible = false;
         }
 
+        private void Clear()
+        {
+            tContractNo.Clear();
+            tAmount.Clear();
+            tComment.Clear();
+            dateEdit1.Clear();
+            tDebtBalance.Clear();
+            tDebtNew.Clear();
+            tDebtTotal.Clear();
+            QaliqBorcHesabla(Convert.ToInt32(lookSupplier.EditValue));
+            TotalDebtCalc();
+            tContractNo.Focus();
+        }
+
         private void lookSupplier_TextChanged(object sender, EventArgs e)
         {
             if (lookSupplier.EditValue != null)
             {
                 QaliqBorcHesabla(Convert.ToInt32(lookSupplier.EditValue));
                 TotalDebtCalc();
+                lDebtHistory.Visible = true;
+            }
+            else
+            {
+                lDebtHistory.Visible = false;
             }
         }
 
@@ -120,6 +154,11 @@ namespace WindowsFormsApp2.Forms
         {
             tDebtNew.Text = tAmount.Text;
             TotalDebtCalc();
+        }
+
+        private void lDebtHistory_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

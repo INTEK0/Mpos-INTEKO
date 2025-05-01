@@ -373,13 +373,16 @@ namespace WindowsFormsApp2.Helpers.DB
         public class SupplierDebt
         {
             public int Id { get; set; }
-            public int IsDeleted { get; set; }
+            public int SupplierId { get; set; }
             public string SupplierName { get; set; }
+            public string ContractNo { get; set; }
             public decimal Amount { get; set; }
             public string Comment { get; set; }
-            public DateTime Date { get; set; }
-            public DateTime LogDate { get; set; } = DateTime.Now;
+            public DateTime ContractDate { get; set; }
+            public DateTime CreatedAt { get; set; } = DateTime.Now;
             public int UserId { get; set; }
+            public int IsDeleted { get; set; } = 0;
+
         }
     }
 }

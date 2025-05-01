@@ -94,7 +94,7 @@ namespace WindowsFormsApp2
             this.MinimumSize = new System.Drawing.Size(340, 152);
             this.Name = "BankTTNM";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "BankTTNM";
+            this.Text = "Bank RRN";
             this.Load += new System.EventHandler(this.BankTTNM_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -1016,7 +1016,7 @@ LEFT JOIN pos_guzest pg
                 //CASH
                 if (!string.IsNullOrEmpty(textEdit6.Text))
                 {
-                    SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
+                    SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString);
                     string queryString = "SELECT STATUS FROM MENFI_AC_BAGLA ";
                     SqlCommand command = new SqlCommand(queryString, connection);
 
@@ -1036,7 +1036,7 @@ LEFT JOIN pos_guzest pg
                         {
                             DataRow row = gridView1.GetDataRow(i);
 
-                            SqlConnection connection4 = new SqlConnection(Properties.Settings.Default.SqlCon);
+                            SqlConnection connection4 = new SqlConnection(DbHelpers.DbConnectionString);
                             string queryStringk = "SELECT sum(   migdar_ ) as miktar   FROM dbo.GAIME_SATIS_SEARCH_menfi_ACIG() where [MƏHSUL ADI]=N'" + row["MƏHSUL ADI"].ToString() + "' and [MƏHSUL KODU]=(select [MEHSUL_KODU]from [MAL_ALISI_DETAILS] where [MAL_ALISI_DETAILS_ID]=" + Convert.ToInt32(row["MAL_ALISI_DETAILS_ID"]) + " ) group by TECHIZATCI_ID ,[TƏCHİZATÇI] ,[MƏHSUL ADI],  [MƏHSUL KODU],BARKOD  ";
                             connection4.Open();
                             SqlCommand command4 = new SqlCommand(queryStringk, connection4);
@@ -2754,7 +2754,8 @@ LEFT JOIN pos_guzest pg
                             incomingSum,
                             tUsername.Text,
                             _customer,
-                            _doctor);
+                            _doctor, 
+                            bankttnminputdata);
 
                         if (IsSuccess)
                         {
@@ -6047,7 +6048,7 @@ WHERE rn = 1;";
             else
             {
                 tileControl1.Visible = false;
-                layoutControlItem60.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                //layoutControlItem60.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             }
         }
 

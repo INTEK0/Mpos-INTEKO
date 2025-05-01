@@ -49,9 +49,15 @@ namespace WindowsFormsApp2
                 accordionControlElement47.Visible = false;
                 accordionControlElement48.Visible = false;
                 accordionControlElement50.Visible = false;
+                accordionControlElement54.Visible = false;
                 tabLog.Visible = false;
                 tabDatabase.Visible = false;
                 accordionControlElement54.Visible = false;
+                chStockAmount.Enabled = false;
+                chActive.Enabled = false;
+                chDeactive.Enabled = false;
+                tabLog.PageEnabled = false;
+                tabDatabase.PageEnabled = false;
             }
             GridPanelText(gridProducts);
             GridPanelText(gridLogs);
@@ -113,8 +119,7 @@ namespace WindowsFormsApp2
 
         private void accordionControlElement5_Click(object sender, EventArgs e)
         {
-            //OpenForm<TECIZATCI_LAYOUT>();
-            OpenForm<fAddSupplier>();
+
         }
 
         private void accordionControlElement41_Click(object sender, EventArgs e)
@@ -530,12 +535,7 @@ FROM[terazimalzeme]";
         {
             lMposVersion.Text = Application.ProductVersion;
             lLicenceVersion.Text = "Yoxdur";
-            BestsellingProducts();
-            TotalSalesInformation();
-            TotalRefundInformation();
-            TotalPurchaseInformation();
-            StockInformation();
-            StockDecreasingAmountLoad();
+            chStockAmount.Checked = false;
             ProductNegativeStatus();
             HotSalesShow();
             SendToKassaShow();
@@ -545,16 +545,50 @@ FROM[terazimalzeme]";
             SuccessMessageVisibleShow();
             Get_StockDecreasingAmountShow();
             ClinicModuleShow();
-            ExpensesDataLoad();
             SysAdminControl();
+        }
+
+        private async void MAINSCRRENS_Activated(object sender, EventArgs e)
+        {
+            try
+            {
+                await StockProductsList(); //Anbar qalığı
+                //StockDecreasingAmountLoad(); //Miqdarı az olan məhsullar
+                await TotalSalesInformation(); //Cari satış hesabatı
+                TotalRefundInformation(); //Cari qaytarma hesabatı
+                TotalPurchaseInformation(); //Cari alış hesabatı
+                BestsellingProducts(); //Ən çox satılan məhsullar
+                ExpensesDataLoad(); //Cari xərclər
+            }
+            catch (Exception ex)
+            {
+                ReadyMessages.ERROR_DATALOAD_MESSAGE(ex.Message);
+            }
+
+        }
+
+        private async void lRefresh_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                BestsellingProducts(); //Ən çox satılan məhsullar
+                StockDecreasingAmountLoad(); //Miqdarı az olan məhsullar
+                await TotalSalesInformation(); //Cari satış hesabatı
+                TotalRefundInformation(); //Cari qaytarma hesabatı
+                TotalPurchaseInformation(); //Cari alış hesabatı
+                ExpensesDataLoad(); //Cari xərclər
+            }
+            catch (Exception ex)
+            {
+                ReadyMessages.ERROR_DATALOAD_MESSAGE(ex.Message);
+            }
         }
 
         private void ExpensesDataLoad()
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
-            {
-                con.Open();
-                string query = @"WITH Headers AS (
+
+
+            string query = @"WITH Headers AS (
     SELECT DISTINCT Header FROM IncomeAndExpensesData
 )
 SELECT 
@@ -565,36 +599,26 @@ LEFT JOIN IncomeAndExpensesData i
     ON h.Header = i.Header 
     AND i.Date = CAST(GETDATE() AS DATE) AND i.Type = 4
 GROUP BY h.Header;";
-                using (SqlCommand cmd = new SqlCommand(query, con))
-                {
-                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-                    {
-                        using (DataTable dt = new DataTable())
-                        {
-                            da.Fill(dt);
-                            gridControlExpenses.DataSource = dt;
-                            gridExpenses.ViewCaption = $"XƏRCLƏR - {DateTime.Now.ToString("dd.MM.yyyy")}";
-                            gridExpenses.OptionsView.ShowFooter = true;
-                            gridExpenses.Columns["Amount"].Summary.Clear();
-                            GridColumnSummaryItem summaryItem = new GridColumnSummaryItem
-                            {
-                                FieldName = "Amount",
-                                SummaryType = DevExpress.Data.SummaryItemType.Sum,
-                                DisplayFormat = "{0:N2}"
-                            };
-                            gridExpenses.Columns["Amount"].Summary.Add(summaryItem);
-                        }
-                    }
-                }
-            }
+
+            var data = DbProsedures.ConvertToDataTable(query);
+            gridControlExpenses.DataSource = data;
+            gridExpenses.ViewCaption = $"XƏRCLƏR - {DateTime.Now.ToString("dd.MM.yyyy")}";
+            gridExpenses.OptionsView.ShowFooter = true;
+            gridExpenses.Columns["Amount"].Summary.Clear();
+            GridColumnSummaryItem summaryItem = new GridColumnSummaryItem
+            {
+                FieldName = "Amount",
+                SummaryType = DevExpress.Data.SummaryItemType.Sum,
+                DisplayFormat = "{0:N2}"
+            };
+            gridExpenses.Columns["Amount"].Summary.Add(summaryItem);
+
         }
 
         private void BestsellingProducts(string count = "5")
         {
             gridView1.ViewCaption = $"{DateTime.Now.ToString("MMMM")} ayında ən çox satılan {count} məhsul";
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
-            {
-                string query = $@"SELECT TOP {count}
+            string query = $@"SELECT TOP {count}
     m.[MEHSUL_ADI] AS ProductName, 
     ISNULL(SUM(t.TotalAmount),0) AS TotalAmount
 FROM [dbo].[MAL_ALISI_DETAILS] m
@@ -619,29 +643,19 @@ LEFT JOIN
 ) t 
 ON m.[MAL_ALISI_DETAILS_ID] = t.[mal_alisi_details_id]
 GROUP BY m.[MEHSUL_ADI]
-ORDER BY TotalAmount DESC;
-";
-
-                using (SqlCommand cmd = new SqlCommand(query, con))
-                {
-                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-                    {
-                        DataTable dataTable = new DataTable();
-                        da.Fill(dataTable);
-                        gridControl1.DataSource = dataTable;
-                    }
-                }
-            }
+ORDER BY TotalAmount DESC;";
+            var data = DbProsedures.ConvertToDataTable(query);
+            gridControl1.DataSource = data;
         }
 
         /// <summary>
         /// CARİ SATIŞ HESABATI
         /// </summary>
-        private void TotalSalesInformation()
+        private async Task TotalSalesInformation()
         {
             using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
             {
-                con.Open();
+                await con.OpenAsync();
 
                 //Əvvəlki kod. Nerolidəki müştərinin bildirdiyi problemdən etibarən kodda düzəliş edildi
                 #region
@@ -694,9 +708,9 @@ FROM (
 
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
-                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
                     {
-                        while (dr.Read())
+                        while (await dr.ReadAsync())
                         {
                             lSalePriceTotal.Text = Convert.ToDecimal(dr["TotalSalePrice"]).ToString("C2");
                             lSalesCount.Text = Convert.ToDecimal(dr["TotalSalesCount"]).ToString("N2");
@@ -784,12 +798,12 @@ FROM (
             }
         }
 
-        private void chShowStock_CheckedChanged(object sender, EventArgs e)
+        private async void chShowStock_CheckedChanged(object sender, EventArgs e)
         {
             CheckButton checkEdit = (CheckButton)sender;
             if (checkEdit.Checked)
             {
-                StockProductsList();
+               await StockProductsList();
             }
         }
 
@@ -799,44 +813,6 @@ FROM (
             if (checkEdit.Checked)
             {
                 StockDecreasingAmountLoad();
-            }
-        }
-
-        /// <summary>
-        /// STOK SAYI lStockCount-a yazdırılır
-        /// </summary>
-        private void StockInformation()
-        {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
-            {
-                string query = $@"
-                DECLARE @Result TABLE (
-                TECHIZATCI_ID int,
-                TECHIZATCI NVARCHAR(100),
-                MAL_ALIS_DETAILS_ID int,
-                PRODUCTNAME NVARCHAR(MAX),
-                PRODUCTCODE NVARCHAR(100),
-                PURCHASEPRICE decimal(18, 3),
-                SALEPRICE decimal(18, 3),
-                STOCK decimal(9,2),
-                BARCODE NVARCHAR(100),
-                EDV NVARCHAR(50));
-                INSERT INTO @Result
-                EXEC dbo.gaime_Satis_mal_load;
-                SELECT COUNT(*) AS StockCount
-                FROM @Result;";
-
-                using (SqlCommand cmd = new SqlCommand(query, con))
-                {
-                    con.Open();
-                    using (SqlDataReader dr = cmd.ExecuteReader())
-                    {
-                        while (dr.Read())
-                        {
-                            lStockCount.Text = dr["StockCount"].ToString();
-                        }
-                    }
-                }
             }
         }
 
@@ -910,7 +886,7 @@ FROM (
         /// <summary>
         /// Anbar qalığını göstərilməsi
         /// </summary>
-        private async void StockProductsList()
+        private async Task StockProductsList()
         {
             Cursor.Current = Cursors.WaitCursor;
             gridProducts.ViewCaption = "Anbar qalığı";
@@ -918,10 +894,11 @@ FROM (
             using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
             {
                 string query = "EXEC dbo.gaime_Satis_mal_load;";
+                await con.OpenAsync();
 
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
-                    await con.OpenAsync();
+                    cmd.CommandTimeout = 120;
 
                     using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                     {
@@ -941,6 +918,7 @@ FROM (
                             gridProducts.Columns["EDV"].Visible = false;
                         }
                         gridProducts.RefreshData();
+                        lStockCount.Text = gridProducts.DataRowCount.ToString();
                     }
                 }
             }
@@ -986,29 +964,7 @@ FROM (
             Cursor.Current = Cursors.Default;
         }
 
-        private void lRefresh_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Cursor = Cursors.WaitCursor;
-                BestsellingProducts(); //Ən çox satılan məhsullar
-                StockDecreasingAmountLoad(); //Miqdarı az olan məhsullar
-                TotalSalesInformation(); //Cari satış hesabatı
-                TotalRefundInformation(); //Cari qaytarma hesabatı
-                TotalPurchaseInformation(); //Cari alış hesabatı
-                StockInformation(); //Anbar qalığı məlumatları
-                ExpensesDataLoad(); //Cari xərclər
-            }
-            catch (Exception ex)
-            {
-                ReadyMessages.ERROR_DATALOAD_MESSAGE(ex.Message);
-            }
-            finally
-            {
-                Cursor = Cursors.Default;
-                chStockDecreasingAmount.Checked = true;
-            }
-        }
+
 
         private void BestSellingProductListCount(object sender, EventArgs e)
         {
@@ -1481,9 +1437,16 @@ FROM (
             OpenForm<fDiscountProduct>();
         }
 
-        private void MAINSCRRENS_Activated(object sender, EventArgs e)
+
+
+        private void accordionControlElement71_Click(object sender, EventArgs e)
         {
-            lRefresh_Click(null,null);
+            OpenForm<fAddSupplier>();
+        }
+
+        private void accordionControlElement69_Click(object sender, EventArgs e)
+        {
+            OpenForm<fAddSupplierDebt>();
         }
 
         private void chTerminalPrintReceipt_CheckedChanged(object sender, EventArgs e)

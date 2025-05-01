@@ -42,8 +42,6 @@ namespace WindowsFormsApp2
             this.lLicenceStatus = new DevExpress.XtraEditors.LabelControl();
             this.lLicenceVersion = new DevExpress.XtraEditors.LabelControl();
             this.lMposVersion = new DevExpress.XtraEditors.LabelControl();
-            this.gridControl2 = new DevExpress.XtraGrid.GridControl();
-            this.gridView2 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.pictureEdit1 = new DevExpress.XtraEditors.PictureEdit();
             this.fluentFormDefaultManager1 = new DevExpress.XtraBars.FluentDesignSystem.FluentFormDefaultManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
@@ -96,12 +94,18 @@ namespace WindowsFormsApp2
             this.gridExpenses = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridControl2 = new DevExpress.XtraGrid.GridControl();
+            this.gridView2 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.pictureEdit3 = new DevExpress.XtraEditors.PictureEdit();
             this.accordionControl1 = new DevExpress.XtraBars.Navigation.AccordionControl();
             this.accordionControlElement59 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement2 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement3 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement4 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement5 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
+            this.accordionControlElement71 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
+            this.accordionControlElement69 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
+            this.accordionControlElement70 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement6 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement49 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement7 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
@@ -239,15 +243,11 @@ namespace WindowsFormsApp2
             this.tabModul = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.tileControl1 = new DevExpress.XtraEditors.TileControl();
             this.tileGroup1 = new DevExpress.XtraEditors.TileGroup();
-            this.accordionControlElement69 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
-            this.accordionControlElement70 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.fluentDesignFormContainer1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
             this.groupControl1.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gridControl2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit1.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fluentFormDefaultManager1)).BeginInit();
             this.tableLayoutPanel8.SuspendLayout();
@@ -284,6 +284,9 @@ namespace WindowsFormsApp2
             this.panelControl6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlExpenses)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridExpenses)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControl2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureEdit3.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.accordionControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fluentDesignFormControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView3)).BeginInit();
@@ -357,12 +360,13 @@ namespace WindowsFormsApp2
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 248F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel1.Controls.Add(this.groupControl1, 3, 3);
-            this.tableLayoutPanel1.Controls.Add(this.gridControl2, 1, 4);
             this.tableLayoutPanel1.Controls.Add(this.pictureEdit1, 3, 4);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel8, 3, 1);
             this.tableLayoutPanel1.Controls.Add(this.panelControl9, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.groupControl2, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.gridControlExpenses, 3, 2);
+            this.tableLayoutPanel1.Controls.Add(this.gridControl2, 2, 4);
+            this.tableLayoutPanel1.Controls.Add(this.pictureEdit3, 0, 4);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -526,30 +530,6 @@ namespace WindowsFormsApp2
             this.lMposVersion.Size = new System.Drawing.Size(121, 30);
             this.lMposVersion.TabIndex = 6;
             this.lMposVersion.Text = "-";
-            // 
-            // gridControl2
-            // 
-            this.gridControl2.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.gridControl2.Location = new System.Drawing.Point(25, 762);
-            this.gridControl2.MainView = this.gridView2;
-            this.gridControl2.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.gridControl2.Name = "gridControl2";
-            this.gridControl2.Size = new System.Drawing.Size(113, 25);
-            this.gridControl2.TabIndex = 10;
-            this.gridControl2.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.gridView2});
-            this.gridControl2.Visible = false;
-            // 
-            // gridView2
-            // 
-            this.gridView2.DetailHeight = 431;
-            this.gridView2.GridControl = this.gridControl2;
-            this.gridView2.Name = "gridView2";
-            this.gridView2.OptionsEditForm.PopupEditFormWidth = 1066;
-            this.gridView2.OptionsPrint.PrintFooter = false;
-            this.gridView2.OptionsPrint.PrintGroupFooter = false;
-            this.gridView2.OptionsView.ShowColumnHeaders = false;
-            this.gridView2.OptionsView.ShowGroupPanel = false;
             // 
             // pictureEdit1
             // 
@@ -1419,6 +1399,51 @@ namespace WindowsFormsApp2
             this.gridColumn8.VisibleIndex = 1;
             this.gridColumn8.Width = 95;
             // 
+            // gridControl2
+            // 
+            this.gridControl2.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.gridControl2.Location = new System.Drawing.Point(617, 762);
+            this.gridControl2.MainView = this.gridView2;
+            this.gridControl2.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.gridControl2.Name = "gridControl2";
+            this.gridControl2.Size = new System.Drawing.Size(113, 25);
+            this.gridControl2.TabIndex = 10;
+            this.gridControl2.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gridView2});
+            this.gridControl2.Visible = false;
+            // 
+            // gridView2
+            // 
+            this.gridView2.DetailHeight = 431;
+            this.gridView2.GridControl = this.gridControl2;
+            this.gridView2.Name = "gridView2";
+            this.gridView2.OptionsEditForm.PopupEditFormWidth = 1066;
+            this.gridView2.OptionsPrint.PrintFooter = false;
+            this.gridView2.OptionsPrint.PrintGroupFooter = false;
+            this.gridView2.OptionsView.ShowColumnHeaders = false;
+            this.gridView2.OptionsView.ShowGroupPanel = false;
+            // 
+            // pictureEdit3
+            // 
+            this.tableLayoutPanel1.SetColumnSpan(this.pictureEdit3, 2);
+            this.pictureEdit3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureEdit3.EditValue = ((object)(resources.GetObject("pictureEdit3.EditValue")));
+            this.pictureEdit3.Location = new System.Drawing.Point(5, 761);
+            this.pictureEdit3.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.pictureEdit3.MenuManager = this.fluentFormDefaultManager1;
+            this.pictureEdit3.Name = "pictureEdit3";
+            this.pictureEdit3.Properties.AllowFocused = false;
+            this.pictureEdit3.Properties.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(245)))), ((int)(((byte)(250)))));
+            this.pictureEdit3.Properties.Appearance.Options.UseBackColor = true;
+            this.pictureEdit3.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.pictureEdit3.Properties.ContextButtonOptions.AnimationType = DevExpress.Utils.ContextAnimationType.OpacityAnimation;
+            this.pictureEdit3.Properties.PictureAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.pictureEdit3.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
+            this.pictureEdit3.Properties.ShowMenu = false;
+            this.pictureEdit3.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Zoom;
+            this.pictureEdit3.Size = new System.Drawing.Size(602, 42);
+            this.pictureEdit3.TabIndex = 5;
+            // 
             // accordionControl1
             // 
             this.accordionControl1.Appearance.Group.Default.Options.UseFont = true;
@@ -1524,13 +1549,32 @@ namespace WindowsFormsApp2
             this.accordionControlElement5.Appearance.Normal.ForeColor = System.Drawing.Color.White;
             this.accordionControlElement5.Appearance.Normal.Options.UseForeColor = true;
             this.accordionControlElement5.Elements.AddRange(new DevExpress.XtraBars.Navigation.AccordionControlElement[] {
+            this.accordionControlElement71,
             this.accordionControlElement69,
             this.accordionControlElement70});
-            this.accordionControlElement5.Expanded = true;
             this.accordionControlElement5.ImageOptions.SvgImage = global::WindowsFormsApp2.Properties.Resources.bo_order_item1;
             this.accordionControlElement5.Name = "accordionControlElement5";
             this.accordionControlElement5.Text = "Təchizatçı";
-            this.accordionControlElement5.Click += new System.EventHandler(this.accordionControlElement5_Click);
+            // 
+            // accordionControlElement71
+            // 
+            this.accordionControlElement71.Name = "accordionControlElement71";
+            this.accordionControlElement71.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
+            this.accordionControlElement71.Text = "Təchizatçı yarat";
+            this.accordionControlElement71.Click += new System.EventHandler(this.accordionControlElement71_Click);
+            // 
+            // accordionControlElement69
+            // 
+            this.accordionControlElement69.Name = "accordionControlElement69";
+            this.accordionControlElement69.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
+            this.accordionControlElement69.Text = "Yeni borc əlavəsi";
+            this.accordionControlElement69.Click += new System.EventHandler(this.accordionControlElement69_Click);
+            // 
+            // accordionControlElement70
+            // 
+            this.accordionControlElement70.Name = "accordionControlElement70";
+            this.accordionControlElement70.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
+            this.accordionControlElement70.Text = "Qalıq borc ödənişləri";
             // 
             // accordionControlElement6
             // 
@@ -2053,7 +2097,7 @@ namespace WindowsFormsApp2
             // 
             this.accordionControlElement52.Name = "accordionControlElement52";
             this.accordionControlElement52.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
-            this.accordionControlElement52.Text = "Bank TTNM";
+            this.accordionControlElement52.Text = "Bank RRN";
             this.accordionControlElement52.Click += new System.EventHandler(this.accordionControlElement52_Click);
             // 
             // accordionControlElement66
@@ -2468,7 +2512,7 @@ namespace WindowsFormsApp2
             this.tabDatabase.Caption = "Verilənlər bazası";
             this.tabDatabase.Controls.Add(this.panelDatabase);
             this.tabDatabase.Name = "tabDatabase";
-            this.tabDatabase.Size = new System.Drawing.Size(1157, 806);
+            this.tabDatabase.Size = new System.Drawing.Size(1157, 761);
             // 
             // panelDatabase
             // 
@@ -2487,7 +2531,7 @@ namespace WindowsFormsApp2
             this.panelDatabase.LookAndFeel.UseDefaultLookAndFeel = false;
             this.panelDatabase.Margin = new System.Windows.Forms.Padding(1);
             this.panelDatabase.Name = "panelDatabase";
-            this.panelDatabase.Size = new System.Drawing.Size(1157, 806);
+            this.panelDatabase.Size = new System.Drawing.Size(1157, 761);
             this.panelDatabase.TabIndex = 1;
             // 
             // lBackupHistory
@@ -2587,7 +2631,7 @@ namespace WindowsFormsApp2
             this.tabLog.Caption = "Arxiv";
             this.tabLog.Controls.Add(this.tablePanel1);
             this.tabLog.Name = "tabLog";
-            this.tabLog.Size = new System.Drawing.Size(1157, 806);
+            this.tabLog.Size = new System.Drawing.Size(1157, 761);
             // 
             // tablePanel1
             // 
@@ -2602,7 +2646,7 @@ namespace WindowsFormsApp2
             this.tablePanel1.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 66F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 26F)});
-            this.tablePanel1.Size = new System.Drawing.Size(1157, 806);
+            this.tablePanel1.Size = new System.Drawing.Size(1157, 761);
             this.tablePanel1.TabIndex = 0;
             this.tablePanel1.UseSkinIndents = true;
             // 
@@ -2730,7 +2774,7 @@ namespace WindowsFormsApp2
             this.gridControlLogs.Margin = new System.Windows.Forms.Padding(2);
             this.gridControlLogs.Name = "gridControlLogs";
             this.tablePanel1.SetRow(this.gridControlLogs, 1);
-            this.gridControlLogs.Size = new System.Drawing.Size(1151, 734);
+            this.gridControlLogs.Size = new System.Drawing.Size(1151, 689);
             this.gridControlLogs.TabIndex = 18;
             this.gridControlLogs.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridLogs});
@@ -3100,7 +3144,7 @@ namespace WindowsFormsApp2
             this.tabLicence.Caption = "Lisenziya";
             this.tabLicence.Controls.Add(this.panelControl15);
             this.tabLicence.Name = "tabLicence";
-            this.tabLicence.Size = new System.Drawing.Size(1157, 806);
+            this.tabLicence.Size = new System.Drawing.Size(1157, 761);
             // 
             // panelControl15
             // 
@@ -3117,7 +3161,7 @@ namespace WindowsFormsApp2
             this.panelControl15.LookAndFeel.UseDefaultLookAndFeel = false;
             this.panelControl15.Margin = new System.Windows.Forms.Padding(1);
             this.panelControl15.Name = "panelControl15";
-            this.panelControl15.Size = new System.Drawing.Size(1157, 806);
+            this.panelControl15.Size = new System.Drawing.Size(1157, 761);
             this.panelControl15.TabIndex = 14;
             // 
             // labelControl26
@@ -3199,18 +3243,6 @@ namespace WindowsFormsApp2
             this.tileGroup1.Name = "tileGroup1";
             this.tileGroup1.Text = "tileGroup1";
             // 
-            // accordionControlElement69
-            // 
-            this.accordionControlElement69.Name = "accordionControlElement69";
-            this.accordionControlElement69.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
-            this.accordionControlElement69.Text = "Yeni borc əlavəsi";
-            // 
-            // accordionControlElement70
-            // 
-            this.accordionControlElement70.Name = "accordionControlElement70";
-            this.accordionControlElement70.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
-            this.accordionControlElement70.Text = "Qalıq borc ödənişləri";
-            // 
             // MAINSCRRENS
             // 
             this.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(245)))), ((int)(((byte)(250)))));
@@ -3243,8 +3275,6 @@ namespace WindowsFormsApp2
             this.groupControl1.ResumeLayout(false);
             this.tableLayoutPanel7.ResumeLayout(false);
             this.tableLayoutPanel7.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gridControl2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit1.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.fluentFormDefaultManager1)).EndInit();
             this.tableLayoutPanel8.ResumeLayout(false);
@@ -3283,6 +3313,9 @@ namespace WindowsFormsApp2
             this.panelControl6.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridControlExpenses)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridExpenses)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControl2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureEdit3.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.accordionControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.fluentDesignFormControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView3)).EndInit();
@@ -3439,8 +3472,6 @@ namespace WindowsFormsApp2
         private DevExpress.XtraGrid.GridControl gridControlProducts;
         private DevExpress.XtraGrid.Views.Grid.GridView gridProducts;
         private DevExpress.XtraEditors.PanelControl panelControl10;
-        private DevExpress.XtraGrid.GridControl gridControl2;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridView2;
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement56;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
         private DevExpress.XtraEditors.PanelControl panelControl7;
@@ -3553,6 +3584,10 @@ namespace WindowsFormsApp2
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement68;
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement69;
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement70;
+        private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement71;
+        private DevExpress.XtraEditors.PictureEdit pictureEdit3;
+        private DevExpress.XtraGrid.GridControl gridControl2;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView2;
     }
 }
 

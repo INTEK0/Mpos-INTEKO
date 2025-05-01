@@ -203,6 +203,7 @@ FROM userParol where IsDeleted = 0";
         private void gridView1_RowClick(object sender, DevExpress.XtraGrid.Views.Grid.RowClickEventArgs e)
         {
             DataRow dr = gridView1.GetDataRow(gridView1.FocusedRowHandle);
+            var posSales = dr["PosSales"].ToString() == "" ? "false" : dr["PosSales"].ToString();
             if (dr != null)
             {
                 int iu = Convert.ToInt32(dr[3]);
@@ -217,7 +218,7 @@ FROM userParol where IsDeleted = 0";
                 tAddress.Text = dr[8].ToString();
                 dateBirth.Text = dr[9].ToString();
                 tBloodType.Text = dr[10].ToString();
-                chToPosSale.Checked = Convert.ToBoolean(dr["PosSales"].ToString());
+                chToPosSale.Checked = Convert.ToBoolean(posSales);
                 if (iu > 0)
                 {
                     checkBox1.Checked = true;

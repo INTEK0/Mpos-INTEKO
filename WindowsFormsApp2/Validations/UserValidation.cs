@@ -78,7 +78,7 @@ namespace WindowsFormsApp2.Validations
 
             try
             {
-                string query = $"SELECT COUNT(1) FROM userParol WHERE Ulogin = @username";
+                string query = $"SELECT COUNT(1) FROM userParol WHERE Ulogin = @username AND IsDeleted = 0";
                 using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
                 {
                     connection.Open();

@@ -52,7 +52,6 @@ namespace WindowsFormsApp2.Helpers.DB
         private const string DELETE_GuarantorQuery = "delete_zamin";
         private const string UPDATE_GuarantorDataQuery = "UPDATE_ZAMIN";
         private const string GET_RefundProccesNoQuery = "EXEC dbo.POS_GAYTARMA";
-        private const string INSERT_UserQuery = "userParol_insert";
         private const string UPDATE_UserQuery = "userParol_update";
         private const string DELETE_UserQuery = "userParol_delete";
         private const string INSERT_ClinicDataQuery = "ClinicReportInsertData";
@@ -228,7 +227,8 @@ namespace WindowsFormsApp2.Helpers.DB
         {
             using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
             {
-                using (SqlCommand cmd = new SqlCommand(INSERT_UserQuery, connection))
+                string query = "userParol_insert";
+                using (SqlCommand cmd = new SqlCommand(query, connection))
                 {
                     connection.Open();
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
@@ -253,6 +253,8 @@ namespace WindowsFormsApp2.Helpers.DB
                     param.Value = item.DateBirth;
                     param = cmd.Parameters.Add("@GAN_GRUPU", SqlDbType.NVarChar, 100);
                     param.Value = item.BloodType;
+                    param = cmd.Parameters.Add("@POSSALES", SqlDbType.Bit);
+                    param.Value = item.PosSaleScreen;
 
                     cmd.ExecuteNonQuery();
                 }
@@ -1908,24 +1910,24 @@ WHERE BARKOD = '{barcode}'";
         {
             using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
             {
-                string query = $@"";
+                string query = "INSERT_SUPPLIER_DEBT";
                 await con.OpenAsync();
-                using (SqlCommand cmd = new SqlCommand(INSERT_IncomeAndExpenseDataQuery, con))
+                using (SqlCommand cmd = new SqlCommand(query, con))
                 {
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlParameter param;
-                    param = cmd.Parameters.Add("@SupplierName", SqlDbType.NVarChar, 200);
-                    param.Value = item.SupplierName;
+                    param = cmd.Parameters.Add("@SupplierId", SqlDbType.Int);
+                    param.Value = item.SupplierId;
                     param = cmd.Parameters.Add("@Amount", SqlDbType.Decimal);
                     param.Value = item.Amount;
+                    param = cmd.Parameters.Add("@ContractNo", SqlDbType.NVarChar, 200);
+                    param.Value = item.ContractNo;
                     param = cmd.Parameters.Add("@Comment", SqlDbType.NVarChar, int.MaxValue);
                     param.Value = item.Comment;
-                    param = cmd.Parameters.Add("@Date", SqlDbType.Date);
-                    param.Value = item.Date;
+                    param = cmd.Parameters.Add("@ContractDate", SqlDbType.Date);
+                    param.Value = item.ContractDate;
                     param = cmd.Parameters.Add("@UserId", SqlDbType.Int);
                     param.Value = Properties.Settings.Default.UserID;
-                    param = cmd.Parameters.Add("@LogDate", SqlDbType.DateTime);
-                    param.Value = DateTime.Now;
 
                     param = cmd.Parameters.Add("@ResultId", SqlDbType.Int);
                     param.Direction = ParameterDirection.Output;
