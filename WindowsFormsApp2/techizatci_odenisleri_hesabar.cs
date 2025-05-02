@@ -38,7 +38,7 @@ namespace WindowsFormsApp2
             }
             else
             {
-                LOAD(Convert.ToDateTime(dateEdit2.Text.ToString()), Convert.ToDateTime(dateEdit1.Text));
+                LOAD(Convert.ToDateTime(dateEdit2.Text), Convert.ToDateTime(dateEdit1.Text));
             }
         }
 
@@ -60,6 +60,7 @@ namespace WindowsFormsApp2
                                 da.Fill(dt);
                                 gridControl1.DataSource = dt;
                                 gridView1.Columns[0].Visible = false;
+                                gridView1.Columns["SB_ID"].Visible = false;
                             }
                         }
                     }

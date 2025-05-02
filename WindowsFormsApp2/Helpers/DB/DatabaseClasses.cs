@@ -384,5 +384,22 @@ namespace WindowsFormsApp2.Helpers.DB
             public int IsDeleted { get; set; } = 0;
 
         }
+
+        public class SupplierDebtPay
+        {
+            public int ProductMainId { get; set; }
+            public int SupplierDebtId { get; set; }
+            public int SupplierId { get; set; }
+            public decimal Pay { get; set; }
+            public string PaymentType { get; set; }
+            public string GaimeNo { get; set; }
+            public string ContractNo { get; set; }
+            public string Comment { get; set; }
+            public DateTime PayDate { get; set; }
+            public string ProccessNo { get; set; }
+            public int UserId { get;  }
+            public decimal MainDebtAmount { get; set; }
+            public decimal TaxDebtAmount { get; set; }
+        }
     }
 }

@@ -73,6 +73,7 @@ namespace WindowsFormsApp2
             this.gridView1.DetailHeight = 431;
             this.gridView1.GridControl = this.gridControl1;
             this.gridView1.Name = "gridView1";
+            this.gridView1.OptionsBehavior.Editable = false;
             this.gridView1.OptionsEditForm.PopupEditFormWidth = 1067;
             // 
             // tableLayoutPanel1

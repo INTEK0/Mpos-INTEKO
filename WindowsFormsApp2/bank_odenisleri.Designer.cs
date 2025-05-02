@@ -43,8 +43,8 @@ namespace WindowsFormsApp2
             this.simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.textEdit17 = new DevExpress.XtraEditors.TextEdit();
-            this.textEdit5 = new DevExpress.XtraEditors.TextEdit();
+            this.tContractNo = new DevExpress.XtraEditors.TextEdit();
+            this.tProccesNo = new DevExpress.XtraEditors.TextEdit();
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -74,8 +74,8 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.textEdit14.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textEdit17.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textEdit5.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tContractNo.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tProccesNo.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
@@ -109,8 +109,8 @@ namespace WindowsFormsApp2
             this.layoutControl1.Controls.Add(this.radioButton1);
             this.layoutControl1.Controls.Add(this.simpleButton1);
             this.layoutControl1.Controls.Add(this.gridControl1);
-            this.layoutControl1.Controls.Add(this.textEdit17);
-            this.layoutControl1.Controls.Add(this.textEdit5);
+            this.layoutControl1.Controls.Add(this.tContractNo);
+            this.layoutControl1.Controls.Add(this.tProccesNo);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
             this.layoutControl1.Margin = new System.Windows.Forms.Padding(4);
@@ -245,6 +245,7 @@ namespace WindowsFormsApp2
             this.gridControl1.Name = "gridControl1";
             this.gridControl1.Size = new System.Drawing.Size(1241, 470);
             this.gridControl1.TabIndex = 5;
+            this.gridControl1.TabStop = false;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
             // 
@@ -254,26 +255,28 @@ namespace WindowsFormsApp2
             this.gridView1.GridControl = this.gridControl1;
             this.gridView1.Name = "gridView1";
             this.gridView1.OptionsEditForm.PopupEditFormWidth = 1067;
+            this.gridView1.OptionsSelection.MultiSelect = true;
+            this.gridView1.OptionsSelection.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.CheckBoxRowSelect;
             this.gridView1.OptionsView.EnableAppearanceEvenRow = true;
             this.gridView1.OptionsView.EnableAppearanceOddRow = true;
             // 
-            // textEdit17
+            // tContractNo
             // 
-            this.textEdit17.Location = new System.Drawing.Point(178, 139);
-            this.textEdit17.Margin = new System.Windows.Forms.Padding(4);
-            this.textEdit17.Name = "textEdit17";
-            this.textEdit17.Size = new System.Drawing.Size(282, 30);
-            this.textEdit17.StyleController = this.layoutControl1;
-            this.textEdit17.TabIndex = 4;
+            this.tContractNo.Location = new System.Drawing.Point(178, 139);
+            this.tContractNo.Margin = new System.Windows.Forms.Padding(4);
+            this.tContractNo.Name = "tContractNo";
+            this.tContractNo.Size = new System.Drawing.Size(282, 30);
+            this.tContractNo.StyleController = this.layoutControl1;
+            this.tContractNo.TabIndex = 4;
             // 
-            // textEdit5
+            // tProccesNo
             // 
-            this.textEdit5.Location = new System.Drawing.Point(178, 103);
-            this.textEdit5.Margin = new System.Windows.Forms.Padding(4);
-            this.textEdit5.Name = "textEdit5";
-            this.textEdit5.Size = new System.Drawing.Size(282, 30);
-            this.textEdit5.StyleController = this.layoutControl1;
-            this.textEdit5.TabIndex = 4;
+            this.tProccesNo.Location = new System.Drawing.Point(178, 103);
+            this.tProccesNo.Margin = new System.Windows.Forms.Padding(4);
+            this.tProccesNo.Name = "tProccesNo";
+            this.tProccesNo.Size = new System.Drawing.Size(282, 30);
+            this.tProccesNo.StyleController = this.layoutControl1;
+            this.tProccesNo.TabIndex = 4;
             // 
             // Root
             // 
@@ -382,7 +385,7 @@ namespace WindowsFormsApp2
             // 
             // layoutControlItem2
             // 
-            this.layoutControlItem2.Control = this.textEdit5;
+            this.layoutControlItem2.Control = this.tProccesNo;
             this.layoutControlItem2.Location = new System.Drawing.Point(0, 36);
             this.layoutControlItem2.Name = "layoutControlItem2";
             this.layoutControlItem2.Size = new System.Drawing.Size(443, 36);
@@ -391,7 +394,7 @@ namespace WindowsFormsApp2
             // 
             // layoutControlItem3
             // 
-            this.layoutControlItem3.Control = this.textEdit17;
+            this.layoutControlItem3.Control = this.tContractNo;
             this.layoutControlItem3.Location = new System.Drawing.Point(0, 72);
             this.layoutControlItem3.Name = "layoutControlItem3";
             this.layoutControlItem3.Size = new System.Drawing.Size(443, 36);
@@ -481,8 +484,8 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.textEdit14.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textEdit17.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textEdit5.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tContractNo.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tProccesNo.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
@@ -510,8 +513,8 @@ namespace WindowsFormsApp2
         private DevExpress.XtraLayout.LayoutControl layoutControl1;
         private DevExpress.XtraGrid.GridControl gridControl1;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
-        private DevExpress.XtraEditors.TextEdit textEdit17;
-        private DevExpress.XtraEditors.TextEdit textEdit5;
+        private DevExpress.XtraEditors.TextEdit tContractNo;
+        private DevExpress.XtraEditors.TextEdit tProccesNo;
         private DevExpress.XtraLayout.LayoutControlGroup Root;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;

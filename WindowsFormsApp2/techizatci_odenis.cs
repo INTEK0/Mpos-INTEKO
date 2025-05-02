@@ -14,7 +14,6 @@ namespace WindowsFormsApp2
         // string connectionString = "Data Source=.;Initial Catalog=NewInteko;Integrated Security=True";
         string procedure = "INSERT_TECHIZATCI_ODENIS";
         string proc_mus_odenis = "musteri_ODENIS_";
-        string proce1 = "techizatci_odenis_emeliyyat_nomre";
         string proce_MUS = "MUSTERI_odenis_emeliyyat_nomre";
         string delete_odenis = "DELETE_TECHIZATCI_ODENISI";
         string update_techizatc = "update_techizatci";
@@ -159,8 +158,9 @@ namespace WindowsFormsApp2
         }
         public string emeliyyat_nomre()
         {
+
             SqlConnection con = new SqlConnection(Properties.Settings.Default.SqlCon);
-            SqlCommand cmd = new SqlCommand(proce1, con);
+            SqlCommand cmd = new SqlCommand("proce1", con);
             // Configure command and add input parameters.
             cmd.CommandType = CommandType.StoredProcedure;
             SqlParameter param;

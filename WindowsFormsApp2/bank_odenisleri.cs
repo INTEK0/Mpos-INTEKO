@@ -23,24 +23,19 @@ namespace WindowsFormsApp2
             DateTime dateTime = DateTime.UtcNow.Date;
 
             dateEdit1.Text = dateTime.ToShortDateString();
-            textEdit5.Enabled = false;
-            // XtraMessageBox.Show(t_odenis_user_id.ToString());
-            string a = t.emeliyyat_nomre();
-            textEdit5.Text = a;
+            tProccesNo.Enabled = false;
+            tProccesNo.Text = DbProsedures.GET_SupplierDebtPayProccessNo();
             lookUpEdit8GEtData_yeni_anbar();
             radioButton2.Checked = true;
-            textEdit17.Enabled = false;
 
-            //   dateEdit1.TabIndex = 1;
-            textEdit5.TabIndex = 2;
-            textEdit17.TabIndex = 3;
+            tProccesNo.TabIndex = 2;
+            tContractNo.TabIndex = 3;
             lookUpEdit1.TabIndex = 4;
             memoEdit1.TabIndex = 5;
-            gridControl1.TabStop = false;
         }
         private void lookUpEdit8GEtData_yeni_anbar()
         {
-            string strQuery = @" SELECT distinct( c.TECHIZATCI_ID),c.SIRKET_ADI 
+            string strQuery = @"SELECT distinct( c.TECHIZATCI_ID),c.SIRKET_ADI 
  AS N'TƏCHİZATÇI ADI' FROM COMPANY.TECHIZATCI c
  inner join MAL_ALISI_MAIN m on m.TECHIZATCI_ID = c.TECHIZATCI_ID 
  inner join (  select MAL_ALISI_MAIN_ID from ( 
@@ -52,10 +47,7 @@ namespace WindowsFormsApp2
  GROUP BY FAKTURA_NOMRE,M.MAL_ALISI_MAIN_ID,TARIX )t ) x on x.MAL_ALISI_MAIN_ID = m.MAL_ALISI_MAIN_ID
  WHERE c.IsDeleted = 0";
 
-          var data =  DbProsedures.ConvertToDataTable(strQuery);
-
-
-
+            var data = DbProsedures.ConvertToDataTable(strQuery);
 
             lookUpEdit1.Properties.DisplayMember = "TƏCHİZATÇI ADI";
             lookUpEdit1.Properties.ValueMember = "TECHIZATCI_ID";
@@ -65,24 +57,26 @@ namespace WindowsFormsApp2
             lookUpEdit1.Properties.Columns[0].Visible = false;
 
         }
-       
-        public void getsum(int A)
+
+        public void getsum(int paramValue)
         {
-            int paramValue = A;
+            string queryString = @"SELECT 
+cast(sum(isnull(BORC,0.00)) AS decimal(18, 2)) AS BORC,
+cast(sum(isnull(ESAS_BORC, 0.00)) AS decimal(18, 2)) ESAS_BORC,
+cast(sum(isnull(EDV_BORC, 0.00)) AS decimal(18, 2)) EDV_BORC 
+FROM(SELECT f.MAL_ALISI_MAIN_ID, f.[FAKTURA NÖMRƏ], 
+f.TARIX ,
+f.QİYMƏT-isnull(t.odenis, 0.00) N'BORC', 
+isnull(f.ESAS_BORC,0.00) - isnull(t.ESAS_BORC_ODENIS,0.00) AS ESAS_BORC,
+isnull(f.VERGI,0.00) - isnull(t.EDV_BORC,0.00) AS EDV_BORC,
+0 AS 'ÖDƏNİŞ'
+FROM dbo.fn_TECHIZATCI_BORC(@pricePoint) f 
+left join(select  MAL_ALISI_MAIN_ID , 
+(SUM(ISNULL(ESAS_BORC_ODENIS, 0.00)) + SUM(ISNULL(EDV_BORC, 0.00))) AS odenis , 
+SUM(ISNULL(ESAS_BORC_ODENIS, 0.00))ESAS_BORC_ODENIS, SUM(ISNULL(EDV_BORC, 0.00))EDV_BORC 
+FROM TECHIZATCI_ODENIS GROUP BY MAL_ALISI_MAIN_ID)t ON f.MAL_ALISI_MAIN_ID = t.MAL_ALISI_MAIN_ID )o";
 
-
-            string queryString = "  select cast(sum(isnull(BORC,0.00)) as decimal(9, 2)) as BORC , " +
-                " cast(sum(isnull(ESAS_BORC, 0.00)) as decimal(9, 2)) ESAS_BORC , " +
-                 " cast(sum(isnull(EDV_BORC, 0.00)) as decimal(9, 2)) EDV_BORC from(SELECT f.MAL_ALISI_MAIN_ID, f.[FAKTURA NÖMRƏ] , " +
-                   "   f.TARIX , f.QİYMƏT-isnull(t.odenis, 0.00) N'BORC', " +
-                " isnull(f.ESAS_BORC,0.00) - isnull(t.ESAS_BORC_ODENIS,0.00) as ESAS_BORC,isnull(f.VERGI,0.00) - isnull(t.EDV_BORC,0.00) as EDV_BORC , " +
-             "	0 AS 'ÖDƏNİŞ'FROM dbo.fn_TECHIZATCI_BORC(@pricePoint) f " +
-                  "  left join(select  MAL_ALISI_MAIN_ID , " +
-                  " (SUM(ISNULL(ESAS_BORC_ODENIS, 0.00)) + SUM(ISNULL(EDV_BORC, 0.00))) AS odenis , " +
-                 " SUM(ISNULL(ESAS_BORC_ODENIS, 0.00))ESAS_BORC_ODENIS, SUM(ISNULL(EDV_BORC, 0.00))EDV_BORC " +
-                   "   from TECHIZATCI_ODENIS group by MAL_ALISI_MAIN_ID)t on f.MAL_ALISI_MAIN_ID = t.MAL_ALISI_MAIN_ID )o ";
-
-            SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
+            SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString);
             SqlCommand cmd = new SqlCommand();
             SqlCommand command = new SqlCommand(queryString, connection);
 
@@ -92,53 +86,20 @@ namespace WindowsFormsApp2
             SqlDataReader dr = command.ExecuteReader();
             while (dr.Read())
             {
-
                 textEdit14.Text = dr["BORC"].ToString();
                 textEdit2.Text = dr["ESAS_BORC"].ToString();
                 textEdit1.Text = dr["EDV_BORC"].ToString();
-
             }
             connection.Close();
-
-
         }
-        //public void getall_BANK(int A)
-        //{
-        //    int paramValue = A;
-        //    try
-        //    {
-        //        SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
 
-
-        //        string queryString = " SELECT * FROM [dbo].[fn_TECHIZATCI_BORC_EDV] (@pricePoint)";
-        //        SqlCommand command = new SqlCommand(queryString, connection);
-        //        command.Parameters.AddWithValue("@pricePoint", paramValue);
-        //        SqlDataAdapter da = new SqlDataAdapter(command);
-        //        DataTable dt = new DataTable();
-        //        da.Fill(dt);
-        //        gridControl1.DataSource = dt;
-        //        gridView1.Columns[0].Visible = false; //MAL_ALISI_MAIN_ID
-
-        //        gridView1.OptionsSelection.MultiSelect = true;
-        //        gridView1.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Console.WriteLine("Xəta!\n" + e);
-        //    }
-
-        //}
-
-        public void getall(int A)
+        public void getall(int paramValue)
         {
-            int paramValue = A;
             try
             {
-                SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString);
-
-
                 string queryString = @"
 SELECT MAL_ALISI_MAIN_ID,
+	   SupplierDebtId,
        [FAKTURA NÖMRƏ],
        TARIX ,
        cast(sum(isnull(ESAS_BORC, 0.00)) AS decimal(9, 2)) N'ƏSAS BORC',
@@ -148,6 +109,7 @@ SELECT MAL_ALISI_MAIN_ID,
        0.00 AS N'YEKUN BORC ÖDƏ'
 FROM
   (SELECT f.MAL_ALISI_MAIN_ID,
+		  f.SupplierDebtId,
           f.[FAKTURA NÖMRƏ],
           f.TARIX,
           f.QİYMƏT - isnull(t.odenis, 0.00) N'BORC',
@@ -157,6 +119,7 @@ FROM
    FROM dbo.fn_TECHIZATCI_BORC(@pricePoint) f
    LEFT JOIN
      (SELECT MAL_ALISI_MAIN_ID,
+		     
              (SUM(ISNULL(ESAS_BORC_ODENIS, 0.00)) + SUM(ISNULL(EDV_BORC, 0.00))) AS odenis,
              SUM(ISNULL(ESAS_BORC_ODENIS, 0.00))ESAS_BORC_ODENIS,
              SUM(ISNULL(EDV_BORC, 0.00))EDV_BORC
@@ -164,19 +127,26 @@ FROM
       GROUP BY MAL_ALISI_MAIN_ID)t ON f.MAL_ALISI_MAIN_ID = t.MAL_ALISI_MAIN_ID)o
 WHERE BORC > 0.00
 GROUP BY MAL_ALISI_MAIN_ID,
+SupplierDebtId,
          [FAKTURA NÖMRƏ],
          TARIX";
-
-                SqlCommand command = new SqlCommand(queryString, connection);
-                command.Parameters.AddWithValue("@pricePoint", paramValue);
-                SqlDataAdapter da = new SqlDataAdapter(command);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-                gridControl1.DataSource = dt;
-                gridView1.Columns[0].Visible = false; //MAL_ALISI_MAIN_ID
-
-                gridView1.OptionsSelection.MultiSelect = true;
-                gridView1.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
+                using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand(queryString,connection))
+                    {
+                        cmd.Parameters.AddWithValue("@pricePoint", paramValue);
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+                            using (DataTable dt = new DataTable())
+                            {
+                                da.Fill(dt);
+                                gridControl1.DataSource = dt;
+                                gridView1.Columns["MAL_ALISI_MAIN_ID"].Visible = false; //MAL_ALISI_MAIN_ID
+                                gridView1.Columns["SupplierDebtId"].Visible = false; //SupplierDebtId
+                            }
+                        }
+                    }
+                }
             }
             catch (Exception e)
             {
@@ -204,58 +174,55 @@ GROUP BY MAL_ALISI_MAIN_ID,
             }
         }
 
-        private void simpleButton1_Click(object sender, EventArgs e)
+        private async void simpleButton1_Click(object sender, EventArgs e)
         {
             int conf = 0;
 
             foreach (int i in gridView1.GetSelectedRows())
             {
                 DataRow row = gridView1.GetDataRow(i);
-                string fak_nom;
-                if (string.IsNullOrEmpty(textEdit17.Text))
-                {
-                    fak_nom = "-";
-                }
-                else
-                {
-                    fak_nom = textEdit17.Text;
-                }
 
                 decimal yekunborc = Convert.ToDecimal(row["YEKUN BORC ÖDƏ"].ToString());
                 decimal edv = Convert.ToDecimal(row["ƏDV ÖDƏ"].ToString());
 
                 decimal odenilen = yekunborc + edv;
 
+                int productMainId = string.IsNullOrWhiteSpace(row[0].ToString()) ? 0 : Convert.ToInt32(row[0].ToString());
+                int supplierDebtId = string.IsNullOrWhiteSpace(row[1].ToString()) ? 0 : Convert.ToInt32(row[1].ToString());
+                int supplierId = Convert.ToInt32(lookUpEdit1.EditValue);
+                int resultId = await DbProsedures.InsertSupplierPay(new DatabaseClasses.SupplierDebtPay
+                {
+                    ProductMainId = productMainId,
+                    SupplierDebtId = supplierDebtId,
+                    SupplierId = supplierId,
+                    Pay = odenilen,
+                    PaymentType = radio,
+                    Comment = memoEdit1.Text.Trim(),
+                    PayDate = dateEdit1.DateTime,
+                    ProccessNo = tProccesNo.Text,
+                    ContractNo = row[2].ToString(), //Alış fakturasının nömrəsi
+                    GaimeNo = tContractNo.Text,
+                    MainDebtAmount = yekunborc,
+                    TaxDebtAmount = edv,
+                });
 
-                int a = t.INSERT_ODENIS(Convert.ToInt32(row[0].ToString()),
-                    odenilen, 
-                    radio, 
-                    fak_nom, 
-                    memoEdit1.Text,
-                    Convert.ToDateTime(dateEdit1.Text),
-                    textEdit5.Text,
-                    row[1].ToString(),
-                    t_odenis_user_id,
-                    yekunborc,
-                    edv);
 
-                conf = conf + a;
+                conf = conf + resultId;
 
             }
 
             if (conf > 0)
             {
-                XtraMessageBox.Show("ÖDƏNİŞ UĞURLA TAMAMLANDI");
-                textEdit5.Text = "";
-                textEdit17.Text = "";
-                string a = t.emeliyyat_nomre();
-                textEdit5.Text = a;
-
+                FormHelpers.Alert("Ödəniş uğurla tamamlandı", Enums.MessageType.Success);
+                tProccesNo.Clear();
+                tContractNo.Clear();
+                tProccesNo.Text = DbProsedures.GET_SupplierDebtPayProccessNo();
+                getall(Convert.ToInt32(lookUpEdit1.EditValue));
+                getsum(Convert.ToInt32(lookUpEdit1.EditValue));
+                gridControl1.RefreshDataSource();
             }
-            getall(Convert.ToInt32(lookUpEdit1.EditValue));
-            getsum(Convert.ToInt32(lookUpEdit1.EditValue));
-            gridControl1.RefreshDataSource();
         }
+
         public Decimal confirmation_total()
         {
             Decimal a = 0;
@@ -267,20 +234,21 @@ GROUP BY MAL_ALISI_MAIN_ID,
             }
             return a;
         }
+
         public static string radio = "NAĞD";
         public static int r_int = 0;
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
             //BANK
-            textEdit17.Enabled = true;
+            tContractNo.Enabled = true;
             radio = "BANK";
         }
 
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
             //NEGD
-            textEdit17.Enabled = false;
+            tContractNo.Enabled = false;
             radio = "NAĞD";
         }
 
