@@ -1,16 +1,9 @@
-﻿using DevExpress.XtraEditors;
-using DevExpress.XtraGrid.Localization;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+using DevExpress.XtraGrid;
+using DevExpress.XtraGrid.Localization;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using static WindowsFormsApp2.Helpers.FormHelpers;
@@ -19,6 +12,7 @@ namespace WindowsFormsApp2
 {
     public partial class TECHIZATCI_ODENISI_HESABATI : DevExpress.XtraEditors.XtraForm
     {
+        private GridColumnSummaryItem _debtSum;
         public TECHIZATCI_ODENISI_HESABATI()
         {
             InitializeComponent();
@@ -52,19 +46,19 @@ namespace WindowsFormsApp2
             lookUpEdit1.Properties.Columns[0].Visible = false;
         }
 
-        private void simpleButton1_Click(object sender, EventArgs e)
+        private async void simpleButton1_Click(object sender, EventArgs e)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(lookUpEdit1.Text))
                 {
-                    GetallData(Convert.ToDateTime(dateEdit1.Text), Convert.ToDateTime(dateEdit2.Text));
+                    await GetallDataAsync(Convert.ToDateTime(dateEdit1.Text), Convert.ToDateTime(dateEdit2.Text));
                 }
                 else
                 {
-                    GetallData_t_id(Convert.ToDateTime(dateEdit1.Text),
-                                    Convert.ToDateTime(dateEdit2.Text),
-                                    Convert.ToInt32(lookUpEdit1.EditValue));
+                    await GetallData_t_id(Convert.ToDateTime(dateEdit1.Text),
+                                     Convert.ToDateTime(dateEdit2.Text),
+                                     Convert.ToInt32(lookUpEdit1.EditValue));
                 }
             }
             catch (Exception ex)
@@ -73,33 +67,205 @@ namespace WindowsFormsApp2
             }
         }
 
-        private void GetallData_t_id(DateTime d1, DateTime d2, int v)
+        private async Task GetallData_t_id(DateTime start, DateTime end, int supplierId)
         {
-            SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
-            string queryString = "SELECT * FROM dbo.fn_TECHIZATCI_ODENILENLER_hesabat_t_id (cast(@pricePoint AS DATE) , CAST(@pricePoint1 AS DATE),@pricePoint2)  ";
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                await con.OpenAsync();
+                string query = "SELECT * FROM dbo.fn_TECHIZATCI_ODENILENLER_hesabat_t_id (CAST(@startDate AS DATE) , CAST(@endDate AS DATE),@supplierId)";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@startDate", start);
+                    cmd.Parameters.AddWithValue("@endDate", end);
+                    cmd.Parameters.AddWithValue("@supplierId", supplierId);
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    {
+                        using (DataTable dt = new DataTable())
+                        {
+                            da.Fill(dt);
+                            gridControl1.DataSource = dt;
+                            gridView1.Columns["QALIQ MƏBLƏĞ"].Summary.Clear();
+                            _debtSum = new GridColumnSummaryItem
+                            {
+                                FieldName = "QALIQ MƏBLƏĞ",
+                                SummaryType = DevExpress.Data.SummaryItemType.Sum,
+                                DisplayFormat = "{0:C2}",
 
-            SqlCommand command = new SqlCommand(queryString, connection);
-            command.Parameters.AddWithValue("@pricepoint", d1);
-            command.Parameters.AddWithValue("@pricepoint1", d2);
-            command.Parameters.AddWithValue("@pricepoint2", v);
-            SqlDataAdapter da = new SqlDataAdapter(command);
-            DataTable dt = new DataTable();
-            da.Fill(dt);
-            gridControl1.DataSource = dt;
+                            };
+                            gridView1.Columns["QALIQ MƏBLƏĞ"].Summary.Add(_debtSum);
+                        }
+                    }
+                }
+            }
         }
 
-        private void GetallData(DateTime D1_, DateTime D2_)
+        private async Task GetallDataAsync(DateTime start, DateTime end)
         {
-            SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
-            string queryString = "SELECT * FROM dbo.fn_TECHIZATCI_ODENILENLER_hesabat (cast(@pricePoint AS DATE) , CAST(@pricePoint1 AS DATE))  ";
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                string queryString = "SELECT * FROM dbo.fn_TECHIZATCI_ODENILENLER_hesabat (cast(@startDate AS DATE), CAST(@endDate AS DATE))";
+                await con.OpenAsync();
+                using (SqlCommand cmd = new SqlCommand(queryString, con))
+                {
+                    cmd.Parameters.AddWithValue("@startDate", start);
+                    cmd.Parameters.AddWithValue("@endDate", end);
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    {
+                        using (DataTable dt = new DataTable())
+                        {
+                            da.Fill(dt);
+                            gridControl1.DataSource = dt;
+                            gridView1.Columns["QALIQ MƏBLƏĞ"].Summary.Clear();
+                            _debtSum = new GridColumnSummaryItem
+                            {
+                                FieldName = "QALIQ MƏBLƏĞ",
+                                SummaryType = DevExpress.Data.SummaryItemType.Sum,
+                                DisplayFormat = "{0:C2}",
 
-            SqlCommand command = new SqlCommand(queryString, connection);
-            command.Parameters.AddWithValue("@pricepoint", D1_);
-            command.Parameters.AddWithValue("@pricepoint1", D2_);
-            SqlDataAdapter da = new SqlDataAdapter(command);
-            DataTable dt = new DataTable();
-            da.Fill(dt);
-            gridControl1.DataSource = dt;
+                            };
+                            gridView1.Columns["QALIQ MƏBLƏĞ"].Summary.Add(_debtSum);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void gridView1_DoubleClick(object sender, EventArgs e)
+        {
+            var selectedRow = gridView1.GetFocusedDataRow();
+            if (selectedRow == null) return;
+            object data = null;
+
+            int malAlisiId = selectedRow.Field<int?>("MAL_ALISI_MAIN_ID") ?? 0;
+            int supplierDebtId = selectedRow.Field<int?>("SupplierDebtId") ?? 0;
+            int supplierId = selectedRow.Field<int?>("TECHIZATCI_ID") ?? 0;
+            string supplierName = selectedRow.Field<string>("TƏCHİZATÇI ADI") ?? null;
+            string contractNo = selectedRow.Field<string>("TƏCHİZATÇI FAKTURA №") ?? null;
+
+            if (malAlisiId > 0)
+                data = ShowPurchaseDetails(malAlisiId);
+            else if (supplierDebtId > 0)
+                data = ShowSupplierDebtDetails(supplierDebtId);
+
+            gridControl2.DataSource = data;
+            gridView2.Columns["Payment"].Summary.Clear();
+            GridColumnSummaryItem payment = new GridColumnSummaryItem
+            {
+                FieldName = "Payment",
+                SummaryType = DevExpress.Data.SummaryItemType.Sum,
+                DisplayFormat = "{0:N2}",
+
+            };
+            gridView2.Columns["Payment"].Summary.Add(payment);
+
+
+            lookUpEdit1.Enabled = false;
+            navigationFrame1.SelectedPage = page2;
+            tSupplierName.Text = supplierName;
+            tContractNo.Text = contractNo;
+            TotalSupplierDebt(supplierId);
+        }
+
+        private DataTable ShowPurchaseDetails(int productMainId)
+        {
+            string query = $@"
+ DECLARE @malAlisiMainId INT = {productMainId};
+
+WITH DebtAction AS (
+    SELECT 
+        t.TARIX AS PayDate,
+		t.GAIME_N AS GaimeNo,
+        ISNULL(u.AD, 'YOXDUR') AS Username,
+        t.ODENIS AS Payment,
+        t.ODENIS_TIPI AS PaymentType,
+        t.MAL_ALISI_MAIN_ID,
+        CAST(t.DATE_ AS DATETIME) AS OrderDate
+    FROM TECHIZATCI_ODENIS t
+    LEFT JOIN userParol u ON u.id = t._USER_ID
+    WHERE t.MAL_ALISI_MAIN_ID = @malAlisiMainId
+),
+TotalDebt AS (
+    SELECT 
+        SUM((ISNULL(d.ALIS_GIYMETI,0)-ISNULL(d.ENDIRIM_MEBLEGI,0)) * ISNULL(d.MIGDARI,0)) AS Borc
+    FROM MAL_ALISI_DETAILS d
+    WHERE d.MAL_ALISI_MAIN_ID = @malAlisiMainId
+)
+SELECT 
+    h.PayDate,
+	h.GaimeNo,
+    h.Username,
+    h.PaymentType,
+    h.Payment,
+    tb.Borc - SUM(h.Payment) OVER (ORDER BY h.OrderDate, h.MAL_ALISI_MAIN_ID ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS RemainingAmount
+FROM DebtAction h
+CROSS JOIN TotalDebt tb
+ORDER BY h.OrderDate;
+    ";
+
+            var data = DbProsedures.ConvertToDataTable(query);
+            return data;
+        }
+
+        private DataTable ShowSupplierDebtDetails(int supplierDebtId)
+        {
+            string query = $@"
+        DECLARE @supplierDebtId INT = {supplierDebtId};
+
+WITH Hareket AS (
+    SELECT 
+        t.TARIX AS PayDate,
+		t.GAIME_N AS GaimeNo,
+        ISNULL(u.AD, 'YOXDUR') AS Username,
+        t.ODENIS AS Payment,
+        t.ODENIS_TIPI AS PaymentType,
+        t.SupplierDebtId,
+        CAST(t.DATE_ AS DATETIME) AS SiraTarihi
+    FROM TECHIZATCI_ODENIS t
+    LEFT JOIN userParol u ON u.id = t._USER_ID
+    WHERE t.SupplierDebtId = @supplierDebtId
+),
+ToplamBorc AS (
+    SELECT Amount AS Borc
+    FROM COMPANY.SupplierDebt
+    WHERE Id = @supplierDebtId
+)
+SELECT 
+    h.PayDate,
+	h.GaimeNo,
+    h.Username,
+    h.PaymentType,
+    h.Payment,
+    tb.Borc - SUM(h.Payment) OVER (ORDER BY h.SiraTarihi, h.SupplierDebtId ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS RemainingAmount
+FROM Hareket h
+CROSS JOIN ToplamBorc tb
+ORDER BY h.SiraTarihi;
+    ";
+
+            var data = DbProsedures.ConvertToDataTable(query);
+            return data;
+        }
+
+        private void Clear()
+        {
+            tSupplierName.Clear();
+            tContractNo.Clear();
+            tContractDebtBalance.Clear();
+            tDebtDate.Clear();
+            tContractDebt.Clear();
+            tTotalDebt.Clear();
+            lookUpEdit1.Enabled = true;
+            navigationFrame1.SelectedPage = page1;
+        }
+
+        private void bBack_Click(object sender, EventArgs e)
+        {
+            Clear();
+        }
+
+        private async void TotalSupplierDebt(int supplierId)
+        {
+            decimal debt = await DbProsedures.GET_SupplierTotalDebt(supplierId);
+            tTotalDebt.Text = debt.ToString();
         }
     }
 }

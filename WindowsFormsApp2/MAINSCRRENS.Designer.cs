@@ -1487,8 +1487,8 @@ namespace WindowsFormsApp2
             this.accordionControlElement7,
             this.accordionControlElement10,
             this.accordionControlElement13,
-            this.accordionControlElement17,
             this.accordionControlElement21,
+            this.accordionControlElement17,
             this.accordionControlElement28,
             this.accordionControlElement30,
             this.accordionControlElement54,
@@ -2853,7 +2853,7 @@ namespace WindowsFormsApp2
             this.tabAllSettings.Name = "tabAllSettings";
             this.tabAllSettings.Properties.AppearanceCaption.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.tabAllSettings.Properties.AppearanceCaption.Options.UseFont = true;
-            this.tabAllSettings.Size = new System.Drawing.Size(1157, 761);
+            this.tabAllSettings.Size = new System.Drawing.Size(1157, 759);
             // 
             // panelControl13
             // 
@@ -2872,7 +2872,7 @@ namespace WindowsFormsApp2
             this.panelControl13.LookAndFeel.UseDefaultLookAndFeel = false;
             this.panelControl13.Margin = new System.Windows.Forms.Padding(1);
             this.panelControl13.Name = "panelControl13";
-            this.panelControl13.Size = new System.Drawing.Size(1157, 761);
+            this.panelControl13.Size = new System.Drawing.Size(1157, 759);
             this.panelControl13.TabIndex = 12;
             // 
             // chClinicModul

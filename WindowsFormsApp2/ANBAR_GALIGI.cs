@@ -24,7 +24,6 @@ namespace WindowsFormsApp2
         {
             InitializeComponent();
             GridPanelText(gridView1);
-            GridLocalizer.Active = new MyGridLocalizer();
         }
 
         private void simpleButton2_Click(object sender, EventArgs e)

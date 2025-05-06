@@ -382,7 +382,6 @@ namespace WindowsFormsApp2.Helpers.DB
             public DateTime CreatedAt { get; set; } = DateTime.Now;
             public int UserId { get; set; }
             public int IsDeleted { get; set; } = 0;
-
         }
 
         public class SupplierDebtPay

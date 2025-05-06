@@ -21,8 +21,8 @@ namespace WindowsFormsApp2.NKA
     public static class Omnitech
     {
         private static readonly bool MessageVisible = FormHelpers.SuccessMessageVisible();
-        private static readonly string Username = "Api";
-        private static readonly string Pin = "1";
+        private static readonly string Username = "SuperApi";
+        private static readonly string Pin = "123";
         public static OmnitechResponse RequestPOST(string ipAddress, string json)
         {
             try
@@ -424,6 +424,7 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
                 cashier = cashier,
                 items = items,
                 vatAmounts = vatAmounts,
+                rrn = rrn,
             };
 
 
@@ -1475,6 +1476,7 @@ case A.VERGI_DERECESI
             public decimal creditSum { get; set; } = 0;
             public decimal bonusSum { get; set; } = 0;
             public decimal incomingSum { get; set; }
+            public string rrn { get; set; } = null;
             public string parentDocument { get; set; } = null;
             public string refund_short_document_id { get; set; } = null;
             public string refund_document_number { get; set; } = null;

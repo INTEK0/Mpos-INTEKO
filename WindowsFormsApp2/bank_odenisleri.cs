@@ -15,6 +15,7 @@ namespace WindowsFormsApp2
         public bank_odenisleri(int t_user_id)
         {
             InitializeComponent();
+            FormHelpers.GridPanelText(gridView1);
             t_odenis_user_id = t_user_id;
         }
         techizatci_odenis t = new techizatci_odenis();
@@ -33,6 +34,7 @@ namespace WindowsFormsApp2
             lookUpEdit1.TabIndex = 4;
             memoEdit1.TabIndex = 5;
         }
+
         private void lookUpEdit8GEtData_yeni_anbar()
         {
             string strQuery = @"SELECT distinct( c.TECHIZATCI_ID),c.SIRKET_ADI 
@@ -58,23 +60,39 @@ namespace WindowsFormsApp2
 
         }
 
-        public void getsum(int paramValue)
+        private void getsum(int paramValue)
         {
             string queryString = @"SELECT 
-cast(sum(isnull(BORC,0.00)) AS decimal(18, 2)) AS BORC,
-cast(sum(isnull(ESAS_BORC, 0.00)) AS decimal(18, 2)) ESAS_BORC,
-cast(sum(isnull(EDV_BORC, 0.00)) AS decimal(18, 2)) EDV_BORC 
-FROM(SELECT f.MAL_ALISI_MAIN_ID, f.[FAKTURA NÖMRƏ], 
-f.TARIX ,
-f.QİYMƏT-isnull(t.odenis, 0.00) N'BORC', 
-isnull(f.ESAS_BORC,0.00) - isnull(t.ESAS_BORC_ODENIS,0.00) AS ESAS_BORC,
-isnull(f.VERGI,0.00) - isnull(t.EDV_BORC,0.00) AS EDV_BORC,
-0 AS 'ÖDƏNİŞ'
-FROM dbo.fn_TECHIZATCI_BORC(@pricePoint) f 
-left join(select  MAL_ALISI_MAIN_ID , 
-(SUM(ISNULL(ESAS_BORC_ODENIS, 0.00)) + SUM(ISNULL(EDV_BORC, 0.00))) AS odenis , 
-SUM(ISNULL(ESAS_BORC_ODENIS, 0.00))ESAS_BORC_ODENIS, SUM(ISNULL(EDV_BORC, 0.00))EDV_BORC 
-FROM TECHIZATCI_ODENIS GROUP BY MAL_ALISI_MAIN_ID)t ON f.MAL_ALISI_MAIN_ID = t.MAL_ALISI_MAIN_ID )o";
+    CAST(SUM(ISNULL(BORC, 0.00)) AS decimal(18, 2)) AS BORC,
+    CAST(SUM(ISNULL(ESAS_BORC, 0.00)) AS decimal(18, 2)) AS ESAS_BORC,
+    CAST(SUM(ISNULL(EDV_BORC, 0.00)) AS decimal(18, 2)) AS EDV_BORC 
+FROM (
+    SELECT 
+        f.MAL_ALISI_MAIN_ID,
+        f.SupplierDebtId,
+        f.[FAKTURA NÖMRƏ], 
+        f.TARIX,
+        f.QİYMƏT - ISNULL(t.odenis, 0.00) AS BORC, 
+        ISNULL(f.ESAS_BORC, 0.00) - ISNULL(t.ESAS_BORC_ODENIS, 0.00) AS ESAS_BORC,
+        ISNULL(f.VERGI, 0.00) - ISNULL(t.EDV_BORC, 0.00) AS EDV_BORC,
+        0 AS 'ÖDƏNİŞ'
+    FROM dbo.fn_TECHIZATCI_BORC(@pricePoint) f 
+    LEFT JOIN (
+        SELECT  
+            MAL_ALISI_MAIN_ID, 
+            SupplierDebtId,
+            SUM(ISNULL(ESAS_BORC_ODENIS, 0.00)) AS ESAS_BORC_ODENIS,
+            SUM(ISNULL(EDV_BORC, 0.00)) AS EDV_BORC,
+            SUM(ISNULL(ESAS_BORC_ODENIS, 0.00)) + SUM(ISNULL(EDV_BORC, 0.00)) AS odenis
+        FROM TECHIZATCI_ODENIS 
+        GROUP BY MAL_ALISI_MAIN_ID, SupplierDebtId
+    ) t ON (
+        (f.MAL_ALISI_MAIN_ID IS NOT NULL AND f.MAL_ALISI_MAIN_ID = t.MAL_ALISI_MAIN_ID)
+        OR
+        (f.MAL_ALISI_MAIN_ID IS NULL AND f.SupplierDebtId = t.SupplierDebtId)
+    )
+) o
+";
 
             SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString);
             SqlCommand cmd = new SqlCommand();
@@ -93,46 +111,57 @@ FROM TECHIZATCI_ODENIS GROUP BY MAL_ALISI_MAIN_ID)t ON f.MAL_ALISI_MAIN_ID = t.M
             connection.Close();
         }
 
-        public void getall(int paramValue)
+        private void getall(int paramValue)
         {
             try
             {
                 string queryString = @"
-SELECT MAL_ALISI_MAIN_ID,
-	   SupplierDebtId,
-       [FAKTURA NÖMRƏ],
-       TARIX ,
-       cast(sum(isnull(ESAS_BORC, 0.00)) AS decimal(9, 2)) N'ƏSAS BORC',
-	   cast(sum(isnull(EDV_BORC, 0.00)) AS decimal(9, 2)) N'ƏDV BORC',
-       cast(sum(isnull(BORC, 0.00)) AS decimal(9, 2)) AS N'YEKUN BORC',
-       0.00 AS N'ƏDV ÖDƏ',
-       0.00 AS N'YEKUN BORC ÖDƏ'
-FROM
-  (SELECT f.MAL_ALISI_MAIN_ID,
-		  f.SupplierDebtId,
-          f.[FAKTURA NÖMRƏ],
-          f.TARIX,
-          f.QİYMƏT - isnull(t.odenis, 0.00) N'BORC',
-		  isnull(f.ESAS_BORC, 0.00) - isnull(t.ESAS_BORC_ODENIS, 0.00) AS ESAS_BORC,
-		  isnull(f.VERGI, 0.00) - isnull(t.EDV_BORC, 0.00) AS EDV_BORC,
-		  0 AS 'ÖDƏNİŞ'
-   FROM dbo.fn_TECHIZATCI_BORC(@pricePoint) f
-   LEFT JOIN
-     (SELECT MAL_ALISI_MAIN_ID,
-		     
-             (SUM(ISNULL(ESAS_BORC_ODENIS, 0.00)) + SUM(ISNULL(EDV_BORC, 0.00))) AS odenis,
-             SUM(ISNULL(ESAS_BORC_ODENIS, 0.00))ESAS_BORC_ODENIS,
-             SUM(ISNULL(EDV_BORC, 0.00))EDV_BORC
-      FROM TECHIZATCI_ODENIS
-      GROUP BY MAL_ALISI_MAIN_ID)t ON f.MAL_ALISI_MAIN_ID = t.MAL_ALISI_MAIN_ID)o
+SELECT 
+    MAL_ALISI_MAIN_ID,
+    SupplierDebtId,
+    [FAKTURA NÖMRƏ],
+    TARIX,
+    CAST(SUM(ISNULL(ESAS_BORC, 0.00)) AS decimal(18, 2)) AS N'ƏSAS BORC',
+    CAST(SUM(ISNULL(EDV_BORC, 0.00)) AS decimal(18, 2)) AS N'ƏDV BORC',
+    CAST(SUM(ISNULL(BORC, 0.00)) AS decimal(18, 2)) AS N'YEKUN BORC',
+    0.00 AS N'ƏDV ÖDƏ',
+    0.00 AS N'YEKUN BORC ÖDƏ'
+FROM (
+    SELECT 
+        f.MAL_ALISI_MAIN_ID,
+        f.SupplierDebtId,
+        f.[FAKTURA NÖMRƏ],
+        f.TARIX,
+        f.QİYMƏT - ISNULL(t.odenis, 0.00) AS BORC,
+        ISNULL(f.ESAS_BORC, 0.00) - ISNULL(t.ESAS_BORC_ODENIS, 0.00) AS ESAS_BORC,
+        ISNULL(f.VERGI, 0.00) - ISNULL(t.EDV_BORC, 0.00) AS EDV_BORC,
+        0 AS 'ÖDƏNİŞ'
+    FROM dbo.fn_TECHIZATCI_BORC(@pricePoint) f
+    LEFT JOIN (
+        SELECT 
+            MAL_ALISI_MAIN_ID,
+            SupplierDebtId,
+            SUM(ISNULL(ESAS_BORC_ODENIS, 0.00)) AS ESAS_BORC_ODENIS,
+            SUM(ISNULL(EDV_BORC, 0.00)) AS EDV_BORC,
+            SUM(ISNULL(ESAS_BORC_ODENIS, 0.00)) + SUM(ISNULL(EDV_BORC, 0.00)) AS odenis
+        FROM TECHIZATCI_ODENIS
+        GROUP BY MAL_ALISI_MAIN_ID, SupplierDebtId
+    ) t ON (
+        (f.MAL_ALISI_MAIN_ID IS NOT NULL AND f.MAL_ALISI_MAIN_ID = t.MAL_ALISI_MAIN_ID)
+        OR
+        (f.MAL_ALISI_MAIN_ID IS NULL AND f.SupplierDebtId = t.SupplierDebtId)
+    )
+) o
 WHERE BORC > 0.00
-GROUP BY MAL_ALISI_MAIN_ID,
-SupplierDebtId,
-         [FAKTURA NÖMRƏ],
-         TARIX";
+GROUP BY 
+    MAL_ALISI_MAIN_ID,
+    SupplierDebtId,
+    [FAKTURA NÖMRƏ],
+    TARIX;
+";
                 using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
                 {
-                    using (SqlCommand cmd = new SqlCommand(queryString,connection))
+                    using (SqlCommand cmd = new SqlCommand(queryString, connection))
                     {
                         cmd.Parameters.AddWithValue("@pricePoint", paramValue);
                         using (SqlDataAdapter da = new SqlDataAdapter(cmd))
@@ -223,40 +252,26 @@ SupplierDebtId,
             }
         }
 
-        public Decimal confirmation_total()
-        {
-            Decimal a = 0;
-            foreach (int i in gridView1.GetSelectedRows())
-            {
-                DataRow row = gridView1.GetDataRow(i);
-
-                a = (Decimal)(a + Convert.ToDecimal(row[4]));
-            }
-            return a;
-        }
-
+        
         public static string radio = "NAĞD";
         public static int r_int = 0;
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
-            //BANK
             tContractNo.Enabled = true;
             radio = "BANK";
         }
 
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
-            //NEGD
             tContractNo.Enabled = false;
             radio = "NAĞD";
         }
 
         private void simpleButton2_Click(object sender, EventArgs e)
         {
-            FormHelpers.OpenForm<TECHIZATCI_ODENILENLER>(this);
-            //TECHIZATCI_ODENILENLER TO = new TECHIZATCI_ODENILENLER(this);
-            //TO.Show();
+            FormHelpers.Alert("Müvəqqəti olaraq deaktiv edilmiştir", Enums.MessageType.Info);
+            //FormHelpers.OpenForm<TECHIZATCI_ODENILENLER>(this);
         }
     }
 }

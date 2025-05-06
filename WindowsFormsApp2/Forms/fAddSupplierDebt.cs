@@ -106,37 +106,10 @@ namespace WindowsFormsApp2.Forms
             }
         }
 
-        private void QaliqBorcHesabla(int supplierId)
+        private async void QaliqBorcHesabla(int supplierId)
         {
-            string query = @"
-            SELECT Y.BORC - X.GAYTARMA_MEBLEG AS BORC FROM( select 1 AS ID, cast(sum(isnull(BORC, 0.00)) as decimal(18, 2)) as BORC
-            FROM (SELECT f.MAL_ALISI_MAIN_ID, f.[FAKTURA NÖMRƏ],f.TARIX, f.QİYMƏT - isnull(t.odenis, 0.00) BORC,0 AS 'ÖDƏNİŞ'
-            FROM dbo.fn_TECHIZATCI_BORC(@pricePoint) f 
-            left join(select  MAL_ALISI_MAIN_ID, sum(ODENIS) odenis FROM TECHIZATCI_ODENIS
-            group by MAL_ALISI_MAIN_ID)t  on f.MAL_ALISI_MAIN_ID = t.MAL_ALISI_MAIN_ID)o )Y
-            LEFT JOIN(SELECT 1 AS ID, ISNULL(CAST(SUM(MD.ALIS_GIYMETI * D.MIGDARI) AS decimal(18, 2)), 0.00)
-            AS GAYTARMA_MEBLEG FROM MAL_GEYTARMA_MAIN M
-            INNER JOIN  MAL_GEYTARMA_DETAILS D ON
-            M.MAL_GEYTARMA_MAIN_ID = D.MAL_GEYTARMA_MAIN_ID
-            INNER JOIN MAL_ALISI_DETAILS MD ON MD.MAL_ALISI_DETAILS_ID = D.MAL_ALISI_DETAILS_ID
-            INNER JOIN MAL_ALISI_MAIN MM ON MM.MAL_ALISI_MAIN_ID = MD.MAL_ALISI_MAIN_ID
-            WHERE MM.TECHIZATCI_ID = @pricePoint)X ON X.ID = Y.ID";
-
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
-            {
-                connection.Open();
-                using (SqlCommand cmd = new SqlCommand(query, connection))
-                {
-                    cmd.Parameters.AddWithValue("@pricePoint", supplierId);
-                    using (SqlDataReader dr = cmd.ExecuteReader())
-                    {
-                        while (dr.Read())
-                        {
-                            tDebtBalance.Text = dr["BORC"].ToString();
-                        }
-                    }
-                }
-            }
+            decimal debt = await DbProsedures.GET_SupplierTotalDebt(supplierId);
+            tDebtBalance.Text = debt.ToString();
         }
 
         private void TotalDebtCalc()

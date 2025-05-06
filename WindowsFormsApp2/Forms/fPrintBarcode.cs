@@ -130,10 +130,10 @@ namespace WindowsFormsApp2.Forms
         private void bPrint_Click(object sender, EventArgs e)
         {
             int[] selectedRows = gridProducts.GetSelectedRows();
+            string companyName = _company?.CompanyName;
 
             foreach (var rowHandle in selectedRows)
             {
-                string companyName = _company?.CompanyName;
                 string barcode = gridProducts.GetRowCellValue(rowHandle, colBarcode).ToString();
                 string name = gridProducts.GetRowCellValue(rowHandle, colProductName).ToString();
                 string salesPrice = Convert.ToDouble(gridProducts.GetRowCellValue(rowHandle, coLSalePrice).ToString()).ToString("N2");
@@ -148,18 +148,18 @@ namespace WindowsFormsApp2.Forms
                     string status = RawPrinterHelper.GetPrinterDetailedStatus(lookPrinters.Text);
                     if (status is "Online")
                     {
+                        Enums.BarcodeType barcodeType = Enums.BarcodeType.Code128;
+                        if (barcode.Length is 13)
+                        {
+                            barcodeType = BarcodeType.EAN13;
+                        }
+                        else
+                        {
+                            barcodeType = BarcodeType.Code128;
+                        }
+
                         if ((PrintType)lookPrintType.EditValue is PrintType.minimum)
                         {
-                            Enums.BarcodeType barcodeType = Enums.BarcodeType.Code128;
-                            if (barcode.Length is 13)
-                            {
-                                barcodeType = BarcodeType.EAN13;
-                            }
-                            else
-                            {
-                                barcodeType = BarcodeType.Code128;
-                            }
-
                             for (int i = 0; i < printCount; i++)
                             {
                                 PrinterCacheData.PrintLabel30x20(name.Trim(), salesPrice, barcode.Trim(), lookPrinters.Text, barcodeType);
@@ -180,29 +180,6 @@ namespace WindowsFormsApp2.Forms
                         return;
                     }
                 }
-
-                //_productName = name;
-                //_salePrice = salesPrice;
-                //_barcode = barcode;
-
-                //_printType = (PrintType)lookPrintType.EditValue;
-                //_barcodeImage = GenerateBarcode(_barcode, 0, _productName, _salePrice);
-
-                //PrintDocument pd = new PrintDocument();
-                //pd.DefaultPageSettings = new PageSettings
-                //{
-                //    PaperSize = new PrinterSettings().DefaultPageSettings.PaperSize
-                //};
-                //pd.DocumentName = $"Name_{name} - Barkod_{barcode}";
-                //pd.PrintPage += new PrintPageEventHandler(printbarkod);
-                //pd.PrinterSettings.PrinterName = new System.Drawing.Printing.PrinterSettings().PrinterName;
-
-                //PrintDialog PrintDialog1 = new PrintDialog
-                //{
-                //    Document = pd
-                //};
-
-                //pd.Print();
             }
             this.Show();
         }

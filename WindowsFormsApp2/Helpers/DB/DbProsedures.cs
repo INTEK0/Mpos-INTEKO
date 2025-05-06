@@ -2005,6 +2005,30 @@ WHERE BARKOD = '{barcode}'";
             }
         }
 
+        public static async Task<decimal> GET_SupplierTotalDebt(int supplierId)
+        {
+            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                await connection.OpenAsync();
+                string query = "sp_GetSupplierDebt";
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@SupplierId", supplierId);
+                    SqlParameter outputParam = new SqlParameter("@BORC", SqlDbType.Decimal)
+                    {
+                        Precision = 18,
+                        Scale = 2,
+                        Direction = ParameterDirection.Output
+                    };
+                    cmd.Parameters.Add(outputParam);
+                    await cmd.ExecuteNonQueryAsync();
+
+                    return (decimal)outputParam.Value;
+                }
+            }
+        }
+
         #endregion [..SUPPLİERS..]
 
 
