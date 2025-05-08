@@ -7,6 +7,7 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Windows.Forms;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
@@ -381,7 +382,7 @@ namespace WindowsFormsApp2.NKA
                 string name = dr["name"].ToString();
                 string code = dr["code"].ToString();
                 decimal salePrice = Convert.ToDecimal(dr["salePrice"]);
-                double quantity = Convert.ToDouble(dr["quantity"]);
+                decimal quantity = Convert.ToDecimal(dr["quantity"]);
                 int vatType = Convert.ToInt32(dr["vatType"]);
                 int quantityType = Convert.ToInt32(dr["quantityType"]);
                 decimal discount = Convert.ToDecimal(dr["discount"]);
@@ -419,6 +420,8 @@ namespace WindowsFormsApp2.NKA
                 operation = "sale",
             };
 
+            decimal totalSum = (decimal)items.Sum(x => (x.salePrice * x.quantity) - x.discountAmount);
+
             string json = Newtonsoft.Json.JsonConvert.SerializeObject(rootObject, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
@@ -437,7 +440,7 @@ namespace WindowsFormsApp2.NKA
                         proccessNo = salesData.ProccessNo,
                         cash = salesData.Cash,
                         card = salesData.Card,
-                        total = salesData.Total,
+                        total = totalSum,
                         json = json,
                         shortFiskalId = response.data.short_document_id,
                         rrn = response.data.rrn,
@@ -539,7 +542,7 @@ namespace WindowsFormsApp2.NKA
                 string name = dr["name"].ToString();
                 string code = dr["code"].ToString();
                 decimal salePrice = Convert.ToDecimal(dr["satis_giymet"]);
-                double quantity = Convert.ToDouble(dr["say"]);
+                decimal quantity = Convert.ToDecimal(dr["say"]);
                 int vatType = Convert.ToInt32(dr["vtypes"]);
                 int quantityType = Convert.ToInt32(dr["quantity_type"]);
                 double ssum = Convert.ToDouble(dr["tutar"]);
@@ -971,7 +974,7 @@ WHERE psd.pos_satis_check_main_id = {pos_satis_main_id} AND psm.user_id_ = {Prop
         {
             public string name { get; set; }
             public string code { get; set; }
-            public double quantity { get; set; }
+            public decimal quantity { get; set; }
             public decimal salePrice { get; set; }
             public double? realPrice { get; set; } = null;
             public decimal? purchasePrice { get; set; } = null;

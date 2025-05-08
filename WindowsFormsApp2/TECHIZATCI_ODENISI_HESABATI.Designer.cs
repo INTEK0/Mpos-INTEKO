@@ -34,8 +34,9 @@ namespace WindowsFormsApp2
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn16 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -77,7 +78,6 @@ namespace WindowsFormsApp2
             this.separatorControl4 = new DevExpress.XtraEditors.SeparatorControl();
             this.separatorControl2 = new DevExpress.XtraEditors.SeparatorControl();
             this.bBack = new DevExpress.XtraEditors.SimpleButton();
-            this.gridColumn16 = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
@@ -131,8 +131,8 @@ namespace WindowsFormsApp2
             this.gridColumn1,
             this.gridColumn2,
             this.gridColumn16,
-            this.gridColumn3,
             this.gridColumn4,
+            this.gridColumn3,
             this.gridColumn5,
             this.gridColumn6,
             this.gridColumn13,
@@ -162,6 +162,21 @@ namespace WindowsFormsApp2
             this.gridColumn2.FieldName = "SupplierDebtId";
             this.gridColumn2.Name = "gridColumn2";
             // 
+            // gridColumn16
+            // 
+            this.gridColumn16.Caption = "SupplierId";
+            this.gridColumn16.FieldName = "TECHIZATCI_ID";
+            this.gridColumn16.Name = "gridColumn16";
+            // 
+            // gridColumn4
+            // 
+            this.gridColumn4.Caption = "İSTİFADƏÇİ ADI";
+            this.gridColumn4.FieldName = "İSTİFADƏÇİ ADI";
+            this.gridColumn4.Name = "gridColumn4";
+            this.gridColumn4.Visible = true;
+            this.gridColumn4.VisibleIndex = 0;
+            this.gridColumn4.Width = 170;
+            // 
             // gridColumn3
             // 
             this.gridColumn3.Caption = "TARİX";
@@ -172,15 +187,6 @@ namespace WindowsFormsApp2
             this.gridColumn3.Visible = true;
             this.gridColumn3.VisibleIndex = 1;
             this.gridColumn3.Width = 130;
-            // 
-            // gridColumn4
-            // 
-            this.gridColumn4.Caption = "İSTİFADƏÇİ ADI";
-            this.gridColumn4.FieldName = "İSTİFADƏÇİ ADI";
-            this.gridColumn4.Name = "gridColumn4";
-            this.gridColumn4.Visible = true;
-            this.gridColumn4.VisibleIndex = 0;
-            this.gridColumn4.Width = 170;
             // 
             // gridColumn5
             // 
@@ -622,6 +628,8 @@ namespace WindowsFormsApp2
             this.tContractDebtBalance.Properties.AppearanceDisabled.ForeColor = System.Drawing.Color.Black;
             this.tContractDebtBalance.Properties.AppearanceDisabled.Options.UseFont = true;
             this.tContractDebtBalance.Properties.AppearanceDisabled.Options.UseForeColor = true;
+            this.tContractDebtBalance.Properties.AppearanceDisabled.Options.UseTextOptions = true;
+            this.tContractDebtBalance.Properties.AppearanceDisabled.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.tContractDebtBalance.Properties.AppearanceReadOnly.Options.UseTextOptions = true;
             this.tContractDebtBalance.Properties.AppearanceReadOnly.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.tContractDebtBalance.Size = new System.Drawing.Size(232, 34);
@@ -656,10 +664,16 @@ namespace WindowsFormsApp2
             this.tContractDebt.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
             this.tContractDebt.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tContractDebt.Properties.Appearance.Options.UseFont = true;
+            this.tContractDebt.Properties.Appearance.Options.UseTextOptions = true;
+            this.tContractDebt.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.tContractDebt.Properties.AppearanceDisabled.Font = new System.Drawing.Font("Tahoma", 12F);
             this.tContractDebt.Properties.AppearanceDisabled.ForeColor = System.Drawing.Color.Black;
             this.tContractDebt.Properties.AppearanceDisabled.Options.UseFont = true;
             this.tContractDebt.Properties.AppearanceDisabled.Options.UseForeColor = true;
+            this.tContractDebt.Properties.AppearanceDisabled.Options.UseTextOptions = true;
+            this.tContractDebt.Properties.AppearanceDisabled.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.tContractDebt.Properties.AppearanceReadOnly.Options.UseTextOptions = true;
+            this.tContractDebt.Properties.AppearanceReadOnly.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.tContractDebt.Size = new System.Drawing.Size(232, 34);
             this.tContractDebt.TabIndex = 20;
             this.tContractDebt.TabStop = false;
@@ -717,10 +731,10 @@ namespace WindowsFormsApp2
             | System.Windows.Forms.AnchorStyles.Left)));
             this.separatorControl4.AutoSizeMode = true;
             this.separatorControl4.LineOrientation = System.Windows.Forms.Orientation.Vertical;
-            this.separatorControl4.Location = new System.Drawing.Point(300, 56);
+            this.separatorControl4.Location = new System.Drawing.Point(300, 83);
             this.separatorControl4.Name = "separatorControl4";
             this.separatorControl4.Padding = new System.Windows.Forms.Padding(3);
-            this.separatorControl4.Size = new System.Drawing.Size(7, 217);
+            this.separatorControl4.Size = new System.Drawing.Size(7, 180);
             this.separatorControl4.TabIndex = 0;
             this.separatorControl4.Visible = false;
             // 
@@ -750,12 +764,6 @@ namespace WindowsFormsApp2
             this.bBack.TabIndex = 12;
             this.bBack.Text = "Geri";
             this.bBack.Click += new System.EventHandler(this.bBack_Click);
-            // 
-            // gridColumn16
-            // 
-            this.gridColumn16.Caption = "SupplierId";
-            this.gridColumn16.FieldName = "TECHIZATCI_ID";
-            this.gridColumn16.Name = "gridColumn16";
             // 
             // TECHIZATCI_ODENISI_HESABATI
             // 

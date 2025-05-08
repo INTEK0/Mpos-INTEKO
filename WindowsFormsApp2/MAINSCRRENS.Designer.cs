@@ -124,10 +124,6 @@ namespace WindowsFormsApp2
             this.accordionControlElement14 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement15 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement16 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
-            this.accordionControlElement17 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
-            this.accordionControlElement18 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
-            this.accordionControlElement19 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
-            this.accordionControlElement20 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement21 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement22 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement23 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
@@ -135,6 +131,10 @@ namespace WindowsFormsApp2
             this.accordionControlElement25 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement26 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement27 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
+            this.accordionControlElement17 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
+            this.accordionControlElement18 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
+            this.accordionControlElement19 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
+            this.accordionControlElement20 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement28 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement29 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement62 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
@@ -791,17 +791,18 @@ namespace WindowsFormsApp2
             this.chShowStock.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.chShowStock.Appearance.Options.UseFont = true;
             this.chShowStock.AutoSize = true;
+            this.chShowStock.Checked = true;
+            this.chShowStock.Dock = System.Windows.Forms.DockStyle.Left;
             this.chShowStock.GroupIndex = 1;
-            this.chShowStock.Location = new System.Drawing.Point(210, 2);
+            this.chShowStock.Location = new System.Drawing.Point(207, 2);
             this.chShowStock.LookAndFeel.SkinName = "WXI";
             this.chShowStock.LookAndFeel.UseDefaultLookAndFeel = false;
             this.chShowStock.Margin = new System.Windows.Forms.Padding(2, 0, 3, 0);
             this.chShowStock.Name = "chShowStock";
             this.chShowStock.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.chShowStock.Size = new System.Drawing.Size(132, 28);
+            this.chShowStock.Size = new System.Drawing.Size(81, 29);
             this.chShowStock.TabIndex = 12;
-            this.chShowStock.TabStop = false;
-            this.chShowStock.Text = "Anbar qalığını göstər";
+            this.chShowStock.Text = "Anbar qalığı";
             this.chShowStock.CheckedChanged += new System.EventHandler(this.chShowStock_CheckedChanged);
             // 
             // chStockDecreasingAmount
@@ -810,7 +811,6 @@ namespace WindowsFormsApp2
             this.chStockDecreasingAmount.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.chStockDecreasingAmount.Appearance.Options.UseFont = true;
             this.chStockDecreasingAmount.AutoSize = true;
-            this.chStockDecreasingAmount.Checked = true;
             this.chStockDecreasingAmount.Dock = System.Windows.Forms.DockStyle.Left;
             this.chStockDecreasingAmount.GroupIndex = 1;
             this.chStockDecreasingAmount.Location = new System.Drawing.Point(2, 2);
@@ -821,7 +821,9 @@ namespace WindowsFormsApp2
             this.chStockDecreasingAmount.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
             this.chStockDecreasingAmount.Size = new System.Drawing.Size(205, 29);
             this.chStockDecreasingAmount.TabIndex = 11;
+            this.chStockDecreasingAmount.TabStop = false;
             this.chStockDecreasingAmount.Text = "Miqdarı az olan məhsulları göstər";
+            this.chStockDecreasingAmount.Visible = false;
             this.chStockDecreasingAmount.CheckedChanged += new System.EventHandler(this.chStockDecreasingAmount_CheckedChanged);
             // 
             // bGridExcelExport
@@ -1738,39 +1740,6 @@ namespace WindowsFormsApp2
             this.accordionControlElement16.Text = "Obyekten Anbara";
             this.accordionControlElement16.Click += new System.EventHandler(this.accordionControlElement16_Click);
             // 
-            // accordionControlElement17
-            // 
-            this.accordionControlElement17.Appearance.Normal.ForeColor = System.Drawing.Color.White;
-            this.accordionControlElement17.Appearance.Normal.Options.UseForeColor = true;
-            this.accordionControlElement17.Elements.AddRange(new DevExpress.XtraBars.Navigation.AccordionControlElement[] {
-            this.accordionControlElement18,
-            this.accordionControlElement19,
-            this.accordionControlElement20});
-            this.accordionControlElement17.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("accordionControlElement17.ImageOptions.SvgImage")));
-            this.accordionControlElement17.Name = "accordionControlElement17";
-            this.accordionControlElement17.Text = "Ödənişlər";
-            // 
-            // accordionControlElement18
-            // 
-            this.accordionControlElement18.Name = "accordionControlElement18";
-            this.accordionControlElement18.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
-            this.accordionControlElement18.Text = "Nağd ödənişlər";
-            this.accordionControlElement18.Click += new System.EventHandler(this.accordionControlElement18_Click);
-            // 
-            // accordionControlElement19
-            // 
-            this.accordionControlElement19.Name = "accordionControlElement19";
-            this.accordionControlElement19.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
-            this.accordionControlElement19.Text = "Bank ödənişlər";
-            this.accordionControlElement19.Click += new System.EventHandler(this.accordionControlElement19_Click);
-            // 
-            // accordionControlElement20
-            // 
-            this.accordionControlElement20.Name = "accordionControlElement20";
-            this.accordionControlElement20.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
-            this.accordionControlElement20.Text = "Müştəridən ödənişlər";
-            this.accordionControlElement20.Click += new System.EventHandler(this.accordionControlElement20_Click);
-            // 
             // accordionControlElement21
             // 
             this.accordionControlElement21.Appearance.Normal.ForeColor = System.Drawing.Color.White;
@@ -1827,6 +1796,39 @@ namespace WindowsFormsApp2
             this.accordionControlElement27.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
             this.accordionControlElement27.Text = "Borc Kredit Hesabatı";
             this.accordionControlElement27.Click += new System.EventHandler(this.accordionControlElement27_Click);
+            // 
+            // accordionControlElement17
+            // 
+            this.accordionControlElement17.Appearance.Normal.ForeColor = System.Drawing.Color.White;
+            this.accordionControlElement17.Appearance.Normal.Options.UseForeColor = true;
+            this.accordionControlElement17.Elements.AddRange(new DevExpress.XtraBars.Navigation.AccordionControlElement[] {
+            this.accordionControlElement18,
+            this.accordionControlElement19,
+            this.accordionControlElement20});
+            this.accordionControlElement17.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("accordionControlElement17.ImageOptions.SvgImage")));
+            this.accordionControlElement17.Name = "accordionControlElement17";
+            this.accordionControlElement17.Text = "Ödənişlər";
+            // 
+            // accordionControlElement18
+            // 
+            this.accordionControlElement18.Name = "accordionControlElement18";
+            this.accordionControlElement18.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
+            this.accordionControlElement18.Text = "Nağd ödənişlər";
+            this.accordionControlElement18.Click += new System.EventHandler(this.accordionControlElement18_Click);
+            // 
+            // accordionControlElement19
+            // 
+            this.accordionControlElement19.Name = "accordionControlElement19";
+            this.accordionControlElement19.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
+            this.accordionControlElement19.Text = "Bank ödənişlər";
+            this.accordionControlElement19.Click += new System.EventHandler(this.accordionControlElement19_Click);
+            // 
+            // accordionControlElement20
+            // 
+            this.accordionControlElement20.Name = "accordionControlElement20";
+            this.accordionControlElement20.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
+            this.accordionControlElement20.Text = "Müştəridən ödənişlər";
+            this.accordionControlElement20.Click += new System.EventHandler(this.accordionControlElement20_Click);
             // 
             // accordionControlElement28
             // 

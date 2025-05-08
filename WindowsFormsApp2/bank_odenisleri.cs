@@ -18,7 +18,6 @@ namespace WindowsFormsApp2
             FormHelpers.GridPanelText(gridView1);
             t_odenis_user_id = t_user_id;
         }
-        techizatci_odenis t = new techizatci_odenis();
         private void bank_odenisleri_Load(object sender, EventArgs e)
         {
             DateTime dateTime = DateTime.UtcNow.Date;
@@ -60,55 +59,12 @@ namespace WindowsFormsApp2
 
         }
 
-        private void getsum(int paramValue)
+        private async void getsum(int paramValue)
         {
-            string queryString = @"SELECT 
-    CAST(SUM(ISNULL(BORC, 0.00)) AS decimal(18, 2)) AS BORC,
-    CAST(SUM(ISNULL(ESAS_BORC, 0.00)) AS decimal(18, 2)) AS ESAS_BORC,
-    CAST(SUM(ISNULL(EDV_BORC, 0.00)) AS decimal(18, 2)) AS EDV_BORC 
-FROM (
-    SELECT 
-        f.MAL_ALISI_MAIN_ID,
-        f.SupplierDebtId,
-        f.[FAKTURA NÖMRƏ], 
-        f.TARIX,
-        f.QİYMƏT - ISNULL(t.odenis, 0.00) AS BORC, 
-        ISNULL(f.ESAS_BORC, 0.00) - ISNULL(t.ESAS_BORC_ODENIS, 0.00) AS ESAS_BORC,
-        ISNULL(f.VERGI, 0.00) - ISNULL(t.EDV_BORC, 0.00) AS EDV_BORC,
-        0 AS 'ÖDƏNİŞ'
-    FROM dbo.fn_TECHIZATCI_BORC(@pricePoint) f 
-    LEFT JOIN (
-        SELECT  
-            MAL_ALISI_MAIN_ID, 
-            SupplierDebtId,
-            SUM(ISNULL(ESAS_BORC_ODENIS, 0.00)) AS ESAS_BORC_ODENIS,
-            SUM(ISNULL(EDV_BORC, 0.00)) AS EDV_BORC,
-            SUM(ISNULL(ESAS_BORC_ODENIS, 0.00)) + SUM(ISNULL(EDV_BORC, 0.00)) AS odenis
-        FROM TECHIZATCI_ODENIS 
-        GROUP BY MAL_ALISI_MAIN_ID, SupplierDebtId
-    ) t ON (
-        (f.MAL_ALISI_MAIN_ID IS NOT NULL AND f.MAL_ALISI_MAIN_ID = t.MAL_ALISI_MAIN_ID)
-        OR
-        (f.MAL_ALISI_MAIN_ID IS NULL AND f.SupplierDebtId = t.SupplierDebtId)
-    )
-) o
-";
-
-            SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString);
-            SqlCommand cmd = new SqlCommand();
-            SqlCommand command = new SqlCommand(queryString, connection);
-
-            command.Parameters.AddWithValue("@pricePoint", paramValue);
-
-            connection.Open();
-            SqlDataReader dr = command.ExecuteReader();
-            while (dr.Read())
-            {
-                textEdit14.Text = dr["BORC"].ToString();
-                textEdit2.Text = dr["ESAS_BORC"].ToString();
-                textEdit1.Text = dr["EDV_BORC"].ToString();
-            }
-            connection.Close();
+            var debt = await DbProsedures.GET_SupplierTotalDebt(paramValue);
+            textEdit14.Text = debt.totalAmount.ToString("N2");
+            textEdit2.Text = debt.mainAmount.ToString("N2");
+            textEdit1.Text = debt.taxAmount.ToString("N2");
         }
 
         private void getall(int paramValue)
@@ -252,7 +208,7 @@ GROUP BY
             }
         }
 
-        
+
         public static string radio = "NAĞD";
         public static int r_int = 0;
 

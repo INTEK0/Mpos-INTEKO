@@ -474,35 +474,26 @@ SELECT [Id]
 
         public void get_cem(string emeliyyat_n)
         {
+            decimal total = 0;
+
+            for (int i = 0; i < gridView1.RowCount; i++)
+            {
+                var deger = gridView1.GetRowCellValue(i, "TOPLAM");
+                if (deger != null && decimal.TryParse(deger.ToString(), out decimal d))
+                {
+                    total += Math.Truncate(d * 100) / 100;
+                }
+            }
+
+            textEdit6.Text = total.ToString("0.00");
+
+            //Yekun məbləğin hesablanmasının kodu sqldən ayrılıb c# üzərindən edildiyi üçün bu kod ləğv edildi
+            /*
             try
             {
                 using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
                 {
                     connection.Open();
-
-                    //Yuvarlama etdiyi üçün bu kod deaktiv edilmiştir
-                    //                    string query = @"
-                    //                  select CAST(
-                    //    ROUND(
-                    //        sum(s - (s * ISNULL(pg.endirim_faiz, 0.00)) / 100.00 - ISNULL(pg.endiriz_azn, 0.00)), 
-                    //        2, 
-                    //        1
-                    //    ) 
-                    //    AS decimal(9,2)
-                    //) as cem
-                    //from (
-                    //    select mal_alisi_details_id, 
-                    //           satis_qiymeti * count(*) * 
-                    //           (case when sum(isnull(kg_, 0.00)) != 0.00 then sum(isnull(kg_, 0.00)) else 1 end) s 
-                    //    from calculation 
-                    //    where emeliyyat_nomre = @pricePoint AND userId = @userID
-                    //    group by satis_qiymeti, mal_alisi_details_id
-                    //) tx 
-                    //left join pos_guzest pg 
-                    //    on pg.mal_details_id = tx.mal_alisi_details_id and pg.emeliyyat_nomre = @pricePoint";
-
-
-
 
                     string query = @"
                   SELECT CAST(
@@ -532,7 +523,7 @@ LEFT JOIN pos_guzest pg
                             {
                                 if (dr["cem"].ToString() != "0.000")
                                 {
-                                    textEdit6.Text = dr["cem"].ToString();
+                              //      textEdit6.Text = dr["cem"].ToString();
                                 }
                             }
                             gridView1.GroupPanelText = $"Məhsul sayı: {gridView1.RowCount}";
@@ -544,6 +535,7 @@ LEFT JOIN pos_guzest pg
             {
                 ReadyMessages.ERROR_DEFAULT_MESSAGE("Xəta!\n" + e.Message);
             }
+*/
         }
 
         /// <summary>
@@ -555,43 +547,6 @@ LEFT JOIN pos_guzest pg
         {
             try
             {
-                /*
-                using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
-                {
-                    string queryString = "SELECT * FROM  dbo.fn_POS_SATIS_LOAD(@EMELIYYAT_NOMRE,@userID)";
-                    Start:
-                    if (connection.State == ConnectionState.Open)
-                    {
-                        using (SqlCommand command = new SqlCommand(queryString, connection))
-                        {
-                            command.Parameters.AddWithValue("@EMELIYYAT_NOMRE", proccessNo);
-                            command.Parameters.AddWithValue("@userID", Properties.Settings.Default.UserID);
-                            using (SqlDataAdapter da = new SqlDataAdapter(command))
-                            {
-                                using (DataTable dt = new DataTable())
-                                {
-                                    da.Fill(dt);
-                                    gridControl1.DataSource = dt;
-                                    gridView1.OptionsSelection.MultiSelect = true;
-                                    gridView1.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
-
-                                    gridView1.Columns[0].Visible = false;
-                                    gridView1.Columns[8].Visible = false;
-                                    gridView1.Columns[9].Visible = false;
-                                    gridView1.Columns["ALIŞ QİYMƏTİ"].Visible = false;
-                                    gridView1.Columns["BARKOD"].Visible = false;
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        await connection.OpenAsync();
-                        goto Start;
-                    }
-                }
-                */
-
                 Cursor.Current = Cursors.WaitCursor;
                 using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
                 {
@@ -607,20 +562,8 @@ LEFT JOIN pos_guzest pg
                         using (SqlDataReader reader = await command.ExecuteReaderAsync())
                         {
                             DataTable dt = new DataTable();
-                            dt.Load(reader); // reader'dan datayı alıp tabloya yükler
+                            dt.Load(reader);
                             gridControl1.DataSource = dt;
-
-                            //gridView1.OptionsSelection.MultiSelect = true;
-                            //gridView1.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
-
-                            //if (dt.Columns.Contains("ALIŞ QİYMƏTİ"))
-                            //    gridView1.Columns["ALIŞ QİYMƏTİ"].Visible = false;
-                            //if (dt.Columns.Contains("BARKOD"))
-                            //    gridView1.Columns["BARKOD"].Visible = false;
-
-                            //gridView1.Columns[0].Visible = false;
-                            //gridView1.Columns[8].Visible = false;
-                            //gridView1.Columns[9].Visible = false;
                         }
                     }
                 }
@@ -634,6 +577,7 @@ LEFT JOIN pos_guzest pg
                 Cursor.Current = Cursors.Default;
             }
         }
+
 
         private void get_say_birmal(string barkod, string em_nomre)
         {
@@ -2225,6 +2169,15 @@ LEFT JOIN pos_guzest pg
         private void bControlTape_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             Omnitech.ControlTape(lIpAdress.Text, null);
+        }
+
+        private void gridView1_CustomColumnDisplayText(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventArgs e)
+        {
+            if (e.Column.FieldName == "TOPLAM" && e.Value != null && decimal.TryParse(e.Value.ToString(), out decimal val))
+            {
+                decimal truncated = Math.Truncate(val * 100) / 100;
+                e.DisplayText = truncated.ToString("0.00");
+            }
         }
 
         private void bAddProduct_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)

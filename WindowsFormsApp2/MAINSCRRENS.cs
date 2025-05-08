@@ -555,8 +555,8 @@ FROM[terazimalzeme]";
                 await StockProductsList(); //Anbar qalığı
                 //StockDecreasingAmountLoad(); //Miqdarı az olan məhsullar
                 await TotalSalesInformation(); //Cari satış hesabatı
-                TotalRefundInformation(); //Cari qaytarma hesabatı
-                TotalPurchaseInformation(); //Cari alış hesabatı
+                await TotalRefundInformation(); //Cari qaytarma hesabatı
+               await TotalPurchaseInformation(); //Cari alış hesabatı
                 BestsellingProducts(); //Ən çox satılan məhsullar
                 ExpensesDataLoad(); //Cari xərclər
             }
@@ -572,10 +572,10 @@ FROM[terazimalzeme]";
             try
             {
                 BestsellingProducts(); //Ən çox satılan məhsullar
-                StockDecreasingAmountLoad(); //Miqdarı az olan məhsullar
+               // StockDecreasingAmountLoad(); //Miqdarı az olan məhsullar
                 await TotalSalesInformation(); //Cari satış hesabatı
-                TotalRefundInformation(); //Cari qaytarma hesabatı
-                TotalPurchaseInformation(); //Cari alış hesabatı
+                await TotalRefundInformation(); //Cari qaytarma hesabatı
+                await TotalPurchaseInformation(); //Cari alış hesabatı
                 ExpensesDataLoad(); //Cari xərclər
             }
             catch (Exception ex)
@@ -657,42 +657,15 @@ ORDER BY TotalAmount DESC;";
             {
                 await con.OpenAsync();
 
-                //Əvvəlki kod. Nerolidəki müştərinin bildirdiyi problemdən etibarən kodda düzəliş edildi
-                #region
-                //string query = $@"SELECT 
-                //ISNULL(SUM(t.TotalSalePrice), 0) AS TotalSalePrice,
-                //ISNULL(SUM(t.SalesCount), 0) AS TotalSalesCount
-                //FROM (
-                //-- pos_satis_check_details cədvəlindəki datalar
-                //SELECT 
-                //ISNULL(SUM(CAST(p.count_ AS DECIMAL(18, 3)) * CAST(p.satis_giymet AS DECIMAL(18, 3))),0) AS TotalSalePrice,
-                //ISNULL(SUM(CAST(p.count_ AS DECIMAL(18, 3))),0) AS SalesCount
-                //FROM [dbo].[pos_satis_check_details] p
-                //JOIN [dbo].[pos_satis_check_main] pm ON p.[pos_satis_check_main_id] = pm.[pos_satis_check_main_id]
-                //WHERE CAST(pm.date_ AS DATE) = CAST(GETDATE() AS DATE)
-
-                //UNION ALL
-
-                //-- GAIME_SATISI_DETAILS cədvəlindəki datalar
-                //SELECT 
-                //ISNULL(SUM(CAST(g.YEKUN_MEBLEG AS DECIMAL(18, 3))),0) AS TotalSalePrice,
-                //ISNULL(SUM(CAST(g.MIGDARI AS DECIMAL(18, 3))),0) AS SalesCount
-                //FROM [dbo].[GAIME_SATISI_DETAILS] g
-                //WHERE CAST(g.TARIX AS DATE) = CAST(GETDATE() AS DATE)) t;";
-
-                #endregion
-
                 string query = $@"SELECT 
     ROUND(SUM(t.TotalSalePrice), 2, 1) AS TotalSalePrice,
     ROUND(SUM(t.SalesCount), 2, 1) AS TotalSalesCount
 FROM (
     -- pos_satis_check_details cədvəlindəki datalar
-    SELECT 
-        ISNULL(SUM(CAST(p.count_ AS DECIMAL(18, 5)) * CAST(p.satis_giymet AS DECIMAL(18, 5))), 0) AS TotalSalePrice,
-        ISNULL(SUM(CAST(p.count_ AS DECIMAL(18, 3))), 0) AS SalesCount
-    FROM [dbo].[pos_satis_check_details] p
-    JOIN [dbo].[pos_satis_check_main] pm 
-        ON p.[pos_satis_check_main_id] = pm.[pos_satis_check_main_id]
+      SELECT 
+          ISNULL(SUM(CAST(pm.UMUMI_MEBLEG AS DECIMAL(18, 5))), 0) AS TotalSalePrice,
+        ISNULL(COUNT(DISTINCT pm.pos_nomre), 0) AS SalesCount
+    FROM [dbo].[pos_satis_check_main] pm
     WHERE CAST(pm.date_ AS DATE) = CAST(GETDATE() AS DATE)
 
     UNION ALL
@@ -700,7 +673,7 @@ FROM (
     -- GAIME_SATISI_DETAILS cədvəlindəki datalar
     SELECT 
         ISNULL(SUM(CAST(g.YEKUN_MEBLEG AS DECIMAL(18, 5))), 0) AS TotalSalePrice,
-        ISNULL(SUM(CAST(g.MIGDARI AS DECIMAL(18, 3))), 0) AS SalesCount
+       ISNULL(COUNT(DISTINCT g.GAIME_SATISI_DETAILS_ID), 0) AS SalesCount
     FROM [dbo].[GAIME_SATISI_DETAILS] g
     WHERE CAST(g.TARIX AS DATE) = CAST(GETDATE() AS DATE)
 ) t;
@@ -710,10 +683,10 @@ FROM (
                 {
                     using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
                     {
-                        while (await dr.ReadAsync())
+                        if (await dr.ReadAsync())
                         {
                             lSalePriceTotal.Text = Convert.ToDecimal(dr["TotalSalePrice"]).ToString("C2");
-                            lSalesCount.Text = Convert.ToDecimal(dr["TotalSalesCount"]).ToString("N2");
+                            lSalesCount.Text = Convert.ToDecimal(dr["TotalSalesCount"]).ToString("N0");
                         }
                     }
                 }
@@ -723,38 +696,38 @@ FROM (
         /// <summary>
         /// CARİ QAYTARMA HESABATI
         /// </summary>
-        private void TotalRefundInformation()
+        private async Task TotalRefundInformation()
         {
             using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
             {
-                con.Open();
+                await con.OpenAsync();
                 string query = $@"SELECT 
                 ISNULL(SUM(t.TotalRefundPrice),0) AS TotalRefundPrice,
                 ISNULL(SUM(t.RefundCount),0) AS TotalRefundCount
                 FROM (
                 -- pos_gaytarma_manual cədvəlindəki datalar
                 SELECT 
-                ISNULL(SUM(CAST(pg.say AS DECIMAL(18, 2)) * CAST(pd.satis_giymet AS DECIMAL(18, 2))),0) AS TotalRefundPrice,
-                ISNULL(SUM(CAST(pg.say AS DECIMAL(18, 2))),0) AS RefundCount
+                ISNULL(SUM(CAST(pm.UMUMI_MEBLEG AS DECIMAL(18, 5))), 0) AS TotalRefundPrice,
+                ISNULL(COUNT(DISTINCT pg.pos_gaytarma_manual_id), 0) AS RefundCount
                 FROM [dbo].pos_gaytarma_manual pg
-                JOIN [dbo].pos_satis_check_details pd ON pg.pos_satis_check_details = pd.pos_satis_check_details_id
+                INNER JOIN pos_satis_check_main pm ON pm.pos_satis_check_main_id = pg.pos_satis_check_main_id
                 WHERE CAST(pg.date_ AS DATE) = CAST(GETDATE() AS DATE)
 
                 UNION ALL
-
+ 
                 -- gaime_satis_gaytarma cədvəlindəki datalar
                 SELECT 
                 ISNULL(SUM(CAST(gd.SATIS_GIYMETI AS DECIMAL(18, 2)) * CAST(g.migdar AS DECIMAL(18, 2))),0) AS TotalRefundPrice,
-                ISNULL(SUM(CAST(g.migdar AS DECIMAL(18, 2))),0) AS RefundCount
+                ISNULL(COUNT(DISTINCT gd.GAIME_SATISI_DETAILS_ID), 0) AS RefundCount
                 FROM [dbo].gaime_satis_gaytarma g
-	            JOIN [dbo].GAIME_SATISI_DETAILS gd ON g.gaime_satis_details_id = gd.GAIME_SATISI_DETAILS_ID
+                JOIN [dbo].GAIME_SATISI_DETAILS gd ON g.gaime_satis_details_id = gd.GAIME_SATISI_DETAILS_ID
                 WHERE CAST(g.tarix_ AS DATE) = CAST(GETDATE() AS DATE)) t;";
 
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
-                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
                     {
-                        while (dr.Read())
+                        if (await dr.ReadAsync())
                         {
                             lRefuntPrice.Text = Convert.ToDecimal(dr["TotalRefundPrice"]).ToString("C2");
                             lRefundCount.Text = dr["TotalRefundCount"].ToString();
@@ -767,11 +740,11 @@ FROM (
         /// <summary>
         /// CARİ ALIŞ HESABATI
         /// </summary>
-        private void TotalPurchaseInformation()
+        private async Task TotalPurchaseInformation()
         {
             using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
             {
-                con.Open();
+                await con.OpenAsync();
                 string query = $@"SELECT 
                 ISNULL(SUM(t.TotalPruchasePrice),0) AS TotalPurchasePrice,
                 ISNULL(SUM(t.PurchaseCount),0) AS TotalPurchaseCount
@@ -786,9 +759,9 @@ FROM (
 
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
-                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
                     {
-                        while (dr.Read())
+                        if (await dr.ReadAsync())
                         {
                             lPurchaseTotalPrice.Text = Convert.ToDecimal(dr["TotalPurchasePrice"]).ToString("C2");
                             lPurchaseCount.Text = dr["TotalPurchaseCount"].ToString();
@@ -803,17 +776,17 @@ FROM (
             CheckButton checkEdit = (CheckButton)sender;
             if (checkEdit.Checked)
             {
-               await StockProductsList();
+                await StockProductsList();
             }
         }
 
         private void chStockDecreasingAmount_CheckedChanged(object sender, EventArgs e)
         {
-            CheckButton checkEdit = (CheckButton)sender;
-            if (checkEdit.Checked)
-            {
-                StockDecreasingAmountLoad();
-            }
+            //CheckButton checkEdit = (CheckButton)sender;
+            //if (checkEdit.Checked)
+            //{
+            //    StockDecreasingAmountLoad();
+            //}
         }
 
         private void bGridExcelExport_Click(object sender, EventArgs e)
@@ -932,36 +905,37 @@ FROM (
         /// <summary>
         /// Miqdarı az olan məhsulları göstərilməsi
         /// </summary>
-        private async void StockDecreasingAmountLoad()
+        private void StockDecreasingAmountLoad()
         {
-            Cursor.Current = Cursors.WaitCursor;
-            if (chStockAmount.Checked)
-            {
-                gridProducts.ViewCaption = "Miqdarı az olan məhsullar";
-                using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
-                {
-                    string query = $@"exec [StockDecreasingAmount]";
 
-                    using (SqlCommand cmd = new SqlCommand(query, con))
-                    {
-                        await con.OpenAsync();
+            //Cursor.Current = Cursors.WaitCursor;
+            //if (chStockAmount.Checked)
+            //{
+            //    gridProducts.ViewCaption = "Miqdarı az olan məhsullar";
+            //    using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            //    {
+            //        string query = $@"exec [StockDecreasingAmount]";
 
-                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-                        {
-                            DataTable dataTable = new DataTable();
-                            await Task.Run(() => da.Fill(dataTable));
-                            gridControlProducts.DataSource = dataTable;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                chStockDecreasingAmount.Visible = false;
-                chShowStock.Dock = DockStyle.Left;
-                chShowStock.Checked = true;
-            }
-            Cursor.Current = Cursors.Default;
+            //        using (SqlCommand cmd = new SqlCommand(query, con))
+            //        {
+            //            await con.OpenAsync();
+
+            //            using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+            //            {
+            //                DataTable dataTable = new DataTable();
+            //                await Task.Run(() => da.Fill(dataTable));
+            //                gridControlProducts.DataSource = dataTable;
+            //            }
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    chStockDecreasingAmount.Visible = false;
+            //    chShowStock.Dock = DockStyle.Left;
+            //    chShowStock.Checked = true;
+            //}
+            //Cursor.Current = Cursors.Default;
         }
 
 

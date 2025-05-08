@@ -2005,7 +2005,7 @@ WHERE BARKOD = '{barcode}'";
             }
         }
 
-        public static async Task<decimal> GET_SupplierTotalDebt(int supplierId)
+        public static async Task<(decimal totalAmount, decimal mainAmount, decimal taxAmount)> GET_SupplierTotalDebt(int supplierId)
         {
             using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
             {
@@ -2015,16 +2015,38 @@ WHERE BARKOD = '{barcode}'";
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@SupplierId", supplierId);
-                    SqlParameter outputParam = new SqlParameter("@BORC", SqlDbType.Decimal)
+
+                    var totalAmountParam = new SqlParameter("@TOTAL_DEBT", SqlDbType.Decimal)
                     {
                         Precision = 18,
-                        Scale = 2,
+                        Scale = 4,
                         Direction = ParameterDirection.Output
                     };
-                    cmd.Parameters.Add(outputParam);
+                    var mainAmountParam = new SqlParameter("@MAIN_DEBT", SqlDbType.Decimal)
+                    {
+                        Precision = 18,
+                        Scale = 4,
+                        Direction = ParameterDirection.Output
+                    };
+                    var taxAmountParam = new SqlParameter("@TAX_DEBT", SqlDbType.Decimal)
+                    {
+                        Precision = 18,
+                        Scale = 4,
+                        Direction = ParameterDirection.Output
+                    };
+
+                    cmd.Parameters.Add(totalAmountParam);
+                    cmd.Parameters.Add(mainAmountParam);
+                    cmd.Parameters.Add(taxAmountParam);
+
                     await cmd.ExecuteNonQueryAsync();
 
-                    return (decimal)outputParam.Value;
+
+                    decimal totalAmount = (decimal)totalAmountParam.Value;
+                    decimal mainAmount = (decimal)mainAmountParam.Value;
+                    decimal taxAmount = (decimal)taxAmountParam.Value;
+
+                    return (totalAmount, mainAmount, taxAmount);
                 }
             }
         }

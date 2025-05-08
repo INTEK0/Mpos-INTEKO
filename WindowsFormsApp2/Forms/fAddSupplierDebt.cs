@@ -108,8 +108,8 @@ namespace WindowsFormsApp2.Forms
 
         private async void QaliqBorcHesabla(int supplierId)
         {
-            decimal debt = await DbProsedures.GET_SupplierTotalDebt(supplierId);
-            tDebtBalance.Text = debt.ToString();
+            var debt = await DbProsedures.GET_SupplierTotalDebt(supplierId);
+            tDebtBalance.Text = debt.totalAmount.ToString("N2");
         }
 
         private void TotalDebtCalc()

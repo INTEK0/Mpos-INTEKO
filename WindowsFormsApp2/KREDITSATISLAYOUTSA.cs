@@ -1439,7 +1439,7 @@ namespace WindowsFormsApp2
                             //"\"password\":\"password\"} "
                             //                ;
 
-                            double quantity = Convert.ToDouble(tQuantity.Text);
+                            decimal quantity = Convert.ToDecimal(tQuantity.Text);
                             decimal saleprice = Convert.ToDecimal(price);
 
                             int vatType = Convert.ToInt32(label9.Text);
@@ -1595,7 +1595,7 @@ namespace WindowsFormsApp2
 
 
 
-                            double quantity = Convert.ToDouble(tQuantity.Text);
+                            decimal quantity = Convert.ToDecimal(tQuantity.Text);
                             decimal saleprice = Convert.ToDecimal(price);
 
                             int vatType = Convert.ToInt32(label9.Text);

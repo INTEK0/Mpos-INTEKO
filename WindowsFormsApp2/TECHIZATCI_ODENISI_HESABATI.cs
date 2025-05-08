@@ -3,7 +3,6 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 using DevExpress.XtraGrid;
-using DevExpress.XtraGrid.Localization;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using static WindowsFormsApp2.Helpers.FormHelpers;
@@ -12,17 +11,23 @@ namespace WindowsFormsApp2
 {
     public partial class TECHIZATCI_ODENISI_HESABATI : DevExpress.XtraEditors.XtraForm
     {
-        private GridColumnSummaryItem _debtSum;
+        GridColumnSummaryItem _summaryItemPayment;
         public TECHIZATCI_ODENISI_HESABATI()
         {
             InitializeComponent();
             GridPanelText(gridView1);
-            GridLocalizer.Active = new MyGridLocalizer();
         }
 
         private void simpleButton2_Click(object sender, EventArgs e)
         {
-            ExcelExport(gridControl1, "Təchizatçı ödənişi hesabatı");
+            if (navigationFrame1.SelectedPage == page1)
+            {
+                ExcelExport(gridControl1, "Təchizatçı ödəniş hesabatı");
+            }
+            else
+            {
+                ExcelExport(gridControl2, $"{tSupplierName.Text} təchizatçısının ödəniş hesabatı");
+            }
         }
 
         private void TECHIZATCI_ODENISI_HESABATI_Load(object sender, EventArgs e)
@@ -32,6 +37,8 @@ namespace WindowsFormsApp2
             dateEdit1.Text = dateTime.ToShortDateString();
             dateEdit2.Text = dateTime.ToShortDateString();
             lookupedittextxhange_main();
+
+
         }
 
         private void lookupedittextxhange_main()
@@ -52,11 +59,11 @@ namespace WindowsFormsApp2
             {
                 if (string.IsNullOrWhiteSpace(lookUpEdit1.Text))
                 {
-                    await GetallDataAsync(Convert.ToDateTime(dateEdit1.Text), Convert.ToDateTime(dateEdit2.Text));
+                    await DataLoadAsync(Convert.ToDateTime(dateEdit1.Text), Convert.ToDateTime(dateEdit2.Text));
                 }
                 else
                 {
-                    await GetallData_t_id(Convert.ToDateTime(dateEdit1.Text),
+                    await DataLoadToSupplier(Convert.ToDateTime(dateEdit1.Text),
                                      Convert.ToDateTime(dateEdit2.Text),
                                      Convert.ToInt32(lookUpEdit1.EditValue));
                 }
@@ -67,7 +74,7 @@ namespace WindowsFormsApp2
             }
         }
 
-        private async Task GetallData_t_id(DateTime start, DateTime end, int supplierId)
+        private async Task DataLoadToSupplier(DateTime start, DateTime end, int supplierId)
         {
             using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
             {
@@ -85,21 +92,27 @@ namespace WindowsFormsApp2
                             da.Fill(dt);
                             gridControl1.DataSource = dt;
                             gridView1.Columns["QALIQ MƏBLƏĞ"].Summary.Clear();
-                            _debtSum = new GridColumnSummaryItem
+                            GridColumnSummaryItem debtSum = new GridColumnSummaryItem
                             {
                                 FieldName = "QALIQ MƏBLƏĞ",
                                 SummaryType = DevExpress.Data.SummaryItemType.Sum,
                                 DisplayFormat = "{0:C2}",
 
                             };
-                            gridView1.Columns["QALIQ MƏBLƏĞ"].Summary.Add(_debtSum);
+                            gridView1.Columns["QALIQ MƏBLƏĞ"].Summary.Add(debtSum);
+
+                            var summaryItem = new DevExpress.XtraGrid.GridColumnSummaryItem();
+                            summaryItem.SummaryType = DevExpress.Data.SummaryItemType.Custom;
+                            summaryItem.DisplayFormat = "⚠️ Lütfen kayıtları kontrol ediniz!";
+                            gridView1.Columns["İSTİFADƏÇİ ADI"].Summary.Clear();
+                            gridView1.Columns["İSTİFADƏÇİ ADI"].Summary.Add(summaryItem);
                         }
                     }
                 }
             }
         }
 
-        private async Task GetallDataAsync(DateTime start, DateTime end)
+        private async Task DataLoadAsync(DateTime start, DateTime end)
         {
             using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
             {
@@ -116,21 +129,21 @@ namespace WindowsFormsApp2
                             da.Fill(dt);
                             gridControl1.DataSource = dt;
                             gridView1.Columns["QALIQ MƏBLƏĞ"].Summary.Clear();
-                            _debtSum = new GridColumnSummaryItem
+                            GridColumnSummaryItem debtSum = new GridColumnSummaryItem
                             {
                                 FieldName = "QALIQ MƏBLƏĞ",
                                 SummaryType = DevExpress.Data.SummaryItemType.Sum,
                                 DisplayFormat = "{0:C2}",
 
                             };
-                            gridView1.Columns["QALIQ MƏBLƏĞ"].Summary.Add(_debtSum);
+                            gridView1.Columns["QALIQ MƏBLƏĞ"].Summary.Add(debtSum);
                         }
                     }
                 }
             }
         }
 
-        private void gridView1_DoubleClick(object sender, EventArgs e)
+        private async void gridView1_DoubleClick(object sender, EventArgs e)
         {
             var selectedRow = gridView1.GetFocusedDataRow();
             if (selectedRow == null) return;
@@ -143,27 +156,31 @@ namespace WindowsFormsApp2
             string contractNo = selectedRow.Field<string>("TƏCHİZATÇI FAKTURA №") ?? null;
 
             if (malAlisiId > 0)
+            {
                 data = ShowPurchaseDetails(malAlisiId);
+            }
             else if (supplierDebtId > 0)
+            {
                 data = ShowSupplierDebtDetails(supplierDebtId);
+            }
 
             gridControl2.DataSource = data;
             gridView2.Columns["Payment"].Summary.Clear();
-            GridColumnSummaryItem payment = new GridColumnSummaryItem
+            _summaryItemPayment = new GridColumnSummaryItem
             {
                 FieldName = "Payment",
                 SummaryType = DevExpress.Data.SummaryItemType.Sum,
-                DisplayFormat = "{0:N2}",
+                DisplayFormat = "N2",
 
             };
-            gridView2.Columns["Payment"].Summary.Add(payment);
-
+            gridView2.Columns["Payment"].Summary.Add(_summaryItemPayment);
 
             lookUpEdit1.Enabled = false;
             navigationFrame1.SelectedPage = page2;
             tSupplierName.Text = supplierName;
             tContractNo.Text = contractNo;
             TotalSupplierDebt(supplierId);
+            await SupplierDebtDataLoad(supplierDebtId);
         }
 
         private DataTable ShowPurchaseDetails(int productMainId)
@@ -240,8 +257,8 @@ FROM Hareket h
 CROSS JOIN ToplamBorc tb
 ORDER BY h.SiraTarihi;
     ";
-
             var data = DbProsedures.ConvertToDataTable(query);
+
             return data;
         }
 
@@ -264,8 +281,48 @@ ORDER BY h.SiraTarihi;
 
         private async void TotalSupplierDebt(int supplierId)
         {
-            decimal debt = await DbProsedures.GET_SupplierTotalDebt(supplierId);
-            tTotalDebt.Text = debt.ToString();
+            var debt = await DbProsedures.GET_SupplierTotalDebt(supplierId);
+
+            tTotalDebt.Text = debt.totalAmount.ToString("N2");
+        }
+
+        private async Task<(DateTime contractDate, decimal Amount)> ContractDebt_SupplierDebtAsync(int supplierDebtId)
+        {
+            DateTime contractDate = DateTime.MinValue;
+            decimal amount = default;
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                await con.OpenAsync();
+                string query = @"SELECT ContractDate, Amount FROM COMPANY.SupplierDebt WHERE Id = @Id";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@Id", supplierDebtId);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            contractDate = reader.GetDateTime(reader.GetOrdinal("ContractDate"));
+                            amount = reader.GetDecimal(reader.GetOrdinal("Amount"));
+                        }
+                        return (contractDate, amount);
+                    }
+                }
+            }
+        }
+
+        private async Task SupplierDebtDataLoad(int supplierDebtId)
+        {
+            if (supplierDebtId > 0)
+            {
+              
+                var supplierDebtData = await ContractDebt_SupplierDebtAsync(supplierDebtId);
+                tDebtDate.Text = supplierDebtData.contractDate == DateTime.MinValue ? null : supplierDebtData.contractDate.ToString("dd.MM.yyyy");
+                tContractDebt.Text = supplierDebtData.Amount.ToString("N2");
+
+                var totalPaid = _summaryItemPayment.SummaryValue.ToString();
+                decimal balance =  Convert.ToDecimal(tContractDebt.Text) - Convert.ToDecimal(totalPaid);
+                tContractDebtBalance.Text = balance.ToString("N2");
+            }
         }
     }
 }
