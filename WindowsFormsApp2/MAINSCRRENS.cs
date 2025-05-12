@@ -1423,6 +1423,11 @@ FROM (
             OpenForm<fAddSupplierDebt>();
         }
 
+        private void accordionControlElement70_Click(object sender, EventArgs e)
+        {
+            OpenForm<bank_odenisleri>(Properties.Settings.Default.UserID);
+        }
+
         private void chTerminalPrintReceipt_CheckedChanged(object sender, EventArgs e)
         {
             if (chTerminalPrintReceipt.Checked)

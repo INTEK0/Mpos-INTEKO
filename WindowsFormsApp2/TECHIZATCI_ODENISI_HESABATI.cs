@@ -100,12 +100,6 @@ namespace WindowsFormsApp2
 
                             };
                             gridView1.Columns["QALIQ MƏBLƏĞ"].Summary.Add(debtSum);
-
-                            var summaryItem = new DevExpress.XtraGrid.GridColumnSummaryItem();
-                            summaryItem.SummaryType = DevExpress.Data.SummaryItemType.Custom;
-                            summaryItem.DisplayFormat = "⚠️ Lütfen kayıtları kontrol ediniz!";
-                            gridView1.Columns["İSTİFADƏÇİ ADI"].Summary.Clear();
-                            gridView1.Columns["İSTİFADƏÇİ ADI"].Summary.Add(summaryItem);
                         }
                     }
                 }
@@ -180,7 +174,9 @@ namespace WindowsFormsApp2
             tSupplierName.Text = supplierName;
             tContractNo.Text = contractNo;
             TotalSupplierDebt(supplierId);
+
             await SupplierDebtDataLoad(supplierDebtId);
+            await ProductPurchaseDataLoad(malAlisiId);
         }
 
         private DataTable ShowPurchaseDetails(int productMainId)
@@ -310,6 +306,39 @@ ORDER BY h.SiraTarihi;
             }
         }
 
+        private async Task<(DateTime contractDate, decimal Amount)> ContractDebt_ProductPurchaseAsync(int productMainId)
+        {
+            DateTime contractDate = DateTime.MinValue;
+            decimal amount = default;
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                await con.OpenAsync();
+                string query = @"SELECT 
+    MAX(ma.TARIX) AS ContractDate, 
+    SUM(md.YEKUN_MEBLEG) AS Amount
+FROM 
+    dbo.MAL_ALISI_DETAILS md
+INNER JOIN MAL_ALISI_MAIN ma ON ma.MAL_ALISI_MAIN_ID = md.MAL_ALISI_MAIN_ID
+WHERE 
+   md.MAL_ALISI_MAIN_ID = @Id
+GROUP BY 
+    md.MAL_ALISI_MAIN_ID";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@Id", productMainId);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            contractDate = reader.GetDateTime(reader.GetOrdinal("ContractDate"));
+                            amount = reader.GetDecimal(reader.GetOrdinal("Amount"));
+                        }
+                        return (contractDate, amount);
+                    }
+                }
+            }
+        }
+
         private async Task SupplierDebtDataLoad(int supplierDebtId)
         {
             if (supplierDebtId > 0)
@@ -321,6 +350,20 @@ ORDER BY h.SiraTarihi;
 
                 var totalPaid = _summaryItemPayment.SummaryValue.ToString();
                 decimal balance =  Convert.ToDecimal(tContractDebt.Text) - Convert.ToDecimal(totalPaid);
+                tContractDebtBalance.Text = balance.ToString("N2");
+            }
+        }
+
+        private async Task ProductPurchaseDataLoad(int productMainId)
+        {
+            if (productMainId > 0)
+            {
+                var productPurchaseData = await ContractDebt_ProductPurchaseAsync(productMainId);
+                tDebtDate.Text = productPurchaseData.contractDate == DateTime.MinValue ? null : productPurchaseData.contractDate.ToString("dd.MM.yyyy");
+                tContractDebt.Text = productPurchaseData.Amount.ToString("N2");
+
+                var totalPaid = _summaryItemPayment.SummaryValue.ToString();
+                decimal balance = Convert.ToDecimal(tContractDebt.Text) - Convert.ToDecimal(totalPaid);
                 tContractDebtBalance.Text = balance.ToString("N2");
             }
         }

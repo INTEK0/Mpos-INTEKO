@@ -16,6 +16,7 @@ using WindowsFormsApp2.Helpers;
 using System.Security.Cryptography;
 using DevExpress.DashboardCommon;
 using static DTOs;
+using DevExpress.XtraMap.Native;
 
 namespace WindowsFormsApp2.NKA
 {
@@ -273,7 +274,11 @@ namespace WindowsFormsApp2.NKA
 
         public static bool Sales(SalesDto salesData)
         {
-            salesData.AccessToken = Login(salesData.IpAddress);
+            if (string.IsNullOrWhiteSpace(salesData.AccessToken))
+            {
+                salesData.AccessToken = Login(salesData.IpAddress);
+            }
+            //salesData.AccessToken = Login(salesData.IpAddress);
 
             List<Item> items = new List<Item>();
             List<Itemticaretelave> items2 = new List<Itemticaretelave>();
@@ -288,7 +293,8 @@ select
     t.item_id,
     t.salePrice,
 	t.purchasePrice,
-    t.quantity,   
+    t.quantity,
+    t.discount,
 	case t.vatType 
         when 1 then '18' 
         when 2 then '18' 
@@ -324,6 +330,7 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
                             double quantity = Convert.ToDouble(dr["quantity"]);
                             int vatType = Convert.ToInt32(dr["vatType"]);
                             string vatTypeName = dr["vatTypeName"].ToString();
+                            decimal discount = Convert.ToDecimal(dr["discount"]);
                             int quantityType = Convert.ToInt32(dr["quantityType"]);
                             decimal ssum = Convert.ToDecimal(dr["ssum"]);
 
@@ -528,11 +535,7 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
             {
                 from = start,
                 to = end,
-
-
             };
-
-
 
             string json = Newtonsoft.Json.JsonConvert.SerializeObject(zreport, new JsonSerializerSettings
             {
@@ -541,7 +544,7 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
 
             var response = RequestPOST(ipAddress, json, "kas_periodic_z");
 
-            if (response.message == "success")
+            if (response.message == "success" || response.message == "Success operation")
             {
                 if (MessageVisible)
                 {
@@ -557,9 +560,12 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
             }
         }
 
-        public static bool Refund(RefundDto refund /*string ipAddress, string accessToken, PayType payType, string cashier, string proccesNo*/)
+        public static bool Refund(RefundDto refund)
         {
-            refund.AccessToken = Login(refund.IpAddress);
+            if (string.IsNullOrWhiteSpace(refund.AccessToken))
+            {
+                refund.AccessToken = Login(refund.IpAddress);
+            }
 
             string _fiskallID = "", _shortFiskallID = "", _checkNum = "";
             decimal _cash = default, _card = default, _total2 = default;
@@ -780,7 +786,7 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
         public static void LastReceiptCopy(string ipAdress, string accessToken)
         {
             string fiskalID = string.Empty;
-            using (SqlConnection con = new SqlConnection(Properties.Settings.Default.SqlCon))
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
             {
                 con.Open();
                 using (SqlCommand cmd = new SqlCommand(DbHelpers.LastDocumentFiskalId, con))

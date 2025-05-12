@@ -77,9 +77,9 @@ SELECT
     SupplierDebtId,
     [FAKTURA NÖMRƏ],
     TARIX,
-    CAST(SUM(ISNULL(ESAS_BORC, 0.00)) AS decimal(18, 2)) AS N'ƏSAS BORC',
-    CAST(SUM(ISNULL(EDV_BORC, 0.00)) AS decimal(18, 2)) AS N'ƏDV BORC',
-    CAST(SUM(ISNULL(BORC, 0.00)) AS decimal(18, 2)) AS N'YEKUN BORC',
+    CAST(SUM(ISNULL(ESAS_BORC, 0.00)) AS decimal(18, 3)) AS N'ƏSAS BORC',
+    CAST(SUM(ISNULL(EDV_BORC, 0.00)) AS decimal(18, 3)) AS N'ƏDV BORC',
+    CAST(SUM(ISNULL(BORC, 0.00)) AS decimal(18, 3)) AS N'YEKUN BORC',
     0.00 AS N'ƏDV ÖDƏ',
     0.00 AS N'YEKUN BORC ÖDƏ'
 FROM (
@@ -113,7 +113,8 @@ GROUP BY
     MAL_ALISI_MAIN_ID,
     SupplierDebtId,
     [FAKTURA NÖMRƏ],
-    TARIX;
+    TARIX
+ORDER BY TARIX;
 ";
                 using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
                 {

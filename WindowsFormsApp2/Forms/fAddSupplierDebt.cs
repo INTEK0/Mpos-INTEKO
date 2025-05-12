@@ -98,7 +98,7 @@ namespace WindowsFormsApp2.Forms
             {
                 QaliqBorcHesabla(Convert.ToInt32(lookSupplier.EditValue));
                 TotalDebtCalc();
-                lDebtHistory.Visible = true;
+                //lDebtHistory.Visible = true;
             }
             else
             {

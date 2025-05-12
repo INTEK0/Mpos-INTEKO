@@ -52,7 +52,6 @@ namespace WindowsFormsApp2.Forms
 
                     break;
                 case "6":
-
                     if (dateEdit2.DateTime < dateEdit1.DateTime)
                     {
                         FormHelpers.Alert("Qeyd edilən tarix aralığı səhvdir", Enums.MessageType.Warning);
@@ -63,6 +62,17 @@ namespace WindowsFormsApp2.Forms
                         nbaResponse = NBA.PeriodicReport(dateEdit1.DateTime, dateEdit2.DateTime, kassa.Ip);
                         NBA_Response_Report(nbaResponse);
                        
+                    }
+                    break;
+                case "7":
+                    if (dateEdit2.DateTime < dateEdit1.DateTime)
+                    {
+                        FormHelpers.Alert("Qeyd edilən tarix aralığı səhvdir", Enums.MessageType.Warning);
+                        return;
+                    }
+                    else
+                    {
+                       EKASAM.PeriodicReport(dateEdit1.DateTime,dateEdit2.DateTime,kassa.Ip);
                     }
                     break;
             }

@@ -30,6 +30,7 @@
         {
             this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
             this.panelControl3 = new DevExpress.XtraEditors.PanelControl();
+            this.tContractNo = new DevExpress.XtraEditors.TextEdit();
             this.separatorControl1 = new DevExpress.XtraEditors.SeparatorControl();
             this.lookSupplier = new DevExpress.XtraEditors.LookUpEdit();
             this.tDebtTotal = new DevExpress.XtraEditors.TextEdit();
@@ -41,21 +42,21 @@
             this.labelControl7 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl6 = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl8 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl3 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl2 = new DevExpress.XtraEditors.LabelControl();
             this.tComment = new DevExpress.XtraEditors.MemoEdit();
             this.lHeader = new DevExpress.XtraEditors.LabelControl();
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
+            this.lDebtHistory = new DevExpress.XtraEditors.HyperlinkLabelControl();
             this.bSave = new DevExpress.XtraEditors.SimpleButton();
             this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
-            this.tContractNo = new DevExpress.XtraEditors.TextEdit();
-            this.labelControl8 = new DevExpress.XtraEditors.LabelControl();
-            this.lDebtHistory = new DevExpress.XtraEditors.HyperlinkLabelControl();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).BeginInit();
             this.tablePanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl3)).BeginInit();
             this.panelControl3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tContractNo.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.separatorControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lookSupplier.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tDebtTotal.Properties)).BeginInit();
@@ -69,7 +70,6 @@
             this.panelControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).BeginInit();
             this.panelControl2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tContractNo.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // tablePanel1
@@ -117,6 +117,16 @@
             this.tablePanel1.SetRow(this.panelControl3, 1);
             this.panelControl3.Size = new System.Drawing.Size(495, 425);
             this.panelControl3.TabIndex = 1;
+            // 
+            // tContractNo
+            // 
+            this.tContractNo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tContractNo.Location = new System.Drawing.Point(104, 51);
+            this.tContractNo.Margin = new System.Windows.Forms.Padding(4);
+            this.tContractNo.Name = "tContractNo";
+            this.tContractNo.Size = new System.Drawing.Size(382, 30);
+            this.tContractNo.TabIndex = 1;
             // 
             // separatorControl1
             // 
@@ -270,6 +280,16 @@
             this.labelControl6.TabIndex = 3;
             this.labelControl6.Text = "Yeni borc";
             // 
+            // labelControl8
+            // 
+            this.labelControl8.Appearance.Font = new System.Drawing.Font("Verdana", 11F);
+            this.labelControl8.Appearance.Options.UseFont = true;
+            this.labelControl8.Location = new System.Drawing.Point(7, 57);
+            this.labelControl8.Name = "labelControl8";
+            this.labelControl8.Size = new System.Drawing.Size(80, 18);
+            this.labelControl8.TabIndex = 3;
+            this.labelControl8.Text = "Faktura №";
+            // 
             // labelControl3
             // 
             this.labelControl3.Appearance.Font = new System.Drawing.Font("Verdana", 11F);
@@ -338,6 +358,16 @@
             this.panelControl1.Size = new System.Drawing.Size(503, 51);
             this.panelControl1.TabIndex = 3;
             // 
+            // lDebtHistory
+            // 
+            this.lDebtHistory.Location = new System.Drawing.Point(12, 17);
+            this.lDebtHistory.Name = "lDebtHistory";
+            this.lDebtHistory.Size = new System.Drawing.Size(89, 16);
+            this.lDebtHistory.TabIndex = 1;
+            this.lDebtHistory.Text = "Borc tarixçəsi";
+            this.lDebtHistory.Visible = false;
+            this.lDebtHistory.Click += new System.EventHandler(this.lDebtHistory_Click);
+            // 
             // bSave
             // 
             this.bSave.AllowFocus = false;
@@ -366,36 +396,6 @@
             this.panelControl2.Size = new System.Drawing.Size(501, 482);
             this.panelControl2.TabIndex = 4;
             // 
-            // tContractNo
-            // 
-            this.tContractNo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tContractNo.Location = new System.Drawing.Point(104, 51);
-            this.tContractNo.Margin = new System.Windows.Forms.Padding(4);
-            this.tContractNo.Name = "tContractNo";
-            this.tContractNo.Size = new System.Drawing.Size(382, 30);
-            this.tContractNo.TabIndex = 1;
-            // 
-            // labelControl8
-            // 
-            this.labelControl8.Appearance.Font = new System.Drawing.Font("Verdana", 11F);
-            this.labelControl8.Appearance.Options.UseFont = true;
-            this.labelControl8.Location = new System.Drawing.Point(7, 57);
-            this.labelControl8.Name = "labelControl8";
-            this.labelControl8.Size = new System.Drawing.Size(80, 18);
-            this.labelControl8.TabIndex = 3;
-            this.labelControl8.Text = "Faktura №";
-            // 
-            // lDebtHistory
-            // 
-            this.lDebtHistory.Location = new System.Drawing.Point(12, 17);
-            this.lDebtHistory.Name = "lDebtHistory";
-            this.lDebtHistory.Size = new System.Drawing.Size(89, 16);
-            this.lDebtHistory.TabIndex = 1;
-            this.lDebtHistory.Text = "Borc tarixçəsi";
-            this.lDebtHistory.Visible = false;
-            this.lDebtHistory.Click += new System.EventHandler(this.lDebtHistory_Click);
-            // 
             // fAddSupplierDebt
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -414,6 +414,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.panelControl3)).EndInit();
             this.panelControl3.ResumeLayout(false);
             this.panelControl3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tContractNo.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.separatorControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lookSupplier.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tDebtTotal.Properties)).EndInit();
@@ -428,7 +429,6 @@
             this.panelControl1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).EndInit();
             this.panelControl2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.tContractNo.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }

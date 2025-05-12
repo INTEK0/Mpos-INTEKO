@@ -1,7 +1,8 @@
-﻿using DevExpress.XtraGrid.Localization;
-using System;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
+using DevExpress.XtraGrid.Localization;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using static WindowsFormsApp2.Helpers.FormHelpers;
@@ -23,6 +24,7 @@ namespace WindowsFormsApp2
 
             dateEdit1.Text = dateTime.ToShortDateString();
             dateEdit2.Text = dateTime.ToShortDateString();
+            
         }
 
         private void simpleButton2_Click(object sender, EventArgs e)
@@ -70,6 +72,58 @@ namespace WindowsFormsApp2
             {
                 ReadyMessages.ERROR_DEFAULT_MESSAGE(e.Message);
             }
+        }
+
+        private async Task TotalSupplierDebt()
+        {
+            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                await connection.OpenAsync();
+                string query = "sp_GetAllSupplierDebt";
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    var totalAmountParam = new SqlParameter("@TOTAL_DEBT", SqlDbType.Decimal)
+                    {
+                        Precision = 18,
+                        Scale = 4,
+                        Direction = ParameterDirection.Output
+                    };
+                    var mainAmountParam = new SqlParameter("@MAIN_DEBT", SqlDbType.Decimal)
+                    {
+                        Precision = 18,
+                        Scale = 4,
+                        Direction = ParameterDirection.Output
+                    };
+                    var taxAmountParam = new SqlParameter("@TAX_DEBT", SqlDbType.Decimal)
+                    {
+                        Precision = 18,
+                        Scale = 4,
+                        Direction = ParameterDirection.Output
+                    };
+
+                    cmd.Parameters.Add(totalAmountParam);
+                    cmd.Parameters.Add(mainAmountParam);
+                    cmd.Parameters.Add(taxAmountParam);
+
+                    await cmd.ExecuteNonQueryAsync();
+
+
+                    decimal totalAmount = (decimal)totalAmountParam.Value;
+                    decimal mainAmount = (decimal)mainAmountParam.Value;
+                    decimal taxAmount = (decimal)taxAmountParam.Value;
+
+                    tTotalAmount.Text = totalAmount.ToString("N2");
+                    tMainDebt.Text = mainAmount.ToString("N2");
+                    tTaxDebt.Text = taxAmount.ToString("N2");
+                }
+            }
+        }
+
+        private async void techizatci_odenisleri_hesabar_Activated(object sender, EventArgs e)
+        {
+            await TotalSupplierDebt();
         }
     }
 }

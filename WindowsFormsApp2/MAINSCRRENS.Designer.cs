@@ -1577,6 +1577,7 @@ namespace WindowsFormsApp2
             this.accordionControlElement70.Name = "accordionControlElement70";
             this.accordionControlElement70.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
             this.accordionControlElement70.Text = "Qalıq borc ödənişləri";
+            this.accordionControlElement70.Click += new System.EventHandler(this.accordionControlElement70_Click);
             // 
             // accordionControlElement6
             // 
@@ -2855,7 +2856,7 @@ namespace WindowsFormsApp2
             this.tabAllSettings.Name = "tabAllSettings";
             this.tabAllSettings.Properties.AppearanceCaption.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.tabAllSettings.Properties.AppearanceCaption.Options.UseFont = true;
-            this.tabAllSettings.Size = new System.Drawing.Size(1157, 759);
+            this.tabAllSettings.Size = new System.Drawing.Size(1157, 761);
             // 
             // panelControl13
             // 
@@ -2874,7 +2875,7 @@ namespace WindowsFormsApp2
             this.panelControl13.LookAndFeel.UseDefaultLookAndFeel = false;
             this.panelControl13.Margin = new System.Windows.Forms.Padding(1);
             this.panelControl13.Name = "panelControl13";
-            this.panelControl13.Size = new System.Drawing.Size(1157, 759);
+            this.panelControl13.Size = new System.Drawing.Size(1157, 761);
             this.panelControl13.TabIndex = 12;
             // 
             // chClinicModul
