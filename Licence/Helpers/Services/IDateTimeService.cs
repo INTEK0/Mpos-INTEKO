@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace fLicence.Helpers.Services
+namespace Licence.Helpers.Services
 {
     public interface IDateTimeService
     {

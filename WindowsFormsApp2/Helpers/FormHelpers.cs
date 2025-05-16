@@ -1,10 +1,4 @@
-﻿using DevExpress.Xpo.Logger.Transport;
-using DevExpress.XtraGrid;
-using DevExpress.XtraGrid.Localization;
-using DevExpress.XtraPrinting.Localization;
-using DevExpress.XtraGrid.Views.Grid;
-using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -14,10 +8,12 @@ using System.Net;
 using System.Net.Mail;
 using System.Net.NetworkInformation;
 using System.Reflection;
-using System.Security.AccessControl;
-using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DevExpress.XtraGrid;
+using DevExpress.XtraGrid.Localization;
+using DevExpress.XtraGrid.Views.Grid;
+using Microsoft.Win32;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using WindowsFormsApp2.NKA;
@@ -382,20 +378,6 @@ inner join userParol u on u.id = ki.KASSIR_ID where u.id = {Properties.Settings.
                 }
                 finally { Cursor.Current = Cursors.Default; }
             }
-        }
-
-        public static string LicenceKey()
-        {
-            string key = "Yoxdur";
-            if (Registry.GetValue(@"HKEY_CURRENT_USER\Mpos\", "ProductID", null) == null)
-            {
-                Registry.CurrentUser.CreateSubKey("Mpos").SetValue("ProductID", "Yoxdur");
-            }
-            else
-            {
-                key = Registry.CurrentUser.OpenSubKey("Mpos").GetValue("ProductID").ToString();
-            }
-            return key;
         }
 
         public static T MapReaderToObject<T>(IDataRecord record) where T : new()

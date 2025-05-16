@@ -40,7 +40,7 @@ namespace WindowsFormsApp2
             this.labelControl17 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl19 = new DevExpress.XtraEditors.LabelControl();
             this.lLicenceStatus = new DevExpress.XtraEditors.LabelControl();
-            this.lLicenceVersion = new DevExpress.XtraEditors.LabelControl();
+            this.lLicenceExpireDate = new DevExpress.XtraEditors.LabelControl();
             this.lMposVersion = new DevExpress.XtraEditors.LabelControl();
             this.pictureEdit1 = new DevExpress.XtraEditors.PictureEdit();
             this.fluentFormDefaultManager1 = new DevExpress.XtraBars.FluentDesignSystem.FluentFormDefaultManager(this.components);
@@ -356,9 +356,9 @@ namespace WindowsFormsApp2
             // 
             this.tableLayoutPanel1.ColumnCount = 4;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 66.66667F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 248F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 43.89086F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.16711F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.94547F));
             this.tableLayoutPanel1.Controls.Add(this.groupControl1, 3, 3);
             this.tableLayoutPanel1.Controls.Add(this.pictureEdit1, 3, 4);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel8, 3, 1);
@@ -383,12 +383,12 @@ namespace WindowsFormsApp2
             // 
             this.groupControl1.Controls.Add(this.tableLayoutPanel7);
             this.groupControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupControl1.Location = new System.Drawing.Point(863, 645);
+            this.groupControl1.Location = new System.Drawing.Point(864, 645);
             this.groupControl1.LookAndFeel.SkinName = "WXI";
             this.groupControl1.LookAndFeel.UseDefaultLookAndFeel = false;
             this.groupControl1.Name = "groupControl1";
             this.groupControl1.ShowCaption = false;
-            this.groupControl1.Size = new System.Drawing.Size(291, 110);
+            this.groupControl1.Size = new System.Drawing.Size(290, 110);
             this.groupControl1.TabIndex = 13;
             this.groupControl1.Text = "groupControl1";
             // 
@@ -401,7 +401,7 @@ namespace WindowsFormsApp2
             this.tableLayoutPanel7.Controls.Add(this.labelControl17, 0, 0);
             this.tableLayoutPanel7.Controls.Add(this.labelControl19, 0, 1);
             this.tableLayoutPanel7.Controls.Add(this.lLicenceStatus, 1, 0);
-            this.tableLayoutPanel7.Controls.Add(this.lLicenceVersion, 1, 1);
+            this.tableLayoutPanel7.Controls.Add(this.lLicenceExpireDate, 1, 1);
             this.tableLayoutPanel7.Controls.Add(this.lMposVersion, 1, 2);
             this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel7.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
@@ -412,7 +412,7 @@ namespace WindowsFormsApp2
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(287, 106);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(286, 106);
             this.tableLayoutPanel7.TabIndex = 0;
             // 
             // labelControl12
@@ -473,7 +473,7 @@ namespace WindowsFormsApp2
             this.labelControl19.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
             this.labelControl19.Size = new System.Drawing.Size(157, 29);
             this.labelControl19.TabIndex = 5;
-            this.labelControl19.Text = "Lisenziya versiya :";
+            this.labelControl19.Text = "Lisenziya müddəti";
             // 
             // lLicenceStatus
             // 
@@ -490,28 +490,27 @@ namespace WindowsFormsApp2
             this.lLicenceStatus.Location = new System.Drawing.Point(163, 3);
             this.lLicenceStatus.Name = "lLicenceStatus";
             this.lLicenceStatus.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.lLicenceStatus.Size = new System.Drawing.Size(121, 29);
+            this.lLicenceStatus.Size = new System.Drawing.Size(120, 29);
             this.lLicenceStatus.TabIndex = 5;
             this.lLicenceStatus.Text = "Aktivdir";
             // 
-            // lLicenceVersion
+            // lLicenceExpireDate
             // 
-            this.lLicenceVersion.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold);
-            this.lLicenceVersion.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lLicenceVersion.Appearance.Options.UseFont = true;
-            this.lLicenceVersion.Appearance.Options.UseForeColor = true;
-            this.lLicenceVersion.Appearance.Options.UseTextOptions = true;
-            this.lLicenceVersion.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
-            this.lLicenceVersion.Appearance.TextOptions.Trimming = DevExpress.Utils.Trimming.EllipsisCharacter;
-            this.lLicenceVersion.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.lLicenceVersion.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lLicenceVersion.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lLicenceVersion.Location = new System.Drawing.Point(163, 38);
-            this.lLicenceVersion.Name = "lLicenceVersion";
-            this.lLicenceVersion.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.lLicenceVersion.Size = new System.Drawing.Size(121, 29);
-            this.lLicenceVersion.TabIndex = 5;
-            this.lLicenceVersion.Text = "-";
+            this.lLicenceExpireDate.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold);
+            this.lLicenceExpireDate.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.lLicenceExpireDate.Appearance.Options.UseFont = true;
+            this.lLicenceExpireDate.Appearance.Options.UseForeColor = true;
+            this.lLicenceExpireDate.Appearance.Options.UseTextOptions = true;
+            this.lLicenceExpireDate.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
+            this.lLicenceExpireDate.Appearance.TextOptions.Trimming = DevExpress.Utils.Trimming.EllipsisCharacter;
+            this.lLicenceExpireDate.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.lLicenceExpireDate.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lLicenceExpireDate.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lLicenceExpireDate.Location = new System.Drawing.Point(163, 38);
+            this.lLicenceExpireDate.Name = "lLicenceExpireDate";
+            this.lLicenceExpireDate.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.lLicenceExpireDate.Size = new System.Drawing.Size(120, 29);
+            this.lLicenceExpireDate.TabIndex = 5;
             // 
             // lMposVersion
             // 
@@ -527,7 +526,7 @@ namespace WindowsFormsApp2
             this.lMposVersion.Location = new System.Drawing.Point(163, 73);
             this.lMposVersion.Name = "lMposVersion";
             this.lMposVersion.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.lMposVersion.Size = new System.Drawing.Size(121, 30);
+            this.lMposVersion.Size = new System.Drawing.Size(120, 30);
             this.lMposVersion.TabIndex = 6;
             this.lMposVersion.Text = "-";
             // 
@@ -535,7 +534,7 @@ namespace WindowsFormsApp2
             // 
             this.pictureEdit1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureEdit1.EditValue = global::WindowsFormsApp2.Properties.Resources.Mpos_Logo_Text;
-            this.pictureEdit1.Location = new System.Drawing.Point(865, 761);
+            this.pictureEdit1.Location = new System.Drawing.Point(866, 761);
             this.pictureEdit1.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.pictureEdit1.MenuManager = this.fluentFormDefaultManager1;
             this.pictureEdit1.Name = "pictureEdit1";
@@ -550,7 +549,7 @@ namespace WindowsFormsApp2
             this.pictureEdit1.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
             this.pictureEdit1.Properties.ShowMenu = false;
             this.pictureEdit1.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Zoom;
-            this.pictureEdit1.Size = new System.Drawing.Size(287, 42);
+            this.pictureEdit1.Size = new System.Drawing.Size(286, 42);
             this.pictureEdit1.TabIndex = 4;
             // 
             // fluentFormDefaultManager1
@@ -584,13 +583,13 @@ namespace WindowsFormsApp2
             this.tableLayoutPanel8.Controls.Add(this.b15, 2, 1);
             this.tableLayoutPanel8.Controls.Add(this.b20, 3, 1);
             this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel8.Location = new System.Drawing.Point(860, 116);
+            this.tableLayoutPanel8.Location = new System.Drawing.Point(861, 116);
             this.tableLayoutPanel8.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel8.Name = "tableLayoutPanel8";
             this.tableLayoutPanel8.RowCount = 2;
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 85.2459F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.7541F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(297, 280);
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(296, 280);
             this.tableLayoutPanel8.TabIndex = 5;
             // 
             // gridControl1
@@ -602,7 +601,7 @@ namespace WindowsFormsApp2
             this.gridControl1.LookAndFeel.UseDefaultLookAndFeel = false;
             this.gridControl1.MainView = this.gridView1;
             this.gridControl1.Name = "gridControl1";
-            this.gridControl1.Size = new System.Drawing.Size(291, 232);
+            this.gridControl1.Size = new System.Drawing.Size(290, 232);
             this.gridControl1.TabIndex = 0;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
@@ -718,7 +717,7 @@ namespace WindowsFormsApp2
             this.b20.Margin = new System.Windows.Forms.Padding(5);
             this.b20.Name = "b20";
             this.b20.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.b20.Size = new System.Drawing.Size(65, 32);
+            this.b20.Size = new System.Drawing.Size(64, 32);
             this.b20.TabIndex = 1;
             this.b20.Text = "20";
             this.b20.Click += new System.EventHandler(this.BestSellingProductListCount);
@@ -735,7 +734,7 @@ namespace WindowsFormsApp2
             this.panelControl9.LookAndFeel.UseDefaultLookAndFeel = false;
             this.panelControl9.Name = "panelControl9";
             this.tableLayoutPanel1.SetRowSpan(this.panelControl9, 3);
-            this.panelControl9.Size = new System.Drawing.Size(854, 636);
+            this.panelControl9.Size = new System.Drawing.Size(855, 636);
             this.panelControl9.TabIndex = 6;
             // 
             // gridControlProducts
@@ -746,7 +745,7 @@ namespace WindowsFormsApp2
             this.gridControlProducts.LookAndFeel.UseDefaultLookAndFeel = false;
             this.gridControlProducts.MainView = this.gridProducts;
             this.gridControlProducts.Name = "gridControlProducts";
-            this.gridControlProducts.Size = new System.Drawing.Size(854, 603);
+            this.gridControlProducts.Size = new System.Drawing.Size(855, 603);
             this.gridControlProducts.TabIndex = 0;
             this.gridControlProducts.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridProducts});
@@ -782,7 +781,7 @@ namespace WindowsFormsApp2
             this.panelControl10.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelControl10.Location = new System.Drawing.Point(0, 0);
             this.panelControl10.Name = "panelControl10";
-            this.panelControl10.Size = new System.Drawing.Size(854, 33);
+            this.panelControl10.Size = new System.Drawing.Size(855, 33);
             this.panelControl10.TabIndex = 1;
             // 
             // chShowStock
@@ -834,7 +833,7 @@ namespace WindowsFormsApp2
             this.bGridExcelExport.Dock = System.Windows.Forms.DockStyle.Right;
             this.bGridExcelExport.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bGridExcelExport.ImageOptions.SvgImage")));
             this.bGridExcelExport.ImageOptions.SvgImageSize = new System.Drawing.Size(20, 20);
-            this.bGridExcelExport.Location = new System.Drawing.Point(763, 2);
+            this.bGridExcelExport.Location = new System.Drawing.Point(764, 2);
             this.bGridExcelExport.LookAndFeel.SkinName = "WXI";
             this.bGridExcelExport.LookAndFeel.UseDefaultLookAndFeel = false;
             this.bGridExcelExport.Margin = new System.Windows.Forms.Padding(5);
@@ -1339,12 +1338,12 @@ namespace WindowsFormsApp2
             // gridControlExpenses
             // 
             this.gridControlExpenses.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gridControlExpenses.Location = new System.Drawing.Point(863, 399);
+            this.gridControlExpenses.Location = new System.Drawing.Point(864, 399);
             this.gridControlExpenses.LookAndFeel.SkinName = "WXI";
             this.gridControlExpenses.LookAndFeel.UseDefaultLookAndFeel = false;
             this.gridControlExpenses.MainView = this.gridExpenses;
             this.gridControlExpenses.Name = "gridControlExpenses";
-            this.gridControlExpenses.Size = new System.Drawing.Size(291, 240);
+            this.gridControlExpenses.Size = new System.Drawing.Size(290, 240);
             this.gridControlExpenses.TabIndex = 0;
             this.gridControlExpenses.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridExpenses});
@@ -1404,7 +1403,7 @@ namespace WindowsFormsApp2
             // gridControl2
             // 
             this.gridControl2.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.gridControl2.Location = new System.Drawing.Point(617, 762);
+            this.gridControl2.Location = new System.Drawing.Point(524, 762);
             this.gridControl2.MainView = this.gridView2;
             this.gridControl2.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.gridControl2.Name = "gridControl2";
@@ -1443,7 +1442,7 @@ namespace WindowsFormsApp2
             this.pictureEdit3.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
             this.pictureEdit3.Properties.ShowMenu = false;
             this.pictureEdit3.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Zoom;
-            this.pictureEdit3.Size = new System.Drawing.Size(602, 42);
+            this.pictureEdit3.Size = new System.Drawing.Size(509, 42);
             this.pictureEdit3.TabIndex = 5;
             // 
             // accordionControl1
@@ -3578,7 +3577,7 @@ namespace WindowsFormsApp2
         private DevExpress.XtraEditors.LabelControl labelControl17;
         private DevExpress.XtraEditors.LabelControl labelControl19;
         private DevExpress.XtraEditors.LabelControl lLicenceStatus;
-        private DevExpress.XtraEditors.LabelControl lLicenceVersion;
+        private DevExpress.XtraEditors.LabelControl lLicenceExpireDate;
         private DevExpress.XtraEditors.LabelControl lMposVersion;
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement65;
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement66;

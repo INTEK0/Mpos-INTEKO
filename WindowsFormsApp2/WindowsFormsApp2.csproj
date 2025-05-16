@@ -499,6 +499,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Helpers\CacheData\PrinterCacheData.cs" />
+    <Compile Include="Helpers\CustomAppContext.cs" />
     <Compile Include="Helpers\DB\DbHelpers.cs" />
     <Compile Include="Helpers\DB\DbProsedures.cs" />
     <Compile Include="EXCELL_IMPORT.cs">
@@ -1754,6 +1755,11 @@
   <ItemGroup>
     <None Include="Resources\Mpos_Logo_Text.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Licence\Licence.csproj">
+      <Project>{60b454b3-dabf-49af-a4a8-8e804d9ebbc2}</Project>
+      <Name>Licence</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

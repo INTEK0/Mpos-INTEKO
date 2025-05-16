@@ -1,7 +1,7 @@
 ﻿using System;
-using fLicence.Helpers.Services;
+using Licence.Helpers.Services;
 
-namespace fLicence.Helpers.Implementations
+namespace Licence.Helpers.Implementations
 {
     public class LocalDateTimeService : IDateTimeService
     {

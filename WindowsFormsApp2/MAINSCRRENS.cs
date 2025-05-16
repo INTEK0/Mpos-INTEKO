@@ -3,6 +3,7 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraGrid;
 using DevExpress.XtraGrid.Localization;
 using DevExpress.XtraPrinting;
+using Licence.Services;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -534,7 +535,6 @@ FROM[terazimalzeme]";
         private void MainScreen_Load(object sender, EventArgs e)
         {
             lMposVersion.Text = Application.ProductVersion;
-            lLicenceVersion.Text = "Yoxdur";
             chStockAmount.Checked = false;
             ProductNegativeStatus();
             HotSalesShow();
@@ -546,6 +546,12 @@ FROM[terazimalzeme]";
             Get_StockDecreasingAmountShow();
             ClinicModuleShow();
             SysAdminControl();
+            LicenceControl();
+        }
+
+        private void LicenceControl()
+        {
+
         }
 
         private async void MAINSCRRENS_Activated(object sender, EventArgs e)
@@ -556,9 +562,12 @@ FROM[terazimalzeme]";
                 //StockDecreasingAmountLoad(); //Miqdarı az olan məhsullar
                 await TotalSalesInformation(); //Cari satış hesabatı
                 await TotalRefundInformation(); //Cari qaytarma hesabatı
-               await TotalPurchaseInformation(); //Cari alış hesabatı
+                await TotalPurchaseInformation(); //Cari alış hesabatı
                 BestsellingProducts(); //Ən çox satılan məhsullar
                 ExpensesDataLoad(); //Cari xərclər
+
+                var licenceUser = await Licence.Operations.LicenceOperation.LicenceStatusControl(LicenseService.Instance.GetLicenceKey());
+                lLicenceExpireDate.Text = licenceUser == null ? "-" : licenceUser.LicenceExpireDate.ToString("dd.MM.yyyy");
             }
             catch (Exception ex)
             {
@@ -572,7 +581,7 @@ FROM[terazimalzeme]";
             try
             {
                 BestsellingProducts(); //Ən çox satılan məhsullar
-               // StockDecreasingAmountLoad(); //Miqdarı az olan məhsullar
+                                       // StockDecreasingAmountLoad(); //Miqdarı az olan məhsullar
                 await TotalSalesInformation(); //Cari satış hesabatı
                 await TotalRefundInformation(); //Cari qaytarma hesabatı
                 await TotalPurchaseInformation(); //Cari alış hesabatı
@@ -964,7 +973,7 @@ FROM (
             }
             else if (e.Page == tabLicence)
             {
-                lLicenceKey.Text = LicenceKey();
+                lLicenceKey.Text =LicenseService.Instance.GetLicenceKey();
             }
             else if (e.Page == tabModul)
             {

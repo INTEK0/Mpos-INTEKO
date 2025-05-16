@@ -33,7 +33,6 @@ namespace WindowsFormsApp2.Helpers.DB
         private const string GET_ProductExistsQuery = "yoxlama_mehsul_kodu";
         private const string INSERT_MALALISIMAINQuery = "INSERT_MAL_ALISI_MAIN";
         private const string INSERT_IMPORT_MALALISIMAINQuery = "INSERT_IMPORT_MAL_ALISI_MAIN";
-        private const string INSERT_MALALISIDETAILQuery = "INSERT_MAL_ALISI_DETAILS";
         private const string DELETE_MALALISIDETAILQuery = "DELETE_PRODUCT_MAL_ALIS_DETAILS";
         private const string INSERT_CustomerQuery = "INSERT_MUSTERI";
         private const string INSERT_DoctorQuery = "INSERT_DOCTOR";
@@ -959,8 +958,9 @@ namespace WindowsFormsApp2.Helpers.DB
             {
                 using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
                 {
+                    string query = "INSERT_MAL_ALISI_DETAILS";
                     connection.Open();
-                    using (SqlCommand cmd = new SqlCommand(INSERT_MALALISIDETAILQuery, connection))
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         SqlParameter param;
@@ -977,8 +977,8 @@ namespace WindowsFormsApp2.Helpers.DB
                         param.Value = item.ProductCode;
                         param = cmd.Parameters.Add("@ANBAR", SqlDbType.NVarChar, 500);
                         param.Value = item.WarehouseName;
-                        param = cmd.Parameters.Add("@MIGDARI", SqlDbType.NVarChar, 500);
-                        param.Value = item.Quantity.ToString();
+                        param = cmd.Parameters.Add("@MIGDARI", SqlDbType.Decimal);
+                        param.Value = item.Quantity;
                         param = cmd.Parameters.Add("@VAHID", SqlDbType.NVarChar, 500);
                         param.Value = item.UnitName;
                         param = cmd.Parameters.Add("@VALYUTA", SqlDbType.NVarChar, 500);

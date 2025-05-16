@@ -1,4 +1,10 @@
-﻿namespace fLicence.Helpers
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Licence.Helpers
 {
     public class Enums
     {

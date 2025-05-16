@@ -1,26 +1,14 @@
-﻿using DevExpress.DashboardCommon;
-using DevExpress.LookAndFeel;
-using DevExpress.Utils.Colors;
-using DevExpress.XtraEditors;
-using DevExpress.XtraGrid.Localization;
-using DevExpress.XtraGrid.Views.Grid;
-using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using DevExpress.XtraEditors;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
-using WindowsFormsApp2.Helpers.Messages;
 using WindowsFormsApp2.Validations;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
 using static WindowsFormsApp2.Helpers.Enums;
 using static WindowsFormsApp2.Helpers.FormHelpers;
@@ -126,7 +114,7 @@ namespace WindowsFormsApp2.Forms
                 ProductName = tProductName.Text,
                 ProductCode = tProductCode.Text,
                 WarehouseName = lookWarehouse.Text,
-                Quantity = Convert.ToDecimal(tQuantity.Text),
+                Quantity = Decimal.Parse(tQuantity.Text),
                 UnitName = lookUnit.Text,
                 CurrencyName = lookCurrency.Text,
                 TaxName = lookTaxType.Text,
