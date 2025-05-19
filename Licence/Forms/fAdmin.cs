@@ -20,7 +20,7 @@ namespace Licence.Forms
         {
             string key = Services.LicenseService.Instance.GetLicenceKey();
             var result = DialogResult.Cancel;
-            if (key is "Yoxdur")
+            if (key is "Yoxdur" || string.IsNullOrWhiteSpace(key))
             {
                 string currentDate = DateTime.Now.ToString("HH:mm");
                 if (tPassword.Text.Trim() == $"inteko{currentDate}")

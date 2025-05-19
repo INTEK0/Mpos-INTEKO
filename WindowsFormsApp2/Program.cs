@@ -12,6 +12,7 @@ using System.Threading;
 using System.Reflection;
 using Licence.Forms;
 using System.Web.UI.WebControls;
+using WindowsFormsApp2.Forms;
 
 namespace WindowsFormsApp2
 {
@@ -34,63 +35,60 @@ namespace WindowsFormsApp2
             DevExpress.XtraEditors.Controls.Localizer.Active = new CustomLocalizer();
             GridLocalizer.Active = new MyGridLocalizer();
 
+            string appName = Assembly.GetExecutingAssembly().GetName().Name;
+            bool createdNew;
+            mutex = new Mutex(true, appName, out createdNew);
+
+            if (!createdNew)
+            {
+                Process current = Process.GetCurrentProcess();
+                Process[] processes = Process.GetProcessesByName(current.ProcessName);
+
+                foreach (var process in processes)
+                {
+                    if (process.Id != current.Id)
+                    {
+                        IntPtr handle = process.MainWindowHandle;
+                        if (handle != IntPtr.Zero)
+                        {
+                            ShowWindow(handle, SW_RESTORE);
+                            SetForegroundWindow(handle);
+                        }
+                        break;
+                    }
+                }
+
+                return;
+            }
+
+            FolderControl();
+            CultureInfoData();
+
+
+            if (string.IsNullOrWhiteSpace(_licenceKey) || _licenceKey is "Yoxdur")
+            {
+                var result = new fRegister().ShowDialog();
+
+                if (result == DialogResult.OK)
+                {
+                    Application.Restart();
+                }
+                return;
+            }
+
+
+            if (Licence.Helpers.FormHelpers.HasInternetConnection())
+            {
+                var user = LicenseService.Instance.RequestKeyControl(_licenceKey).Result;
+                if (user == null || !user.IsActive || !LicenseService.Instance.LicenceExpireDateControl(user))
+                {
+                    Application.Run(new fDeactive(user));
+                    return;
+                }
+            }
+
+            LicenseService.Instance.Start(_licenceKey);
             Application.Run(new avtorizasiya());
-
-            //string appName = Assembly.GetExecutingAssembly().GetName().Name;
-            //bool createdNew;
-            //mutex = new Mutex(true, appName, out createdNew);
-
-            //if (!createdNew)
-            //{
-            //    Process current = Process.GetCurrentProcess();
-            //    Process[] processes = Process.GetProcessesByName(current.ProcessName);
-
-            //    foreach (var process in processes)
-            //    {
-            //        if (process.Id != current.Id)
-            //        {
-            //            IntPtr handle = process.MainWindowHandle;
-            //            if (handle != IntPtr.Zero)
-            //            {
-            //                ShowWindow(handle, SW_RESTORE);
-            //                SetForegroundWindow(handle);
-            //            }
-            //            break;
-            //        }
-            //    }
-
-            //    return;
-            //}
-
-            //FolderControl();
-            //CultureInfoData();
-
-
-
-            //if (string.IsNullOrWhiteSpace(_licenceKey) || _licenceKey is "Yoxdur")
-            //{
-            //    var result = new fRegister().ShowDialog();
-
-            //    if (result == DialogResult.OK)
-            //    {
-            //        Application.Restart();
-            //    }
-            //    return;
-            //}
-
-
-            //if (Licence.Helpers.FormHelpers.HasInternetConnection())
-            //{
-            //    var user = LicenseService.Instance.RequestKeyControl(_licenceKey).Result;
-            //    if (user == null || !user.IsActive || !LicenseService.Instance.LicenceExpireDateControl(user))
-            //    {
-            //        Application.Run(new CustomAppContext());
-            //        return;
-            //    }
-            //}
-
-            //LicenseService.Instance.Start(_licenceKey);
-            //Application.Run(new CustomAppContext());
         }
 
         static void CultureInfoData()

@@ -102,12 +102,6 @@
     <Compile Include="Forms\fAdmin.Designer.cs">
       <DependentUpon>fAdmin.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\fDeactive.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\fDeactive.Designer.cs">
-      <DependentUpon>fDeactive.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\fRegister.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -128,9 +122,6 @@
     <Compile Include="Validations\UserValidation.cs" />
     <EmbeddedResource Include="Forms\fAdmin.resx">
       <DependentUpon>fAdmin.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\fDeactive.resx">
-      <DependentUpon>fDeactive.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fRegister.resx">
       <DependentUpon>fRegister.cs</DependentUpon>

@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Windows.Forms;
 using WindowsFormsApp2.Helpers;
-using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using WindowsFormsApp2.Validations;
 
@@ -90,6 +88,7 @@ namespace WindowsFormsApp2
 
         private void kryptonButton1_Click(object sender, EventArgs e)
         {
+            
             var user = UserValidation.ValidateUser(textEdit1.Text.Trim(), textEdit2.Text.Trim());
             if (user != null)
             {
@@ -136,7 +135,7 @@ namespace WindowsFormsApp2
 
         private void kryptonButton2_Click(object sender, EventArgs e)
         {
-            Close();
+            Application.Exit();
         }
 
         private void lForgetPassword_Click(object sender, EventArgs e)

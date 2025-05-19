@@ -351,6 +351,12 @@
     <Compile Include="Forms\fCreditPay.Designer.cs">
       <DependentUpon>fCreditPay.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\fDeactive.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\fDeactive.Designer.cs">
+      <DependentUpon>fDeactive.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\fDeletedProductsReport.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -499,7 +505,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Helpers\CacheData\PrinterCacheData.cs" />
-    <Compile Include="Helpers\CustomAppContext.cs" />
     <Compile Include="Helpers\DB\DbHelpers.cs" />
     <Compile Include="Helpers\DB\DbProsedures.cs" />
     <Compile Include="EXCELL_IMPORT.cs">
@@ -1084,6 +1089,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fCustomers.resx">
       <DependentUpon>fCustomers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\fDeactive.resx">
+      <DependentUpon>fDeactive.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fDeletedProductsReport.resx">
       <DependentUpon>fDeletedProductsReport.cs</DependentUpon>

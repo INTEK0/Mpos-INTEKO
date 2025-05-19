@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DevExpress.XtraEditors;
 using Licence.Entities;
 using Licence.Forms;
 using Licence.Helpers;
@@ -13,7 +14,6 @@ namespace Licence.Services
     public class LicenseService
     {
         private static LicenseService _instance;
-        private fDeactive deactiveForm;
         private static readonly object _lock = new object();
         private System.Threading.Timer _timer;
         private string _licenseKey;
@@ -81,7 +81,10 @@ namespace Licence.Services
         private async Task CheckStatusAsync()
         {
             if (!FormHelpers.HasInternetConnection())
+            {
+                XtraMessageBox.Show("İnternet bağlantınız yoxdur.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
+            }
 
             try
             {
@@ -89,7 +92,7 @@ namespace Licence.Services
 
                 if (user == null)
                     return;
-                
+
                 if (!user.IsActive || !LicenceExpireDateControl(user))
                 {
                     ShowDeactiveForm();
@@ -163,7 +166,7 @@ namespace Licence.Services
                 return hours;
             }
 
-            return 1; // Varsayılan: 1 saat
+            return 1; // Default: 1 saat
         }
     }
 }

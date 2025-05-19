@@ -44,6 +44,7 @@ namespace WindowsFormsApp2
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.pictureBox6 = new System.Windows.Forms.PictureBox();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.textEdit2.Properties)).BeginInit();
@@ -61,7 +62,7 @@ namespace WindowsFormsApp2
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(768, 479);
+            this.label1.Location = new System.Drawing.Point(771, 468);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(175, 16);
             this.label1.TabIndex = 0;
@@ -272,6 +273,7 @@ namespace WindowsFormsApp2
             this.fluentDesignFormContainer1.Controls.Add(this.pictureBox1);
             this.fluentDesignFormContainer1.Controls.Add(this.kryptonButton1);
             this.fluentDesignFormContainer1.Controls.Add(this.pictureBox3);
+            this.fluentDesignFormContainer1.Controls.Add(this.label2);
             this.fluentDesignFormContainer1.Controls.Add(this.label1);
             this.fluentDesignFormContainer1.Controls.Add(this.pictureBox2);
             this.fluentDesignFormContainer1.Controls.Add(this.textEdit2);
@@ -289,10 +291,10 @@ namespace WindowsFormsApp2
             // pictureBox7
             // 
             this.pictureBox7.Image = global::WindowsFormsApp2.Properties.Resources.download__2_3;
-            this.pictureBox7.Location = new System.Drawing.Point(734, 475);
+            this.pictureBox7.Location = new System.Drawing.Point(721, 468);
             this.pictureBox7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureBox7.Name = "pictureBox7";
-            this.pictureBox7.Size = new System.Drawing.Size(33, 25);
+            this.pictureBox7.Size = new System.Drawing.Size(44, 32);
             this.pictureBox7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox7.TabIndex = 20;
             this.pictureBox7.TabStop = false;
@@ -301,10 +303,10 @@ namespace WindowsFormsApp2
             // 
             this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox1.Image = global::WindowsFormsApp2.Properties.Resources.fb_icon_325x325;
-            this.pictureBox1.Location = new System.Drawing.Point(602, 475);
+            this.pictureBox1.Location = new System.Drawing.Point(602, 468);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(33, 25);
+            this.pictureBox1.Size = new System.Drawing.Size(44, 32);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 19;
             this.pictureBox1.TabStop = false;
@@ -314,10 +316,10 @@ namespace WindowsFormsApp2
             // 
             this.pictureBox5.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox5.Image = global::WindowsFormsApp2.Properties.Resources.whatsapp_socialnetwork_17360;
-            this.pictureBox5.Location = new System.Drawing.Point(561, 475);
+            this.pictureBox5.Location = new System.Drawing.Point(556, 468);
             this.pictureBox5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureBox5.Name = "pictureBox5";
-            this.pictureBox5.Size = new System.Drawing.Size(33, 25);
+            this.pictureBox5.Size = new System.Drawing.Size(44, 32);
             this.pictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox5.TabIndex = 7;
             this.pictureBox5.TabStop = false;
@@ -327,10 +329,10 @@ namespace WindowsFormsApp2
             // 
             this.pictureBox4.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox4.Image = global::WindowsFormsApp2.Properties.Resources._3721672_instagram_108066;
-            this.pictureBox4.Location = new System.Drawing.Point(520, 475);
+            this.pictureBox4.Location = new System.Drawing.Point(509, 468);
             this.pictureBox4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(33, 25);
+            this.pictureBox4.Size = new System.Drawing.Size(44, 32);
             this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox4.TabIndex = 6;
             this.pictureBox4.TabStop = false;
@@ -347,6 +349,17 @@ namespace WindowsFormsApp2
             this.pictureBox6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox6.TabIndex = 18;
             this.pictureBox6.TabStop = false;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.Transparent;
+            this.label2.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(771, 484);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(109, 16);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "012 311 15 11";
             // 
             // avtorizasiya
             // 
@@ -400,5 +413,6 @@ namespace WindowsFormsApp2
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox pictureBox7;
         private DevExpress.XtraEditors.LabelControl lForgetPassword;
+        private System.Windows.Forms.Label label2;
     }
 }

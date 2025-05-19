@@ -1,19 +1,9 @@
-﻿using DevExpress.CodeParser;
-using DevExpress.DashboardCommon;
-using DevExpress.DataAccess.Sql;
-using DevExpress.Pdf.Native.BouncyCastle.Utilities.Net;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
 using DevExpress.XtraEditors;
 using Newtonsoft.Json;
 using RestSharp;
-using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.IO;
-using System.Net;
-using System.Security.Policy;
-using System.Text;
-using System.Text.Json;
-using System.Windows.Forms;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
@@ -26,7 +16,7 @@ namespace WindowsFormsApp2.NKA
 {
     public static class AzSmart
     {
-        public const string FiskalPort = "8008";
+        public const string FiskalPort = "10156"; //prod port: 8008 - test port: 10156
 
         private static readonly bool MessageVisible = FormHelpers.SuccessMessageVisible();
         private static AzSmartResponse RequestPOST(string ipAddress, string data)
