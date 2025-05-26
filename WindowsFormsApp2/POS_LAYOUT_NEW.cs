@@ -836,7 +836,7 @@ LEFT JOIN pos_guzest pg
                     foreach (int row in selectedRows)
                     {
                         DataRow dr = gridView1.GetDataRow(row);
-                        int productId = Convert.ToInt32( dr[0].ToString());
+                        int productId = Convert.ToInt32(dr[0].ToString());
                         string barcode = dr[11].ToString();
 
                         DbProsedures.INSERT_PosDiscount(new PosDiscount
@@ -2069,12 +2069,6 @@ LEFT JOIN pos_guzest pg
         {
             fPrepayment f = new fPrepayment();
             f.ShowDialog();
-            //prepaymentsales bt = new prepaymentsales(this);
-            //if (bt.ShowDialog() is DialogResult.Cancel)
-            //{
-            //    return;
-            //}
-
         }
 
         private void bClinicPrint_Click(object sender, EventArgs e)
@@ -2286,8 +2280,6 @@ LEFT JOIN pos_guzest pg
 
                 XtraMessageBox.Show("AYLIQ Z HESABATI UĞURLA ÇIXARILDI");
 
-
-
                 PrintDocument pd = new PrintDocument();
                 PrinterSettings settings = new PrinterSettings();
                 PageSettings pageSettings = new PageSettings(settings);
@@ -2314,25 +2306,44 @@ LEFT JOIN pos_guzest pg
 
         satis_json st_ = new satis_json();
 
-        private void AzSmartInstallmentSales(string ip, string cashier, decimal total)
+        private async void AzSmartInstallmentSales(string ip, string cashier, decimal total)
         {
             st.update_calculation_tr();
             DbProsedures.DeleteItem();
-
+            decimal _discount = 0;
             for (int i = 0; i < gridView1.DataRowCount; i++)
             {
                 DataRow row = gridView1.GetDataRow(i);
 
+                decimal say = Convert.ToDecimal(row["SAY"]);
+                decimal salePrice = Convert.ToDecimal(row["SATIŞ QİYMƏTİ"]);
+                int vatType = Convert.ToInt32(row["EDV_ID"]);
+                int quantityType = Convert.ToInt32(row["VAHIDLER_ID"]);
+                int productId = Convert.ToInt32(row["MAL_ALISI_DETAILS_ID"]);
+                _discount = Convert.ToDecimal(row["GÜZƏŞT"]);
+                decimal purchasePrice = 0;
+                string barcode = "Code2";
+                if (row.Table.Columns.Contains("ALIŞ QİYMƏTİ") && !row.IsNull("ALIŞ QİYMƏTİ"))
+                {
+                    purchasePrice = Convert.ToDecimal(row["ALIŞ QİYMƏTİ"]);
+                }
+                if (row.Table.Columns.Contains("BARKOD") && !row.IsNull("BARKOD"))
+                {
+                    barcode = row["BARKOD"].ToString();
+                }
+
+
                 DbProsedures.InsertItem(new DatabaseClasses.Item
                 {
                     Name = row["MƏHSUL ADI"].ToString(),
-                    Code = "Code2",
-                    Quantity = Convert.ToDecimal(row["SAY"]),
-                    SalePrice = Convert.ToDecimal(row["SATIŞ QİYMƏTİ"]),
-                    PurchasePrice = Convert.ToDecimal(row["ALIŞ QİYMƏTİ"]),
-                    vatType = Convert.ToInt32(row["EDV_ID"]),
-                    QuantityType = Convert.ToInt32(row["VAHIDLER_ID"]),
-                    ProductId = Convert.ToInt32(row["MAL_ALISI_DETAILS_ID"])
+                    Code = barcode,
+                    Quantity = say,
+                    SalePrice = salePrice,
+                    PurchasePrice = purchasePrice,
+                    vatType = vatType,
+                    QuantityType = quantityType,
+                    ProductId = productId,
+                    Discount = _discount
                 });
             }
 
@@ -2345,7 +2356,33 @@ LEFT JOIN pos_guzest pg
                 paidPayment = 0
             });
 
-            bool IsSuccess = AzSmart.InstallmentSales(lIpAdress.Text, lMerchantId.Text, textEdit1.Text, total, cashier);
+            //RRN KODU MANUAL OLARAQ YAZMAQ ÜÇÜN
+            if (total > 0 && bankttnmd is "1")
+            {
+                Bankttnminput bt = new Bankttnminput(this);
+                if (bt.ShowDialog() is DialogResult.Cancel)
+                {
+                    return;
+                }
+            }
+            else
+            {
+                bankttnminputdata = string.Empty;
+            }
+
+
+            bool IsSuccess = await AzSmart.InstallmentSales(new DTOs.SalesDto
+            {
+                IpAddress = lIpAdress.Text,
+                MerchantId = lMerchantId.Text,
+                ProccessNo = textEdit1.Text,
+                Total = total,
+                Cash = 0,
+                Card = total,
+                IncomingSum = 0,
+                Cashier = tUsername.Text,
+                Rrn = bankttnminputdata
+            });
 
             if (IsSuccess)
             {
@@ -2707,7 +2744,7 @@ LEFT JOIN pos_guzest pg
                             incomingSum,
                             tUsername.Text,
                             _customer,
-                            _doctor, 
+                            _doctor,
                             bankttnminputdata);
 
                         if (IsSuccess)

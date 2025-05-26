@@ -539,133 +539,291 @@ namespace WindowsFormsApp2.NKA
             }
         }
 
-        public static bool InstallmentSales(string ipAddress, string merchantID, string processNo, decimal _total, string cashier)
+        public static async Task<bool> InstallmentSales(DTOs.SalesDto salesData)
         {
-            return false;
-            //            List<Item> items = new List<Item>();
-            //            SqlConnection conn = new SqlConnection(DbHelpers.DbConnectionString);
-            //            SqlCommand cmd = new SqlCommand();
-            //            conn.Open();
-            //            string query = $@"select name,
-            //Item.item_id,
-            //salePrice,
-            //quantity,
-            //case vatType 
-            //when 1 then '1800' 
-            //when 4 then '200'
-            //when 5 then '800'
-            //else 0 end as TaxPrc, 
-            //case vatType 
-            //when 1 then N'ƏDV 18%' 
-            //when 4 then 'SV-2%' 
-            //when 5 then 'SV-8%' 
-            //when 3 then N'ƏDV-dən azad' end as TaxName,
-            //quantityType,
-            //salePrice*quantity as ssum
-            //FROM  dbo.item where user_id = {Properties.Settings.Default.UserID};";
+            string requestJson = null;
+            string responseJson = null;
+            int posSalesId = 0;
+            try
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                List<RequestSale.Item> items = new List<RequestSale.Item>();
+                string query = "GetItems_AzSmart";
 
-            //            cmd.Connection = conn;
-            //            cmd.CommandText = query;
+                SqlConnection conn = new SqlConnection(DbHelpers.DbConnectionString);
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@UserID", Properties.Settings.Default.UserID);
+                conn.Open();
 
-            //            SqlDataReader dr = cmd.ExecuteReader();
-            //            while (dr.Read())
-            //            {
-            //                string name = dr["name"].ToString();
-            //                string code = dr["item_id"].ToString();
-            //                decimal salePrice = Convert.ToDecimal(dr["salePrice"]);
-            //                decimal quantity = Convert.ToDecimal(dr["quantity"]);
-            //                string taxName = dr["TaxName"].ToString();
-            //                int TaxPrc = Convert.ToInt32(dr["TaxPrc"]);
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    string name = dr["name"].ToString();
+                    string Id = dr["item_id"].ToString();
+                    string barcode = dr["code"].ToString();
+                    decimal salePrice = Convert.ToDecimal(dr["salePrice"]);
+                    decimal _purchasePrice = Convert.ToDecimal(dr["purchasePrice"]);
+                    decimal quantity = Convert.ToDecimal(dr["quantity"]);
+                    string taxName = dr["TaxName"].ToString();
+                    int TaxCode = Convert.ToInt32(dr["TaxCode"]);
+                    int calcType = Convert.ToInt32(dr["calcType"]);
+                    int TaxPrc = Convert.ToInt32(dr["TaxPrc"]);
+
+                    int miqdar = Convert.ToInt32(quantity * 1000);
+                    int price = Convert.ToInt32(salePrice * quantity * 100);
+
+                    int? purchasePrice = Convert.ToInt32(_purchasePrice * 100);
+                    int? purchasePriceSum = Convert.ToInt32(_purchasePrice * quantity * 100);
+
+                    if (taxName != "Ticarət əlavəsi 18%")
+                    {
+                        purchasePriceSum = null;
+                        purchasePrice = null;
+                    }
+
+                    var taxs = new List<RequestSale.itemTaxes>
+                    {
+                        new RequestSale.itemTaxes
+                        {
+                            fullName = taxName,
+                            taxName = taxName,
+                            taxPrc = TaxPrc,
+                            calcType = calcType,
+                        }
+                    };
+
+                    RequestSale.Item itemProduct = new RequestSale.Item
+                    {
+                        itemId = Id,
+                        itemName = name,
+                        itemBarcode = barcode,
+                        itemQty = miqdar,
+                        itemAmount = price,
+                        itemMarginPrice = purchasePrice,
+                        itemMarginSum = purchasePriceSum,
+                        itemTaxes = taxs
+                    };
+                    items.Add(itemProduct);
+                }
+
+                int cash = Convert.ToInt32(salesData.IncomingSum * 100);
+                int card = Convert.ToInt32(salesData.Card * 100);
+                int total = Convert.ToInt32(salesData.Total * 100);
+
+                RequestSale.Payments payments = new RequestSale.Payments
+                {
+                    cashAmount = 0,
+                    cashlessAmount = 0,
+                    installmentAmount = total,
+                    rrn = string.IsNullOrWhiteSpace(salesData.Rrn) ? null : salesData.Rrn,
+                };
+
+                string docnumber = await ReturnHeaderId();
+
+                RequestSale.Root root = new RequestSale.Root
+                {
+                    employeeName = salesData.Cashier,
+                    items = items,
+                    payments = payments,
+                    amount = total,
+                    docNumber = docnumber
+                };
+
+                string json = Newtonsoft.Json.JsonConvert.SerializeObject(root, new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                });
+
+                var response = RequestPOST<ResponseSale>($"{salesData.IpAddress}/sale", salesData.MerchantId, json);
+                requestJson = response.requestJson;
+                responseJson = response.responseJson;
+
+                if (response.code != 506)
+                {
+                    if (response.data.status == "success")
+                    {
+                        posSalesId = DbProsedures.InsertPosSales(new PosSales
+                        {
+                            posNomre = response.data.fiscalNum,
+                            longFiskalId = response.data.fiscalID.ToString(),
+                            proccessNo = salesData.ProccessNo,
+                            cash = cash,
+                            card = total,
+                            total = total,
+                            json = json,
+                            shortFiskalId = null,
+                            rrn = response.data.rrn
+                        });
+
+                        if (MessageVisible)
+                        {
+                            ReadyMessages.SUCCESS_SALES_MESSAGE();
+                        }
+
+                        FormHelpers.Log($"Pos satışı uğurla edildi. Qəbz №: {response.data.fiscalNum}");
+                        return true;
+                    }
+                    else
+                    {
+                        ReadyMessages.ERROR_SALES_MESSAGE(response.data.message);
+                        FormHelpers.Log($"Pos satışı xətası - Xəta mesajı: {response.data.message}");
+                        return false;
+                    }
+                }
+                else
+                {
+                    ReadyMessages.ERROR_SALES_MESSAGE($"Kassa ilə əlaqə zamanı xəta yarandı\n{response.message}");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                ReadyMessages.ERROR_SALES_MESSAGE(ex.Message);
+                return false;
+            }
+            finally
+            {
+                FormHelpers.OperationLog(new OperationLogs
+                {
+                    OperationType = OperationType.PosSales,
+                    OperationId = posSalesId,
+                    Message = posSalesId == 0 ? "Error" : "Success",
+                    RequestCode = requestJson,
+                    ResponseCode = responseJson,
+                });
+                Cursor.Current = Cursors.Default;
+            }
 
 
-            //                int price = Convert.ToInt32(salePrice * quantity) * 100;
-            //                int miqdar = Convert.ToInt32(quantity * 1000);
-
-            //                List<ItemTax> taxs = new List<ItemTax>();
-
-            //                ItemTax tax = new ItemTax
-            //                {
-            //                    fullName = taxName,
-            //                    taxName = taxName,
-            //                    taxPrc = TaxPrc,
-            //                };
-            //                taxs.Add(tax);
 
 
-            //                Item itemProduct = new Item
-            //                {
-            //                    itemName = name,
-            //                    itemId = code,
-            //                    itemQty = miqdar,
-            //                    itemAmount = price,
-            //                    itemTaxes = taxs
-            //                };
-            //                items.Add(itemProduct);
-            //            }
+            /*
+            List<Item> items = new List<Item>();
+            SqlConnection conn = new SqlConnection(DbHelpers.DbConnectionString);
+            SqlCommand cmd = new SqlCommand();
+            conn.Open();
+            string query = $@"select name,
+            Item.item_id,
+            salePrice,
+            quantity,
+            case vatType 
+            when 1 then '1800' 
+            when 4 then '200'
+            when 5 then '800'
+            else 0 end as TaxPrc, 
+            case vatType 
+            when 1 then N'ƏDV 18%' 
+            when 4 then 'SV-2%' 
+            when 5 then 'SV-8%' 
+            when 3 then N'ƏDV-dən azad' end as TaxName,
+            quantityType,
+            salePrice*quantity as ssum
+            FROM  dbo.item where user_id = {Properties.Settings.Default.UserID};";
 
-            //            int total = Convert.ToInt32(_total) * 100;
+            cmd.Connection = conn;
+            cmd.CommandText = query;
 
-            //            Payments payments = new Payments
-            //            {
-            //                cashAmount = 0,
-            //                cashlessAmount = 0,
-            //                installmentAmount = total
-            //            };
+            SqlDataReader dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                string name = dr["name"].ToString();
+                string code = dr["item_id"].ToString();
+                decimal salePrice = Convert.ToDecimal(dr["salePrice"]);
+                decimal quantity = Convert.ToDecimal(dr["quantity"]);
+                string taxName = dr["TaxName"].ToString();
+                int TaxPrc = Convert.ToInt32(dr["TaxPrc"]);
 
-            //            string docnumber = ReturnHeaderId();
 
-            //            RootObject rootObject = new RootObject
-            //            {
-            //                employeeName = cashier,
-            //                //rrn = rrn,
-            //                items = items,
-            //                payments = payments,
-            //                amount = total,
-            //                docNumber = docnumber
-            //            };
+                int price = Convert.ToInt32(salePrice * quantity) * 100;
+                int miqdar = Convert.ToInt32(quantity * 1000);
 
-            //            string json = Newtonsoft.Json.JsonConvert.SerializeObject(rootObject, new JsonSerializerSettings
-            //            {
-            //                NullValueHandling = NullValueHandling.Ignore
-            //            });
+                List<ItemTax> taxs = new List<ItemTax>();
 
-            //            string hashData = JsonConvertBase64(json, merchantID);
+                ItemTax tax = new ItemTax
+                {
+                    fullName = taxName,
+                    taxName = taxName,
+                    taxPrc = TaxPrc,
+                };
+                taxs.Add(tax);
 
-            //            var response = RequestPOST(ipAddress + "/sale", hashData);
 
-            //            if (response != null)
-            //            {
-            //                if (response.status is "success")
-            //                {
-            //                    DbProsedures.InsertPosSales(new PosSales
-            //                    {
-            //                        posNomre = response.fiscalNum,
-            //                        longFiskalId = response.fiscalID.ToString(),
-            //                        proccessNo = processNo,
-            //                        cash = 0,
-            //                        card = _total,
-            //                        total = total,
-            //                        json = json,
-            //                        shortFiskalId = null
-            //                    });
+                Item itemProduct = new Item
+                {
+                    itemName = name,
+                    itemId = code,
+                    itemQty = miqdar,
+                    itemAmount = price,
+                    itemTaxes = taxs
+                };
+                items.Add(itemProduct);
+            }
 
-            //                    if (MessageVisible)
-            //                    {
-            //                        ReadyMessages.SUCCESS_SALES_MESSAGE();
+            int total = Convert.ToInt32(_total) * 100;
 
-            //                    }
-            //                    FormHelpers.Log($"Birbank ilə taksit ödənişi uğurla edildi. Qəbz No: {response.fiscalNum}");
-            //                    return true;
-            //                }
-            //                else
-            //                {
-            //                    return false;
-            //                }
-            //            }
-            //            else
-            //            {
-            //                return false;
-            //            }
+            Payments payments = new Payments
+            {
+                cashAmount = 0,
+                cashlessAmount = 0,
+                installmentAmount = total
+            };
+
+            string docnumber = await ReturnHeaderId();
+
+            RootObject rootObject = new RootObject
+            {
+                employeeName = cashier,
+                rrn = rrn,
+                items = items,
+                payments = payments,
+                amount = total,
+                docNumber = docnumber
+            };
+
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(rootObject, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            });
+
+            string hashData = JsonConvertBase64(json, merchantID);
+
+            var response = RequestPOST(ipAddress + "/sale", hashData);
+
+            if (response != null)
+            {
+                if (response.status is "success")
+                {
+                    DbProsedures.InsertPosSales(new PosSales
+                    {
+                        posNomre = response.fiscalNum,
+                        longFiskalId = response.fiscalID.ToString(),
+                        proccessNo = processNo,
+                        cash = 0,
+                        card = _total,
+                        total = total,
+                        json = json,
+                        shortFiskalId = null
+                    });
+
+                    if (MessageVisible)
+                    {
+                        ReadyMessages.SUCCESS_SALES_MESSAGE();
+
+                    }
+                    FormHelpers.Log($"Birbank ilə taksit ödənişi uğurla edildi. Qəbz No: {response.fiscalNum}");
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+            */
         }
 
         public static void XReport(string ipAddress, string merchantId, string cashier)
