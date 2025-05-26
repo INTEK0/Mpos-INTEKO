@@ -19,19 +19,30 @@ namespace WindowsFormsApp2.Forms
 
         private async void bLicenceControl_Click(object sender, EventArgs e)
         {
-            _user = await LicenseService.Instance.RequestKeyControl(_licenceKey);
-            if (_user != null)
+            try
             {
+                Cursor.Current = Cursors.WaitCursor;
+                _user = await LicenseService.Instance.RequestKeyControl(_licenceKey);
+                if (_user != null)
+                {
 
-                if (_user.IsActive && LicenseService.Instance.LicenceExpireDateControl(_user))
-                {
-                    Application.Restart();
-                }
-                else
-                {
-                    ErrorMesssage();
+                    if (_user.IsActive && LicenseService.Instance.LicenceExpireDateControl(_user))
+                    {
+                        Application.Restart();
+                    }
+                    else
+                    {
+                        ErrorMesssage();
+                    }
                 }
             }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally {  Cursor.Current = Cursors.Default; }
+
         }
 
         private void bExit_Click(object sender, EventArgs e)
@@ -78,6 +89,7 @@ namespace WindowsFormsApp2.Forms
 
         private void fDeactive_Load(object sender, EventArgs e)
         {
+            Licence.Services.LicenseService.Instance.Stop();
             lProductID.Text = "ID: " + Registry.CurrentUser.OpenSubKey("Mpos").GetValue("ProductID").ToString();
             lVersion.Text = $"Version: {Application.ProductVersion}";
             ErrorMesssage();

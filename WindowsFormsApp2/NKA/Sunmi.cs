@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Windows.Forms;
+using DevExpress.DataAccess.Native.Web;
 using DevExpress.XtraEditors;
 using Newtonsoft.Json;
 using RestSharp;
@@ -18,26 +19,28 @@ namespace WindowsFormsApp2.NKA
 {
     public static class Sunmi
     {
-        private static readonly POS_LAYOUT_NEW posPage;
         private static readonly bool MessageVisible = FormHelpers.SuccessMessageVisible();
+        private static readonly RestClient _restClient = new RestClient();
 
-        private static ResponseData RequestPOST(string ipAddress, string json)
+        private static ResponseData RequestPOST(string url, string json)
         {
-            RestClient rest = new RestClient();
-            RestRequest request = new RestRequest(ipAddress, Method.Post);
+            RestRequest request = new RestRequest(url, Method.Post);
             request.AddHeader("Content-Type", "application/json;charset=utf-8");
             request.AddStringBody(json, DataFormat.Json);
-            RestResponse response = rest.Execute(request);
-
-            if (response.ResponseStatus != ResponseStatus.Completed)
+            RestResponse response = _restClient.Execute(request);
+            if (string.IsNullOrWhiteSpace(response?.Content))
             {
-                ReadyMessages.ERROR_SERVER_CONNECTION_MESSAGE();
-                FormHelpers.Log($"Kassa ilə əlaqə zamanı xəta yarandı\n\n {response.ErrorMessage}");
-                return null;
+                return new ResponseData
+                {
+                    code = "506",
+                    message = "Error",
+                    requestJson = json
+                };
             }
 
-
             ResponseData responseData = System.Text.Json.JsonSerializer.Deserialize<ResponseData>(response.Content);
+            responseData.requestJson = json;
+            responseData.responseJson = response.Content;
             return responseData;
         }
 
@@ -351,13 +354,16 @@ namespace WindowsFormsApp2.NKA
 
         public static bool Sales(SalesDto salesData)
         {
-            List<Item> items = new List<Item>();
+            int posSaleId = 0;
+            string _requestJson = null;
+            string _responseJson = null;
+            try
+            {
+                List<Item> items = new List<Item>();
 
-            SqlConnection conn = new SqlConnection();
-            SqlCommand cmd = new SqlCommand();
-            conn.ConnectionString = DbHelpers.DbConnectionString;
-            conn.Open();
-            string query = $@"SELECT 
+                using (SqlConnection conn = new SqlConnection(DbHelpers.DbConnectionString))
+                {
+                    string query = $@"SELECT 
                               name,
                               --Item.item_id,
                               code,
@@ -368,105 +374,128 @@ namespace WindowsFormsApp2.NKA
                               quantityType,
                               salePrice*quantity as ssum
                               FROM dbo.item WHERE user_id = {Properties.Settings.Default.UserID};";
-
-            cmd.Connection = conn;
-            cmd.CommandText = query;
-
-            SqlDataReader dr = cmd.ExecuteReader();
-            while (dr.Read())
-            {
-                string name = dr["name"].ToString();
-                string code = dr["code"].ToString();
-                decimal salePrice = Convert.ToDecimal(dr["salePrice"]);
-                decimal quantity = Convert.ToDecimal(dr["quantity"]);
-                int vatType = Convert.ToInt32(dr["vatType"]);
-                int quantityType = Convert.ToInt32(dr["quantityType"]);
-                decimal discount = Convert.ToDecimal(dr["discount"]);
-                salePrice = Math.Round(salePrice, 2);
-
-                Item itemProduct = new Item
-                {
-                    name = name,
-                    code = code,
-                    salePrice = salePrice,
-                    quantity = quantity,
-                    vatType = vatType,
-                    quantityType = quantityType,
-                    discountAmount = discount
-                };
-                items.Add(itemProduct);
-            }
-
-            Data data = new Data
-            {
-                documentUUID = Guid.NewGuid().ToString(),
-                cashPayment = salesData.Cash,
-                cardPayment = salesData.Card,
-                bonusPayment = 0,
-                items = items,
-                cashierName = salesData.Cashier,
-                clientName = salesData.Customer == null ? null : $"{salesData.Customer.Name} {salesData.Customer.Surname} {salesData.Customer.FatherName}",
-                rrn = salesData.Rrn,
-                moneyBackType = null
-            };
-
-            RootObject rootObject = new RootObject
-            {
-                data = data,
-                operation = "sale",
-            };
-
-            decimal totalSum = (decimal)items.Sum(x => (x.salePrice * x.quantity) - x.discountAmount);
-
-            string json = Newtonsoft.Json.JsonConvert.SerializeObject(rootObject, new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore
-            });
-
-            var response = RequestPOST(salesData.IpAddress, json);
-
-            if (response != null)
-            {
-                if (response.message is "Success operation" || response.message is "Successful operation")
-                {
-                    DbProsedures.InsertPosSales(new PosSales
+                    conn.Open();
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
-                        posNomre = response.data.number,
-                        longFiskalId = response.data.document_id,
-                        proccessNo = salesData.ProccessNo,
-                        cash = salesData.Cash,
-                        card = salesData.Card,
-                        total = totalSum,
-                        json = json,
-                        shortFiskalId = response.data.short_document_id,
-                        rrn = response.data.rrn,
-                        customerId = salesData.Customer?.CustomerID,
-                        doctorId = salesData.Doctor?.Id,
-                    });
+                        using (SqlDataReader dr = cmd.ExecuteReader())
+                        {
+                            while (dr.Read())
+                            {
+                                string name = dr["name"].ToString();
+                                string code = dr["code"].ToString();
+                                decimal salePrice = Convert.ToDecimal(dr["salePrice"]);
+                                decimal quantity = Convert.ToDecimal(dr["quantity"]);
+                                int vatType = Convert.ToInt32(dr["vatType"]);
+                                int quantityType = Convert.ToInt32(dr["quantityType"]);
+                                decimal discount = Convert.ToDecimal(dr["discount"]);
+                                salePrice = Math.Round(salePrice, 2);
 
-                    if (MessageVisible)
-                    {
-                        ReadyMessages.SUCCESS_SALES_MESSAGE();
+                                Item itemProduct = new Item
+                                {
+                                    name = name,
+                                    code = code,
+                                    salePrice = salePrice,
+                                    quantity = quantity,
+                                    vatType = vatType,
+                                    quantityType = quantityType,
+                                    discountAmount = discount
+                                };
+                                items.Add(itemProduct);
+                            }
+                        }
                     }
-
-                    FormHelpers.Log($"Pos satışı uğurla edildi. Qəbz No: {response.data.number}");
-                    return true;
                 }
-                else if (response.message is "document: invalid shift duration")
+
+
+                Data data = new Data
                 {
-                    XtraMessageBox.Show("GÜN SONU (Z) HESABATI ÇIXARILMAYIB !\n\nZəhmət olmasa pos bağla düyməsinə vuraraq günü sonlandırın.", "Mesaj", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return false;
+                    documentUUID = Guid.NewGuid().ToString(),
+                    cashPayment = salesData.Cash,
+                    cardPayment = salesData.Card,
+                    bonusPayment = 0,
+                    items = items,
+                    cashierName = salesData.Cashier,
+                    clientName = salesData.Customer == null ? null : $"{salesData.Customer.Name} {salesData.Customer.Surname} {salesData.Customer.FatherName}",
+                    rrn = string.IsNullOrWhiteSpace(salesData.Rrn) ? null : salesData.Rrn,
+                    moneyBackType = null
+                };
+
+                RootObject rootObject = new RootObject
+                {
+                    data = data,
+                    operation = "sale",
+                };
+
+                decimal totalSum = (decimal)items.Sum(x => (x.salePrice * x.quantity) - x.discountAmount);
+
+                string json = Newtonsoft.Json.JsonConvert.SerializeObject(rootObject, new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                });
+
+                var response = RequestPOST(salesData.IpAddress, json);
+
+                _requestJson = json;
+                _responseJson = response.responseJson;
+
+                if (response.message != "error" && response.code != "506")
+                {
+                    switch (response.message)
+                    {
+                        case "Success operation":
+                        case "Successful operation":
+                            posSaleId = DbProsedures.InsertPosSales(new PosSales
+                            {
+                                posNomre = response.data.number,
+                                longFiskalId = response.data.document_id,
+                                proccessNo = salesData.ProccessNo,
+                                cash = salesData.Cash,
+                                card = salesData.Card,
+                                total = totalSum,
+                                json = json,
+                                shortFiskalId = response.data.short_document_id,
+                                rrn = response.data.rrn,
+                                customerId = salesData.Customer?.CustomerID,
+                                doctorId = salesData.Doctor?.Id,
+                            });
+
+                            if (MessageVisible)
+                            {
+                                ReadyMessages.SUCCESS_SALES_MESSAGE();
+                            }
+
+                            FormHelpers.Log($"Pos satışı uğurla edildi. Qəbz No: {response.data.number}");
+                            return true;
+                        case "document: invalid shift duration":
+                            XtraMessageBox.Show("GÜN SONU (Z) HESABATI ÇIXARILMAYIB !\n\nZəhmət olmasa pos bağla düyməsinə vuraraq günü sonlandırın.", "Mesaj", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            return false;
+                        default:
+                            ReadyMessages.ERROR_SALES_MESSAGE(response.message);
+                            FormHelpers.Log($"Pos satışı xətası - Xəta mesajı: {response.message}");
+                            return false;
+                    }
                 }
                 else
                 {
-                    ReadyMessages.ERROR_SALES_MESSAGE(response.message);
-                    FormHelpers.Log($"Pos satışı xətası - Xəta mesajı: {response.message}");
+                    ReadyMessages.ERROR_SALES_MESSAGE("Kassa ilə əlaqə zamanı xəta yarandı");
                     return false;
                 }
             }
-            else
+            catch (Exception ex)
             {
+                ReadyMessages.ERROR_SALES_MESSAGE(ex.Message);
                 return false;
+            }
+            finally
+            {
+                FormHelpers.OperationLog(new OperationLogs
+                {
+                    OperationType = OperationType.PosSales,
+                    OperationId = posSaleId,
+                    Message = posSaleId == 0 ? "Error" : "Success",
+                    RequestCode = _requestJson,
+                    ResponseCode = _responseJson,
+                });
             }
         }
 
@@ -475,20 +504,15 @@ namespace WindowsFormsApp2.NKA
             string fiskallID = "";
             decimal cash = default;
             decimal card = default;
-
-            SqlConnection conn2 = new SqlConnection(DbHelpers.DbConnectionString);
-            SqlCommand cmd2 = new SqlCommand();
-            conn2.Open();
             string query2 = "SELECT  [pos_satis_check_main_id],[pos_nomre],[fiscal_id],[date_] ,[user_id_] ," +
                 "[emeliyyat_nomre],[NEGD_],[KART_],[UMUMI_MEBLEG] ,[json_] ,[fiscalNum],[documentID]" +
                 "  FROM [pos_satis_check_main] WHERE[pos_satis_check_main_id] IN(SELECT[pos_satis_check_main_id]  " +
                 " FROM [pos_gaytarma_manual] where [pos_gaytarma_manual_id] =(select max([pos_gaytarma_manual_id]) " +
                 "from [pos_gaytarma_manual])); ";
+            SqlConnection conn2 = new SqlConnection(DbHelpers.DbConnectionString);
+            SqlCommand cmd2 = new SqlCommand(query2, conn2);
+            conn2.Open();
 
-
-
-            cmd2.Connection = conn2;
-            cmd2.CommandText = query2;
 
             SqlDataReader dr2 = cmd2.ExecuteReader();
 
@@ -507,13 +531,6 @@ namespace WindowsFormsApp2.NKA
                 card = card1;
             }
 
-
-            SqlConnection conn = new SqlConnection();
-            SqlCommand cmd = new SqlCommand();
-            conn.ConnectionString = DbHelpers.DbConnectionString;
-            conn.Open();
-
-
             string query = $@"(SELECT md.MEHSUL_ADI AS name,
                        p.item_id AS code,
                        pl.say AS say,
@@ -525,12 +542,10 @@ namespace WindowsFormsApp2.NKA
                        INNER JOIN MAL_ALISI_DETAILS md ON p.mal_alisi_details_id = md.MAL_ALISI_DETAILS_ID
                        INNER JOIN pos_gaytarma_manual pl ON p.pos_satis_check_details_id = pl.pos_satis_check_details
               WHERE pl.emeliyyat_nomre = '{refundData.ProccessNo}')";
+            SqlConnection conn = new SqlConnection(DbHelpers.DbConnectionString);
+            SqlCommand cmd = new SqlCommand(query, conn);
+            conn.Open();
 
-
-
-
-            cmd.Connection = conn;
-            cmd.CommandText = query;
             List<Item> items = new List<Item>();
             SqlDataReader dr = cmd.ExecuteReader();
             while (dr.Read())
@@ -581,29 +596,47 @@ namespace WindowsFormsApp2.NKA
                 NullValueHandling = NullValueHandling.Ignore
             });
 
+            var response = RequestPOST(refundData.IpAddress, json);
 
-            RestClient rest = new RestClient();
-            RestRequest request = new RestRequest(refundData.IpAddress, Method.Post);
-            request.AddHeader("Content-Type", "application/json;charset=utf-8");
-            request.AddStringBody(json, DataFormat.Json);
-            RestResponse response = rest.Execute(request);
-
-            ResponseData responseData = System.Text.Json.JsonSerializer.Deserialize<ResponseData>(response.Content);
-            if ($"{responseData.message}" == "Success operation" || $"{responseData.message}" == "Successful operation")
+            try
             {
-                if (MessageVisible)
+                if (response.message != "error" && response.code != "506")
                 {
-                    ReadyMessages.SUCCESS_RETURN_SALES_MESSAGE();
-                }
+                    if (response.message == "Success operation" || response.message == "Successful operation")
+                    {
+                        if (MessageVisible)
+                        {
+                            ReadyMessages.SUCCESS_RETURN_SALES_MESSAGE();
+                        }
 
-                FormHelpers.Log($"Qəbz geri qaytarması edildi. Qəbz №: {responseData.data.number}");
-                return true;
+                        FormHelpers.Log($"Qəbz geri qaytarması edildi. Qəbz №: {response.data.number}");
+                        return true;
+                    }
+                    else
+                    {
+                        FormHelpers.Log($"Pos satış qaytarma xətası. Xəta mesajı: {response.message}");
+                        ReadyMessages.ERROR_RETURN_SALES_MESSAGE(response.message);
+                        return false;
+                    }
+                }
+                else
+                    return false;
             }
-            else
+            catch (Exception ex)
             {
-                FormHelpers.Log($"Pos satış qaytarma xətası. Xəta mesajı: {responseData.message}");
-                ReadyMessages.ERROR_RETURN_SALES_MESSAGE(responseData.message);
+                FormHelpers.Log($"Pos satış qaytarma xətası. Xəta mesajı: {ex.Message}");
+                ReadyMessages.ERROR_RETURN_SALES_MESSAGE(ex.Message);
                 return false;
+            }
+            finally
+            {
+                FormHelpers.OperationLog(new OperationLogs
+                {
+                    OperationType = OperationType.RefundPosSales,
+                    OperationId = (int)OperationType.RefundPosSales,
+                    RequestCode = response.requestJson,
+                    ResponseCode = response.responseJson,
+                });
             }
         }
 
@@ -642,7 +675,7 @@ namespace WindowsFormsApp2.NKA
                     {
                         ReadyMessages.SUCCES_CREDIT_PAYMENT_MESSAGE();
                     }
-                    
+
                     FormHelpers.Log($"{rootObject.data.creditContract} nömrəli müqavilənin kredit ödənişi edildi.");
 
                     using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
@@ -659,7 +692,7 @@ WHERE KREDIT_SATISI_AYLIK_ID= {KREDIT_SATISI_AYLIK_ID}";
                         }
                     }
 
-                   
+
                     return true;
                 }
             }
@@ -815,7 +848,7 @@ WHERE KREDIT_SATISI_AYLIK_ID= {KREDIT_SATISI_AYLIK_ID}";
                         decimal debt = salesData.Total - salesData.PrepaymentPay; //Qalan borcu
                         DbProsedures.InsertCustomerDebt(CustomerDebtType.AvansPay, DateTime.Now, salesData.Customer.CustomerID, debt);
                     }
-                  
+
 
                     if (MessageVisible)
                     {
@@ -1149,6 +1182,13 @@ WHERE psd.pos_satis_check_main_id = {pos_satis_main_id} AND psm.user_id_ = {Prop
 
 
         #region [..RESPONSE CLASS..]
+        public abstract class BaseResponse
+        {
+            public string requestJson { get; set; }
+            public string responseJson { get; set; }
+            public string code { get; set; }
+            public string message { get; set; }
+        }
 
         public class ResponseDocumentData
         {
@@ -1163,13 +1203,10 @@ WHERE psd.pos_satis_check_main_id = {pos_satis_main_id} AND psm.user_id_ = {Prop
             public string rrn { get; set; }
         }
 
-        public class ResponseData
+        public class ResponseData : BaseResponse
         {
             public ResponseDocumentData data { get; set; }
-            public string code { get; set; }
-            public string message { get; set; }
             public string document_number { get; set; }
-
         }
 
         public class GetInfoResponse
@@ -1213,11 +1250,9 @@ WHERE psd.pos_satis_check_main_id = {pos_satis_main_id} AND psm.user_id_ = {Prop
                 public decimal totalSum { get; set; }
             }
 
-            public class Root
+            public class Root : BaseResponse
             {
                 public Data data { get; set; }
-                public string code { get; set; }
-                public string message { get; set; }
             }
         }
 
@@ -1232,15 +1267,13 @@ WHERE psd.pos_satis_check_main_id = {pos_satis_main_id} AND psm.user_id_ = {Prop
                 public decimal totalSum { get; set; }
             }
 
-            public class Root
+            public class Root : BaseResponse
             {
                 public Data data { get; set; }
-                public string code { get; set; }
-                public string message { get; set; }
             }
         }
 
-        public class CreditPayResponse
+        public class CreditPayResponse : BaseResponse
         {
             public class Data
             {
@@ -1255,10 +1288,7 @@ WHERE psd.pos_satis_check_main_id = {pos_satis_main_id} AND psm.user_id_ = {Prop
                 public string transaction_id { get; set; }
                 public string transaction_number { get; set; }
             }
-
             public Data data { get; set; }
-            public string code { get; set; }
-            public string message { get; set; }
         }
         #endregion [..RESPONSE CLASS..]
     }

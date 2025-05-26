@@ -115,9 +115,9 @@
     <Compile Include="Helpers\Implementations\LocalDateTimeService.cs" />
     <Compile Include="Helpers\Services\IDateTimeService.cs" />
     <Compile Include="Helpers\Services\IGuidKeyService.cs" />
-    <Compile Include="Operations\LicenceOperation.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AppService.cs" />
     <Compile Include="Services\LicenseService.cs" />
     <Compile Include="Validations\UserValidation.cs" />
     <EmbeddedResource Include="Forms\fAdmin.resx">

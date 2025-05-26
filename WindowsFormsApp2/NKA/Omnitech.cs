@@ -33,7 +33,7 @@ namespace WindowsFormsApp2.NKA
                 request.AddHeader("Content-Type", "application/json;charset=utf-8");
                 request.AddStringBody(json, DataFormat.Json);
                 RestResponse response = client.Execute(request);
-
+                 //return response;
                 if (response.ResponseStatus != ResponseStatus.Completed)
                 {
                     ReadyMessages.ERROR_SERVER_CONNECTION_MESSAGE();
@@ -1272,14 +1272,14 @@ case A.VERGI_DERECESI
             }
 
             string fiskalID = string.Empty;
-            using (SqlConnection con = new SqlConnection(Properties.Settings.Default.SqlCon))
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
             {
                 con.Open();
                 using (SqlCommand cmd = new SqlCommand(DbHelpers.LastDocumentFiskalId, con))
                 {
                     using (SqlDataReader dr = cmd.ExecuteReader())
                     {
-                        while (dr.Read())
+                        if (dr.Read())
                         {
                             fiskalID = dr[0].ToString();
                         }

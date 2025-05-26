@@ -2798,8 +2798,10 @@ namespace WindowsFormsApp2
             this.gridLogs.Name = "gridLogs";
             this.gridLogs.OptionsBehavior.Editable = false;
             this.gridLogs.OptionsNavigation.AutoFocusNewRow = true;
+            this.gridLogs.OptionsView.ColumnHeaderAutoHeight = DevExpress.Utils.DefaultBoolean.True;
             this.gridLogs.OptionsView.EnableAppearanceEvenRow = true;
             this.gridLogs.OptionsView.EnableAppearanceOddRow = true;
+            this.gridLogs.OptionsView.RowAutoHeight = true;
             this.gridLogs.OptionsView.ShowIndicator = false;
             // 
             // gridColumn3
@@ -2820,6 +2822,7 @@ namespace WindowsFormsApp2
             this.gridColumn4.Name = "gridColumn4";
             this.gridColumn4.Visible = true;
             this.gridColumn4.VisibleIndex = 1;
+            this.gridColumn4.Width = 783;
             // 
             // gridColumn5
             // 
@@ -2827,7 +2830,7 @@ namespace WindowsFormsApp2
             this.gridColumn5.DisplayFormat.FormatString = "d";
             this.gridColumn5.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.gridColumn5.FieldName = "Tarix";
-            this.gridColumn5.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Right;
+            this.gridColumn5.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.MiddleLeft;
             this.gridColumn5.MaxWidth = 100;
             this.gridColumn5.MinWidth = 100;
             this.gridColumn5.Name = "gridColumn5";
@@ -2839,12 +2842,12 @@ namespace WindowsFormsApp2
             // 
             this.gridColumn6.Caption = "Saat";
             this.gridColumn6.FieldName = "Saat";
-            this.gridColumn6.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Right;
+            this.gridColumn6.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.MiddleLeft;
             this.gridColumn6.MinWidth = 100;
             this.gridColumn6.Name = "gridColumn6";
             this.gridColumn6.Visible = true;
             this.gridColumn6.VisibleIndex = 3;
-            this.gridColumn6.Width = 100;
+            this.gridColumn6.Width = 116;
             // 
             // tabAllSettings
             // 
@@ -2855,7 +2858,7 @@ namespace WindowsFormsApp2
             this.tabAllSettings.Name = "tabAllSettings";
             this.tabAllSettings.Properties.AppearanceCaption.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.tabAllSettings.Properties.AppearanceCaption.Options.UseFont = true;
-            this.tabAllSettings.Size = new System.Drawing.Size(1157, 759);
+            this.tabAllSettings.Size = new System.Drawing.Size(1157, 761);
             // 
             // panelControl13
             // 
@@ -2874,7 +2877,7 @@ namespace WindowsFormsApp2
             this.panelControl13.LookAndFeel.UseDefaultLookAndFeel = false;
             this.panelControl13.Margin = new System.Windows.Forms.Padding(1);
             this.panelControl13.Name = "panelControl13";
-            this.panelControl13.Size = new System.Drawing.Size(1157, 759);
+            this.panelControl13.Size = new System.Drawing.Size(1157, 761);
             this.panelControl13.TabIndex = 12;
             // 
             // chClinicModul

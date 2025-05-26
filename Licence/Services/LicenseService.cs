@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
@@ -16,8 +19,14 @@ namespace Licence.Services
         private static LicenseService _instance;
         private static readonly object _lock = new object();
         private System.Threading.Timer _timer;
-        private string _licenseKey;
         //private bool _isChecking = false;
+        private readonly List<TimeSpan> _controlTimes = new List<TimeSpan>
+        {
+             new TimeSpan(12, 0, 0),
+             new TimeSpan(13, 0, 0),
+             new TimeSpan(17, 0, 0)
+        };
+        private TimeSpan _lastCheckedTime = TimeSpan.MinValue;
         private LicenseService() { }
 
         public static LicenseService Instance
@@ -68,46 +77,53 @@ namespace Licence.Services
             }
         }
 
-        public void Start(string licenseKey)
+        public void Start()
         {
-            _licenseKey = licenseKey;
-
-            int hours = GetLicenseIntervalFromConfig();
-            int interval = hours * 60 * 60 * 1000; // convert hours
-
-            _timer = new System.Threading.Timer(async _ => await CheckStatusAsync(), null, 0, interval);
+            _timer = new System.Threading.Timer(async _ => await CheckScheduledTimes(), null, 0, 60 * 1000);
         }
 
-        private async Task CheckStatusAsync()
+        public void Stop()
         {
-            if (!FormHelpers.HasInternetConnection())
+            if (_timer != null)
+                _timer.Dispose();
+        }
+
+        private async Task CheckScheduledTimes()
+        {
+            TimeSpan now = DateTime.Now.TimeOfDay;
+
+            foreach (var target in _controlTimes)
             {
-                XtraMessageBox.Show("İnternet bağlantınız yoxdur.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            try
-            {
-                var user = await RequestKeyControl(_licenseKey);
-
-                if (user == null)
-                    return;
-
-                if (!user.IsActive || !LicenceExpireDateControl(user))
+                if (now.Hours == target.Hours && now.Minutes == target.Minutes && _lastCheckedTime != target)
                 {
-                    ShowDeactiveForm();
-                    return;
-                }
+                    _lastCheckedTime = target;
 
-            }
-            catch (Exception ex)
-            {
-                throw ex;
+                    var user = await RequestKeyControl(GetLicenceKey());
+                    if (user != null)
+                    {
+                        if (!user.IsActive || !LicenceExpireDateControl(user))
+                        {
+                            AppService.mutex.Dispose();
+                            Process.Start(Application.ExecutablePath);
+                            await Task.Delay(500);
+                            Environment.Exit(0);
+                        }
+                    }
+
+
+                    break;
+                }
             }
         }
 
         public async Task<User> RequestKeyControl(string key)
         {
+            if (!FormHelpers.HasInternetConnection())
+            {
+                //   XtraMessageBox.Show("İnternet bağlantınız yoxdur.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+
             if (string.IsNullOrWhiteSpace(key) || key is "Yoxdur")
             {
                 return null;
@@ -166,7 +182,7 @@ namespace Licence.Services
                 return hours;
             }
 
-            return 1; // Default: 1 saat
+            return 3; // Default: 3 saat
         }
     }
 }

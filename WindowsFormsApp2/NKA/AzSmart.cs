@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using Newtonsoft.Json;
 using RestSharp;
@@ -16,108 +20,117 @@ namespace WindowsFormsApp2.NKA
 {
     public static class AzSmart
     {
-        public const string FiskalPort = "10156"; //prod port: 8008 - test port: 10156
+        public const string FiskalPort = "10155"; //prod port: 8008 - test port: 10155
+        private static readonly RestClient _restClient = new RestClient();
 
         private static readonly bool MessageVisible = FormHelpers.SuccessMessageVisible();
-        private static AzSmartResponse RequestPOST(string ipAddress, string data)
+        private static BaseRequestResponse<T> RequestPOST<T>(string ipAddress, string merchantID, string json)
         {
-            var client = new RestClient();
+            string data = JsonConvertBase64(json, merchantID);
+
             var request = new RestRequest(ipAddress, Method.Post);
             request.AddParameter("text/plain", data, ParameterType.RequestBody);
-            RestResponse response = client.Execute(request);
+            RestResponse response = _restClient.Execute(request);
+            if (string.IsNullOrWhiteSpace(response?.Content))
+            {
+                return new BaseRequestResponse<T>
+                {
+                    code = 506,
+                    message = response.ErrorMessage,
+                    requestJson = json
+                };
+            }
 
-            if (response.ResponseStatus != ResponseStatus.Completed)
+            var responseData = System.Text.Json.JsonSerializer.Deserialize<T>(response.Content);
+            return new BaseRequestResponse<T>
             {
-                ReadyMessages.ERROR_SERVER_CONNECTION_MESSAGE();
-                FormHelpers.Log($"Kassa ilə əlaqə zamanı xəta yarandı\n\n {response.ErrorMessage}");
-                return null;
-            }
-            else
-            {
-                AzSmartResponse weatherForecast = System.Text.Json.JsonSerializer.Deserialize<AzSmartResponse>(response.Content);
-                return weatherForecast;
-            }
+                requestJson = json,
+                responseJson = response.Content,
+                data = responseData
+            };
         }
 
         public static void OpenShift(string ipAdress, string merchantId, string cashier)
         {
-            RootObject rootObject = new RootObject
+            var root = new
             {
-                employeeName = cashier,
-                wsName = null,
-                departmentName = null,
-                currency = null,
+                employeeName = cashier
             };
 
-            string json = Newtonsoft.Json.JsonConvert.SerializeObject(rootObject, new JsonSerializerSettings
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(root, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
             });
 
-            var data = JsonConvertBase64(json, merchantId);
+            var response = RequestPOST<BaseResponse>($"{ipAdress}/open_shift", merchantId, json);
 
-
-            var client = new RestClient();
-            var request = new RestRequest(ipAdress + "/open_shift", Method.Post);
-            request.AddParameter("text/plain", data, ParameterType.RequestBody);
-            RestResponse response = client.Execute(request);
-
-            if (response.ResponseStatus != ResponseStatus.Completed)
+            if (response.code != 506)
             {
-                ReadyMessages.ERROR_SERVER_CONNECTION_MESSAGE();
-                FormHelpers.Log($"Kassa ilə əlaqə zamanı xəta yarandı\n\n {response.ErrorMessage}");
-                return;
-            }
-
-            AzSmartResponseOpenShift weatherForecast = System.Text.Json.JsonSerializer.Deserialize<AzSmartResponseOpenShift>(response.Content);
-            if (weatherForecast != null)
-            {
-                switch (weatherForecast.code)
+                if (response.data.status is "success")
                 {
-                    case 0:
-                        ReadyMessages.SUCCESS_OPEN_SHIFT_MESSAGE();
-                        FormHelpers.Log(CommonData.SUCCESS_OPEN_SHIFT);
-                        break;
-                    case 6:
-                        ReadyMessages.SUCCESS_SHIFT_STATUS_MESSAGE();
-                        break;
-                    default:
-                        XtraMessageBox.Show(weatherForecast.message);
-                        break;
+                    ReadyMessages.SUCCESS_OPEN_SHIFT_MESSAGE();
+                    FormHelpers.Log(CommonData.SUCCESS_OPEN_SHIFT);
                 }
+                else
+                {
+                    ReadyMessages.ERROR_OPENSHIFT_MESSAGE(response.data.message);
+                    FormHelpers.Log($"{ErrorMessages.ERROR_OPENSHIFT} Xəta mesajı: {response.data.message}");
+                }
+            }
+            else
+            {
+                ReadyMessages.ERROR_OPENSHIFT_MESSAGE($"Kassa ilə əlaqə zamanı xəta yarandı\n{response.message}");
+            }
+        }
+
+        public static void GetShiftStatus(string ipAdress, string merchantId, string cashier)
+        {
+            var root = new
+            {
+                employeeName = cashier,
+            };
+
+
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(root, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            });
+
+            var response = RequestPOST<ResponseCheckShift>($"{ipAdress}/check_shift", merchantId, json);
+            if (response.code != 506)
+            {
+                if (response.data.isShiftOpen is "true")
+                {
+                    string open_time = Convert.ToDateTime(response.data.shiftOpenAt).ToString("dd.MM.yyyy HH:mm:ss");
+                    ReadyMessages.SUCCESS_SHIFT_STATUS_MESSAGE(open_time);
+                }
+                else
+                {
+                    OpenShift(ipAdress, merchantId, cashier);
+                }
+            }
+            else
+            {
+                ReadyMessages.ERROR_DEFAULT_MESSAGE($"Kassa ilə əlaqə zamanı xəta yarandı\n{response.message}");
             }
         }
 
         public static void CloseShift(string ipAdress, string merchantId, string cashier)
         {
-            RootObject rootObject = new RootObject
+            var root = new
             {
-                employeeName = cashier,
-                wsName = null,
-                departmentName = null,
-                currency = null,
+                employeeName = cashier
             };
 
-            string json = Newtonsoft.Json.JsonConvert.SerializeObject(rootObject, new JsonSerializerSettings
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(root, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
             });
 
-            var data = JsonConvertBase64(json, merchantId);
-
-
-            var client = new RestClient();
-            var request = new RestRequest(ipAdress + "/close_shift", Method.Post);
-            request.AddParameter("text/plain", data, ParameterType.RequestBody);
-            RestResponse response = client.Execute(request);
-
-            AzSmartResponse weatherForecast = System.Text.Json.JsonSerializer.Deserialize<AzSmartResponse>(response.Content);
-
-          //  var response = RequestPOST(ipAdress + "/close_shift", data);
-
-            if (weatherForecast != null)
+            var response = RequestPOST<BaseResponse>($"{ipAdress}/close_shift", merchantId, json);
+            if (response.code != 506)
             {
-                if (weatherForecast.status is "success")
+                if (response.data.status is "success")
                 {
                     if (MessageVisible)
                     {
@@ -128,178 +141,179 @@ namespace WindowsFormsApp2.NKA
                 }
                 else
                 {
-                    ReadyMessages.WARNING_DEFAULT_MESSAGE(weatherForecast.message);
+                    ReadyMessages.WARNING_DEFAULT_MESSAGE(response.data.message);
                     FormHelpers.OperationLog(new OperationLogs
                     {
                         Message = "Z REPORT ERROR",
                         OperationId = 0,
                         OperationType = OperationType.ZReport,
-                        RequestCode = json,
-                        ResponseCode = response.Content
+                        RequestCode = response.requestJson,
+                        ResponseCode = response.responseJson
                     });
+                    FormHelpers.Log($"Z REPORT ERROR - Xəta mesajı: {response.data.message}");
                 }
             }
             else
             {
-                FormHelpers.OperationLog(new OperationLogs
-                {
-                    Message = "Z REPORT ERROR",
-                    OperationId = 0,
-                    OperationType = OperationType.ZReport,
-                    RequestCode = json,
-                    ResponseCode = response.Content
-                });
+                ReadyMessages.ERROR_DEFAULT_MESSAGE($"Kassa ilə əlaqə zamanı xəta yarandı\n{response.message}");
             }
         }
 
-        public static bool Sales(DTOs.SalesDto salesData)
+        public static async Task<bool> Sales(DTOs.SalesDto salesData)
         {
-            List<Item> items = new List<Item>();
-            SqlConnection conn = new SqlConnection(DbHelpers.DbConnectionString);
-            SqlCommand cmd = new SqlCommand();
-            conn.Open();
-            string query = $@"
-SELECT 
-t.name,
-t.item_id,
-t.salePrice,
-t.purchasePrice,
-t.quantity,
-case t.vatType 
-        when 1 then '1800' 
-        when 2 then '1800' 
-        when 3 then '0'
-        when 4 then '200' 
-        when 5 then '800'
-end as TaxPrc,
-case t.vatType 
-        when 1 then N'ƏDV 18%'
-        when 2 then N'Ticarət əlavəsi 18%'
-        when 3 then N'ƏDV-dən azad'
-        when 4 then 'SV-2%'
-        when 5 then 'SV-8%'
-end as TaxName,
-t.quantityType,
-salePrice*quantity as ssum
-FROM dbo.Item as t
-WHERE user_id = {Properties.Settings.Default.UserID}";
-
-            cmd.Connection = conn;
-            cmd.CommandText = query;
-
-            SqlDataReader dr = cmd.ExecuteReader();
-            while (dr.Read())
+            string requestJson = null;
+            string responseJson = null;
+            int posSalesId = 0;
+            try
             {
-                string name = dr["name"].ToString();
-                string code = dr["item_id"].ToString();
-                decimal salePrice = Convert.ToDecimal(dr["salePrice"]);
-                decimal _purchasePrice = Convert.ToDecimal(dr["purchasePrice"]);
-                decimal quantity = Convert.ToDecimal(dr["quantity"]);
-                string taxName = dr["TaxName"].ToString();
-                int TaxPrc = Convert.ToInt32(dr["TaxPrc"]);
+                Cursor.Current = Cursors.WaitCursor;
+                List<RequestSale.Item> items = new List<RequestSale.Item>();
+                string query = "GetItems_AzSmart";
 
+                SqlConnection conn = new SqlConnection(DbHelpers.DbConnectionString);
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@UserID", Properties.Settings.Default.UserID);
+                conn.Open();
 
-                int miqdar = Convert.ToInt32(quantity * 1000);
-                int price = Convert.ToInt32(salePrice * quantity * 100);
-
-                int? purchasePrice = Convert.ToInt32(_purchasePrice * 100);
-                int? purchasePriceSum = Convert.ToInt32(_purchasePrice * quantity * 100);
-
-                if (taxName != "Ticarət əlavəsi 18%")
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
                 {
-                    purchasePriceSum = null;
-                    purchasePrice = null;
-                }
-
-                List<ItemTax> taxs = new List<ItemTax>();
-
-                ItemTax tax = new ItemTax
-                {
-                    fullName = taxName,
-                    taxName = taxName,
-                    taxPrc = TaxPrc,
-                };
-                taxs.Add(tax);
+                    string name = dr["name"].ToString();
+                    string Id = dr["item_id"].ToString();
+                    string barcode = dr["code"].ToString();
+                    decimal salePrice = Convert.ToDecimal(dr["salePrice"]);
+                    decimal _purchasePrice = Convert.ToDecimal(dr["purchasePrice"]);
+                    decimal quantity = Convert.ToDecimal(dr["quantity"]);
+                    string taxName = dr["TaxName"].ToString();
+                    int TaxCode = Convert.ToInt32(dr["TaxCode"]);
+                    int calcType = Convert.ToInt32(dr["calcType"]);
+                    int TaxPrc = Convert.ToInt32(dr["TaxPrc"]);
 
 
-                Item itemProduct = new Item
-                {
-                    itemName = name,
-                    itemId = code,
-                    itemQty = miqdar,
-                    itemAmount = price,
-                    itemMarginPrice = purchasePrice,
-                    itemMarginSum = purchasePriceSum,
-                    itemTaxes = taxs
-                };
-                items.Add(itemProduct);
-            }
+                    int miqdar = Convert.ToInt32(quantity * 1000);
+                    int price = Convert.ToInt32(salePrice * quantity * 100);
 
-            int cash = Convert.ToInt32(salesData.IncomingSum * 100);
-            int card = Convert.ToInt32(salesData.Card * 100);
-            int total = Convert.ToInt32(salesData.Total * 100);
+                    int? purchasePrice = Convert.ToInt32(_purchasePrice * 100);
+                    int? purchasePriceSum = Convert.ToInt32(_purchasePrice * quantity * 100);
 
-            Payments payments = new Payments
-            {
-                cashAmount = cash,
-                cashlessAmount = card,
-            };
-
-            string docnumber = ReturnHeaderId();
-
-            RootObject rootObject = new RootObject
-            {
-                employeeName = salesData.Cashier,
-                rrn = salesData.Rrn,
-                items = items,
-                payments = payments,
-                amount = total,
-                docNumber = docnumber
-            };
-
-            string json = Newtonsoft.Json.JsonConvert.SerializeObject(rootObject, new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore
-            });
-
-            string hashData = JsonConvertBase64(json, salesData.MerchantId);
-
-            var response = RequestPOST(salesData.IpAddress + "/sale", hashData);
-
-            if (response != null)
-            {
-                if (response.status == "success")
-                {
-                    DbProsedures.InsertPosSales(new PosSales
+                    if (taxName != "Ticarət əlavəsi 18%")
                     {
-                        posNomre = response.fiscalNum,
-                        longFiskalId = response.fiscalID.ToString(),
-                        proccessNo = salesData.ProccessNo,
-                        cash = cash,
-                        card = card,
-                        total = total,
-                        json = json,
-                        shortFiskalId = null
-                    });
-
-                    if (MessageVisible)
-                    {
-                        ReadyMessages.SUCCESS_SALES_MESSAGE();
+                        purchasePriceSum = null;
+                        purchasePrice = null;
                     }
 
-                    FormHelpers.Log($"Pos satışı uğurla edildi. Qəbz №: {response.fiscalNum}");
-                    return true;
+                    var taxs = new List<RequestSale.itemTaxes>
+                {
+                    new RequestSale.itemTaxes
+                    {
+                        fullName = taxName,
+                        taxName = taxName,
+                        taxPrc = TaxPrc,
+                        calcType = calcType,
+                    }
+                };
+
+                    RequestSale.Item itemProduct = new RequestSale.Item
+                    {
+                        itemId = Id,
+                        itemName = name,
+                        itemBarcode = barcode,
+                        itemQty = miqdar,
+                        itemAmount = price,
+                        itemMarginPrice = purchasePrice,
+                        itemMarginSum = purchasePriceSum,
+                        itemTaxes = taxs
+                    };
+                    items.Add(itemProduct);
+                }
+
+                int cash = Convert.ToInt32(salesData.IncomingSum * 100);
+                int card = Convert.ToInt32(salesData.Card * 100);
+                int total = Convert.ToInt32(salesData.Total * 100);
+
+                RequestSale.Payments payments = new RequestSale.Payments
+                {
+                    cashAmount = cash,
+                    cashlessAmount = card,
+                    rrn = string.IsNullOrWhiteSpace(salesData.Rrn) ? null : salesData.Rrn,
+                };
+
+                string docnumber = await ReturnHeaderId();
+
+                RequestSale.Root root = new RequestSale.Root
+                {
+                    employeeName = salesData.Cashier,
+                    items = items,
+                    payments = payments,
+                    amount = total,
+                    docNumber = docnumber
+                };
+
+                string json = Newtonsoft.Json.JsonConvert.SerializeObject(root, new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                });
+
+
+                var response = RequestPOST<ResponseSale>($"{salesData.IpAddress}/sale", salesData.MerchantId, json);
+                requestJson = response.requestJson;
+                responseJson = response.responseJson;
+
+                if (response.code != 506)
+                {
+                    if (response.data.status == "success")
+                    {
+                        posSalesId = DbProsedures.InsertPosSales(new PosSales
+                        {
+                            posNomre = response.data.fiscalNum,
+                            longFiskalId = response.data.fiscalID.ToString(),
+                            proccessNo = salesData.ProccessNo,
+                            cash = cash,
+                            card = card,
+                            total = total,
+                            json = json,
+                            shortFiskalId = null,
+                            rrn = response.data.rrn,
+                        });
+
+                        if (MessageVisible)
+                        {
+                            ReadyMessages.SUCCESS_SALES_MESSAGE();
+                        }
+
+                        FormHelpers.Log($"Pos satışı uğurla edildi. Qəbz №: {response.data.fiscalNum}");
+                        return true;
+                    }
+                    else
+                    {
+                        ReadyMessages.ERROR_SALES_MESSAGE(response.data.message);
+                        FormHelpers.Log($"Pos satışı xətası - Xəta mesajı: {response.data.message}");
+                        return false;
+                    }
                 }
                 else
                 {
-                    ReadyMessages.ERROR_SALES_MESSAGE(response.message);
-                    FormHelpers.Log($"Pos satışı xətası - Xəta mesajı: {response.message}");
+                    ReadyMessages.ERROR_SALES_MESSAGE($"Kassa ilə əlaqə zamanı xəta yarandı\n{response.message}");
                     return false;
                 }
             }
-            else
+            catch (Exception ex)
             {
+                ReadyMessages.ERROR_SALES_MESSAGE(ex.Message);
                 return false;
+            }
+            finally
+            {
+                FormHelpers.OperationLog(new OperationLogs
+                {
+                    OperationType = OperationType.PosSales,
+                    OperationId = posSalesId,
+                    Message = posSalesId == 0 ? "Error" : "Success",
+                    RequestCode = requestJson,
+                    ResponseCode = responseJson,
+                });
+                Cursor.Current = Cursors.Default;
             }
         }
 
@@ -340,7 +354,6 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
                     }
                 }
             }
-
 
             using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon))
             {
@@ -404,7 +417,6 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
                 }
             }
 
-
             int cash = Convert.ToInt32(_cash * 100);
             int card = Convert.ToInt32(_card * 100);
             int total = Convert.ToInt32(_total2 * 100);
@@ -446,57 +458,68 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
                 NullValueHandling = NullValueHandling.Ignore
             });
 
-            string hashData = JsonConvertBase64(json, merchantID);
 
-            var response = RequestPOST(ipAddress + "/refund", hashData);
+            var response = RequestPOST<ResponseRefund>($"{ipAddress}/refund", merchantID, json);
 
-            if (response != null)
+            if (response.code != 506)
             {
-                if (response.status == "success")
+                if (response.data.status == "success")
                 {
                     if (MessageVisible)
                     {
                         ReadyMessages.SUCCESS_RETURN_SALES_MESSAGE();
                     }
 
-                    FormHelpers.Log($"Qəbz geri qaytarması edildi Qəbz №: {response.fiscalNum}");
+                    FormHelpers.Log($"Qəbz geri qaytarması edildi Qəbz №: {response.data.fiscalNum}");
                     return true;
                 }
                 else
                 {
-                    FormHelpers.Log($"Pos satış qaytarma xətası. Xəta mesajı: {response.message}");
-                    ReadyMessages.ERROR_RETURN_SALES_MESSAGE(response.message);
+                    FormHelpers.Log($"Pos satış qaytarma xətası. Xəta mesajı: {response.data.message}");
+                    ReadyMessages.ERROR_RETURN_SALES_MESSAGE(response.data.message);
                     return false;
                 }
             }
             else
             {
+                ReadyMessages.ERROR_RETURN_SALES_MESSAGE($"Kassa ilə əlaqə zamanı xəta yarandı\n{response.message}");
                 return false;
             }
         }
 
         public static void LastReceiptCopy(string ipAddress, string merchantId, string cashier)
         {
-            RootObject rootObject = new RootObject
+            string fiskalID = string.Empty;
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
             {
-                employeeName = cashier,
-                wsName = null,
-                departmentName = null,
-                currency = null,
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand(DbHelpers.LastDocumentFiskalId, con))
+                {
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            fiskalID = dr[0].ToString();
+                        }
+                    }
+                }
+            }
+
+            var root = new
+            {
+                documentID = fiskalID
             };
 
-            string json = Newtonsoft.Json.JsonConvert.SerializeObject(rootObject, new JsonSerializerSettings
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(root, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
             });
 
-            var data = JsonConvertBase64(json, merchantId);
+            var response = RequestPOST<BaseResponse>($"{ipAddress}/check_copy", merchantId, json);
 
-            var response = RequestPOST(ipAddress + "/last_document", data);
-
-            if (response != null)
+            if (response.code != 506)
             {
-                if (response.status is "success")
+                if (response.data.status is "success")
                 {
                     if (MessageVisible)
                     {
@@ -506,162 +529,162 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
                 }
                 else
                 {
-                    ReadyMessages.ERROR_LAST_DOCUMENT_MESSAGE(response.message);
-                    FormHelpers.Log($"Təkrar qəbz çap olunarkən xəta yarandı. Xəta mesajı: {response.message}");
+                    ReadyMessages.ERROR_LAST_DOCUMENT_MESSAGE(response.data.message);
+                    FormHelpers.Log($"Təkrar qəbz çap olunarkən xəta yarandı. Xəta mesajı: {response.data.message}");
                 }
+            }
+            else
+            {
+                ReadyMessages.ERROR_DEFAULT_MESSAGE($"Kassa ilə əlaqə zamanı xəta yarandı\n{response.message}");
             }
         }
 
         public static bool InstallmentSales(string ipAddress, string merchantID, string processNo, decimal _total, string cashier)
         {
-            List<Item> items = new List<Item>();
-            SqlConnection conn = new SqlConnection(DbHelpers.DbConnectionString);
-            SqlCommand cmd = new SqlCommand();
-            conn.Open();
-            string query = $@"select name,
-Item.item_id,
-salePrice,
-quantity,
-case vatType 
-when 1 then '1800' 
-when 4 then '200'
-when 5 then '800'
-else 0 end as TaxPrc, 
-case vatType 
-when 1 then N'ƏDV 18%' 
-when 4 then 'SV-2%' 
-when 5 then 'SV-8%' 
-when 3 then N'ƏDV-dən azad' end as TaxName,
-quantityType,
-salePrice*quantity as ssum
-FROM  dbo.item where user_id = {Properties.Settings.Default.UserID};";
+            return false;
+            //            List<Item> items = new List<Item>();
+            //            SqlConnection conn = new SqlConnection(DbHelpers.DbConnectionString);
+            //            SqlCommand cmd = new SqlCommand();
+            //            conn.Open();
+            //            string query = $@"select name,
+            //Item.item_id,
+            //salePrice,
+            //quantity,
+            //case vatType 
+            //when 1 then '1800' 
+            //when 4 then '200'
+            //when 5 then '800'
+            //else 0 end as TaxPrc, 
+            //case vatType 
+            //when 1 then N'ƏDV 18%' 
+            //when 4 then 'SV-2%' 
+            //when 5 then 'SV-8%' 
+            //when 3 then N'ƏDV-dən azad' end as TaxName,
+            //quantityType,
+            //salePrice*quantity as ssum
+            //FROM  dbo.item where user_id = {Properties.Settings.Default.UserID};";
 
-            cmd.Connection = conn;
-            cmd.CommandText = query;
+            //            cmd.Connection = conn;
+            //            cmd.CommandText = query;
 
-            SqlDataReader dr = cmd.ExecuteReader();
-            while (dr.Read())
-            {
-                string name = dr["name"].ToString();
-                string code = dr["item_id"].ToString();
-                decimal salePrice = Convert.ToDecimal(dr["salePrice"]);
-                decimal quantity = Convert.ToDecimal(dr["quantity"]);
-                string taxName = dr["TaxName"].ToString();
-                int TaxPrc = Convert.ToInt32(dr["TaxPrc"]);
-
-
-                int price = Convert.ToInt32(salePrice * quantity) * 100;
-                int miqdar = Convert.ToInt32(quantity * 1000);
-
-                List<ItemTax> taxs = new List<ItemTax>();
-
-                ItemTax tax = new ItemTax
-                {
-                    fullName = taxName,
-                    taxName = taxName,
-                    taxPrc = TaxPrc,
-                };
-                taxs.Add(tax);
+            //            SqlDataReader dr = cmd.ExecuteReader();
+            //            while (dr.Read())
+            //            {
+            //                string name = dr["name"].ToString();
+            //                string code = dr["item_id"].ToString();
+            //                decimal salePrice = Convert.ToDecimal(dr["salePrice"]);
+            //                decimal quantity = Convert.ToDecimal(dr["quantity"]);
+            //                string taxName = dr["TaxName"].ToString();
+            //                int TaxPrc = Convert.ToInt32(dr["TaxPrc"]);
 
 
-                Item itemProduct = new Item
-                {
-                    itemName = name,
-                    itemId = code,
-                    itemQty = miqdar,
-                    itemAmount = price,
-                    itemTaxes = taxs
-                };
-                items.Add(itemProduct);
-            }
+            //                int price = Convert.ToInt32(salePrice * quantity) * 100;
+            //                int miqdar = Convert.ToInt32(quantity * 1000);
 
-            int total = Convert.ToInt32(_total) * 100;
+            //                List<ItemTax> taxs = new List<ItemTax>();
 
-            Payments payments = new Payments
-            {
-                cashAmount = 0,
-                cashlessAmount = 0,
-                installmentAmount = total
-            };
+            //                ItemTax tax = new ItemTax
+            //                {
+            //                    fullName = taxName,
+            //                    taxName = taxName,
+            //                    taxPrc = TaxPrc,
+            //                };
+            //                taxs.Add(tax);
 
-            string docnumber = ReturnHeaderId();
 
-            RootObject rootObject = new RootObject
-            {
-                employeeName = cashier,
-                //rrn = rrn,
-                items = items,
-                payments = payments,
-                amount = total,
-                docNumber = docnumber
-            };
+            //                Item itemProduct = new Item
+            //                {
+            //                    itemName = name,
+            //                    itemId = code,
+            //                    itemQty = miqdar,
+            //                    itemAmount = price,
+            //                    itemTaxes = taxs
+            //                };
+            //                items.Add(itemProduct);
+            //            }
 
-            string json = Newtonsoft.Json.JsonConvert.SerializeObject(rootObject, new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore
-            });
+            //            int total = Convert.ToInt32(_total) * 100;
 
-            string hashData = JsonConvertBase64(json, merchantID);
+            //            Payments payments = new Payments
+            //            {
+            //                cashAmount = 0,
+            //                cashlessAmount = 0,
+            //                installmentAmount = total
+            //            };
 
-            var response = RequestPOST(ipAddress + "/sale", hashData);
+            //            string docnumber = ReturnHeaderId();
 
-            if (response != null)
-            {
-                if (response.status is "success")
-                {
-                    DbProsedures.InsertPosSales(new PosSales
-                    {
-                        posNomre = response.fiscalNum,
-                        longFiskalId = response.fiscalID.ToString(),
-                        proccessNo = processNo,
-                        cash = 0,
-                        card = _total,
-                        total = total,
-                        json = json,
-                        shortFiskalId = null
-                    });
+            //            RootObject rootObject = new RootObject
+            //            {
+            //                employeeName = cashier,
+            //                //rrn = rrn,
+            //                items = items,
+            //                payments = payments,
+            //                amount = total,
+            //                docNumber = docnumber
+            //            };
 
-                    if (MessageVisible)
-                    {
-                        ReadyMessages.SUCCESS_SALES_MESSAGE();
+            //            string json = Newtonsoft.Json.JsonConvert.SerializeObject(rootObject, new JsonSerializerSettings
+            //            {
+            //                NullValueHandling = NullValueHandling.Ignore
+            //            });
 
-                    }
-                    FormHelpers.Log($"Birbank ilə taksit ödənişi uğurla edildi. Qəbz No: {response.fiscalNum}");
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
+            //            string hashData = JsonConvertBase64(json, merchantID);
+
+            //            var response = RequestPOST(ipAddress + "/sale", hashData);
+
+            //            if (response != null)
+            //            {
+            //                if (response.status is "success")
+            //                {
+            //                    DbProsedures.InsertPosSales(new PosSales
+            //                    {
+            //                        posNomre = response.fiscalNum,
+            //                        longFiskalId = response.fiscalID.ToString(),
+            //                        proccessNo = processNo,
+            //                        cash = 0,
+            //                        card = _total,
+            //                        total = total,
+            //                        json = json,
+            //                        shortFiskalId = null
+            //                    });
+
+            //                    if (MessageVisible)
+            //                    {
+            //                        ReadyMessages.SUCCESS_SALES_MESSAGE();
+
+            //                    }
+            //                    FormHelpers.Log($"Birbank ilə taksit ödənişi uğurla edildi. Qəbz No: {response.fiscalNum}");
+            //                    return true;
+            //                }
+            //                else
+            //                {
+            //                    return false;
+            //                }
+            //            }
+            //            else
+            //            {
+            //                return false;
+            //            }
         }
 
         public static void XReport(string ipAddress, string merchantId, string cashier)
         {
-            RootObject rootObject = new RootObject
+            var root = new
             {
-                employeeName = cashier,
-                wsName = null,
-                departmentName = null,
-                currency = null,
+                departmentName = string.Empty
             };
 
-            string json = Newtonsoft.Json.JsonConvert.SerializeObject(rootObject, new JsonSerializerSettings
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(root, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
             });
 
-            var data = JsonConvertBase64(json, merchantId);
+            var response = RequestPOST<BaseResponse>($"{ipAddress}/x_report", merchantId, json);
 
-            var response = RequestPOST(ipAddress + "/x_report", data);
-
-            if (response != null)
+            if (response.code != 506)
             {
-                if (response.status is "success")
+                if (response.data.status is "success")
                 {
                     if (MessageVisible)
                     {
@@ -671,82 +694,177 @@ FROM  dbo.item where user_id = {Properties.Settings.Default.UserID};";
                 }
                 else
                 {
-                    ReadyMessages.WARNING_DEFAULT_MESSAGE(response.message);
+                    ReadyMessages.WARNING_DEFAULT_MESSAGE(response.data.message);
                 }
+            }
+            else
+            {
+                ReadyMessages.ERROR_DEFAULT_MESSAGE($"Kassa ilə əlaqə zamanı xəta yarandı\n{response.message}");
             }
         }
 
         public static void PeriodicReport(DateTime _start, DateTime _end, string ipAddress, string merchantId)
         {
-            string start = _start.ToString("yyyy-MM-dd hh:mm:ss");
-            string end = _end.ToString("yyyy-MM-dd hh:mm:ss");
+            string start = _start.ToString("yyyy-MM-dd");
+            string end = _end.ToString("yyyy-MM-dd");
 
-            RootObject rootObject = new RootObject
+            RequestPeriodicReport root = new RequestPeriodicReport
             {
-                wsName = null,
-                departmentName = null,
-                amount = null,
-                currency = null,
-                date_start = start,
-                date_stop = end,
+                employeeName = "Kassir",
+                dateFrom = start,
+                dateFor = end,
             };
 
-            string json = Newtonsoft.Json.JsonConvert.SerializeObject(rootObject, new JsonSerializerSettings
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(root, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
             });
 
-            var data = JsonConvertBase64(json, merchantId);
-
-            var response = RequestPOST(ipAddress + "/dates_report", data);
-
-            if (response.status == "success")
+            var response = RequestPOST<BaseResponse>($"{ipAddress}/dates_report", merchantId, json);
+            if (response.code != 506)
             {
-                if (MessageVisible)
+                if (response.data.status == "success")
                 {
-                    ReadyMessages.SUCCES_PERİODİC_Z_REPORT_MESSAGE();
+                    if (MessageVisible)
+                    {
+                        ReadyMessages.SUCCES_PERİODİC_Z_REPORT_MESSAGE();
+                    }
+                    FormHelpers.Log(CommonData.SUCCES_PERİODİC_Z_REPORT);
                 }
-                FormHelpers.Log(CommonData.SUCCES_PERİODİC_Z_REPORT);
+                else
+                {
+                    ReadyMessages.ERROR_DEFAULT_MESSAGE(response.data.message);
+                    FormHelpers.Log($"Dövrü hesabat çap edilərkən xəta yarandı. Xəta mesajı: {response.data.message}");
+                }
             }
             else
             {
-                ReadyMessages.ERROR_DEFAULT_MESSAGE(response.message);
-                FormHelpers.Log($"Dövrü hesabat çap edilərkən xəta yarandı. Xəta mesajı: {response.message}");
+                ReadyMessages.ERROR_DEFAULT_MESSAGE($"Kassa ilə əlaqə zamanı xəta yarandı\n{response.message}");
             }
         }
 
-        private static string ReturnHeaderId()
+        private async static Task<string> ReturnHeaderId()
         {
-            SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString);
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = con;
-            cmd.CommandText = $"select header_id from  dbo.header where userId = {Properties.Settings.Default.UserID}";
-            con.Open();
-
-            var result = cmd.ExecuteScalar();
-
-            if (result != null)
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
             {
-                return result.ToString();
-            }
-            else
-            {
-                return null;
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = con;
+                    cmd.CommandText = $"SELECT header_id FROM dbo.header WHERE userId = {Properties.Settings.Default.UserID}";
+                    await con.OpenAsync();
+                    var result = await cmd.ExecuteScalarAsync();
+                    if (result != null)
+                    {
+                        return result.ToString();
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
             }
         }
 
-        public static string JsonConvertBase64(string json, string merchantId)
+        private static string JsonConvertBase64(string json, string merchantId)
         {
-            string base_64 = Base64Encode(json);
-            var data_ = base_64;
-            var convert_sign1 = data_ + merchantId;
-            var conver_sign2sha = sha1(convert_sign1);
-            var convert_sign3 = Base64Encode(conver_sign2sha);
-            var string_post = "data=" + data_.Replace("=", "%3D") + "&" + "sign=" + convert_sign3.Replace("=", "%3D");
-            return string_post;
+            string base64Data = Base64Encode(json);
+            string sha1Hash = sha1(base64Data + merchantId);
+            string base64Sign = Base64Encode(sha1Hash);
+            return $"data={base64Data.Replace("=", "%3D")}&sign={base64Sign.Replace("=", "%3D")}";
         }
+
 
         #region [..Request Classes..]
+
+        private class RequestSale
+        {
+            public class ExtraPayment
+            {
+                public string code { get; set; }
+                public int amount { get; set; }
+                public string trxParams { get; set; }
+            }
+
+            public class Item
+            {
+                public string itemId { get; set; }
+                public string itemCodeType { get; set; } = null;
+                public string itemName { get; set; }
+                public int? itemAttr { get; set; } = null;
+                public string itemQRCode { get; set; } = null;
+                public string itemCode { get; set; } = null;
+                public string itemUnitCode { get; set; } = null;
+                public string itemUnit { get; set; } = null;
+                public string itemBarcode { get; set; } = null;
+                public int itemQty { get; set; }
+                public int itemAmount { get; set; }
+                public int discount { get; set; }
+                public int? discountPrc { get; set; } = null;
+                public string extraData { get; set; } = null;
+                public string textToPrint { get; set; } = null;
+                public List<itemTaxes> itemTaxes { get; set; }
+                public int? itemMarginSum { get; set; } = null;
+                public int? itemMarginPrice { get; set; } = null;
+            }
+
+            public class itemTaxes
+            {
+                public string taxName { get; set; }
+                public string fullName { get; set; }
+                public int taxPrc { get; set; }
+                public int? taxCode { get; set; } = null;
+                public int calcType { get; set; } = 1;
+            }
+
+            public class Payments
+            {
+                public int cashAmount { get; set; }
+                public int cashlessAmount { get; set; }
+                public int creditAmount { get; set; }
+                public int bonusesAmount { get; set; }
+                public int prepaymentAmount { get; set; }
+                public int prepaymentCashlessAmount { get; set; }
+                public int installmentAmount { get; set; }
+                public int invoiceAmount { get; set; }
+                public string rrn { get; set; } = null;
+                public string cardNumber { get; set; } = null;
+                public string bankName { get; set; } = null;
+            }
+
+            public class Root
+            {
+                public string documentID { get; set; } = null;
+                public int? documentExtID { get; set; } = null;
+                public string docTime { get; set; } = null;
+                public string docNumber { get; set; }
+                public string wsName { get; set; } = null;
+                public string departmentName { get; set; } = null;
+                public string departmentCode { get; set; } = null;
+                public string employeeName { get; set; }
+                public int amount { get; set; }
+                public string currency { get; set; } = "AZN";
+                public List<Item> items { get; set; }
+                public Payments payments { get; set; }
+                // public List<ExtraPayment> extraPayments { get; set; } = null;
+                public string fiscalID { get; set; } = null;
+                public string printFooter { get; set; } = null;
+                public string creditContract { get; set; } = null;
+                public string prepayDocID { get; set; } = null;
+                public string prepayDocNum { get; set; } = null;
+                public string clientPhone { get; set; } = null;
+                public string clientName { get; set; } = null;
+                public int? tips { get; set; } = null;
+                public int? cashback { get; set; } = null;
+                public bool? skipReceiptPrint { get; set; } = null;
+            }
+        }
+
+        private class RequestPeriodicReport
+        {
+            public string employeeName { get; set; }
+            public string dateFrom { get; set; }
+            public string dateFor { get; set; }
+        }
 
         private class ItemTax
         {
@@ -811,100 +929,67 @@ FROM  dbo.item where user_id = {Properties.Settings.Default.UserID};";
 
         #region [..Response Classes..]
 
-        public class AzSmartResponseOpenShift
+        public class BaseRequestResponse<T>
+        {
+            public int code { get; set; }
+            public string message { get; set; }
+            public string requestJson { get; set; }
+            public string responseJson { get; set; }
+            public T data { get; set; }
+        }
+
+        public class BaseResponse
         {
             public string status { get; set; }
             public int code { get; set; }
             public string message { get; set; }
-
         }
 
-        private class AzSmartResponse
+        private class ResponseCheckShift : BaseResponse
         {
-            public int Cash { get; set; }
-            public int CashRest { get; set; }
-            public int CorrBonusesSum { get; set; }
-            public int CorrCashSum { get; set; }
-            public int CorrCashlessSum { get; set; }
-            public int CorrCount { get; set; }
-            public int CorrCreditSum { get; set; }
-            public int CorrPrepaymentSum { get; set; }
-            public int CorrSum { get; set; }
-            public int CreditpayBonusesSum { get; set; }
-            public int CreditpayCashSum { get; set; }
-            public int CreditpayCashlessSum { get; set; }
-            public int CreditpayCount { get; set; }
-            public int CreditpayCreditSum { get; set; }
-            public int CreditpayPrepaymentSum { get; set; }
-            public int CreditpayRollbackBonusesSum { get; set; }
-            public int CreditpayRollbackCashSum { get; set; }
-            public int CreditpayRollbackCashlessSum { get; set; }
-            public int CreditpayRollbackCount { get; set; }
-            public int CreditpayRollbackCreditSum { get; set; }
-            public int CreditpayRollbackPrepaymentSum { get; set; }
-            public int CreditpayRollbackSum { get; set; }
-            public int CreditpaySum { get; set; }
-            public string DepartmentName { get; set; }
-            public int DepositCount { get; set; }
-            public int DepositSum { get; set; }
-            public int DocCountToSend { get; set; }
-            public string EmployeeName { get; set; }
-            public string FirstDocNumber { get; set; }
-            //public int FiscalID { get; set; }
-            public string LastDocNumber { get; set; }
-            public int MoneyBackBonusesSum { get; set; }
-            public int MoneyBackCashSum { get; set; }
-            public int MoneyBackCashlessSum { get; set; }
-            public int MoneyBackCount { get; set; }
-            public int MoneyBackCreditSum { get; set; }
-            public int MoneyBackPrepaymentSum { get; set; }
-            public int MoneyBackSum { get; set; }
-            public int OpenOrdersCnt { get; set; }
-            public int PrepayBonusesSum { get; set; }
-            public int PrepayCashSum { get; set; }
-            public int PrepayCashlessSum { get; set; }
-            public int PrepayCount { get; set; }
-            public int PrepayCreditSum { get; set; }
-            public int PrepayPrepaymentSum { get; set; }
-            public int PrepaySum { get; set; }
-            public string ReportNumber { get; set; }
-            public int RollbackBonusesSum { get; set; }
-            public int RollbackCashSum { get; set; }
-            public int RollbackCashlessSum { get; set; }
-            public int RollbackCount { get; set; }
-            public int RollbackCreditSum { get; set; }
-            public int RollbackPrepaymentSum { get; set; }
-            public int RollbackSum { get; set; }
-            public int SaleBonusesSum { get; set; }
-            public int SaleCashSum { get; set; }
-            public int SaleCashlessSum { get; set; }
-            public int SaleCount { get; set; }
-            public int SaleCreditSum { get; set; }
-            public int SalePrepaymentCashSum { get; set; }
-            public int SalePrepaymentCashlessSum { get; set; }
-            public int SalePrepaymentSum { get; set; }
-            public int SaleSum { get; set; }
-            public int ShiftID { get; set; }
-            public string ShiftOpenAt { get; set; }
-            public int ToPrint { get; set; }
-            public int WithdrawCount { get; set; }
-            public int WithdrawSum { get; set; }
-            public string WsName { get; set; }
-
-
-            public string status { get; set; }
-            public int shiftID { get; set; }
-            public int? code { get; set; }
-            public string message { get; set; }
-            public string error_description { get; set; } = null;
-            public int? documentID { get; set; } = null;
-            public object fiscalID { get; set; } = null;
-            public string fiscalNum { get; set; } = null;
-            public string rrn { get; set; } = null;
-            public string auth { get; set; } = null;
-            public string card_num { get; set; } = null;
-            public string checkNum { get; set; } = null;
+            public string isShiftOpen { get; set; }
+            public string shiftOpenAt { get; set; }
         }
+
+        private class ResponseSale : BaseResponse
+        {
+            public string auth { get; set; }
+            public string card_num { get; set; }
+            public string checkNum { get; set; }
+            public int docStatus { get; set; }
+            public int documentExtID { get; set; }
+            public int documentID { get; set; }
+            public string fiscalID { get; set; }
+            public string fiscalNum { get; set; }
+            public string preview_data { get; set; }
+            public int printError { get; set; }
+            public string printTime { get; set; }
+            public string rrn { get; set; }
+            public int shiftOrdersCnt { get; set; }
+            public List<TotalPayment> totalPayments { get; set; }
+            public class TotalPayment
+            {
+                public int amount { get; set; }
+                public string auth { get; set; }
+                public string card_num { get; set; }
+                public int change { get; set; }
+                public string checkNum { get; set; }
+                public string extraParams { get; set; }
+                public int id { get; set; }
+                public string name { get; set; }
+                public string notes { get; set; }
+                public string rrn { get; set; }
+                public string type { get; set; }
+            }
+        }
+
+        private class ResponseRefund : BaseResponse
+        {
+            public string rrn { get; set; }
+            public string fiscalNum { get; set; }
+            public object fiscalID { get; set; }
+        }
+
 
         #endregion [..Response Classes..]
     }

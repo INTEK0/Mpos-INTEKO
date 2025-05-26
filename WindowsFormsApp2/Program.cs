@@ -1,24 +1,21 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
+using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows.Forms;
 using DevExpress.XtraGrid.Localization;
 using DevExpress.XtraReports.Design;
-using Licence.Services;
-using WindowsFormsApp2.Helpers;
-using System.Diagnostics;
-using static WindowsFormsApp2.Helpers.FormHelpers;
-using System.Threading;
-using System.Reflection;
 using Licence.Forms;
-using System.Web.UI.WebControls;
+using Licence.Services;
 using WindowsFormsApp2.Forms;
+using static WindowsFormsApp2.Helpers.FormHelpers;
 
 namespace WindowsFormsApp2
 {
     static class Program
     {
-        private static Mutex mutex = null;
         private static readonly string _licenceKey = LicenseService.Instance.GetLicenceKey();
         [DllImport("user32.dll")]
         private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
@@ -37,7 +34,7 @@ namespace WindowsFormsApp2
 
             string appName = Assembly.GetExecutingAssembly().GetName().Name;
             bool createdNew;
-            mutex = new Mutex(true, appName, out createdNew);
+            Licence.Services.AppService.mutex = new Mutex(true, appName, out createdNew);
 
             if (!createdNew)
             {
@@ -61,8 +58,6 @@ namespace WindowsFormsApp2
                 return;
             }
 
-            FolderControl();
-            CultureInfoData();
 
 
             if (string.IsNullOrWhiteSpace(_licenceKey) || _licenceKey is "Yoxdur")
@@ -87,7 +82,8 @@ namespace WindowsFormsApp2
                 }
             }
 
-            LicenseService.Instance.Start(_licenceKey);
+            FolderControl();
+            CultureInfoData();
             Application.Run(new avtorizasiya());
         }
 
@@ -100,7 +96,5 @@ namespace WindowsFormsApp2
             CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator = ".";
             CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol = "₼"; //₼
         }
-
-
     }
 }

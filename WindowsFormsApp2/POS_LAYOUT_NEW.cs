@@ -1400,7 +1400,7 @@ LEFT JOIN pos_guzest pg
                     Sunmi.GetShiftStatus(lIpAdress.Text, tUsername.Text);
                     break; /*SUNMI*/
                 case "2":
-                    AzSmart.OpenShift(lIpAdress.Text, lMerchantId.Text, tUsername.Text);
+                    AzSmart.GetShiftStatus(lIpAdress.Text, lMerchantId.Text, tUsername.Text);
                     break; /*AZSMART*/
                 case "3":
                     textBox1.Text = Omnitech.Login(lIpAdress.Text); //Access Token alır
@@ -2567,7 +2567,7 @@ LEFT JOIN pos_guzest pg
             FormHelpers.OpenForm<POS_GAYTARMA_LAYOUT>(textBox1.Text, tUsername.Text);
         }
 
-        public void gelen_data_negd_pos(decimal cash_, decimal card_, decimal umumi_mebleg_, decimal incomingSum = default, decimal _qaliq = default, bool clinic = false, PayType payType = PayType.Empty)
+        public async void gelen_data_negd_pos(decimal cash_, decimal card_, decimal umumi_mebleg_, decimal incomingSum = default, decimal _qaliq = default, bool clinic = false, PayType payType = PayType.Empty)
         {
             try
             {
@@ -2677,7 +2677,7 @@ LEFT JOIN pos_guzest pg
                         }
                         break; /*SUNMI*/
                     case "2":
-                        IsSuccess = AzSmart.Sales(new DTOs.SalesDto
+                        IsSuccess = await AzSmart.Sales(new DTOs.SalesDto
                         {
                             IpAddress = lIpAdress.Text,
                             MerchantId = lMerchantId.Text,

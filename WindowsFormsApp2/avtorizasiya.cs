@@ -2,6 +2,7 @@
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Windows.Forms;
+using Licence.Services;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.Messages;
 using WindowsFormsApp2.Validations;
@@ -95,6 +96,7 @@ namespace WindowsFormsApp2
                 Properties.Settings.Default.UserID = user.Id;
                 Properties.Settings.Default.Save();
                 FormHelpers.Log("Sistemə daxil oldu");
+                LicenseService.Instance.Start();
 
                 if (user.IsAdmin)
                 {

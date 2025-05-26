@@ -259,14 +259,14 @@ namespace WindowsFormsApp2.Helpers.DB
         public class OperationLogs
         {
             public Enums.OperationType OperationType { get; set; }
-            public int OperationId { get; set; }
-            public string Message { get; set; } = string.Empty;
-            public string RequestCode { get; set; } = string.Empty;
-            public string ResponseCode { get; set; } = string.Empty;
+            public int OperationId { get; set; } = 0;
+            public string Message { get; set; } = null;
+            public string RequestCode { get; set; } = null;
+            public string ResponseCode { get; set; } = null;
 
         }
 
-        public class  GaimeMain
+        public class GaimeMain
         {
             public string ProccessNo { get; set; }
             public string QaimeNomre { get; set; }
@@ -396,7 +396,7 @@ namespace WindowsFormsApp2.Helpers.DB
             public string Comment { get; set; }
             public DateTime PayDate { get; set; }
             public string ProccessNo { get; set; }
-            public int UserId { get;  }
+            public int UserId { get; }
             public decimal MainDebtAmount { get; set; }
             public decimal TaxDebtAmount { get; set; }
         }

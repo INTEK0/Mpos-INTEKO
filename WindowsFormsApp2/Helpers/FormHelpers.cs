@@ -80,9 +80,9 @@ namespace WindowsFormsApp2.Helpers
                 command.Parameters.AddWithValue("@TypeId", (int)logs.OperationType);
                 command.Parameters.AddWithValue("@Date", DateTime.Now.Date);
                 command.Parameters.AddWithValue("@Time", DateTime.Now.TimeOfDay);
-                command.Parameters.AddWithValue("@Message", logs.Message);
-                command.Parameters.AddWithValue("@RequestCode", logs.RequestCode);
-                command.Parameters.AddWithValue("@ResponseCode", logs.ResponseCode);
+                command.Parameters.AddWithValue("@Message", (object)logs.Message ?? DBNull.Value);
+                command.Parameters.AddWithValue("@RequestCode", (object)logs.RequestCode ?? DBNull.Value);
+                command.Parameters.AddWithValue("@ResponseCode", (object)logs.ResponseCode ?? DBNull.Value);
 
 
                 try

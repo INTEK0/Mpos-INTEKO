@@ -370,13 +370,16 @@ namespace WindowsFormsApp2.Helpers.DB
                     parameter.Direction = ParameterDirection.Output;
                     cmd.ExecuteNonQuery();
 
-
+                    /*
                     FormHelpers.OperationLog(new OperationLogs
                     {
                         OperationType = OperationType.PosSales,
-                        OperationId = Convert.ToInt32(parameter.Value)
+                        OperationId = posSalesId,
+                        Message = posSalesId == 0 ? "Error" : "Success",
+                        RequestCode = requestJson,
+                        ResponseCode = responseJson,
                     });
-
+                    */
 
                     return Convert.ToInt32(parameter.Value);
                 }

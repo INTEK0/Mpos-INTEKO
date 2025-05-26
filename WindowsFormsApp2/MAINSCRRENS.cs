@@ -532,7 +532,7 @@ FROM[terazimalzeme]";
             //}
         }
 
-        private void MainScreen_Load(object sender, EventArgs e)
+        private async void MainScreen_Load(object sender, EventArgs e)
         {
             lMposVersion.Text = Application.ProductVersion;
             chStockAmount.Checked = false;
@@ -546,12 +546,8 @@ FROM[terazimalzeme]";
             Get_StockDecreasingAmountShow();
             ClinicModuleShow();
             SysAdminControl();
-            LicenceControl();
-        }
-
-        private void LicenceControl()
-        {
-
+            var licenceUser = await LicenseService.Instance.RequestKeyControl(LicenseService.Instance.GetLicenceKey());
+            lLicenceExpireDate.Text = licenceUser == null ? "-" : licenceUser.LicenceExpireDate.ToString("dd.MM.yyyy");
         }
 
         private async void MAINSCRRENS_Activated(object sender, EventArgs e)
@@ -565,9 +561,6 @@ FROM[terazimalzeme]";
                 await TotalPurchaseInformation(); //Cari alış hesabatı
                 BestsellingProducts(); //Ən çox satılan məhsullar
                 ExpensesDataLoad(); //Cari xərclər
-
-                var licenceUser = await Licence.Operations.LicenceOperation.LicenceStatusControl(LicenseService.Instance.GetLicenceKey());
-                lLicenceExpireDate.Text = licenceUser == null ? "-" : licenceUser.LicenceExpireDate.ToString("dd.MM.yyyy");
             }
             catch (Exception ex)
             {
@@ -973,7 +966,7 @@ FROM (
             }
             else if (e.Page == tabLicence)
             {
-                lLicenceKey.Text =LicenseService.Instance.GetLicenceKey();
+                lLicenceKey.Text = LicenseService.Instance.GetLicenceKey();
             }
             else if (e.Page == tabModul)
             {
