@@ -1,5 +1,6 @@
 ﻿using DevExpress.Map.Native;
 using DevExpress.XtraEditors;
+using DevExpress.XtraMap.Native;
 using Newtonsoft.Json;
 using RestSharp;
 using System;
@@ -33,7 +34,7 @@ namespace WindowsFormsApp2.NKA
                 request.AddHeader("Content-Type", "application/json;charset=utf-8");
                 request.AddStringBody(json, DataFormat.Json);
                 RestResponse response = client.Execute(request);
-                 //return response;
+                //return response;
                 if (response.ResponseStatus != ResponseStatus.Completed)
                 {
                     ReadyMessages.ERROR_SERVER_CONNECTION_MESSAGE();
@@ -528,6 +529,8 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
             if (string.IsNullOrWhiteSpace(salesData.AccessToken))
             {
                 salesData.AccessToken = Login(salesData.IpAddress);
+                if (string.IsNullOrWhiteSpace(salesData.AccessToken))
+                    return false;
             }
 
             List<Item> items = new List<Item>();
@@ -752,11 +755,13 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
             }
         }
 
-        public static bool PrepaymentSale(string ipAddress, string token, decimal id, string username, string fisids, decimal prepay, Enums.PayType type)
+        public static bool PrepaymentSale(SalesDto salesData, decimal pos_satis_main_id)
         {
-            if (string.IsNullOrWhiteSpace(token))
+            if (string.IsNullOrWhiteSpace(salesData.AccessToken))
             {
-                token = Login(ipAddress);
+                salesData.AccessToken = Login(salesData.IpAddress);
+                if (string.IsNullOrWhiteSpace(salesData.AccessToken))
+                    return false;
             }
 
             List<Item> items = new List<Item>();
@@ -799,7 +804,7 @@ case A.VERGI_DERECESI
   where 
   POS.pos_satis_check_main_id=D.pos_satis_check_main_id AND 
   A.[mal_alisi_details_id]=D.[mal_alisi_details_id]
-  AND D.[pos_satis_check_main_id]={id}";
+  AND D.[pos_satis_check_main_id]={pos_satis_main_id}";
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
                     using (SqlDataReader dr = cmd.ExecuteReader())
@@ -863,7 +868,7 @@ case A.VERGI_DERECESI
                 vatAmounts.Add(new VatAmount
                 {
                     vatPercent = 18,
-                    vatSum = vatSumFor18Percent - prepay
+                    vatSum = vatSumFor18Percent - salesData.PrepaymentPay
                 });
             }
 
@@ -872,7 +877,7 @@ case A.VERGI_DERECESI
                 vatAmounts.Add(new VatAmount
                 {
                     vatPercent = 2,
-                    vatSum = vatSumFor0Percent - prepay
+                    vatSum = vatSumFor0Percent - salesData.PrepaymentPay
                 });
             }
 
@@ -881,39 +886,38 @@ case A.VERGI_DERECESI
                 vatAmounts.Add(new VatAmount
                 {
                     vatPercent = 0,
-                    vatSum = vatSumFor0Percent - prepay
+                    vatSum = vatSumFor0Percent - salesData.PrepaymentPay
                 });
             }
 
-            decimal newprepay = Convert.ToDecimal(prepay);
-            decimal casha = 0;
-            decimal carda = 0;
-            decimal incominga = 0;
+            decimal newprepay = Convert.ToDecimal(salesData.PrepaymentPay);
+            //decimal casha = 0;
+            //decimal carda = 0;
 
-            if (type is PayType.Cash)
-            {
-                casha = total - newprepay;
-                incominga = total - newprepay;
-            }
-            else if (type is PayType.Card)
-            {
-                carda = total - newprepay;
-            }
-            else if (type is PayType.CashCard)
-            {
-
-            }
-            preList.Add(fisids);
+            //switch (salesData.PayType)
+            //{
+            //    case PayType.Cash:
+            //        casha = total - newprepay;
+            //        break;
+            //    case PayType.Card:
+            //        carda = total - newprepay;
+            //        break;
+            //    case PayType.CashCard:
+            //        casha = salesData.Cash;
+            //        carda = salesData.Card;
+            //        break;
+            //}
+            preList.Add(salesData.FiscalId);
 
             Data data = new Data
             {
                 parents = preList,
                 prepaymentSum = newprepay,
-                sum = total - newprepay,
-                cashSum = casha,
-                cashlessSum = carda,
-                incomingSum = incominga,
-                cashier = username,
+                sum = salesData.Total,
+                cashSum = salesData.Cash,
+                cashlessSum = salesData.Card,
+                incomingSum = salesData.IncomingSum,
+                cashier = salesData.Cashier,
                 items = items,
                 vatAmounts = vatAmounts,
             };
@@ -937,7 +941,7 @@ case A.VERGI_DERECESI
 
             RequestData requestData = new RequestData
             {
-                access_token = token,
+                access_token = salesData.AccessToken,
                 tokenData = tokenData,
                 checkData = checkData
             };
@@ -953,7 +957,7 @@ case A.VERGI_DERECESI
                 NullValueHandling = NullValueHandling.Ignore
             });
 
-            var response = RequestPOST(ipAddress, json);
+            var response = RequestPOST(salesData.IpAddress, json);
 
             if (response != null)
             {
@@ -961,7 +965,12 @@ case A.VERGI_DERECESI
                 {
                     using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
                     {
-                        string query = $"UPDATE [dbo].[pos_satis_check_main] SET NEGD_={casha.ToString("N2").Replace(',', '.')}+NEGD_,KART_={carda.ToString("N2").Replace(',', '.')}+KART_, [PREdate_]=getdate(),PREfiscal_id='{response.short_id}' where pos_satis_check_main_id={id}";
+                        string query = $@"UPDATE [dbo].[pos_satis_check_main] SET 
+                                       NEGD_={salesData.Cash.ToString("N2").Replace(',', '.')} + NEGD_,
+                                       KART_={salesData.Card.ToString("N2").Replace(',', '.')} + KART_, 
+                                       [PREdate_]=getdate(),
+                                       PREfiscal_id='{response.short_id}' 
+                                       WHERE pos_satis_check_main_id={pos_satis_main_id}";
                         using (SqlCommand cmd = new SqlCommand(query, con))
                         {
                             con.Open();
@@ -1269,6 +1278,8 @@ case A.VERGI_DERECESI
             if (string.IsNullOrWhiteSpace(accessToken))
             {
                 accessToken = Login(ipAdress);
+                if (string.IsNullOrWhiteSpace(accessToken))
+                    return;
             }
 
             string fiskalID = string.Empty;

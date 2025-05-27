@@ -948,40 +948,40 @@ LEFT JOIN pos_guzest pg
             tBarcode.Focus();
         }
 
-        private void simpleButton11_Click(object sender, EventArgs e)
-        {
-            DeleteButton();
-        }
-
         void Payment(Enums.PayType type)
         {
-            if (type is Enums.PayType.Cash)
+            if (!string.IsNullOrEmpty(textEdit6.Text))
             {
-                //CASH
-                if (!string.IsNullOrEmpty(textEdit6.Text))
+                Cursor.Current = Cursors.WaitCursor;
+                int number = 0;
+                decimal saysa24 = 0;
+                int numberkontrol = 0;
+                //Məhsulların mənfiyə getməsinə icazə verilib verilmədiyini kontrol edir
+                using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
                 {
-                    SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString);
-                    string queryString = "SELECT STATUS FROM MENFI_AC_BAGLA ";
-                    SqlCommand command = new SqlCommand(queryString, connection);
-
-
-                    SqlDataAdapter da = new SqlDataAdapter(command);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-                    decimal saysa24 = 0;
-                    int number = dt.Rows[0].Field<int>("STATUS");
-                    int numberkontrol = 0;
-
-
+                    string queryString = "SELECT STATUS FROM MENFI_AC_BAGLA";
+                    using (SqlCommand command = new SqlCommand(queryString, connection))
+                    {
+                        using (SqlDataAdapter da = new SqlDataAdapter(command))
+                        {
+                            using (DataTable dt = new DataTable())
+                            {
+                                da.Fill(dt);
+                                number = dt.Rows[0].Field<int>("STATUS");
+                            }
+                        }
+                    }
+                }
+               
+                if (type is Enums.PayType.Cash)
+                {
                     if (number == 0)
                     {
-
                         for (int i = 0; i < gridView1.DataRowCount; i++)
                         {
                             DataRow row = gridView1.GetDataRow(i);
-
                             SqlConnection connection4 = new SqlConnection(DbHelpers.DbConnectionString);
-                            string queryStringk = "SELECT sum(   migdar_ ) as miktar   FROM dbo.GAIME_SATIS_SEARCH_menfi_ACIG() where [MƏHSUL ADI]=N'" + row["MƏHSUL ADI"].ToString() + "' and [MƏHSUL KODU]=(select [MEHSUL_KODU]from [MAL_ALISI_DETAILS] where [MAL_ALISI_DETAILS_ID]=" + Convert.ToInt32(row["MAL_ALISI_DETAILS_ID"]) + " ) group by TECHIZATCI_ID ,[TƏCHİZATÇI] ,[MƏHSUL ADI],  [MƏHSUL KODU],BARKOD  ";
+                            string queryStringk = "SELECT sum(migdar_) as miktar FROM dbo.GAIME_SATIS_SEARCH_menfi_ACIG() where [MƏHSUL ADI]=N'" + row["MƏHSUL ADI"].ToString() + "' and [MƏHSUL KODU]=(select [MEHSUL_KODU]from [MAL_ALISI_DETAILS] where [MAL_ALISI_DETAILS_ID]=" + Convert.ToInt32(row["MAL_ALISI_DETAILS_ID"]) + " ) group by TECHIZATCI_ID ,[TƏCHİZATÇI] ,[MƏHSUL ADI],  [MƏHSUL KODU], BARKOD";
                             connection4.Open();
                             SqlCommand command4 = new SqlCommand(queryStringk, connection4);
                             decimal saysa = Convert.ToDecimal(row["SAY"]);
@@ -1012,39 +1012,14 @@ LEFT JOIN pos_guzest pg
                     else
                     {
                         decimal f = Convert.ToDecimal(textEdit6.Text);
-
                         bank n = new bank(f, this);
-
                         n.ShowDialog();
                     }
                 }
-            }
-            else if (type is Enums.PayType.Card)
-            {
-                Cursor.Current = Cursors.WaitCursor;
-                //kart 
-                if (string.IsNullOrEmpty(textEdit6.Text))
+                else if (type is Enums.PayType.Card)
                 {
-
-                }
-                else
-                {
-                    SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
-                    string queryString = "SELECT STATUS FROM MENFI_AC_BAGLA ";
-                    SqlCommand command = new SqlCommand(queryString, connection);
-
-
-                    SqlDataAdapter da = new SqlDataAdapter(command);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-                    decimal saysa24 = 0;
-                    int number = dt.Rows[0].Field<int>("STATUS");
-                    int numberkontrol = 0;
-
-
                     if (number == 0)
                     {
-
                         for (int i = 0; i < gridView1.DataRowCount; i++)
                         {
                             DataRow row = gridView1.GetDataRow(i);
@@ -1098,23 +1073,8 @@ LEFT JOIN pos_guzest pg
                         gelen_data_negd_pos(0, f, f, 0, 0, false);
                     }
                 }
-
-                Cursor.Current = Cursors.Default;
-            }
-            else if (type is Enums.PayType.CashCard)
-            {
-                if (!string.IsNullOrEmpty(textEdit6.Text))
+                else if (type is Enums.PayType.CashCard)
                 {
-                    SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
-                    string queryString = "SELECT STATUS FROM MENFI_AC_BAGLA ";
-                    SqlCommand command = new SqlCommand(queryString, connection);
-
-                    SqlDataAdapter da = new SqlDataAdapter(command);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-                    decimal saysa24 = 0;
-                    int number = dt.Rows[0].Field<int>("STATUS");
-                    int numberkontrol = 0;
                     if (number == 0)
                     {
                         for (int i = 0; i < gridView1.DataRowCount; i++)
@@ -1158,21 +1118,8 @@ LEFT JOIN pos_guzest pg
                         nk.ShowDialog();
                     }
                 }
-            }
-            else if (type is Enums.PayType.Prepayment)
-            {
-                if (!string.IsNullOrEmpty(textEdit6.Text))
+                else if (type is Enums.PayType.Prepayment)
                 {
-                    SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
-                    string queryString = "SELECT STATUS FROM MENFI_AC_BAGLA ";
-                    SqlCommand command = new SqlCommand(queryString, connection);
-
-                    SqlDataAdapter da = new SqlDataAdapter(command);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-                    decimal saysa24 = 0;
-                    int number = dt.Rows[0].Field<int>("STATUS");
-                    int numberkontrol = 0;
                     if (number == 0)
                     {
                         for (int i = 0; i < gridView1.DataRowCount; i++)
@@ -1216,24 +1163,8 @@ LEFT JOIN pos_guzest pg
                         nk.ShowDialog();
                     }
                 }
-            }
-            else if (type is PayType.OtherPay)
-            {
-                Cursor.Current = Cursors.WaitCursor;
-                if (!string.IsNullOrEmpty(textEdit6.Text))
+                else if (type is PayType.OtherPay)
                 {
-                    SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString);
-                    string queryString = "SELECT STATUS FROM MENFI_AC_BAGLA ";
-                    SqlCommand command = new SqlCommand(queryString, connection);
-
-
-                    SqlDataAdapter da = new SqlDataAdapter(command);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-                    decimal saysa24 = 0;
-                    int number = dt.Rows[0].Field<int>("STATUS");
-                    int numberkontrol = 0;
-
                     if (number == 0)
                     {
 
@@ -1276,37 +1207,10 @@ LEFT JOIN pos_guzest pg
                         gelen_data_negd_pos(0, f, f, 0, 0, false, Enums.PayType.OtherPay);
                     }
                 }
-
-                Cursor.Current = Cursors.Default;
-            }
-            else if (type is PayType.Installment)
-            {
-                Cursor.Current = Cursors.WaitCursor;
-                //kart 
-                if (string.IsNullOrEmpty(textEdit6.Text))
+                else if (type is PayType.Installment)
                 {
-
-                }
-                else
-
-                {
-                    SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
-                    string queryString = "SELECT STATUS FROM MENFI_AC_BAGLA ";
-                    SqlCommand command = new SqlCommand(queryString, connection);
-
-
-                    SqlDataAdapter da = new SqlDataAdapter(command);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-                    decimal saysa24 = 0;
-                    int number = dt.Rows[0].Field<int>("STATUS");
-                    int numberkontrol = 0;
-                    //    XtraMessageBox.Show(number.ToString());
-
-
                     if (number == 0)
                     {
-
                         for (int i = 0; i < gridView1.DataRowCount; i++)
                         {
                             DataRow row = gridView1.GetDataRow(i);
@@ -1348,10 +1252,8 @@ LEFT JOIN pos_guzest pg
                         AzSmartInstallmentSales(lIpAdress.Text, tUsername.Text, f);
                     }
                 }
-
-                Cursor.Current = Cursors.Default;
+                tBarcode.Focus();
             }
-            tBarcode.Focus();
         }
 
         private void simpleButton5_Click(object sender, EventArgs e)
@@ -2113,7 +2015,7 @@ LEFT JOIN pos_guzest pg
                         }, number);
                         break; /*SUNMI*/
                     case "3":
-                        Omnitech.PrepaymentSale(lIpAdress.Text, textBox1.Text, number, tUsername.Text, fiskalid, prepay, type);
+                        //Omnitech.PrepaymentSale(lIpAdress.Text, textBox1.Text, number, tUsername.Text, fiskalid, prepay, type);
                         break; /*OMNITECH*/
                 }
             }
@@ -2869,11 +2771,10 @@ LEFT JOIN pos_guzest pg
                     {
                         return;
                     }
-
                 }
                 else
                 {
-                    bankttnminputdata = "";
+                    bankttnminputdata = string.Empty;
                 }
 
 
@@ -2891,8 +2792,6 @@ LEFT JOIN pos_guzest pg
                     ReadyMessages.WARNING_DEFAULT_MESSAGE("Avans satışları yalnız NKA Kassaları üçün nəzərdə tutulmuşdur");
                     return;
                 }
-
-
 
                 switch (lModel.Text)
                 {

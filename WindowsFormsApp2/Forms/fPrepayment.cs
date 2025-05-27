@@ -1,7 +1,6 @@
-﻿using DevExpress.XtraEditors;
-using DevExpress.XtraGrid.Localization;
-using System;
+﻿using System;
 using System.Linq;
+using DevExpress.XtraEditors;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
 using static WindowsFormsApp2.Helpers.FormHelpers;
@@ -13,7 +12,6 @@ namespace WindowsFormsApp2.Forms
         public fPrepayment()
         {
             InitializeComponent();
-            GridLocalizer.Active = new MyGridLocalizer();
             GridPanelText(gridAvans);
         }
 
@@ -48,13 +46,10 @@ when (psm.NEGD_>0.00 and psm.KART_ <=0.00) then N'NAĞD'
 when (psm.KART_>0.00 and psm.NEGD_< =0.00) then N'KART'
 ELSE N'NAĞD-KART' END AS PayType
 FROM [pos_satis_check_main] psm
-INNER JOIN pos_satis_check_details psd ON psd.pos_satis_check_main_id = psm.pos_satis_check_main_id
-INNER JOIN MAL_ALISI_DETAILS mad ON mad.MAL_ALISI_DETAILS_ID = psd.mal_alisi_details_id
-INNER JOIN MAL_ALISI_MAIN man ON man.MAL_ALISI_MAIN_ID = mad.MAL_ALISI_MAIN_ID
-INNER JOIN COMPANY.TECHIZATCI t ON t.TECHIZATCI_ID = man.TECHIZATCI_ID
 LEFT JOIN MUSTERILER customer ON customer.MUSTERILER_ID = psm.CustomerId
 INNER JOIN userParol u ON u.id = psm.user_id_
-WHERE psm.Prepayment IS NOT NULL AND psm.PREfiscal_id IS NULL";
+WHERE psm.Prepayment IS NOT NULL AND psm.Prepayment !=  0 AND psm.PREfiscal_id IS NULL
+order by psm.date_ asc";
                     break;
                 case SearchType.FiscalID:
                     query = $@"SELECT 
@@ -73,13 +68,9 @@ when (psm.NEGD_>0.00 and psm.KART_ <=0.00) then N'NAĞD'
 when (psm.KART_>0.00 and psm.NEGD_< =0.00) then N'KART'
 ELSE N'NAĞD-KART' END AS PayType
 FROM [pos_satis_check_main] psm
-INNER JOIN pos_satis_check_details psd ON psd.pos_satis_check_main_id = psm.pos_satis_check_main_id
-INNER JOIN MAL_ALISI_DETAILS mad ON mad.MAL_ALISI_DETAILS_ID = psd.mal_alisi_details_id
-INNER JOIN MAL_ALISI_MAIN man ON man.MAL_ALISI_MAIN_ID = mad.MAL_ALISI_MAIN_ID
-INNER JOIN COMPANY.TECHIZATCI t ON t.TECHIZATCI_ID = man.TECHIZATCI_ID
 LEFT JOIN MUSTERILER customer ON customer.MUSTERILER_ID = psm.CustomerId
 INNER JOIN userParol u ON u.id = psm.user_id_
-WHERE psm.Prepayment IS NOT NULL AND psm.PREfiscal_id IS NULL AND psm.fiscalNum = N'{tSearch.Text.Trim()}'";
+WHERE psm.Prepayment IS NOT NULL AND psm.Prepayment != 0 AND psm.PREfiscal_id IS NULL AND psm.fiscalNum = N'{tSearch.Text.Trim()}'";
                     break;
                 case SearchType.ReceiptNo:
                     query = $@"SELECT 
@@ -98,13 +89,9 @@ when (psm.NEGD_>0.00 and psm.KART_ <=0.00) then N'NAĞD'
 when (psm.KART_>0.00 and psm.NEGD_< =0.00) then N'KART'
 ELSE N'NAĞD-KART' END AS PayType
 FROM [pos_satis_check_main] psm
-INNER JOIN pos_satis_check_details psd ON psd.pos_satis_check_main_id = psm.pos_satis_check_main_id
-INNER JOIN MAL_ALISI_DETAILS mad ON mad.MAL_ALISI_DETAILS_ID = psd.mal_alisi_details_id
-INNER JOIN MAL_ALISI_MAIN man ON man.MAL_ALISI_MAIN_ID = mad.MAL_ALISI_MAIN_ID
-INNER JOIN COMPANY.TECHIZATCI t ON t.TECHIZATCI_ID = man.TECHIZATCI_ID
 LEFT JOIN MUSTERILER customer ON customer.MUSTERILER_ID = psm.CustomerId
 INNER JOIN userParol u ON u.id = psm.user_id_
-WHERE psm.Prepayment IS NOT NULL AND psm.PREfiscal_id IS NULL AND psm.pos_nomre = '{tSearch.Text.Trim()}'";
+WHERE psm.Prepayment IS NOT NULL AND psm.Prepayment != 0 AND psm.PREfiscal_id IS NULL AND psm.pos_nomre = '{tSearch.Text.Trim()}'";
                     break;
             }
 
@@ -138,7 +125,7 @@ WHERE psm.Prepayment IS NOT NULL AND psm.PREfiscal_id IS NULL AND psm.pos_nomre 
             fPrepaymentPay f = new fPrepaymentPay(fiskal.ToString());
             if (f.ShowDialog() is System.Windows.Forms.DialogResult.OK)
             {
-                bSearch_Click(sender, null);
+                gridControlAvans.DataSource = null;
             }
         }
 
