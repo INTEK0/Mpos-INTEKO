@@ -19,10 +19,11 @@ namespace Licence.Services
         private static LicenseService _instance;
         private static readonly object _lock = new object();
         private System.Threading.Timer _timer;
+
         //private bool _isChecking = false;
         private readonly List<TimeSpan> _controlTimes = new List<TimeSpan>
         {
-             new TimeSpan(12, 0, 0),
+             new TimeSpan(10, 0, 0),
              new TimeSpan(13, 0, 0),
              new TimeSpan(17, 0, 0)
         };

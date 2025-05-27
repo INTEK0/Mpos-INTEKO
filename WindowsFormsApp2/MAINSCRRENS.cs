@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -546,8 +547,43 @@ FROM[terazimalzeme]";
             Get_StockDecreasingAmountShow();
             ClinicModuleShow();
             SysAdminControl();
+            await LicenceCheck();
+        }
+
+        private async Task LicenceCheck()
+        {
             var licenceUser = await LicenseService.Instance.RequestKeyControl(LicenseService.Instance.GetLicenceKey());
-            lLicenceExpireDate.Text = licenceUser == null ? "-" : licenceUser.LicenceExpireDate.ToString("dd.MM.yyyy");
+            if (licenceUser is null)
+            {
+                lLicenceExpireDate.Text = "-";
+                lLicenceExpireDate.ForeColor = Color.Black;
+            }
+            else
+            {
+                DateTime expireDate = licenceUser.LicenceExpireDate.Date;
+                lLicenceExpireDate.Text = expireDate.ToString("dd.MM.yyyy");
+
+                int daysRemaining = (expireDate - DateTime.Today).Days;
+
+                if (daysRemaining <= 2)
+                {
+                    lLicenceExpireDate.ForeColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Danger;
+                }
+                else if (daysRemaining <= 5)
+                {
+                    lLicenceExpireDate.ForeColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Warning; // sarımsı renk (saf sarı okunması zor olabilir)
+                }
+                else
+                {
+                    lLicenceExpireDate.ForeColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Success; // uzun süre varsa yeşil gibi güven veren bir renk olabilir
+                }
+            }
+
+
+
+
+
+            //lLicenceExpireDate.Text = licenceUser == null ? "-" : licenceUser.LicenceExpireDate.ToString("dd.MM.yyyy");
         }
 
         private async void MAINSCRRENS_Activated(object sender, EventArgs e)

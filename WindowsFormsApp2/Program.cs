@@ -10,6 +10,7 @@ using DevExpress.XtraReports.Design;
 using Licence.Forms;
 using Licence.Services;
 using WindowsFormsApp2.Forms;
+using WindowsFormsApp2.Helpers;
 using static WindowsFormsApp2.Helpers.FormHelpers;
 
 namespace WindowsFormsApp2
@@ -59,7 +60,6 @@ namespace WindowsFormsApp2
             }
 
 
-
             if (string.IsNullOrWhiteSpace(_licenceKey) || _licenceKey is "Yoxdur")
             {
                 var result = new fRegister().ShowDialog();
@@ -80,6 +80,10 @@ namespace WindowsFormsApp2
                     Application.Run(new fDeactive(user));
                     return;
                 }
+            }
+            else
+            {
+                FormHelpers.Alert("İnternet bağlantınız yoxdur", Enums.MessageType.Error);
             }
 
             FolderControl();
