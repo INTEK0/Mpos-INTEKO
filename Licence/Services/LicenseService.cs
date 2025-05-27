@@ -23,9 +23,9 @@ namespace Licence.Services
         //private bool _isChecking = false;
         private readonly List<TimeSpan> _controlTimes = new List<TimeSpan>
         {
-             new TimeSpan(10, 0, 0),
-             new TimeSpan(13, 0, 0),
-             new TimeSpan(17, 0, 0)
+             //new TimeSpan(10, 0, 0),
+             new TimeSpan(15, 0, 0),
+             //new TimeSpan(17, 0, 0)
         };
         private TimeSpan _lastCheckedTime = TimeSpan.MinValue;
         private LicenseService() { }
