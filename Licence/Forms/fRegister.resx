@@ -117,38 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="DevExpress.Data.v24.1" name="DevExpress.Data.v24.1, Version=24.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-  <data name="editorButtonImageOptions1.SvgImage" type="DevExpress.Utils.Svg.SvgImage, DevExpress.Data.v24.1" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAFlEZXZFeHByZXNzLkRhdGEudjI0LjEsIFZlcnNpb249MjQuMS4z
-        LjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjg4ZDE3NTRkNzAwZTQ5YQUBAAAAHURl
-        dkV4cHJlc3MuVXRpbHMuU3ZnLlN2Z0ltYWdlAQAAAAREYXRhBwICAAAACQMAAAAPAwAAAFQBAAAC77u/
-        PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4NCjxzdmcgd2lkdGg9IjMycHgiIGhl
-        aWdodD0iMzJweCIgdmlld0JveD0iMCAwIDI1NiAyNTYiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8y
-        MDAwL3N2ZyIgZmlsbD0iIzAwMDAwMCI+DQogIDxwYXRoIGQ9Ik0xODQsNjRINDBhOCw4LDAsMCwwLTgs
-        OFYyMTZhOCw4LDAsMCwwLDgsOEgxODRhOCw4LDAsMCwwLDgtOFY3MkE4LDgsMCwwLDAsMTg0LDY0Wm0t
-        OCwxNDRINDhWODBIMTc2Wk0yMjQsNDBWMTg0YTgsOCwwLDAsMS0xNiwwVjQ4SDcyYTgsOCwwLDAsMSww
-        LTE2SDIxNkE4LDgsMCwwLDEsMjI0LDQwWiIgLz4NCjwvc3ZnPgs=
-</value>
-  </data>
-  <data name="editorButtonImageOptions2.SvgImage" type="DevExpress.Utils.Svg.SvgImage, DevExpress.Data.v24.1" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAFlEZXZFeHByZXNzLkRhdGEudjI0LjEsIFZlcnNpb249MjQuMS4z
-        LjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjg4ZDE3NTRkNzAwZTQ5YQUBAAAAHURl
-        dkV4cHJlc3MuVXRpbHMuU3ZnLlN2Z0ltYWdlAQAAAAREYXRhBwICAAAACQMAAAAPAwAAAJICAAAC77u/
-        PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4NCjxzdmcgd2lkdGg9IjMycHgiIGhl
-        aWdodD0iMzJweCIgdmlld0JveD0iMCAwIDI1NiAyNTYiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8y
-        MDAwL3N2ZyIgZmlsbD0iIzAwMDAwMCI+DQogIDxwYXRoIGQ9Ik04OCwxMDRINDBhOCw4LDAsMCwxLTgt
-        OFY0OGE4LDgsMCwwLDEsMTYsMFY3Ni42OUw2Mi42Myw2Mi4wNkE5NS40Myw5NS40MywwLDAsMSwxMzAs
-        MzMuOTRoLjUzYTk1LjM2LDk1LjM2LDAsMCwxLDY3LjA3LDI3LjMzLDgsOCwwLDAsMS0xMS4xOCwxMS40
-        NCw3OS41Miw3OS41MiwwLDAsMC01NS44OS0yMi43N2gtLjQ1QTc5LjU2LDc5LjU2LDAsMCwwLDczLjk0
-        LDczLjM3TDU5LjMxLDg4SDg4YTgsOCwwLDAsMSwwLDE2Wm0xMjgsNDhIMTY4YTgsOCwwLDAsMCwwLDE2
-        aDI4LjY5bC0xNC42MywxNC42M2E3OS41Niw3OS41NiwwLDAsMS01Ni4xMywyMy40M2gtLjQ1YTc5LjUy
-        LDc5LjUyLDAsMCwxLTU1Ljg5LTIyLjc3LDgsOCwwLDEsMC0xMS4xOCwxMS40NCw5NS4zNiw5NS4zNiww
-        LDAsMCw2Ny4wNywyNy4zM0gxMjZhOTUuNDMsOTUuNDMsMCwwLDAsNjcuMzYtMjguMTJMMjA4LDE3OS4z
-        MVYyMDhhOCw4LDAsMCwwLDE2LDBWMTYwQTgsOCwwLDAsMCwyMTYsMTUyWiIgLz4NCjwvc3ZnPgs=
-</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="pictureEdit1.EditValue" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -808,6 +776,38 @@
         QgghxBBo2BJCCCGEEEIIIYQQQogh0LAlhBBCCCGEEEIIIYQQQ6BhSwghhBBCCCGEEEIIIYZAw5YQQggh
         hBBCCCGEEEIMgYYtIYQQQgghhBBCCCGEGAINW0IIIYQQQgghhBBCCDEEGraEEEIIIYQQQgghhBBiCDRs
         CSGEEEIIIYQQQgghxBBo2BJCCCGEEEIIIYQQQogRKPX/B76OOCFw/4yMAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <assembly alias="DevExpress.Data.v24.1" name="DevExpress.Data.v24.1, Version=24.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+  <data name="editorButtonImageOptions1.SvgImage" type="DevExpress.Utils.Svg.SvgImage, DevExpress.Data.v24.1" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAFlEZXZFeHByZXNzLkRhdGEudjI0LjEsIFZlcnNpb249MjQuMS4z
+        LjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjg4ZDE3NTRkNzAwZTQ5YQUBAAAAHURl
+        dkV4cHJlc3MuVXRpbHMuU3ZnLlN2Z0ltYWdlAQAAAAREYXRhBwICAAAACQMAAAAPAwAAAFQBAAAC77u/
+        PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4NCjxzdmcgd2lkdGg9IjMycHgiIGhl
+        aWdodD0iMzJweCIgdmlld0JveD0iMCAwIDI1NiAyNTYiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8y
+        MDAwL3N2ZyIgZmlsbD0iIzAwMDAwMCI+DQogIDxwYXRoIGQ9Ik0xODQsNjRINDBhOCw4LDAsMCwwLTgs
+        OFYyMTZhOCw4LDAsMCwwLDgsOEgxODRhOCw4LDAsMCwwLDgtOFY3MkE4LDgsMCwwLDAsMTg0LDY0Wm0t
+        OCwxNDRINDhWODBIMTc2Wk0yMjQsNDBWMTg0YTgsOCwwLDAsMS0xNiwwVjQ4SDcyYTgsOCwwLDAsMSww
+        LTE2SDIxNkE4LDgsMCwwLDEsMjI0LDQwWiIgLz4NCjwvc3ZnPgs=
+</value>
+  </data>
+  <data name="editorButtonImageOptions2.SvgImage" type="DevExpress.Utils.Svg.SvgImage, DevExpress.Data.v24.1" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAFlEZXZFeHByZXNzLkRhdGEudjI0LjEsIFZlcnNpb249MjQuMS4z
+        LjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjg4ZDE3NTRkNzAwZTQ5YQUBAAAAHURl
+        dkV4cHJlc3MuVXRpbHMuU3ZnLlN2Z0ltYWdlAQAAAAREYXRhBwICAAAACQMAAAAPAwAAAJICAAAC77u/
+        PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4NCjxzdmcgd2lkdGg9IjMycHgiIGhl
+        aWdodD0iMzJweCIgdmlld0JveD0iMCAwIDI1NiAyNTYiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8y
+        MDAwL3N2ZyIgZmlsbD0iIzAwMDAwMCI+DQogIDxwYXRoIGQ9Ik04OCwxMDRINDBhOCw4LDAsMCwxLTgt
+        OFY0OGE4LDgsMCwwLDEsMTYsMFY3Ni42OUw2Mi42Myw2Mi4wNkE5NS40Myw5NS40MywwLDAsMSwxMzAs
+        MzMuOTRoLjUzYTk1LjM2LDk1LjM2LDAsMCwxLDY3LjA3LDI3LjMzLDgsOCwwLDAsMS0xMS4xOCwxMS40
+        NCw3OS41Miw3OS41MiwwLDAsMC01NS44OS0yMi43N2gtLjQ1QTc5LjU2LDc5LjU2LDAsMCwwLDczLjk0
+        LDczLjM3TDU5LjMxLDg4SDg4YTgsOCwwLDAsMSwwLDE2Wm0xMjgsNDhIMTY4YTgsOCwwLDAsMCwwLDE2
+        aDI4LjY5bC0xNC42MywxNC42M2E3OS41Niw3OS41NiwwLDAsMS01Ni4xMywyMy40M2gtLjQ1YTc5LjUy
+        LDc5LjUyLDAsMCwxLTU1Ljg5LTIyLjc3LDgsOCwwLDEsMC0xMS4xOCwxMS40NCw5NS4zNiw5NS4zNiww
+        LDAsMCw2Ny4wNywyNy4zM0gxMjZhOTUuNDMsOTUuNDMsMCwwLDAsNjcuMzYtMjguMTJMMjA4LDE3OS4z
+        MVYyMDhhOCw4LDAsMCwwLDE2LDBWMTYwQTgsOCwwLDAsMCwyMTYsMTUyWiIgLz4NCjwvc3ZnPgs=
 </value>
   </data>
   <data name="fRegister.IconOptions.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

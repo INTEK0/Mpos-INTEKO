@@ -11,11 +11,6 @@ namespace WindowsFormsApp2
 {
     public partial class avtorizasiya : DevExpress.XtraBars.FluentDesignSystem.FluentDesignForm
     {
-        bool mouseDown;
-        private Point offset;
-        string unames, uparol, uemail, uNameSurname;
-        SqlConnection Con = new SqlConnection(Properties.Settings.Default.SqlCon);
-
         public avtorizasiya()
         {
             InitializeComponent();
@@ -89,7 +84,6 @@ namespace WindowsFormsApp2
 
         private void kryptonButton1_Click(object sender, EventArgs e)
         {
-            
             var user = UserValidation.ValidateUser(textEdit1.Text.Trim(), textEdit2.Text.Trim());
             if (user != null)
             {

@@ -89,6 +89,11 @@ namespace WindowsFormsApp2
             FolderControl();
             CultureInfoData();
             Application.Run(new avtorizasiya());
+            //Application.Run(new fDeactive(new Licence.Entities.User
+            //{
+            //    LicenceKey = _licenceKey,
+            //    LicenceExpireDate = DateTime.Now,
+            //}));
         }
 
         static void CultureInfoData()

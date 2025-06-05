@@ -23,7 +23,7 @@ namespace WindowsFormsApp2
             DateTime dateTime = DateTime.UtcNow.Date;
 
             dateEdit1.Text = dateTime.ToShortDateString();
-            dateEdit2.Text = dateTime.ToShortDateString();
+            dateEdit1.Text = dateTime.ToShortDateString();
             
         }
 
@@ -34,27 +34,26 @@ namespace WindowsFormsApp2
 
         private void simpleButton3_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(dateEdit2.Text) || string.IsNullOrEmpty(dateEdit1.Text))
+            if (string.IsNullOrEmpty(dateEdit1.Text))
             {
                 Alert("TARİX ARALIĞI SEÇİLMƏYİB", Helpers.Enums.MessageType.Warning);
             }
             else
             {
-                LOAD(Convert.ToDateTime(dateEdit2.Text), Convert.ToDateTime(dateEdit1.Text));
+                LOAD(Convert.ToDateTime(dateEdit1.Text));
             }
         }
 
-        private void LOAD(DateTime d1, DateTime d2)
+        private void LOAD(DateTime endDate)
         {
             try
             {
                 using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
                 {
-                    string queryString = "select * from dbo.TECHIZATCI_borclu_all_HESABAT (@pricePoint,@pricePoint1) ";
+                    string queryString = "select * from dbo.TECHIZATCI_borclu_all_HESABAT (@endDate) ";
                     using (SqlCommand command = new SqlCommand(queryString, connection))
                     {
-                        command.Parameters.AddWithValue("@pricePoint", d1);
-                        command.Parameters.AddWithValue("@pricePoint1", d2);
+                        command.Parameters.AddWithValue("@endDate", endDate);
                         using (SqlDataAdapter da = new SqlDataAdapter(command))
                         {
                             using (DataTable dt = new DataTable())

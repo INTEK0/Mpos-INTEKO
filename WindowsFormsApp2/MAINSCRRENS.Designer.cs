@@ -36,10 +36,10 @@ namespace WindowsFormsApp2
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.groupControl1 = new DevExpress.XtraEditors.GroupControl();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
+            this.lLicenceExpireDate = new DevExpress.XtraEditors.LabelControl();
             this.labelControl12 = new DevExpress.XtraEditors.LabelControl();
             this.lMposVersion = new DevExpress.XtraEditors.LabelControl();
             this.labelControl19 = new DevExpress.XtraEditors.LabelControl();
-            this.lLicenceExpireDate = new DevExpress.XtraEditors.LabelControl();
             this.pictureEdit1 = new DevExpress.XtraEditors.PictureEdit();
             this.fluentFormDefaultManager1 = new DevExpress.XtraBars.FluentDesignSystem.FluentFormDefaultManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
@@ -412,6 +412,23 @@ namespace WindowsFormsApp2
             this.tableLayoutPanel7.Size = new System.Drawing.Size(286, 87);
             this.tableLayoutPanel7.TabIndex = 0;
             // 
+            // lLicenceExpireDate
+            // 
+            this.lLicenceExpireDate.Appearance.Font = new System.Drawing.Font("Nunito", 14F, System.Drawing.FontStyle.Bold);
+            this.lLicenceExpireDate.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.lLicenceExpireDate.Appearance.Options.UseFont = true;
+            this.lLicenceExpireDate.Appearance.Options.UseForeColor = true;
+            this.lLicenceExpireDate.Appearance.Options.UseTextOptions = true;
+            this.lLicenceExpireDate.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
+            this.lLicenceExpireDate.Appearance.TextOptions.Trimming = DevExpress.Utils.Trimming.EllipsisCharacter;
+            this.lLicenceExpireDate.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.lLicenceExpireDate.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lLicenceExpireDate.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lLicenceExpireDate.Location = new System.Drawing.Point(163, 4);
+            this.lLicenceExpireDate.Name = "lLicenceExpireDate";
+            this.lLicenceExpireDate.Size = new System.Drawing.Size(119, 48);
+            this.lLicenceExpireDate.TabIndex = 5;
+            // 
             // labelControl12
             // 
             this.labelControl12.Appearance.Font = new System.Drawing.Font("Nunito", 12F, System.Drawing.FontStyle.Bold);
@@ -468,23 +485,6 @@ namespace WindowsFormsApp2
             this.labelControl19.Size = new System.Drawing.Size(155, 48);
             this.labelControl19.TabIndex = 5;
             this.labelControl19.Text = "Lisenziya bitmə\r\nmüddəti :";
-            // 
-            // lLicenceExpireDate
-            // 
-            this.lLicenceExpireDate.Appearance.Font = new System.Drawing.Font("Nunito", 14F, System.Drawing.FontStyle.Bold);
-            this.lLicenceExpireDate.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lLicenceExpireDate.Appearance.Options.UseFont = true;
-            this.lLicenceExpireDate.Appearance.Options.UseForeColor = true;
-            this.lLicenceExpireDate.Appearance.Options.UseTextOptions = true;
-            this.lLicenceExpireDate.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
-            this.lLicenceExpireDate.Appearance.TextOptions.Trimming = DevExpress.Utils.Trimming.EllipsisCharacter;
-            this.lLicenceExpireDate.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.lLicenceExpireDate.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lLicenceExpireDate.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lLicenceExpireDate.Location = new System.Drawing.Point(163, 4);
-            this.lLicenceExpireDate.Name = "lLicenceExpireDate";
-            this.lLicenceExpireDate.Size = new System.Drawing.Size(119, 48);
-            this.lLicenceExpireDate.TabIndex = 5;
             // 
             // pictureEdit1
             // 
@@ -2814,7 +2814,7 @@ namespace WindowsFormsApp2
             this.tabAllSettings.Name = "tabAllSettings";
             this.tabAllSettings.Properties.AppearanceCaption.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.tabAllSettings.Properties.AppearanceCaption.Options.UseFont = true;
-            this.tabAllSettings.Size = new System.Drawing.Size(1157, 761);
+            this.tabAllSettings.Size = new System.Drawing.Size(1157, 759);
             // 
             // panelControl13
             // 
@@ -2833,7 +2833,7 @@ namespace WindowsFormsApp2
             this.panelControl13.LookAndFeel.UseDefaultLookAndFeel = false;
             this.panelControl13.Margin = new System.Windows.Forms.Padding(1);
             this.panelControl13.Name = "panelControl13";
-            this.panelControl13.Size = new System.Drawing.Size(1157, 761);
+            this.panelControl13.Size = new System.Drawing.Size(1157, 759);
             this.panelControl13.TabIndex = 12;
             // 
             // chClinicModul

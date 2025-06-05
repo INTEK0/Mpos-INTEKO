@@ -774,12 +774,6 @@
     <Compile Include="prenagdkart.Designer.cs">
       <DependentUpon>prenagdkart.cs</DependentUpon>
     </Compile>
-    <Compile Include="prepaymentsales.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="prepaymentsales.Designer.cs">
-      <DependentUpon>prepaymentsales.cs</DependentUpon>
-    </Compile>
     <Compile Include="PrinterSettings\RawPrinterHelper.cs" />
     <Compile Include="QAIME_SATISI_QAYTARMA_LAYOUT.cs">
       <SubType>Form</SubType>
@@ -1092,6 +1086,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fDeactive.resx">
       <DependentUpon>fDeactive.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fDeletedProductsReport.resx">
       <DependentUpon>fDeletedProductsReport.cs</DependentUpon>
@@ -1305,9 +1300,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="prenagdkart.resx">
       <DependentUpon>prenagdkart.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="prepaymentsales.resx">
-      <DependentUpon>prepaymentsales.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
