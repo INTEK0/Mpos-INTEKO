@@ -251,9 +251,6 @@ where kredit_id={_creditMainId}";
                     double deger51 = Math.Round(Convert.ToDouble(deger5), 2);
                     decimal f = Convert.ToDecimal(deger51);
 
-                    nagkardkredit nk = new nagkardkredit(f, null, this);
-                    nk.ShowDialog();
-
                     _creditPayData = new CreditPayData
                     {
                         KONTROL = deger2,
@@ -262,6 +259,11 @@ where kredit_id={_creditMainId}";
                         longidsana = deger4,
                         AYLIQ_ODENIS = deger5
                     };
+
+                    nagkardkredit nk = new nagkardkredit(f, this);
+                    nk.ShowDialog();
+
+                   
                 }
             }
         }

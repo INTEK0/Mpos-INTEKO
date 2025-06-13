@@ -290,7 +290,7 @@ FROM [KREDIT_SATISI_MAIN]";
                     double deger51 = Math.Round(Convert.ToDouble(deger5), 2);
                     decimal f = Convert.ToDecimal(deger51);
 
-                    nagkardkredit nk = new nagkardkredit(f, this, null);
+                    nagkardkredit nk = new nagkardkredit(f,  null);
                     nk.ShowDialog();
 
 

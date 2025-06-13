@@ -300,7 +300,6 @@
             this.labelControl11.Size = new System.Drawing.Size(6, 18);
             this.labelControl11.TabIndex = 34;
             this.labelControl11.Text = "*";
-            this.labelControl11.Visible = false;
             // 
             // lookNation
             // 

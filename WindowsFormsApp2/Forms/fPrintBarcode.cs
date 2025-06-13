@@ -97,6 +97,7 @@ namespace WindowsFormsApp2.Forms
             public Decimal StockAmount { get; set; }
             public string Barcode { get; set; }
             public string TaxName { get; set; }
+            public string UnitName { get; set; }
             public int PrintCount { get; set; } = 1;
         }
 
@@ -116,6 +117,7 @@ namespace WindowsFormsApp2.Forms
                 gridData.StockAmount = Convert.ToDecimal(row[7].ToString());
                 gridData.Barcode = row[8].ToString();
                 gridData.TaxName = row[9].ToString();
+               // gridData.UnitName = row["VAHIDLER_NAME"].ToString();
                 _data.Add(gridData);
             }
             gridControlProducts.DataSource = _data;
@@ -134,10 +136,13 @@ namespace WindowsFormsApp2.Forms
 
             foreach (var rowHandle in selectedRows)
             {
+                string productId = gridProducts.GetRowCellValue(rowHandle, colProductId).ToString();
                 string barcode = gridProducts.GetRowCellValue(rowHandle, colBarcode).ToString();
                 string name = gridProducts.GetRowCellValue(rowHandle, colProductName).ToString();
+                string unit = gridProducts.GetRowCellValue(rowHandle, colUnitName).ToString();
                 string salesPrice = Convert.ToDouble(gridProducts.GetRowCellValue(rowHandle, coLSalePrice).ToString()).ToString("N2");
                 int printCount = Convert.ToInt32(gridProducts.GetRowCellValue(rowHandle, colPrintCount).ToString());
+
 
                 if (string.IsNullOrWhiteSpace(lookPrinters.Text) || lookPrinters.Text is "PRİNTER SEÇİMİ")
                 {
@@ -149,14 +154,9 @@ namespace WindowsFormsApp2.Forms
                     if (status is "Online")
                     {
                         Enums.BarcodeType barcodeType = Enums.BarcodeType.Code128;
-                        if (barcode.Length is 13)
-                        {
-                            barcodeType = BarcodeType.EAN13;
-                        }
-                        else
-                        {
-                            barcodeType = BarcodeType.Code128;
-                        }
+
+                        barcodeType = barcode.Length == 13 ? BarcodeType.EAN13 : BarcodeType.Code128;
+
 
                         if ((PrintType)lookPrintType.EditValue is PrintType.minimum)
                         {
@@ -169,7 +169,15 @@ namespace WindowsFormsApp2.Forms
                         {
                             for (int i = 0; i < printCount; i++)
                             {
-                                PrinterCacheData.PrintLabel60x40(companyName, name.Trim(), salesPrice, barcode.Trim(), lookPrinters.Text);
+                                if (unit is "KQ")
+                                {
+                                    PrinterCacheData.PrintLabel60x40(companyName, $"{name.Trim()} - {productId}", salesPrice, barcode.Trim(), lookPrinters.Text);
+                                }
+                                else
+                                {
+                                    PrinterCacheData.PrintLabel60x40(companyName, name.Trim(), salesPrice, barcode.Trim(), lookPrinters.Text);
+                                }
+                                // PrinterCacheData.PrintLabel60x40(companyName, name.Trim(), salesPrice, barcode.Trim(), lookPrinters.Text);
                             }
                         }
                     }
@@ -188,9 +196,11 @@ namespace WindowsFormsApp2.Forms
         {
             int rowHandle = gridProducts.FocusedRowHandle;
 
+            string productId = gridProducts.GetRowCellValue(rowHandle, colProductId).ToString();
             string companyName = _company?.CompanyName;
             string barcode = gridProducts.GetRowCellValue(rowHandle, colBarcode).ToString();
             string name = gridProducts.GetRowCellValue(rowHandle, colProductName).ToString();
+            string unit = gridProducts.GetRowCellValue(rowHandle, colUnitName).ToString();
             string salesPrice = Convert.ToDouble(gridProducts.GetRowCellValue(rowHandle, coLSalePrice).ToString()).ToString("N2");
 
             if (string.IsNullOrWhiteSpace(lookPrinters.Text) || lookPrinters.Text is "PRİNTER SEÇİMİ")
@@ -217,7 +227,14 @@ namespace WindowsFormsApp2.Forms
                     }
                     else
                     {
-                        PrinterCacheData.PrintLabel60x40(companyName, name.Trim(), salesPrice, barcode.Trim(), lookPrinters.Text);
+                        if (unit is "KQ")
+                        {
+                            PrinterCacheData.PrintLabel60x40(companyName, $"{name.Trim()} - {productId}", salesPrice, barcode.Trim(), lookPrinters.Text);
+                        }
+                        else
+                        {
+                            PrinterCacheData.PrintLabel60x40(companyName, name.Trim(), salesPrice, barcode.Trim(), lookPrinters.Text);
+                        }
                     }
                 }
                 else

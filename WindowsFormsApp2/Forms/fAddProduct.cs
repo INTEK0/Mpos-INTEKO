@@ -105,7 +105,6 @@ namespace WindowsFormsApp2.Forms
         private async void bAdd_Click(object sender, EventArgs e)
         {
             var selectedPaymentType = panelControl3.Controls.OfType<CheckEdit>().FirstOrDefault(x => x.Checked);
-
             ProductsDetail productsDetail = new ProductsDetail
             {
                 ProductMainId = 0,

@@ -1005,6 +1005,9 @@ namespace WindowsFormsApp2
             this.textEdit9.Location = new System.Drawing.Point(1100, 86);
             this.textEdit9.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textEdit9.Name = "textEdit9";
+            this.textEdit9.Properties.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.NumericMaskManager));
+            this.textEdit9.Properties.MaskSettings.Set("MaskManagerSignature", "allowNull=False");
+            this.textEdit9.Properties.MaskSettings.Set("mask", "f2");
             this.textEdit9.Properties.Appearance.ForeColor = System.Drawing.Color.Red;
             this.textEdit9.Properties.Appearance.Options.UseForeColor = true;
             this.textEdit9.Size = new System.Drawing.Size(276, 30);

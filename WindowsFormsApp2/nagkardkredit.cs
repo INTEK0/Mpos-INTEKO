@@ -15,14 +15,12 @@ namespace WindowsFormsApp2
 {
     public partial class nagkardkredit : DevExpress.XtraEditors.XtraForm
     {
-        private readonly SearchKrediOdeme_LAYOUT frm1;
         private readonly fCreditPay _creditPay;
         public decimal h { get; set; }
-        public nagkardkredit(decimal a, SearchKrediOdeme_LAYOUT frm, fCreditPay creditPay)
+        public nagkardkredit(decimal a,  fCreditPay creditPay)
         {
             InitializeComponent();
             h = a;
-            frm1 = frm;
             _creditPay = creditPay;
         }
 
@@ -163,15 +161,8 @@ namespace WindowsFormsApp2
             {
                 //yeri deyismemisden evvel   frm1.gelen_data_negd_pos(n_, k_,Convert.ToDecimal(_um_old));
 
-                if (frm1 is null)
-                {
-                    _creditPay.gelen_data_negd_pos(n_, k_, total);
-                }
-                else
-                {
-                    frm1.gelen_data_negd_pos(n_, k_, total);
-                }
-               
+                _creditPay.gelen_data_negd_pos(n_, k_, total);
+
                 this.Close();
             }
             else
