@@ -1,11 +1,4 @@
-﻿using DevExpress.XtraBars.Navigation;
-using DevExpress.XtraEditors;
-using DevExpress.XtraGrid;
-using DevExpress.XtraGrid.Localization;
-using DevExpress.XtraPrinting;
-using Licence.Services;
-using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -15,8 +8,13 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.UI.WebControls;
 using System.Windows.Forms;
+using DevExpress.XtraBars.Navigation;
+using DevExpress.XtraEditors;
+using DevExpress.XtraGrid;
+using DevExpress.XtraGrid.Localization;
+using Licence.Services;
+using Microsoft.Win32;
 using WindowsFormsApp2.Forms;
 using WindowsFormsApp2.Forms.PrintPages;
 using WindowsFormsApp2.Helpers;
@@ -106,7 +104,7 @@ namespace WindowsFormsApp2
 
         private void accordionControlElement12_Click(object sender, EventArgs e)
         {
-            OpenForm<QAIME_SATISI_QAYTARMA_LAYOUT>(Properties.Settings.Default.UserID);
+            OpenForm<QAIME_SATISI_QAYTARMA_LAYOUT>();
         }
 
         private void accordionControlElement8_Click(object sender, EventArgs e)
@@ -116,7 +114,7 @@ namespace WindowsFormsApp2
 
         private void accordionControlElement9_Click(object sender, EventArgs e)
         {
-            OpenForm<MEHSUL_GAYTARMA_LAYOUT>(Properties.Settings.Default.UserID);
+            OpenForm<MEHSUL_GAYTARMA_LAYOUT>();
         }
 
         private void accordionControlElement5_Click(object sender, EventArgs e)
@@ -552,6 +550,9 @@ FROM[terazimalzeme]";
 
         private async Task LicenceCheck()
         {
+            //lLicenceExpireDate.Text = "-";
+            //lLicenceExpireDate.ForeColor = Color.Black;
+
             var licenceUser = await LicenseService.Instance.RequestKeyControl(LicenseService.Instance.GetLicenceKey());
             if (licenceUser is null)
             {
@@ -571,19 +572,15 @@ FROM[terazimalzeme]";
                 }
                 else if (daysRemaining <= 5)
                 {
-                    lLicenceExpireDate.ForeColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Warning; // sarımsı renk (saf sarı okunması zor olabilir)
+                    lLicenceExpireDate.ForeColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Warning;
                 }
                 else
                 {
-                    lLicenceExpireDate.ForeColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Success; // uzun süre varsa yeşil gibi güven veren bir renk olabilir
+                    lLicenceExpireDate.ForeColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Success;
                 }
+
+                lLicenceExpireDate.ToolTip = $"Lisenziyanın bitmə müddətinə {daysRemaining} gün qalıb";
             }
-
-
-
-
-
-            //lLicenceExpireDate.Text = licenceUser == null ? "-" : licenceUser.LicenceExpireDate.ToString("dd.MM.yyyy");
         }
 
         private async void MAINSCRRENS_Activated(object sender, EventArgs e)

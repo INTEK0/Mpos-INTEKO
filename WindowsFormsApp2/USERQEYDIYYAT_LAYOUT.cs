@@ -146,11 +146,6 @@ FROM userParol where IsDeleted = 0";
                 PosSaleScreen = chToPosSale.Checked
             };
 
-            if (checkBox1.Checked is false && chToPosSale.Checked is true)
-            {
-                user.PosSaleScreen = chToPosSale.Checked;
-            }
-
             var validator = new UserValidation();
             var validateResult = validator.Validate(user);
 

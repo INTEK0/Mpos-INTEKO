@@ -176,7 +176,7 @@
             this.lHeader.Name = "lHeader";
             this.lHeader.Size = new System.Drawing.Size(386, 120);
             this.lHeader.TabIndex = 3;
-            this.lHeader.Text = "LİSENZİYA DEAKTİV EDİLDİ";
+            this.lHeader.Text = "AKTİV LİSENZİYA TAPILMADI";
             // 
             // lMessage
             // 

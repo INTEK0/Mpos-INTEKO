@@ -95,7 +95,7 @@ namespace WindowsFormsApp2
             }
             else
             {
-                MG = new MEHSUL_GAYTARMA_LAYOUT(u_id);
+                MG = new MEHSUL_GAYTARMA_LAYOUT();
                 MG.Show();
 
             }
@@ -121,7 +121,7 @@ namespace WindowsFormsApp2
             }
             else
             {
-                GST = new QAIME_SATISI_QAYTARMA_LAYOUT(u_id);
+                GST = new QAIME_SATISI_QAYTARMA_LAYOUT();
                 GST.Show();
 
             }

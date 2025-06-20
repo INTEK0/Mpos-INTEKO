@@ -879,7 +879,6 @@
       <DependentUpon>Magaza.cs</DependentUpon>
     </Compile>
     <Compile Include="MAL_ALISI_CRUD.cs" />
-    <Compile Include="MAL_GAYTARMA.cs" />
     <Compile Include="MEHSUL_ALISI.cs" />
     <Compile Include="MEHSUL_ALİSİ.cs">
       <SubType>Form</SubType>

@@ -145,7 +145,6 @@ namespace WindowsFormsApp2
             }
 
         }
-        MAL_GAYTARMA mg = new MAL_GAYTARMA();
 
        
         private void simpleButton6_Click(object sender, EventArgs e)
@@ -155,7 +154,8 @@ namespace WindowsFormsApp2
             {
                 try
                 {
-                    int ret = mg.InsertMalGaytarma(textEdit6.Text.ToString(), Convert.ToDateTime(dateEdit4.Text), g_user_id);
+                    int ret = 0; 
+                    //mg.InsertMalGaytarma(textEdit6.Text.ToString(), Convert.ToDateTime(dateEdit4.Text), g_user_id);
                     if (ret > 0)
                     {
                         //XtraMessageBox.Show("ugurlu");
@@ -168,7 +168,7 @@ namespace WindowsFormsApp2
                             decimal b = Convert.ToDecimal(row[10].ToString());
                             if (a >= b)
                             {
-                                int u = mg.InsertMalGaytarmaDetails(ret.ToString(), row[0].ToString(), row[10].ToString());
+                                //int u = mg.InsertMalGaytarmaDetails(ret.ToString(), row[0].ToString(), row[10].ToString());
                             }
                             //  MessageBox.Show(row[7].ToString() +" / " +row[10].ToString());
                             //    MessageBox.Show(ret.ToString()+" " + row[0].ToString() + " " + row[1].ToString());

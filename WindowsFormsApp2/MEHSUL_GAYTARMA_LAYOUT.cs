@@ -1,131 +1,82 @@
-﻿using DevExpress.XtraEditors;
-using DevExpress.XtraGrid.Localization;
-using DevExpress.XtraGrid.Views.Grid;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
 using System.Data;
-using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
-using static WindowsFormsApp2.Helpers.FormHelpers;
 
 namespace WindowsFormsApp2
 {
     public partial class MEHSUL_GAYTARMA_LAYOUT : DevExpress.XtraEditors.XtraForm
     {
-        public static int g_user_id;
-        private readonly string qeryString = "EXEC  dbo.MAL_GAYTARMA_KOD";
-        public MEHSUL_GAYTARMA_LAYOUT(int gay_u_id)
+        public MEHSUL_GAYTARMA_LAYOUT()
         {
             InitializeComponent();
-            g_user_id = gay_u_id;
             FormHelpers.GridPanelText(gridView1);
-            GridLocalizer.Active = new MyGridLocalizer();
         }
 
         private void MEHSUL_GAYTARMA_LAYOUT_Load(object sender, EventArgs e)
         {
-            GETKOD();
-            textEdit6.Enabled = false;
-            DateTime dateTime = DateTime.UtcNow.Date;
-            dateEdit4.Text = dateTime.ToString();
+            tProccessNo.Text = DbProsedures.GET_ProductReturnProcessNo();
+            dateTarix.Text = DateTime.UtcNow.Date.ToString();
 
-
-            gridControl1.TabStop = false;
-
-            gridView1.OptionsSelection.MultiSelect = true;
-            gridView1.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
-
-            lookupedittextxhange_main();
+            SupplierDataLoad();
         }
-        private void lookupedittextxhange_main()
+
+        private void SupplierDataLoad()
         {
-            string strQuery = "select TECHIZATCI_ID,SIRKET_ADI from COMPANY.TECHIZATCI WHERE IsDeleted = 0";
- 
-            var data = DbProsedures.ConvertToDataTable(strQuery);
-            lookUpEdit2.Properties.DisplayMember = "SIRKET_ADI";
-            lookUpEdit2.Properties.ValueMember = "TECHIZATCI_ID";
-            lookUpEdit2.Properties.DataSource = data;
-            //lookUpEdit2.Properties.NullText = "TƏCHİZATÇINI SEÇİN";
-            lookUpEdit2.Properties.PopulateColumns();
-            lookUpEdit2.Properties.Columns[0].Visible = false;
+            string query = "SELECT TECHIZATCI_ID, SIRKET_ADI AS N'ŞİRKƏT ADI' FROM COMPANY.TECHIZATCI WHERE IsDeleted = 0";
+            var data = DbProsedures.ConvertToDataTable(query);
+            lookSupplier.Properties.DisplayMember = "ŞİRKƏT ADI";
+            lookSupplier.Properties.ValueMember = "TECHIZATCI_ID";
+            lookSupplier.Properties.DataSource = data;
+            lookSupplier.Properties.PopulateColumns();
+            lookSupplier.Properties.Columns[0].Visible = false;
         }
-
-        private void GETKOD()
-        {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
-            {
-                SqlCommand command = new SqlCommand(qeryString, connection);
-                try
-                {
-                    connection.Open();
-                    SqlDataReader reader = command.ExecuteReader();
-                    while (reader.Read())
-                    {
-
-                        textEdit6.Text = reader[0].ToString();
-
-
-                    }
-                    reader.Close();
-                }
-                catch (Exception ex)
-                {
-                    ReadyMessages.ERROR_DEFAULT_MESSAGE(ex.Message);
-                }
-            }
-        }
-        MAL_GAYTARMA mg = new MAL_GAYTARMA();
 
 
         private void simpleButton6_Click(object sender, EventArgs e)
         {
             try
             {
-                int ret = mg.InsertMalGaytarma(textEdit6.Text, Convert.ToDateTime(dateEdit4.Text), g_user_id);
-                if (ret > 0)
+                gridView1.UpdateCurrentRow();
+
+                int[] selectedRows = gridView1.GetSelectedRows();
+
+                if (selectedRows.Length > 0)
                 {
-
-                    foreach (int i in gridView1.GetSelectedRows())
+                    foreach (int item in selectedRows)
                     {
+                        var row = gridView1.GetRow(item) as RefundProduct;
 
-                        DataRow row = gridView1.GetDataRow(i);
-                        decimal a = Convert.ToDecimal(row[7].ToString());
-                        decimal b = Convert.ToDecimal(row[10].ToString());
-                        if (a >= b)
+                        if (row.RefundQuantity <= 0)
                         {
-                            int u = mg.InsertMalGaytarmaDetails(ret.ToString(), row[0].ToString(), row[10].ToString(), memoEdit1.Text);
+                            FormHelpers.Alert("Seçili olan sətirdə qaytarılacaq miqdar daxil edilmədi", Enums.MessageType.Warning);
+                            return;
                         }
 
-                        FormHelpers.OperationLog(new Helpers.DB.DatabaseClasses.OperationLogs
+                        int result = DbProsedures.InsertRefundProductMain(tProccessNo.Text, Convert.ToDateTime(dateTarix.Text));
+                        if (result > 0)
                         {
-                            OperationType = Enums.OperationType.RefundProduct,
-                            OperationId = ret
-                        });
+                            DbProsedures.InsertRefundProductDetail(result, row.Id, row.RefundQuantity, tComment.Text);
 
-                        FormHelpers.Log($"{row[2]} təchizatçısının {row[4]} məhsulunun {row[10]} {row[6]} qaytarması edildi");
-
-
-
+                            FormHelpers.OperationLog(new Helpers.DB.DatabaseClasses.OperationLogs
+                            {
+                                OperationType = Enums.OperationType.RefundProduct,
+                                OperationId = result
+                            });
+                            FormHelpers.Log($"{row.SupplierName} təchizatçısının {row.ProductName} məhsulunun {row.RefundQuantity} {row.UnitName} qaytarması edildi");
+                        }
                     }
-                    XtraMessageBox.Show("ƏMƏLİYYAT UĞURLA TAMAMLANDI");
+                    FormHelpers.Alert("Məhsul qaytarılması uğurla edildi", Enums.MessageType.Success);
+                    RefundProductsDataLoad(lookSupplier.Text);
+                    tTotalAmount.Text = DbProsedures.GET_ProductReturnDebtTotal((int)lookSupplier.EditValue);
+                    Clear();
                 }
-                getall1(lookUpEdit2.Text);
-                clear();
-                getsum(Convert.ToInt32(lookUpEdit2.EditValue));
-
-                textEdit14.Text = "";
-                GETKOD();
-                lookUpEdit2.EditValue = null;
-                dateEdit4.Text = DateTime.Now.ToString("dd.MM.yyyy");
-                lookupedittextxhange_main();
+                else
+                {
+                    FormHelpers.Alert("Məhsul seçimi edilmədi", Enums.MessageType.Warning);
+                }
             }
             catch (Exception ex)
             {
@@ -133,127 +84,91 @@ namespace WindowsFormsApp2
             }
         }
 
-        private void getsum(int A)
+        private void RefundProductsDataLoad(string supplierName)
         {
-            int paramValue = A;
+            string query = $@"SELECT 
+  Id, 
+  Date, 
+  SupplierName, 
+  ContractNo, 
+  ProductName, 
+  ProductCode, 
+  UnitName, 
+  Quantity, 
+  PurchasePrice, 
+  Warehouse, 
+  RefundQuantity 
+    FROM[dbo].[gaytarilacag_mallar] 
+WHERE 
+  SupplierName = N'{supplierName}' 
+  AND Quantity > 0.00";
 
+            var data = DbProsedures.ConvertToDataTable(query);
 
-            string queryString = "SELECT Y.BORC - X.GAYTARMA_MEBLEG AS BORC FROM( " +
-        " select 1 AS ID, cast(sum(isnull(BORC, 0.00)) as decimal(9, 2)) as BORC " +
-                  " from(SELECT f.MAL_ALISI_MAIN_ID, f.[FAKTURA NÖMRƏ], " +
-                   "   f.TARIX, f.QİYMƏT - isnull(t.odenis, 0.00) BORC, " +
-                    "  0 AS 'ÖDƏNİŞ'FROM dbo.fn_TECHIZATCI_BORC(@pricePoint) f " +
-                          "  left join(select  MAL_ALISI_MAIN_ID, " +
-                       " sum(ODENIS) odenis from TECHIZATCI_ODENIS " +
-                       " group by MAL_ALISI_MAIN_ID)t  on f.MAL_ALISI_MAIN_ID = t.MAL_ALISI_MAIN_ID)o " +
-                       " )Y " +
-                       " LEFT JOIN( " +
-                       " SELECT 1 AS ID, ISNULL(CAST(SUM(MD.ALIS_GIYMETI * D.MIGDARI) AS decimal(9, 2)), 0.00) " +
-                       " AS GAYTARMA_MEBLEG FROM MAL_GEYTARMA_MAIN M " +
-                       " INNER JOIN  MAL_GEYTARMA_DETAILS D ON " +
-                       " M.MAL_GEYTARMA_MAIN_ID = D.MAL_GEYTARMA_MAIN_ID " +
-                       " INNER JOIN MAL_ALISI_DETAILS MD ON MD.MAL_ALISI_DETAILS_ID = D.MAL_ALISI_DETAILS_ID " +
-                       " INNER JOIN MAL_ALISI_MAIN MM ON MM.MAL_ALISI_MAIN_ID = MD.MAL_ALISI_MAIN_ID " +
-                       " WHERE MM.TECHIZATCI_ID = @pricePoint " +
-                       "  )X ON X.ID = Y.ID ";
-
-            SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
-            SqlCommand cmd = new SqlCommand();
-            SqlCommand command = new SqlCommand(queryString, connection);
-
-            command.Parameters.AddWithValue("@pricePoint", paramValue);
-
-            connection.Open();
-            SqlDataReader dr = command.ExecuteReader();
-            while (dr.Read())
+            BindingList<RefundProduct> products = new BindingList<RefundProduct>();
+            foreach (DataRow item in data.Rows)
             {
-
-                textEdit14.Text = dr["BORC"].ToString();
-
-            }
-            connection.Close();
-        }
-
-        private void clear()
-        {
-            memoEdit1.Text = "";
-        }
-
-        private void getall1(string supplierName)
-        {
-            try
-            {
-                string queryString = $@"SELECT [MAL_ALISI_DETAILS_ID] ,
-       [TARIX],
-       [TƏCHİZATÇI ADI],
-       [FAKTURA NÖMRƏSİ] ,
-       [MƏHSUL ADI],
-       [MƏHSUL KODU],
-       [VAHİD] ,
-       [MİQDARI],
-       [BİR VAHİDİN QİYMƏTİ] ,
-       [YERLƏŞDİYİ ANBAR],
-       [QAYTARILMALI MİQDAR]
-FROM[dbo].[gaytarilacag_mallar]
-WHERE[TƏCHİZATÇI ADI] = N'{supplierName}'
-  AND[MİQDARI] > 0.00";
-
-                var data = DbProsedures.ConvertToDataTable(queryString);
-                gridControl1.DataSource = data;
-
-               
-                gridView1.Columns[0].Visible = false;
-                gridView1.OptionsSelection.MultiSelect = true;
-                gridView1.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
-
-            }
-            catch (Exception e)
-            {
-               ReadyMessages.ERROR_DEFAULT_MESSAGE(e.Message);
+                RefundProduct product = new RefundProduct();
+                product.Id = Convert.ToInt32(item["Id"].ToString());
+                product.Date = Convert.ToDateTime(item["Date"].ToString());
+                product.SupplierName = item["SupplierName"].ToString();
+                product.ContractNo = item["ContractNo"].ToString();
+                product.ProductName = item["ProductName"].ToString();
+                product.ProductCode = item["ProductCode"].ToString();
+                product.UnitName = item["UnitName"].ToString();
+                product.Quantity = Convert.ToDecimal(item["Quantity"].ToString());
+                product.PurchasePrice = Convert.ToDecimal(item["PurchasePrice"].ToString());
+                product.Warehouse = item["Warehouse"].ToString();
+                product.RefundQuantity = 0;
+                products.Add(product);
             }
 
-            lookupedittextxhange_main();
+            gridControl1.DataSource = products;
         }
 
-
-        private void simpleButton1_Click(object sender, EventArgs e)
-        {
-            clear();
-            gridControl1.DataSource = null;
-        }
         private void simpleButton3_Click(object sender, EventArgs e)
         {
-            FormHelpers.OpenForm<GAYTARMA_AXTARİS>(this);
-
+            FormHelpers.OpenForm<MEHSUL_GAYTARMA_HESABAT>();
         }
-        public void getall()
+
+        private void lookSupplier_TextChanged(object sender, EventArgs e)
         {
-            try
+            if (lookSupplier.EditValue != null)
             {
-                string query = " SELECT * FROM [dbo].[gaytarilacag_mallar] WHERE [MİQDARI]>0.00";
-
-                var data = DbProsedures.ConvertToDataTable(query);
-                
-                gridControl1.DataSource = data;
-                gridView1.Columns[0].Visible = false;
-                gridView1.Columns[1].Visible = false;
+                tTotalAmount.Text = DbProsedures.GET_ProductReturnDebtTotal((int)lookSupplier.EditValue);
+                RefundProductsDataLoad(lookSupplier.Text);
             }
-            catch (Exception e)
-            {
-                ReadyMessages.ERROR_DEFAULT_MESSAGE(e.Message);
-            }
-
-            lookupedittextxhange_main();
         }
-        private void lookUpEdit2_TextChanged(object sender, EventArgs e)
+
+        private void bClear_Click(object sender, EventArgs e)
         {
-            if (lookUpEdit2.EditValue != null)
-            {
-                getsum(Convert.ToInt32(lookUpEdit2.EditValue));
-                getall1(lookUpEdit2.Text);
-                DateTime dateTime = DateTime.UtcNow.Date;
-                dateEdit4.Text = dateTime.ToString();
-            }
+            Clear();
+        }
+
+        private void Clear()
+        {
+            gridControl1.DataSource = null;
+            tComment.Clear();
+            lookSupplier.Clear();
+            SupplierDataLoad();
+            tTotalAmount.Clear();
+            tProccessNo.Text = DbProsedures.GET_ProductReturnProcessNo();
+            dateTarix.Text = DateTime.Now.ToString("dd.MM.yyyy");
+        }
+
+        private class RefundProduct
+        {
+            public int Id { get; set; }
+            public DateTime Date { get; set; }
+            public string SupplierName { get; set; }
+            public string ContractNo { get; set; }
+            public string ProductName { get; set; }
+            public string ProductCode { get; set; }
+            public string UnitName { get; set; }
+            public decimal Quantity { get; set; }
+            public decimal PurchasePrice { get; set; }
+            public string Warehouse { get; set; }
+            public decimal RefundQuantity { get; set; }
         }
     }
 }

@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DevExpress.XtraEditors;
 using Newtonsoft.Json;
 using RestSharp;
 using WindowsFormsApp2.Helpers;
@@ -204,15 +202,16 @@ namespace WindowsFormsApp2.NKA
                     }
 
                     var taxs = new List<RequestSale.itemTaxes>
-                {
-                    new RequestSale.itemTaxes
                     {
-                        fullName = taxName,
-                        taxName = taxName,
-                        taxPrc = TaxPrc,
-                        calcType = calcType,
-                    }
-                };
+                        new RequestSale.itemTaxes
+                        {
+                            fullName = taxName,
+                            taxName = taxName,
+                            taxPrc = TaxPrc,
+                            calcType = calcType,
+                            //taxCode = 0
+                        }
+                    };
 
                     RequestSale.Item itemProduct = new RequestSale.Item
                     {
@@ -267,7 +266,7 @@ namespace WindowsFormsApp2.NKA
                         posSalesId = DbProsedures.InsertPosSales(new PosSales
                         {
                             posNomre = response.data.fiscalNum,
-                            longFiskalId = response.data.fiscalID.ToString(),
+                            longFiskalId = response.data.fiscalID,
                             proccessNo = salesData.ProccessNo,
                             cash = cash,
                             card = card,

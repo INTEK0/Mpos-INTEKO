@@ -176,7 +176,7 @@ namespace WindowsFormsApp2
         private void GAYTARMA_AXTARİS_FormClosing(object sender, FormClosingEventArgs e)
         {
 
-         frm1.getall();
+        
         }
 
         private void barButtonItem4_ItemClick(object sender, ItemClickEventArgs e)

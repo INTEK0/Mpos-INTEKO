@@ -4,8 +4,6 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DevExpress.Xpo.DB.Helpers;
-using DevExpress.XtraReports.UI;
 using WindowsFormsApp2.Helpers.Messages;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
 using static WindowsFormsApp2.Helpers.DB.DTOs;
@@ -51,8 +49,6 @@ namespace WindowsFormsApp2.Helpers.DB
         private const string DELETE_GuarantorQuery = "delete_zamin";
         private const string UPDATE_GuarantorDataQuery = "UPDATE_ZAMIN";
         private const string GET_RefundProccesNoQuery = "EXEC dbo.POS_GAYTARMA";
-        private const string UPDATE_UserQuery = "userParol_update";
-        private const string DELETE_UserQuery = "userParol_delete";
         private const string INSERT_ClinicDataQuery = "ClinicReportInsertData";
         public static readonly string GET_ClinicDataLoadQuery = $"EXEC [dbo].[ClinicReportDataLoad]@UserID = {Properties.Settings.Default.UserID}";
         private const string INSERT_GaimeSalesMainQuery = "INSERT_GAIME_SATISI_MAIN";
@@ -264,7 +260,8 @@ namespace WindowsFormsApp2.Helpers.DB
         {
             using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
             {
-                using (SqlCommand cmd = new SqlCommand(UPDATE_UserQuery, connection))
+                string query = "userParol_update";
+                using (SqlCommand cmd = new SqlCommand(query, connection))
                 {
                     connection.Open();
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
@@ -289,6 +286,8 @@ namespace WindowsFormsApp2.Helpers.DB
                     param.Value = item.DateBirth;
                     param = cmd.Parameters.Add("@GAN_GRUPU", SqlDbType.NVarChar, 100);
                     param.Value = item.BloodType;
+                    param = cmd.Parameters.Add("PosSaleScreen", SqlDbType.Bit);
+                    param.Value = item.PosSaleScreen;
 
                     cmd.ExecuteNonQuery();
                 }
@@ -299,7 +298,8 @@ namespace WindowsFormsApp2.Helpers.DB
         {
             using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
             {
-                using (SqlCommand cmd = new SqlCommand(DELETE_UserQuery, connection))
+                string query = "userParol_delete";
+                using (SqlCommand cmd = new SqlCommand(query, connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     SqlParameter param;
@@ -1143,6 +1143,148 @@ WHERE BARKOD = '{barcode}'";
             }
         }
 
+        public static string GET_ProductReturnProcessNo()
+        {
+            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                string query = "EXEC  dbo.MAL_GAYTARMA_KOD";
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    connection.Open();
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            return dr[0].ToString();
+                        }
+                        return null;
+                    }
+                }
+            }
+        }
+
+        public static string GET_ProductReturnDebtTotal(int SupplierId)
+        {
+            string query = $@"SELECT 
+  Y.BORC - X.GAYTARMA_MEBLEG AS BORC 
+FROM 
+  (
+    select 
+      1 AS ID, 
+      cast(
+        sum(
+          isnull(BORC, 0.00)
+        ) as decimal(9, 3)
+      ) as BORC 
+    from 
+      (
+        SELECT 
+          f.MAL_ALISI_MAIN_ID, 
+          f.[FAKTURA NÖMRƏ], 
+          f.TARIX, 
+          f.QİYMƏT - isnull(t.odenis, 0.00) BORC, 
+          0 AS 'ÖDƏNİŞ' 
+        FROM 
+          dbo.fn_TECHIZATCI_BORC({SupplierId}) f 
+          left join(
+            select 
+              MAL_ALISI_MAIN_ID, 
+              sum(ODENIS) odenis 
+            from 
+              TECHIZATCI_ODENIS 
+            group by 
+              MAL_ALISI_MAIN_ID
+          ) t on f.MAL_ALISI_MAIN_ID = t.MAL_ALISI_MAIN_ID
+      ) o
+  ) Y 
+  LEFT JOIN(
+    SELECT 
+      1 AS ID, 
+      ISNULL(
+        CAST(
+          SUM(MD.ALIS_GIYMETI * D.MIGDARI) AS decimal(9, 3)
+        ), 
+        0.00
+      ) AS GAYTARMA_MEBLEG 
+    FROM 
+      MAL_GEYTARMA_MAIN M 
+      INNER JOIN MAL_GEYTARMA_DETAILS D ON M.MAL_GEYTARMA_MAIN_ID = D.MAL_GEYTARMA_MAIN_ID 
+      INNER JOIN MAL_ALISI_DETAILS MD ON MD.MAL_ALISI_DETAILS_ID = D.MAL_ALISI_DETAILS_ID 
+      INNER JOIN MAL_ALISI_MAIN MM ON MM.MAL_ALISI_MAIN_ID = MD.MAL_ALISI_MAIN_ID 
+    WHERE 
+      MM.TECHIZATCI_ID = {SupplierId}
+  ) X ON X.ID = Y.ID
+";
+
+            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    connection.Open();
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            return dr[0].ToString();
+                        }
+                        return null;
+                    }
+                }
+            }
+        }
+
+        public static int InsertRefundProductMain(string proccessNo, DateTime date)
+        {
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                string query = "INSERT_MAL_GAYTARMA_MAIN";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlParameter param;
+                    param = cmd.Parameters.Add("@EMELIYYAT_NOMRE", SqlDbType.NVarChar, 100);
+                    param.Value = proccessNo;
+                    param = cmd.Parameters.Add("@TARIX", SqlDbType.Date);
+                    param.Value = date;
+                    param = cmd.Parameters.Add("@_USER_ID", SqlDbType.Int);
+                    param.Value = Properties.Settings.Default.UserID;
+                    param = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
+                    param.Direction = ParameterDirection.Output;
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+                    return Convert.ToInt32(param.Value);
+                }
+            }
+        }
+
+        public static int InsertRefundProductDetail(int RefundProductId, int ProductId, decimal RefundQuantity, string Comment = null)
+        {
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                string query = "INSERT_MAL_GAYTARMA_DETAILS";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlParameter param;
+                    param = cmd.Parameters.Add("@MAL_GEYTARMA_MAIN_ID", SqlDbType.Int);
+                    param.Value = RefundProductId;
+                    param = cmd.Parameters.Add("@MAL_ALISI_DETAILS_ID", SqlDbType.Int);
+                    param.Value = ProductId;
+                    param = cmd.Parameters.Add("@MIGDARI", SqlDbType.Decimal);
+                    param.Value = RefundQuantity;
+                    param = cmd.Parameters.Add("@COMMENT", SqlDbType.NVarChar, int.MaxValue);
+                    param.Value = Comment;
+                    param = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
+                    param.Direction = ParameterDirection.Output;
+
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+                    return Convert.ToInt32(param.Value);
+                }
+            }
+        }
 
         #endregion [..PRODUCTS..]
 

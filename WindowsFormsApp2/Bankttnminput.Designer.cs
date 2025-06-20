@@ -74,7 +74,7 @@ namespace WindowsFormsApp2
             this.MinimumSize = new System.Drawing.Size(340, 152);
             this.Name = "Bankttnminput";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "BankTTNM";
+            this.Text = "Bank RRN";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Bankttnminput_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();

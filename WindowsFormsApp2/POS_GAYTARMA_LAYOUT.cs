@@ -134,35 +134,36 @@ namespace WindowsFormsApp2
         {
             try
             {
-                SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
-
-                string queryString = "select * from  dbo.fn_pos_gaytarma_date_load (@pricePoint ,@pricePoint1) ";
-
-
-                SqlCommand command = new SqlCommand(queryString, connection);
-                command.Parameters.AddWithValue("@pricePoint", d1);
-                command.Parameters.AddWithValue("@pricePoint1", d2);
-                SqlDataAdapter da = new SqlDataAdapter(command);
-                DataTable dt1 = new DataTable();
-                da.Fill(dt1);
-                gridControl1.DataSource = dt1;
-
-
-                gridView1.OptionsSelection.MultiSelect = true;
-                gridView1.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
-                if (lModel.Text is "2")
+                using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
                 {
-                    gridView1.Columns[0].Visible = false;
-                    gridView1.Columns[1].Visible = false;
-                    gridView1.Columns[5].Visible = false;
-                    gridView1.Columns[7].Visible = true;
-                    gridView1.Columns[8].Visible = true;
-                }
-                else
-                {
-                    gridView1.Columns[0].Visible = false;
-                    gridView1.Columns[7].Visible = false;
-                    gridView1.Columns[8].Visible = false;
+                    string queryString = "select * from  dbo.fn_pos_gaytarma_date_load (@pricePoint ,@pricePoint1) ";
+                    using (SqlCommand cmd = new SqlCommand(queryString, con))
+                    {
+                        cmd.Parameters.AddWithValue("@pricePoint", d1);
+                        cmd.Parameters.AddWithValue("@pricePoint1", d2);
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+                            using (DataTable dt = new DataTable())
+                            {
+                                da.Fill(dt);
+                                gridControl1.DataSource = dt;
+                                if (lModel.Text is "2")
+                                {
+                                    gridView1.Columns[0].Visible = false;
+                                    gridView1.Columns[1].Visible = false;
+                                    gridView1.Columns[5].Visible = false;
+                                    gridView1.Columns[7].Visible = true;
+                                    gridView1.Columns[8].Visible = true;
+                                }
+                                else
+                                {
+                                    gridView1.Columns[0].Visible = false;
+                                    gridView1.Columns[7].Visible = false;
+                                    gridView1.Columns[8].Visible = false;
+                                }
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception e)
@@ -1996,8 +1997,8 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
                             DbProsedures.InsertPosRefund(new DatabaseClasses.PosRefund
                             {
                                 proccessNo = textEdit1.Text,
-                                pos_satis_check_main_id = Convert.ToInt32(row[0]),
-                                pos_satis_check_details_id = Convert.ToInt32(row[1]),
+                                pos_satis_check_main_id = Convert.ToInt32(row["pos_satis_check_main_id"]),
+                                pos_satis_check_details_id = Convert.ToInt32(row["pos_satis_check_details_id"]),
                                 quantity = fr,
                                 comment = memoEdit1.Text
                             });
@@ -2034,7 +2035,7 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
                                 {
                                     textEdit1.Text = DbProsedures.GET_RefundProccessNo();
                                     gridControl1.DataSource = null;
-                                }                                
+                                }
                                 break; /*OMNITECH*/
                             case "4":
                                 using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
+using WindowsFormsApp2.Helpers.Messages;
 using static WindowsFormsApp2.Helpers.Enums;
 
 namespace WindowsFormsApp2
@@ -21,7 +22,6 @@ namespace WindowsFormsApp2
         string procedure6 = "insert_gaime_satisi_gaytarma_main";
         string DELETE_GAIME = "GAIME_SATISI_DETAILS_DELETE";
         string update_gaime_satisi = "upda_gaime_satisi_details";
-        string insert_gaime_satis_gaytarma_proc = "insert_gaime_satis_gaytarma";
         string proceduretest = "test_musteriA_di";
 
         public int test_proc_(string EMELIYYAT_NOMRE_, string musteri_)
@@ -48,57 +48,26 @@ namespace WindowsFormsApp2
             return Convert.ToInt32(param.Value);
         }
 
-        public int insert_gaime_satis_gaytarma_proc_(string gaime_satis_details_id, string migdar,
+        public int insert_gaime_satis_gaytarma_proc_(int gaime_satis_details_id, decimal migdar,
             string emeliyyat_nomre, DateTime tarix_, string geyd_)
         {
-            //SqlConnection con = new SqlConnection(Properties.Settings.Default.SqlCon);
-            //SqlCommand cmd = new SqlCommand(insert_gaime_satis_gaytarma_proc, con);
-            //cmd.CommandType = CommandType.StoredProcedure;
-            //SqlParameter param;
-            //param = cmd.Parameters.Add("@gaime_satis_details_id", SqlDbType.NVarChar, 20);
-            //param.Value = gaime_satis_details_id;
-            //param = cmd.Parameters.Add("@migdar", SqlDbType.NVarChar, 20);
-            //param.Value = migdar;
-
-            //param = cmd.Parameters.Add("@emeliyyat_nomre", SqlDbType.NVarChar, 100);
-            //param.Value = emeliyyat_nomre;
-
-            //param = cmd.Parameters.Add("@tarix_", SqlDbType.DateTime);
-            //param.Value = tarix_;
-            //param = cmd.Parameters.Add("@geyd", SqlDbType.NVarChar, 500);
-            //param.Value = geyd_;
-
-            //param = cmd.Parameters.Add("@user_id", SqlDbType.Int);
-            //param.Value = _user_id;
-
-            //// Add the output parameter.
-            //param = cmd.Parameters.Add("@EMPCOUNT", SqlDbType.Int);
-            //param.Direction = ParameterDirection.Output;
-            //// Execute the command.
-            //con.Open();
-            //cmd.ExecuteNonQuery();
-            //con.Close();
-            //return Convert.ToInt32(param.Value);
-
-
-            //-------------------------------------------------------
 
             int empCount = 0;
             int returnMainId = 0;
 
             using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
             {
-                using (SqlCommand cmd = new SqlCommand(insert_gaime_satis_gaytarma_proc, con))
+                using (SqlCommand cmd = new SqlCommand("insert_gaime_satis_gaytarma", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
 
-                    cmd.Parameters.Add("@gaime_satis_details_id", SqlDbType.NVarChar, 100).Value = gaime_satis_details_id;
-                    cmd.Parameters.Add("@migdar", SqlDbType.NVarChar, 100).Value = migdar;
+                    cmd.Parameters.Add("@gaime_satis_details_id", SqlDbType.Int).Value = gaime_satis_details_id;
+                    cmd.Parameters.Add("@migdar", SqlDbType.Decimal).Value = migdar;
                     cmd.Parameters.Add("@emeliyyat_nomre", SqlDbType.NVarChar, 100).Value = emeliyyat_nomre;
                     cmd.Parameters.Add("@tarix_", SqlDbType.Date, 100).Value = tarix_;
-                    cmd.Parameters.Add("@geyd", SqlDbType.NVarChar, 100).Value = geyd_;
-                    cmd.Parameters.Add("@user_id", SqlDbType.Int, 100).Value = Properties.Settings.Default.UserID;
+                    cmd.Parameters.Add("@geyd", SqlDbType.NVarChar, 500).Value = geyd_;
+                    cmd.Parameters.Add("@user_id", SqlDbType.Int).Value = Properties.Settings.Default.UserID;
 
 
 

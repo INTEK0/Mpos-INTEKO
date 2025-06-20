@@ -1,29 +1,20 @@
-﻿using DevExpress.DashboardCommon;
-using DevExpress.Xpo;
-using DevExpress.XtraMap.Native;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using RestSharp;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Security.Policy;
-using System.Text.Json;
-using System.Windows.Forms;
-using WindowsFormsApp2.Forms;
+using Newtonsoft.Json;
+using RestSharp;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using static DTOs;
-using static WindowsFormsApp2.POS_LAYOUT_NEW;
 
 namespace WindowsFormsApp2.NKA
 {
     public class NBA
     {
-        public static readonly string NBA_FISCAL_SERVICE_PORT = "9847"; //9898 prod port - 9847 test port
-        public static readonly string NBA_BANK_SERVICE_PORT = "9944"; //9999 prod port - 9944 test port
-        private static readonly string NBA_LOGIN_PIN = "23264544"; //12348765 prod pin - 23264544 test pin
+        public static readonly string NBA_FISCAL_SERVICE_PORT = "9898"; //9898 prod port - 9847 test port
+        public static readonly string NBA_BANK_SERVICE_PORT = "9999"; //9999 prod port - 9944 test port
+        private static readonly string NBA_LOGIN_PIN = "12348765"; //12348765 prod pin - 23264544 test pin
 
         /* return olunacaq json, edvHesap1, edvHesap2, edvdenazad2,odenen,qaliq */
 

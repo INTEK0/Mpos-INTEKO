@@ -59,6 +59,7 @@ namespace WindowsFormsApp2
                 return;
             }
 
+            #region [..Licence..]
 
             if (string.IsNullOrWhiteSpace(_licenceKey) || _licenceKey is "Yoxdur")
             {
@@ -86,14 +87,11 @@ namespace WindowsFormsApp2
                 FormHelpers.Alert("İnternet bağlantınız yoxdur", Enums.MessageType.Error);
             }
 
+            #endregion [..Licence..]
+
             FolderControl();
             CultureInfoData();
             Application.Run(new avtorizasiya());
-            //Application.Run(new fDeactive(new Licence.Entities.User
-            //{
-            //    LicenceKey = _licenceKey,
-            //    LicenceExpireDate = DateTime.Now,
-            //}));
         }
 
         static void CultureInfoData()

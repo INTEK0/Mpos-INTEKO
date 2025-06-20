@@ -140,13 +140,13 @@ namespace WindowsFormsApp2
             this.accordionControlElement30 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement31 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement32 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
+            this.accordionControlElement42 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement33 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement34 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement35 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement36 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement37 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement38 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
-            this.accordionControlElement42 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement43 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement47 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement44 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
@@ -428,6 +428,7 @@ namespace WindowsFormsApp2
             this.lLicenceExpireDate.Name = "lLicenceExpireDate";
             this.lLicenceExpireDate.Size = new System.Drawing.Size(119, 48);
             this.lLicenceExpireDate.TabIndex = 5;
+            this.lLicenceExpireDate.ToolTip = "test";
             // 
             // labelControl12
             // 
@@ -1826,13 +1827,13 @@ namespace WindowsFormsApp2
             this.accordionControlElement30.Elements.AddRange(new DevExpress.XtraBars.Navigation.AccordionControlElement[] {
             this.accordionControlElement31,
             this.accordionControlElement32,
+            this.accordionControlElement42,
             this.accordionControlElement33,
             this.accordionControlElement34,
             this.accordionControlElement35,
             this.accordionControlElement36,
             this.accordionControlElement37,
             this.accordionControlElement38,
-            this.accordionControlElement42,
             this.accordionControlElement43,
             this.accordionControlElement47,
             this.accordionControlElement44,
@@ -1859,6 +1860,13 @@ namespace WindowsFormsApp2
             this.accordionControlElement32.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
             this.accordionControlElement32.Text = "Mahsul Alış Hesabatı";
             this.accordionControlElement32.Click += new System.EventHandler(this.accordionControlElement32_Click);
+            // 
+            // accordionControlElement42
+            // 
+            this.accordionControlElement42.Name = "accordionControlElement42";
+            this.accordionControlElement42.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
+            this.accordionControlElement42.Text = "Məhsul alışı qaytarma hesabatı";
+            this.accordionControlElement42.Click += new System.EventHandler(this.accordionControlElement42_Click);
             // 
             // accordionControlElement33
             // 
@@ -1901,16 +1909,6 @@ namespace WindowsFormsApp2
             this.accordionControlElement38.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
             this.accordionControlElement38.Text = "Satış Növ Hesabatı";
             this.accordionControlElement38.Click += new System.EventHandler(this.accordionControlElement38_Click);
-            // 
-            // accordionControlElement42
-            // 
-            this.accordionControlElement42.Enabled = false;
-            this.accordionControlElement42.Name = "accordionControlElement42";
-            this.accordionControlElement42.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
-            this.accordionControlElement42.Text = "Məhsul alışı qaytarma hesabatı";
-            this.accordionControlElement42.Visible = false;
-            this.accordionControlElement42.VisibleInFooter = false;
-            this.accordionControlElement42.Click += new System.EventHandler(this.accordionControlElement42_Click);
             // 
             // accordionControlElement43
             // 
@@ -2814,7 +2812,7 @@ namespace WindowsFormsApp2
             this.tabAllSettings.Name = "tabAllSettings";
             this.tabAllSettings.Properties.AppearanceCaption.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.tabAllSettings.Properties.AppearanceCaption.Options.UseFont = true;
-            this.tabAllSettings.Size = new System.Drawing.Size(1157, 759);
+            this.tabAllSettings.Size = new System.Drawing.Size(1157, 761);
             // 
             // panelControl13
             // 
@@ -2833,7 +2831,7 @@ namespace WindowsFormsApp2
             this.panelControl13.LookAndFeel.UseDefaultLookAndFeel = false;
             this.panelControl13.Margin = new System.Windows.Forms.Padding(1);
             this.panelControl13.Name = "panelControl13";
-            this.panelControl13.Size = new System.Drawing.Size(1157, 759);
+            this.panelControl13.Size = new System.Drawing.Size(1157, 761);
             this.panelControl13.TabIndex = 12;
             // 
             // chClinicModul
