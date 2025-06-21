@@ -37,6 +37,7 @@ DOGUM_TARIXI as N'Doğum tarixi',
 GAN_GRUPU as 'Qan qrupu',
 PosSales
 FROM userParol where IsDeleted = 0";
+
             var data = DbProsedures.ConvertToDataTable(query);
             gridControl1.DataSource = data;
             gridView1.Columns[0].Visible = false;

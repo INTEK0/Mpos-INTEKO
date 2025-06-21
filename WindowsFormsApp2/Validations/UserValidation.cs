@@ -1,14 +1,9 @@
-﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using FluentValidation;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace WindowsFormsApp2.Validations
 {
@@ -19,8 +14,6 @@ namespace WindowsFormsApp2.Validations
             RuleFor(x => x.Username).NotEmpty().WithMessage("İstifadəçi adını daxil edin");
             RuleFor(x => x.Password).NotEmpty().WithMessage("İstifadəçi parolunu daxil edin");
             RuleFor(x => x.NameSurname).NotEmpty().WithMessage("Ad və Soyadı daxil edin");
-            //RuleFor(x => x.Email).NotEmpty().WithMessage("Elektron poçt ünvanını daxil edin");
-            //RuleFor(x => x.Email).EmailAddress().WithMessage("Elekton poçt ünvanı düzgün daxil edilmədi");
         }
 
         public static DatabaseClasses.User ValidateUser(string username, string password)

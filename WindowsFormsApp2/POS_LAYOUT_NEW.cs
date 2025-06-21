@@ -2076,6 +2076,12 @@ LEFT JOIN pos_guzest pg
             }
         }
 
+        private void bPeriodicReport_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            fKassaReport f = new fKassaReport();
+            f.ShowDialog();
+        }
+
         private void bAddProduct_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             var control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("HotSalesShow").ToString());

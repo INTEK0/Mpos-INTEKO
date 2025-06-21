@@ -61,37 +61,38 @@ namespace WindowsFormsApp2
 
             #region [..Licence..]
 
-            if (string.IsNullOrWhiteSpace(_licenceKey) || _licenceKey is "Yoxdur")
-            {
-                var result = new fRegister().ShowDialog();
+            //if (string.IsNullOrWhiteSpace(_licenceKey) || _licenceKey is "Yoxdur")
+            //{
+            //    var result = new fRegister().ShowDialog();
 
-                if (result == DialogResult.OK)
-                {
-                    Application.Restart();
-                }
-                return;
-            }
+            //    if (result == DialogResult.OK)
+            //    {
+            //        Application.Restart();
+            //    }
+            //    return;
+            //}
 
 
-            if (Licence.Helpers.FormHelpers.HasInternetConnection())
-            {
-                var user = LicenseService.Instance.RequestKeyControl(_licenceKey).Result;
-                if (user == null || !user.IsActive || !LicenseService.Instance.LicenceExpireDateControl(user))
-                {
-                    Application.Run(new fDeactive(user));
-                    return;
-                }
-            }
-            else
-            {
-                FormHelpers.Alert("İnternet bağlantınız yoxdur", Enums.MessageType.Error);
-            }
+            //if (Licence.Helpers.FormHelpers.HasInternetConnection())
+            //{
+            //    var user = LicenseService.Instance.RequestKeyControl(_licenceKey).Result;
+            //    if (user == null || !user.IsActive || !LicenseService.Instance.LicenceExpireDateControl(user))
+            //    {
+            //        Application.Run(new fDeactive(user));
+            //        return;
+            //    }
+            //}
+            //else
+            //{
+            //    FormHelpers.Alert("İnternet bağlantınız yoxdur", Enums.MessageType.Error);
+            //}
 
             #endregion [..Licence..]
 
             FolderControl();
             CultureInfoData();
-            Application.Run(new avtorizasiya());
+            //Application.Run(new avtorizasiya());
+            Application.Run(new fUser());
         }
 
         static void CultureInfoData()

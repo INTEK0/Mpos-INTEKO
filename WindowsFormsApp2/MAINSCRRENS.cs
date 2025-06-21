@@ -550,37 +550,37 @@ FROM[terazimalzeme]";
 
         private async Task LicenceCheck()
         {
-            //lLicenceExpireDate.Text = "-";
-            //lLicenceExpireDate.ForeColor = Color.Black;
+            lLicenceExpireDate.Text = "-";
+            lLicenceExpireDate.ForeColor = Color.Black;
 
-            var licenceUser = await LicenseService.Instance.RequestKeyControl(LicenseService.Instance.GetLicenceKey());
-            if (licenceUser is null)
-            {
-                lLicenceExpireDate.Text = "-";
-                lLicenceExpireDate.ForeColor = Color.Black;
-            }
-            else
-            {
-                DateTime expireDate = licenceUser.LicenceExpireDate.Date;
-                lLicenceExpireDate.Text = expireDate.ToString("dd.MM.yyyy");
+            //var licenceUser = await LicenseService.Instance.RequestKeyControl(LicenseService.Instance.GetLicenceKey());
+            //if (licenceUser is null)
+            //{
+            //    lLicenceExpireDate.Text = "-";
+            //    lLicenceExpireDate.ForeColor = Color.Black;
+            //}
+            //else
+            //{
+            //    DateTime expireDate = licenceUser.LicenceExpireDate.Date;
+            //    lLicenceExpireDate.Text = expireDate.ToString("dd.MM.yyyy");
 
-                int daysRemaining = (expireDate - DateTime.Today).Days;
+            //    int daysRemaining = (expireDate - DateTime.Today).Days;
 
-                if (daysRemaining <= 2)
-                {
-                    lLicenceExpireDate.ForeColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Danger;
-                }
-                else if (daysRemaining <= 5)
-                {
-                    lLicenceExpireDate.ForeColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Warning;
-                }
-                else
-                {
-                    lLicenceExpireDate.ForeColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Success;
-                }
+            //    if (daysRemaining <= 2)
+            //    {
+            //        lLicenceExpireDate.ForeColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Danger;
+            //    }
+            //    else if (daysRemaining <= 5)
+            //    {
+            //        lLicenceExpireDate.ForeColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Warning;
+            //    }
+            //    else
+            //    {
+            //        lLicenceExpireDate.ForeColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Success;
+            //    }
 
-                lLicenceExpireDate.ToolTip = $"Lisenziyanın bitmə müddətinə {daysRemaining} gün qalıb";
-            }
+            //    lLicenceExpireDate.ToolTip = $"Lisenziyanın bitmə müddətinə {daysRemaining} gün qalıb";
+            //}
         }
 
         private async void MAINSCRRENS_Activated(object sender, EventArgs e)

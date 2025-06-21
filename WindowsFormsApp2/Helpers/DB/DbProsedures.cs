@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
+using System.Web.Security;
 using System.Windows.Forms;
 using WindowsFormsApp2.Helpers.Messages;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
@@ -194,7 +195,7 @@ namespace WindowsFormsApp2.Helpers.DB
 
 
 
-        #region [.. USER ..]
+        #region [.. USER AND ROLE ..]
 
         public static User GetUser()
         {
@@ -218,19 +219,18 @@ namespace WindowsFormsApp2.Helpers.DB
             }
         }
 
-        public static void InsertUser(User item)
+        public static int InsertUser(User item)
         {
             using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
             {
                 string query = "userParol_insert";
                 using (SqlCommand cmd = new SqlCommand(query, connection))
                 {
-                    connection.Open();
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlParameter param;
-                    param = cmd.Parameters.Add("@login", SqlDbType.VarChar);
+                    param = cmd.Parameters.Add("@login", SqlDbType.NVarChar, 100);
                     param.Value = item.Username;
-                    param = cmd.Parameters.Add("@parol", SqlDbType.VarChar);
+                    param = cmd.Parameters.Add("@parol", SqlDbType.NVarChar, 100);
                     param.Value = item.Password;
                     param = cmd.Parameters.Add("@admin", SqlDbType.Bit);
                     param.Value = item.IsAdmin;
@@ -238,20 +238,20 @@ namespace WindowsFormsApp2.Helpers.DB
                     param.Value = item.NameSurname;
                     param = cmd.Parameters.Add("@EMAILL", SqlDbType.NVarChar, 100);
                     param.Value = item.Email;
-                    param = cmd.Parameters.Add("@TELEFON", SqlDbType.NVarChar, 100);
+                    param = cmd.Parameters.Add("@TELEFON", SqlDbType.NVarChar, 50);
                     param.Value = item.Phone;
-                    param = cmd.Parameters.Add("@SV_NO", SqlDbType.NVarChar, 100);
-                    param.Value = item.SvNo;
-                    param = cmd.Parameters.Add("@UNVAN", SqlDbType.NVarChar, 100);
-                    param.Value = item.Address;
                     param = cmd.Parameters.Add("@DOGUM_TARIXI", SqlDbType.Date);
                     param.Value = item.DateBirth;
-                    param = cmd.Parameters.Add("@GAN_GRUPU", SqlDbType.NVarChar, 100);
-                    param.Value = item.BloodType;
-                    param = cmd.Parameters.Add("@POSSALES", SqlDbType.Bit);
-                    param.Value = item.PosSaleScreen;
+                    SqlParameter outputIdParam = new SqlParameter("@UserId", SqlDbType.Int)
+                    {
+                        Direction = ParameterDirection.Output
+                    };
+                    cmd.Parameters.Add(outputIdParam);
 
+                    connection.Open();
                     cmd.ExecuteNonQuery();
+                    int UserId = (int)outputIdParam.Value;
+                    return UserId;
                 }
             }
         }
@@ -278,14 +278,8 @@ namespace WindowsFormsApp2.Helpers.DB
                     param.Value = item.Email;
                     param = cmd.Parameters.Add("@TELEFON", SqlDbType.NVarChar, 100);
                     param.Value = item.Phone;
-                    param = cmd.Parameters.Add("@SV_NO", SqlDbType.NVarChar, 100);
-                    param.Value = item.SvNo;
-                    param = cmd.Parameters.Add("@UNVAN", SqlDbType.NVarChar, 100);
-                    param.Value = item.Address;
                     param = cmd.Parameters.Add("@DOGUM_TARIXI", SqlDbType.Date);
                     param.Value = item.DateBirth;
-                    param = cmd.Parameters.Add("@GAN_GRUPU", SqlDbType.NVarChar, 100);
-                    param.Value = item.BloodType;
                     param = cmd.Parameters.Add("PosSaleScreen", SqlDbType.Bit);
                     param.Value = item.PosSaleScreen;
 
@@ -294,7 +288,7 @@ namespace WindowsFormsApp2.Helpers.DB
             }
         }
 
-        public static void DeleteUser(int userID)
+        public static void DeleteUser(int userId)
         {
             using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
             {
@@ -304,14 +298,67 @@ namespace WindowsFormsApp2.Helpers.DB
                     cmd.CommandType = CommandType.StoredProcedure;
                     SqlParameter param;
                     param = cmd.Parameters.Add("@userID", SqlDbType.Int);
-                    param.Value = userID;
+                    param.Value = userId;
+                    connection.Open();
+                    cmd.ExecuteNonQuery();
+                    DeleteRole(userId);
+                }
+            }
+        }
+
+        public static void InsertRole(UserRole item)
+        {
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlCommand cmd = new SqlCommand("userRole_insert", con))
+            {
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@UserId", item.UserId);
+                cmd.Parameters.AddWithValue("@ProductAdd", item.ProductAdd);
+                cmd.Parameters.AddWithValue("@RefundProduct", item.RefundProduct);
+                cmd.Parameters.AddWithValue("@ProductDelete", item.ProductDelete);
+                cmd.Parameters.AddWithValue("@ProductDiscount", item.ProductDiscount);
+                cmd.Parameters.AddWithValue("@ProductBarcodePrint", item.ProductBarcodePrint);
+                cmd.Parameters.AddWithValue("@ScalesProductDownload", item.ScalesProductDownload);
+                cmd.Parameters.AddWithValue("@Suppliers", item.Suppliers);
+                cmd.Parameters.AddWithValue("@Customers", item.Customers);
+                cmd.Parameters.AddWithValue("@BankSale", item.BankSale);
+                cmd.Parameters.AddWithValue("@Credit", item.Credit);
+                cmd.Parameters.AddWithValue("@PosPrepayment", item.PosPrepayment);
+                cmd.Parameters.AddWithValue("@PosSale", item.PosSale);
+                cmd.Parameters.AddWithValue("@PosRefund", item.PosRefund);
+                cmd.Parameters.AddWithValue("@PosSalePriceEdit", item.PosSalePriceEdit);
+                var param = new SqlParameter("@PosSalePriceLimit", SqlDbType.Decimal);
+                param.Precision = 18;
+                param.Scale = 2;
+                param.Value = item.PosSalePriceLimit.HasValue ? (object)item.PosSalePriceLimit.Value : DBNull.Value;
+                cmd.Parameters.Add(param);
+                cmd.Parameters.AddWithValue("@Report", item.Report);
+                cmd.Parameters.AddWithValue("@TerminalDelete", item.TerminalDelete);
+                cmd.Parameters.AddWithValue("@Payments", item.Payments);
+                cmd.Parameters.AddWithValue("@Users", item.Users);
+                cmd.Parameters.AddWithValue("@Backups", item.Backups);
+                cmd.Parameters.AddWithValue("@Logs", item.Logs);
+                cmd.Parameters.AddWithValue("@ScalesDelete", item.ScalesDelete);
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        private static void DeleteRole(int userId)
+        {
+            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                string query = $"DELETE FROM UserRole WHERE UserId = {userId}";
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
                     connection.Open();
                     cmd.ExecuteNonQuery();
                 }
             }
         }
 
-        #endregion [.. USER ..]
+        #endregion [.. USER AND ROLE ..]
 
 
 

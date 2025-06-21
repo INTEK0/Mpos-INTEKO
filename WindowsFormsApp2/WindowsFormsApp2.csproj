@@ -489,6 +489,12 @@
     <Compile Include="Forms\fSuppliers.Designer.cs">
       <DependentUpon>fSuppliers.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\fUser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\fUser.Designer.cs">
+      <DependentUpon>fUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\fWithdraw.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -986,6 +992,7 @@
     <Compile Include="Validations\SupplierValidation.cs" />
     <Compile Include="Validations\TereziValidation.cs" />
     <Compile Include="Validations\TerminalValidation.cs" />
+    <Compile Include="Validations\UserRoleValidation.cs" />
     <Compile Include="Validations\UserValidation.cs" />
     <Compile Include="ZAMINKREDIT.cs">
       <SubType>Form</SubType>
@@ -1167,6 +1174,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fTest.resx">
       <DependentUpon>fTest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\fUser.resx">
+      <DependentUpon>fUser.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fWithdraw.resx">
       <DependentUpon>fWithdraw.cs</DependentUpon>
@@ -1663,6 +1673,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Mpos.ico" />
+    <None Include="Resources\delete_32x32.png" />
+    <None Include="Resources\pencolor_32x32.png" />
     <None Include="Resources\previousview.svg" />
     <None Include="Resources\bo_order_item1.svg" />
     <None Include="Resources\actions_envelopeclose.svg" />

@@ -243,6 +243,33 @@ namespace WindowsFormsApp2.Helpers.DB
             public bool PosSaleScreen { get; set; } = false;
         }
 
+        public class UserRole
+        {
+            public int UserId { get; set; }
+            public bool ProductAdd { get; set; }
+            public bool RefundProduct { get; set; }
+            public bool ProductDelete { get; set; }
+            public bool ProductDiscount { get; set; }
+            public bool ProductBarcodePrint { get; set; }
+            public bool ScalesProductDownload { get; set; }
+            public bool Suppliers { get; set; }
+            public bool Customers { get; set; }
+            public bool BankSale { get; set; }
+            public bool Credit { get; set; }
+            public bool PosPrepayment { get; set; }
+            public bool PosSale { get; set; }
+            public bool PosRefund { get; set; }
+            public bool PosSalePriceEdit { get; set; }
+            public decimal? PosSalePriceLimit { get; set; }
+            public bool Report { get; set; }
+            public bool TerminalDelete { get; set; }
+            public bool Payments { get; set; }
+            public bool Users { get; set; }
+            public bool Backups { get; set; }
+            public bool Logs { get; set; }
+            public bool ScalesDelete { get; set; }
+        }
+
         public class Doctor
         {
             public int Id { get; set; }

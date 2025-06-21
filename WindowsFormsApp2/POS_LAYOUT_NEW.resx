@@ -468,6 +468,25 @@
         PC9zdmc+Cw==
 </value>
   </data>
+  <data name="barButtonItem1.ImageOptions.SvgImage" type="DevExpress.Utils.Svg.SvgImage, DevExpress.Data.v24.1" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAFlEZXZFeHByZXNzLkRhdGEudjI0LjEsIFZlcnNpb249MjQuMS4z
+        LjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjg4ZDE3NTRkNzAwZTQ5YQUBAAAAHURl
+        dkV4cHJlc3MuVXRpbHMuU3ZnLlN2Z0ltYWdlAQAAAAREYXRhBwICAAAACQMAAAAPAwAAALACAAAC77u/
+        PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4NCjxzdmcgd2lkdGg9IjMycHgiIGhl
+        aWdodD0iMzJweCIgdmlld0JveD0iMCAwIDI1NiAyNTYiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8y
+        MDAwL3N2ZyIgZmlsbD0iIzAwMDAwMCI+DQogIDxwYXRoIGQ9Ik0yMDgsMzRIMTgyVjI0YTYsNiwwLDAs
+        MC0xMiwwVjM0SDg2VjI0YTYsNiwwLDAsMC0xMiwwVjM0SDQ4QTE0LDE0LDAsMCwwLDM0LDQ4VjIwOGEx
+        NCwxNCwwLDAsMCwxNCwxNEgyMDhhMTQsMTQsMCwwLDAsMTQtMTRWNDhBMTQsMTQsMCwwLDAsMjA4LDM0
+        Wk00OCw0Nkg3NFY1NmE2LDYsMCwwLDAsMTIsMFY0Nmg4NFY1NmE2LDYsMCwwLDAsMTIsMFY0NmgyNmEy
+        LDIsMCwwLDEsMiwyVjgySDQ2VjQ4QTIsMiwwLDAsMSw0OCw0NlpNMjA4LDIxMEg0OGEyLDIsMCwwLDEt
+        Mi0yVjk0SDIxMFYyMDhBMiwyLDAsMCwxLDIwOCwyMTBabS05OC05MHY2NGE2LDYsMCwwLDEtMTIsMFYx
+        MjkuNzFsLTcuMzIsMy42NmE2LDYsMCwxLDEtNS4zNi0xMC43NGwxNi04QTYsNiwwLDAsMSwxMTAsMTIw
+        Wm01OS41NywyOS4yNUwxNDgsMTc4aDIwYTYsNiwwLDAsMSwwLDEySDEzNmE2LDYsMCwwLDEtNC44LTku
+        NkwxNjAsMTQyYTEwLDEwLDAsMSwwLTE2LjY1LTExQTYsNiwwLDEsMSwxMzMsMTI1YTIyLDIyLDAsMSwx
+        LDM2LjYyLDI0LjI2WiIgLz4NCjwvc3ZnPgs=
+</value>
+  </data>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>25</value>
   </metadata>

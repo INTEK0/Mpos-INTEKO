@@ -188,6 +188,7 @@ namespace WindowsFormsApp2
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.lBankName = new System.Windows.Forms.Label();
+            this.bPeriodicReport = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.textEdit13.Properties)).BeginInit();
@@ -1005,11 +1006,11 @@ namespace WindowsFormsApp2
             this.textEdit9.Location = new System.Drawing.Point(1100, 86);
             this.textEdit9.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textEdit9.Name = "textEdit9";
+            this.textEdit9.Properties.Appearance.ForeColor = System.Drawing.Color.Red;
+            this.textEdit9.Properties.Appearance.Options.UseForeColor = true;
             this.textEdit9.Properties.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.NumericMaskManager));
             this.textEdit9.Properties.MaskSettings.Set("MaskManagerSignature", "allowNull=False");
             this.textEdit9.Properties.MaskSettings.Set("mask", "f2");
-            this.textEdit9.Properties.Appearance.ForeColor = System.Drawing.Color.Red;
-            this.textEdit9.Properties.Appearance.Options.UseForeColor = true;
             this.textEdit9.Size = new System.Drawing.Size(276, 30);
             this.textEdit9.StyleController = this.layoutControl1;
             this.textEdit9.TabIndex = 17;
@@ -1991,9 +1992,10 @@ namespace WindowsFormsApp2
             this.bWithdraw,
             this.bPrintClinic,
             this.bControlTape,
-            this.bAddProduct});
+            this.bAddProduct,
+            this.bPeriodicReport});
             this.barManager1.MainMenu = this.bar2;
-            this.barManager1.MaxItemId = 7;
+            this.barManager1.MaxItemId = 8;
             // 
             // bar2
             // 
@@ -2023,7 +2025,8 @@ namespace WindowsFormsApp2
             this.barSubItem1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
             new DevExpress.XtraBars.LinkPersistInfo(this.bDeposit),
             new DevExpress.XtraBars.LinkPersistInfo(this.bWithdraw),
-            new DevExpress.XtraBars.LinkPersistInfo(this.bControlTape)});
+            new DevExpress.XtraBars.LinkPersistInfo(this.bControlTape),
+            new DevExpress.XtraBars.LinkPersistInfo(this.bPeriodicReport)});
             this.barSubItem1.Name = "barSubItem1";
             // 
             // bDeposit
@@ -2114,6 +2117,14 @@ namespace WindowsFormsApp2
             this.lBankName.TabIndex = 1;
             this.lBankName.Text = "BankName";
             this.lBankName.Visible = false;
+            // 
+            // bPeriodicReport
+            // 
+            this.bPeriodicReport.Caption = "Dövrü hesabat";
+            this.bPeriodicReport.Id = 7;
+            this.bPeriodicReport.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("barButtonItem1.ImageOptions.SvgImage")));
+            this.bPeriodicReport.Name = "bPeriodicReport";
+            this.bPeriodicReport.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bPeriodicReport_ItemClick);
             // 
             // POS_LAYOUT_NEW
             // 
@@ -2367,5 +2378,6 @@ namespace WindowsFormsApp2
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn12;
         private DevExpress.XtraGrid.Columns.GridColumn colRowDelete;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit bRowDelete;
+        private DevExpress.XtraBars.BarButtonItem bPeriodicReport;
     }
 }
