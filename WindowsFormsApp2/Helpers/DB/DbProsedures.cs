@@ -29,7 +29,6 @@ namespace WindowsFormsApp2.Helpers.DB
         private const string GET_BasketDataLoadQuery = "PosBasketDataLoad";
         private const string GET_CategoryExistsQuery = "SELECT_COUNT_KATEGORY";
         private const string INSERT_CategoryQuery = "SELECT_KATEGORY";
-        private const string GET_ProductExistsQuery = "yoxlama_mehsul_kodu";
         private const string INSERT_MALALISIMAINQuery = "INSERT_MAL_ALISI_MAIN";
         private const string INSERT_IMPORT_MALALISIMAINQuery = "INSERT_IMPORT_MAL_ALISI_MAIN";
         private const string DELETE_MALALISIDETAILQuery = "DELETE_PRODUCT_MAL_ALIS_DETAILS";
@@ -885,7 +884,8 @@ namespace WindowsFormsApp2.Helpers.DB
             using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
             {
                 connection.Open();
-                using (SqlCommand cmd = new SqlCommand(GET_ProductExistsQuery, connection))
+                string query = "yoxlama_mehsul_kodu";
+                using (SqlCommand cmd = new SqlCommand(query, connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     SqlParameter param;
@@ -895,6 +895,37 @@ namespace WindowsFormsApp2.Helpers.DB
 
                     param = cmd.Parameters.Add("@techizatci_id", SqlDbType.Int);
                     param.Value = supplierId;
+
+                    param = cmd.Parameters.Add("@empcount", SqlDbType.Int);
+                    param.Direction = ParameterDirection.Output;
+
+                    cmd.ExecuteNonQuery();
+                    return Convert.ToInt32(param.Value);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 0 - Məhsul yoxdur
+        /// 1 - Barkod fərqli məhsulda istifadə olunur
+        /// 2 - Barkod sadəcə daxil edilən məhsul adında istifadə olunur
+        /// </summary>
+        public static int Exists_ProductBarcode(string barcode, string productName)
+        {
+            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                connection.Open();
+                string query = "CheckProductBarcodeControl";
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlParameter param;
+
+                    param = cmd.Parameters.Add("@barcode", SqlDbType.NVarChar, 200);
+                    param.Value = barcode;
+
+                    param = cmd.Parameters.Add("@name", SqlDbType.NVarChar, Int32.MaxValue);
+                    param.Value = productName;
 
                     param = cmd.Parameters.Add("@empcount", SqlDbType.Int);
                     param.Direction = ParameterDirection.Output;

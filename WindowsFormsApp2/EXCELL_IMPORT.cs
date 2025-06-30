@@ -503,21 +503,21 @@ CASE
         ELSE MEHSUL_KODU 
    END,
 	4,
-	cast(replace([MEHSULUN_MIGDARI],',','.') as decimal(9,3)),
+	cast(replace([MEHSULUN_MIGDARI],',','.') as decimal(18,3)),
 	CAST([VAHIDI] AS int),1,
 	cast([EDV] as int),
-	cast(replace([SATIS_GIYMETI],',','.') as decimal(9,3)),
-	cast(replace([SATINALMA_GIYMETI],',','.') as decimal(9,3)), 
+	cast(replace([SATIS_GIYMETI],',','.') as decimal(18,3)),
+	cast(replace([SATINALMA_GIYMETI],',','.') as decimal(18,3)), 
 	GETDATE(),
 	CONVERT(DATETIME, [ISTEHSAL_TARIHI], 104) ,
 	CONVERT (DATETIME,[SONISTIFADE_TARIHI],104),  
 	TESVIR,
 	0,0,0,
-	cast(replace([SATINALMA_GIYMETI],',','.') as decimal(9,3)) * cast(replace([MEHSULUN_MIGDARI],',','.') as decimal(9,3))
+	cast(replace([SATINALMA_GIYMETI],',','.') as decimal(18,3)) * cast(replace([MEHSULUN_MIGDARI],',','.') as decimal(18,3))
 	FROM [EXCELL_IMPORT_DATA_NEW]
 
   WHERE  [KONTROL]=0
-  AND ALIS_TARIHI='{ALIS_TARIHI}' 
+  AND ALIS_TARIHI=N'{ALIS_TARIHI}' 
   AND FAKTURA_NO=N'{FAKTURA_NO}'
   AND TECHIZATCI_ADI=N'{TECHIZATCI_ADI}'";
                 string queryambarmagazakontrol = "\r\ndelete from ANBAR_MAGAZA\r\n\r\n   INSERT INTO ANBAR_MAGAZA(ANBAR_ID,MAGAZA_ID,TARIX,EMELIYYAT_NOMRE,mal_details_id,migdar)\r\n\t\tselect 4, 1002,getdate(),1,MAL_ALISI_DETAILS_ID,MIGDARI from MAL_ALISI_DETAILS ";

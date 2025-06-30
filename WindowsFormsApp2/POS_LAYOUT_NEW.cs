@@ -483,9 +483,10 @@ SELECT [Id]
                 {
                     total += Math.Truncate(d * 100) / 100;
                 }
+                
             }
-
             textEdit6.Text = total.ToString("0.00");
+            gridView1.GroupPanelText = $"Məhsul sayı: {gridView1.RowCount}";
 
             //Yekun məbləğin hesablanmasının kodu sqldən ayrılıb c# üzərindən edildiyi üçün bu kod ləğv edildi
             /*

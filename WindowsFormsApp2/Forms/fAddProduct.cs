@@ -105,13 +105,15 @@ namespace WindowsFormsApp2.Forms
         private async void bAdd_Click(object sender, EventArgs e)
         {
             var selectedPaymentType = panelControl3.Controls.OfType<CheckEdit>().FirstOrDefault(x => x.Checked);
+
+
             ProductsDetail productsDetail = new ProductsDetail
             {
                 ProductMainId = 0,
-                CategoryName = tCategoryName.Text,
-                Barocde = tBarcode.Text,
-                ProductName = tProductName.Text,
-                ProductCode = tProductCode.Text,
+                CategoryName = tCategoryName.Text.Trim(),
+                Barocde = tBarcode.Text.Trim(),
+                ProductName = tProductName.Text.Trim(),
+                ProductCode = tProductCode.Text.Trim(),
                 WarehouseName = lookWarehouse.Text,
                 Quantity = Decimal.Parse(tQuantity.Text),
                 UnitName = lookUnit.Text,
@@ -143,9 +145,13 @@ namespace WindowsFormsApp2.Forms
             }
 
 
-            int IsExists = DbProsedures.Exists_ProductCode(tProductCode.Text, Convert.ToInt32(lookSupplier.EditValue));
+            //int IsExists = DbProsedures.Exists_ProductCode(tProductCode.Text, Convert.ToInt32(lookSupplier.EditValue));
+            int IsExistsBarcode = DbProsedures.Exists_ProductBarcode(tBarcode.Text.Trim(), tProductName.Text.TrimStart().Trim());
 
-            if (IsExists > 1)
+
+
+
+            if (IsExistsBarcode != 1)
             {
                 int addMainProduct = DbProsedures.InsertProductMain(new ProductsMain
                 {
@@ -171,10 +177,9 @@ namespace WindowsFormsApp2.Forms
             }
             else
             {
-                FormHelpers.Alert("MƏHSUL KODU BAŞKA BİR TƏCHİZATÇIDA MÖVCUDDUR", MessageType.Warning);
+                FormHelpers.Alert("Daxil edilən barkod ilə fərqli bir məhsul sistemdə mövcuddur", Enums.MessageType.Warning);
                 return;
             }
-            lookSupplier.Enabled = false;
         }
 
         private void YeniBorcHesabla()
