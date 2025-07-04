@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Validations;
+using static WindowsFormsApp2.Helpers.Enums;
 using static WindowsFormsApp2.Helpers.FormHelpers;
 
 namespace WindowsFormsApp2.Forms
@@ -73,6 +74,11 @@ namespace WindowsFormsApp2.Forms
 
         private void bDelete_Click(object sender, EventArgs e)
         {
+            if (!Helpers.CacheData.CommonData.User.UserRole.ScalesDelete)
+            {
+                FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
+                return;
+            }
             foreach (int i in gridView1.GetSelectedRows())
             {
                 DataRow row = gridView1.GetDataRow(i);

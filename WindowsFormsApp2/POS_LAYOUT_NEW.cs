@@ -794,6 +794,12 @@ LEFT JOIN pos_guzest pg
 
         private async void textEdit9_KeyPress(object sender, KeyPressEventArgs e)
         {
+            if (!Helpers.CacheData.CommonData.User.UserRole.PosSalePriceEdit)
+            {
+                FormHelpers.Alert("Sizin qiymət dəyişikliyi etmənizə icazəniz yoxdur", MessageType.Error);
+                return;
+            }
+
             //Update Sale Price
             if (e.KeyChar == (char)13)
             {
@@ -954,9 +960,22 @@ LEFT JOIN pos_guzest pg
             if (!string.IsNullOrEmpty(textEdit6.Text))
             {
                 Cursor.Current = Cursors.WaitCursor;
+                decimal total = Decimal.Parse(textEdit6.Text);
+                if (Helpers.CacheData.CommonData.User.UserRole.PosSalePriceLimit != null &&
+                    Helpers.CacheData.CommonData.User.UserRole.PosSalePriceLimit < total)
+                {
+                    XtraMessageBox.Show(
+                        $"Ümumi satış məbləği təyin edilən limitdən yüksəkdir.\n\nMaksimum: {Helpers.CacheData.CommonData.User.UserRole.PosSalePriceLimit}"
+                        , "Bildiriş", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+
+
                 int number = 0;
                 decimal saysa24 = 0;
                 int numberkontrol = 0;
+
                 //Məhsulların mənfiyə getməsinə icazə verilib verilmədiyini kontrol edir
                 using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
                 {
@@ -1970,6 +1989,11 @@ LEFT JOIN pos_guzest pg
 
         private void simpleButton4_Click(object sender, EventArgs e)
         {
+            if (!Helpers.CacheData.CommonData.User.UserRole.PosPrepayment)
+            {
+                FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
+                return;
+            }
             fPrepayment f = new fPrepayment();
             f.ShowDialog();
         }
@@ -2028,6 +2052,11 @@ LEFT JOIN pos_guzest pg
 
         private void simpleButton15_Click_1(object sender, EventArgs e)
         {
+            if (!Helpers.CacheData.CommonData.User.UserRole.PosPrepayment)
+            {
+                FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
+                return;
+            }
             Payment(Enums.PayType.Prepayment);
         }
 
@@ -2510,6 +2539,11 @@ LEFT JOIN pos_guzest pg
 
         private void simpleButton25_Click(object sender, EventArgs e)
         {
+            if (!Helpers.CacheData.CommonData.User.UserRole.PosRefund)
+            {
+                FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
+                return;
+            }
             FormHelpers.OpenForm<POS_GAYTARMA_LAYOUT>(textBox1.Text, tUsername.Text);
         }
 

@@ -47,6 +47,7 @@ namespace WindowsFormsApp2.Validations
                                 if (dr.Read())
                                 {
                                     var user = FormHelpers.MapReaderToObject<DatabaseClasses.User>(dr);
+                                    user.UserRole = DbProsedures.GetRole(user.Id);
                                     return user;
                                 }
                                 else

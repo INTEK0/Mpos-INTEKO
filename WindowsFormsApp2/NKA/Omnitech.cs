@@ -1,19 +1,15 @@
-﻿using DevExpress.Map.Native;
-using DevExpress.XtraEditors;
-using DevExpress.XtraMap.Native;
-using Newtonsoft.Json;
-using RestSharp;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Security.Policy;
 using System.Windows.Forms;
+using DevExpress.XtraEditors;
+using Newtonsoft.Json;
+using RestSharp;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using static DTOs;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
 using static WindowsFormsApp2.Helpers.Enums;
 

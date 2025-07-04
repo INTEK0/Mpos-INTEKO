@@ -105,6 +105,11 @@ LEFT JOIN userParol u ON u.id = ki.KASSIR_ID";
 
         private void bDelete_Click(object sender, EventArgs e)
         {
+            if (!Helpers.CacheData.CommonData.User.UserRole.TerminalDelete)
+            {
+                FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
+                return;
+            }
             foreach (int i in gridView1.GetSelectedRows())
             {
                 DataRow row = gridView1.GetDataRow(i);

@@ -241,6 +241,7 @@ namespace WindowsFormsApp2.Helpers.DB
             public DateTime DateBirth { get; set; }
             public string BloodType { get; set; }
             public bool PosSaleScreen { get; set; } = false;
+            public UserRole UserRole { get; set; }
         }
 
         public class UserRole

@@ -17,7 +17,6 @@ namespace WindowsFormsApp2.Forms
 {
     public partial class fAddProduct : BaseForm
     {
-        private string PaymentTypeRadioButton { get; set; }
         private int productID { get; set; }
         private int categoryID { get; set; }
         private DataTable _currentDataTable = new DataTable();
@@ -104,6 +103,14 @@ namespace WindowsFormsApp2.Forms
 
         private async void bAdd_Click(object sender, EventArgs e)
         {
+
+            if (!Helpers.CacheData.CommonData.User.UserRole.ProductAdd)
+            {
+                FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
+                return;
+            }
+
+
             var selectedPaymentType = panelControl3.Controls.OfType<CheckEdit>().FirstOrDefault(x => x.Checked);
 
 
@@ -255,6 +262,11 @@ namespace WindowsFormsApp2.Forms
 
         private void bAlinanMallar_Click(object sender, EventArgs e)
         {
+            if (!Helpers.CacheData.CommonData.User.UserRole.Report)
+            {
+                FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
+                return;
+            }
             FormHelpers.OpenForm<fReceivedProducts>();
         }
 
@@ -631,6 +643,12 @@ namespace WindowsFormsApp2.Forms
 
         private void bDelete_Click(object sender, EventArgs e)
         {
+            if (!Helpers.CacheData.CommonData.User.UserRole.ProductDelete)
+            {
+                FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
+                return;
+            }
+
             if (XtraMessageBox.Show($"{tProductName.Text} məhsulunu silmək istədiyinizə əminsiniz ?", nameof(HeaderMessage.Xəbərdarlıq), MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 int response = DbProsedures.DeleteProduct(new ProductsDetail
@@ -664,6 +682,12 @@ namespace WindowsFormsApp2.Forms
 
         private void bNewSupplier_Click(object sender, EventArgs e)
         {
+            if (!Helpers.CacheData.CommonData.User.UserRole.Suppliers)
+            {
+                FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
+                return;
+            }
+
             fAddSupplier fAddSupplier = new fAddSupplier();
             if (fAddSupplier.ShowDialog() is DialogResult.OK)
             {

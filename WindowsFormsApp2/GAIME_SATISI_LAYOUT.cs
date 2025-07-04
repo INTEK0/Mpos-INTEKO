@@ -376,23 +376,37 @@ namespace WindowsFormsApp2
 
                 int paramValue = Convert.ToInt32(dr[0]);
 
-                //labelControl1.Text = dr[0].ToString();
 
-                //XtraMessageBox.Show(paramValue.ToString());
-                string queryString =
-                   " select  D.GAIME_SATISI_DETAILS_ID, CT.SIRKET_ADI,m.MUSTERI,MD.MEHSUL_ADI,MD.MEHSUL_KODU,d.MIGDARI" +
-                   ",d.SATIS_GIYMETI, " +
-                   " CAST(replace(D.MIGDARI,',','.') " +
-                   "AS DECIMAL(9,2))*CAST(replace(D.SATIS_GIYMETI,',','.') AS DECIMAL(9,2)) " +
-                   " AS YEKUN_MEBLEG,d.ENDIRIM_AZN,d.ENDIRIM_FAIZ,d.ENDIRIM_MEBLEGI,d.GEYD,cs.STORE_NAME " + " from GAIME_SATISI_MAIN m inner join GAIME_SATISI_DETAILS d " +
-                   " on m.GAIME_SATISI_MAIN_ID = d.GAIME_SATISI_MAIN_ID " + " inner JOIN MAL_ALISI_DETAILS MD ON MD.MAL_ALISI_DETAILS_ID=D.MAL_DETAILS_ID " +
-                   " INNER JOIN MAL_ALISI_MAIN MM ON MM.MAL_ALISI_MAIN_ID=MD.MAL_ALISI_MAIN_ID " +
-                   " INNER JOIN COMPANY.TECHIZATCI CT ON CT.TECHIZATCI_ID=MM.TECHIZATCI_ID " +
-                   " inner join COMPANY.STORE cs on cs.STOREID=d.MAGAZA " +
-                " WHERE D.GAIME_SATISI_DETAILS_ID=@pricepoint ";
+                string queryString = @"select 
+  D.GAIME_SATISI_DETAILS_ID, 
+  CT.SIRKET_ADI, 
+  m.MUSTERI, 
+  MD.MEHSUL_ADI, 
+  MD.MEHSUL_KODU, 
+  d.MIGDARI, 
+  d.SATIS_GIYMETI, 
+  CAST(
+    replace(D.MIGDARI, ',', '.') AS DECIMAL(9, 2)
+  )* CAST(
+    replace(D.SATIS_GIYMETI, ',', '.') AS DECIMAL(9, 2)
+  ) AS YEKUN_MEBLEG, 
+  d.ENDIRIM_AZN, 
+  d.ENDIRIM_FAIZ, 
+  d.ENDIRIM_MEBLEGI, 
+  d.GEYD, 
+  cs.STORE_NAME 
+from 
+  GAIME_SATISI_MAIN m 
+  inner join GAIME_SATISI_DETAILS d on m.GAIME_SATISI_MAIN_ID = d.GAIME_SATISI_MAIN_ID 
+  inner JOIN MAL_ALISI_DETAILS MD ON MD.MAL_ALISI_DETAILS_ID = D.MAL_DETAILS_ID 
+  INNER JOIN MAL_ALISI_MAIN MM ON MM.MAL_ALISI_MAIN_ID = MD.MAL_ALISI_MAIN_ID 
+  INNER JOIN COMPANY.TECHIZATCI CT ON CT.TECHIZATCI_ID = MM.TECHIZATCI_ID 
+  inner join COMPANY.STORE cs on cs.STOREID = d.MAGAZA 
+WHERE 
+  D.GAIME_SATISI_DETAILS_ID = @pricepoint";
 
 
-                using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon))
+                using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
                 {
                     SqlCommand command = new SqlCommand(queryString, connection);
                     command.Parameters.AddWithValue("@pricePoint", paramValue);

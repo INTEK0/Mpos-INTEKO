@@ -30,9 +30,7 @@ namespace WindowsFormsApp2
 
         private void TECHIZATCI_SEC_Load(object sender, EventArgs e)
         {
-            int f_ = GETSTATUS();
-            //  XtraMessageBox.Show(f_.ToString());
-            switch (f_)
+            switch (GETSTATUS())
             {
                 case 0:
                     //menfi baglidir
@@ -41,9 +39,7 @@ namespace WindowsFormsApp2
                 case 1:
                     //menfi aciqdir
                     getall_menfi_ACIG();
-                    //getall();
                     break;
-
             }
 
         }
@@ -130,7 +126,7 @@ namespace WindowsFormsApp2
             {
                 techizatci_adi = dr[1].ToString();
                 mehsul_adi = dr[3].ToString();
-                satis_giymeti = dr[5].ToString();
+                satis_giymeti = dr[6].ToString();
                 mal_det_id = Convert.ToInt32(dr[2].ToString());
                 anbar_g = dr[6].ToString();
                 edv_ = dr["EDV"].ToString();

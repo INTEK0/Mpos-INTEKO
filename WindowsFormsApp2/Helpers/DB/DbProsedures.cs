@@ -196,20 +196,24 @@ namespace WindowsFormsApp2.Helpers.DB
 
         #region [.. USER AND ROLE ..]
 
-        public static User GetUser()
+        public static User GetUser(int userId = 0)
         {
+            if (userId is 0)
+                userId = Properties.Settings.Default.UserID;
+            
             using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
             {
-                string query = "SELECT *  FROM SELECT_USER_DATA_LOAD(@userID)";
+                string query = "SELECT * FROM SELECT_USER_DATA_LOAD(@userID)";
                 connection.Open();
                 using (SqlCommand cmd = new SqlCommand(query, connection))
                 {
-                    cmd.Parameters.AddWithValue("@userID", Properties.Settings.Default.UserID);
+                    cmd.Parameters.AddWithValue("@userID", userId);
                     using (SqlDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
                             var user = FormHelpers.MapReaderToObject<User>(dr);
+                            user.UserRole = GetRole(userId);
                             return user;
                         }
                         return null;
@@ -283,6 +287,7 @@ namespace WindowsFormsApp2.Helpers.DB
                     param.Value = item.PosSaleScreen;
 
                     cmd.ExecuteNonQuery();
+                    FormHelpers.Log($"{item.Username} İstifadəçisində düzəliş edildi");
                 }
             }
         }
@@ -344,6 +349,45 @@ namespace WindowsFormsApp2.Helpers.DB
             }
         }
 
+        public static void UpdateRole(UserRole item)
+        {
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlCommand cmd = new SqlCommand("userRole_update", con))
+            {
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@UserId", item.UserId);
+                cmd.Parameters.AddWithValue("@ProductAdd", item.ProductAdd);
+                cmd.Parameters.AddWithValue("@RefundProduct", item.RefundProduct);
+                cmd.Parameters.AddWithValue("@ProductDelete", item.ProductDelete);
+                cmd.Parameters.AddWithValue("@ProductDiscount", item.ProductDiscount);
+                cmd.Parameters.AddWithValue("@ProductBarcodePrint", item.ProductBarcodePrint);
+                cmd.Parameters.AddWithValue("@ScalesProductDownload", item.ScalesProductDownload);
+                cmd.Parameters.AddWithValue("@Suppliers", item.Suppliers);
+                cmd.Parameters.AddWithValue("@Customers", item.Customers);
+                cmd.Parameters.AddWithValue("@BankSale", item.BankSale);
+                cmd.Parameters.AddWithValue("@Credit", item.Credit);
+                cmd.Parameters.AddWithValue("@PosPrepayment", item.PosPrepayment);
+                cmd.Parameters.AddWithValue("@PosSale", item.PosSale);
+                cmd.Parameters.AddWithValue("@PosRefund", item.PosRefund);
+                cmd.Parameters.AddWithValue("@PosSalePriceEdit", item.PosSalePriceEdit);
+                var param = new SqlParameter("@PosSalePriceLimit", SqlDbType.Decimal);
+                param.Precision = 18;
+                param.Scale = 2;
+                param.Value = item.PosSalePriceLimit.HasValue ? (object)item.PosSalePriceLimit.Value : DBNull.Value;
+                cmd.Parameters.Add(param);
+                cmd.Parameters.AddWithValue("@Report", item.Report);
+                cmd.Parameters.AddWithValue("@TerminalDelete", item.TerminalDelete);
+                cmd.Parameters.AddWithValue("@Payments", item.Payments);
+                cmd.Parameters.AddWithValue("@Users", item.Users);
+                cmd.Parameters.AddWithValue("@Backups", item.Backups);
+                cmd.Parameters.AddWithValue("@Logs", item.Logs);
+                cmd.Parameters.AddWithValue("@ScalesDelete", item.ScalesDelete);
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
         private static void DeleteRole(int userId)
         {
             using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
@@ -353,6 +397,31 @@ namespace WindowsFormsApp2.Helpers.DB
                 {
                     connection.Open();
                     cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public static UserRole GetRole(int userId = 0)
+        {
+            if (userId is 0)
+                userId = Properties.Settings.Default.UserID;
+
+            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                string query = "SELECT * FROM GetUserRole(@userID)";
+                connection.Open();
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@userID", userId);
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            var data = FormHelpers.MapReaderToObject<UserRole>(dr);
+                            return data;
+                        }
+                        return null;
+                    }
                 }
             }
         }

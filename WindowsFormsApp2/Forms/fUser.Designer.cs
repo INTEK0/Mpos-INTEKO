@@ -28,11 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions3 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions4 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -48,6 +43,11 @@
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject22 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject23 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject24 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions7 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject25 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject26 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject27 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject28 = new DevExpress.Utils.SerializableAppearanceObject();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(fUser));
             DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions1 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -59,6 +59,11 @@
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions3 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
             this.tabPane1 = new DevExpress.XtraBars.Navigation.TabPane();
             this.tabNavigationPage1 = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
@@ -105,7 +110,7 @@
             this.chPosSalePriceEdit = new DevExpress.XtraEditors.CheckEdit();
             this.chCashier = new DevExpress.XtraEditors.CheckEdit();
             this.chAdmin = new DevExpress.XtraEditors.CheckEdit();
-            this.bDelete = new DevExpress.XtraEditors.SimpleButton();
+            this.bCancel = new DevExpress.XtraEditors.SimpleButton();
             this.bSave = new DevExpress.XtraEditors.SimpleButton();
             this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
@@ -117,6 +122,8 @@
             this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.bDetailRole = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.bEditUser = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -170,6 +177,7 @@
             this.tablePanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bDetailRole)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bEditUser)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bDeleteUser)).BeginInit();
             this.SuspendLayout();
@@ -219,7 +227,7 @@
             this.panelControl1.Controls.Add(this.tFullName);
             this.panelControl1.Location = new System.Drawing.Point(0, 3);
             this.panelControl1.Name = "panelControl1";
-            this.panelControl1.Size = new System.Drawing.Size(825, 241);
+            this.panelControl1.Size = new System.Drawing.Size(825, 246);
             this.panelControl1.TabIndex = 7;
             // 
             // dateBirth
@@ -244,7 +252,7 @@
             this.separatorControl1.Location = new System.Drawing.Point(113, 86);
             this.separatorControl1.Name = "separatorControl1";
             this.separatorControl1.Padding = new System.Windows.Forms.Padding(0);
-            this.separatorControl1.Size = new System.Drawing.Size(699, 1);
+            this.separatorControl1.Size = new System.Drawing.Size(707, 1);
             this.separatorControl1.TabIndex = 7;
             // 
             // labelControl8
@@ -262,7 +270,7 @@
             this.tPhone.EditValue = "";
             this.tPhone.Location = new System.Drawing.Point(113, 165);
             this.tPhone.Name = "tPhone";
-            this.tPhone.Size = new System.Drawing.Size(700, 30);
+            this.tPhone.Size = new System.Drawing.Size(707, 30);
             this.tPhone.TabIndex = 4;
             // 
             // tEmail
@@ -272,7 +280,7 @@
             this.tEmail.EditValue = "";
             this.tEmail.Location = new System.Drawing.Point(113, 129);
             this.tEmail.Name = "tEmail";
-            this.tEmail.Size = new System.Drawing.Size(700, 30);
+            this.tEmail.Size = new System.Drawing.Size(707, 30);
             this.tEmail.TabIndex = 3;
             // 
             // labelControl5
@@ -322,14 +330,14 @@
             this.tPassword.EditValue = "";
             this.tPassword.Location = new System.Drawing.Point(113, 50);
             this.tPassword.Name = "tPassword";
-            serializableAppearanceObject12.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Bold);
-            serializableAppearanceObject12.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Critical;
-            serializableAppearanceObject12.Options.UseFont = true;
-            serializableAppearanceObject12.Options.UseForeColor = true;
+            serializableAppearanceObject16.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Bold);
+            serializableAppearanceObject16.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Critical;
+            serializableAppearanceObject16.Options.UseFont = true;
+            serializableAppearanceObject16.Options.UseForeColor = true;
             this.tPassword.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "*", -1, false, true, true, editorButtonImageOptions3, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "*", -1, false, true, true, editorButtonImageOptions4, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.tPassword.Properties.UseSystemPasswordChar = true;
-            this.tPassword.Size = new System.Drawing.Size(700, 30);
+            this.tPassword.Size = new System.Drawing.Size(707, 30);
             this.tPassword.TabIndex = 1;
             // 
             // tUsername
@@ -339,13 +347,13 @@
             this.tUsername.EditValue = "";
             this.tUsername.Location = new System.Drawing.Point(113, 14);
             this.tUsername.Name = "tUsername";
-            serializableAppearanceObject16.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Bold);
-            serializableAppearanceObject16.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Critical;
-            serializableAppearanceObject16.Options.UseFont = true;
-            serializableAppearanceObject16.Options.UseForeColor = true;
+            serializableAppearanceObject20.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Bold);
+            serializableAppearanceObject20.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Critical;
+            serializableAppearanceObject20.Options.UseFont = true;
+            serializableAppearanceObject20.Options.UseForeColor = true;
             this.tUsername.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "*", -1, false, true, true, editorButtonImageOptions4, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
-            this.tUsername.Size = new System.Drawing.Size(700, 30);
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "*", -1, false, true, true, editorButtonImageOptions5, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
+            this.tUsername.Size = new System.Drawing.Size(707, 30);
             this.tUsername.TabIndex = 0;
             // 
             // tFullName
@@ -355,13 +363,13 @@
             this.tFullName.EditValue = "";
             this.tFullName.Location = new System.Drawing.Point(113, 93);
             this.tFullName.Name = "tFullName";
-            serializableAppearanceObject20.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Bold);
-            serializableAppearanceObject20.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Critical;
-            serializableAppearanceObject20.Options.UseFont = true;
-            serializableAppearanceObject20.Options.UseForeColor = true;
+            serializableAppearanceObject24.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Bold);
+            serializableAppearanceObject24.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Critical;
+            serializableAppearanceObject24.Options.UseFont = true;
+            serializableAppearanceObject24.Options.UseForeColor = true;
             this.tFullName.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "*", -1, false, true, true, editorButtonImageOptions5, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
-            this.tFullName.Size = new System.Drawing.Size(700, 30);
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "*", -1, false, true, true, editorButtonImageOptions6, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
+            this.tFullName.Size = new System.Drawing.Size(707, 30);
             this.tFullName.TabIndex = 2;
             // 
             // tabNavigationPage2
@@ -379,9 +387,9 @@
             this.panelControl2.Controls.Add(this.panelControl3);
             this.panelControl2.Controls.Add(this.chCashier);
             this.panelControl2.Controls.Add(this.chAdmin);
-            this.panelControl2.Location = new System.Drawing.Point(6, 3);
+            this.panelControl2.Location = new System.Drawing.Point(0, 3);
             this.panelControl2.Name = "panelControl2";
-            this.panelControl2.Size = new System.Drawing.Size(813, 243);
+            this.panelControl2.Size = new System.Drawing.Size(825, 246);
             this.panelControl2.TabIndex = 10;
             // 
             // panelControl3
@@ -414,7 +422,7 @@
             this.panelControl3.Location = new System.Drawing.Point(139, 0);
             this.panelControl3.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.panelControl3.Name = "panelControl3";
-            this.panelControl3.Size = new System.Drawing.Size(674, 243);
+            this.panelControl3.Size = new System.Drawing.Size(686, 246);
             this.panelControl3.TabIndex = 3;
             // 
             // separatorControl2
@@ -450,12 +458,12 @@
             this.tSaleLimit.Name = "tSaleLimit";
             this.tSaleLimit.Properties.Appearance.Options.UseTextOptions = true;
             this.tSaleLimit.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            serializableAppearanceObject24.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Bold);
-            serializableAppearanceObject24.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Critical;
-            serializableAppearanceObject24.Options.UseFont = true;
-            serializableAppearanceObject24.Options.UseForeColor = true;
+            serializableAppearanceObject28.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Bold);
+            serializableAppearanceObject28.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Critical;
+            serializableAppearanceObject28.Options.UseFont = true;
+            serializableAppearanceObject28.Options.UseForeColor = true;
             this.tSaleLimit.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "*", -1, false, true, true, editorButtonImageOptions6, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "*", -1, false, true, true, editorButtonImageOptions7, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.tSaleLimit.Properties.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.NumericMaskManager));
             this.tSaleLimit.Properties.MaskSettings.Set("MaskManagerSignature", "allowNull=False");
             this.tSaleLimit.Properties.MaskSettings.Set("mask", "C2");
@@ -777,24 +785,25 @@
             this.chAdmin.Tag = "All";
             this.chAdmin.CheckedChanged += new System.EventHandler(this.chAdmin_CheckedChanged);
             // 
-            // bDelete
+            // bCancel
             // 
-            this.bDelete.AllowFocus = false;
-            this.bDelete.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Danger;
-            this.bDelete.Appearance.Options.UseBackColor = true;
-            this.bDelete.AutoSize = true;
-            this.tablePanel1.SetColumn(this.bDelete, 1);
-            this.bDelete.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.bDelete.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bDelete.ImageOptions.SvgImage")));
-            this.bDelete.ImageOptions.SvgImageSize = new System.Drawing.Size(22, 22);
-            this.bDelete.Location = new System.Drawing.Point(123, 300);
-            this.bDelete.Name = "bDelete";
-            this.tablePanel1.SetRow(this.bDelete, 1);
-            this.bDelete.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.bDelete.Size = new System.Drawing.Size(124, 28);
-            this.bDelete.TabIndex = 4;
-            this.bDelete.Text = "İstifadəçini sil";
-            this.bDelete.Visible = false;
+            this.bCancel.AllowFocus = false;
+            this.bCancel.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Danger;
+            this.bCancel.Appearance.Options.UseBackColor = true;
+            this.bCancel.AutoSize = true;
+            this.tablePanel1.SetColumn(this.bCancel, 1);
+            this.bCancel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.bCancel.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bCancel.ImageOptions.SvgImage")));
+            this.bCancel.ImageOptions.SvgImageSize = new System.Drawing.Size(22, 22);
+            this.bCancel.Location = new System.Drawing.Point(123, 300);
+            this.bCancel.Name = "bCancel";
+            this.tablePanel1.SetRow(this.bCancel, 1);
+            this.bCancel.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bCancel.Size = new System.Drawing.Size(84, 28);
+            this.bCancel.TabIndex = 4;
+            this.bCancel.Text = "Ləğv et";
+            this.bCancel.Visible = false;
+            this.bCancel.Click += new System.EventHandler(this.bCancel_Click);
             // 
             // bSave
             // 
@@ -823,7 +832,7 @@
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 50F)});
             this.tablePanel1.Controls.Add(this.gridControl1);
             this.tablePanel1.Controls.Add(this.tabPane1);
-            this.tablePanel1.Controls.Add(this.bDelete);
+            this.tablePanel1.Controls.Add(this.bCancel);
             this.tablePanel1.Controls.Add(this.bSave);
             this.tablePanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tablePanel1.Location = new System.Drawing.Point(0, 0);
@@ -851,7 +860,8 @@
             this.gridControl1.Name = "gridControl1";
             this.gridControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.bEditUser,
-            this.bDeleteUser});
+            this.bDeleteUser,
+            this.bDetailRole});
             this.tablePanel1.SetRow(this.gridControl1, 2);
             this.gridControl1.Size = new System.Drawing.Size(825, 298);
             this.gridControl1.TabIndex = 76;
@@ -873,6 +883,7 @@
             this.gridColumn8,
             this.gridColumn3,
             this.gridColumn4,
+            this.gridColumn10,
             this.gridColumn5,
             this.gridColumn9});
             this.gridView1.DetailHeight = 431;
@@ -899,6 +910,7 @@
             this.gridColumn1.OptionsColumn.AllowEdit = false;
             this.gridColumn1.Visible = true;
             this.gridColumn1.VisibleIndex = 0;
+            this.gridColumn1.Width = 160;
             // 
             // gridColumn7
             // 
@@ -914,6 +926,7 @@
             this.gridColumn2.OptionsColumn.AllowEdit = false;
             this.gridColumn2.Visible = true;
             this.gridColumn2.VisibleIndex = 1;
+            this.gridColumn2.Width = 167;
             // 
             // gridColumn8
             // 
@@ -931,6 +944,7 @@
             this.gridColumn3.OptionsColumn.AllowEdit = false;
             this.gridColumn3.Visible = true;
             this.gridColumn3.VisibleIndex = 2;
+            this.gridColumn3.Width = 155;
             // 
             // gridColumn4
             // 
@@ -940,6 +954,35 @@
             this.gridColumn4.OptionsColumn.AllowEdit = false;
             this.gridColumn4.Visible = true;
             this.gridColumn4.VisibleIndex = 3;
+            this.gridColumn4.Width = 155;
+            // 
+            // gridColumn10
+            // 
+            this.gridColumn10.AppearanceHeader.Options.UseTextOptions = true;
+            this.gridColumn10.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gridColumn10.Caption = "Hüquqları";
+            this.gridColumn10.ColumnEdit = this.bDetailRole;
+            this.gridColumn10.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.MiddleLeft;
+            this.gridColumn10.MaxWidth = 40;
+            this.gridColumn10.MinWidth = 40;
+            this.gridColumn10.Name = "gridColumn10";
+            this.gridColumn10.OptionsColumn.ShowCaption = false;
+            this.gridColumn10.OptionsFilter.AllowAutoFilter = false;
+            this.gridColumn10.OptionsFilter.AllowFilter = false;
+            this.gridColumn10.Visible = true;
+            this.gridColumn10.VisibleIndex = 4;
+            this.gridColumn10.Width = 40;
+            // 
+            // bDetailRole
+            // 
+            this.bDetailRole.AutoHeight = false;
+            editorButtonImageOptions1.SvgImage = global::WindowsFormsApp2.Properties.Resources.functionsinformation;
+            editorButtonImageOptions1.SvgImageSize = new System.Drawing.Size(24, 24);
+            this.bDetailRole.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions1, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
+            this.bDetailRole.Name = "bDetailRole";
+            this.bDetailRole.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.bDetailRole.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.bDetailRole_ButtonClick);
             // 
             // gridColumn5
             // 
@@ -953,22 +996,23 @@
             this.gridColumn5.OptionsFilter.AllowAutoFilter = false;
             this.gridColumn5.OptionsFilter.AllowFilter = false;
             this.gridColumn5.Visible = true;
-            this.gridColumn5.VisibleIndex = 4;
+            this.gridColumn5.VisibleIndex = 5;
             this.gridColumn5.Width = 40;
             // 
             // bEditUser
             // 
             this.bEditUser.AutoHeight = false;
             this.bEditUser.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            editorButtonImageOptions1.Image = global::WindowsFormsApp2.Properties.Resources.pencolor_32x32;
-            serializableAppearanceObject1.Options.UseTextOptions = true;
-            serializableAppearanceObject1.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            editorButtonImageOptions2.Image = global::WindowsFormsApp2.Properties.Resources.pencolor_32x32;
+            serializableAppearanceObject5.Options.UseTextOptions = true;
+            serializableAppearanceObject5.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.bEditUser.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "Düzəliş et", -1, true, true, false, editorButtonImageOptions1, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "Düzəliş et", -1, true, true, false, editorButtonImageOptions2, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.bEditUser.ButtonsStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.bEditUser.HideSelection = false;
             this.bEditUser.Name = "bEditUser";
             this.bEditUser.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.bEditUser.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.bEditUser_ButtonClick);
             // 
             // gridColumn9
             // 
@@ -982,15 +1026,15 @@
             this.gridColumn9.OptionsFilter.AllowAutoFilter = false;
             this.gridColumn9.OptionsFilter.AllowFilter = false;
             this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 5;
+            this.gridColumn9.VisibleIndex = 6;
             this.gridColumn9.Width = 40;
             // 
             // bDeleteUser
             // 
             this.bDeleteUser.AutoHeight = false;
-            editorButtonImageOptions2.Image = global::WindowsFormsApp2.Properties.Resources.delete_32x32;
+            editorButtonImageOptions3.Image = global::WindowsFormsApp2.Properties.Resources.delete_32x32;
             this.bDeleteUser.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions2, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions3, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.bDeleteUser.Name = "bDeleteUser";
             this.bDeleteUser.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.bDeleteUser.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.bDeleteUser_ButtonClick);
@@ -1062,6 +1106,7 @@
             this.tablePanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bDetailRole)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bEditUser)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bDeleteUser)).EndInit();
             this.ResumeLayout(false);
@@ -1078,7 +1123,6 @@
         private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
         private DevExpress.XtraEditors.SimpleButton bSave;
         private DevExpress.XtraEditors.PanelControl panelControl1;
-        private DevExpress.XtraEditors.LabelControl labelControl1;
         private DevExpress.XtraEditors.LabelControl labelControl2;
         private DevExpress.XtraEditors.LabelControl labelControl3;
         private DevExpress.XtraEditors.SeparatorControl separatorControl1;
@@ -1087,7 +1131,7 @@
         private DevExpress.XtraEditors.LabelControl labelControl5;
         private DevExpress.XtraEditors.LabelControl labelControl4;
         private DevExpress.XtraEditors.LabelControl labelControl8;
-        private DevExpress.XtraEditors.SimpleButton bDelete;
+        private DevExpress.XtraEditors.SimpleButton bCancel;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn1;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn2;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn3;
@@ -1132,5 +1176,8 @@
         private DevExpress.XtraEditors.CheckEdit chAdmin;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn9;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit bDeleteUser;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn10;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit bDetailRole;
+        private DevExpress.XtraEditors.LabelControl labelControl1;
     }
 }

@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using DevExpress.Internal;
 using DevExpress.XtraEditors;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
@@ -17,6 +10,8 @@ namespace WindowsFormsApp2.Forms
 {
     public partial class fUser : DevExpress.XtraEditors.XtraForm
     {
+        private int userId { get; set; }
+        private string password { get; set; }
         public fUser()
         {
             InitializeComponent();
@@ -51,7 +46,14 @@ where
 
         private void bSave_Click(object sender, EventArgs e)
         {
-            AddUser();
+            if (bSave.Text is "Yadda saxla")
+            {
+                AddUser();
+            }
+            else
+            {
+                EditUser();
+            }
         }
 
         private void AddUser()
@@ -101,7 +103,7 @@ where
             }
         }
 
-        private void AddRole(int userId)
+        void AddRole(int userId)
         {
             DatabaseClasses.UserRole role = new DatabaseClasses.UserRole();
             role.UserId = userId;
@@ -139,14 +141,77 @@ where
             DbProsedures.InsertRole(role);
         }
 
-        private void DeleteUser()
+        private void EditUser()
         {
+            DatabaseClasses.User user = new DatabaseClasses.User()
+            {
+                Id = userId,
+                Username = tUsername.Text.Trim(),
+                Password = string.IsNullOrWhiteSpace(tPassword.Text) ? password : tPassword.Text.Trim(),
+                NameSurname = tFullName.Text.Trim(),
+                IsAdmin = chAdmin.Checked == true ? true : false,
+                Email = tEmail.Text.Trim(),
+                Phone = tPhone.Text.Trim(),
+                DateBirth = dateBirth.DateTime,
+            };
 
+
+            var validator = new UserValidation();
+            var validateResult = validator.Validate(user);
+
+            if (!validateResult.IsValid)
+            {
+                foreach (var error in validateResult.Errors)
+                {
+                    FormHelpers.Alert(error.ErrorMessage, Enums.MessageType.Warning);
+                    return;
+                }
+            }
+
+            DbProsedures.UpdatetUser(user);
+
+            FormHelpers.Alert($"{user.Username} İstifadəçisində düzəliş edildi", Enums.MessageType.Success);
+
+            EditRole();
+            Clear();
         }
 
-        private void DeleteRole(int userId)
+        void EditRole()
         {
+            DatabaseClasses.UserRole role = new DatabaseClasses.UserRole();
+            role.UserId = userId;
+            role.ProductAdd = chProductAdd.Checked;
+            role.RefundProduct = chRefundProduct.Checked;
+            role.ProductDelete = chProductDelete.Checked;
+            role.ProductDiscount = chProductDiscount.Checked;
+            role.ProductBarcodePrint = chProductBarcodePrint.Checked;
+            role.ScalesProductDownload = chScalesProductDownload.Checked;
+            role.Suppliers = chSuppliers.Checked;
+            role.Customers = chCustomers.Checked;
+            role.BankSale = chBankSale.Checked;
+            role.Credit = chCredit.Checked;
+            role.PosPrepayment = chPosPrepayment.Checked;
+            role.PosSale = chPosSale.Checked;
+            role.PosRefund = chPosRefund.Checked;
+            role.PosSalePriceEdit = chPosSalePriceEdit.Checked;
+            if (chPosSalePriceLimit.Checked)
+            {
+                if (!string.IsNullOrWhiteSpace(tSaleLimit.Text))
+                    role.PosSalePriceLimit = Convert.ToDecimal(tSaleLimit.EditValue);
+                else
+                    role.PosSalePriceLimit = null;
+            }
+            else
+                role.PosSalePriceLimit = null;
+            role.Report = chReport.Checked;
+            role.TerminalDelete = chTerminalDelete.Checked;
+            role.Payments = chPayments.Checked;
+            role.Users = chUsers.Checked;
+            role.Backups = chBackups.Checked;
+            role.Logs = chLogs.Checked;
+            role.ScalesDelete = chScalesDelete.Checked;
 
+            DbProsedures.UpdateRole(role);
         }
 
         private void Clear()
@@ -157,7 +222,8 @@ where
             tEmail.Clear();
             tPhone.Clear();
             dateBirth.Clear();
-
+            tSaleLimit.Clear();
+            chPosSalePriceLimit.Checked = false;
 
             tUsername.Focus();
         }
@@ -224,14 +290,94 @@ where
 
         private void bDeleteUser_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
+            if (XtraMessageBox.Show("İstifadəçini silmək istədiyinizə əminsiniz ?", "Bildiriş", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                DataRow dr = gridView1.GetDataRow(gridView1.FocusedRowHandle);
+                if (dr != null)
+                {
+                    int userID = Convert.ToInt32(dr["Id"].ToString());
+                    DbProsedures.DeleteUser(userID);
+                    string message = $"{dr["Username"]} istifadəçisi silindi";
+                    FormHelpers.Alert(message, Enums.MessageType.Success);
+                    FormHelpers.Log(message);
+                    UserDataLoad();
+                }
+            }
+        }
+
+        private void bDetailRole_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
             DataRow dr = gridView1.GetDataRow(gridView1.FocusedRowHandle);
             if (dr != null)
             {
                 int userID = Convert.ToInt32(dr["Id"].ToString());
-                DbProsedures.DeleteUser(userID);
-                FormHelpers.Log($"{dr["Username"]} istifadəçisi silindi");
-                UserDataLoad();
+                fUserRoleShow f = new fUserRoleShow(userID);
+                f.ShowDialog();
             }
+        }
+
+        private void bEditUser_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            DataRow dr = gridView1.GetDataRow(gridView1.FocusedRowHandle);
+            if (dr != null)
+            {
+                userId = Convert.ToInt32(dr["Id"].ToString());
+                password = dr["Password"].ToString();
+
+                var data = DbProsedures.GetUser(userId);
+                SelectUserDataLoad(data);
+                bSave.Text = "Düzəliş et";
+                bCancel.Visible = true;
+            }
+        }
+
+        private void SelectUserDataLoad(DatabaseClasses.User user)
+        {
+            tUsername.Text = user.Username;
+            tFullName.Text = user.NameSurname;
+            tEmail.Text = user.Email;
+            tPhone.Text = user.Phone;
+            dateBirth.DateTime = user.DateBirth;
+            if (user.IsAdmin)
+                chAdmin.Checked = true;
+            else
+                chCashier.Checked = true;
+
+            //Roles
+            chProductAdd.Checked = user.UserRole.ProductAdd;
+            chRefundProduct.Checked = user.UserRole.RefundProduct;
+            chProductDelete.Checked = user.UserRole.ProductDelete;
+            chProductDiscount.Checked = user.UserRole.ProductDiscount;
+            chProductBarcodePrint.Checked = user.UserRole.ProductBarcodePrint;
+            chScalesProductDownload.Checked = user.UserRole.ScalesProductDownload;
+            chSuppliers.Checked = user.UserRole.Suppliers;
+            chCustomers.Checked = user.UserRole.Customers;
+            chBankSale.Checked = user.UserRole.BankSale;
+            chCredit.Checked = user.UserRole.Credit;
+            chPosPrepayment.Checked = user.UserRole.PosPrepayment;
+            chPosSale.Checked = user.UserRole.PosSale;
+            chPosRefund.Checked = user.UserRole.PosRefund;
+            chPosSalePriceEdit.Checked = user.UserRole.PosSalePriceEdit;
+            chPosSalePriceLimit.Checked = user.UserRole.PosSalePriceLimit.HasValue;
+            tSaleLimit.Text = user.UserRole.PosSalePriceLimit.HasValue
+                ? user.UserRole.PosSalePriceLimit.Value.ToString()
+                : null;
+            chReport.Checked = user.UserRole.Report;
+            chTerminalDelete.Checked = user.UserRole.TerminalDelete;
+            chPayments.Checked = user.UserRole.Payments;
+            chUsers.Checked = user.UserRole.Users;
+            chBackups.Checked = user.UserRole.Backups;
+            chLogs.Checked = user.UserRole.Logs;
+            chScalesDelete.Checked = user.UserRole.ScalesDelete;
+        }
+
+        private void bCancel_Click(object sender, EventArgs e)
+        {
+            bSave.Text = "Yadda saxla";
+            Clear();
+            chCashier.Checked = true;
+            chAdmin.Checked = true;
+            bCancel.Visible = false;
         }
     }
 }

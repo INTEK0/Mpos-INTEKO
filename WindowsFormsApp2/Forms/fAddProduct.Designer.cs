@@ -2601,7 +2601,9 @@
             this.bEdit.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Warning;
             this.bEdit.Appearance.Options.UseBackColor = true;
             this.bEdit.AutoSize = true;
+            this.bEdit.Cursor = System.Windows.Forms.Cursors.No;
             this.bEdit.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.bEdit.Enabled = false;
             this.bEdit.Location = new System.Drawing.Point(183, 2);
             this.bEdit.Margin = new System.Windows.Forms.Padding(2);
             this.bEdit.MinimumSize = new System.Drawing.Size(177, 32);

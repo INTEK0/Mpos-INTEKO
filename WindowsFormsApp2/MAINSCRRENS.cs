@@ -31,37 +31,36 @@ namespace WindowsFormsApp2
         public MAINSCRRENS(int xuser)
         {
             InitializeComponent();
-            if (xuser < 1)
-            {
-                accordionControlElement5.Visible = false;
-                accordionControlElement6.Visible = false;
-                accordionControlElement58.Visible = false;
-                accordionControlElement8.Visible = false;
-                accordionControlElement9.Visible = false;
-                accordionControlElement10.Visible = false;
-                accordionControlElement17.Visible = false;
-                accordionControlElement28.Visible = false;
-                accordionControlElement32.Visible = false;
-                accordionControlElement33.Visible = false;
-                accordionControlElement35.Visible = false;
-                accordionControlElement36.Visible = false;
-                accordionControlElement43.Visible = false;
-                accordionControlElement47.Visible = false;
-                accordionControlElement48.Visible = false;
-                accordionControlElement50.Visible = false;
-                accordionControlElement54.Visible = false;
-                tabLog.Visible = false;
-                tabDatabase.Visible = false;
-                accordionControlElement54.Visible = false;
-                chStockAmount.Enabled = false;
-                chActive.Enabled = false;
-                chDeactive.Enabled = false;
-                tabLog.PageEnabled = false;
-                tabDatabase.PageEnabled = false;
-            }
+            //if (xuser < 1)
+            //{
+            //    accordionControlElement5.Visible = false;
+            //    accordionControlElement6.Visible = false;
+            //    accordionControlElement58.Visible = false;
+            //    accordionControlElement8.Visible = false;
+            //    accordionControlElement9.Visible = false;
+            //    accordionControlElement10.Visible = false;
+            //    accordionControlElement17.Visible = false;
+            //    accordionControlElement28.Visible = false;
+            //    accordionControlElement32.Visible = false;
+            //    accordionControlElement33.Visible = false;
+            //    accordionControlElement35.Visible = false;
+            //    accordionControlElement36.Visible = false;
+            //    accordionControlElement43.Visible = false;
+            //    accordionControlElement47.Visible = false;
+            //    accordionControlElement48.Visible = false;
+            //    accordionControlElement50.Visible = false;
+            //    accordionControlElement54.Visible = false;
+            //    tabLog.Visible = false;
+            //    tabDatabase.Visible = false;
+            //    accordionControlElement54.Visible = false;
+            //    chStockAmount.Enabled = false;
+            //    chActive.Enabled = false;
+            //    chDeactive.Enabled = false;
+            //    tabLog.PageEnabled = false;
+            //    tabDatabase.PageEnabled = false;
+            //}
             GridPanelText(gridProducts);
             GridPanelText(gridLogs);
-            GridLocalizer.Active = new MyGridLocalizer();
         }
 
         private void accordionControlElement13_Click(object sender, EventArgs e)
@@ -71,6 +70,11 @@ namespace WindowsFormsApp2
 
         private void accordionControlElement6_Click(object sender, EventArgs e)
         {
+            if (!Helpers.CacheData.CommonData.User.UserRole.Customers)
+            {
+                FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
+                return;
+            }
             OpenForm<fAddCustomer>();
         }
 
@@ -99,11 +103,21 @@ namespace WindowsFormsApp2
 
         private void accordionControlElement11_Click(object sender, EventArgs e)
         {
+            if (!Helpers.CacheData.CommonData.User.UserRole.BankSale)
+            {
+                FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
+                return;
+            }
             OpenForm<GAIME_SATISI_LAYOUT>(Properties.Settings.Default.UserID, this);
         }
 
         private void accordionControlElement12_Click(object sender, EventArgs e)
         {
+            if (!Helpers.CacheData.CommonData.User.UserRole.BankSale)
+            {
+                FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
+                return;
+            }
             OpenForm<QAIME_SATISI_QAYTARMA_LAYOUT>();
         }
 
@@ -114,16 +128,22 @@ namespace WindowsFormsApp2
 
         private void accordionControlElement9_Click(object sender, EventArgs e)
         {
+            if (!Helpers.CacheData.CommonData.User.UserRole.RefundProduct)
+            {
+                FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
+                return;
+            }
             OpenForm<MEHSUL_GAYTARMA_LAYOUT>();
-        }
-
-        private void accordionControlElement5_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void accordionControlElement41_Click(object sender, EventArgs e)
         {
+            if (!Helpers.CacheData.CommonData.User.UserRole.PosSale)
+            {
+                FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
+                return;
+            }
+
             POS_LAYOUT_NEW f = Application.OpenForms.OfType<POS_LAYOUT_NEW>().FirstOrDefault();
             if (f != null)
             {
@@ -189,6 +209,12 @@ namespace WindowsFormsApp2
 
         private void accordionControlElement51_Click(object sender, EventArgs e)
         {
+            if (!Helpers.CacheData.CommonData.User.UserRole.ScalesProductDownload)
+            {
+                FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
+                return;
+            }
+
             try
             {
                 string message = "Excel faylına istəyə görə bütün məhsulları vəya KQ olan məhsulları yazdıra bilərsiniz.\n\n" +
@@ -417,7 +443,12 @@ FROM[terazimalzeme]";
 
         private void accordionControlElement18_Click(object sender, EventArgs e)
         {
-            OpenForm<bank_odenisleri>(Properties.Settings.Default.UserID);
+            if (!Helpers.CacheData.CommonData.User.UserRole.Suppliers)
+            {
+                FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
+                return;
+            }
+            OpenForm<bank_odenisleri>(Helpers.CacheData.CommonData.User.Id);
         }
 
         private void accordionControlElement19_Click(object sender, EventArgs e)
@@ -432,6 +463,11 @@ FROM[terazimalzeme]";
 
         private void accordionControlElement22_Click(object sender, EventArgs e)
         {
+            if (!Helpers.CacheData.CommonData.User.UserRole.Customers)
+            {
+                FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
+                return;
+            }
             OpenForm<fAddCustomer>();
         }
 
@@ -443,27 +479,45 @@ FROM[terazimalzeme]";
         private void accordionControlElement23_Click(object sender, EventArgs e)
         {
             OpenForm<fAddGuarantor>();
-            //OpenForm<ZAMINLER_LAYOUT>();
         }
 
         private void accordionControlElement24_Click(object sender, EventArgs e)
         {
+            if (!Helpers.CacheData.CommonData.User.UserRole.Credit)
+            {
+                FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
+                return;
+            }
             OpenForm<KREDITSATISLAYOUTSA>(Properties.Settings.Default.UserID, this);
         }
 
         private void accordionControlElement25_Click(object sender, EventArgs e)
         {
+            if (!Helpers.CacheData.CommonData.User.UserRole.Credit)
+            {
+                FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
+                return;
+            }
             OpenForm<fCreditPay>();
-            // OpenForm<SearchKrediOdeme_LAYOUT>(Properties.Settings.Default.UserID, this);
         }
 
         private void accordionControlElement26_Click(object sender, EventArgs e)
         {
+            if (!Helpers.CacheData.CommonData.User.UserRole.Report)
+            {
+                FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
+                return;
+            }
             OpenForm<KREDITHESABATI>();
         }
 
         private void accordionControlElement27_Click(object sender, EventArgs e)
         {
+            if (!Helpers.CacheData.CommonData.User.UserRole.Report)
+            {
+                FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
+                return;
+            }
             OpenForm<KREDITODENISHESABAT1>();
         }
 
@@ -510,8 +564,13 @@ FROM[terazimalzeme]";
 
         private void accordionControlElement55_Click(object sender, EventArgs e)
         {
-            //OpenForm<RibbonForm1>(1, Properties.Settings.Default.UserID);
+            if (!Helpers.CacheData.CommonData.User.UserRole.ProductBarcodePrint)
+            {
+                FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
+                return;
+            }
             OpenForm<fPrintBarcode>();
+
         }
 
         private void MainScreen_FormClosing(object sender, FormClosingEventArgs e)
@@ -546,12 +605,25 @@ FROM[terazimalzeme]";
             ClinicModuleShow();
             SysAdminControl();
             await LicenceCheck();
+            if (!Helpers.CacheData.CommonData.User.UserRole.Report)
+            {
+                accordionControlElement30.Enabled = false;
+            }
+            if (!Helpers.CacheData.CommonData.User.UserRole.Backups)
+            {
+                tabDatabase.PageVisible = false;
+            }
+            if (!Helpers.CacheData.CommonData.User.UserRole.Logs)
+            {
+                tabLog.PageVisible = false;
+            }
         }
 
         private async Task LicenceCheck()
         {
-            //lLicenceExpireDate.Text = "-";
-            //lLicenceExpireDate.ForeColor = Color.Black;
+            lLicenceExpireDate.Text = "-";
+            lLicenceExpireDate.ForeColor = Color.Black;
+            return;
 
             var licenceUser = await LicenseService.Instance.RequestKeyControl(LicenseService.Instance.GetLicenceKey());
             if (licenceUser is null)
@@ -934,7 +1006,12 @@ FROM (
 
         private void accordionControlElement54_Click_1(object sender, EventArgs e)
         {
-            OpenForm<USERQEYDIYYAT_LAYOUT>();
+            if (!Helpers.CacheData.CommonData.User.UserRole.Users)
+            {
+                FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
+                return;
+            }
+            OpenForm<fUser>();
         }
 
         /// <summary>
@@ -1009,6 +1086,11 @@ FROM (
 
         private void bBackupDownload_Click(object sender, EventArgs e)
         {
+            if (!Helpers.CacheData.CommonData.User.UserRole.Backups)
+            {
+                FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
+                return;
+            }
             DbHelpers.DatabaseBackup();
             BackupHistory();
         }
@@ -1443,23 +1525,44 @@ FROM (
 
         private void accordionControlElement68_Click(object sender, EventArgs e)
         {
+            if (!Helpers.CacheData.CommonData.User.UserRole.ProductDiscount)
+            {
+                FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
+                return;
+            }
             OpenForm<fDiscountProduct>();
+
         }
 
 
 
         private void accordionControlElement71_Click(object sender, EventArgs e)
         {
+            if (!Helpers.CacheData.CommonData.User.UserRole.Suppliers)
+            {
+                FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
+                return;
+            }
             OpenForm<fAddSupplier>();
         }
 
         private void accordionControlElement69_Click(object sender, EventArgs e)
         {
+            if (!Helpers.CacheData.CommonData.User.UserRole.Suppliers)
+            {
+                FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
+                return;
+            }
             OpenForm<fAddSupplierDebt>();
         }
 
         private void accordionControlElement70_Click(object sender, EventArgs e)
         {
+            if (!Helpers.CacheData.CommonData.User.UserRole.Suppliers)
+            {
+                FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
+                return;
+            }
             OpenForm<bank_odenisleri>(Properties.Settings.Default.UserID);
         }
 

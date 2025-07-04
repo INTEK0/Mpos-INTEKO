@@ -50,17 +50,10 @@ namespace WindowsFormsApp2
             }
 
             catch (Exception ex)
-
             {
-
-
-
                 return null;
-
             }
-
             finally
-
             {
 
                 con.Close();

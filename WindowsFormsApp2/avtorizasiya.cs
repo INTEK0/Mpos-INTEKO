@@ -90,6 +90,9 @@ namespace WindowsFormsApp2
                 Properties.Settings.Default.UserID = user.Id;
                 Properties.Settings.Default.Save();
                 FormHelpers.Log("Sistemə daxil oldu");
+                Helpers.CacheData.CommonData.User = user;
+
+
                 LicenseService.Instance.Start();
 
                 if (user.IsAdmin)

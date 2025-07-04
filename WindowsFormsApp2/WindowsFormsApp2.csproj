@@ -495,6 +495,12 @@
     <Compile Include="Forms\fUser.Designer.cs">
       <DependentUpon>fUser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\fUserRoleShow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\fUserRoleShow.Designer.cs">
+      <DependentUpon>fUserRoleShow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\fWithdraw.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -510,6 +516,7 @@
     <Compile Include="Helpers\BaseForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Helpers\CacheData\CommonData.cs" />
     <Compile Include="Helpers\CacheData\PrinterCacheData.cs" />
     <Compile Include="Helpers\DB\DbHelpers.cs" />
     <Compile Include="Helpers\DB\DbProsedures.cs" />
@@ -1178,6 +1185,9 @@
     <EmbeddedResource Include="Forms\fUser.resx">
       <DependentUpon>fUser.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\fUserRoleShow.resx">
+      <DependentUpon>fUserRoleShow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\fWithdraw.resx">
       <DependentUpon>fWithdraw.cs</DependentUpon>
     </EmbeddedResource>
@@ -1673,6 +1683,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Mpos.ico" />
+    <None Include="Resources\functionsinformation.svg" />
     <None Include="Resources\delete_32x32.png" />
     <None Include="Resources\pencolor_32x32.png" />
     <None Include="Resources\previousview.svg" />

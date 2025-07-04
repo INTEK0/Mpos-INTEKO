@@ -471,7 +471,7 @@ namespace WindowsFormsApp2
             this.MinimumSize = new System.Drawing.Size(703, 400);
             this.Name = "bank_odenisleri";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "NAĞD ÖDƏNİŞ";
+            this.Text = "TƏCHİZATÇI ÖDƏNİŞLƏRİ";
             this.Load += new System.EventHandler(this.bank_odenisleri_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);

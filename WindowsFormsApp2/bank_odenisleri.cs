@@ -1,6 +1,4 @@
-﻿using DevExpress.XtraEditors;
-using DevExpress.XtraGrid.Views.Grid;
-using System;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
 using WindowsFormsApp2.Helpers;
