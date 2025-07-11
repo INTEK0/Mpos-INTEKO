@@ -399,6 +399,12 @@
     <Compile Include="Forms\fIncomeAndExpensesReport.Designer.cs">
       <DependentUpon>fIncomeAndExpensesReport.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\fPay.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\fPay.Designer.cs">
+      <DependentUpon>fPay.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\fPOSRefundReport.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -738,12 +744,6 @@
     <Compile Include="MUSTERI_ODENIS_HESABAT.Designer.cs">
       <DependentUpon>MUSTERI_ODENIS_HESABAT.cs</DependentUpon>
     </Compile>
-    <Compile Include="nagdkardkredit.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="nagdkardkredit.Designer.cs">
-      <DependentUpon>nagdkardkredit.cs</DependentUpon>
-    </Compile>
     <Compile Include="nagkardkredit.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -989,6 +989,7 @@
       <DependentUpon>USERQEYDIYYAT_LAYOUT.cs</DependentUpon>
     </Compile>
     <Compile Include="Validations\CompanyValidation.cs" />
+    <Compile Include="Validations\CreditValidation.cs" />
     <Compile Include="Validations\CustomerValidation.cs" />
     <Compile Include="Validations\DiscountProductValidation.cs" />
     <Compile Include="Validations\DoctorValidation.cs" />
@@ -1127,6 +1128,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fKassaReport.resx">
       <DependentUpon>fKassaReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\fPay.resx">
+      <DependentUpon>fPay.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fPOSRefundReport.resx">
       <DependentUpon>fPOSRefundReport.cs</DependentUpon>
@@ -1286,9 +1290,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MUSTERI_ODENIS_HESABAT.resx">
       <DependentUpon>MUSTERI_ODENIS_HESABAT.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="nagdkardkredit.resx">
-      <DependentUpon>nagdkardkredit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="nagd_kart.resx">
       <DependentUpon>nagd_kart.cs</DependentUpon>
@@ -1683,6 +1684,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Mpos.ico" />
+    <None Include="Resources\financial1.svg" />
     <None Include="Resources\functionsinformation.svg" />
     <None Include="Resources\delete_32x32.png" />
     <None Include="Resources\pencolor_32x32.png" />

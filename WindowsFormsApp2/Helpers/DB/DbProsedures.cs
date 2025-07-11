@@ -57,7 +57,6 @@ namespace WindowsFormsApp2.Helpers.DB
         private const string GET_GetProductSalesDataQuery = "GetProductSalesData";
         private const string GET_GetProductPurchaseDataQuery = "GetProductPurchaseData";
         private const string INSERT_IncomeAndExpenseDataQuery = "INSERT_INCOME_AND_EXPENSE";
-        private const string INSERT_TerminalQuery = "KASSA_IP_INSERT";
 
         #endregion [...PROCEDURES QUERY...]
 
@@ -200,7 +199,7 @@ namespace WindowsFormsApp2.Helpers.DB
         {
             if (userId is 0)
                 userId = Properties.Settings.Default.UserID;
-            
+
             using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
             {
                 string query = "SELECT * FROM SELECT_USER_DATA_LOAD(@userID)";
@@ -2569,29 +2568,27 @@ FROM
         public static int TerminalAdd(Terminal item)
         {
             using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlCommand cmd = new SqlCommand("KASSA_IP_INSERT", con))
             {
                 con.Open();
-                using (SqlCommand cmd = new SqlCommand(INSERT_TerminalQuery, con))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    SqlParameter param;
-                    param = cmd.Parameters.Add("@KASSA_FIRMA_IP", SqlDbType.Int);
-                    param.Value = item.ModelId;
-                    param = cmd.Parameters.Add("@IP_ADRESS", SqlDbType.NVarChar, 100);
-                    param.Value = item.IpAddress;
-                    param = cmd.Parameters.Add("@BANK_NAME", SqlDbType.NVarChar, 100);
-                    param.Value = item.BankName;
-                    param = cmd.Parameters.Add("@KASSIR_ID", SqlDbType.Int);
-                    param.Value = item.UserId;
-                    param = cmd.Parameters.Add("@merchant_id", SqlDbType.NVarChar, 1000);
-                    param.Value = item.MerchantIdKey;
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlParameter param;
+                param = cmd.Parameters.Add("@KASSA_FIRMA_IP", SqlDbType.Int);
+                param.Value = item.ModelId;
+                param = cmd.Parameters.Add("@IP_ADRESS", SqlDbType.NVarChar, 100);
+                param.Value = item.IpAddress;
+                param = cmd.Parameters.Add("@BANK_NAME", SqlDbType.NVarChar, 100);
+                param.Value = item.BankName;
+                param = cmd.Parameters.Add("@KASSIR_ID", SqlDbType.Int);
+                param.Value = item.UserId;
+                param = cmd.Parameters.Add("@merchant_id", SqlDbType.NVarChar, 1000);
+                param.Value = item.MerchantIdKey;
 
-                    param = cmd.Parameters.Add("@EMPCOUNT", SqlDbType.Int);
-                    param.Direction = ParameterDirection.Output;
+                param = cmd.Parameters.Add("@EMPCOUNT", SqlDbType.Int);
+                param.Direction = ParameterDirection.Output;
 
-                    cmd.ExecuteNonQuery();
-                    return Convert.ToInt32(param.Value);
-                }
+                cmd.ExecuteNonQuery();
+                return Convert.ToInt32(param.Value);
             }
         }
 
@@ -2866,6 +2863,89 @@ WHERE
 
         #endregion [.. DISCOUNT PRODUCT ..]
 
+
+        #region CREDIT
+
+        public static string GET_CreditSaleProccessNo()
+        {
+            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                connection.Open();
+                using (SqlCommand cmd = new SqlCommand("EXEC dbo.KREDIT_SATISI_EMELIYYAT_NOMRE", connection))
+                {
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            return dr[0].ToString();
+                        }
+                        return null;
+                    }
+                }
+            }
+        }
+
+        public async static Task Insert_CreditMain(CreditMain item)
+        {
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlCommand cmd = new SqlCommand("INSERT_KREDIT_SATISI_MAIN", con))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@ProcessNo", item.ProcessNo);
+                cmd.Parameters.AddWithValue("@ContractNo", item.ContractNo);
+                cmd.Parameters.AddWithValue("@OdenilenMebleg", item.OdenilenMebleg);
+                cmd.Parameters.AddWithValue("@PaymentType", item.PaymentType);
+                cmd.Parameters.AddWithValue("@Tarix", item.Date);
+                cmd.Parameters.AddWithValue("@CustomerName", item.CustomerName);
+                cmd.Parameters.AddWithValue("@CustomerId", item.CustomerId);
+                cmd.Parameters.AddWithValue("@ZaminName", item.ZaminName);
+                cmd.Parameters.AddWithValue("@ZaminId", item.ZaminId);
+                cmd.Parameters.AddWithValue("@SupplierName", item.SupplierName);
+                cmd.Parameters.AddWithValue("@ProductId", item.ProductId);
+                cmd.Parameters.AddWithValue("@ProductName", item.ProductName);
+                cmd.Parameters.AddWithValue("@Quantity", item.Quantity);
+                cmd.Parameters.AddWithValue("@SalePrice", item.SalePrice);
+                cmd.Parameters.AddWithValue("@DiscountPercent", item.DiscountPercent);
+                cmd.Parameters.AddWithValue("@DiscountAmount", item.DiscountAmount);
+                cmd.Parameters.AddWithValue("@Taksit", item.Taksit);
+                cmd.Parameters.AddWithValue("@Total", item.Total);
+                cmd.Parameters.AddWithValue("@IlkinOdenis", item.IlkinOdenis);
+                cmd.Parameters.AddWithValue("@Comment", item.Comment);
+                cmd.Parameters.AddWithValue("@MonthAmount", item.MonthAmount);
+                cmd.Parameters.AddWithValue("@Cashier", item.Cashier);
+                cmd.Parameters.AddWithValue("@UserId", item.UserId);
+                cmd.Parameters.AddWithValue("@LonfFiskalId", item.LonfFiskalId);
+                cmd.Parameters.AddWithValue("@ShortFiskalId", item.ShortFiskalId);
+                await con.OpenAsync();
+                await cmd.ExecuteNonQueryAsync();
+            }
+        }
+
+        public async static Task Insert_CreditMonth(CreditSaleMonth item)
+        {
+            string query = $@"INSERT INTO [dbo].[KREDIT_SATISI_AYLIKODEME] 
+([kredit_id], [taksitno], [DATEODEMEGUNU_], 
+  [ODENILECEK_MEBLEG], longidsana) 
+VALUES 
+  (
+    @CreditSaleId, @Month, @PaymentDay, 
+    @Amount, @CreditSaleFiscalId
+  )";
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, con))
+            {
+                cmd.CommandType = CommandType.Text;
+                cmd.Parameters.AddWithValue("@CreditSaleId", item.CreditSaleId);
+                cmd.Parameters.AddWithValue("@Month", item.Month);
+                cmd.Parameters.AddWithValue("@PaymentDay", item.PaymentDay);
+                cmd.Parameters.AddWithValue("@Amount", item.Amount);
+                cmd.Parameters.AddWithValue("@CreditSaleFiscalId", item.CreditSaleFiscalId);
+                await con.OpenAsync();
+                await cmd.ExecuteNonQueryAsync();
+            }
+        }
+
+        #endregion
 
         #endregion [...PROCEDURES METHODS...]
     }

@@ -1,6 +1,6 @@
 ﻿namespace WindowsFormsApp2.Forms
 {
-    partial class fPrepaymentPay
+    partial class fPay
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(fPrepaymentPay));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(fPay));
             this.navigationFrame1 = new DevExpress.XtraBars.Navigation.NavigationFrame();
             this.pageHome = new DevExpress.XtraBars.Navigation.NavigationPage();
             this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
@@ -86,7 +86,7 @@
             this.pageCashCard});
             this.navigationFrame1.SelectedPage = this.pageHome;
             this.navigationFrame1.Size = new System.Drawing.Size(458, 136);
-            this.navigationFrame1.TabIndex = 0;
+            this.navigationFrame1.TabIndex = 1;
             this.navigationFrame1.Text = "navigationFrame1";
             // 
             // pageHome
@@ -172,7 +172,6 @@
             // 
             // pageCash
             // 
-            this.pageCash.Caption = "pageCash";
             this.pageCash.Controls.Add(this.lCash_Message);
             this.pageCash.Controls.Add(this.bCash_Enter);
             this.pageCash.Controls.Add(this.labelControl3);
@@ -251,7 +250,6 @@
             // 
             // pageCashCard
             // 
-            this.pageCashCard.Caption = "pageCashCard";
             this.pageCashCard.Controls.Add(this.tCashCard_Cash);
             this.pageCashCard.Controls.Add(this.tCashCard_Card);
             this.pageCashCard.Controls.Add(this.tCashCard_Enter);
@@ -379,6 +377,9 @@
             this.tCash_Total.Properties.Appearance.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Critical;
             this.tCash_Total.Properties.Appearance.Options.UseFont = true;
             this.tCash_Total.Properties.Appearance.Options.UseForeColor = true;
+            this.tCash_Total.Properties.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.NumericMaskManager));
+            this.tCash_Total.Properties.MaskSettings.Set("MaskManagerSignature", "allowNull=False");
+            this.tCash_Total.Properties.MaskSettings.Set("mask", "f2");
             this.tCash_Total.Properties.NullText = "0";
             this.tCash_Total.Properties.ReadOnly = true;
             this.tCash_Total.Size = new System.Drawing.Size(176, 54);
@@ -437,12 +438,15 @@
             this.tCashCard_Total.Properties.Appearance.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Critical;
             this.tCashCard_Total.Properties.Appearance.Options.UseFont = true;
             this.tCashCard_Total.Properties.Appearance.Options.UseForeColor = true;
+            this.tCashCard_Total.Properties.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.NumericMaskManager));
+            this.tCashCard_Total.Properties.MaskSettings.Set("MaskManagerSignature", "allowNull=False");
+            this.tCashCard_Total.Properties.MaskSettings.Set("mask", "f2");
             this.tCashCard_Total.Properties.NullText = "0";
             this.tCashCard_Total.Properties.ReadOnly = true;
             this.tCashCard_Total.Size = new System.Drawing.Size(176, 54);
             this.tCashCard_Total.TabIndex = 27;
             // 
-            // fPrepaymentPay
+            // fPay
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
@@ -452,10 +456,10 @@
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(460, 310);
             this.MinimumSize = new System.Drawing.Size(460, 170);
-            this.Name = "fPrepaymentPay";
+            this.Name = "fPay";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Ödəniş növü";
-            this.Load += new System.EventHandler(this.fPrepaymentPay_Load);
+            this.Text = "Ödəniş";
+            this.Load += new System.EventHandler(this.fPay_Load);
             ((System.ComponentModel.ISupportInitialize)(this.navigationFrame1)).EndInit();
             this.navigationFrame1.ResumeLayout(false);
             this.pageHome.ResumeLayout(false);
@@ -480,29 +484,29 @@
 
         private DevExpress.XtraBars.Navigation.NavigationFrame navigationFrame1;
         private DevExpress.XtraBars.Navigation.NavigationPage pageHome;
-        private DevExpress.XtraBars.Navigation.NavigationPage pageCash;
         private DevExpress.Utils.Layout.TablePanel tablePanel1;
         private DevExpress.XtraEditors.SimpleButton bCash;
         private DevExpress.XtraEditors.SimpleButton bCard;
         private DevExpress.XtraEditors.SimpleButton bCashCard;
-        private DevExpress.XtraEditors.LabelControl labelControl1;
-        private DevExpress.XtraEditors.TextEdit tCash_Total;
-        private DevExpress.XtraEditors.LabelControl labelControl2;
-        private DevExpress.XtraEditors.LabelControl labelControl3;
-        private DevExpress.XtraEditors.TextEdit tCash_Balance;
+        private DevExpress.XtraBars.Navigation.NavigationPage pageCash;
+        private DevExpress.XtraEditors.LabelControl lCash_Message;
         private DevExpress.XtraEditors.SimpleButton bCash_Enter;
+        private DevExpress.XtraEditors.LabelControl labelControl3;
+        private DevExpress.XtraEditors.LabelControl labelControl2;
+        private DevExpress.XtraEditors.LabelControl labelControl1;
+        private DevExpress.XtraEditors.TextEdit tCash_Paid;
+        private DevExpress.XtraEditors.TextEdit tCash_Balance;
+        private DevExpress.XtraEditors.TextEdit tCash_Total;
         private DevExpress.XtraBars.Navigation.NavigationPage pageCashCard;
+        private DevExpress.XtraEditors.TextEdit tCashCard_Cash;
+        private DevExpress.XtraEditors.TextEdit tCashCard_Card;
         private DevExpress.XtraEditors.SimpleButton tCashCard_Enter;
         private DevExpress.XtraEditors.LabelControl labelControl4;
+        private DevExpress.XtraEditors.LabelControl lCashCard_Message;
         private DevExpress.XtraEditors.LabelControl labelControl7;
         private DevExpress.XtraEditors.LabelControl labelControl5;
         private DevExpress.XtraEditors.LabelControl labelControl6;
         private DevExpress.XtraEditors.TextEdit tCashCard_Balance;
         private DevExpress.XtraEditors.TextEdit tCashCard_Total;
-        private DevExpress.XtraEditors.TextEdit tCash_Paid;
-        private DevExpress.XtraEditors.TextEdit tCashCard_Card;
-        private DevExpress.XtraEditors.TextEdit tCashCard_Cash;
-        private DevExpress.XtraEditors.LabelControl lCashCard_Message;
-        private DevExpress.XtraEditors.LabelControl lCash_Message;
     }
 }

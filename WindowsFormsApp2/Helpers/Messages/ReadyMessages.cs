@@ -57,7 +57,7 @@ namespace WindowsFormsApp2.Helpers.Messages
             XtraMessageBox.Show(CommonData.SUCCESS_RETURN_SALES, nameof(HeaderMessage.Mesaj), MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        public static void SUCCES_CREDIT_SALES_MESSAGE()
+        public static void SUCCESS_CREDIT_SALES_MESSAGE()
         {
             XtraMessageBox.Show(CommonData.SUCCESS_CREDIT_SALES, nameof(HeaderMessage.Mesaj), MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
@@ -110,6 +110,11 @@ namespace WindowsFormsApp2.Helpers.Messages
         public static void ERROR_SALES_MESSAGE(string exception)
         {
             XtraMessageBox.Show($"{ErrorMessages.ERROR_SALES}\n\n{exception}", nameof(HeaderMessage.Xəta), MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        public static void ERROR_CREDIT_SALES_MESSAGE(string exception)
+        {
+            XtraMessageBox.Show($"{ErrorMessages.ERROR_CREDIT_SALES}\n\n{exception}", nameof(HeaderMessage.Xəta), MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         public static void ERROR_RETURN_SALES_MESSAGE(string exception)

@@ -314,12 +314,10 @@ namespace WindowsFormsApp2.Helpers.DB
                 public string Id { get; set; }
                 public string Name { get; set; }
             }
-
             public class Unit
             {
                 public string Name { get; set; }
             }
-
             public List<Supplier> Suppliers { get; set; } = new List<Supplier>();
             public List<Unit> Units { get; set; } = new List<Unit>();
             public int ProductId { get; set; }
@@ -427,6 +425,50 @@ namespace WindowsFormsApp2.Helpers.DB
             public int UserId { get; }
             public decimal MainDebtAmount { get; set; }
             public decimal TaxDebtAmount { get; set; }
+        }
+
+        public class CreditMain
+        {
+            public static User User { get; set; } = DbProsedures.GetUser();
+            public string ProcessNo { get; set; }
+            public string ContractNo { get; set; }
+            public decimal OdenilenMebleg { get; set; }
+            public short PaymentType { get; set; } = 1;
+            public int CustomerId { get; set; }
+            public string CustomerName { get; set; }
+            public int ZaminId { get; set; }
+            public string ZaminName { get; set; }
+            public int UserId { get; set; } = User.Id;
+            public string Cashier { get; set; } = User.NameSurname;
+            public string SupplierName { get; set; }
+            public int ProductId { get; set; }
+            public string ProductName { get; set; }
+            public decimal Quantity { get; set; }
+            public decimal SalePrice { get; set; }
+            public decimal DiscountPercent { get; set; }
+            public decimal DiscountAmount { get; set; }
+            public int Taksit { get; set; }
+            public decimal Total { get; set; }
+            public decimal IlkinOdenis { get; set; }
+            public decimal MonthAmount { get; set; }
+            public string Comment { get; set; }
+            public DateTime Date { get; set; } = DateTime.Now;
+            public string LonfFiskalId { get; set; }
+            public string ShortFiskalId { get; set; }
+        } 
+
+        public class CreditSaleMonth
+        {
+            public int CreditSaleId { get; set; }
+            public int Month { get; set; }
+            public DateTime PaymentDay { get; set; }
+            public decimal Amount { get; set; }
+            public decimal PayAmount { get; set; }
+            public DateTime Date { get; set; }
+            public string CreditSaleFiscalId { get; set; }
+            public string LongFiscalId { get; set; }
+            public string ShortFiscalId { get; set; }
+            public DateTime PayDate { get; set; }
         }
     }
 }

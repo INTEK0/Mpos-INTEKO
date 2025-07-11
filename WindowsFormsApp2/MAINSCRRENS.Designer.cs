@@ -1765,6 +1765,8 @@ namespace WindowsFormsApp2
             this.accordionControlElement17.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("accordionControlElement17.ImageOptions.SvgImage")));
             this.accordionControlElement17.Name = "accordionControlElement17";
             this.accordionControlElement17.Text = "Ödənişlər";
+            this.accordionControlElement17.Visible = false;
+            this.accordionControlElement17.VisibleInFooter = false;
             // 
             // accordionControlElement18
             // 

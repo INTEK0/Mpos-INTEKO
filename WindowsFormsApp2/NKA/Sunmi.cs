@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Windows.Forms;
+using DevExpress.Data.Helpers;
 using DevExpress.DataAccess.Native.Web;
 using DevExpress.XtraEditors;
+using DevExpress.XtraMap.Native;
 using Newtonsoft.Json;
 using RestSharp;
 using WindowsFormsApp2.Helpers;
@@ -698,13 +700,71 @@ WHERE KREDIT_SATISI_AYLIK_ID= {KREDIT_SATISI_AYLIK_ID}";
             }
         }
 
-        public static string CreditSale(RootObject rootObject)
+        public static Tuple<bool, string, string> CreditSale(CreditSaleDto dataDto)
         {
-            string json = Newtonsoft.Json.JsonConvert.SerializeObject(rootObject, new JsonSerializerSettings
+            List<CreditSaleRequest.Item> items = new List<CreditSaleRequest.Item>();
+            CreditSaleRequest.Item item = new CreditSaleRequest.Item()
+            {
+                name = dataDto.item.ProductName,
+                code = dataDto.item.ProductCode,
+                quantity = dataDto.item.Quantity,
+                quantityType = dataDto.item.QuantityType,
+                vatType = dataDto.item.VatType,
+                salePrice = dataDto.item.SalePrice
+            };
+            items.Add(item);
+
+            CreditSaleRequest.Data data = new CreditSaleRequest.Data()
+            {
+                cashPayment = dataDto.CashPayment,
+                cardPayment = dataDto.CardPayment,
+                cashierName = dataDto.Cashier,
+                creditPayer = dataDto.CustomerName,
+                creditContract = dataDto.CreditContract,
+                creditPayment = dataDto.creditPayment,
+                documentUUID = dataDto.DocumentUUID,
+                note = dataDto.Note,
+                items = items,
+            };
+
+            CreditSaleRequest request = new CreditSaleRequest()
+            {
+                data = data
+            };
+
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(request, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
             });
-            return json;
+
+            var response = RequestPOST(dataDto.Url, json);
+
+            if (response.message != "error" && response.code != "506")
+            {
+                switch (response.message)
+                {
+                    case "Success operation":
+                    case "Successful operation":
+                        if (MessageVisible)
+                        {
+                            ReadyMessages.SUCCESS_CREDIT_SALES_MESSAGE();
+                        }
+                        FormHelpers.Log($"Kredit satışı uğurla edildi. Qəbz No: {response.data.number}");
+                        return new Tuple<bool, string, string>(true,response.data.document_id, response.data.short_document_id);
+                    case "document: invalid shift duration":
+                        XtraMessageBox.Show("GÜN SONU (Z) HESABATI ÇIXARILMAYIB !\n\nPos Satış səhifəsindən daxil olaraq günü sonlandırın", "Mesaj", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return new Tuple<bool, string, string>(true, null, null);
+                    default:
+                        ReadyMessages.ERROR_CREDIT_SALES_MESSAGE(response.message);
+                        FormHelpers.Log($"Kredit satışı xətası - Xəta mesajı: {response.message}");
+                        return new Tuple<bool, string, string>(true, null, null);
+                }
+            }
+            else
+            {
+                ReadyMessages.ERROR_CREDIT_SALES_MESSAGE("Kassa ilə əlaqə zamanı xəta yarandı");
+                return new Tuple<bool, string, string>(true, null, null);
+            }
         }
 
         public static void PeriodicReport(DateTime _start, DateTime _end, string ipAddress)
@@ -1178,6 +1238,103 @@ WHERE psd.pos_satis_check_main_id = {pos_satis_main_id} AND psm.user_id_ = {Prop
                 public string password { get; set; } = "password";
             }
         }
+
+        public class  CreditSaleRequest
+        {
+            public class Item
+            {
+                public string name { get; set; }
+                public string code { get; set; }
+                public decimal quantity { get; set; }
+                public decimal salePrice { get; set; }
+                public double? realPrice { get; set; } = null;
+                public decimal? purchasePrice { get; set; } = null;
+                public int? codeType { get; set; } = null;
+                public int quantityType { get; set; }
+                public int vatType { get; set; }
+                public decimal? discountAmount { get; set; } = null;
+            }
+
+            public class Data
+            {
+                public bool? isManual { get; set; } = null;
+                public string startDate { get; set; } = null;
+                public string endDate { get; set; } = null;
+                public string parentDocumentId { get; set; } = null;
+                public string documentUUID { get; set; } = null;
+                public decimal? cashPayment { get; set; } = null;
+                public decimal? creditPayment { get; set; } = null;
+                public decimal? depositPayment { get; set; } = null;
+                public decimal? cardPayment { get; set; } = null;
+                public decimal? bonusPayment { get; set; } = null;
+                public List<Item> items { get; set; } = null;
+                public int? moneyBackType { get; set; } = null;
+                public string clientName { get; set; } = null;
+                public double? clientTotalBonus { get; set; } = null;
+                public double? clientEarnedBonus { get; set; } = null;
+                public string clientBonusCardNumber { get; set; } = null;
+                public string cashierName { get; set; } = null;
+                public string rrn { get; set; } = null;
+                public string currency { get; set; } = "AZN";
+                public string creditPayer { get; set; } = null;
+                public double? residue { get; set; } = null;
+                public string creditContract { get; set; } = null;
+                public string paymentNumber { get; set; } = null;
+                public string note { get; set; } = null;
+            }
+
+            public Data data { get; set; }
+            public string Operation { get; set; } = "sale";
+        }
+
+        public class CreditPayRequest
+        {
+            public class Item
+            {
+                public string name { get; set; }
+                public string code { get; set; }
+                public decimal quantity { get; set; }
+                public decimal salePrice { get; set; }
+                public double? realPrice { get; set; } = null;
+                public decimal? purchasePrice { get; set; } = null;
+                public int? codeType { get; set; } = null;
+                public int quantityType { get; set; }
+                public int vatType { get; set; }
+                public decimal? discountAmount { get; set; } = null;
+            }
+
+            public class Data
+            {
+                public bool? isManual { get; set; } = null;
+                public string startDate { get; set; } = null;
+                public string endDate { get; set; } = null;
+                public string parentDocumentId { get; set; } = null;
+                public string documentUUID { get; set; } = null;
+                public decimal? cashPayment { get; set; } = null;
+                public decimal? creditPayment { get; set; } = null;
+                public decimal? depositPayment { get; set; } = null;
+                public decimal? cardPayment { get; set; } = null;
+                public decimal? bonusPayment { get; set; } = null;
+                public List<Item> items { get; set; } = null;
+                public int? moneyBackType { get; set; } = null;
+                public string clientName { get; set; } = null;
+                public double? clientTotalBonus { get; set; } = null;
+                public double? clientEarnedBonus { get; set; } = null;
+                public string clientBonusCardNumber { get; set; } = null;
+                public string cashierName { get; set; } = null;
+                public string rrn { get; set; } = null;
+                public string currency { get; set; } = "AZN";
+                public string creditPayer { get; set; } = null;
+                public double? residue { get; set; } = null;
+                public string creditContract { get; set; } = null;
+                public string paymentNumber { get; set; } = null;
+                public string note { get; set; } = null;
+            }
+
+            public Data data { get; set; }
+            public string Operation { get; set; } = "credit";
+        }
+        
         #endregion [..REQUEST CLASS..]
 
 

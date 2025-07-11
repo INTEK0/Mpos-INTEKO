@@ -703,6 +703,16 @@ namespace WindowsFormsApp2.Properties {
         /// <summary>
         ///   Looks up a localized resource of type DevExpress.Utils.Svg.SvgImage.
         /// </summary>
+        internal static DevExpress.Utils.Svg.SvgImage financial1 {
+            get {
+                object obj = ResourceManager.GetObject("financial1", resourceCulture);
+                return ((DevExpress.Utils.Svg.SvgImage)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type DevExpress.Utils.Svg.SvgImage.
+        /// </summary>
         internal static DevExpress.Utils.Svg.SvgImage floatingobjectbringtofrontoftext {
             get {
                 object obj = ResourceManager.GetObject("floatingobjectbringtofrontoftext", resourceCulture);

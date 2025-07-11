@@ -1,27 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.UI;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
-using DevExpress.XtraEditors.Repository;
-using DevExpress.XtraGrid.Columns;
-using DevExpress.XtraGrid.Localization;
 using DevExpress.XtraGrid.Views.Grid;
-using DevExpress.XtraRichEdit.Model;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
-using WindowsFormsApp2.Helpers.Messages;
 using WindowsFormsApp2.NKA;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
+using static DTOs;
 using static WindowsFormsApp2.Helpers.Enums;
 using static WindowsFormsApp2.Helpers.FormHelpers;
 
@@ -33,7 +20,7 @@ namespace WindowsFormsApp2.Forms
         private string _unitId, _taxId, _productId, _creditMainId, _customerId;
         private int index = 0;
         private CreditPayData _creditPayData;
-
+        private readonly IpModel _terminal = GetIpModel();
 
         private class CreditPayData
         {
@@ -49,7 +36,6 @@ namespace WindowsFormsApp2.Forms
             InitializeComponent();
             GridPanelText(gridView1);
             GridPanelText(gridView2);
-            GridLocalizer.Active = new MyGridLocalizer();
         }
 
         private void fCreditPay_Load(object sender, EventArgs e)
@@ -59,11 +45,7 @@ namespace WindowsFormsApp2.Forms
 
         private void CreditDataLoad()
         {
-            try
-            {
-                using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
-                {
-                    string query = @"SELECT [KREDIT_SATISI_MAIN_ID] ID,
+            string query = @"SELECT [KREDIT_SATISI_MAIN_ID] ID,
 [GAIME_NOMRE] 'MÜQAVİLƏ NÖMRƏSİ',
 [ODENILEN_MEBLEG] 'KREDİT MƏBLƏĞİ',
 [musteri_id] AS N'MÜŞTƏRİ ID',
@@ -84,74 +66,41 @@ namespace WindowsFormsApp2.Forms
 ilkinodenis,
 prd_qty 'MİQDAR'
 FROM [KREDIT_SATISI_MAIN]";
-                    con.Open();
-                    using (SqlCommand cmd = new SqlCommand(query, con))
-                    {
-                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-                        {
-                            using (DataTable dt = new DataTable())
-                            {
-                                da.Fill(dt);
-                                gridControl1.DataSource = dt;
-                                gridView1.Columns["ID"].Visible = false;
-                                gridView1.Columns["product_id"].Visible = false;
-                                gridView1.OptionsSelection.MultiSelect = true;
-                                gridView1.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                ReadyMessages.ERROR_DEFAULT_MESSAGE(e.Message);
-            }
+            var data = DbProsedures.ConvertToDataTable(query);
+            gridControl1.DataSource = data;
         }
 
         private void GetUnitAndTaxData()
         {
-            try
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
             {
-                using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
-                {
-                    con.Open();
+                con.Open();
 
-                    string query = $@"SELECT  
+                string query = $@"SELECT  
 [VAHID], 
 [VERGI_DERECESI] 
 FROM  [MAL_ALISI_DETAILS] 
 WHERE 
 [MAL_ALISI_DETAILS_ID] = {_productId}";
-                    using (SqlCommand cmd = new SqlCommand(query, con))
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    using (SqlDataReader dr = cmd.ExecuteReader())
                     {
-                        using (SqlDataReader dr = cmd.ExecuteReader())
+                        if (dr.Read())
                         {
-                            if (dr.Read())
-                            {
-                                _unitId = dr["VAHID"].ToString();
-                                _taxId = dr["VERGI_DERECESI"].ToString();
-                            }
+                            _unitId = dr["VAHID"].ToString();
+                            _taxId = dr["VERGI_DERECESI"].ToString();
                         }
                     }
                 }
-            }
-            catch (Exception e)
-            {
-                ReadyMessages.ERROR_DEFAULT_MESSAGE(e.Message);
             }
         }
 
         private void PeriodicPayDataLoad()
         {
-            try
-            {
-                gridView2.ClearSelection();
-                gridControl2.DataSource = null;
-
-                using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
-                {
-                    con.Open();
-                    string queryString = $@"SELECT  [KREDIT_SATISI_AYLIK_ID],
+            gridView2.ClearSelection();
+            gridControl2.DataSource = null;
+            string queryString = $@"SELECT  [KREDIT_SATISI_AYLIK_ID],
 [kredit_id],
 [taksitno] AS N'KREDİT (AY)',
 [DATEODEMEGUNU_] AS  'QRAFİK ÜZRƏ ÖDƏNİŞ TARİXİ',
@@ -161,111 +110,187 @@ CASE WHEN [ODENILEN_MEBLEG]>=ODENILECEK_MEBLEG THEN 1 ELSE 0 END AS KONTROL,
 [longidsana]  
 FROM  [KREDIT_SATISI_AYLIKODEME] 
 where kredit_id={_creditMainId}";
-
-                    using (SqlCommand cmd = new SqlCommand(queryString, con))
-                    {
-                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-                        {
-                            using (DataTable dt = new DataTable())
-                            {
-                                da.Fill(dt);
-                                gridControl2.DataSource = dt;
-                                gridView2.Columns["kredit_id"].Visible = false;
-                                gridView2.Columns["KREDIT_SATISI_AYLIK_ID"].Visible = false;
-                                gridView2.Columns["KONTROL"].Visible = false;
-                                gridView2.Columns["longidsana"].Visible = false;
-                            }
-                        }
-                    }
-                }
-
-
-                if (gridView2.Columns.ColumnByFieldName("ÖDƏNİŞ ƏT") == null)
-                {
-                    AddUnboundColumn();
-                    AddRepository();
-                }
-            }
-            catch (Exception e)
-            {
-                ReadyMessages.ERROR_DEFAULT_MESSAGE(e.Message);
-            }
+            var data = DbProsedures.ConvertToDataTable(queryString);
+            gridControl2.DataSource = data;
         }
 
-        private void AddUnboundColumn()
+        private void bPay_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
-            GridColumn unbColumn = gridView2.Columns.AddField("ÖDƏNİŞ ƏT");
-            unbColumn.VisibleIndex = gridView2.Columns.Count;
-            unbColumn.UnboundType = DevExpress.Data.UnboundColumnType.Decimal;
-        }
-
-        private void AddRepository()
-        {
-            RepositoryItemButtonEdit edit = new RepositoryItemButtonEdit();
-            edit.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
-            edit.ButtonClick += edit_ButtonClick;
-            edit.Buttons[0].Caption = "ÖDƏNİŞ ƏT";
-            edit.Buttons[0].Kind = DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph;
-            gridView2.Columns["ÖDƏNİŞ ƏT"].ColumnEdit = edit;
-        }
-
-        void edit_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
-        {
-            string deger2 = "", deger3 = "", deger4 = "", deger5 = "", deger6 = "", handle = null;
             int[] selectedRows = gridView2.GetSelectedRows();
-            foreach (var rowHandle in selectedRows)
-            {
-                handle = rowHandle.ToString();
-                index = rowHandle;
-                deger2 = gridView2.GetRowCellValue(rowHandle, "KONTROL").ToString();
-                deger3 = gridView2.GetRowCellValue(rowHandle, "KREDIT_SATISI_AYLIK_ID").ToString();
-                deger6 = gridView2.GetRowCellValue(rowHandle, "KREDİT (AY)").ToString();
-                deger4 = gridView2.GetRowCellValue(rowHandle, "longidsana").ToString();
-                deger5 = gridView2.GetRowCellValue(rowHandle, "AYLIQ ÖDƏNİŞ").ToString();
-            }
+            if (selectedRows.Length == 0)
+                return;
 
-            string deger20 = "";
+            int rowHandle = selectedRows[0];
+            int prevRowHandle = rowHandle - 1;
 
 
-            if (index > 0)
-            {
-                deger20 = gridView2.GetRowCellValue(index - 1, "KONTROL").ToString();
-            }
-            else
-            {
-                deger20 = "Bos";
-            }
-            if (deger20 == "0")
+            string kontrol = gridView2.GetRowCellValue(rowHandle, "KONTROL")?.ToString();
+            string kreditId = gridView2.GetRowCellValue(rowHandle, "KREDIT_SATISI_AYLIK_ID")?.ToString();
+            string kreditAy = gridView2.GetRowCellValue(rowHandle, "KREDİT (AY)")?.ToString();
+            string longId = gridView2.GetRowCellValue(rowHandle, "longidsana")?.ToString();
+            string aylikOdenis = gridView2.GetRowCellValue(rowHandle, "AYLIQ ÖDƏNİŞ")?.ToString();
+
+
+            string prevKontrol = prevRowHandle >= 0
+                ? gridView2.GetRowCellValue(prevRowHandle, "KONTROL")?.ToString()
+                : "Bos";
+
+            if (prevKontrol == "0")
             {
                 XtraMessageBox.Show("Zəhmət olmasa, əvvəlki ayın ödənişini edin.");
+                return;
             }
-            else
+
+            if (kontrol == "1")
             {
-                if (deger2 == "1")
-                {
-                    XtraMessageBox.Show("Ödəniş əvvəllər edilib. Növbəti ödənişi edin");
-                }
-                else
-                {
-                    deger5 = gridView2.GetRowCellValue(Convert.ToInt32(handle), "AYLIQ ÖDƏNİŞ").ToString();
-                    double deger51 = Math.Round(Convert.ToDouble(deger5), 2);
-                    decimal f = Convert.ToDecimal(deger51);
-
-                    _creditPayData = new CreditPayData
-                    {
-                        KONTROL = deger2,
-                        KREDIT_SATISI_AYLIK_ID = deger3,
-                        KREDIT_AY = deger6,
-                        longidsana = deger4,
-                        AYLIQ_ODENIS = deger5
-                    };
-
-                    nagkardkredit nk = new nagkardkredit(f, this);
-                    nk.ShowDialog();
-
-                   
-                }
+                XtraMessageBox.Show("Ödəniş əvvəllər edilib. Növbəti ödənişi edin");
+                return;
             }
+
+            if (!double.TryParse(aylikOdenis, out double parsedAmount))
+            {
+                XtraMessageBox.Show("Ödəniş məbləği düzgün deyil.");
+                return;
+            }
+
+            decimal amount = Convert.ToDecimal(Math.Round(parsedAmount, 2));
+
+            _creditPayData = new CreditPayData
+            {
+                KONTROL = kontrol,
+                KREDIT_SATISI_AYLIK_ID = kreditId,
+                KREDIT_AY = kreditAy,
+                longidsana = longId,
+                AYLIQ_ODENIS = aylikOdenis
+            };
+
+            fPay pay = new fPay(amount);
+            if (pay.ShowDialog() == DialogResult.OK)
+            {
+                Payment(pay.Result.Total, pay.Result.Cash, pay.Result.Card, pay.Result.IncomingSum);
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            //string deger2 = "", deger3 = "", deger4 = "", deger5 = "", deger6 = "", handle = null;
+            //foreach (var rowHandle in gridView2.GetSelectedRows())
+            //{
+            //    handle = rowHandle.ToString();
+            //    index = rowHandle;
+            //    deger2 = gridView2.GetRowCellValue(rowHandle, "KONTROL").ToString();
+            //    deger3 = gridView2.GetRowCellValue(rowHandle, "KREDIT_SATISI_AYLIK_ID").ToString();
+            //    deger6 = gridView2.GetRowCellValue(rowHandle, "KREDİT (AY)").ToString();
+            //    deger4 = gridView2.GetRowCellValue(rowHandle, "longidsana").ToString();
+            //    deger5 = gridView2.GetRowCellValue(rowHandle, "AYLIQ ÖDƏNİŞ").ToString();
+            //}
+
+            //string deger20 = "";
+
+
+            //if (index > 0)
+            //{
+            //    deger20 = gridView2.GetRowCellValue(index - 1, "KONTROL").ToString();
+            //}
+            //else
+            //{
+            //    deger20 = "Bos";
+            //}
+            //if (deger20 == "0")
+            //{
+            //    XtraMessageBox.Show("Zəhmət olmasa, əvvəlki ayın ödənişini edin.");
+            //}
+            //else
+            //{
+            //    if (deger2 == "1")
+            //    {
+            //        XtraMessageBox.Show("Ödəniş əvvəllər edilib. Növbəti ödənişi edin");
+            //    }
+            //    else
+            //    {
+            //        deger5 = gridView2.GetRowCellValue(Convert.ToInt32(handle), "AYLIQ ÖDƏNİŞ").ToString();
+            //        double deger51 = Math.Round(Convert.ToDouble(deger5), 2);
+            //        decimal f = Convert.ToDecimal(deger51);
+
+            //        _creditPayData = new CreditPayData
+            //        {
+            //            KONTROL = deger2,
+            //            KREDIT_SATISI_AYLIK_ID = deger3,
+            //            KREDIT_AY = deger6,
+            //            longidsana = deger4,
+            //            AYLIQ_ODENIS = deger5
+            //        };
+
+            //        //nagkardkredit nk = new nagkardkredit(f, this);
+            //        //nk.ShowDialog();
+
+            //        fPay pay = new fPay(f);
+            //        if (pay.ShowDialog() is DialogResult.OK)
+            //        {
+            //            Payment(pay.Result.Total, pay.Result.Cash, pay.Result.Card, pay.Result.IncomingSum);
+            //        }
+            //    }
+            //}
+        }
+
+        private void Payment(decimal Total, decimal Cash, decimal Card, decimal IncomingSum)
+        {
+            //string uuid = Guid.NewGuid().ToString();
+            //int vatType = Convert.ToInt16(_taxId);
+            //int quantityType = Convert.ToInt16(_unitId);
+            //DTOs.CreditPayDto payData = new DTOs.CreditPayDto()
+            //{
+            //    item = new CreditPayDto.Item
+            //    {
+            //        Name = tProductName.Text,
+            //        Code = _productId,
+            //        Quantity = 1,
+            //        SalePrice = deger51,
+            //        RealPrice = Convert.ToDecimal(degeryek),
+            //        quantityType = quantityType,
+            //        vatType = vatType
+            //    },
+            //    documentUUID = uuid,
+            //    IncomingSum = IncomingSum,
+            //    CashPayment = Cash,
+            //    CardPayment = Card,
+            //    CreditContract = tContractNo.Text,
+            //    ParenDocumentId = _creditPayData.longidsana,
+            //    Url = _terminal.Ip,
+            //    CustomerName = tCustomerName.Text,
+
+            //};
+
+            //switch (_terminal.Model)
+            //{
+            //    case "1":
+            //        bool SunmiIsSuccess = false;
+            //        if (SunmiIsSuccess)
+            //        {
+            //            CreditDataLoad();
+            //            PeriodicPayDataLoad();
+            //            //DbProsedures.InsertCustomerDebt(CustomerDebtType.CreditPay, 
+            //            //    DateTime.Now, 
+            //            //    Convert.ToInt32(_customerId), deger51);
+            //        }
+            //        break;
+            //    case "3":
+                    
+            //        break;
+            //}
         }
 
         private void gridView1_RowClick(object sender, RowClickEventArgs e)
@@ -273,7 +298,6 @@ where kredit_id={_creditMainId}";
             DataRow dr = gridView1.GetDataRow(gridView1.FocusedRowHandle);
             if (dr != null)
             {
-                int paramValue = Convert.ToInt32(dr[0]);
                 _creditMainId = dr[0].ToString();
                 _customerId = dr["MÜŞTƏRİ ID"].ToString();
                 tContractNo.Text = dr["MÜQAVİLƏ NÖMRƏSİ"].ToString();
@@ -294,7 +318,7 @@ where kredit_id={_creditMainId}";
 
                 if (tTotalPay.Text == "")
                 {
-                    tCreditBalance.Text = (Convert.ToDouble(tCreditAmount.Text)).ToString();
+                    tCreditBalance.Text = Convert.ToDouble(tCreditAmount.Text).ToString();
                 }
                 else
                 {
@@ -304,16 +328,6 @@ where kredit_id={_creditMainId}";
                 GetUnitAndTaxData();
                 PeriodicPayDataLoad();
             }
-        }
-
-        private void bReport_Click(object sender, EventArgs e)
-        {
-            FormHelpers.ExcelExport(gridControl2, $"{tCustomerName.Text} - Aylıq kredit ödəniş hesabatı");
-        }
-
-        private void bRefresh_Click(object sender, EventArgs e)
-        {
-
         }
 
         public void gelen_data_negd_pos(decimal cash_, decimal card_, decimal umumi_mebleg_)
@@ -346,6 +360,10 @@ where kredit_id={_creditMainId}";
                 int vatType = Convert.ToInt16(_taxId);
                 int quantityType = Convert.ToInt16(_unitId);
                 decimal salePrice = Convert.ToDecimal(tSalePrice.Text);
+
+
+
+
                 Sunmi.Item item = new Sunmi.Item()
                 {
                     name = tProductName.Text,
@@ -356,8 +374,6 @@ where kredit_id={_creditMainId}";
                     vatType = vatType,
                     quantityType = quantityType
                 };
-
-
 
                 Sunmi.Data data = new Sunmi.Data()
                 {

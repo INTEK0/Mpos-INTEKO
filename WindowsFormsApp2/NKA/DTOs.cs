@@ -1,4 +1,8 @@
-﻿using WindowsFormsApp2.Helpers;
+﻿using System;
+using System.Collections.Generic;
+using WindowsFormsApp2.Helpers;
+using WindowsFormsApp2.Helpers.DB;
+using WindowsFormsApp2.NKA;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
 
 public static class DTOs
@@ -54,5 +58,72 @@ public static class DTOs
         public string AccessToken { get; set; }
         public string Cashier { get; set; }
         public decimal Sum { get; set; }
+    }
+
+    public class CreditSaleDto
+    {
+        public class Item
+        {
+            public string ProductName { get; set; }
+            public string ProductCode { get; set; }
+            public decimal Quantity { get; set; }
+            public decimal SalePrice { get; set; }
+
+            public decimal Total
+            {
+                get
+                {
+                    return SalePrice * Quantity;
+                }
+            }
+
+            public int VatType { get; set; }
+            public int QuantityType { get; set; }
+        }
+        public Item item { get; set; }
+        public decimal Total
+        {
+            get { return CashPayment + CardPayment; }
+        }
+        public string DocumentUUID { get; set; }
+        public decimal CashPayment { get; set; } = 0;
+        public decimal CardPayment { get; set; } = 0;
+        public decimal creditPayment { get; set; }
+        public decimal IncomingSum { get; set; }
+        public string Cashier { get; set; }
+        public string CreditContract { get; set; }
+        public string CustomerName { get; set; }
+        public string Note { get; set; }
+        public string Url { get; set; }
+        public string AccessToken { get; set; }
+        public string MerchantId { get; set; }
+    }
+
+    public class CreditPayDto
+    {
+        public class Item
+        {
+            public string Name { get; set; }
+            public string Code { get; set; }
+            public decimal Quantity { get; set; }
+            public decimal SalePrice { get; set; }
+            public decimal RealPrice { get; set; }
+            public int vatType { get; set; }
+            public int quantityType { get; set; }
+        };
+        public Item item { get; set; }
+        public string documentUUID { get; set; }
+        public string ParenDocumentId { get; set; }
+        public decimal CashPayment { get; set; }
+        public decimal CardPayment { get; set; }
+        public string CashierName { get; } = DbProsedures.GetUser().NameSurname;
+        public string CreditContract { get; set; }
+        public string CustomerName { get; set; }
+        public decimal MonthPeriodPayment { get; set; }
+        public decimal IncomingSum { get; set; }
+        public string Note { get; set; }
+        public string Url { get; set; }
+        public string AccessToken { get; set; }
+        public string MerchantId { get; set; }
     }
 }

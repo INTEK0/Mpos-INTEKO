@@ -424,8 +424,6 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
                 rrn = rrn,
             };
 
-
-
             Parameters parameters = new Parameters
             {
                 doc_type = "sale",
@@ -1428,6 +1426,125 @@ case A.VERGI_DERECESI
             return Math.Truncate(value * 100) / 100;
         }
 
+        public static Tuple<bool, string, string> CreditSale(CreditSaleDto creditData)
+        {
+            if (string.IsNullOrWhiteSpace(creditData.AccessToken))
+            {
+                creditData.AccessToken = Login(creditData.Url);
+                if (string.IsNullOrWhiteSpace(creditData.AccessToken))
+                    return new Tuple<bool, string, string>(false, null, null); ;
+            }
+
+            List<CreditSaleRequest.Item> items = new List<CreditSaleRequest.Item>();
+            List<CreditSaleRequest.VatAmount> vatAmounts = new List<CreditSaleRequest.VatAmount>();
+
+            decimal vatSumFor18Percent = 0;
+            decimal vatSumFor2Percent = 0;
+            decimal vatSumFor0Percent = 0;
+
+            int vatType = 18;
+            switch (creditData.item.VatType)
+            {
+                case 1:
+                case 2:
+                    vatType = 18;
+                    break;
+                case 3: vatType = 0; break;
+                case 4: vatType = 2; break;
+                case 6: vatType = 2; break;
+                case 5: vatType = 8; break;
+            }
+
+            CreditSaleRequest.Item item = new CreditSaleRequest.Item
+            {
+                itemName = creditData.item.ProductName,
+                itemCode = creditData.item.ProductCode,
+                itemQuantityType = creditData.item.QuantityType,
+                itemQuantity = creditData.item.Quantity,
+                itemPrice = creditData.item.SalePrice,
+                itemSum = creditData.item.SalePrice * creditData.item.Quantity,
+                itemVatPercent = vatType,
+            };
+            items.Add(item);
+
+            vatAmounts.Add(new CreditSaleRequest.VatAmount
+            {
+                vatPercent = vatType,
+                vatSum = creditData.Total
+            });
+
+            CreditSaleRequest.Data data = new CreditSaleRequest.Data
+            {
+                sum = creditData.Total,
+                cashSum = creditData.CashPayment,
+                cashlessSum = creditData.CardPayment,
+                creditSum = creditData.creditPayment,
+                incomingSum = creditData.IncomingSum,
+                cashier = creditData.Cashier,
+                items = items,
+                vatAmounts = vatAmounts,
+                creditContract = creditData.CreditContract
+            };
+
+            CreditSaleRequest.RequestData requestData = new CreditSaleRequest.RequestData()
+            {
+                access_token = creditData.AccessToken,
+                tokenData = new CreditSaleRequest.TokenData()
+                {
+                    parameters = new CreditSaleRequest.Parameters()
+                    {
+                        data = data
+                    },
+                },
+                checkData = new CreditSaleRequest.CheckData(){}
+            };
+
+            CreditSaleRequest.Root root = new CreditSaleRequest.Root()
+            {
+                requestData = requestData
+            };
+
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(root, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            });
+
+            var response = RequestPOST(creditData.Url, json);
+
+            if (response != null)
+            {
+                if (response.message == "Successful operation")
+                {
+                    if (MessageVisible)
+                        ReadyMessages.SUCCESS_CREDIT_SALES_MESSAGE();
+                    FormHelpers.Log($"Kredit satışı uğurla edildi. Qəbz No: {response.document_number}");
+                    return new Tuple<bool, string, string>(true, response.long_id, response.short_id);
+                }
+                else if (response.message == "document: invalid shift duration")
+                {
+                    XtraMessageBox.Show("GÜN SONU (Z) HESABATI ÇIXARILMAYIB !\n\nZəhmət olmasa pos bağla düyməsinə vuraraq günü sonlandırın.", "Mesaj", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return new Tuple<bool, string, string>(false, null, null);
+                }
+                else if (response.message == "document: invalid shift status")
+                {
+                    XtraMessageBox.Show("NÖVBƏ AÇILMAYIB !\n\nZəhmət olmasa pos aç düyməsinə vuraraq növbəni açın.", "Mesaj", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return new Tuple<bool, string, string>(false, null, null);
+                }
+                else
+                {
+                    ReadyMessages.ERROR_SALES_MESSAGE(response.message);
+                    FormHelpers.Log($"Pos satışı xətası - Xəta mesajı: {response.message}");
+                    return new Tuple<bool, string, string>(false, null, null);
+                }
+            }
+            else
+            {
+                return new Tuple<bool, string, string>(false, null, null);
+            }
+
+            return new Tuple<bool, string, string>(false, null, null);
+        }
+
 
         #region [..Request Classes..]
 
@@ -1447,6 +1564,72 @@ case A.VERGI_DERECESI
             }
 
             public RequestData requestData { get; set; }
+        }
+
+        public class CreditSaleRequest
+        {
+            public class CheckData
+            {
+                public int check_type { get; set; } = 1;
+            }
+
+            public class Data
+            {
+                public string cashier { get; set; }
+                public string currency { get; set; } = "AZN";
+                public string creditContract { get; set; }
+                public List<Item> items { get; set; }
+                public decimal sum { get; set; }
+                public decimal cashSum { get; set; }
+                public decimal cashlessSum { get; set; }
+                public decimal creditSum { get; set; }
+                public decimal bonusSum { get; set; }
+                public decimal incomingSum { get; set; }
+                public List<VatAmount> vatAmounts { get; set; }
+            }
+
+            public class Item
+            {
+                public string itemName { get; set; }
+                public int itemCodeType { get; set; }
+                public string itemCode { get; set; }
+                public int itemQuantityType { get; set; }
+                public decimal itemQuantity { get; set; }
+                public decimal itemPrice { get; set; }
+                public decimal itemSum { get; set; }
+                public int itemVatPercent { get; set; }
+            }
+
+            public class Parameters
+            {
+                public string doc_type { get; set; } = "sale";
+                public Data data { get; set; }
+            }
+
+            public class RequestData
+            {
+                public string access_token { get; set; }
+                public TokenData tokenData { get; set; }
+                public CheckData checkData { get; set; }
+            }
+
+            public class Root
+            {
+                public RequestData requestData { get; set; }
+            }
+
+            public class TokenData
+            {
+                public Parameters parameters { get; set; }
+                public string operationId { get; set; } = "createDocument";
+                public int version { get; set; } = 1;
+            }
+
+            public class VatAmount
+            {
+                public decimal vatSum { get; set; }
+                public int? vatPercent { get; set; }
+            }
         }
 
         private class Item

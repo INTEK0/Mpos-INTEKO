@@ -27,7 +27,7 @@ namespace WindowsFormsApp2
         public int test_proc_(string EMELIYYAT_NOMRE_, string musteri_)
         {
             // Create ADO.NET objects.
-            SqlConnection con = new SqlConnection(Properties.Settings.Default.SqlCon);
+            SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString);
             SqlCommand cmd = new SqlCommand(proceduretest, con);
             // Configure command and add input parameters.
             cmd.CommandType = CommandType.StoredProcedure;

@@ -483,7 +483,7 @@ SELECT [Id]
                 {
                     total += Math.Truncate(d * 100) / 100;
                 }
-                
+
             }
             textEdit6.Text = total.ToString("0.00");
             gridView1.GroupPanelText = $"Məhsul sayı: {gridView1.RowCount}";
@@ -659,7 +659,7 @@ LEFT JOIN pos_guzest pg
         /// insert calculation əməliyyatını və məhsula öncədən endirim tətbiq edilib edilmədiyni kontrol edir
         /// </summary>
         /// <param name="barcode"></param>
-        public async Task getall(string barcode)
+        public async Task  getall(string barcode)
         {
             /*
             try
@@ -992,7 +992,7 @@ LEFT JOIN pos_guzest pg
                         }
                     }
                 }
-               
+
                 if (type is Enums.PayType.Cash)
                 {
                     if (number == 0)
@@ -1561,7 +1561,7 @@ LEFT JOIN pos_guzest pg
             }
         }
 
-        public void NBA_CloseShift()
+        private void NBA_CloseShift()
         {
             string SendJson = null;
             string ResponseJson = null;
@@ -1569,11 +1569,12 @@ LEFT JOIN pos_guzest pg
             try
             {
                 var responseData = NBA.CloseShift(lIpAdress.Text, textBox1.Text);
-                SendJson = responseData.RequestJson;
-                ResponseJson = responseData.ResponseJson;
+                
                 if (responseData == null) { return; }
                 else
                 {
+                    SendJson = responseData.RequestJson;
+                    ResponseJson = responseData.ResponseJson;
                     if (responseData.message is "Successful operation")
                     {
                         nacilma = responseData.data.shiftOpenAtUtc.ToString();
@@ -2470,23 +2471,16 @@ LEFT JOIN pos_guzest pg
                     simpleButton25_Click(null, null);
                     break;
                 case Keys.F12:
-                    if (_user.IsAdmin)
+                    if (!Helpers.CacheData.CommonData.User.UserRole.ProductAdd)
                     {
-                        fQuickAddProduct f = new fQuickAddProduct();
-                        f.Show();
+                        FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
+                        return;
                     }
-                    else
-                    {
-                        Alert("Sizin icazəniz yoxdur", MessageType.Info);
-                    }
+                    fQuickAddProduct f = new fQuickAddProduct();
+                    f.Show();
+
                     break;
             }
-        }
-
-        private void bShortcut_Click(object sender, EventArgs e)
-        {
-            fShortcuts f = new fShortcuts();
-            f.ShowDialog();
         }
 
         private void gridView1_RowClick(object sender, RowClickEventArgs e)

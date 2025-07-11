@@ -488,7 +488,7 @@ FROM[terazimalzeme]";
                 FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
                 return;
             }
-            OpenForm<KREDITSATISLAYOUTSA>(Properties.Settings.Default.UserID, this);
+            OpenForm<KREDITSATISLAYOUTSA>();
         }
 
         private void accordionControlElement25_Click(object sender, EventArgs e)
@@ -1473,6 +1473,11 @@ FROM (
         {
             if (e.KeyCode is Keys.F12)
             {
+                if (!Helpers.CacheData.CommonData.User.UserRole.ProductAdd)
+                {
+                    FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
+                    return;
+                }
                 OpenForm<fQuickAddProduct>("");
             }
         }

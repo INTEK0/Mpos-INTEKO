@@ -1,15 +1,10 @@
-﻿using DevExpress.XtraEditors;
-using DevExpress.XtraGrid.Localization;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DevExpress.XtraEditors;
+using DevExpress.XtraGrid.Localization;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using static WindowsFormsApp2.Helpers.FormHelpers;
@@ -25,7 +20,6 @@ namespace WindowsFormsApp2
             InitializeComponent();
             frm1 = frm_;
             GridPanelText(gridView1);
-            GridLocalizer.Active = new MyGridLocalizer();
         }
 
         private void TECHIZATCI_SEC_Load(object sender, EventArgs e)
@@ -64,16 +58,33 @@ namespace WindowsFormsApp2
 
         }
 
-        public void getall_menfi_ACIG()
+        public async void getall_menfi_ACIG()
         {
             try
             {
-                var data = DbProsedures.ConvertToDataTable("exec dbo.gaime_Satis_mal_load");
+                Cursor.Current = Cursors.WaitCursor;
 
-                gridControl1.DataSource = data;
-                gridView1.Columns[0].Visible = false;
-                gridView1.Columns[2].Visible = false;
-                gridView1.Columns["EDV"].Visible = false;
+                using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+                {
+                    string query = "EXEC dbo.gaime_Satis_mal_load;";
+                    await con.OpenAsync();
+
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        cmd.CommandTimeout = 120;
+
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+                            DataTable dataTable = new DataTable();
+                            await Task.Run(() => da.Fill(dataTable));
+                            gridControl1.DataSource = dataTable;
+                            gridView1.Columns[0].Visible = false;
+                            gridView1.Columns[2].Visible = false;
+                            gridView1.Columns["EDV"].Visible = false;
+                            gridView1.RefreshData();
+                        }
+                    }
+                }
 
             }
             catch (Exception e)
