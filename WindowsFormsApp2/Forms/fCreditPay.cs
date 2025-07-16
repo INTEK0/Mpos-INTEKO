@@ -5,7 +5,6 @@ using System.Data.SqlClient;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
-using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.NKA;
 using static DTOs;
@@ -16,7 +15,6 @@ namespace WindowsFormsApp2.Forms
 {
     public partial class fCreditPay : DevExpress.XtraEditors.XtraForm
     {
-        public readonly IpModel _IpModel = FormHelpers.GetIpModel();
         private string _unitId, _taxId, _productId, _creditMainId, _customerId;
         private int index = 0;
         private CreditPayData _creditPayData;
@@ -56,7 +54,14 @@ namespace WindowsFormsApp2.Forms
 [taksit] 'KREDİT MÜDDƏTİ(AY)',
 [prd_price] * prd_qty AS 'YEKUN MƏBLƏĞ',
 [ayliktutar] 'QRAFİK ÜZRƏ ÖDƏNİŞ',
-[prd_price] 'SATIŞ QİYMƏTİ', 
+[prd_price] 'SATIŞ QİYMƏTİ',
+ISNULL([prd_price] * prd_qty - ISNULL(ilkinodenis, 0), 0)
+-
+ISNULL((
+  SELECT SUM(ODENILEN_MEBLEG)
+  FROM [KREDIT_SATISI_AYLIKODEME]
+  WHERE kredit_id = [KREDIT_SATISI_MAIN_ID]
+), 0) AS N'QALIQ BORC',
 [DATE_] 'MÜQAVİLƏ TARİXİ' ,
 (SELECT MAX([DATE2_]) FROM [KREDIT_SATISI_AYLIKODEME] WHERE kredit_id =[KREDIT_SATISI_MAIN_ID]) 'SON ÖDƏNİŞ TARİXİ',
 (SELECT SUM(ODENILEN_MEBLEG)  FROM [KREDIT_SATISI_AYLIKODEME] WHERE kredit_id =[KREDIT_SATISI_MAIN_ID]) 'CƏM ÖDƏNİLƏN MƏBLƏĞ',
@@ -65,9 +70,20 @@ namespace WindowsFormsApp2.Forms
 [product_id],
 ilkinodenis,
 prd_qty 'MİQDAR'
-FROM [KREDIT_SATISI_MAIN]";
+FROM [KREDIT_SATISI_MAIN]
+WHERE
+  (
+    ([prd_price] * prd_qty - ISNULL(ilkinodenis, 0)) -
+    ISNULL((
+      SELECT SUM(ODENILEN_MEBLEG)
+      FROM [KREDIT_SATISI_AYLIKODEME]
+      WHERE kredit_id = [KREDIT_SATISI_MAIN_ID]
+    ), 0)
+  ) > 0
+ORDER BY KREDIT_SATISI_MAIN_ID DESC";
             var data = DbProsedures.ConvertToDataTable(query);
             gridControl1.DataSource = data;
+            gridView1.RefreshData();
         }
 
         private void GetUnitAndTaxData()
@@ -98,8 +114,6 @@ WHERE
 
         private void PeriodicPayDataLoad()
         {
-            gridView2.ClearSelection();
-            gridControl2.DataSource = null;
             string queryString = $@"SELECT  [KREDIT_SATISI_AYLIK_ID],
 [kredit_id],
 [taksitno] AS N'KREDİT (AY)',
@@ -112,6 +126,7 @@ FROM  [KREDIT_SATISI_AYLIKODEME]
 where kredit_id={_creditMainId}";
             var data = DbProsedures.ConvertToDataTable(queryString);
             gridControl2.DataSource = data;
+            gridView2.RefreshData();
         }
 
         private void bPay_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
@@ -169,128 +184,67 @@ where kredit_id={_creditMainId}";
             {
                 Payment(pay.Result.Total, pay.Result.Cash, pay.Result.Card, pay.Result.IncomingSum);
             }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            //string deger2 = "", deger3 = "", deger4 = "", deger5 = "", deger6 = "", handle = null;
-            //foreach (var rowHandle in gridView2.GetSelectedRows())
-            //{
-            //    handle = rowHandle.ToString();
-            //    index = rowHandle;
-            //    deger2 = gridView2.GetRowCellValue(rowHandle, "KONTROL").ToString();
-            //    deger3 = gridView2.GetRowCellValue(rowHandle, "KREDIT_SATISI_AYLIK_ID").ToString();
-            //    deger6 = gridView2.GetRowCellValue(rowHandle, "KREDİT (AY)").ToString();
-            //    deger4 = gridView2.GetRowCellValue(rowHandle, "longidsana").ToString();
-            //    deger5 = gridView2.GetRowCellValue(rowHandle, "AYLIQ ÖDƏNİŞ").ToString();
-            //}
-
-            //string deger20 = "";
-
-
-            //if (index > 0)
-            //{
-            //    deger20 = gridView2.GetRowCellValue(index - 1, "KONTROL").ToString();
-            //}
-            //else
-            //{
-            //    deger20 = "Bos";
-            //}
-            //if (deger20 == "0")
-            //{
-            //    XtraMessageBox.Show("Zəhmət olmasa, əvvəlki ayın ödənişini edin.");
-            //}
-            //else
-            //{
-            //    if (deger2 == "1")
-            //    {
-            //        XtraMessageBox.Show("Ödəniş əvvəllər edilib. Növbəti ödənişi edin");
-            //    }
-            //    else
-            //    {
-            //        deger5 = gridView2.GetRowCellValue(Convert.ToInt32(handle), "AYLIQ ÖDƏNİŞ").ToString();
-            //        double deger51 = Math.Round(Convert.ToDouble(deger5), 2);
-            //        decimal f = Convert.ToDecimal(deger51);
-
-            //        _creditPayData = new CreditPayData
-            //        {
-            //            KONTROL = deger2,
-            //            KREDIT_SATISI_AYLIK_ID = deger3,
-            //            KREDIT_AY = deger6,
-            //            longidsana = deger4,
-            //            AYLIQ_ODENIS = deger5
-            //        };
-
-            //        //nagkardkredit nk = new nagkardkredit(f, this);
-            //        //nk.ShowDialog();
-
-            //        fPay pay = new fPay(f);
-            //        if (pay.ShowDialog() is DialogResult.OK)
-            //        {
-            //            Payment(pay.Result.Total, pay.Result.Cash, pay.Result.Card, pay.Result.IncomingSum);
-            //        }
-            //    }
-            //}
         }
 
         private void Payment(decimal Total, decimal Cash, decimal Card, decimal IncomingSum)
         {
-            //string uuid = Guid.NewGuid().ToString();
-            //int vatType = Convert.ToInt16(_taxId);
-            //int quantityType = Convert.ToInt16(_unitId);
-            //DTOs.CreditPayDto payData = new DTOs.CreditPayDto()
-            //{
-            //    item = new CreditPayDto.Item
-            //    {
-            //        Name = tProductName.Text,
-            //        Code = _productId,
-            //        Quantity = 1,
-            //        SalePrice = deger51,
-            //        RealPrice = Convert.ToDecimal(degeryek),
-            //        quantityType = quantityType,
-            //        vatType = vatType
-            //    },
-            //    documentUUID = uuid,
-            //    IncomingSum = IncomingSum,
-            //    CashPayment = Cash,
-            //    CardPayment = Card,
-            //    CreditContract = tContractNo.Text,
-            //    ParenDocumentId = _creditPayData.longidsana,
-            //    Url = _terminal.Ip,
-            //    CustomerName = tCustomerName.Text,
+            string uuid = Guid.NewGuid().ToString();
+            int vatType = Convert.ToInt16(_taxId);
+            int quantityType = Convert.ToInt16(_unitId);
+            decimal pay = Math.Round(Convert.ToDecimal(_creditPayData.KREDIT_AY) * Convert.ToDecimal(_creditPayData.AYLIQ_ODENIS), 2);
+            decimal residue = Convert.ToDecimal(tCreditBalance.Text) - Convert.ToDecimal(tCreditPeriodAmount.Text);
+            residue = Math.Max(residue, 0);
+            DTOs.CreditPayDto payData = new DTOs.CreditPayDto()
+            {
+                Url = _terminal.Ip,
+                item = new CreditPayDto.Item
+                {
+                    Name = tProductName.Text,
+                    Code = _productId,
+                    Quantity = Convert.ToDecimal(tAmount.Text),
+                    SalePrice = Convert.ToDecimal(tSalePrice.Text),
+                    quantityType = quantityType,
+                    VatType = vatType
+                },
+                documentUUID = uuid,
+                IncomingSum = IncomingSum,
+                CashPayment = Cash,
+                CardPayment = Card,
+                Residue = residue,
+                paymentNumber = Convert.ToInt32(_creditPayData.KREDIT_AY),
+                CreditContract = tContractNo.Text,
+                ParenDocumentId = _creditPayData.longidsana,
+                CustomerName = tCustomerName.Text,
+                CreditMonthId = Convert.ToInt32(_creditPayData.KREDIT_SATISI_AYLIK_ID),
+            };
 
-            //};
+            switch (_terminal.Model)
+            {
+                case "1":
+                    bool SunmiIsSuccess = Sunmi.CreditPay(payData);
+                    if (SunmiIsSuccess)
+                    {
+                        RefreshData();
+                    }
+                    break;
+                case "3":
+                    bool OmnitechIsSuccess = Omnitech.CreditPay(payData);
+                    if (OmnitechIsSuccess)
+                    {
+                        RefreshData();
+                    }
+                    break;
+            }
+        }
 
-            //switch (_terminal.Model)
-            //{
-            //    case "1":
-            //        bool SunmiIsSuccess = false;
-            //        if (SunmiIsSuccess)
-            //        {
-            //            CreditDataLoad();
-            //            PeriodicPayDataLoad();
-            //            //DbProsedures.InsertCustomerDebt(CustomerDebtType.CreditPay, 
-            //            //    DateTime.Now, 
-            //            //    Convert.ToInt32(_customerId), deger51);
-            //        }
-            //        break;
-            //    case "3":
-                    
-            //        break;
-            //}
+        private void RefreshData()
+        {
+            CreditDataLoad();
+            PeriodicPayDataLoad();
+            DbProsedures.InsertCustomerDebt(CustomerDebtType.CreditPay,
+                DateTime.Now, Convert.ToInt32(_customerId),
+                Math.Round(Convert.ToDecimal(_creditPayData.AYLIQ_ODENIS), 2));
+            LoadCreditDetailsSelectedRow();
         }
 
         private void gridView1_RowClick(object sender, RowClickEventArgs e)
@@ -298,13 +252,12 @@ where kredit_id={_creditMainId}";
             DataRow dr = gridView1.GetDataRow(gridView1.FocusedRowHandle);
             if (dr != null)
             {
-                _creditMainId = dr[0].ToString();
+                _creditMainId = dr["ID"].ToString();
                 _customerId = dr["MÜŞTƏRİ ID"].ToString();
                 tContractNo.Text = dr["MÜQAVİLƏ NÖMRƏSİ"].ToString();
                 tContractDate.Text = dr["MÜQAVİLƏ TARİXİ"].ToString();
                 tCustomerName.Text = dr["AD SOYAD ATA ADI"].ToString();
                 tProductName.Text = dr["MƏHSULUN ADI"].ToString();
-                tCreditAmount.Text = dr["KREDİT MƏBLƏĞİ"].ToString();
                 tCreditPeriod.Text = dr["KREDİT MÜDDƏTİ(AY)"].ToString();
                 tCreditPeriodAmount.Text = dr["QRAFİK ÜZRƏ ÖDƏNİŞ"].ToString();
                 tLastPayDate.Text = dr["SON ÖDƏNİŞ TARİXİ"].ToString();
@@ -317,16 +270,115 @@ where kredit_id={_creditMainId}";
                 tCreditAmount.Text = (Convert.ToDouble(tTotal.Text) - Convert.ToDouble(tDownPayment.Text)).ToString();
 
                 if (tTotalPay.Text == "")
-                {
                     tCreditBalance.Text = Convert.ToDouble(tCreditAmount.Text).ToString();
-                }
                 else
-                {
-                    tCreditBalance.Text = (Convert.ToDouble(tCreditAmount.Text) - Convert.ToDouble(tTotalPay.Text)).ToString();
-                }
+                    tCreditBalance.Text = Math.Max((Convert.ToDouble(dr["QALIQ BORC"].ToString())), 0).ToString();
+
                 _productId = dr["product_id"].ToString();
                 GetUnitAndTaxData();
                 PeriodicPayDataLoad();
+            }
+        }
+
+        private void LoadCreditDetailsSelectedRow()
+        {
+            if (!string.IsNullOrWhiteSpace(_creditMainId))
+            {
+                string query = @"SELECT 
+  [KREDIT_SATISI_MAIN_ID] ID, 
+  [GAIME_NOMRE] N'MÜQAVİLƏ NÖMRƏSİ', 
+  [ODENILEN_MEBLEG] N'KREDİT MƏBLƏĞİ', 
+  [musteri_id] AS N'MÜŞTƏRİ ID', 
+  [MUSTERI] N'AD SOYAD ATA ADI', 
+  [ZAMIN] N'ZAMIN AD SOYAD', 
+  [personel] N'SATIŞ PERSONEL', 
+  [product_name] N'MƏHSULUN ADI', 
+  [taksit] N'KREDİT MÜDDƏTİ(AY)', 
+  [prd_price] * prd_qty AS N'YEKUN MƏBLƏĞ', 
+  [ayliktutar] N'QRAFİK ÜZRƏ ÖDƏNİŞ', 
+  [prd_price] N'SATIŞ QİYMƏTİ',
+  ISNULL([prd_price] * prd_qty - ISNULL(ilkinodenis, 0), 0)
+  -
+  ISNULL((
+    SELECT SUM(ODENILEN_MEBLEG)
+    FROM [KREDIT_SATISI_AYLIKODEME]
+    WHERE kredit_id = [KREDIT_SATISI_MAIN_ID]
+  ), 0) AS N'QALIQ BORC',
+  [DATE_] N'MÜQAVİLƏ TARİXİ', 
+  (
+    SELECT 
+      MAX([DATE2_]) 
+    FROM 
+      [KREDIT_SATISI_AYLIKODEME] 
+    WHERE 
+      kredit_id = [KREDIT_SATISI_MAIN_ID]
+  ) N'SON ÖDƏNİŞ TARİXİ', 
+  (
+    SELECT 
+      SUM(ODENILEN_MEBLEG) 
+    FROM 
+      [KREDIT_SATISI_AYLIKODEME] 
+    WHERE 
+      kredit_id = [KREDIT_SATISI_MAIN_ID]
+  ) N'CƏM ÖDƏNİLƏN MƏBLƏĞ', 
+  (
+    SELECT 
+      ODENILEN_MEBLEG 
+    FROM 
+      [KREDIT_SATISI_AYLIKODEME] 
+    WHERE 
+      kredit_id = [KREDIT_SATISI_MAIN_ID] 
+      AND DATE2_ = (
+        SELECT 
+          MAX([DATE2_]) 
+        FROM 
+          [KREDIT_SATISI_AYLIKODEME] 
+        WHERE 
+          kredit_id = [KREDIT_SATISI_MAIN_ID]
+      )
+  ) N'SON ÖDƏNİŞ MƏBLƏĞİ', 
+  [product_id], 
+  ilkinodenis, 
+  prd_qty N'MİQDAR' 
+FROM 
+  [KREDIT_SATISI_MAIN] 
+where 
+  [KREDIT_SATISI_MAIN_ID] = @Id";
+                using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@Id", _creditMainId);
+                    con.Open();
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            _creditMainId = dr["ID"].ToString();
+                            _customerId = dr["MÜŞTƏRİ ID"].ToString();
+                            tContractNo.Text = dr["MÜQAVİLƏ NÖMRƏSİ"].ToString();
+                            tContractDate.Text = dr["MÜQAVİLƏ TARİXİ"].ToString();
+                            tCustomerName.Text = dr["AD SOYAD ATA ADI"].ToString();
+                            tProductName.Text = dr["MƏHSULUN ADI"].ToString();
+                            tCreditPeriod.Text = dr["KREDİT MÜDDƏTİ(AY)"].ToString();
+                            tCreditPeriodAmount.Text = dr["QRAFİK ÜZRƏ ÖDƏNİŞ"].ToString();
+                            tLastPayDate.Text = dr["SON ÖDƏNİŞ TARİXİ"].ToString();
+                            tLastPayAmount.Text = dr["SON ÖDƏNİŞ MƏBLƏĞİ"].ToString();
+                            tTotalPay.Text = dr["CƏM ÖDƏNİLƏN MƏBLƏĞ"].ToString();
+                            tDownPayment.Text = dr["ilkinodenis"].ToString();
+                            tSalePrice.Text = dr["SATIŞ QİYMƏTİ"].ToString();
+                            tAmount.Text = dr["MİQDAR"].ToString();
+                            tTotal.Text = dr["YEKUN MƏBLƏĞ"].ToString();
+                            tCreditAmount.Text = (Convert.ToDouble(tTotal.Text) - Convert.ToDouble(tDownPayment.Text)).ToString();
+
+                            if (tTotalPay.Text == "")
+                                tCreditBalance.Text = Convert.ToDouble(tCreditAmount.Text).ToString();
+                            else
+                                tCreditBalance.Text = Math.Max((Convert.ToDouble(dr["QALIQ BORC"].ToString())), 0).ToString();
+
+                            _productId = dr["product_id"].ToString();
+                        }
+                    }
+                }
             }
         }
 
@@ -381,7 +433,7 @@ where kredit_id={_creditMainId}";
                     parentDocumentId = _creditPayData.longidsana,
                     cashPayment = cash_,
                     cardPayment = card_,
-                    cashierName = _IpModel.Cashier,
+                    cashierName = _terminal.Cashier,
                     residue = yekunodenens2,
                     paymentNumber = _creditPayData.KREDIT_AY,
                     creditContract = tContractNo.Text,
@@ -396,13 +448,13 @@ where kredit_id={_creditMainId}";
                     operation = "credit"
                 };
 
-                bool result = Sunmi.CreditPay(root, _IpModel.Ip, _creditPayData.KREDIT_SATISI_AYLIK_ID);
-                if (result)
-                {
-                    CreditDataLoad();
-                    PeriodicPayDataLoad();
-                    DbProsedures.InsertCustomerDebt(CustomerDebtType.CreditPay, DateTime.Now, Convert.ToInt32(_customerId), deger51);
-                }
+                //bool result = Sunmi.CreditPay(root, _terminal.Ip, _creditPayData.KREDIT_SATISI_AYLIK_ID);
+                //if (result)
+                //{
+                //    CreditDataLoad();
+                //    PeriodicPayDataLoad();
+                //    DbProsedures.InsertCustomerDebt(CustomerDebtType.CreditPay, DateTime.Now, Convert.ToInt32(_customerId), deger51);
+                //}
             }
             catch (Exception ex)
             {

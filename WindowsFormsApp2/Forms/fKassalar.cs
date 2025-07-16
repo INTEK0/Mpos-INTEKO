@@ -6,6 +6,7 @@ using System.Linq;
 using DevExpress.XtraGrid.Localization;
 using DevExpress.XtraGrid.Views.Grid;
 using WindowsFormsApp2.Helpers;
+using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using WindowsFormsApp2.Validations;
@@ -105,7 +106,7 @@ LEFT JOIN userParol u ON u.id = ki.KASSIR_ID";
 
         private void bDelete_Click(object sender, EventArgs e)
         {
-            if (!Helpers.CacheData.CommonData.User.UserRole.TerminalDelete)
+            if (!UserCacheService.User.UserRole.TerminalDelete)
             {
                 FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
                 return;

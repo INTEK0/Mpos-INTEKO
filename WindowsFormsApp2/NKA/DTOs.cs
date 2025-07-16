@@ -101,25 +101,38 @@ public static class DTOs
 
     public class CreditPayDto
     {
+        public int CreditMonthId { get; set; } //KREDIT_SATISI_AYLIK_ID
         public class Item
         {
             public string Name { get; set; }
             public string Code { get; set; }
             public decimal Quantity { get; set; }
             public decimal SalePrice { get; set; }
-            public decimal RealPrice { get; set; }
-            public int vatType { get; set; }
+            public decimal Total
+            {
+                get
+                {
+                    return SalePrice * Quantity;
+                }
+            }
+
+            public int VatType { get; set; }
             public int quantityType { get; set; }
         };
         public Item item { get; set; }
         public string documentUUID { get; set; }
         public string ParenDocumentId { get; set; }
+        public decimal Residue { get; set; }
         public decimal CashPayment { get; set; }
         public decimal CardPayment { get; set; }
+        public decimal Total
+        {
+            get { return CashPayment + CardPayment; }
+        }
         public string CashierName { get; } = DbProsedures.GetUser().NameSurname;
         public string CreditContract { get; set; }
         public string CustomerName { get; set; }
-        public decimal MonthPeriodPayment { get; set; }
+        public int paymentNumber { get; set; } //Hansı ayın ödənişi olduğu göndərilir.
         public decimal IncomingSum { get; set; }
         public string Note { get; set; }
         public string Url { get; set; }

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using WindowsFormsApp2.Helpers;
+using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Validations;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
@@ -104,7 +105,7 @@ namespace WindowsFormsApp2.Forms
         private async void bAdd_Click(object sender, EventArgs e)
         {
 
-            if (!Helpers.CacheData.CommonData.User.UserRole.ProductAdd)
+            if (!UserCacheService.User.UserRole.ProductAdd)
             {
                 FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
                 return;
@@ -262,7 +263,7 @@ namespace WindowsFormsApp2.Forms
 
         private void bAlinanMallar_Click(object sender, EventArgs e)
         {
-            if (!Helpers.CacheData.CommonData.User.UserRole.Report)
+            if (!UserCacheService.User.UserRole.Report)
             {
                 FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
                 return;
@@ -643,7 +644,7 @@ namespace WindowsFormsApp2.Forms
 
         private void bDelete_Click(object sender, EventArgs e)
         {
-            if (!Helpers.CacheData.CommonData.User.UserRole.ProductDelete)
+            if (!UserCacheService.User.UserRole.ProductDelete)
             {
                 FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
                 return;
@@ -682,7 +683,7 @@ namespace WindowsFormsApp2.Forms
 
         private void bNewSupplier_Click(object sender, EventArgs e)
         {
-            if (!Helpers.CacheData.CommonData.User.UserRole.Suppliers)
+            if (!UserCacheService.User.UserRole.Suppliers)
             {
                 FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
                 return;

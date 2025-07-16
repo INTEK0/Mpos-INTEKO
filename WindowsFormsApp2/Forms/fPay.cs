@@ -139,5 +139,14 @@ namespace WindowsFormsApp2.Forms
             };
             DialogResult = DialogResult.OK;
         }
+
+        private void fPay_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                if (navigationFrame1.SelectedPage == pageCash)
+                    bCash_Enter.PerformClick();
+                else if (navigationFrame1.SelectedPage == pageCashCard)
+                    tCashCard_Enter.PerformClick();
+        }
     }
 }

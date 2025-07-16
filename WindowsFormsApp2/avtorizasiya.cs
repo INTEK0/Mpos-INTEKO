@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Licence.Services;
 using WindowsFormsApp2.Helpers;
+using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.Messages;
 using WindowsFormsApp2.Validations;
 
@@ -90,7 +91,7 @@ namespace WindowsFormsApp2
                 Properties.Settings.Default.UserID = user.Id;
                 Properties.Settings.Default.Save();
                 FormHelpers.Log("Sistemə daxil oldu");
-                Helpers.CacheData.CommonData.User = user;
+                UserCacheService.User = user;
 
 
                 LicenseService.Instance.Start();

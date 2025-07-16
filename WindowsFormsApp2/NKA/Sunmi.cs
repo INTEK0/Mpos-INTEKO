@@ -642,15 +642,48 @@ namespace WindowsFormsApp2.NKA
             }
         }
 
-        public static bool CreditPay(RootObject rootObject, string IpAddress, string KREDIT_SATISI_AYLIK_ID)
+        public static bool CreditPay(CreditPayDto creditData)
         {
-            string json = Newtonsoft.Json.JsonConvert.SerializeObject(rootObject, new JsonSerializerSettings
+            CreditPayRequest.Item item = new CreditPayRequest.Item()
+            {
+                name = creditData.item.Name,
+                code = creditData.item.Code,
+                quantity = creditData.item.Quantity,
+                salePrice = creditData.Total,
+                realPrice = creditData.item.SalePrice,
+                vatType = creditData.item.VatType,
+                quantityType = creditData.item.quantityType
+            };
+
+            CreditPayRequest.Data data = new CreditPayRequest.Data()
+            {
+                documentUUID = creditData.documentUUID,
+                parentDocumentId = creditData.ParenDocumentId,
+                cashPayment = creditData.IncomingSum,
+                cardPayment = creditData.CardPayment,
+                cashierName = creditData.CashierName,
+                residue = creditData.Residue,
+                paymentNumber = creditData.paymentNumber.ToString(),
+                creditContract = creditData.CreditContract,
+                creditPayer = creditData.CustomerName,
+                clientName = creditData.CustomerName,
+                items = new List<CreditPayRequest.Item> { item }
+            };
+
+
+            CreditPayRequest root = new CreditPayRequest
+            {
+                data = data
+            };
+
+
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(root, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
             });
 
             RestClient rest = new RestClient();
-            RestRequest request = new RestRequest(IpAddress, Method.Post);
+            RestRequest request = new RestRequest(creditData.Url, Method.Post);
             request.AddHeader("Content-Type", "application/json;charset=utf-8");
             request.AddStringBody(json, DataFormat.Json);
             RestResponse response = rest.Execute(request);
@@ -678,22 +711,8 @@ namespace WindowsFormsApp2.NKA
                         ReadyMessages.SUCCES_CREDIT_PAYMENT_MESSAGE();
                     }
 
-                    FormHelpers.Log($"{rootObject.data.creditContract} nömrəli müqavilənin kredit ödənişi edildi.");
-
-                    using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
-                    {
-                        string query = $@"UPDATE [dbo].[KREDIT_SATISI_AYLIKODEME] SET [DATE2_]=GETDATE(),
-[ODENILEN_MEBLEG]=[ODENILECEK_MEBLEG],
-[longids]=N'{payResponse.data.document_id}',
-[shortids]=N'{payResponse.data.short_document_id}'  
-WHERE KREDIT_SATISI_AYLIK_ID= {KREDIT_SATISI_AYLIK_ID}";
-                        con.Open();
-                        using (SqlCommand cmd = new SqlCommand(query, con))
-                        {
-                            cmd.ExecuteNonQuery();
-                        }
-                    }
-
+                    DbProsedures.UPDATE_CreditPay(payResponse.data.short_document_id, payResponse.data.document_id, creditData.CreditMonthId);
+                    FormHelpers.Log($"{data.creditContract} nömrəli müqavilənin kredit ödənişi edildi. Qəbz No: {payResponse.data.document_number}");
 
                     return true;
                 }
@@ -1295,7 +1314,7 @@ WHERE psd.pos_satis_check_main_id = {pos_satis_main_id} AND psm.user_id_ = {Prop
                 public string code { get; set; }
                 public decimal quantity { get; set; }
                 public decimal salePrice { get; set; }
-                public double? realPrice { get; set; } = null;
+                public decimal? realPrice { get; set; } = null;
                 public decimal? purchasePrice { get; set; } = null;
                 public int? codeType { get; set; } = null;
                 public int quantityType { get; set; }
@@ -1325,7 +1344,7 @@ WHERE psd.pos_satis_check_main_id = {pos_satis_main_id} AND psm.user_id_ = {Prop
                 public string rrn { get; set; } = null;
                 public string currency { get; set; } = "AZN";
                 public string creditPayer { get; set; } = null;
-                public double? residue { get; set; } = null;
+                public decimal? residue { get; set; } = null;
                 public string creditContract { get; set; } = null;
                 public string paymentNumber { get; set; } = null;
                 public string note { get; set; } = null;

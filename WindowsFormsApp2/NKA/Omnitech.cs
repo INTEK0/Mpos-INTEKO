@@ -1496,7 +1496,7 @@ case A.VERGI_DERECESI
                         data = data
                     },
                 },
-                checkData = new CreditSaleRequest.CheckData(){}
+                checkData = new CreditSaleRequest.CheckData() { }
             };
 
             CreditSaleRequest.Root root = new CreditSaleRequest.Root()
@@ -1533,7 +1533,7 @@ case A.VERGI_DERECESI
                 else
                 {
                     ReadyMessages.ERROR_SALES_MESSAGE(response.message);
-                    FormHelpers.Log($"Pos satışı xətası - Xəta mesajı: {response.message}");
+                    FormHelpers.Log($"Kredit satışı xətası - Xəta mesajı: {response.message}");
                     return new Tuple<bool, string, string>(false, null, null);
                 }
             }
@@ -1543,6 +1543,130 @@ case A.VERGI_DERECESI
             }
 
             return new Tuple<bool, string, string>(false, null, null);
+        }
+
+        public static bool CreditPay(CreditPayDto creditData)
+        {
+            if (string.IsNullOrWhiteSpace(creditData.AccessToken))
+            {
+                creditData.AccessToken = Login(creditData.Url);
+                if (string.IsNullOrWhiteSpace(creditData.AccessToken))
+                    return false;
+            }
+
+            List<CreditPayRequest.Item> items = new List<CreditPayRequest.Item>();
+            List<CreditPayRequest.VatAmount> vatAmounts = new List<CreditPayRequest.VatAmount>();
+
+            decimal vatSumFor18Percent = 0;
+            decimal vatSumFor2Percent = 0;
+            decimal vatSumFor0Percent = 0;
+
+            int vatType = 18;
+            switch (creditData.item.VatType)
+            {
+                case 1:
+                case 2:
+                    vatType = 18;
+                    break;
+                case 3: vatType = 0; break;
+                case 4: vatType = 2; break;
+                case 6: vatType = 2; break;
+                case 5: vatType = 8; break;
+            }
+
+            CreditPayRequest.Item item = new CreditPayRequest.Item
+            {
+                itemName = creditData.item.Name,
+                itemCode = creditData.item.Code,
+                itemQuantityType = creditData.item.quantityType,
+                itemQuantity = creditData.item.Quantity,
+                itemPrice = creditData.item.SalePrice,
+                itemSum = creditData.item.SalePrice * creditData.item.Quantity,
+                itemVatPercent = vatType,
+            };
+            items.Add(item);
+
+            vatAmounts.Add(new CreditPayRequest.VatAmount
+            {
+                vatPercent = vatType,
+                vatSum = creditData.Total,
+            });
+
+            CreditPayRequest.Data data = new CreditPayRequest.Data
+            {
+                parentDocument = creditData.ParenDocumentId,
+                paymentNumber = creditData.paymentNumber,
+                residue = creditData.Residue,
+                sum = creditData.Total,
+                cashSum = creditData.CashPayment,
+                cashlessSum = creditData.CardPayment,
+                incomingSum = creditData.IncomingSum,
+                cashier = creditData.CashierName,
+                items = items,
+                vatAmounts = vatAmounts,
+                creditContract = creditData.CreditContract,
+            };
+
+
+            CreditPayRequest.RequestData requestData = new CreditPayRequest.RequestData()
+            {
+                access_token = creditData.AccessToken,
+                tokenData = new CreditPayRequest.TokenData()
+                {
+                    parameters = new CreditPayRequest.Parameters()
+                    {
+                        data = data
+                    },
+                },
+                checkData = new CreditPayRequest.CheckData() { }
+            };
+
+            CreditPayRequest.Root root = new CreditPayRequest.Root()
+            {
+                requestData = requestData
+            };
+
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(root, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            });
+
+            var response = RequestPOST(creditData.Url, json);
+
+            if (response != null)
+            {
+                if (response.message == "Successful operation")
+                {
+                    if (MessageVisible)
+                        ReadyMessages.SUCCES_CREDIT_PAYMENT_MESSAGE();
+
+                    DbProsedures.UPDATE_CreditPay(response.short_id, response.long_id, creditData.CreditMonthId);
+                    FormHelpers.Log($"{data.creditContract} nömrəli müqavilənin kredit ödənişi edildi. Qəbz No: {response.document_number}");
+                    return true;
+                }
+                else if (response.message == "document: invalid shift duration")
+                {
+                    XtraMessageBox.Show("GÜN SONU (Z) HESABATI ÇIXARILMAYIB !\n\nZəhmət olmasa pos bağla düyməsinə vuraraq günü sonlandırın.", "Mesaj", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return false;
+                }
+                else if (response.message == "document: invalid shift status")
+                {
+                    XtraMessageBox.Show("NÖVBƏ AÇILMAYIB !\n\nZəhmət olmasa pos aç düyməsinə vuraraq növbəni açın.", "Mesaj", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return false;
+                }
+                else
+                {
+                    ReadyMessages.ERROR_SALES_MESSAGE(response.message);
+                    FormHelpers.Log($"Kredit ödənişi xətası - Xəta mesajı: {response.message}");
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+
+            return false;
         }
 
 
@@ -1566,7 +1690,7 @@ case A.VERGI_DERECESI
             public RequestData requestData { get; set; }
         }
 
-        public class CreditSaleRequest
+        private class CreditSaleRequest
         {
             public class CheckData
             {
@@ -1630,6 +1754,78 @@ case A.VERGI_DERECESI
                 public decimal vatSum { get; set; }
                 public int? vatPercent { get; set; }
             }
+        }
+
+        private class CreditPayRequest
+        {
+            public class CheckData
+            {
+                public int check_type { get; set; } = 31;
+            }
+
+            public class Data
+            {
+                public string cashier { get; set; }
+                public string currency { get; set; } = "AZN";
+                public string parentDocument { get; set; }
+                public string creditContract { get; set; }
+                public int paymentNumber { get; set; }
+                public List<Item> items { get; set; }
+                public decimal residue { get; set; }
+                public decimal sum { get; set; }
+                public decimal cashSum { get; set; }
+                public decimal cashlessSum { get; set; }
+                public decimal prepaymentSum { get; set; }
+                public decimal creditSum { get; set; }
+                public decimal bonusSum { get; set; }
+                public decimal incomingSum { get; set; }
+                public List<VatAmount> vatAmounts { get; set; }
+            }
+
+            public class Item
+            {
+                public string itemName { get; set; }
+                public int itemCodeType { get; set; }
+                public string itemCode { get; set; }
+                public int itemQuantityType { get; set; }
+                public decimal itemQuantity { get; set; }
+                public decimal itemPrice { get; set; }
+                public decimal itemSum { get; set; }
+                public int itemVatPercent { get; set; }
+            }
+
+            public class Parameters
+            {
+                public string doc_type { get; set; } = "creditpay";
+                public Data data { get; set; }
+            }
+
+            public class RequestData
+            {
+                public string access_token { get; set; }
+                public TokenData tokenData { get; set; }
+                public CheckData checkData { get; set; }
+            }
+
+            public class TokenData
+            {
+                public Parameters parameters { get; set; }
+                public string operationId { get; set; } = "createDocument";
+                public int version { get; set; } = 1;
+            }
+
+            public class VatAmount
+            {
+                public decimal vatSum { get; set; }
+                public int vatPercent { get; set; }
+            }
+
+            public class Root
+            {
+                public RequestData requestData { get; set; }
+            }
+
+            public RequestData requestData { get; set; }
         }
 
         private class Item

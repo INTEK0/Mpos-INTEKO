@@ -2945,6 +2945,23 @@ VALUES
             }
         }
 
+        public static void UPDATE_CreditPay(string shortId, string longId, int Id)
+        {
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                string query = $@"UPDATE [dbo].[KREDIT_SATISI_AYLIKODEME] SET [DATE2_]=GETDATE(),
+[ODENILEN_MEBLEG]=[ODENILECEK_MEBLEG],
+[longids]=N'{longId}',
+[shortids]=N'{shortId}'  
+WHERE KREDIT_SATISI_AYLIK_ID= {Id}";
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
         #endregion
 
         #endregion [...PROCEDURES METHODS...]

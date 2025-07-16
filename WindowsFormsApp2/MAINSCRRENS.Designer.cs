@@ -55,9 +55,19 @@ namespace WindowsFormsApp2
             this.panelControl9 = new DevExpress.XtraEditors.PanelControl();
             this.gridControlProducts = new DevExpress.XtraGrid.GridControl();
             this.gridProducts = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn17 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn16 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn15 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn18 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn19 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.panelControl10 = new DevExpress.XtraEditors.PanelControl();
             this.chShowStock = new DevExpress.XtraEditors.CheckButton();
-            this.chStockDecreasingAmount = new DevExpress.XtraEditors.CheckButton();
             this.bGridExcelExport = new DevExpress.XtraEditors.SimpleButton();
             this.groupControl2 = new DevExpress.XtraEditors.GroupControl();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -194,10 +204,17 @@ namespace WindowsFormsApp2
             this.tabDatabase = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.panelDatabase = new DevExpress.XtraEditors.PanelControl();
             this.lBackupHistory = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl21 = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl20 = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl17 = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl16 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl23 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl22 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl18 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl15 = new DevExpress.XtraEditors.LabelControl();
+            this.bDbDelete = new DevExpress.XtraEditors.SimpleButton();
+            this.bDbClear = new DevExpress.XtraEditors.SimpleButton();
+            this.bDbCacheDelete = new DevExpress.XtraEditors.SimpleButton();
             this.bBackupDownload = new DevExpress.XtraEditors.SimpleButton();
             this.tabLog = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
@@ -713,27 +730,143 @@ namespace WindowsFormsApp2
             this.gridProducts.Appearance.EvenRow.Options.UseBackColor = true;
             this.gridProducts.Appearance.OddRow.BackColor = System.Drawing.Color.White;
             this.gridProducts.Appearance.OddRow.Options.UseBackColor = true;
-            this.gridProducts.Appearance.ViewCaption.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
-            this.gridProducts.Appearance.ViewCaption.Options.UseFont = true;
+            this.gridProducts.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.gridColumn9,
+            this.gridColumn10,
+            this.gridColumn11,
+            this.gridColumn12,
+            this.gridColumn13,
+            this.gridColumn17,
+            this.gridColumn14,
+            this.gridColumn16,
+            this.gridColumn15,
+            this.gridColumn18,
+            this.gridColumn19});
             this.gridProducts.DetailHeight = 294;
-            this.gridProducts.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFullFocus;
             this.gridProducts.GridControl = this.gridControlProducts;
             this.gridProducts.Name = "gridProducts";
-            this.gridProducts.OptionsBehavior.Editable = false;
             this.gridProducts.OptionsBehavior.KeepFocusedRowOnUpdate = false;
-            this.gridProducts.OptionsBehavior.ReadOnly = true;
             this.gridProducts.OptionsEditForm.PopupEditFormWidth = 1067;
             this.gridProducts.OptionsNavigation.AutoFocusNewRow = true;
             this.gridProducts.OptionsScrollAnnotations.ShowFocusedRow = DevExpress.Utils.DefaultBoolean.False;
+            this.gridProducts.OptionsView.EnableAppearanceEvenRow = true;
             this.gridProducts.OptionsView.ShowIndicator = false;
             this.gridProducts.OptionsView.ShowViewCaption = true;
-            this.gridProducts.ViewCaption = "Miqdarı az olan məhsullar";
+            this.gridProducts.ViewCaption = "Anbar qalığı";
             this.gridProducts.DoubleClick += new System.EventHandler(this.gridProducts_DoubleClick);
+            // 
+            // gridColumn9
+            // 
+            this.gridColumn9.Caption = "TECHIZATCI_ID";
+            this.gridColumn9.FieldName = "TECHIZATCI_ID";
+            this.gridColumn9.Name = "gridColumn9";
+            this.gridColumn9.OptionsColumn.AllowEdit = false;
+            // 
+            // gridColumn10
+            // 
+            this.gridColumn10.Caption = "TƏCHİZATÇI";
+            this.gridColumn10.FieldName = "TƏCHİZATÇI";
+            this.gridColumn10.Name = "gridColumn10";
+            this.gridColumn10.OptionsColumn.AllowEdit = false;
+            this.gridColumn10.Visible = true;
+            this.gridColumn10.VisibleIndex = 0;
+            this.gridColumn10.Width = 114;
+            // 
+            // gridColumn11
+            // 
+            this.gridColumn11.Caption = "MAL_ALISI_DETAILS_ID";
+            this.gridColumn11.FieldName = "MAL_ALISI_DETAILS_ID";
+            this.gridColumn11.Name = "gridColumn11";
+            this.gridColumn11.OptionsColumn.AllowEdit = false;
+            // 
+            // gridColumn12
+            // 
+            this.gridColumn12.Caption = "MƏHSUL ADI";
+            this.gridColumn12.FieldName = "MƏHSUL ADI";
+            this.gridColumn12.Name = "gridColumn12";
+            this.gridColumn12.OptionsColumn.AllowEdit = false;
+            this.gridColumn12.Visible = true;
+            this.gridColumn12.VisibleIndex = 1;
+            this.gridColumn12.Width = 235;
+            // 
+            // gridColumn13
+            // 
+            this.gridColumn13.Caption = "MƏHSUL KODU";
+            this.gridColumn13.FieldName = "MƏHSUL KODU";
+            this.gridColumn13.Name = "gridColumn13";
+            this.gridColumn13.OptionsColumn.AllowEdit = false;
+            this.gridColumn13.Visible = true;
+            this.gridColumn13.VisibleIndex = 2;
+            this.gridColumn13.Width = 134;
+            // 
+            // gridColumn17
+            // 
+            this.gridColumn17.AppearanceCell.Options.UseTextOptions = true;
+            this.gridColumn17.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.gridColumn17.Caption = "ALIŞ QİYMƏTİ";
+            this.gridColumn17.DisplayFormat.FormatString = "C2";
+            this.gridColumn17.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.gridColumn17.FieldName = "ALIŞ QİYMƏTİ";
+            this.gridColumn17.Name = "gridColumn17";
+            this.gridColumn17.OptionsColumn.AllowEdit = false;
+            // 
+            // gridColumn14
+            // 
+            this.gridColumn14.AppearanceCell.Options.UseTextOptions = true;
+            this.gridColumn14.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.gridColumn14.Caption = "SATIŞ QİYMƏTİ";
+            this.gridColumn14.DisplayFormat.FormatString = "C2";
+            this.gridColumn14.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.gridColumn14.FieldName = "SATIŞ QİYMƏTİ";
+            this.gridColumn14.Name = "gridColumn14";
+            this.gridColumn14.OptionsColumn.AllowEdit = false;
+            this.gridColumn14.Visible = true;
+            this.gridColumn14.VisibleIndex = 3;
+            this.gridColumn14.Width = 134;
+            // 
+            // gridColumn16
+            // 
+            this.gridColumn16.AppearanceCell.Options.UseTextOptions = true;
+            this.gridColumn16.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.gridColumn16.Caption = "BARKOD";
+            this.gridColumn16.FieldName = "MƏHSUL BARKOD";
+            this.gridColumn16.Name = "gridColumn16";
+            this.gridColumn16.OptionsColumn.AllowEdit = false;
+            this.gridColumn16.Visible = true;
+            this.gridColumn16.VisibleIndex = 5;
+            this.gridColumn16.Width = 92;
+            // 
+            // gridColumn15
+            // 
+            this.gridColumn15.AppearanceCell.Options.UseTextOptions = true;
+            this.gridColumn15.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.gridColumn15.Caption = "ANBAR QALIĞI";
+            this.gridColumn15.DisplayFormat.FormatString = "N3";
+            this.gridColumn15.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.gridColumn15.FieldName = "ANBAR QALIĞI";
+            this.gridColumn15.Name = "gridColumn15";
+            this.gridColumn15.OptionsColumn.AllowEdit = false;
+            this.gridColumn15.Visible = true;
+            this.gridColumn15.VisibleIndex = 4;
+            this.gridColumn15.Width = 144;
+            // 
+            // gridColumn18
+            // 
+            this.gridColumn18.Caption = "EDV";
+            this.gridColumn18.FieldName = "EDV";
+            this.gridColumn18.Name = "gridColumn18";
+            this.gridColumn18.OptionsColumn.AllowEdit = false;
+            // 
+            // gridColumn19
+            // 
+            this.gridColumn19.Caption = "CacheDate";
+            this.gridColumn19.FieldName = "CacheDate";
+            this.gridColumn19.Name = "gridColumn19";
+            this.gridColumn19.OptionsColumn.AllowEdit = false;
             // 
             // panelControl10
             // 
             this.panelControl10.Controls.Add(this.chShowStock);
-            this.panelControl10.Controls.Add(this.chStockDecreasingAmount);
             this.panelControl10.Controls.Add(this.bGridExcelExport);
             this.panelControl10.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelControl10.Location = new System.Drawing.Point(0, 0);
@@ -750,7 +883,7 @@ namespace WindowsFormsApp2
             this.chShowStock.Checked = true;
             this.chShowStock.Dock = System.Windows.Forms.DockStyle.Left;
             this.chShowStock.GroupIndex = 1;
-            this.chShowStock.Location = new System.Drawing.Point(207, 2);
+            this.chShowStock.Location = new System.Drawing.Point(2, 2);
             this.chShowStock.LookAndFeel.SkinName = "WXI";
             this.chShowStock.LookAndFeel.UseDefaultLookAndFeel = false;
             this.chShowStock.Margin = new System.Windows.Forms.Padding(2, 0, 3, 0);
@@ -760,27 +893,6 @@ namespace WindowsFormsApp2
             this.chShowStock.TabIndex = 12;
             this.chShowStock.Text = "Anbar qalığı";
             this.chShowStock.CheckedChanged += new System.EventHandler(this.chShowStock_CheckedChanged);
-            // 
-            // chStockDecreasingAmount
-            // 
-            this.chStockDecreasingAmount.AllowFocus = false;
-            this.chStockDecreasingAmount.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.chStockDecreasingAmount.Appearance.Options.UseFont = true;
-            this.chStockDecreasingAmount.AutoSize = true;
-            this.chStockDecreasingAmount.Dock = System.Windows.Forms.DockStyle.Left;
-            this.chStockDecreasingAmount.GroupIndex = 1;
-            this.chStockDecreasingAmount.Location = new System.Drawing.Point(2, 2);
-            this.chStockDecreasingAmount.LookAndFeel.SkinName = "WXI";
-            this.chStockDecreasingAmount.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.chStockDecreasingAmount.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.chStockDecreasingAmount.Name = "chStockDecreasingAmount";
-            this.chStockDecreasingAmount.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.chStockDecreasingAmount.Size = new System.Drawing.Size(205, 29);
-            this.chStockDecreasingAmount.TabIndex = 11;
-            this.chStockDecreasingAmount.TabStop = false;
-            this.chStockDecreasingAmount.Text = "Miqdarı az olan məhsulları göstər";
-            this.chStockDecreasingAmount.Visible = false;
-            this.chStockDecreasingAmount.CheckedChanged += new System.EventHandler(this.chStockDecreasingAmount_CheckedChanged);
             // 
             // bGridExcelExport
             // 
@@ -1744,14 +1856,14 @@ namespace WindowsFormsApp2
             // 
             this.accordionControlElement26.Name = "accordionControlElement26";
             this.accordionControlElement26.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
-            this.accordionControlElement26.Text = "Kredit hesabatı";
+            this.accordionControlElement26.Text = "Kredit satış hesabatı";
             this.accordionControlElement26.Click += new System.EventHandler(this.accordionControlElement26_Click);
             // 
             // accordionControlElement27
             // 
             this.accordionControlElement27.Name = "accordionControlElement27";
             this.accordionControlElement27.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
-            this.accordionControlElement27.Text = "Borc Kredit Hesabatı";
+            this.accordionControlElement27.Text = "Kredit ödəniş hesabatı";
             this.accordionControlElement27.Click += new System.EventHandler(this.accordionControlElement27_Click);
             // 
             // accordionControlElement17
@@ -2478,10 +2590,17 @@ namespace WindowsFormsApp2
             this.panelDatabase.Appearance.Options.UseBackColor = true;
             this.panelDatabase.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.panelDatabase.Controls.Add(this.lBackupHistory);
+            this.panelDatabase.Controls.Add(this.labelControl21);
+            this.panelDatabase.Controls.Add(this.labelControl20);
+            this.panelDatabase.Controls.Add(this.labelControl17);
+            this.panelDatabase.Controls.Add(this.labelControl16);
             this.panelDatabase.Controls.Add(this.labelControl23);
             this.panelDatabase.Controls.Add(this.labelControl22);
             this.panelDatabase.Controls.Add(this.labelControl18);
             this.panelDatabase.Controls.Add(this.labelControl15);
+            this.panelDatabase.Controls.Add(this.bDbDelete);
+            this.panelDatabase.Controls.Add(this.bDbClear);
+            this.panelDatabase.Controls.Add(this.bDbCacheDelete);
             this.panelDatabase.Controls.Add(this.bBackupDownload);
             this.panelDatabase.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelDatabase.Location = new System.Drawing.Point(0, 0);
@@ -2495,7 +2614,7 @@ namespace WindowsFormsApp2
             // lBackupHistory
             // 
             this.lBackupHistory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lBackupHistory.Appearance.Font = new System.Drawing.Font("Verdana", 11F);
+            this.lBackupHistory.Appearance.Font = new System.Drawing.Font("Nunito", 11F);
             this.lBackupHistory.Appearance.Options.UseFont = true;
             this.lBackupHistory.Appearance.Options.UseTextOptions = true;
             this.lBackupHistory.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
@@ -2503,27 +2622,76 @@ namespace WindowsFormsApp2
             this.lBackupHistory.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.lBackupHistory.Location = new System.Drawing.Point(965, 81);
             this.lBackupHistory.Name = "lBackupHistory";
-            this.lBackupHistory.Size = new System.Drawing.Size(180, 18);
+            this.lBackupHistory.Size = new System.Drawing.Size(180, 20);
             this.lBackupHistory.TabIndex = 20;
             this.lBackupHistory.Text = "Yoxdur";
             // 
+            // labelControl21
+            // 
+            this.labelControl21.Appearance.Font = new System.Drawing.Font("Nunito", 10F);
+            this.labelControl21.Appearance.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Critical;
+            this.labelControl21.Appearance.Options.UseFont = true;
+            this.labelControl21.Appearance.Options.UseForeColor = true;
+            this.labelControl21.Location = new System.Drawing.Point(8, 243);
+            this.labelControl21.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
+            this.labelControl21.Name = "labelControl21";
+            this.labelControl21.Size = new System.Drawing.Size(494, 18);
+            this.labelControl21.TabIndex = 20;
+            this.labelControl21.Text = "Silinmə edildikdən sonra heç bir məlumatın geri qaytarılması mümkün olmayacaqdır " +
+    "!";
+            this.labelControl21.Visible = false;
+            // 
+            // labelControl20
+            // 
+            this.labelControl20.Appearance.Font = new System.Drawing.Font("Nunito", 11F);
+            this.labelControl20.Appearance.Options.UseFont = true;
+            this.labelControl20.Location = new System.Drawing.Point(7, 223);
+            this.labelControl20.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.labelControl20.Name = "labelControl20";
+            this.labelControl20.Size = new System.Drawing.Size(225, 20);
+            this.labelControl20.TabIndex = 20;
+            this.labelControl20.Text = "Verilənlər bazasını qalıcı olaraq sil";
+            this.labelControl20.Visible = false;
+            // 
+            // labelControl17
+            // 
+            this.labelControl17.Appearance.Font = new System.Drawing.Font("Nunito", 11F);
+            this.labelControl17.Appearance.Options.UseFont = true;
+            this.labelControl17.Location = new System.Drawing.Point(7, 189);
+            this.labelControl17.Name = "labelControl17";
+            this.labelControl17.Size = new System.Drawing.Size(406, 20);
+            this.labelControl17.TabIndex = 20;
+            this.labelControl17.Text = "Verilənlər bazasını sıfırla (Anbar qalığı, satış, hesabatlar və s.)";
+            this.labelControl17.Visible = false;
+            // 
+            // labelControl16
+            // 
+            this.labelControl16.Appearance.Font = new System.Drawing.Font("Nunito", 11F);
+            this.labelControl16.Appearance.Options.UseFont = true;
+            this.labelControl16.Location = new System.Drawing.Point(7, 157);
+            this.labelControl16.Name = "labelControl16";
+            this.labelControl16.Size = new System.Drawing.Size(144, 20);
+            this.labelControl16.TabIndex = 20;
+            this.labelControl16.Text = "Keş yaddaşını təmizlə";
+            this.labelControl16.Visible = false;
+            // 
             // labelControl23
             // 
-            this.labelControl23.Appearance.Font = new System.Drawing.Font("Verdana", 11F);
+            this.labelControl23.Appearance.Font = new System.Drawing.Font("Nunito", 11F);
             this.labelControl23.Appearance.Options.UseFont = true;
             this.labelControl23.Location = new System.Drawing.Point(7, 81);
             this.labelControl23.Name = "labelControl23";
-            this.labelControl23.Size = new System.Drawing.Size(217, 18);
+            this.labelControl23.Size = new System.Drawing.Size(197, 20);
             this.labelControl23.TabIndex = 20;
             this.labelControl23.Text = "Son nüsxənin yaradılma tarixi";
             // 
             // labelControl22
             // 
-            this.labelControl22.Appearance.Font = new System.Drawing.Font("Verdana", 11F);
+            this.labelControl22.Appearance.Font = new System.Drawing.Font("Nunito", 11F);
             this.labelControl22.Appearance.Options.UseFont = true;
-            this.labelControl22.Location = new System.Drawing.Point(7, 50);
+            this.labelControl22.Location = new System.Drawing.Point(7, 49);
             this.labelControl22.Name = "labelControl22";
-            this.labelControl22.Size = new System.Drawing.Size(164, 18);
+            this.labelControl22.Size = new System.Drawing.Size(148, 20);
             this.labelControl22.TabIndex = 20;
             this.labelControl22.Text = "Ehtiyyat nüsxəsi yarat";
             // 
@@ -2531,7 +2699,7 @@ namespace WindowsFormsApp2
             // 
             this.labelControl18.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelControl18.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold);
+            this.labelControl18.Appearance.Font = new System.Drawing.Font("Nunito", 14F, System.Drawing.FontStyle.Bold);
             this.labelControl18.Appearance.Options.UseFont = true;
             this.labelControl18.Appearance.Options.UseTextOptions = true;
             this.labelControl18.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
@@ -2541,16 +2709,16 @@ namespace WindowsFormsApp2
             this.labelControl18.LineVisible = true;
             this.labelControl18.Location = new System.Drawing.Point(7, 116);
             this.labelControl18.Name = "labelControl18";
-            this.labelControl18.Size = new System.Drawing.Size(1147, 27);
+            this.labelControl18.Size = new System.Drawing.Size(1147, 29);
             this.labelControl18.TabIndex = 0;
-            this.labelControl18.Text = "Verilənlər bazasının sıfırlanması";
+            this.labelControl18.Text = "Verilənlər bazasının idarə olunması\r\n";
             this.labelControl18.Visible = false;
             // 
             // labelControl15
             // 
             this.labelControl15.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelControl15.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold);
+            this.labelControl15.Appearance.Font = new System.Drawing.Font("Nunito", 14F, System.Drawing.FontStyle.Bold);
             this.labelControl15.Appearance.Options.UseFont = true;
             this.labelControl15.Appearance.Options.UseTextOptions = true;
             this.labelControl15.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
@@ -2560,9 +2728,72 @@ namespace WindowsFormsApp2
             this.labelControl15.LineVisible = true;
             this.labelControl15.Location = new System.Drawing.Point(7, 6);
             this.labelControl15.Name = "labelControl15";
-            this.labelControl15.Size = new System.Drawing.Size(1147, 27);
+            this.labelControl15.Size = new System.Drawing.Size(1147, 29);
             this.labelControl15.TabIndex = 0;
             this.labelControl15.Text = "Ehtiyyat nüsxə";
+            // 
+            // bDbDelete
+            // 
+            this.bDbDelete.AllowFocus = false;
+            this.bDbDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.bDbDelete.Appearance.Font = new System.Drawing.Font("Verdana", 11F);
+            this.bDbDelete.Appearance.ForeColor = System.Drawing.Color.Black;
+            this.bDbDelete.Appearance.Options.UseFont = true;
+            this.bDbDelete.Appearance.Options.UseForeColor = true;
+            this.bDbDelete.AppearanceDisabled.ForeColor = System.Drawing.Color.White;
+            this.bDbDelete.AppearanceDisabled.Options.UseForeColor = true;
+            this.bDbDelete.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bDbDelete.ImageOptions.SvgImage")));
+            this.bDbDelete.ImageOptions.SvgImageSize = new System.Drawing.Size(24, 24);
+            this.bDbDelete.Location = new System.Drawing.Point(986, 219);
+            this.bDbDelete.Name = "bDbDelete";
+            this.bDbDelete.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bDbDelete.Size = new System.Drawing.Size(159, 28);
+            this.bDbDelete.TabIndex = 19;
+            this.bDbDelete.Text = "Bazanı sil";
+            this.bDbDelete.Visible = false;
+            this.bDbDelete.Click += new System.EventHandler(this.bBackupDownload_Click);
+            // 
+            // bDbClear
+            // 
+            this.bDbClear.AllowFocus = false;
+            this.bDbClear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.bDbClear.Appearance.Font = new System.Drawing.Font("Verdana", 11F);
+            this.bDbClear.Appearance.ForeColor = System.Drawing.Color.Black;
+            this.bDbClear.Appearance.Options.UseFont = true;
+            this.bDbClear.Appearance.Options.UseForeColor = true;
+            this.bDbClear.AppearanceDisabled.ForeColor = System.Drawing.Color.White;
+            this.bDbClear.AppearanceDisabled.Options.UseForeColor = true;
+            this.bDbClear.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bDbClear.ImageOptions.SvgImage")));
+            this.bDbClear.ImageOptions.SvgImageSize = new System.Drawing.Size(24, 24);
+            this.bDbClear.Location = new System.Drawing.Point(986, 185);
+            this.bDbClear.Name = "bDbClear";
+            this.bDbClear.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bDbClear.Size = new System.Drawing.Size(159, 28);
+            this.bDbClear.TabIndex = 19;
+            this.bDbClear.Text = "Sıfırla";
+            this.bDbClear.Visible = false;
+            this.bDbClear.Click += new System.EventHandler(this.bBackupDownload_Click);
+            // 
+            // bDbCacheDelete
+            // 
+            this.bDbCacheDelete.AllowFocus = false;
+            this.bDbCacheDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.bDbCacheDelete.Appearance.Font = new System.Drawing.Font("Verdana", 11F);
+            this.bDbCacheDelete.Appearance.ForeColor = System.Drawing.Color.Black;
+            this.bDbCacheDelete.Appearance.Options.UseFont = true;
+            this.bDbCacheDelete.Appearance.Options.UseForeColor = true;
+            this.bDbCacheDelete.AppearanceDisabled.ForeColor = System.Drawing.Color.White;
+            this.bDbCacheDelete.AppearanceDisabled.Options.UseForeColor = true;
+            this.bDbCacheDelete.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bDbCacheDelete.ImageOptions.SvgImage")));
+            this.bDbCacheDelete.ImageOptions.SvgImageSize = new System.Drawing.Size(24, 24);
+            this.bDbCacheDelete.Location = new System.Drawing.Point(986, 151);
+            this.bDbCacheDelete.Name = "bDbCacheDelete";
+            this.bDbCacheDelete.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bDbCacheDelete.Size = new System.Drawing.Size(159, 28);
+            this.bDbCacheDelete.TabIndex = 19;
+            this.bDbCacheDelete.Text = "Təmizlə";
+            this.bDbCacheDelete.Visible = false;
+            this.bDbCacheDelete.Click += new System.EventHandler(this.bBackupDownload_Click);
             // 
             // bBackupDownload
             // 
@@ -2576,10 +2807,10 @@ namespace WindowsFormsApp2
             this.bBackupDownload.AppearanceDisabled.Options.UseForeColor = true;
             this.bBackupDownload.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bBackupDownload.ImageOptions.SvgImage")));
             this.bBackupDownload.ImageOptions.SvgImageSize = new System.Drawing.Size(24, 24);
-            this.bBackupDownload.Location = new System.Drawing.Point(965, 43);
+            this.bBackupDownload.Location = new System.Drawing.Point(986, 43);
             this.bBackupDownload.Name = "bBackupDownload";
             this.bBackupDownload.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.bBackupDownload.Size = new System.Drawing.Size(180, 32);
+            this.bBackupDownload.Size = new System.Drawing.Size(159, 28);
             this.bBackupDownload.TabIndex = 19;
             this.bBackupDownload.Text = "Nüsxə yarat";
             this.bBackupDownload.Click += new System.EventHandler(this.bBackupDownload_Click);
@@ -2856,6 +3087,7 @@ namespace WindowsFormsApp2
             // 
             this.chStockAmount.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.chStockAmount.Enabled = false;
             this.chStockAmount.Location = new System.Drawing.Point(8, 86);
             this.chStockAmount.Name = "chStockAmount";
             this.chStockAmount.Properties.Appearance.Font = new System.Drawing.Font("Verdana", 11F);
@@ -3509,7 +3741,6 @@ namespace WindowsFormsApp2
         private DevExpress.XtraEditors.LabelControl labelControl26;
         private DevExpress.XtraEditors.LabelControl lLicenceKey;
         private DevExpress.XtraEditors.LabelControl labelControl30;
-        private DevExpress.XtraEditors.CheckButton chStockDecreasingAmount;
         private DevExpress.XtraEditors.CheckButton chShowStock;
         private DevExpress.XtraEditors.CheckEdit chSendToKassa;
         private DevExpress.XtraEditors.CheckEdit chTerminalPrintReceipt;
@@ -3547,6 +3778,24 @@ namespace WindowsFormsApp2
         private DevExpress.XtraEditors.PictureEdit pictureEdit3;
         private DevExpress.XtraGrid.GridControl gridControl2;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView2;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn9;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn10;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn11;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn12;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn13;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn14;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn16;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn15;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn17;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn18;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn19;
+        private DevExpress.XtraEditors.LabelControl labelControl17;
+        private DevExpress.XtraEditors.LabelControl labelControl16;
+        private DevExpress.XtraEditors.SimpleButton bDbCacheDelete;
+        private DevExpress.XtraEditors.SimpleButton bDbClear;
+        private DevExpress.XtraEditors.LabelControl labelControl20;
+        private DevExpress.XtraEditors.SimpleButton bDbDelete;
+        private DevExpress.XtraEditors.LabelControl labelControl21;
     }
 }
 

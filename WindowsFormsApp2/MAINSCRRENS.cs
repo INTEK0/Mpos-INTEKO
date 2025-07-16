@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DevExpress.DataAccess.Native.Data;
 using DevExpress.XtraBars.Navigation;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid;
@@ -18,6 +19,7 @@ using Microsoft.Win32;
 using WindowsFormsApp2.Forms;
 using WindowsFormsApp2.Forms.PrintPages;
 using WindowsFormsApp2.Helpers;
+using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using static WindowsFormsApp2.Helpers.Enums;
@@ -70,7 +72,7 @@ namespace WindowsFormsApp2
 
         private void accordionControlElement6_Click(object sender, EventArgs e)
         {
-            if (!Helpers.CacheData.CommonData.User.UserRole.Customers)
+            if (!UserCacheService.User.UserRole.Customers)
             {
                 FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
                 return;
@@ -103,7 +105,7 @@ namespace WindowsFormsApp2
 
         private void accordionControlElement11_Click(object sender, EventArgs e)
         {
-            if (!Helpers.CacheData.CommonData.User.UserRole.BankSale)
+            if (!UserCacheService.User.UserRole.BankSale)
             {
                 FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
                 return;
@@ -113,7 +115,7 @@ namespace WindowsFormsApp2
 
         private void accordionControlElement12_Click(object sender, EventArgs e)
         {
-            if (!Helpers.CacheData.CommonData.User.UserRole.BankSale)
+            if (!UserCacheService.User.UserRole.BankSale)
             {
                 FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
                 return;
@@ -128,7 +130,7 @@ namespace WindowsFormsApp2
 
         private void accordionControlElement9_Click(object sender, EventArgs e)
         {
-            if (!Helpers.CacheData.CommonData.User.UserRole.RefundProduct)
+            if (!UserCacheService.User.UserRole.RefundProduct)
             {
                 FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
                 return;
@@ -138,7 +140,7 @@ namespace WindowsFormsApp2
 
         private void accordionControlElement41_Click(object sender, EventArgs e)
         {
-            if (!Helpers.CacheData.CommonData.User.UserRole.PosSale)
+            if (!UserCacheService.User.UserRole.PosSale)
             {
                 FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
                 return;
@@ -209,7 +211,7 @@ namespace WindowsFormsApp2
 
         private void accordionControlElement51_Click(object sender, EventArgs e)
         {
-            if (!Helpers.CacheData.CommonData.User.UserRole.ScalesProductDownload)
+            if (!UserCacheService.User.UserRole.ScalesProductDownload)
             {
                 FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
                 return;
@@ -443,12 +445,12 @@ FROM[terazimalzeme]";
 
         private void accordionControlElement18_Click(object sender, EventArgs e)
         {
-            if (!Helpers.CacheData.CommonData.User.UserRole.Suppliers)
+            if (!UserCacheService.User.UserRole.Suppliers)
             {
                 FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
                 return;
             }
-            OpenForm<bank_odenisleri>(Helpers.CacheData.CommonData.User.Id);
+            OpenForm<bank_odenisleri>(UserCacheService.User.Id);
         }
 
         private void accordionControlElement19_Click(object sender, EventArgs e)
@@ -463,7 +465,7 @@ FROM[terazimalzeme]";
 
         private void accordionControlElement22_Click(object sender, EventArgs e)
         {
-            if (!Helpers.CacheData.CommonData.User.UserRole.Customers)
+            if (!UserCacheService.User.UserRole.Customers)
             {
                 FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
                 return;
@@ -483,7 +485,7 @@ FROM[terazimalzeme]";
 
         private void accordionControlElement24_Click(object sender, EventArgs e)
         {
-            if (!Helpers.CacheData.CommonData.User.UserRole.Credit)
+            if (!UserCacheService.User.UserRole.Credit)
             {
                 FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
                 return;
@@ -493,7 +495,7 @@ FROM[terazimalzeme]";
 
         private void accordionControlElement25_Click(object sender, EventArgs e)
         {
-            if (!Helpers.CacheData.CommonData.User.UserRole.Credit)
+            if (!UserCacheService.User.UserRole.Credit)
             {
                 FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
                 return;
@@ -503,7 +505,7 @@ FROM[terazimalzeme]";
 
         private void accordionControlElement26_Click(object sender, EventArgs e)
         {
-            if (!Helpers.CacheData.CommonData.User.UserRole.Report)
+            if (!UserCacheService.User.UserRole.Report)
             {
                 FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
                 return;
@@ -513,7 +515,7 @@ FROM[terazimalzeme]";
 
         private void accordionControlElement27_Click(object sender, EventArgs e)
         {
-            if (!Helpers.CacheData.CommonData.User.UserRole.Report)
+            if (!UserCacheService.User.UserRole.Report)
             {
                 FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
                 return;
@@ -564,7 +566,7 @@ FROM[terazimalzeme]";
 
         private void accordionControlElement55_Click(object sender, EventArgs e)
         {
-            if (!Helpers.CacheData.CommonData.User.UserRole.ProductBarcodePrint)
+            if (!UserCacheService.User.UserRole.ProductBarcodePrint)
             {
                 FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
                 return;
@@ -605,15 +607,15 @@ FROM[terazimalzeme]";
             ClinicModuleShow();
             SysAdminControl();
             await LicenceCheck();
-            if (!Helpers.CacheData.CommonData.User.UserRole.Report)
+            if (!UserCacheService.User.UserRole.Report)
             {
                 accordionControlElement30.Enabled = false;
             }
-            if (!Helpers.CacheData.CommonData.User.UserRole.Backups)
+            if (!UserCacheService.User.UserRole.Backups)
             {
                 tabDatabase.PageVisible = false;
             }
-            if (!Helpers.CacheData.CommonData.User.UserRole.Logs)
+            if (!UserCacheService.User.UserRole.Logs)
             {
                 tabLog.PageVisible = false;
             }
@@ -621,9 +623,9 @@ FROM[terazimalzeme]";
 
         private async Task LicenceCheck()
         {
-            lLicenceExpireDate.Text = "-";
-            lLicenceExpireDate.ForeColor = Color.Black;
-            return;
+            //lLicenceExpireDate.Text = "-";
+            //lLicenceExpireDate.ForeColor = Color.Black;
+            //return;
 
             var licenceUser = await LicenseService.Instance.RequestKeyControl(LicenseService.Instance.GetLicenceKey());
             if (licenceUser is null)
@@ -659,11 +661,12 @@ FROM[terazimalzeme]";
         {
             try
             {
-                await StockProductsList(); //Anbar qalığı
                 //StockDecreasingAmountLoad(); //Miqdarı az olan məhsullar
                 await TotalSalesInformation(); //Cari satış hesabatı
                 await TotalRefundInformation(); //Cari qaytarma hesabatı
                 await TotalPurchaseInformation(); //Cari alış hesabatı
+                await StockProductsList(); //Anbar qalığı
+
                 BestsellingProducts(); //Ən çox satılan məhsullar
                 ExpensesDataLoad(); //Cari xərclər
             }
@@ -678,11 +681,13 @@ FROM[terazimalzeme]";
         {
             try
             {
-                BestsellingProducts(); //Ən çox satılan məhsullar
-                                       // StockDecreasingAmountLoad(); //Miqdarı az olan məhsullar
+                // StockDecreasingAmountLoad(); //Miqdarı az olan məhsullar
                 await TotalSalesInformation(); //Cari satış hesabatı
                 await TotalRefundInformation(); //Cari qaytarma hesabatı
                 await TotalPurchaseInformation(); //Cari alış hesabatı
+                await StockProductsList();//Anbar qalığı
+
+                BestsellingProducts(); //Ən çox satılan məhsullar
                 ExpensesDataLoad(); //Cari xərclər
             }
             catch (Exception ex)
@@ -902,10 +907,6 @@ FROM (
             {
                 FormHelpers.ExcelExport(gridControlProducts, "Anbar Qalığı");
             }
-            else if (chStockDecreasingAmount.Checked)
-            {
-                FormHelpers.ExcelExport(gridControlProducts, "Miqdarı az olan məhsulların siyahısı");
-            }
         }
 
         private void accordionControlElement56_Click(object sender, EventArgs e)
@@ -969,44 +970,16 @@ FROM (
         private async Task StockProductsList()
         {
             Cursor.Current = Cursors.WaitCursor;
-            gridProducts.ViewCaption = "Anbar qalığı";
-
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
-            {
-                string query = "EXEC dbo.gaime_Satis_mal_load;";
-                await con.OpenAsync();
-
-                using (SqlCommand cmd = new SqlCommand(query, con))
-                {
-                    cmd.CommandTimeout = 120;
-
-                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-                    {
-                        DataTable dataTable = new DataTable();
-                        await Task.Run(() => da.Fill(dataTable));
-                        gridControlProducts.DataSource = dataTable;
-                        if (gridProducts.Columns["TECHIZATCI_ID"] != null)
-                        {
-                            gridProducts.Columns["TECHIZATCI_ID"].Visible = false;
-                        }
-                        if (gridProducts.Columns["MAL_ALISI_DETAILS_ID"] != null)
-                        {
-                            gridProducts.Columns["MAL_ALISI_DETAILS_ID"].Visible = false;
-                        }
-                        if (gridProducts.Columns["EDV"] != null)
-                        {
-                            gridProducts.Columns["EDV"].Visible = false;
-                        }
-                        gridProducts.RefreshData();
-                        lStockCount.Text = gridProducts.DataRowCount.ToString();
-                    }
-                }
-            }
+            var data = await StockCacheService.LoadStockAsync();
+            gridControlProducts.DataSource = data;
+            gridProducts.RefreshData();
+            lStockCount.Text = gridProducts.DataRowCount.ToString();
+            Cursor.Current = Cursors.Default;
         }
 
         private void accordionControlElement54_Click_1(object sender, EventArgs e)
         {
-            if (!Helpers.CacheData.CommonData.User.UserRole.Users)
+            if (!UserCacheService.User.UserRole.Users)
             {
                 FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
                 return;
@@ -1086,7 +1059,7 @@ FROM (
 
         private void bBackupDownload_Click(object sender, EventArgs e)
         {
-            if (!Helpers.CacheData.CommonData.User.UserRole.Backups)
+            if (!UserCacheService.User.UserRole.Backups)
             {
                 FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
                 return;
@@ -1135,7 +1108,7 @@ FROM (
                     cmd.Parameters.AddWithValue("@EndDate", end);
                     using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                     {
-                        using (DataTable dataTable = new DataTable())
+                        using (System.Data.DataTable dataTable = new System.Data.DataTable())
                         {
                             da.Fill(dataTable);
                             gridControlLogs.DataSource = dataTable;
@@ -1359,22 +1332,19 @@ FROM (
             }
         }
 
-        private void chStockAmount_CheckedChanged(object sender, EventArgs e)
+        private async void chStockAmount_CheckedChanged(object sender, EventArgs e)
         {
-            if (chStockAmount.Checked)
-            {
-                Registry.CurrentUser.CreateSubKey("Mpos").SetValue("DecreasingAmount", true);
-                chStockDecreasingAmount.Visible = true;
-                chShowStock.Dock = DockStyle.None;
-                chShowStock.Location = new System.Drawing.Point(210, 2);
-            }
-            else
-            {
-                Registry.CurrentUser.CreateSubKey("Mpos").SetValue("DecreasingAmount", false);
-                chStockDecreasingAmount.Visible = false;
-                chShowStock.Dock = DockStyle.Left;
-                StockProductsList();
-            }
+            await StockProductsList();
+            //if (chStockAmount.Checked)
+            //{
+            //    Registry.CurrentUser.CreateSubKey("Mpos").SetValue("DecreasingAmount", true);
+              
+            //}
+            //else
+            //{
+            //    Registry.CurrentUser.CreateSubKey("Mpos").SetValue("DecreasingAmount", false);
+               
+            //}
         }
 
         private void Get_StockDecreasingAmountShow()
@@ -1473,7 +1443,7 @@ FROM (
         {
             if (e.KeyCode is Keys.F12)
             {
-                if (!Helpers.CacheData.CommonData.User.UserRole.ProductAdd)
+                if (!UserCacheService.User.UserRole.ProductAdd)
                 {
                     FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
                     return;
@@ -1530,7 +1500,7 @@ FROM (
 
         private void accordionControlElement68_Click(object sender, EventArgs e)
         {
-            if (!Helpers.CacheData.CommonData.User.UserRole.ProductDiscount)
+            if (!UserCacheService.User.UserRole.ProductDiscount)
             {
                 FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
                 return;
@@ -1543,7 +1513,7 @@ FROM (
 
         private void accordionControlElement71_Click(object sender, EventArgs e)
         {
-            if (!Helpers.CacheData.CommonData.User.UserRole.Suppliers)
+            if (!UserCacheService.User.UserRole.Suppliers)
             {
                 FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
                 return;
@@ -1553,7 +1523,7 @@ FROM (
 
         private void accordionControlElement69_Click(object sender, EventArgs e)
         {
-            if (!Helpers.CacheData.CommonData.User.UserRole.Suppliers)
+            if (!UserCacheService.User.UserRole.Suppliers)
             {
                 FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
                 return;
@@ -1563,7 +1533,7 @@ FROM (
 
         private void accordionControlElement70_Click(object sender, EventArgs e)
         {
-            if (!Helpers.CacheData.CommonData.User.UserRole.Suppliers)
+            if (!UserCacheService.User.UserRole.Suppliers)
             {
                 FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
                 return;

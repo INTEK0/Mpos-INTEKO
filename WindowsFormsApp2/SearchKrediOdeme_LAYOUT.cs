@@ -505,24 +505,24 @@ FROM [KREDIT_SATISI_MAIN]";
 
                 var url = "http://" + ip + ":5544";
 
-                bool result = Sunmi.CreditPay(root, url, deger3);
+                //bool result = Sunmi.CreditPay(root, url, deger3);
 
 
-                if (result)
-                {
-                    SqlConnection con = new SqlConnection(Properties.Settings.Default.SqlCon);
+                //if (result)
+                //{
+                //    SqlConnection con = new SqlConnection(Properties.Settings.Default.SqlCon);
 
-                    SqlCommand cmdodeme = new SqlCommand();
-                    con.Open();
-                    cmdodeme.CommandText = "UPDATE [dbo].[KREDIT_SATISI_AYLIKODEME] SET [DATE2_]=GETDATE(),[ODENILEN_MEBLEG]=[ODENILECEK_MEBLEG],[longids]=N'" + fizid + "',[shortids]=N'" + fizid2 + "'  WHERE KREDIT_SATISI_AYLIK_ID=" + deger3;
-                    cmdodeme.Connection = con;
-                    cmdodeme.CommandType = CommandType.Text;
-                    cmdodeme.ExecuteNonQuery();
+                //    SqlCommand cmdodeme = new SqlCommand();
+                //    con.Open();
+                //    cmdodeme.CommandText = "UPDATE [dbo].[KREDIT_SATISI_AYLIKODEME] SET [DATE2_]=GETDATE(),[ODENILEN_MEBLEG]=[ODENILECEK_MEBLEG],[longids]=N'" + fizid + "',[shortids]=N'" + fizid2 + "'  WHERE KREDIT_SATISI_AYLIK_ID=" + deger3;
+                //    cmdodeme.Connection = con;
+                //    cmdodeme.CommandType = CommandType.Text;
+                //    cmdodeme.ExecuteNonQuery();
 
-                    con.Close();
-                    getall();
-                    getallodeme();
-                }
+                //    con.Close();
+                //    getall();
+                //    getallodeme();
+                //}
             }
             catch (Exception ex)
             {

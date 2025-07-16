@@ -771,7 +771,7 @@ namespace WindowsFormsApp2
                         ProductCode = mal_alisi_details_id,
                         Quantity = quantity,
                         QuantityType = quantityType,
-                        SalePrice = saleprice,
+                        SalePrice = Convert.ToDecimal(tSalePrice.Text),
                         VatType = vatType
                     }
                 };

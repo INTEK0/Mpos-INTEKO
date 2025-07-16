@@ -2,7 +2,7 @@
 
 namespace WindowsFormsApp2.Helpers.CacheData
 {
-    public static class CommonData
+    public class UserCacheService
     {
         public static DatabaseClasses.User User = DbProsedures.GetUser();
     }

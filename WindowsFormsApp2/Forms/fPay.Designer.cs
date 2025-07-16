@@ -41,18 +41,18 @@
             this.labelControl3 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl2 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
+            this.tCash_Paid = new DevExpress.XtraEditors.TextEdit();
+            this.tCash_Balance = new DevExpress.XtraEditors.TextEdit();
+            this.tCash_Total = new DevExpress.XtraEditors.TextEdit();
             this.pageCashCard = new DevExpress.XtraBars.Navigation.NavigationPage();
+            this.tCashCard_Cash = new DevExpress.XtraEditors.TextEdit();
+            this.tCashCard_Card = new DevExpress.XtraEditors.TextEdit();
             this.tCashCard_Enter = new DevExpress.XtraEditors.SimpleButton();
             this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
             this.lCashCard_Message = new DevExpress.XtraEditors.LabelControl();
             this.labelControl7 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl5 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl6 = new DevExpress.XtraEditors.LabelControl();
-            this.tCash_Paid = new DevExpress.XtraEditors.TextEdit();
-            this.tCash_Balance = new DevExpress.XtraEditors.TextEdit();
-            this.tCash_Total = new DevExpress.XtraEditors.TextEdit();
-            this.tCashCard_Cash = new DevExpress.XtraEditors.TextEdit();
-            this.tCashCard_Card = new DevExpress.XtraEditors.TextEdit();
             this.tCashCard_Balance = new DevExpress.XtraEditors.TextEdit();
             this.tCashCard_Total = new DevExpress.XtraEditors.TextEdit();
             ((System.ComponentModel.ISupportInitialize)(this.navigationFrame1)).BeginInit();
@@ -61,10 +61,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).BeginInit();
             this.tablePanel1.SuspendLayout();
             this.pageCash.SuspendLayout();
-            this.pageCashCard.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tCash_Paid.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tCash_Balance.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tCash_Total.Properties)).BeginInit();
+            this.pageCashCard.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tCashCard_Cash.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tCashCard_Card.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tCashCard_Balance.Properties)).BeginInit();
@@ -172,6 +172,7 @@
             // 
             // pageCash
             // 
+            this.pageCash.Caption = "pageCash";
             this.pageCash.Controls.Add(this.lCash_Message);
             this.pageCash.Controls.Add(this.bCash_Enter);
             this.pageCash.Controls.Add(this.labelControl3);
@@ -248,8 +249,55 @@
             this.labelControl1.TabIndex = 6;
             this.labelControl1.Text = "MƏBLƏĞ";
             // 
+            // tCash_Paid
+            // 
+            this.tCash_Paid.Location = new System.Drawing.Point(137, 74);
+            this.tCash_Paid.Name = "tCash_Paid";
+            this.tCash_Paid.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 24F);
+            this.tCash_Paid.Properties.Appearance.Options.UseFont = true;
+            this.tCash_Paid.Properties.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.NumericMaskManager));
+            this.tCash_Paid.Properties.MaskSettings.Set("MaskManagerSignature", "allowNull=False");
+            this.tCash_Paid.Properties.MaskSettings.Set("mask", "f");
+            this.tCash_Paid.Properties.NullText = "0";
+            this.tCash_Paid.Properties.UseMaskAsDisplayFormat = true;
+            this.tCash_Paid.Size = new System.Drawing.Size(176, 54);
+            this.tCash_Paid.TabIndex = 25;
+            this.tCash_Paid.EditValueChanged += new System.EventHandler(this.tCash_Paid_EditValueChanged);
+            // 
+            // tCash_Balance
+            // 
+            this.tCash_Balance.Location = new System.Drawing.Point(137, 137);
+            this.tCash_Balance.Margin = new System.Windows.Forms.Padding(4);
+            this.tCash_Balance.Name = "tCash_Balance";
+            this.tCash_Balance.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 24F);
+            this.tCash_Balance.Properties.Appearance.ForeColor = System.Drawing.Color.Black;
+            this.tCash_Balance.Properties.Appearance.Options.UseFont = true;
+            this.tCash_Balance.Properties.Appearance.Options.UseForeColor = true;
+            this.tCash_Balance.Properties.NullText = "0";
+            this.tCash_Balance.Properties.ReadOnly = true;
+            this.tCash_Balance.Size = new System.Drawing.Size(176, 54);
+            this.tCash_Balance.TabIndex = 5;
+            // 
+            // tCash_Total
+            // 
+            this.tCash_Total.Location = new System.Drawing.Point(137, 13);
+            this.tCash_Total.Margin = new System.Windows.Forms.Padding(4);
+            this.tCash_Total.Name = "tCash_Total";
+            this.tCash_Total.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 24F);
+            this.tCash_Total.Properties.Appearance.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Critical;
+            this.tCash_Total.Properties.Appearance.Options.UseFont = true;
+            this.tCash_Total.Properties.Appearance.Options.UseForeColor = true;
+            this.tCash_Total.Properties.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.NumericMaskManager));
+            this.tCash_Total.Properties.MaskSettings.Set("MaskManagerSignature", "allowNull=False");
+            this.tCash_Total.Properties.MaskSettings.Set("mask", "f2");
+            this.tCash_Total.Properties.NullText = "0";
+            this.tCash_Total.Properties.ReadOnly = true;
+            this.tCash_Total.Size = new System.Drawing.Size(176, 54);
+            this.tCash_Total.TabIndex = 5;
+            // 
             // pageCashCard
             // 
+            this.pageCashCard.Caption = "pageCashCard";
             this.pageCashCard.Controls.Add(this.tCashCard_Cash);
             this.pageCashCard.Controls.Add(this.tCashCard_Card);
             this.pageCashCard.Controls.Add(this.tCashCard_Enter);
@@ -262,6 +310,36 @@
             this.pageCashCard.Controls.Add(this.tCashCard_Total);
             this.pageCashCard.Name = "pageCashCard";
             this.pageCashCard.Size = new System.Drawing.Size(458, 136);
+            // 
+            // tCashCard_Cash
+            // 
+            this.tCashCard_Cash.Location = new System.Drawing.Point(132, 134);
+            this.tCashCard_Cash.Name = "tCashCard_Cash";
+            this.tCashCard_Cash.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 24F);
+            this.tCashCard_Cash.Properties.Appearance.Options.UseFont = true;
+            this.tCashCard_Cash.Properties.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.NumericMaskManager));
+            this.tCashCard_Cash.Properties.MaskSettings.Set("MaskManagerSignature", "allowNull=False");
+            this.tCashCard_Cash.Properties.MaskSettings.Set("mask", "f");
+            this.tCashCard_Cash.Properties.NullText = "0";
+            this.tCashCard_Cash.Properties.UseMaskAsDisplayFormat = true;
+            this.tCashCard_Cash.Size = new System.Drawing.Size(176, 54);
+            this.tCashCard_Cash.TabIndex = 33;
+            this.tCashCard_Cash.EditValueChanged += new System.EventHandler(this.tCashCard_Cash_EditValueChanged);
+            // 
+            // tCashCard_Card
+            // 
+            this.tCashCard_Card.Location = new System.Drawing.Point(132, 74);
+            this.tCashCard_Card.Name = "tCashCard_Card";
+            this.tCashCard_Card.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 24F);
+            this.tCashCard_Card.Properties.Appearance.Options.UseFont = true;
+            this.tCashCard_Card.Properties.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.NumericMaskManager));
+            this.tCashCard_Card.Properties.MaskSettings.Set("MaskManagerSignature", "allowNull=False");
+            this.tCashCard_Card.Properties.MaskSettings.Set("mask", "f");
+            this.tCashCard_Card.Properties.NullText = "0";
+            this.tCashCard_Card.Properties.UseMaskAsDisplayFormat = true;
+            this.tCashCard_Card.Size = new System.Drawing.Size(176, 54);
+            this.tCashCard_Card.TabIndex = 32;
+            this.tCashCard_Card.EditValueChanged += new System.EventHandler(this.tCashCard_Card_EditValueChanged);
             // 
             // tCashCard_Enter
             // 
@@ -339,82 +417,6 @@
             this.labelControl6.TabIndex = 30;
             this.labelControl6.Text = "MƏBLƏĞ";
             // 
-            // tCash_Paid
-            // 
-            this.tCash_Paid.Location = new System.Drawing.Point(137, 74);
-            this.tCash_Paid.Name = "tCash_Paid";
-            this.tCash_Paid.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 24F);
-            this.tCash_Paid.Properties.Appearance.Options.UseFont = true;
-            this.tCash_Paid.Properties.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.NumericMaskManager));
-            this.tCash_Paid.Properties.MaskSettings.Set("MaskManagerSignature", "allowNull=False");
-            this.tCash_Paid.Properties.MaskSettings.Set("mask", "f");
-            this.tCash_Paid.Properties.NullText = "0";
-            this.tCash_Paid.Properties.UseMaskAsDisplayFormat = true;
-            this.tCash_Paid.Size = new System.Drawing.Size(176, 54);
-            this.tCash_Paid.TabIndex = 25;
-            this.tCash_Paid.EditValueChanged += new System.EventHandler(this.tCash_Paid_EditValueChanged);
-            // 
-            // tCash_Balance
-            // 
-            this.tCash_Balance.Location = new System.Drawing.Point(137, 137);
-            this.tCash_Balance.Margin = new System.Windows.Forms.Padding(4);
-            this.tCash_Balance.Name = "tCash_Balance";
-            this.tCash_Balance.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 24F);
-            this.tCash_Balance.Properties.Appearance.ForeColor = System.Drawing.Color.Black;
-            this.tCash_Balance.Properties.Appearance.Options.UseFont = true;
-            this.tCash_Balance.Properties.Appearance.Options.UseForeColor = true;
-            this.tCash_Balance.Properties.NullText = "0";
-            this.tCash_Balance.Properties.ReadOnly = true;
-            this.tCash_Balance.Size = new System.Drawing.Size(176, 54);
-            this.tCash_Balance.TabIndex = 5;
-            // 
-            // tCash_Total
-            // 
-            this.tCash_Total.Location = new System.Drawing.Point(137, 13);
-            this.tCash_Total.Margin = new System.Windows.Forms.Padding(4);
-            this.tCash_Total.Name = "tCash_Total";
-            this.tCash_Total.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 24F);
-            this.tCash_Total.Properties.Appearance.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Critical;
-            this.tCash_Total.Properties.Appearance.Options.UseFont = true;
-            this.tCash_Total.Properties.Appearance.Options.UseForeColor = true;
-            this.tCash_Total.Properties.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.NumericMaskManager));
-            this.tCash_Total.Properties.MaskSettings.Set("MaskManagerSignature", "allowNull=False");
-            this.tCash_Total.Properties.MaskSettings.Set("mask", "f2");
-            this.tCash_Total.Properties.NullText = "0";
-            this.tCash_Total.Properties.ReadOnly = true;
-            this.tCash_Total.Size = new System.Drawing.Size(176, 54);
-            this.tCash_Total.TabIndex = 5;
-            // 
-            // tCashCard_Cash
-            // 
-            this.tCashCard_Cash.Location = new System.Drawing.Point(132, 134);
-            this.tCashCard_Cash.Name = "tCashCard_Cash";
-            this.tCashCard_Cash.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 24F);
-            this.tCashCard_Cash.Properties.Appearance.Options.UseFont = true;
-            this.tCashCard_Cash.Properties.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.NumericMaskManager));
-            this.tCashCard_Cash.Properties.MaskSettings.Set("MaskManagerSignature", "allowNull=False");
-            this.tCashCard_Cash.Properties.MaskSettings.Set("mask", "f");
-            this.tCashCard_Cash.Properties.NullText = "0";
-            this.tCashCard_Cash.Properties.UseMaskAsDisplayFormat = true;
-            this.tCashCard_Cash.Size = new System.Drawing.Size(176, 54);
-            this.tCashCard_Cash.TabIndex = 33;
-            this.tCashCard_Cash.EditValueChanged += new System.EventHandler(this.tCashCard_Cash_EditValueChanged);
-            // 
-            // tCashCard_Card
-            // 
-            this.tCashCard_Card.Location = new System.Drawing.Point(132, 74);
-            this.tCashCard_Card.Name = "tCashCard_Card";
-            this.tCashCard_Card.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 24F);
-            this.tCashCard_Card.Properties.Appearance.Options.UseFont = true;
-            this.tCashCard_Card.Properties.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.NumericMaskManager));
-            this.tCashCard_Card.Properties.MaskSettings.Set("MaskManagerSignature", "allowNull=False");
-            this.tCashCard_Card.Properties.MaskSettings.Set("mask", "f");
-            this.tCashCard_Card.Properties.NullText = "0";
-            this.tCashCard_Card.Properties.UseMaskAsDisplayFormat = true;
-            this.tCashCard_Card.Size = new System.Drawing.Size(176, 54);
-            this.tCashCard_Card.TabIndex = 32;
-            this.tCashCard_Card.EditValueChanged += new System.EventHandler(this.tCashCard_Card_EditValueChanged);
-            // 
             // tCashCard_Balance
             // 
             this.tCashCard_Balance.Location = new System.Drawing.Point(132, 195);
@@ -453,6 +455,7 @@
             this.ClientSize = new System.Drawing.Size(458, 136);
             this.Controls.Add(this.navigationFrame1);
             this.IconOptions.Image = global::WindowsFormsApp2.Properties.Resources.Mpos_png1;
+            this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(460, 310);
             this.MinimumSize = new System.Drawing.Size(460, 170);
@@ -460,6 +463,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Ödəniş";
             this.Load += new System.EventHandler(this.fPay_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.fPay_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.navigationFrame1)).EndInit();
             this.navigationFrame1.ResumeLayout(false);
             this.pageHome.ResumeLayout(false);
@@ -467,11 +471,11 @@
             this.tablePanel1.ResumeLayout(false);
             this.pageCash.ResumeLayout(false);
             this.pageCash.PerformLayout();
-            this.pageCashCard.ResumeLayout(false);
-            this.pageCashCard.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tCash_Paid.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tCash_Balance.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tCash_Total.Properties)).EndInit();
+            this.pageCashCard.ResumeLayout(false);
+            this.pageCashCard.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tCashCard_Cash.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tCashCard_Card.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tCashCard_Balance.Properties)).EndInit();
