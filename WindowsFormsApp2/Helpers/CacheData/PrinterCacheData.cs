@@ -68,9 +68,9 @@ namespace WindowsFormsApp2.Helpers.CacheData
             #endregion [..MƏHSUL ADINDA LİMİT OLMAYAN KOD (Uzun olduqda alt sətirə keçmir)..]
 
 
-            List<string> productLines = SplitProductName(productName, 15);
-            if (productLines.Count > 2)
-                productLines = productLines.Take(2).ToList();
+            List<string> productLines = SplitProductName(productName, 16);
+            if (productLines.Count > 3)
+                productLines = productLines.Take(3).ToList();
             
             double productY = 55;
             int lineSpacing = 40;

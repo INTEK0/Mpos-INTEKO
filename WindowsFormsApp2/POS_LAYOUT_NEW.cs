@@ -660,7 +660,7 @@ LEFT JOIN pos_guzest pg
         /// insert calculation əməliyyatını və məhsula öncədən endirim tətbiq edilib edilmədiyni kontrol edir
         /// </summary>
         /// <param name="barcode"></param>
-        public async Task  getall(string barcode)
+        public async Task getall(string barcode)
         {
             /*
             try
@@ -1570,7 +1570,7 @@ LEFT JOIN pos_guzest pg
             try
             {
                 var responseData = NBA.CloseShift(lIpAdress.Text, textBox1.Text);
-                
+
                 if (responseData == null) { return; }
                 else
                 {
@@ -2106,6 +2106,26 @@ LEFT JOIN pos_guzest pg
                 decimal truncated = Math.Truncate(val * 100) / 100;
                 e.DisplayText = truncated.ToString("0.00");
             }
+        }
+
+        private void bCreditSale_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            if (!UserCacheService.User.UserRole.Credit)
+            {
+                FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
+                return;
+            }
+            OpenForm<KREDITSATISLAYOUTSA>();
+        }
+
+        private void bCreditPay_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            if (!UserCacheService.User.UserRole.Credit)
+            {
+                FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
+                return;
+            }
+            OpenForm<fCreditPay>();
         }
 
         private void bPeriodicReport_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
@@ -2975,23 +2995,18 @@ LEFT JOIN pos_guzest pg
 
         public void getbarkod_mehsuladi(string mehsul_adi)
         {
-            string paramValue = mehsul_adi;
             try
             {
+                string query = "select * from  dbo.POS_autocomplete_search_mehsul_Adi(@pricePoint);";
                 using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+                using (SqlCommand cmd = new SqlCommand(query, connection))
                 {
                     connection.Open();
-                    string query = "select * from  dbo.POS_autocomplete_search_mehsul_Adi(@pricePoint);";
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    cmd.Parameters.AddWithValue("@pricePoint", mehsul_adi);
+                    using (SqlDataReader dr = cmd.ExecuteReader())
                     {
-                        cmd.Parameters.AddWithValue("@pricePoint", paramValue);
-                        using (SqlDataReader dr = cmd.ExecuteReader())
-                        {
-                            if (dr.Read())
-                            {
-                                tBarcode.Text = dr["BARKOD"].ToString();
-                            }
-                        }
+                        if (dr.Read())
+                            tBarcode.Text = dr["BARKOD"].ToString();
                     }
                 }
             }

@@ -1,15 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using DevExpress.XtraEditors;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
@@ -127,11 +116,6 @@ namespace WindowsFormsApp2.Forms
         {
             tDebtNew.Text = tAmount.Text;
             TotalDebtCalc();
-        }
-
-        private void lDebtHistory_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

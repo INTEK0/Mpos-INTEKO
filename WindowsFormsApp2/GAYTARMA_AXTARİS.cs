@@ -22,8 +22,6 @@ namespace WindowsFormsApp2
         public GAYTARMA_AXTARİS(MEHSUL_GAYTARMA_LAYOUT frm   )
         {
            frm1 = frm;
-            GridLocalizer.Active = new GermanGridLocalizer();
-            Localizer.Active = new GermanEditorsLocalizer();
             InitializeComponent();
         }
 

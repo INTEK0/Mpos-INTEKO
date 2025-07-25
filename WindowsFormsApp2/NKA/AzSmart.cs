@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using Newtonsoft.Json;
 using RestSharp;
 using WindowsFormsApp2.Helpers;
+using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
@@ -18,7 +19,7 @@ namespace WindowsFormsApp2.NKA
 {
     public static class AzSmart
     {
-        public const string FiskalPort = "8008"; //prod port: 8008 - test port: 10155
+        public const string FiskalPort = "10155"; //prod port: 8008 - test port: 10155
         private static readonly RestClient _restClient = new RestClient();
 
         private static readonly bool MessageVisible = FormHelpers.SuccessMessageVisible();
@@ -157,7 +158,7 @@ namespace WindowsFormsApp2.NKA
             }
         }
 
-        public static async Task<bool> Sales(DTOs.SalesDto salesData)
+        public async static Task<bool> Sales(DTOs.SalesDto salesData)
         {
             string requestJson = null;
             string responseJson = null;
@@ -238,7 +239,7 @@ namespace WindowsFormsApp2.NKA
                     rrn = string.IsNullOrWhiteSpace(salesData.Rrn) ? null : salesData.Rrn,
                 };
 
-                string docnumber = await ReturnHeaderId();
+                string docnumber = ReturnHeaderId();
 
                 RequestSale.Root root = new RequestSale.Root
                 {
@@ -486,6 +487,147 @@ namespace WindowsFormsApp2.NKA
             }
         }
 
+        public static Tuple<bool, string, string> CreditSale(DTOs.CreditSaleDto salesData)
+        {
+            string requestJson = null;
+            string responseJson = null;
+            int posSalesId = 0;
+            try
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                List<RequestSale.Item> items = new List<RequestSale.Item>();
+                string query = "GetItems_AzSmart";
+
+                SqlConnection conn = new SqlConnection(DbHelpers.DbConnectionString);
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@UserID", UserCacheService.User.Id);
+                conn.Open();
+
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    string name = dr["name"].ToString();
+                    string Id = dr["item_id"].ToString();
+                    string barcode = dr["code"].ToString();
+                    decimal salePrice = Convert.ToDecimal(dr["salePrice"]);
+                    decimal _purchasePrice = Convert.ToDecimal(dr["purchasePrice"]);
+                    decimal quantity = Convert.ToDecimal(dr["quantity"]);
+                    string taxName = dr["TaxName"].ToString();
+                    int TaxCode = Convert.ToInt32(dr["TaxCode"]);
+                    int calcType = Convert.ToInt32(dr["calcType"]);
+                    int TaxPrc = Convert.ToInt32(dr["TaxPrc"]);
+
+
+                    int miqdar = Convert.ToInt32(quantity * 1000);
+                    int price = Convert.ToInt32(salePrice * quantity * 100);
+
+                    int? purchasePrice = Convert.ToInt32(_purchasePrice * 100);
+                    int? purchasePriceSum = Convert.ToInt32(_purchasePrice * quantity * 100);
+
+                    if (taxName != "Ticarət əlavəsi 18%")
+                    {
+                        purchasePriceSum = null;
+                        purchasePrice = null;
+                    }
+
+                    var taxs = new List<RequestSale.itemTaxes>
+                    {
+                        new RequestSale.itemTaxes
+                        {
+                            fullName = taxName,
+                            taxName = taxName,
+                            taxPrc = TaxPrc,
+                            calcType = calcType,
+                            //taxCode = 0
+                        }
+                    };
+
+                    RequestSale.Item itemProduct = new RequestSale.Item
+                    {
+                        itemId = Id,
+                        itemName = name,
+                        itemBarcode = barcode,
+                        itemQty = miqdar,
+                        itemAmount = price,
+                        itemMarginPrice = purchasePrice,
+                        itemMarginSum = purchasePriceSum,
+                        itemTaxes = taxs
+                    };
+                    items.Add(itemProduct);
+                }
+
+                int cash = Convert.ToInt32(salesData.IncomingSum * 100);
+                int card = Convert.ToInt32(salesData.CardPayment * 100);
+                int total = Convert.ToInt32(salesData.Total * 100);
+
+                RequestSale.Payments payments = new RequestSale.Payments
+                {
+                    cashAmount = cash,
+                    cashlessAmount = card,
+                    rrn = string.IsNullOrWhiteSpace(salesData.Rrn) ? null : salesData.Rrn,
+                };
+
+                string docnumber = ReturnHeaderId();
+
+                RequestSale.Root root = new RequestSale.Root
+                {
+                    employeeName = salesData.Cashier,
+                    items = items,
+                    payments = payments,
+                    amount = total,
+                    docNumber = docnumber
+                };
+
+                string json = Newtonsoft.Json.JsonConvert.SerializeObject(root, new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                });
+
+
+                var response = RequestPOST<ResponseSale>($"{salesData.Url}/sale", salesData.MerchantId, json);
+                requestJson = response.requestJson;
+                responseJson = response.responseJson;
+
+                if (response.code != 506)
+                {
+                    if (response.data.status == "success")
+                    {
+
+                        if (MessageVisible)
+                            ReadyMessages.SUCCESS_CREDIT_SALES_MESSAGE();
+
+                        FormHelpers.Log($"Kredit satışı uğurla edildi. Qəbz No: {response.data.fiscalNum}");
+                        return new Tuple<bool, string, string>(true, response.data.fiscalID, response.data.fiscalID.Substring(0, 12));
+                    }
+                    else
+                    {
+                        return new Tuple<bool, string, string>(false, null, null);
+                    }
+                }
+                else
+                {
+                    return new Tuple<bool, string, string>(false, null, null);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new Tuple<bool, string, string>(false, null, null);
+            }
+            finally
+            {
+                FormHelpers.OperationLog(new OperationLogs
+                {
+                    OperationType = OperationType.PosSales,
+                    OperationId = posSalesId,
+                    Message = posSalesId == 0 ? "Error" : "Success",
+                    RequestCode = requestJson,
+                    ResponseCode = responseJson,
+                });
+                Cursor.Current = Cursors.Default;
+            }
+        }
+
         public static void LastReceiptCopy(string ipAddress, string merchantId, string cashier)
         {
             string fiskalID = string.Empty;
@@ -618,7 +760,7 @@ namespace WindowsFormsApp2.NKA
                     rrn = string.IsNullOrWhiteSpace(salesData.Rrn) ? null : salesData.Rrn,
                 };
 
-                string docnumber = await ReturnHeaderId();
+                string docnumber = ReturnHeaderId();
 
                 RequestSale.Root root = new RequestSale.Root
                 {
@@ -900,24 +1042,22 @@ namespace WindowsFormsApp2.NKA
             }
         }
 
-        private async static Task<string> ReturnHeaderId()
+        private static string ReturnHeaderId()
         {
             using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlCommand cmd = new SqlCommand())
             {
-                using (SqlCommand cmd = new SqlCommand())
+                cmd.Connection = con;
+                cmd.CommandText = $"SELECT header_id FROM dbo.header WHERE userId = {Properties.Settings.Default.UserID}";
+                con.Open();
+                var result = cmd.ExecuteScalar();
+                if (result != null)
                 {
-                    cmd.Connection = con;
-                    cmd.CommandText = $"SELECT header_id FROM dbo.header WHERE userId = {Properties.Settings.Default.UserID}";
-                    await con.OpenAsync();
-                    var result = await cmd.ExecuteScalarAsync();
-                    if (result != null)
-                    {
-                        return result.ToString();
-                    }
-                    else
-                    {
-                        return null;
-                    }
+                    return result.ToString();
+                }
+                else
+                {
+                    return null;
                 }
             }
         }
@@ -1079,6 +1219,7 @@ namespace WindowsFormsApp2.NKA
             public int? originAmount { get; set; } = null;
             public string rrn { get; set; } = null;
         }
+
 
         #endregion [..Request Classes..]
 

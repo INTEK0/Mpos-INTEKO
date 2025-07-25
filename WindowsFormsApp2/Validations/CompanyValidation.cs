@@ -11,7 +11,7 @@ namespace WindowsFormsApp2.Validations
             RuleFor(x=> x.Voen).NotEmpty().WithMessage("VÖEN nömrəsini daxil edin");
             RuleFor(x=> x.CompanyCode).NotEmpty().WithMessage("Obyekt kodunu daxil edin");
             RuleFor(x=> x.Address).NotEmpty().WithMessage("Obyektin ünvanını daxil edin");
-            RuleFor(x=> x.Phone).NotEmpty().WithMessage("Əlaqə nömrəsini daxil edin");
+            //RuleFor(x=> x.Phone).NotEmpty().WithMessage("Əlaqə nömrəsini daxil edin");
             //RuleFor(x=> x.Email).EmailAddress().WithMessage("Elektron poçt ünvanı düzgün deyil");
             //RuleFor(x=> x.Email).NotEmpty().WithMessage("Elektron poçt ünvanını daxil edin");
             RuleFor(x=> x.User).NotEmpty().WithMessage("Məsul şəxsin adını daxil edin");

@@ -31,6 +31,7 @@ namespace WindowsFormsApp2.Helpers.CacheData
             using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
             using (SqlCommand cmd = new SqlCommand("gaime_Satis_mal_load_to_cache", con))
             {
+                cmd.CommandTimeout = 120;
                 cmd.CommandType = CommandType.StoredProcedure;
                 await con.OpenAsync();
                 await cmd.ExecuteNonQueryAsync();

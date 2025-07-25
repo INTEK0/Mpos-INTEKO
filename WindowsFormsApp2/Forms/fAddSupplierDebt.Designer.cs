@@ -366,7 +366,6 @@
             this.lDebtHistory.TabIndex = 1;
             this.lDebtHistory.Text = "Borc tarixçəsi";
             this.lDebtHistory.Visible = false;
-            this.lDebtHistory.Click += new System.EventHandler(this.lDebtHistory_Click);
             // 
             // bSave
             // 

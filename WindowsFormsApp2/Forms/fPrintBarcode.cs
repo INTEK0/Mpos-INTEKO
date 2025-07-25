@@ -1,4 +1,5 @@
-﻿using DevExpress.XtraEditors;
+﻿using DevExpress.Diagram.Core.Shapes;
+using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraPrinting.BarCode;
 using System;
@@ -103,6 +104,7 @@ namespace WindowsFormsApp2.Forms
 
         private void GridDataLoad()
         {
+            _data.Clear();
             var data = DbProsedures.ConvertToDataTable("exec dbo.gaime_Satis_mal_load");
             foreach (DataRow row in data.Rows)
             {
@@ -117,11 +119,12 @@ namespace WindowsFormsApp2.Forms
                 gridData.StockAmount = Convert.ToDecimal(row[7].ToString());
                 gridData.Barcode = row[8].ToString();
                 gridData.TaxName = row[9].ToString();
-               // gridData.UnitName = row["VAHIDLER_NAME"].ToString();
+                gridData.UnitName = row["VAHIDLER_NAME"].ToString();
                 _data.Add(gridData);
             }
             gridControlProducts.DataSource = _data;
             gridProducts.GroupPanelText = $"Məhsul sayı: {_data.Count}";
+            gridProducts.ClearSelection();
         }
 
         private void bRefresh_Click(object sender, EventArgs e)
@@ -274,6 +277,66 @@ namespace WindowsFormsApp2.Forms
         {
             e.ErrorText = "Dəstəklənməyən simvol !";
             e.ExceptionMode = DevExpress.XtraEditors.Controls.ExceptionMode.DisplayError;
+        }
+
+        private void chMehsulAlisi_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chMehsulAlisi.Checked)
+            {
+                dateEdit1.Visible = true;
+                dateEdit1.DateTime = DateTime.Now;
+            }
+            else
+            {
+                dateEdit1.Visible = false;
+                GridDataLoad();
+            }
+        }
+
+        private void MehsulAlisiDataLoad()
+        {
+            _data.Clear();       
+            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlCommand cmd = new SqlCommand("ProductLoadWithDate", connection))
+            {
+                connection.Open();
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("@date", SqlDbType.Date) { Value = dateEdit1.DateTime });
+                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                {
+                    using (DataTable dt = new DataTable())
+                    {
+                        da.Fill(dt);
+                        foreach (DataRow row in dt.Rows)
+                        {
+                            GridData gridData = new GridData();
+                            gridData.SupplierId = Convert.ToInt32(row["TECHIZATCI_ID"].ToString());
+                            gridData.SupplierName = row["TƏCHİZATÇI ADI"].ToString();
+                            gridData.ProductId = Convert.ToInt32(row["MAL_ALISI_DETAILS_ID"].ToString());
+                            gridData.ProductName = row["MƏHSUL ADI"].ToString();
+                            gridData.ProductCode = row["MƏHSUL KODU"].ToString();
+                            gridData.PurchasePrice = 0;
+                            gridData.SalePrice = Convert.ToDecimal(row["SATIS_GIYMETI"].ToString());
+                            gridData.StockAmount = 0;
+                            gridData.Barcode = row["BARKOD"].ToString();
+                            gridData.TaxName = row["EDV"].ToString();
+                            gridData.UnitName = row["VAHİD"].ToString();
+                            _data.Add(gridData);
+                        }
+                        gridControlProducts.DataSource = _data;
+                        gridProducts.GroupPanelText = $"Məhsul sayı: {_data.Count}";
+                    }
+                }
+            }
+            gridProducts.ClearSelection();
+        }
+
+        private void dateEdit1_EditValueChanged(object sender, EventArgs e)
+        {
+            if (dateEdit1.Visible)
+            {
+                MehsulAlisiDataLoad();
+            }
         }
 
         void printbarkod(System.Object sender, System.Drawing.Printing.PrintPageEventArgs e)

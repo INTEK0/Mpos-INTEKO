@@ -1,18 +1,10 @@
-﻿using DevExpress.Xpo.DB.Helpers;
-using DevExpress.XtraEditors;
-using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using System;
 using System.Data.SqlClient;
-using System.Drawing;
 using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Win32;
 using WindowsFormsApp2.Helpers;
+using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using WindowsFormsApp2.NKA;
@@ -168,16 +160,14 @@ namespace WindowsFormsApp2.Forms
             int count = 0;
             using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
             {
-                string query = $"SELECT COUNT(*) FROM COMPANY.COMPANY WHERE UserId = {Properties.Settings.Default.UserID}";
+                string query = $"SELECT COUNT(*) FROM COMPANY.COMPANY WHERE UserId = {UserCacheService.User.Id}";
                 using (SqlCommand cmd = new SqlCommand(query, connection))
                 {
                     connection.Open();
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        while (reader.Read())
-                        {
+                        if (reader.Read())
                             count = Convert.ToInt32(reader[0]);
-                        }
                     }
                 }
             }
@@ -203,7 +193,7 @@ namespace WindowsFormsApp2.Forms
                 using (SqlCommand cmd = new SqlCommand(query, connection))
                 {
                     connection.Open();
-                    cmd.Parameters.AddWithValue("@userID", Properties.Settings.Default.UserID);
+                    cmd.Parameters.AddWithValue("@userID", UserCacheService.User.Id);
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -251,21 +241,18 @@ namespace WindowsFormsApp2.Forms
 
         private void bGetDataToken_Click(object sender, EventArgs e)
         {
-            //fAdminPassword f = new fAdminPassword();
-            //if (f.ShowDialog() is DialogResult.OK)
-            //{
             switch (_terminal.Model)
             {
                 case "1": SunmiGetInfo(); break;
                 case "2": break;
-                case "3": break;
+                case "3": OmnitechGetInfo(); break;
                 case "4": FormHelpers.Alert("NKA seçimi edilmədiyi üçün məlumatlar manual daxil edilməlidir", Enums.MessageType.Info); break;
                 case "5": break;
                 case "6": NbaGetInfo(); break;
+                case "7": break;
                 default:
                     break;
             }
-            //}
         }
 
         private void SunmiGetInfo()
@@ -287,6 +274,29 @@ namespace WindowsFormsApp2.Forms
                 Registry.CurrentUser.CreateSubKey("Mpos").CreateSubKey("TokenData").SetValue("ObjectTaxNumber", response.data.object_tax_number);
                 Registry.CurrentUser.CreateSubKey("Mpos").CreateSubKey("TokenData").SetValue("NKAModel", response.data.cashregister_model);
                 Registry.CurrentUser.CreateSubKey("Mpos").CreateSubKey("TokenData").SetValue("NKASerialNumber", response.data.cashbox_serial_number);
+                Registry.CurrentUser.CreateSubKey("Mpos").CreateSubKey("TokenData").SetValue("NMQRegistrationNumber", response.data.cashbox_tax_number);
+            }
+        }
+
+        private void OmnitechGetInfo()
+        {
+            var response = Omnitech.GetInfo(_terminal.Ip);
+            if (response != null)
+            {
+                tCompanyName.Text = response.data.company_name;
+                tVoen.Text = response.data.company_tax_number;
+                tCompanyCode.Text = new string(response.data.object_tax_number.SkipWhile(x => x != '-').Skip(1).ToArray());
+                tAddress.Text = response.data.object_address;
+
+
+
+                Registry.CurrentUser.CreateSubKey("Mpos").CreateSubKey("TokenData").SetValue("TsName", response.data.object_name);
+                Registry.CurrentUser.CreateSubKey("Mpos").CreateSubKey("TokenData").SetValue("Address", response.data.object_address);
+                Registry.CurrentUser.CreateSubKey("Mpos").CreateSubKey("TokenData").SetValue("CompanyName", response.data.company_name);
+                Registry.CurrentUser.CreateSubKey("Mpos").CreateSubKey("TokenData").SetValue("Voen", response.data.company_tax_number);
+                Registry.CurrentUser.CreateSubKey("Mpos").CreateSubKey("TokenData").SetValue("ObjectTaxNumber", response.data.object_tax_number);
+                Registry.CurrentUser.CreateSubKey("Mpos").CreateSubKey("TokenData").SetValue("NKAModel", response.data.cashregister_model);
+                Registry.CurrentUser.CreateSubKey("Mpos").CreateSubKey("TokenData").SetValue("NKASerialNumber", response.data.cashregister_factory_number);
                 Registry.CurrentUser.CreateSubKey("Mpos").CreateSubKey("TokenData").SetValue("NMQRegistrationNumber", response.data.cashbox_tax_number);
             }
         }

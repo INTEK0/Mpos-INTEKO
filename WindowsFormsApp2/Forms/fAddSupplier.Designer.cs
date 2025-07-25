@@ -29,47 +29,45 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(fAddSupplier));
-            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions1 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions2 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
             this.bSupplierList = new DevExpress.XtraEditors.SimpleButton();
             this.bClear = new DevExpress.XtraEditors.SimpleButton();
             this.bAdd = new DevExpress.XtraEditors.SimpleButton();
+            this.tProccessNo = new DevExpress.XtraEditors.ButtonEdit();
             this.tabPane1 = new DevExpress.XtraBars.Navigation.TabPane();
             this.tabNavigationPage1 = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.groupControl2 = new DevExpress.XtraEditors.GroupControl();
+            this.dateContractDate = new DevExpress.XtraEditors.DateEdit();
             this.labelControl11 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
+            this.tSupplierName = new DevExpress.XtraEditors.TextEdit();
             this.labelControl13 = new DevExpress.XtraEditors.LabelControl();
+            this.tVoen = new DevExpress.XtraEditors.TextEdit();
             this.labelControl2 = new DevExpress.XtraEditors.LabelControl();
+            this.tComment = new DevExpress.XtraEditors.TextEdit();
+            this.tConractNo = new DevExpress.XtraEditors.TextEdit();
             this.labelControl9 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
+            this.tAddress = new DevExpress.XtraEditors.TextEdit();
             this.labelControl3 = new DevExpress.XtraEditors.LabelControl();
-            this.labelControl18 = new DevExpress.XtraEditors.LabelControl();
             this.groupControl1 = new DevExpress.XtraEditors.GroupControl();
             this.labelControl23 = new DevExpress.XtraEditors.LabelControl();
+            this.tEmail = new DevExpress.XtraEditors.TextEdit();
+            this.tMobPhone = new DevExpress.XtraEditors.TextEdit();
             this.labelControl22 = new DevExpress.XtraEditors.LabelControl();
             this.tabNavigationPage2 = new DevExpress.XtraBars.Navigation.TabNavigationPage();
+            this.tBankAccountNumber = new DevExpress.XtraEditors.TextEdit();
             this.labelControl7 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl8 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl5 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl10 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl6 = new DevExpress.XtraEditors.LabelControl();
-            this.tProccessNo = new DevExpress.XtraEditors.ButtonEdit();
-            this.tInitialDebt = new DevExpress.XtraEditors.TextEdit();
-            this.lookBorcTeyinati = new DevExpress.XtraEditors.LookUpEdit();
-            this.tSupplierName = new DevExpress.XtraEditors.TextEdit();
-            this.tVoen = new DevExpress.XtraEditors.TextEdit();
-            this.tComment = new DevExpress.XtraEditors.TextEdit();
-            this.tConractNo = new DevExpress.XtraEditors.TextEdit();
-            this.tAddress = new DevExpress.XtraEditors.TextEdit();
-            this.tEmail = new DevExpress.XtraEditors.TextEdit();
-            this.tMobPhone = new DevExpress.XtraEditors.TextEdit();
-            this.tBankAccountNumber = new DevExpress.XtraEditors.TextEdit();
             this.tBankSwift = new DevExpress.XtraEditors.TextEdit();
             this.tBankName = new DevExpress.XtraEditors.TextEdit();
             this.tBankCode = new DevExpress.XtraEditors.TextEdit();
@@ -78,24 +76,24 @@
             this.tablePanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
             this.panelControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tProccessNo.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tabPane1)).BeginInit();
             this.tabPane1.SuspendLayout();
             this.tabNavigationPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).BeginInit();
             this.groupControl2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
-            this.groupControl1.SuspendLayout();
-            this.tabNavigationPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tProccessNo.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tInitialDebt.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lookBorcTeyinati.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dateContractDate.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dateContractDate.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tSupplierName.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tVoen.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tComment.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tConractNo.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tAddress.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
+            this.groupControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tEmail.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tMobPhone.Properties)).BeginInit();
+            this.tabNavigationPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tBankAccountNumber.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tBankSwift.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tBankName.Properties)).BeginInit();
@@ -116,7 +114,7 @@
             this.tablePanel1.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 51F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
-            this.tablePanel1.Size = new System.Drawing.Size(1178, 546);
+            this.tablePanel1.Size = new System.Drawing.Size(1028, 496);
             this.tablePanel1.TabIndex = 4;
             this.tablePanel1.UseSkinIndents = true;
             // 
@@ -132,7 +130,7 @@
             this.panelControl1.Margin = new System.Windows.Forms.Padding(1);
             this.panelControl1.Name = "panelControl1";
             this.tablePanel1.SetRow(this.panelControl1, 0);
-            this.panelControl1.Size = new System.Drawing.Size(1174, 49);
+            this.panelControl1.Size = new System.Drawing.Size(1024, 49);
             this.panelControl1.TabIndex = 0;
             // 
             // bSupplierList
@@ -187,6 +185,29 @@
             this.bAdd.Text = "DAXİL ET";
             this.bAdd.Click += new System.EventHandler(this.bAdd_Click);
             // 
+            // tProccessNo
+            // 
+            this.tProccessNo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.tProccessNo.EditValue = "";
+            this.tProccessNo.Location = new System.Drawing.Point(711, 9);
+            this.tProccessNo.Margin = new System.Windows.Forms.Padding(4);
+            this.tProccessNo.Name = "tProccessNo";
+            this.tProccessNo.Properties.AllowFocused = false;
+            this.tProccessNo.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tProccessNo.Properties.Appearance.Options.UseFont = true;
+            this.tProccessNo.Properties.Appearance.Options.UseTextOptions = true;
+            this.tProccessNo.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.tProccessNo.Properties.AppearanceReadOnly.Font = new System.Drawing.Font("Tahoma", 12F);
+            this.tProccessNo.Properties.AppearanceReadOnly.Options.UseFont = true;
+            this.tProccessNo.Properties.AppearanceReadOnly.Options.UseTextOptions = true;
+            this.tProccessNo.Properties.AppearanceReadOnly.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.tProccessNo.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "TƏCHİZATÇI NÖMRƏSİ", -1, true, true, true, editorButtonImageOptions2, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
+            this.tProccessNo.Properties.ReadOnly = true;
+            this.tProccessNo.Size = new System.Drawing.Size(302, 34);
+            this.tProccessNo.TabIndex = 0;
+            this.tProccessNo.TabStop = false;
+            // 
             // tabPane1
             // 
             this.tabPane1.Appearance.BackColor = System.Drawing.Color.White;
@@ -206,11 +227,11 @@
             this.tabPane1.Pages.AddRange(new DevExpress.XtraBars.Navigation.NavigationPageBase[] {
             this.tabNavigationPage1,
             this.tabNavigationPage2});
-            this.tabPane1.RegularSize = new System.Drawing.Size(1170, 487);
+            this.tabPane1.RegularSize = new System.Drawing.Size(1020, 437);
             this.tablePanel1.SetRow(this.tabPane1, 1);
             this.tabPane1.SelectedPage = this.tabNavigationPage1;
             this.tabPane1.ShowHeaderFocus = DevExpress.Utils.DefaultBoolean.False;
-            this.tabPane1.Size = new System.Drawing.Size(1170, 487);
+            this.tabPane1.Size = new System.Drawing.Size(1020, 437);
             this.tabPane1.TabIndex = 2;
             this.tabPane1.TabStop = false;
             this.tabPane1.Text = "tabPane1";
@@ -227,7 +248,7 @@
             this.tabNavigationPage1.Name = "tabNavigationPage1";
             this.tabNavigationPage1.Properties.AppearanceCaption.Font = new System.Drawing.Font("Nunito", 14F, System.Drawing.FontStyle.Bold);
             this.tabNavigationPage1.Properties.AppearanceCaption.Options.UseFont = true;
-            this.tabNavigationPage1.Size = new System.Drawing.Size(1170, 440);
+            this.tabNavigationPage1.Size = new System.Drawing.Size(1020, 390);
             // 
             // groupControl2
             // 
@@ -235,9 +256,8 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupControl2.AppearanceCaption.Font = new System.Drawing.Font("Nunito", 10F, System.Drawing.FontStyle.Bold);
             this.groupControl2.AppearanceCaption.Options.UseFont = true;
-            this.groupControl2.Controls.Add(this.tInitialDebt);
+            this.groupControl2.Controls.Add(this.dateContractDate);
             this.groupControl2.Controls.Add(this.labelControl11);
-            this.groupControl2.Controls.Add(this.lookBorcTeyinati);
             this.groupControl2.Controls.Add(this.labelControl1);
             this.groupControl2.Controls.Add(this.tSupplierName);
             this.groupControl2.Controls.Add(this.labelControl13);
@@ -249,15 +269,31 @@
             this.groupControl2.Controls.Add(this.labelControl4);
             this.groupControl2.Controls.Add(this.tAddress);
             this.groupControl2.Controls.Add(this.labelControl3);
-            this.groupControl2.Controls.Add(this.labelControl18);
             this.groupControl2.Location = new System.Drawing.Point(3, 3);
             this.groupControl2.LookAndFeel.SkinName = "WXI";
             this.groupControl2.LookAndFeel.UseDefaultLookAndFeel = false;
             this.groupControl2.Name = "groupControl2";
             this.groupControl2.ShowCaption = false;
-            this.groupControl2.Size = new System.Drawing.Size(1164, 310);
+            this.groupControl2.Size = new System.Drawing.Size(1014, 259);
             this.groupControl2.TabIndex = 19;
             this.groupControl2.Text = "MÜŞTƏRİ MƏLUMATLARI";
+            // 
+            // dateContractDate
+            // 
+            this.dateContractDate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dateContractDate.EditValue = null;
+            this.dateContractDate.Location = new System.Drawing.Point(193, 132);
+            this.dateContractDate.Name = "dateContractDate";
+            this.dateContractDate.Properties.AllowFocused = false;
+            this.dateContractDate.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F);
+            this.dateContractDate.Properties.Appearance.Options.UseFont = true;
+            this.dateContractDate.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dateContractDate.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dateContractDate.Size = new System.Drawing.Size(815, 34);
+            this.dateContractDate.TabIndex = 3;
             // 
             // labelControl11
             // 
@@ -283,6 +319,18 @@
             this.labelControl1.TabIndex = 5;
             this.labelControl1.Text = "TƏCHİZATÇI ADI";
             // 
+            // tSupplierName
+            // 
+            this.tSupplierName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tSupplierName.Location = new System.Drawing.Point(193, 7);
+            this.tSupplierName.Margin = new System.Windows.Forms.Padding(4);
+            this.tSupplierName.Name = "tSupplierName";
+            this.tSupplierName.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tSupplierName.Properties.Appearance.Options.UseFont = true;
+            this.tSupplierName.Size = new System.Drawing.Size(815, 34);
+            this.tSupplierName.TabIndex = 0;
+            // 
             // labelControl13
             // 
             this.labelControl13.Appearance.Font = new System.Drawing.Font("Nunito", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -293,6 +341,19 @@
             this.labelControl13.Size = new System.Drawing.Size(37, 18);
             this.labelControl13.TabIndex = 6;
             this.labelControl13.Text = "VÖEN";
+            // 
+            // tVoen
+            // 
+            this.tVoen.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tVoen.Location = new System.Drawing.Point(193, 49);
+            this.tVoen.Margin = new System.Windows.Forms.Padding(4);
+            this.tVoen.Name = "tVoen";
+            this.tVoen.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tVoen.Properties.Appearance.Options.UseFont = true;
+            this.tVoen.Properties.MaxLength = 11;
+            this.tVoen.Size = new System.Drawing.Size(815, 34);
+            this.tVoen.TabIndex = 1;
             // 
             // labelControl2
             // 
@@ -305,11 +366,35 @@
             this.labelControl2.TabIndex = 9;
             this.labelControl2.Text = "ÜNVAN";
             // 
+            // tComment
+            // 
+            this.tComment.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tComment.Location = new System.Drawing.Point(193, 215);
+            this.tComment.Margin = new System.Windows.Forms.Padding(4);
+            this.tComment.Name = "tComment";
+            this.tComment.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tComment.Properties.Appearance.Options.UseFont = true;
+            this.tComment.Size = new System.Drawing.Size(815, 34);
+            this.tComment.TabIndex = 6;
+            // 
+            // tConractNo
+            // 
+            this.tConractNo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tConractNo.Location = new System.Drawing.Point(193, 173);
+            this.tConractNo.Margin = new System.Windows.Forms.Padding(4);
+            this.tConractNo.Name = "tConractNo";
+            this.tConractNo.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tConractNo.Properties.Appearance.Options.UseFont = true;
+            this.tConractNo.Size = new System.Drawing.Size(815, 34);
+            this.tConractNo.TabIndex = 4;
+            // 
             // labelControl9
             // 
             this.labelControl9.Appearance.Font = new System.Drawing.Font("Nunito", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelControl9.Appearance.Options.UseFont = true;
-            this.labelControl9.Location = new System.Drawing.Point(6, 268);
+            this.labelControl9.Location = new System.Drawing.Point(6, 223);
             this.labelControl9.Margin = new System.Windows.Forms.Padding(4);
             this.labelControl9.Name = "labelControl9";
             this.labelControl9.Size = new System.Drawing.Size(36, 18);
@@ -320,34 +405,36 @@
             // 
             this.labelControl4.Appearance.Font = new System.Drawing.Font("Nunito", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelControl4.Appearance.Options.UseFont = true;
-            this.labelControl4.Location = new System.Drawing.Point(6, 225);
+            this.labelControl4.Enabled = false;
+            this.labelControl4.Location = new System.Drawing.Point(6, 140);
             this.labelControl4.Margin = new System.Windows.Forms.Padding(4);
             this.labelControl4.Name = "labelControl4";
-            this.labelControl4.Size = new System.Drawing.Size(75, 18);
+            this.labelControl4.Size = new System.Drawing.Size(119, 18);
             this.labelControl4.TabIndex = 11;
-            this.labelControl4.Text = "İLKİN BORC";
+            this.labelControl4.Text = "MÜQAVİLƏ TARİXİ";
+            // 
+            // tAddress
+            // 
+            this.tAddress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tAddress.Location = new System.Drawing.Point(193, 91);
+            this.tAddress.Margin = new System.Windows.Forms.Padding(4);
+            this.tAddress.Name = "tAddress";
+            this.tAddress.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tAddress.Properties.Appearance.Options.UseFont = true;
+            this.tAddress.Size = new System.Drawing.Size(815, 34);
+            this.tAddress.TabIndex = 2;
             // 
             // labelControl3
             // 
             this.labelControl3.Appearance.Font = new System.Drawing.Font("Nunito", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelControl3.Appearance.Options.UseFont = true;
-            this.labelControl3.Location = new System.Drawing.Point(6, 141);
+            this.labelControl3.Location = new System.Drawing.Point(11, 181);
             this.labelControl3.Margin = new System.Windows.Forms.Padding(4);
             this.labelControl3.Name = "labelControl3";
             this.labelControl3.Size = new System.Drawing.Size(89, 18);
             this.labelControl3.TabIndex = 11;
             this.labelControl3.Text = "MÜQAVİLƏ №";
-            // 
-            // labelControl18
-            // 
-            this.labelControl18.Appearance.Font = new System.Drawing.Font("Nunito", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelControl18.Appearance.Options.UseFont = true;
-            this.labelControl18.Location = new System.Drawing.Point(6, 183);
-            this.labelControl18.Margin = new System.Windows.Forms.Padding(4);
-            this.labelControl18.Name = "labelControl18";
-            this.labelControl18.Size = new System.Drawing.Size(103, 18);
-            this.labelControl18.TabIndex = 14;
-            this.labelControl18.Text = "BORC TƏYİNATI";
             // 
             // groupControl1
             // 
@@ -359,11 +446,11 @@
             this.groupControl1.Controls.Add(this.tEmail);
             this.groupControl1.Controls.Add(this.tMobPhone);
             this.groupControl1.Controls.Add(this.labelControl22);
-            this.groupControl1.Location = new System.Drawing.Point(4, 319);
+            this.groupControl1.Location = new System.Drawing.Point(4, 268);
             this.groupControl1.LookAndFeel.SkinName = "WXI";
             this.groupControl1.LookAndFeel.UseDefaultLookAndFeel = false;
             this.groupControl1.Name = "groupControl1";
-            this.groupControl1.Size = new System.Drawing.Size(1164, 119);
+            this.groupControl1.Size = new System.Drawing.Size(1014, 119);
             this.groupControl1.TabIndex = 0;
             this.groupControl1.Text = "ƏLAQƏ MƏLUMATLARI";
             // 
@@ -377,6 +464,34 @@
             this.labelControl23.Size = new System.Drawing.Size(42, 18);
             this.labelControl23.TabIndex = 19;
             this.labelControl23.Text = "MOBİL";
+            // 
+            // tEmail
+            // 
+            this.tEmail.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tEmail.Location = new System.Drawing.Point(193, 33);
+            this.tEmail.Margin = new System.Windows.Forms.Padding(4);
+            this.tEmail.Name = "tEmail";
+            this.tEmail.Properties.AllowFocused = false;
+            this.tEmail.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tEmail.Properties.Appearance.Options.UseFont = true;
+            this.tEmail.Size = new System.Drawing.Size(814, 34);
+            this.tEmail.TabIndex = 0;
+            // 
+            // tMobPhone
+            // 
+            this.tMobPhone.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tMobPhone.Location = new System.Drawing.Point(193, 75);
+            this.tMobPhone.Margin = new System.Windows.Forms.Padding(4);
+            this.tMobPhone.Name = "tMobPhone";
+            this.tMobPhone.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tMobPhone.Properties.Appearance.Options.UseFont = true;
+            this.tMobPhone.Properties.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.RegExpMaskManager));
+            this.tMobPhone.Properties.MaskSettings.Set("MaskManagerSignature", "isOptimistic=False");
+            this.tMobPhone.Properties.MaskSettings.Set("mask", "(\\d\\d\\d) \\d\\d\\d-\\d\\d\\d\\d");
+            this.tMobPhone.Size = new System.Drawing.Size(814, 34);
+            this.tMobPhone.TabIndex = 1;
             // 
             // labelControl22
             // 
@@ -407,7 +522,19 @@
             this.tabNavigationPage2.Controls.Add(this.tBankCode);
             this.tabNavigationPage2.Controls.Add(this.tBankVoen);
             this.tabNavigationPage2.Name = "tabNavigationPage2";
-            this.tabNavigationPage2.Size = new System.Drawing.Size(1170, 440);
+            this.tabNavigationPage2.Size = new System.Drawing.Size(1020, 393);
+            // 
+            // tBankAccountNumber
+            // 
+            this.tBankAccountNumber.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tBankAccountNumber.Location = new System.Drawing.Point(193, 7);
+            this.tBankAccountNumber.Margin = new System.Windows.Forms.Padding(4);
+            this.tBankAccountNumber.Name = "tBankAccountNumber";
+            this.tBankAccountNumber.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tBankAccountNumber.Properties.Appearance.Options.UseFont = true;
+            this.tBankAccountNumber.Size = new System.Drawing.Size(818, 34);
+            this.tBankAccountNumber.TabIndex = 0;
             // 
             // labelControl7
             // 
@@ -464,166 +591,6 @@
             this.labelControl6.TabIndex = 20;
             this.labelControl6.Text = "BANK ADI";
             // 
-            // tProccessNo
-            // 
-            this.tProccessNo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.tProccessNo.EditValue = "";
-            this.tProccessNo.Location = new System.Drawing.Point(861, 9);
-            this.tProccessNo.Margin = new System.Windows.Forms.Padding(4);
-            this.tProccessNo.Name = "tProccessNo";
-            this.tProccessNo.Properties.AllowFocused = false;
-            this.tProccessNo.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tProccessNo.Properties.Appearance.Options.UseFont = true;
-            this.tProccessNo.Properties.Appearance.Options.UseTextOptions = true;
-            this.tProccessNo.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.tProccessNo.Properties.AppearanceReadOnly.Font = new System.Drawing.Font("Tahoma", 12F);
-            this.tProccessNo.Properties.AppearanceReadOnly.Options.UseFont = true;
-            this.tProccessNo.Properties.AppearanceReadOnly.Options.UseTextOptions = true;
-            this.tProccessNo.Properties.AppearanceReadOnly.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.tProccessNo.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "TƏCHİZATÇI NÖMRƏSİ", -1, true, true, true, editorButtonImageOptions1, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
-            this.tProccessNo.Properties.ReadOnly = true;
-            this.tProccessNo.Size = new System.Drawing.Size(302, 34);
-            this.tProccessNo.TabIndex = 0;
-            this.tProccessNo.TabStop = false;
-            // 
-            // tInitialDebt
-            // 
-            this.tInitialDebt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tInitialDebt.EditValue = "0.0";
-            this.tInitialDebt.Location = new System.Drawing.Point(193, 217);
-            this.tInitialDebt.Margin = new System.Windows.Forms.Padding(4);
-            this.tInitialDebt.Name = "tInitialDebt";
-            this.tInitialDebt.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F);
-            this.tInitialDebt.Properties.Appearance.Options.UseFont = true;
-            this.tInitialDebt.Properties.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.NumericMaskManager));
-            this.tInitialDebt.Properties.MaskSettings.Set("MaskManagerSignature", "allowNull=False");
-            this.tInitialDebt.Properties.MaskSettings.Set("mask", "f3");
-            this.tInitialDebt.Properties.NullText = "0.00";
-            this.tInitialDebt.Properties.UseMaskAsDisplayFormat = true;
-            this.tInitialDebt.Size = new System.Drawing.Size(965, 34);
-            this.tInitialDebt.TabIndex = 35;
-            // 
-            // lookBorcTeyinati
-            // 
-            this.lookBorcTeyinati.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lookBorcTeyinati.Location = new System.Drawing.Point(193, 175);
-            this.lookBorcTeyinati.Margin = new System.Windows.Forms.Padding(4);
-            this.lookBorcTeyinati.Name = "lookBorcTeyinati";
-            this.lookBorcTeyinati.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F);
-            this.lookBorcTeyinati.Properties.Appearance.Options.UseFont = true;
-            this.lookBorcTeyinati.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.lookBorcTeyinati.Properties.DropDownRows = 2;
-            this.lookBorcTeyinati.Properties.NullText = "";
-            this.lookBorcTeyinati.Properties.NullValuePrompt = "--SEÇİN--";
-            this.lookBorcTeyinati.Properties.ShowFooter = false;
-            this.lookBorcTeyinati.Size = new System.Drawing.Size(965, 34);
-            this.lookBorcTeyinati.TabIndex = 4;
-            // 
-            // tSupplierName
-            // 
-            this.tSupplierName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tSupplierName.Location = new System.Drawing.Point(193, 7);
-            this.tSupplierName.Margin = new System.Windows.Forms.Padding(4);
-            this.tSupplierName.Name = "tSupplierName";
-            this.tSupplierName.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tSupplierName.Properties.Appearance.Options.UseFont = true;
-            this.tSupplierName.Size = new System.Drawing.Size(965, 34);
-            this.tSupplierName.TabIndex = 0;
-            // 
-            // tVoen
-            // 
-            this.tVoen.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tVoen.Location = new System.Drawing.Point(193, 49);
-            this.tVoen.Margin = new System.Windows.Forms.Padding(4);
-            this.tVoen.Name = "tVoen";
-            this.tVoen.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tVoen.Properties.Appearance.Options.UseFont = true;
-            this.tVoen.Properties.MaxLength = 11;
-            this.tVoen.Size = new System.Drawing.Size(965, 34);
-            this.tVoen.TabIndex = 1;
-            // 
-            // tComment
-            // 
-            this.tComment.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tComment.Location = new System.Drawing.Point(193, 259);
-            this.tComment.Margin = new System.Windows.Forms.Padding(4);
-            this.tComment.Name = "tComment";
-            this.tComment.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tComment.Properties.Appearance.Options.UseFont = true;
-            this.tComment.Size = new System.Drawing.Size(965, 34);
-            this.tComment.TabIndex = 6;
-            // 
-            // tConractNo
-            // 
-            this.tConractNo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tConractNo.Location = new System.Drawing.Point(193, 133);
-            this.tConractNo.Margin = new System.Windows.Forms.Padding(4);
-            this.tConractNo.Name = "tConractNo";
-            this.tConractNo.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tConractNo.Properties.Appearance.Options.UseFont = true;
-            this.tConractNo.Size = new System.Drawing.Size(965, 34);
-            this.tConractNo.TabIndex = 3;
-            // 
-            // tAddress
-            // 
-            this.tAddress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tAddress.Location = new System.Drawing.Point(193, 91);
-            this.tAddress.Margin = new System.Windows.Forms.Padding(4);
-            this.tAddress.Name = "tAddress";
-            this.tAddress.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tAddress.Properties.Appearance.Options.UseFont = true;
-            this.tAddress.Size = new System.Drawing.Size(965, 34);
-            this.tAddress.TabIndex = 2;
-            // 
-            // tEmail
-            // 
-            this.tEmail.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tEmail.Location = new System.Drawing.Point(193, 33);
-            this.tEmail.Margin = new System.Windows.Forms.Padding(4);
-            this.tEmail.Name = "tEmail";
-            this.tEmail.Properties.AllowFocused = false;
-            this.tEmail.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tEmail.Properties.Appearance.Options.UseFont = true;
-            this.tEmail.Size = new System.Drawing.Size(964, 34);
-            this.tEmail.TabIndex = 0;
-            // 
-            // tMobPhone
-            // 
-            this.tMobPhone.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tMobPhone.Location = new System.Drawing.Point(193, 75);
-            this.tMobPhone.Margin = new System.Windows.Forms.Padding(4);
-            this.tMobPhone.Name = "tMobPhone";
-            this.tMobPhone.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tMobPhone.Properties.Appearance.Options.UseFont = true;
-            this.tMobPhone.Properties.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.RegExpMaskManager));
-            this.tMobPhone.Properties.MaskSettings.Set("MaskManagerSignature", "isOptimistic=False");
-            this.tMobPhone.Properties.MaskSettings.Set("mask", "(\\d\\d\\d) \\d\\d\\d-\\d\\d\\d\\d");
-            this.tMobPhone.Size = new System.Drawing.Size(964, 34);
-            this.tMobPhone.TabIndex = 1;
-            // 
-            // tBankAccountNumber
-            // 
-            this.tBankAccountNumber.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tBankAccountNumber.Location = new System.Drawing.Point(193, 7);
-            this.tBankAccountNumber.Margin = new System.Windows.Forms.Padding(4);
-            this.tBankAccountNumber.Name = "tBankAccountNumber";
-            this.tBankAccountNumber.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tBankAccountNumber.Properties.Appearance.Options.UseFont = true;
-            this.tBankAccountNumber.Size = new System.Drawing.Size(968, 34);
-            this.tBankAccountNumber.TabIndex = 0;
-            // 
             // tBankSwift
             // 
             this.tBankSwift.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -633,7 +600,7 @@
             this.tBankSwift.Name = "tBankSwift";
             this.tBankSwift.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tBankSwift.Properties.Appearance.Options.UseFont = true;
-            this.tBankSwift.Size = new System.Drawing.Size(968, 34);
+            this.tBankSwift.Size = new System.Drawing.Size(818, 34);
             this.tBankSwift.TabIndex = 4;
             // 
             // tBankName
@@ -645,7 +612,7 @@
             this.tBankName.Name = "tBankName";
             this.tBankName.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tBankName.Properties.Appearance.Options.UseFont = true;
-            this.tBankName.Size = new System.Drawing.Size(968, 34);
+            this.tBankName.Size = new System.Drawing.Size(818, 34);
             this.tBankName.TabIndex = 1;
             // 
             // tBankCode
@@ -657,7 +624,8 @@
             this.tBankCode.Name = "tBankCode";
             this.tBankCode.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tBankCode.Properties.Appearance.Options.UseFont = true;
-            this.tBankCode.Size = new System.Drawing.Size(968, 34);
+            this.tBankCode.Properties.MaxLength = 5;
+            this.tBankCode.Size = new System.Drawing.Size(818, 34);
             this.tBankCode.TabIndex = 3;
             // 
             // tBankVoen
@@ -669,19 +637,20 @@
             this.tBankVoen.Name = "tBankVoen";
             this.tBankVoen.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tBankVoen.Properties.Appearance.Options.UseFont = true;
-            this.tBankVoen.Size = new System.Drawing.Size(969, 34);
+            this.tBankVoen.Properties.MaxLength = 10;
+            this.tBankVoen.Size = new System.Drawing.Size(819, 34);
             this.tBankVoen.TabIndex = 2;
             // 
             // fAddSupplier
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(1178, 546);
+            this.ClientSize = new System.Drawing.Size(1028, 496);
             this.Controls.Add(this.tablePanel1);
             this.IconOptions.Image = global::WindowsFormsApp2.Properties.Resources.Mpos_png1;
             this.LookAndFeel.SkinName = "WXI";
             this.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.MinimumSize = new System.Drawing.Size(1180, 580);
+            this.MinimumSize = new System.Drawing.Size(1030, 530);
             this.Name = "fAddSupplier";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "TƏCHİZATÇI";
@@ -690,27 +659,27 @@
             this.tablePanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).EndInit();
             this.panelControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.tProccessNo.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tabPane1)).EndInit();
             this.tabPane1.ResumeLayout(false);
             this.tabNavigationPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).EndInit();
             this.groupControl2.ResumeLayout(false);
             this.groupControl2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).EndInit();
-            this.groupControl1.ResumeLayout(false);
-            this.groupControl1.PerformLayout();
-            this.tabNavigationPage2.ResumeLayout(false);
-            this.tabNavigationPage2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tProccessNo.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tInitialDebt.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lookBorcTeyinati.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dateContractDate.Properties.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dateContractDate.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tSupplierName.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tVoen.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tComment.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tConractNo.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tAddress.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).EndInit();
+            this.groupControl1.ResumeLayout(false);
+            this.groupControl1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tEmail.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tMobPhone.Properties)).EndInit();
+            this.tabNavigationPage2.ResumeLayout(false);
+            this.tabNavigationPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tBankAccountNumber.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tBankSwift.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tBankName.Properties)).EndInit();
@@ -732,7 +701,6 @@
         private DevExpress.XtraBars.Navigation.TabNavigationPage tabNavigationPage1;
         private DevExpress.XtraEditors.GroupControl groupControl2;
         private DevExpress.XtraEditors.LabelControl labelControl11;
-        private DevExpress.XtraEditors.LookUpEdit lookBorcTeyinati;
         private DevExpress.XtraEditors.LabelControl labelControl1;
         private DevExpress.XtraEditors.TextEdit tSupplierName;
         private DevExpress.XtraEditors.LabelControl labelControl13;
@@ -740,7 +708,6 @@
         private DevExpress.XtraEditors.LabelControl labelControl2;
         private DevExpress.XtraEditors.TextEdit tAddress;
         private DevExpress.XtraEditors.LabelControl labelControl3;
-        private DevExpress.XtraEditors.LabelControl labelControl18;
         private DevExpress.XtraEditors.GroupControl groupControl1;
         private DevExpress.XtraEditors.LabelControl labelControl23;
         private DevExpress.XtraEditors.TextEdit tEmail;
@@ -761,6 +728,6 @@
         private DevExpress.XtraEditors.TextEdit tComment;
         private DevExpress.XtraEditors.LabelControl labelControl9;
         private DevExpress.XtraEditors.LabelControl labelControl4;
-        private DevExpress.XtraEditors.TextEdit tInitialDebt;
+        private DevExpress.XtraEditors.DateEdit dateContractDate;
     }
 }

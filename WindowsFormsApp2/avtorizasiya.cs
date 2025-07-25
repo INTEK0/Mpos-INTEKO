@@ -59,11 +59,9 @@ namespace WindowsFormsApp2
             if (e.KeyCode == Keys.Enter)
             {
                 kryptonButton1.PerformClick();
-
                 e.SuppressKeyPress = true;
                 e.Handled = true;
             }
-
             if (e.KeyCode == Keys.Down)
             {
                 textEdit2.Select();

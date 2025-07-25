@@ -35,8 +35,8 @@
             this.tabPane1 = new DevExpress.XtraBars.Navigation.TabPane();
             this.tabNavigationPage1 = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.labelControl21 = new DevExpress.XtraEditors.LabelControl();
+            this.bGetDataToken = new DevExpress.XtraEditors.SimpleButton();
             this.labelControl20 = new DevExpress.XtraEditors.LabelControl();
-            this.labelControl18 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl17 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl12 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl15 = new DevExpress.XtraEditors.LabelControl();
@@ -70,7 +70,6 @@
             this.labelControl6 = new DevExpress.XtraEditors.LabelControl();
             this.tBankCode = new DevExpress.XtraEditors.TextEdit();
             this.tBankVoen = new DevExpress.XtraEditors.TextEdit();
-            this.bGetDataToken = new DevExpress.XtraEditors.SimpleButton();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
             this.panelControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tabPane1)).BeginInit();
@@ -101,9 +100,9 @@
             this.panelControl1.Controls.Add(this.bSave);
             this.panelControl1.Controls.Add(this.lCompanyId);
             this.panelControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelControl1.Location = new System.Drawing.Point(0, 423);
+            this.panelControl1.Location = new System.Drawing.Point(0, 422);
             this.panelControl1.Name = "panelControl1";
-            this.panelControl1.Size = new System.Drawing.Size(737, 54);
+            this.panelControl1.Size = new System.Drawing.Size(728, 54);
             this.panelControl1.TabIndex = 0;
             // 
             // bDelete
@@ -131,7 +130,7 @@
             this.bSave.Appearance.Font = new System.Drawing.Font("Nunito", 12F, System.Drawing.FontStyle.Bold);
             this.bSave.Appearance.Options.UseBackColor = true;
             this.bSave.Appearance.Options.UseFont = true;
-            this.bSave.Location = new System.Drawing.Point(556, 7);
+            this.bSave.Location = new System.Drawing.Point(547, 7);
             this.bSave.Name = "bSave";
             this.bSave.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
             this.bSave.Size = new System.Drawing.Size(172, 42);
@@ -170,9 +169,9 @@
             this.tabPane1.Pages.AddRange(new DevExpress.XtraBars.Navigation.NavigationPageBase[] {
             this.tabNavigationPage1,
             this.tabNavigationPage2});
-            this.tabPane1.RegularSize = new System.Drawing.Size(737, 423);
+            this.tabPane1.RegularSize = new System.Drawing.Size(728, 422);
             this.tabPane1.SelectedPage = this.tabNavigationPage1;
-            this.tabPane1.Size = new System.Drawing.Size(737, 423);
+            this.tabPane1.Size = new System.Drawing.Size(728, 422);
             this.tabPane1.TabIndex = 1;
             this.tabPane1.Text = "tabPane1";
             // 
@@ -184,7 +183,6 @@
             this.tabNavigationPage1.Controls.Add(this.labelControl21);
             this.tabNavigationPage1.Controls.Add(this.bGetDataToken);
             this.tabNavigationPage1.Controls.Add(this.labelControl20);
-            this.tabNavigationPage1.Controls.Add(this.labelControl18);
             this.tabNavigationPage1.Controls.Add(this.labelControl17);
             this.tabNavigationPage1.Controls.Add(this.labelControl12);
             this.tabNavigationPage1.Controls.Add(this.labelControl15);
@@ -224,6 +222,23 @@
             this.labelControl21.TabIndex = 17;
             this.labelControl21.Text = "*";
             // 
+            // bGetDataToken
+            // 
+            this.bGetDataToken.AllowFocus = false;
+            this.bGetDataToken.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.bGetDataToken.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Question;
+            this.bGetDataToken.Appearance.Font = new System.Drawing.Font("Nunito", 12F, System.Drawing.FontStyle.Bold);
+            this.bGetDataToken.Appearance.Options.UseBackColor = true;
+            this.bGetDataToken.Appearance.Options.UseFont = true;
+            this.bGetDataToken.Location = new System.Drawing.Point(556, 324);
+            this.bGetDataToken.Name = "bGetDataToken";
+            this.bGetDataToken.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bGetDataToken.Size = new System.Drawing.Size(172, 34);
+            this.bGetDataToken.TabIndex = 0;
+            this.bGetDataToken.TabStop = false;
+            this.bGetDataToken.Text = "Tokendən al";
+            this.bGetDataToken.Click += new System.EventHandler(this.bGetDataToken_Click);
+            // 
             // labelControl20
             // 
             this.labelControl20.Appearance.Font = new System.Drawing.Font("Nunito", 10F, System.Drawing.FontStyle.Bold);
@@ -236,19 +251,6 @@
             this.labelControl20.Size = new System.Drawing.Size(6, 18);
             this.labelControl20.TabIndex = 17;
             this.labelControl20.Text = "*";
-            // 
-            // labelControl18
-            // 
-            this.labelControl18.Appearance.Font = new System.Drawing.Font("Nunito", 10F, System.Drawing.FontStyle.Bold);
-            this.labelControl18.Appearance.ForeColor = System.Drawing.Color.Red;
-            this.labelControl18.Appearance.Options.UseFont = true;
-            this.labelControl18.Appearance.Options.UseForeColor = true;
-            this.labelControl18.Location = new System.Drawing.Point(178, 163);
-            this.labelControl18.Margin = new System.Windows.Forms.Padding(4);
-            this.labelControl18.Name = "labelControl18";
-            this.labelControl18.Size = new System.Drawing.Size(6, 18);
-            this.labelControl18.TabIndex = 17;
-            this.labelControl18.Text = "*";
             // 
             // labelControl17
             // 
@@ -466,7 +468,7 @@
             this.tVoen.Properties.AllowFocused = false;
             this.tVoen.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tVoen.Properties.Appearance.Options.UseFont = true;
-            this.tVoen.Properties.MaxLength = 11;
+            this.tVoen.Properties.MaxLength = 10;
             this.tVoen.Size = new System.Drawing.Size(424, 34);
             this.tVoen.TabIndex = 1;
             // 
@@ -525,7 +527,7 @@
             this.tabNavigationPage2.Controls.Add(this.tBankCode);
             this.tabNavigationPage2.Controls.Add(this.tBankVoen);
             this.tabNavigationPage2.Name = "tabNavigationPage2";
-            this.tabNavigationPage2.Size = new System.Drawing.Size(737, 376);
+            this.tabNavigationPage2.Size = new System.Drawing.Size(728, 375);
             // 
             // tAccountNumber
             // 
@@ -536,7 +538,7 @@
             this.tAccountNumber.Name = "tAccountNumber";
             this.tAccountNumber.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tAccountNumber.Properties.Appearance.Options.UseFont = true;
-            this.tAccountNumber.Size = new System.Drawing.Size(535, 34);
+            this.tAccountNumber.Size = new System.Drawing.Size(526, 34);
             this.tAccountNumber.TabIndex = 0;
             // 
             // labelControl7
@@ -559,7 +561,7 @@
             this.textEdit9.Name = "textEdit9";
             this.textEdit9.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textEdit9.Properties.Appearance.Options.UseFont = true;
-            this.textEdit9.Size = new System.Drawing.Size(535, 34);
+            this.textEdit9.Size = new System.Drawing.Size(526, 34);
             this.textEdit9.TabIndex = 4;
             // 
             // labelControl8
@@ -582,7 +584,7 @@
             this.tSwift.Name = "tSwift";
             this.tSwift.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tSwift.Properties.Appearance.Options.UseFont = true;
-            this.tSwift.Size = new System.Drawing.Size(535, 34);
+            this.tSwift.Size = new System.Drawing.Size(526, 34);
             this.tSwift.TabIndex = 5;
             // 
             // labelControl9
@@ -627,7 +629,7 @@
             this.tBankName.Name = "tBankName";
             this.tBankName.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tBankName.Properties.Appearance.Options.UseFont = true;
-            this.tBankName.Size = new System.Drawing.Size(535, 34);
+            this.tBankName.Size = new System.Drawing.Size(526, 34);
             this.tBankName.TabIndex = 1;
             // 
             // labelControl6
@@ -650,7 +652,8 @@
             this.tBankCode.Name = "tBankCode";
             this.tBankCode.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tBankCode.Properties.Appearance.Options.UseFont = true;
-            this.tBankCode.Size = new System.Drawing.Size(535, 34);
+            this.tBankCode.Properties.MaxLength = 5;
+            this.tBankCode.Size = new System.Drawing.Size(526, 34);
             this.tBankCode.TabIndex = 3;
             // 
             // tBankVoen
@@ -662,25 +665,9 @@
             this.tBankVoen.Name = "tBankVoen";
             this.tBankVoen.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tBankVoen.Properties.Appearance.Options.UseFont = true;
-            this.tBankVoen.Size = new System.Drawing.Size(536, 34);
+            this.tBankVoen.Properties.MaxLength = 10;
+            this.tBankVoen.Size = new System.Drawing.Size(527, 34);
             this.tBankVoen.TabIndex = 2;
-            // 
-            // bGetDataToken
-            // 
-            this.bGetDataToken.AllowFocus = false;
-            this.bGetDataToken.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.bGetDataToken.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Question;
-            this.bGetDataToken.Appearance.Font = new System.Drawing.Font("Nunito", 12F, System.Drawing.FontStyle.Bold);
-            this.bGetDataToken.Appearance.Options.UseBackColor = true;
-            this.bGetDataToken.Appearance.Options.UseFont = true;
-            this.bGetDataToken.Location = new System.Drawing.Point(556, 324);
-            this.bGetDataToken.Name = "bGetDataToken";
-            this.bGetDataToken.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.bGetDataToken.Size = new System.Drawing.Size(172, 34);
-            this.bGetDataToken.TabIndex = 0;
-            this.bGetDataToken.TabStop = false;
-            this.bGetDataToken.Text = "Tokendən al";
-            this.bGetDataToken.Click += new System.EventHandler(this.bGetDataToken_Click);
             // 
             // fCompany
             // 
@@ -688,12 +675,15 @@
             this.Appearance.Options.UseBackColor = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(737, 477);
+            this.ClientSize = new System.Drawing.Size(728, 476);
             this.Controls.Add(this.tabPane1);
             this.Controls.Add(this.panelControl1);
             this.IconOptions.Image = global::WindowsFormsApp2.Properties.Resources.Mpos_png1;
             this.LookAndFeel.SkinName = "WXI";
             this.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(730, 510);
+            this.MinimumSize = new System.Drawing.Size(730, 510);
             this.Name = "fCompany";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Obyekt məlumatları";
@@ -765,7 +755,6 @@
         private DevExpress.XtraEditors.LabelControl labelControl15;
         private DevExpress.XtraEditors.LabelControl labelControl21;
         private DevExpress.XtraEditors.LabelControl labelControl20;
-        private DevExpress.XtraEditors.LabelControl labelControl18;
         private DevExpress.XtraEditors.LabelControl labelControl17;
         private DevExpress.XtraEditors.LabelControl labelControl12;
         private DevExpress.XtraEditors.SimpleButton bSave;

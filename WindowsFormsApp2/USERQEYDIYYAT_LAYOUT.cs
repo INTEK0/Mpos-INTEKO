@@ -159,7 +159,7 @@ FROM userParol where IsDeleted = 0";
                 }
             }
 
-            DbProsedures.UpdatetUser(user);
+            DbProsedures.UpdateUser(user);
 
             FormHelpers.Alert("istifadəçidə düzəliş edildi", Enums.MessageType.Success);
             FormHelpers.Log($"{user.Id} id nömrəsinə sahib istifadəçidə düzəliş edildi");
@@ -224,6 +224,11 @@ FROM userParol where IsDeleted = 0";
                     checkBox1.Checked = false;
                 }
             }
+        }
+
+        private void chSaveMe_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

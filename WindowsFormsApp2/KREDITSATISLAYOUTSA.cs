@@ -788,6 +788,16 @@ namespace WindowsFormsApp2
                             CreditSaleMain();
                         }
                         break;
+                    case "2":
+                        var AzSmartResult = AzSmart.CreditSale(creditDto);
+
+                        if (AzSmartResult.Item1)
+                        {
+                            label6.Text = AzSmartResult.Item2;
+                            label7.Text = AzSmartResult.Item3;
+                            CreditSaleMain();
+                        }
+                        break;
                     case "3":
                         var OmnitechResult = Omnitech.CreditSale(creditDto);
 

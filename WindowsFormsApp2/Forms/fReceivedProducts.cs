@@ -3,6 +3,7 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using WindowsFormsApp2.Helpers;
+using WindowsFormsApp2.Helpers.DB;
 using static WindowsFormsApp2.Helpers.FormHelpers;
 
 namespace WindowsFormsApp2.Forms
@@ -39,7 +40,7 @@ namespace WindowsFormsApp2.Forms
         private void DataLoad(DateTime start, DateTime finish)
         {
             string query = "SELECT * FROM dbo.ALINAN_MEHSUL(@pricePoint,@pricePoint1)";
-            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
             {
                 connection.Open();
                 using (SqlCommand cmd = new SqlCommand(query,connection))

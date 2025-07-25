@@ -78,6 +78,7 @@ PURCHASEPRICE decimal(18, 3),
 SALEPRICE decimal(18, 3),
 STOCK decimal(9,2),
 BARCODE NVARCHAR(100),
+UNİTNAME NVARCHAR(20),
 EDV NVARCHAR(50));
 INSERT INTO @Result
 EXEC dbo.gaime_Satis_mal_load;

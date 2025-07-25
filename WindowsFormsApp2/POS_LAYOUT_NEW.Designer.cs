@@ -33,21 +33,21 @@ namespace WindowsFormsApp2
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(POS_LAYOUT_NEW));
-            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions1 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions4 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions5 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions2 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions3 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.lModel = new DevExpress.XtraEditors.LabelControl();
             this.simpleButton15 = new DevExpress.XtraEditors.SimpleButton();
@@ -180,6 +180,7 @@ namespace WindowsFormsApp2
             this.bDeposit = new DevExpress.XtraBars.BarButtonItem();
             this.bWithdraw = new DevExpress.XtraBars.BarButtonItem();
             this.bControlTape = new DevExpress.XtraBars.BarButtonItem();
+            this.bPeriodicReport = new DevExpress.XtraBars.BarButtonItem();
             this.bBarShotcurt = new DevExpress.XtraBars.BarButtonItem();
             this.bPrintClinic = new DevExpress.XtraBars.BarButtonItem();
             this.bAddProduct = new DevExpress.XtraBars.BarButtonItem();
@@ -188,7 +189,8 @@ namespace WindowsFormsApp2
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.lBankName = new System.Windows.Forms.Label();
-            this.bPeriodicReport = new DevExpress.XtraBars.BarButtonItem();
+            this.bCreditSale = new DevExpress.XtraBars.BarButtonItem();
+            this.bCreditPay = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.textEdit13.Properties)).BeginInit();
@@ -860,10 +862,10 @@ namespace WindowsFormsApp2
             // bRowDelete
             // 
             this.bRowDelete.AutoHeight = false;
-            editorButtonImageOptions1.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("editorButtonImageOptions1.SvgImage")));
-            editorButtonImageOptions1.SvgImageSize = new System.Drawing.Size(24, 24);
+            editorButtonImageOptions4.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("editorButtonImageOptions4.SvgImage")));
+            editorButtonImageOptions4.SvgImageSize = new System.Drawing.Size(24, 24);
             this.bRowDelete.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions1, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions4, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.bRowDelete.Name = "bRowDelete";
             this.bRowDelete.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.bRowDelete.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.bRowDelete_ButtonClick);
@@ -1213,10 +1215,10 @@ namespace WindowsFormsApp2
             // 
             this.tDoctor.Location = new System.Drawing.Point(342, 44);
             this.tDoctor.Name = "tDoctor";
-            serializableAppearanceObject5.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold);
-            serializableAppearanceObject5.Options.UseFont = true;
+            serializableAppearanceObject17.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold);
+            serializableAppearanceObject17.Options.UseFont = true;
             this.tDoctor.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "AXTAR", -1, true, true, false, editorButtonImageOptions2, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "AXTAR", -1, true, true, false, editorButtonImageOptions5, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.tDoctor.Properties.NullValuePrompt = "Həkim adı";
             this.tDoctor.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
             this.tDoctor.Properties.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.tDoctor_Properties_ButtonClick);
@@ -1232,10 +1234,10 @@ namespace WindowsFormsApp2
             this.tCustomer.Properties.AdvancedModeOptions.AutoCompleteMode = DevExpress.XtraEditors.TextEditAutoCompleteMode.SuggestAppend;
             this.tCustomer.Properties.AdvancedModeOptions.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.tCustomer.Properties.AllowFocused = false;
-            serializableAppearanceObject9.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold);
-            serializableAppearanceObject9.Options.UseFont = true;
+            serializableAppearanceObject5.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold);
+            serializableAppearanceObject5.Options.UseFont = true;
             this.tCustomer.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "AXTAR", -1, true, true, false, editorButtonImageOptions3, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "AXTAR", -1, true, true, false, editorButtonImageOptions2, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.tCustomer.Properties.NullValuePrompt = "Müştəri adı";
             this.tCustomer.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
             this.tCustomer.Properties.UseMaskAsDisplayFormat = true;
@@ -1993,9 +1995,11 @@ namespace WindowsFormsApp2
             this.bPrintClinic,
             this.bControlTape,
             this.bAddProduct,
-            this.bPeriodicReport});
+            this.bPeriodicReport,
+            this.bCreditSale,
+            this.bCreditPay});
             this.barManager1.MainMenu = this.bar2;
-            this.barManager1.MaxItemId = 8;
+            this.barManager1.MaxItemId = 10;
             // 
             // bar2
             // 
@@ -2026,7 +2030,9 @@ namespace WindowsFormsApp2
             new DevExpress.XtraBars.LinkPersistInfo(this.bDeposit),
             new DevExpress.XtraBars.LinkPersistInfo(this.bWithdraw),
             new DevExpress.XtraBars.LinkPersistInfo(this.bControlTape),
-            new DevExpress.XtraBars.LinkPersistInfo(this.bPeriodicReport)});
+            new DevExpress.XtraBars.LinkPersistInfo(this.bPeriodicReport),
+            new DevExpress.XtraBars.LinkPersistInfo(this.bCreditSale),
+            new DevExpress.XtraBars.LinkPersistInfo(this.bCreditPay)});
             this.barSubItem1.Name = "barSubItem1";
             // 
             // bDeposit
@@ -2053,6 +2059,14 @@ namespace WindowsFormsApp2
             this.bControlTape.Name = "bControlTape";
             this.bControlTape.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
             this.bControlTape.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bControlTape_ItemClick);
+            // 
+            // bPeriodicReport
+            // 
+            this.bPeriodicReport.Caption = "Dövrü hesabat";
+            this.bPeriodicReport.Id = 7;
+            this.bPeriodicReport.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bPeriodicReport.ImageOptions.SvgImage")));
+            this.bPeriodicReport.Name = "bPeriodicReport";
+            this.bPeriodicReport.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bPeriodicReport_ItemClick);
             // 
             // bBarShotcurt
             // 
@@ -2118,13 +2132,19 @@ namespace WindowsFormsApp2
             this.lBankName.Text = "BankName";
             this.lBankName.Visible = false;
             // 
-            // bPeriodicReport
+            // bCreditSale
             // 
-            this.bPeriodicReport.Caption = "Dövrü hesabat";
-            this.bPeriodicReport.Id = 7;
-            this.bPeriodicReport.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("barButtonItem1.ImageOptions.SvgImage")));
-            this.bPeriodicReport.Name = "bPeriodicReport";
-            this.bPeriodicReport.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bPeriodicReport_ItemClick);
+            this.bCreditSale.Caption = "Kredit satışı";
+            this.bCreditSale.Id = 8;
+            this.bCreditSale.Name = "bCreditSale";
+            this.bCreditSale.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bCreditSale_ItemClick);
+            // 
+            // bCreditPay
+            // 
+            this.bCreditPay.Caption = "Kredit ödənişi";
+            this.bCreditPay.Id = 9;
+            this.bCreditPay.Name = "bCreditPay";
+            this.bCreditPay.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bCreditPay_ItemClick);
             // 
             // POS_LAYOUT_NEW
             // 
@@ -2379,5 +2399,7 @@ namespace WindowsFormsApp2
         private DevExpress.XtraGrid.Columns.GridColumn colRowDelete;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit bRowDelete;
         private DevExpress.XtraBars.BarButtonItem bPeriodicReport;
+        private DevExpress.XtraBars.BarButtonItem bCreditSale;
+        private DevExpress.XtraBars.BarButtonItem bCreditPay;
     }
 }

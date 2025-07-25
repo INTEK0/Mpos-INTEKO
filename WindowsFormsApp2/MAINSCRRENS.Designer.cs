@@ -110,12 +110,12 @@ namespace WindowsFormsApp2
             this.accordionControlElement2 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement3 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement4 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
+            this.accordionControlElement49 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
+            this.accordionControlElement6 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement5 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement71 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement69 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement70 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
-            this.accordionControlElement6 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
-            this.accordionControlElement49 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement7 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement58 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement8 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
@@ -1551,9 +1551,9 @@ namespace WindowsFormsApp2
             this.accordionControlElement2,
             this.accordionControlElement3,
             this.accordionControlElement4,
-            this.accordionControlElement5,
-            this.accordionControlElement6,
             this.accordionControlElement49,
+            this.accordionControlElement6,
+            this.accordionControlElement5,
             this.accordionControlElement7,
             this.accordionControlElement10,
             this.accordionControlElement13,
@@ -1614,6 +1614,27 @@ namespace WindowsFormsApp2
             this.accordionControlElement4.Text = "Anbar";
             this.accordionControlElement4.Visible = false;
             // 
+            // accordionControlElement49
+            // 
+            this.accordionControlElement49.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("accordionControlElement49.ImageOptions.SvgImage")));
+            this.accordionControlElement49.ImageOptions.SvgImageColorizationMode = DevExpress.Utils.SvgImageColorizationMode.CommonPalette;
+            this.accordionControlElement49.Name = "accordionControlElement49";
+            this.accordionControlElement49.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
+            this.accordionControlElement49.Text = "Həkimlər";
+            this.accordionControlElement49.Visible = false;
+            this.accordionControlElement49.VisibleInFooter = false;
+            this.accordionControlElement49.Click += new System.EventHandler(this.accordionControlElement49_Click);
+            // 
+            // accordionControlElement6
+            // 
+            this.accordionControlElement6.Appearance.Normal.ForeColor = System.Drawing.Color.White;
+            this.accordionControlElement6.Appearance.Normal.Options.UseForeColor = true;
+            this.accordionControlElement6.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("accordionControlElement6.ImageOptions.SvgImage")));
+            this.accordionControlElement6.Name = "accordionControlElement6";
+            this.accordionControlElement6.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
+            this.accordionControlElement6.Text = "Müştərilər";
+            this.accordionControlElement6.Click += new System.EventHandler(this.accordionControlElement6_Click);
+            // 
             // accordionControlElement5
             // 
             this.accordionControlElement5.Appearance.Normal.ForeColor = System.Drawing.Color.White;
@@ -1646,27 +1667,6 @@ namespace WindowsFormsApp2
             this.accordionControlElement70.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
             this.accordionControlElement70.Text = "Qalıq borc ödənişləri";
             this.accordionControlElement70.Click += new System.EventHandler(this.accordionControlElement70_Click);
-            // 
-            // accordionControlElement6
-            // 
-            this.accordionControlElement6.Appearance.Normal.ForeColor = System.Drawing.Color.White;
-            this.accordionControlElement6.Appearance.Normal.Options.UseForeColor = true;
-            this.accordionControlElement6.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("accordionControlElement6.ImageOptions.SvgImage")));
-            this.accordionControlElement6.Name = "accordionControlElement6";
-            this.accordionControlElement6.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
-            this.accordionControlElement6.Text = "Müştərilər";
-            this.accordionControlElement6.Click += new System.EventHandler(this.accordionControlElement6_Click);
-            // 
-            // accordionControlElement49
-            // 
-            this.accordionControlElement49.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("accordionControlElement49.ImageOptions.SvgImage")));
-            this.accordionControlElement49.ImageOptions.SvgImageColorizationMode = DevExpress.Utils.SvgImageColorizationMode.CommonPalette;
-            this.accordionControlElement49.Name = "accordionControlElement49";
-            this.accordionControlElement49.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
-            this.accordionControlElement49.Text = "Həkimlər";
-            this.accordionControlElement49.Visible = false;
-            this.accordionControlElement49.VisibleInFooter = false;
-            this.accordionControlElement49.Click += new System.EventHandler(this.accordionControlElement49_Click);
             // 
             // accordionControlElement7
             // 
@@ -3045,7 +3045,7 @@ namespace WindowsFormsApp2
             this.tabAllSettings.Name = "tabAllSettings";
             this.tabAllSettings.Properties.AppearanceCaption.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.tabAllSettings.Properties.AppearanceCaption.Options.UseFont = true;
-            this.tabAllSettings.Size = new System.Drawing.Size(1157, 759);
+            this.tabAllSettings.Size = new System.Drawing.Size(1157, 761);
             // 
             // panelControl13
             // 
@@ -3064,7 +3064,7 @@ namespace WindowsFormsApp2
             this.panelControl13.LookAndFeel.UseDefaultLookAndFeel = false;
             this.panelControl13.Margin = new System.Windows.Forms.Padding(1);
             this.panelControl13.Name = "panelControl13";
-            this.panelControl13.Size = new System.Drawing.Size(1157, 759);
+            this.panelControl13.Size = new System.Drawing.Size(1157, 761);
             this.panelControl13.TabIndex = 12;
             // 
             // chClinicModul

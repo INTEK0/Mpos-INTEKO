@@ -67,6 +67,7 @@
             this.tabPane1 = new DevExpress.XtraBars.Navigation.TabPane();
             this.tabNavigationPage1 = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
+            this.chSaveMe = new DevExpress.XtraEditors.CheckEdit();
             this.dateBirth = new DevExpress.XtraEditors.DateEdit();
             this.separatorControl1 = new DevExpress.XtraEditors.SeparatorControl();
             this.labelControl8 = new DevExpress.XtraEditors.LabelControl();
@@ -128,11 +129,13 @@
             this.bEditUser = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.bDeleteUser = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.chCashierPos = new DevExpress.XtraEditors.CheckEdit();
             ((System.ComponentModel.ISupportInitialize)(this.tabPane1)).BeginInit();
             this.tabPane1.SuspendLayout();
             this.tabNavigationPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
             this.panelControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chSaveMe.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dateBirth.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dateBirth.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.separatorControl1)).BeginInit();
@@ -180,6 +183,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.bDetailRole)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bEditUser)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bDeleteUser)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chCashierPos.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // tabPane1
@@ -212,6 +216,7 @@
             // 
             this.panelControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelControl1.Controls.Add(this.chSaveMe);
             this.panelControl1.Controls.Add(this.dateBirth);
             this.panelControl1.Controls.Add(this.separatorControl1);
             this.panelControl1.Controls.Add(this.labelControl8);
@@ -227,8 +232,23 @@
             this.panelControl1.Controls.Add(this.tFullName);
             this.panelControl1.Location = new System.Drawing.Point(0, 3);
             this.panelControl1.Name = "panelControl1";
-            this.panelControl1.Size = new System.Drawing.Size(825, 246);
+            this.panelControl1.Size = new System.Drawing.Size(825, 243);
             this.panelControl1.TabIndex = 7;
+            // 
+            // chSaveMe
+            // 
+            this.chSaveMe.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.chSaveMe.Location = new System.Drawing.Point(668, 202);
+            this.chSaveMe.Name = "chSaveMe";
+            this.chSaveMe.Properties.AllowFocused = false;
+            this.chSaveMe.Properties.AutoHeight = false;
+            this.chSaveMe.Properties.AutoWidth = true;
+            this.chSaveMe.Properties.Caption = "Şifrəni yadda saxla";
+            this.chSaveMe.Properties.GlyphAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.chSaveMe.Size = new System.Drawing.Size(152, 30);
+            this.chSaveMe.TabIndex = 26;
+            this.chSaveMe.TabStop = false;
+            this.chSaveMe.Tag = "All";
             // 
             // dateBirth
             // 
@@ -385,6 +405,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelControl2.Controls.Add(this.panelControl3);
+            this.panelControl2.Controls.Add(this.chCashierPos);
             this.panelControl2.Controls.Add(this.chCashier);
             this.panelControl2.Controls.Add(this.chAdmin);
             this.panelControl2.Location = new System.Drawing.Point(0, 3);
@@ -759,7 +780,7 @@
             // 
             // chCashier
             // 
-            this.chCashier.Location = new System.Drawing.Point(16, 47);
+            this.chCashier.Location = new System.Drawing.Point(16, 42);
             this.chCashier.Name = "chCashier";
             this.chCashier.Properties.AllowFocused = false;
             this.chCashier.Properties.AutoWidth = true;
@@ -1039,6 +1060,20 @@
             this.bDeleteUser.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.bDeleteUser.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.bDeleteUser_ButtonClick);
             // 
+            // chCashierPos
+            // 
+            this.chCashierPos.Location = new System.Drawing.Point(16, 70);
+            this.chCashierPos.Name = "chCashierPos";
+            this.chCashierPos.Properties.AllowFocused = false;
+            this.chCashierPos.Properties.AutoWidth = true;
+            this.chCashierPos.Properties.Caption = "Kassir (POS)";
+            this.chCashierPos.Properties.RadioGroupIndex = 1;
+            this.chCashierPos.Size = new System.Drawing.Size(110, 22);
+            this.chCashierPos.TabIndex = 2;
+            this.chCashierPos.TabStop = false;
+            this.chCashierPos.Tag = "All";
+            this.chCashierPos.CheckedChanged += new System.EventHandler(this.chCashierPos_CheckedChanged);
+            // 
             // fUser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1059,6 +1094,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).EndInit();
             this.panelControl1.ResumeLayout(false);
             this.panelControl1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chSaveMe.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dateBirth.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dateBirth.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.separatorControl1)).EndInit();
@@ -1109,6 +1145,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.bDetailRole)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bEditUser)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bDeleteUser)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chCashierPos.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1179,5 +1216,7 @@
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn10;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit bDetailRole;
         private DevExpress.XtraEditors.LabelControl labelControl1;
+        private DevExpress.XtraEditors.CheckEdit chSaveMe;
+        private DevExpress.XtraEditors.CheckEdit chCashierPos;
     }
 }

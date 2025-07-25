@@ -94,8 +94,8 @@ namespace WindowsFormsApp2.Helpers.DB
             public string Voen { get; set; }
             public string Address { get; set; }
             public int BorcTeyinati { get; set; }
+            public DateTime ContractDate { get; set; }
             public string ContractNo { get; set; }
-            public decimal Debt { get; set; } //Borc
             public string MobPhone { get; set; }
             public string Email { get; set; }
             public string Comment { get; set; }
@@ -227,7 +227,7 @@ namespace WindowsFormsApp2.Helpers.DB
             public byte[] ProductImage { get; set; }
         }
 
-        public class User
+        public class    User
         {
             public int Id { get; set; }
             public string Username { get; set; }

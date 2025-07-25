@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
+using DevExpress.XtraMap.Native;
 using Newtonsoft.Json;
 using RestSharp;
 using WindowsFormsApp2.Helpers;
@@ -95,6 +96,60 @@ namespace WindowsFormsApp2.NKA
             else
             {
                 return null;
+            }
+        }
+
+        public static GetInfoResponse GetInfo(string ipAddress)
+        {
+            string token = Login(ipAddress);
+            if (string.IsNullOrWhiteSpace(token))
+                return null;
+
+            var requestData = new GetInfoRequest
+            {
+                requestData = new GetInfoRequest.RequestData
+                {
+                    access_token = token,
+                    checkData = new GetInfoRequest.CheckData
+                    {
+                        check_type = 41
+                    }
+                }
+            };
+
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(requestData, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            });
+
+            try
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                var client = new RestClient();
+                var request = new RestRequest(ipAddress, Method.Post);
+                request.AddHeader("Content-Type", "application/json;charset=utf-8");
+                request.AddStringBody(json, DataFormat.Json);
+                RestResponse response = client.Execute(request);
+                if (response.ResponseStatus != ResponseStatus.Completed)
+                {
+                    ReadyMessages.ERROR_SERVER_CONNECTION_MESSAGE();
+                    FormHelpers.Log($"Kassa ilə əlaqə zamanı xəta yarandı\n\n {response.ErrorMessage}");
+                    return null;
+                }
+                else
+                {
+                    GetInfoResponse responseData = System.Text.Json.JsonSerializer.Deserialize<GetInfoResponse>(response.Content);
+                    return responseData;
+                }
+            }
+            catch (Exception ex)
+            {
+                ReadyMessages.ERROR_DEFAULT_MESSAGE(ex.Message);
+                return null;
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
             }
         }
 
@@ -1828,6 +1883,20 @@ case A.VERGI_DERECESI
             public RequestData requestData { get; set; }
         }
 
+        private class GetInfoRequest
+        {
+            public class CheckData
+            {
+                public int check_type { get; set; } = 41;
+            }
+            public class RequestData
+            {
+                public CheckData checkData { get; set; }
+                public string access_token { get; set; }
+            }
+            public RequestData requestData { get; set; }
+        }
+
         private class Item
         {
             public string itemName { get; set; }
@@ -1919,6 +1988,12 @@ case A.VERGI_DERECESI
 
         #region [..Response Classes..]
 
+        public abstract class BaseResponse
+        {
+            public int code { get; set; }
+            public string message { get; set; }
+        }
+
         public class OmnitechResponse
         {
             public int code { get; set; }
@@ -1943,6 +2018,30 @@ case A.VERGI_DERECESI
             public int firstDocNumber { get; set; }
             public int lastDocNumber { get; set; }
             public int reportNumber { get; set; }
+        }
+
+        public class GetInfoResponse : BaseResponse
+        {
+            public class Data
+            {
+                public string cashbox_factory_number { get; set; }
+                public string cashbox_tax_number { get; set; }
+                public string cashregister_factory_number { get; set; }
+                public string cashregister_model { get; set; }
+                public string company_name { get; set; }
+                public string company_tax_number { get; set; }
+                public string firmware_version { get; set; }
+                public int last_doc_number { get; set; }
+                public DateTime last_online_time { get; set; }
+                public DateTime not_after { get; set; }
+                public DateTime not_before { get; set; }
+                public string object_address { get; set; }
+                public string object_name { get; set; }
+                public string object_tax_number { get; set; }
+                public string qr_code_url { get; set; }
+                public string state { get; set; }
+            }
+            public Data data { get; set; }
         }
 
         #endregion [..Response Classes..]

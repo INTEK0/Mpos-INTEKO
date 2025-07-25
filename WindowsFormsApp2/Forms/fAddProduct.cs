@@ -13,6 +13,7 @@ using WindowsFormsApp2.Validations;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
 using static WindowsFormsApp2.Helpers.Enums;
 using static WindowsFormsApp2.Helpers.FormHelpers;
+using BasselTech.UsbBarcodeScanner;
 
 namespace WindowsFormsApp2.Forms
 {
@@ -37,6 +38,7 @@ namespace WindowsFormsApp2.Forms
 
         private void fAddProduct_Load(object sender, EventArgs e)
         {
+
             SupplierDataLoad();
             UnitDataLoad();
             CurrencyDataLoad();
@@ -702,7 +704,7 @@ namespace WindowsFormsApp2.Forms
             OpenFileDialog openFile = new OpenFileDialog();
             if (openFile.ShowDialog() is DialogResult.OK)
             {
-               // pictureProduct.Image = Image.FromFile(openFile.FileName);
+                // pictureProduct.Image = Image.FromFile(openFile.FileName);
                 using (FileStream stream = new FileStream(openFile.FileName, FileMode.Open, FileAccess.Read))
                 {
                     _imageBytes = new byte[stream.Length];
@@ -720,6 +722,39 @@ namespace WindowsFormsApp2.Forms
                 _imageBytes = null;
             }
             Cursor.Current = Cursors.Default;
+        }
+
+        private UsbBarcodeScanner scanner = new UsbBarcodeScanner();
+
+        private void BarcodeScanner()
+        {
+            scanner.BarcodeScanned += (sender, args) =>
+            {
+                tBarcode.Text = args.Barcode;
+            };
+            scanner.Start();
+        }
+
+        private string _barcode;
+
+        private void tBarcode_EditValueChanged(object sender, EventArgs e)
+        {
+            //string barcode = tBarcode.Text;
+            //if (_barcode == tBarcode.Text.Trim())
+            //{
+            //    tBarcode.Text = null;
+            //    tBarcode.Text = barcode;
+            //    _barcode = barcode;
+            //}
+            //else
+            //{
+            //    _barcode = barcode;
+            //}
+        }
+
+        private void tBarcode_EditValueChanging(object sender, DevExpress.XtraEditors.Controls.ChangingEventArgs e)
+        {
+            
         }
     }
 }

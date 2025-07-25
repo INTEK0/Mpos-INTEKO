@@ -64,8 +64,8 @@ namespace WindowsFormsApp2.Forms
             supplier.SupplierName = tSupplierName.Text.Trim();
             supplier.Voen = tVoen.Text.Trim();
             supplier.Address = tAddress.Text.Trim();
+            supplier.ContractDate = dateContractDate.DateTime;
             supplier.ContractNo = tConractNo.Text.Trim();
-            supplier.Debt = Convert.ToDecimal(tInitialDebt.Text);
             supplier.Email = tEmail.Text;
             supplier.MobPhone = tMobPhone.Text;
             supplier.Comment = tComment.Text.Trim();
@@ -111,8 +111,8 @@ namespace WindowsFormsApp2.Forms
             supplier.SupplierName = tSupplierName.Text.Trim();
             supplier.Voen = tVoen.Text.Trim();
             supplier.Address = tAddress.Text.Trim();
+            supplier.ContractDate = dateContractDate.DateTime;
             supplier.ContractNo = tConractNo.Text.Trim();
-            supplier.Debt = Convert.ToDecimal(tInitialDebt.Text);
             supplier.Email = tEmail.Text;
             supplier.MobPhone = tMobPhone.Text;
             supplier.Comment = tComment.Text.Trim();
@@ -156,8 +156,6 @@ namespace WindowsFormsApp2.Forms
                 tVoen.Text = supplier?.Voen;
                 tAddress.Text = supplier?.Address;
                 tConractNo.Text = supplier?.ContractNo;
-                lookBorcTeyinati.EditValue = Convert.ToInt32(supplier?.BorcTeyinati);
-                tInitialDebt.EditValue = Convert.ToDecimal(supplier?.Debt);
                 tComment.Text = supplier?.Comment;
                 tEmail.Text = supplier?.Email;
                 tMobPhone.Text = supplier?.MobPhone;
@@ -177,8 +175,6 @@ namespace WindowsFormsApp2.Forms
             tVoen.Text = string.Empty;
             tAddress.Text = string.Empty;
             tConractNo.Text = string.Empty;
-            lookBorcTeyinati.Text = null;
-            tInitialDebt.Text = string.Empty;
             tEmail.Text = null;
             tMobPhone.Text = null;
             tComment.Text = null;
@@ -189,18 +185,19 @@ namespace WindowsFormsApp2.Forms
             tBankSwift.Text = string.Empty;
             supplierID = 0;
             bAdd.Text = Enums.GetEnumDescription(Enums.Operation.Add);
+            dateContractDate.DateTime = DateTime.Now;
             tSupplierName.Focus();
         }
 
         private void BorcTeyinatiDataLoad()
         {
-            string query = "select BORC_TEYINATI AS [BORC TƏYİNATI], BORC_TEYINATI_ID from BORC_TEYINATI";
-            var data = DbProsedures.ConvertToDataTable(query);
-            lookBorcTeyinati.Properties.DisplayMember = "BORC TƏYİNATI";
-            lookBorcTeyinati.Properties.ValueMember = "BORC_TEYINATI_ID";
-            lookBorcTeyinati.Properties.DataSource = data;
-            lookBorcTeyinati.Properties.PopulateColumns();
-            lookBorcTeyinati.Properties.Columns["BORC_TEYINATI_ID"].Visible = false;
+            //string query = "select BORC_TEYINATI AS [BORC TƏYİNATI], BORC_TEYINATI_ID from BORC_TEYINATI";
+            //var data = DbProsedures.ConvertToDataTable(query);
+            //lookBorcTeyinati.Properties.DisplayMember = "BORC TƏYİNATI";
+            //lookBorcTeyinati.Properties.ValueMember = "BORC_TEYINATI_ID";
+            //lookBorcTeyinati.Properties.DataSource = data;
+            //lookBorcTeyinati.Properties.PopulateColumns();
+            //lookBorcTeyinati.Properties.Columns["BORC_TEYINATI_ID"].Visible = false;
         }
     }
 }

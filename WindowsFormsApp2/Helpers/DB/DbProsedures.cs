@@ -41,8 +41,6 @@ namespace WindowsFormsApp2.Helpers.DB
         private const string UPDATE_CustomerDataQuery = "UPDATE_MUSTERI";
         private const string UPDATE_DoctorDataQuery = "UPDATE_DOCTOR";
         private const string GET_SupplierProccessNoQuery = "EXEC dbo.TECHIZATCI_NOMRE";
-        private const string INSERT_SupplierQuery = "INSERT_TECHIZATCI";
-        private const string UPDATE_SupplierQuery = "search_techizatci_update";
         private const string DELETE_SupplierQuery = "search_techizatci_delete";
         private const string GET_GuarantorProccessNoQuery = "EXEC dbo.ZAMIN_EMELIYYAT_NOMRE";
         private const string INSERT_GuarantorQuery = "INSERT_ZAMIN";
@@ -71,19 +69,19 @@ namespace WindowsFormsApp2.Helpers.DB
         {
             try
             {
+                Cursor.Current = Cursors.WaitCursor;
                 using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+                using (SqlCommand cmd = new SqlCommand(SqlQuery, connection))
                 {
-                    using (SqlCommand cmd = new SqlCommand(SqlQuery, connection))
+                    connection.Open();
+                    cmd.CommandType = type;
+                    cmd.CommandTimeout = 120;
+                    using (SqlDataAdapter dataAdapter = new SqlDataAdapter(cmd))
                     {
-                        connection.Open();
-                        cmd.CommandType = type;
-                        using (SqlDataAdapter dataAdapter = new SqlDataAdapter(cmd))
+                        using (DataTable data = new DataTable())
                         {
-                            using (DataTable data = new DataTable())
-                            {
-                                dataAdapter.Fill(data);
-                                return data;
-                            }
+                            dataAdapter.Fill(data);
+                            return data;
                         }
                     }
                 }
@@ -94,6 +92,7 @@ namespace WindowsFormsApp2.Helpers.DB
                 FormHelpers.Log(ex.Message);
                 return null;
             }
+            finally { Cursor.Current = Cursors.Default; }
         }
 
 
@@ -244,6 +243,8 @@ namespace WindowsFormsApp2.Helpers.DB
                     param.Value = item.Phone;
                     param = cmd.Parameters.Add("@DOGUM_TARIXI", SqlDbType.Date);
                     param.Value = item.DateBirth;
+                    param = cmd.Parameters.Add("@PosSaleScreen", SqlDbType.Bit);
+                    param.Value = item.PosSaleScreen;
                     SqlParameter outputIdParam = new SqlParameter("@UserId", SqlDbType.Int)
                     {
                         Direction = ParameterDirection.Output
@@ -258,7 +259,7 @@ namespace WindowsFormsApp2.Helpers.DB
             }
         }
 
-        public static void UpdatetUser(User item)
+        public static void UpdateUser(User item)
         {
             using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
             {
@@ -2075,104 +2076,100 @@ FROM
         public static int InsertSupplier(Supplier data)
         {
             using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlCommand cmd = new SqlCommand("INSERT_TECHIZATCI", connection))
             {
-                using (SqlCommand cmd = new SqlCommand(INSERT_SupplierQuery, connection))
-                {
-                    connection.Open();
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    SqlParameter param;
+                connection.Open();
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlParameter param;
 
-                    param = cmd.Parameters.Add("@TECHIZATCI_NOMRE", SqlDbType.NVarChar, 500);
-                    param.Value = data.ProccessNo;
-                    param = cmd.Parameters.Add("@MUGAVİLE_NOM", SqlDbType.NVarChar, 500);
-                    param.Value = data.ContractNo;
-                    param = cmd.Parameters.Add("@SIRKET_ADI", SqlDbType.NVarChar, 500);
-                    param.Value = data.SupplierName;
-                    param = cmd.Parameters.Add("@UNVAN", SqlDbType.NVarChar, 500);
-                    param.Value = data.Address;
-                    param = cmd.Parameters.Add("@ELAGE_NOMRE", SqlDbType.NVarChar, 500);
-                    param.Value = data.MobPhone;
-                    param = cmd.Parameters.Add("@ELEKTRON_POCT", SqlDbType.NVarChar, 500);
-                    param.Value = data.Email;
-                    param = cmd.Parameters.Add("@ILKIN_BORC", SqlDbType.Decimal);
-                    param.Value = data.Debt;
-                    param = cmd.Parameters.Add("@SAHIBKAR_TECHIZATCI", SqlDbType.NVarChar, 500);
-                    param.Value = data.BorcTeyinati;
-                    param = cmd.Parameters.Add("@TECHIZATCI_VOEN", SqlDbType.NVarChar, 500);
-                    param.Value = data.Voen;
-                    param = cmd.Parameters.Add("@HESAB_AD", SqlDbType.NVarChar, 500);
-                    param.Value = data.BankAccountNumber;
-                    param = cmd.Parameters.Add("@BANK_ADI", SqlDbType.NVarChar, 500);
-                    param.Value = data.BankName;
-                    param = cmd.Parameters.Add("@BANK_VOEN", SqlDbType.NVarChar, 500);
-                    param.Value = data.BankVoen;
-                    param = cmd.Parameters.Add("@KOD", SqlDbType.NVarChar, 500);
-                    param.Value = data.BankCode;
-                    param = cmd.Parameters.Add("@SWIFT", SqlDbType.NVarChar, 500);
-                    param.Value = data.BankSwift;
-                    param = cmd.Parameters.Add("@DESCRIPTION", SqlDbType.NVarChar, 500);
-                    param.Value = data.Comment;
-                    param = cmd.Parameters.Add("@ISDELETED", SqlDbType.Int);
-                    param.Value = 0;
+                param = cmd.Parameters.Add("@TECHIZATCI_NOMRE", SqlDbType.NVarChar, 500);
+                param.Value = data.ProccessNo;
+                param = cmd.Parameters.Add("@CONTRACTDATE", SqlDbType.Date);
+                param.Value = data.ContractDate;
+                param = cmd.Parameters.Add("@MUGAVİLE_NOM", SqlDbType.NVarChar, 500);
+                param.Value = data.ContractNo;
+                param = cmd.Parameters.Add("@SIRKET_ADI", SqlDbType.NVarChar, 500);
+                param.Value = data.SupplierName;
+                param = cmd.Parameters.Add("@UNVAN", SqlDbType.NVarChar, 500);
+                param.Value = data.Address;
+                param = cmd.Parameters.Add("@ELAGE_NOMRE", SqlDbType.NVarChar, 500);
+                param.Value = data.MobPhone;
+                param = cmd.Parameters.Add("@ELEKTRON_POCT", SqlDbType.NVarChar, 500);
+                param.Value = data.Email;
+                param = cmd.Parameters.Add("@SAHIBKAR_TECHIZATCI", SqlDbType.NVarChar, 500);
+                param.Value = data.BorcTeyinati;
+                param = cmd.Parameters.Add("@TECHIZATCI_VOEN", SqlDbType.NVarChar, 500);
+                param.Value = data.Voen;
+                param = cmd.Parameters.Add("@HESAB_AD", SqlDbType.NVarChar, 500);
+                param.Value = data.BankAccountNumber;
+                param = cmd.Parameters.Add("@BANK_ADI", SqlDbType.NVarChar, 500);
+                param.Value = data.BankName;
+                param = cmd.Parameters.Add("@BANK_VOEN", SqlDbType.NVarChar, 500);
+                param.Value = data.BankVoen;
+                param = cmd.Parameters.Add("@KOD", SqlDbType.NVarChar, 500);
+                param.Value = data.BankCode;
+                param = cmd.Parameters.Add("@SWIFT", SqlDbType.NVarChar, 500);
+                param.Value = data.BankSwift;
+                param = cmd.Parameters.Add("@DESCRIPTION", SqlDbType.NVarChar, 500);
+                param.Value = data.Comment;
+                param = cmd.Parameters.Add("@ISDELETED", SqlDbType.Int);
+                param.Value = 0;
 
-                    param = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
+                param = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
 
-                    param.Direction = ParameterDirection.Output;
-                    cmd.ExecuteNonQuery();
+                param.Direction = ParameterDirection.Output;
+                cmd.ExecuteNonQuery();
 
 
-                    return Convert.ToInt32(param.Value);
-                }
+                return Convert.ToInt32(param.Value);
             }
         }
 
         public static bool UpdateSupplier(Supplier data)
         {
             using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlCommand cmd = new SqlCommand("search_techizatci_update", connection))
             {
-                using (SqlCommand cmd = new SqlCommand(UPDATE_SupplierQuery, connection))
-                {
-                    connection.Open();
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    SqlParameter param;
+                connection.Open();
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlParameter param;
 
-                    param = cmd.Parameters.Add("@SupplierID", SqlDbType.Int);
-                    param.Value = data.SupplierID;
-                    param = cmd.Parameters.Add("@MUGAVİLE_NOM", SqlDbType.NVarChar, 500);
-                    param.Value = data.ContractNo;
-                    param = cmd.Parameters.Add("@UNVAN", SqlDbType.NVarChar, 500);
-                    param.Value = data.Address;
-                    param = cmd.Parameters.Add("@ELAGE_NOMRE", SqlDbType.NVarChar, 500);
-                    param.Value = data.MobPhone;
-                    param = cmd.Parameters.Add("@ELEKTRON_POCT", SqlDbType.NVarChar, 500);
-                    param.Value = data.Email;
-                    param = cmd.Parameters.Add("@ILKIN_BORC", SqlDbType.Decimal);
-                    param.Value = data.Debt;
-                    param = cmd.Parameters.Add("@SAHIBKAR_TECHIZATCI", SqlDbType.Int);
-                    param.Value = data.BorcTeyinati;
-                    param = cmd.Parameters.Add("@TECHIZATCI_VOEN", SqlDbType.NVarChar, 500);
-                    param.Value = data.Voen;
-                    param = cmd.Parameters.Add("@HESAB_AD", SqlDbType.NVarChar, 500);
-                    param.Value = data.BankAccountNumber;
-                    param = cmd.Parameters.Add("@BANK_ADI", SqlDbType.NVarChar, 500);
-                    param.Value = data.BankName;
-                    param = cmd.Parameters.Add("@BANK_VOEN", SqlDbType.NVarChar, 500);
-                    param.Value = data.BankVoen;
-                    param = cmd.Parameters.Add("@KOD", SqlDbType.NVarChar, 500);
-                    param.Value = data.BankCode;
-                    param = cmd.Parameters.Add("@SWIFT", SqlDbType.NVarChar, 500);
-                    param.Value = data.BankSwift;
-                    param = cmd.Parameters.Add("@DESCRIPTION", SqlDbType.NVarChar, 500);
-                    param.Value = data.Comment;
+                param = cmd.Parameters.Add("@SupplierID", SqlDbType.Int);
+                param.Value = data.SupplierID;
+                param = cmd.Parameters.Add("@CONTRACTDATE", SqlDbType.Date);
+                param.Value = data.ContractDate;
+                param = cmd.Parameters.Add("@MUGAVİLE_NOM", SqlDbType.NVarChar, 500);
+                param.Value = data.ContractNo;
+                param = cmd.Parameters.Add("@UNVAN", SqlDbType.NVarChar, 500);
+                param.Value = data.Address;
+                param = cmd.Parameters.Add("@ELAGE_NOMRE", SqlDbType.NVarChar, 500);
+                param.Value = data.MobPhone;
+                param = cmd.Parameters.Add("@ELEKTRON_POCT", SqlDbType.NVarChar, 500);
+                param.Value = data.Email;
+                param = cmd.Parameters.Add("@SAHIBKAR_TECHIZATCI", SqlDbType.Int);
+                param.Value = data.BorcTeyinati;
+                param = cmd.Parameters.Add("@TECHIZATCI_VOEN", SqlDbType.NVarChar, 500);
+                param.Value = data.Voen;
+                param = cmd.Parameters.Add("@HESAB_AD", SqlDbType.NVarChar, 500);
+                param.Value = data.BankAccountNumber;
+                param = cmd.Parameters.Add("@BANK_ADI", SqlDbType.NVarChar, 500);
+                param.Value = data.BankName;
+                param = cmd.Parameters.Add("@BANK_VOEN", SqlDbType.NVarChar, 500);
+                param.Value = data.BankVoen;
+                param = cmd.Parameters.Add("@KOD", SqlDbType.NVarChar, 500);
+                param.Value = data.BankCode;
+                param = cmd.Parameters.Add("@SWIFT", SqlDbType.NVarChar, 500);
+                param.Value = data.BankSwift;
+                param = cmd.Parameters.Add("@DESCRIPTION", SqlDbType.NVarChar, 500);
+                param.Value = data.Comment;
 
-                    param = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
+                param = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
 
-                    param.Direction = ParameterDirection.Output;
-                    cmd.ExecuteNonQuery();
+                param.Direction = ParameterDirection.Output;
+                cmd.ExecuteNonQuery();
 
 
-                    return Convert.ToBoolean(param.Value);
-                }
+                return Convert.ToBoolean(param.Value);
             }
         }
 

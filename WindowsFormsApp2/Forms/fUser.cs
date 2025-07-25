@@ -46,6 +46,21 @@ where
 
         private void bSave_Click(object sender, EventArgs e)
         {
+            if (chSaveMe.Checked)
+            {
+                Properties.Settings.Default.Username = tUsername.Text;
+                Properties.Settings.Default.Password = string.IsNullOrWhiteSpace(tPassword.Text) ? password : tPassword.Text.Trim();
+                Properties.Settings.Default.SaveMe = true;
+                Properties.Settings.Default.Save();
+            }
+            else
+            {
+                Properties.Settings.Default.Username = null;
+                Properties.Settings.Default.Password = null;
+                Properties.Settings.Default.SaveMe = false;
+                Properties.Settings.Default.Save();
+            }
+
             if (bSave.Text is "Yadda saxla")
             {
                 AddUser();
@@ -54,6 +69,8 @@ where
             {
                 EditUser();
             }
+
+
         }
 
         private void AddUser()
@@ -68,6 +85,7 @@ where
                     Email = tEmail.Text.Trim(),
                     Phone = tPhone.Text.Trim(),
                     IsAdmin = chAdmin.Checked == true ? true : false,
+                    PosSaleScreen = chCashierPos.Checked == true ? true : false,
                     DateBirth = dateBirth.DateTime
                 };
 
@@ -92,7 +110,6 @@ where
                     dynamic message = $"{user.Username} istifadəçisi yaradıldı";
                     FormHelpers.Log(message);
                     FormHelpers.Alert(message, Enums.MessageType.Success);
-
                     Clear();
                     UserDataLoad();
                 }
@@ -150,6 +167,7 @@ where
                 Password = string.IsNullOrWhiteSpace(tPassword.Text) ? password : tPassword.Text.Trim(),
                 NameSurname = tFullName.Text.Trim(),
                 IsAdmin = chAdmin.Checked == true ? true : false,
+                PosSaleScreen = chCashierPos.Checked == true ? true : false,
                 Email = tEmail.Text.Trim(),
                 Phone = tPhone.Text.Trim(),
                 DateBirth = dateBirth.DateTime,
@@ -168,7 +186,7 @@ where
                 }
             }
 
-            DbProsedures.UpdatetUser(user);
+            DbProsedures.UpdateUser(user);
 
             FormHelpers.Alert($"{user.Username} İstifadəçisində düzəliş edildi", Enums.MessageType.Success);
 
@@ -341,7 +359,16 @@ where
             if (user.IsAdmin)
                 chAdmin.Checked = true;
             else
-                chCashier.Checked = true;
+            {
+                if (user.PosSaleScreen)
+                {
+                    chCashierPos.Checked = true;
+                }
+                else
+                {
+                    chCashier.Checked = true;
+                }
+            }
 
             //Roles
             chProductAdd.Checked = user.UserRole.ProductAdd;
@@ -378,6 +405,68 @@ where
             chCashier.Checked = true;
             chAdmin.Checked = true;
             bCancel.Visible = false;
+        }
+
+        private void chCashierPos_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chCashierPos.Checked)
+            {
+                chPosSale.Checked = true;
+                chPosSale.Enabled = false;
+                chProductAdd.Enabled = false;
+                chProductAdd.Checked = false;
+                chRefundProduct.Checked = false;
+                chRefundProduct.Enabled = false;
+                chProductDelete.Checked = false;
+                chProductDelete.Enabled = false;
+                chProductDiscount.Checked = false;
+                chProductDiscount.Enabled = false;
+                chProductBarcodePrint.Checked = false;
+                chProductBarcodePrint.Enabled = false;
+                chScalesProductDownload.Checked = false;
+                chScalesProductDownload.Enabled = false;
+                chSuppliers.Checked = false;
+                chSuppliers.Enabled = false;
+                chCustomers.Checked = false;
+                chCustomers.Enabled = false;
+                chBankSale.Checked = false;
+                chBankSale.Enabled = false;
+                chReport.Checked = false;
+                chReport.Enabled = false;
+                chTerminalDelete.Checked = false;
+                chTerminalDelete.Enabled = false;
+                chPayments.Checked = false;
+                chPayments.Enabled = false;
+                chUsers.Checked = false;
+                chUsers.Enabled = false;
+                chBackups.Checked = false;
+                chBackups.Enabled = false;
+                chLogs.Checked = false;
+                chLogs.Enabled = false;
+                chScalesDelete.Checked = false;
+                chScalesDelete.Enabled = false;
+            }
+            else
+            {
+                chPosSale.Checked = true;
+                chPosSale.Enabled = true;
+                chProductAdd.Enabled = true;
+                chRefundProduct.Enabled = true;
+                chProductDelete.Enabled = true;
+                chProductDiscount.Enabled = true;
+                chProductBarcodePrint.Enabled = true;
+                chScalesProductDownload.Enabled = true;
+                chSuppliers.Enabled = true;
+                chCustomers.Enabled = true;
+                chBankSale.Enabled = true;
+                chReport.Enabled = true;
+                chTerminalDelete.Enabled = true;
+                chPayments.Enabled = true;
+                chUsers.Enabled = true;
+                chBackups.Enabled = true;
+                chLogs.Enabled = true;
+                chScalesDelete.Enabled = true;
+            }
         }
     }
 }
