@@ -15,7 +15,6 @@ using System.Windows.Forms;
 using DevExpress.Data.Linq.Helpers;
 using DevExpress.XtraBars.Navigation;
 using DevExpress.XtraEditors;
-using DevExpress.XtraGrid.Localization;
 using DevExpress.XtraGrid.Views.Grid;
 using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
@@ -75,9 +74,6 @@ namespace WindowsFormsApp2
             textEdit11.Text = DbProsedures.GET_TotalSalesCount();
             get_ip_model();
             bankttnmWrite();
-
-            textEdit11.Enabled = false;
-            textEdit1.Enabled = false;
             CalculationDelete();
             tileproduct();
             BasketDataControl();

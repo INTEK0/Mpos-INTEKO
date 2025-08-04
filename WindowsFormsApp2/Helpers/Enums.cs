@@ -99,6 +99,10 @@ namespace WindowsFormsApp2.Helpers
             ZReport,
             [Description("Nəzarət lenti")]
             ControlTape,
+            [Description("Kredit satışı")]
+            CreditSale,
+            [Description("Kredit ödənişi")]
+            CreditPay
         }
 
         public enum BankType

@@ -772,17 +772,25 @@ namespace WindowsFormsApp2.NKA
                         return new Tuple<bool, string, string>(true,response.data.document_id, response.data.short_document_id);
                     case "document: invalid shift duration":
                         XtraMessageBox.Show("GÜN SONU (Z) HESABATI ÇIXARILMAYIB !\n\nPos Satış səhifəsindən daxil olaraq günü sonlandırın", "Mesaj", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        return new Tuple<bool, string, string>(true, null, null);
+                        return new Tuple<bool, string, string>(false, null, null);
                     default:
                         ReadyMessages.ERROR_CREDIT_SALES_MESSAGE(response.message);
                         FormHelpers.Log($"Kredit satışı xətası - Xəta mesajı: {response.message}");
-                        return new Tuple<bool, string, string>(true, null, null);
+                        FormHelpers.OperationLog(new OperationLogs()
+                        {
+                            Message = response?.message,
+                            RequestCode = response?.requestJson,
+                            ResponseCode = response?.responseJson,
+                            OperationType = OperationType.CreditSale,
+                            OperationId = 506
+                        });
+                        return new Tuple<bool, string, string>(false, null, null);
                 }
             }
             else
             {
                 ReadyMessages.ERROR_CREDIT_SALES_MESSAGE("Kassa ilə əlaqə zamanı xəta yarandı");
-                return new Tuple<bool, string, string>(true, null, null);
+                return new Tuple<bool, string, string>(false, null, null);
             }
         }
 
@@ -1303,7 +1311,7 @@ WHERE psd.pos_satis_check_main_id = {pos_satis_main_id} AND psm.user_id_ = {Prop
             }
 
             public Data data { get; set; }
-            public string Operation { get; set; } = "sale";
+            public string operation { get; set; } = "sale";
         }
 
         public class CreditPayRequest

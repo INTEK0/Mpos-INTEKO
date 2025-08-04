@@ -355,6 +355,12 @@
     <Compile Include="Forms\fCreditPay.Designer.cs">
       <DependentUpon>fCreditPay.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\fCreditSale.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\fCreditSale.Designer.cs">
+      <DependentUpon>fCreditSale.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\fDeactive.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1098,6 +1104,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fCreditPay.resx">
       <DependentUpon>fCreditPay.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\fCreditSale.resx">
+      <DependentUpon>fCreditSale.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fCustomers.resx">
       <DependentUpon>fCustomers.cs</DependentUpon>

@@ -52,7 +52,7 @@ namespace WindowsFormsApp2
         {
             try
             {
-                SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
+                SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString);
                 string queryString = "SELECT STATUS FROM MENFI_AC_BAGLA ";
                 SqlCommand command = new SqlCommand(queryString, connection);
 
@@ -62,17 +62,6 @@ namespace WindowsFormsApp2
                 da.Fill(dt);
 
                 int number = dt.Rows[0].Field<int>("STATUS");
-                // XtraMessageBox.Show(number.ToString());
-                //if (number > 0)
-                //{
-                //    checkBox1.Checked = true;
-                //    checkBox1.Text = "AÇIQDIR";
-                //}
-                //else
-                //{
-                //    checkBox1.Checked = false;
-                //    checkBox1.Text = "BAĞLIDIR";
-                //}
 
                 return number;
 
@@ -125,29 +114,11 @@ namespace WindowsFormsApp2
         public static int mal_det_id;
         public static string anbar_g;
         public static string edv_;
-        private void gridView1_FocusedRowChanged(object sender, DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs e)
-        {
-            //DataRow dr = gridView1.GetDataRow(gridView1.FocusedRowHandle);
-            //if (dr != null)
-            //{
-
-
-            //    //  XtraMessageBox.Show(id.ToString());
-            //    techizatci_adi = dr[1].ToString();
-            //    mehsul_adi = dr[3].ToString();
-            //    satis_giymeti = dr[5].ToString();
-            //    mal_det_id = Convert.ToInt32(dr[2].ToString());
-            //    anbar_g = dr[6].ToString();
-            //    edv_ = dr["EDV"].ToString();
-            //}
-        }
 
         private void gridView1_RowCellClick(object sender, DevExpress.XtraGrid.Views.Grid.RowCellClickEventArgs e)
         {
             frm1.techizatci_axtar(techizatci_adi, mehsul_adi, satis_giymeti, mal_det_id, anbar_g, edv_);
-           
-            // frm1.lookUpEdit8GEtData_yeni(mal_det_id);
-
+            
             this.Close();
         }
 
@@ -156,11 +127,11 @@ namespace WindowsFormsApp2
             DataRow dr = gridView1.GetDataRow(gridView1.FocusedRowHandle);
             if (dr != null)
             {
-                techizatci_adi = dr[1].ToString();
-                mehsul_adi = dr[3].ToString();
-                satis_giymeti = dr[5].ToString();
-                mal_det_id = Convert.ToInt32(dr[2].ToString());
-                anbar_g = dr[6].ToString();
+                techizatci_adi = dr["TƏCHİZATÇI"].ToString();
+                mehsul_adi = dr["MƏHSUL ADI"].ToString();
+                satis_giymeti = dr["SATIŞ QİYMƏTİ"].ToString();
+                mal_det_id = Convert.ToInt32(dr["MAL_ALISI_DETAILS_ID"].ToString());
+                anbar_g = dr["ANBAR QALIĞI"].ToString();
                 edv_ = dr["EDV"].ToString();
             }
         }

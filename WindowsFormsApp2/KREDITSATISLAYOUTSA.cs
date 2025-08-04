@@ -22,6 +22,8 @@ namespace WindowsFormsApp2
         public static string mal_alisi_details_id = "0";
         public static string edv = "";
         public static string anbargalig = "0";
+        private string customerId;
+        private string zaminId;
 
         private DataTable dt;
         private SqlDataAdapter da;
@@ -57,43 +59,32 @@ namespace WindowsFormsApp2
 
         public void MUSTERI(string ID, string MUSTERI_AD)
         {
-
-            labelControl9.Text = ID;
+            customerId = ID;
             tCustomerName.Text = MUSTERI_AD;
         }
 
         public void ZAMIN(string ID, string ZAMIN_AD)
         {
-            label3.Text = ID;
+            zaminId = ID;
             tZamin.Text = ZAMIN_AD;
         }
 
         private void evdkontrol(string edvs)
         {
-            try
+            string query = $"SELECT  [EDV_ID] FROM  [VERGI_DERECESI] WHERE [EDV] = N'{edvs}'";
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, con))
             {
-                using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon))
-                {
-                    SqlCommand cmd = new SqlCommand("SELECT  [EDV_ID] FROM  [VERGI_DERECESI] where [EDV]=N'" + edvs + "'   ", connection);
-                    connection.Open();
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        label9.Text = reader[0].ToString();
-                    }
-                    reader.Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
+                con.Open();
+                object result = cmd.ExecuteScalar();
+                label9.Text = result != null ? result.ToString() : "";
             }
         }
 
         private void getmebleg(string paramValue, string paramValue1, string paramValue2, string paramValue3)
         {
             string queryString = " exec yekun_mebleg_calc @migdar =@pricePoint,@alis_giymet =@pricePoint1,@endirim_faiz =@pricePoint2,@endirim_azn =@pricePoint3";
-            SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
+            SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString);
             SqlCommand cmd = new SqlCommand();
             SqlCommand command = new SqlCommand(queryString, connection);
 
@@ -105,7 +96,6 @@ namespace WindowsFormsApp2
             SqlDataReader dr = command.ExecuteReader();
             while (dr.Read())
             {
-
                 tDiscountTotalAmount.Text = dr["endirim_meblegi"].ToString();
                 tYekunMebleg.Text = dr["yekun_mebleg"].ToString();
             }
@@ -169,74 +159,47 @@ namespace WindowsFormsApp2
             tProccessNo.Text = DbProsedures.GET_CreditSaleProccessNo();
         }
 
-        private async void CreditSaleMain()
+        private async void CreditSaleMain(DatabaseClasses.CreditMain data, string longFiscalId, string shortFiscalId)
         {
-            DatabaseClasses.CreditMain credit = new DatabaseClasses.CreditMain()
-            {
-                ProcessNo = tProccessNo.Text,
-                ContractNo = tContractNo.Text.Trim(),
-                OdenilenMebleg = Decimal.Parse(tTotal.Text),
-                CustomerName = tCustomerName.Text.Trim(),
-                CustomerId = Convert.ToInt32(labelControl9.Text),
-                ZaminName = tZamin.Text.Trim(),
-                ZaminId = Convert.ToInt32(label3.Text),
-                SupplierName = tSupplier.Text,
-                ProductId = Convert.ToInt32(mal_alisi_details_id),
-                ProductName = tProductName.Text,
-                Quantity = Decimal.Parse(tQuantity.Text),
-                SalePrice = Decimal.Parse(tSalePrice.Text),
-                DiscountPercent = Decimal.Parse(tDiscountPercent.Text),
-                DiscountAmount = Decimal.Parse(tDiscountAmount.Text),
-                Taksit = Convert.ToInt32(cmbMonth.Text),
-                Total = Decimal.Parse(tTotal.Text),
-                IlkinOdenis = Decimal.Parse(tIlkinOdenis.Text),
-                Comment = memoEdit1.Text.Trim(),
-                MonthAmount = Decimal.Parse(tAyliqOdenis.Text),
-                LonfFiskalId = label6.Text.Trim(),
-                ShortFiskalId = label7.Text.Trim()
-            };
-
-            var validator = new CreditValidation();
-            var validateResult = validator.Validate(credit);
-
-            if (!validateResult.IsValid)
-            {
-                foreach (var error in validateResult.Errors)
-                {
-                    FormHelpers.Alert(error.ErrorMessage, Enums.MessageType.Warning);
-                    return;
-                }
-            }
-
-            await DbProsedures.Insert_CreditMain(credit);
+            data.LonfFiskalId = longFiscalId;
+            data.ShortFiskalId = shortFiscalId;
+            int id = await DbProsedures.Insert_CreditMain(data);
 
             DbProsedures.InsertCustomerDebt(CustomerDebtType.CreditSale,
                 DateTime.Now,
-                Convert.ToInt32(credit.CustomerId),
-                Convert.ToDecimal(credit.OdenilenMebleg));
+                Convert.ToInt32(data.CustomerId),
+                Convert.ToDecimal(data.OdenilenMebleg));
 
-            await CreditMonthAdd();
+            await CreditMonthAdd(id, longFiscalId);
 
             FormHelpers.Log($"{tProductName.Text} məhsulu {tContractNo.Text} müqavilə nömrəsinə əsasən kredit satışı ilə satıldı.");
             //krediprint();
-            clear();
+            RestartForm();
         }
 
-        private async Task CreditMonthAdd()
+        private void RestartForm()
         {
-            string id = tProccessNo.Text.Substring(tProccessNo.Text.LastIndexOf('-') + 1);
+            this.Hide();
+            XtraForm newForm = (XtraForm)Activator.CreateInstance(this.GetType());
+            newForm.StartPosition = this.StartPosition;
+            newForm.Location = this.Location;
+            newForm.Show();
+            this.Close();
+        }
 
+        private async Task CreditMonthAdd(int creditMainId, string fiscalId)
+        {
             int month = Convert.ToInt32(tMuddetAy.Text);
             for (int i = 1; i <= month; i++)
             {
                 int j = 30 * i;
                 DatabaseClasses.CreditSaleMonth item = new DatabaseClasses.CreditSaleMonth()
                 {
-                    CreditSaleId = Convert.ToInt32(id),
+                    CreditSaleId = creditMainId,
                     Month = i,
                     PaymentDay = DateTime.Today.AddDays(j),
                     Amount = Convert.ToDecimal(tAyliqOdenis.Text),
-                    CreditSaleFiscalId = label6.Text
+                    CreditSaleFiscalId = fiscalId
                 };
 
                 await DbProsedures.Insert_CreditMonth(item);
@@ -288,7 +251,7 @@ namespace WindowsFormsApp2
         public void getmebleg_(string paramValue, string paramValue1)
         {
             string queryString = " exec mehsul_alisi_edv @yekun_mebleg_=@pricePoint,@vergi_derece =@pricePoint1";
-            SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
+            SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString);
             SqlCommand cmd = new SqlCommand();
             SqlCommand command = new SqlCommand(queryString, connection);
 
@@ -297,7 +260,7 @@ namespace WindowsFormsApp2
 
             connection.Open();
             SqlDataReader dr = command.ExecuteReader();
-            while (dr.Read())
+            if (dr.Read())
             {
                 textEdit1.Text = dr["vergisiz"].ToString();
                 textEdit11.Text = dr["vergi"].ToString();
@@ -733,7 +696,7 @@ namespace WindowsFormsApp2
             {
                 Payment(0, 0, 0, 0);
             }
-            
+
         }
 
         private void Payment(decimal Total, decimal Cash, decimal Card, decimal IncomingSum)
@@ -741,10 +704,11 @@ namespace WindowsFormsApp2
             string uuid = Guid.NewGuid().ToString();
             string vahid = get_vahid();
 
+            var data = Validation();
+            if (data is null) return;
+
             try
             {
-                double price = Convert.ToDouble(textEdit1.Text) + Convert.ToDouble(tIlkinOdenis.Text);
-                decimal saleprice = Convert.ToDecimal(price);
                 decimal quantity = Convert.ToDecimal(tQuantity.Text);
 
                 int vatType = Convert.ToInt32(label9.Text);
@@ -781,11 +745,9 @@ namespace WindowsFormsApp2
                     case "1":
                         var SunmiResult = Sunmi.CreditSale(creditDto);
 
-                        if (SunmiResult.Item1)
+                        if (SunmiResult.Item1 == true)
                         {
-                            label6.Text = SunmiResult.Item2;
-                            label7.Text = SunmiResult.Item3;
-                            CreditSaleMain();
+                            CreditSaleMain(data, SunmiResult.Item2, SunmiResult.Item3);
                         }
                         break;
                     case "2":
@@ -793,9 +755,7 @@ namespace WindowsFormsApp2
 
                         if (AzSmartResult.Item1)
                         {
-                            label6.Text = AzSmartResult.Item2;
-                            label7.Text = AzSmartResult.Item3;
-                            CreditSaleMain();
+                            CreditSaleMain(data, AzSmartResult.Item2, AzSmartResult.Item3);
                         }
                         break;
                     case "3":
@@ -803,9 +763,7 @@ namespace WindowsFormsApp2
 
                         if (OmnitechResult.Item1)
                         {
-                            label6.Text = OmnitechResult.Item2;
-                            label7.Text = OmnitechResult.Item3;
-                            CreditSaleMain();
+                            CreditSaleMain(data, OmnitechResult.Item2, OmnitechResult.Item3);
                         }
                         break;
                 }
@@ -814,6 +772,45 @@ namespace WindowsFormsApp2
             {
                 XtraMessageBox.Show("XƏTA \n\n" + ex.Message);
             }
+        }
+
+        private DatabaseClasses.CreditMain Validation()
+        {
+            DatabaseClasses.CreditMain credit = new DatabaseClasses.CreditMain();
+            credit.ProcessNo = tProccessNo.Text;
+            credit.ContractNo = tContractNo.Text.Trim();
+            credit.OdenilenMebleg = Decimal.Parse(tTotal.Text);
+            credit.CustomerName = tCustomerName.Text.Trim();
+            credit.CustomerId = string.IsNullOrWhiteSpace(customerId) ? 0 : Convert.ToInt32(customerId);
+            credit.ZaminName = string.IsNullOrWhiteSpace(tZamin.Text) ? "YOXDUR" : tZamin.Text.Trim();
+            credit.ZaminId = string.IsNullOrWhiteSpace(zaminId) ? 1 : Convert.ToInt32(zaminId);
+            credit.SupplierName = tSupplier.Text;
+            credit.ProductId = string.IsNullOrWhiteSpace(mal_alisi_details_id) ? 0 : Convert.ToInt32(mal_alisi_details_id);
+            credit.ProductName = tProductName.Text;
+            credit.Quantity = Decimal.Parse(tQuantity.Text);
+            credit.SalePrice = Decimal.Parse(tSalePrice.Text);
+            credit.DiscountPercent = Decimal.Parse(tDiscountPercent.Text);
+            credit.DiscountAmount = Decimal.Parse(tDiscountAmount.Text);
+            credit.Taksit = string.IsNullOrWhiteSpace(cmbMonth.Text) ? 0 : Convert.ToInt32(cmbMonth.Text);
+            credit.Total = Decimal.Parse(tTotal.Text);
+            credit.IlkinOdenis = Decimal.Parse(tIlkinOdenis.Text);
+            credit.Comment = memoEdit1.Text.Trim();
+            credit.MonthAmount = Decimal.Parse(tAyliqOdenis.Text);
+
+
+            var validator = new CreditValidation();
+            var validateResult = validator.Validate(credit);
+
+            if (!validateResult.IsValid)
+            {
+                foreach (var error in validateResult.Errors)
+                {
+                    FormHelpers.Alert(error.ErrorMessage, Enums.MessageType.Warning);
+                    return null;
+                }
+            }
+
+            return credit;
         }
     }
 }

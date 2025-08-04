@@ -197,6 +197,7 @@ where kredit_id={_creditMainId}";
             DTOs.CreditPayDto payData = new DTOs.CreditPayDto()
             {
                 Url = _terminal.Ip,
+                MerchantId = _terminal.MerchantId,
                 item = new CreditPayDto.Item
                 {
                     Name = tProductName.Text,
@@ -223,16 +224,17 @@ where kredit_id={_creditMainId}";
                 case "1":
                     bool SunmiIsSuccess = Sunmi.CreditPay(payData);
                     if (SunmiIsSuccess)
-                    {
                         RefreshData();
-                    }
+                    break;
+                case "2":
+                    bool AzSmartIsSuccess = AzSmart.CreditPay(payData);
+                    if (AzSmartIsSuccess)
+                        RefreshData();
                     break;
                 case "3":
                     bool OmnitechIsSuccess = Omnitech.CreditPay(payData);
                     if (OmnitechIsSuccess)
-                    {
                         RefreshData();
-                    }
                     break;
             }
         }

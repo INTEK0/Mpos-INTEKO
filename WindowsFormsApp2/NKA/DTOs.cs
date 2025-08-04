@@ -139,5 +139,6 @@ public static class DTOs
         public string Url { get; set; }
         public string AccessToken { get; set; }
         public string MerchantId { get; set; }
+        public string Rrn { get; set; }
     }
 }

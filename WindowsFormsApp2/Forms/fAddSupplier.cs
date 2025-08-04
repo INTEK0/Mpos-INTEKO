@@ -18,6 +18,7 @@ namespace WindowsFormsApp2.Forms
 
         private void fAddSupplier_Load(object sender, EventArgs e)
         {
+            dateContractDate.DateTime = DateTime.Now;
             Clear();
             BorcTeyinatiDataLoad();
             tProccessNo.Text = DbProsedures.GET_SupplierProccessNo();

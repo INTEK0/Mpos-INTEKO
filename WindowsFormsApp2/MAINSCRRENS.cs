@@ -623,9 +623,9 @@ FROM[terazimalzeme]";
 
         private async Task LicenceCheck()
         {
-            //lLicenceExpireDate.Text = "-";
-            //lLicenceExpireDate.ForeColor = Color.Black;
-            //return;
+            lLicenceExpireDate.Text = "-";
+            lLicenceExpireDate.ForeColor = Color.Black;
+            return;
 
             var licenceUser = await LicenseService.Instance.RequestKeyControl(LicenseService.Instance.GetLicenceKey());
             if (licenceUser is null)

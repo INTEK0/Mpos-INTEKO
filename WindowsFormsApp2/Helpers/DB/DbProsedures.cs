@@ -23,7 +23,6 @@ namespace WindowsFormsApp2.Helpers.DB
         private const string INSERT_CalculationQuery = "insert_calculation";
         private const string INSERT_PosRefundQuery = "insert_pos_gaytarma_manual";
         private const string GET_PosSalesProccesNoQuery = "exec dbo.pos_emeliyyat_nomre";
-        private const string GET_TotalSalesCountQuery = "select count(*) as say from pos_satis_check_main";
         private const string INSERT_PosBasketQuery = "InsertBasketData";
         private const string ExportPosBasketQuery = "ExportBasketDataToCalculation";
         private const string GET_BasketDataLoadQuery = "PosBasketDataLoad";
@@ -36,7 +35,6 @@ namespace WindowsFormsApp2.Helpers.DB
         private const string INSERT_DoctorQuery = "INSERT_DOCTOR";
         private const string DELETE_CustomerQuery = "delete_customer";
         private const string DELETE_DoctorQuery = "delete_doctor";
-        private const string GET_CustomerProccessNoQuery = "EXEC dbo.MUSTERI_EMELIYYAT_NOMRE";
         private const string GET_DoctorProccessNoQuery = "EXEC dbo.DOCTOR_EMELIYYAT_NOMRE";
         private const string UPDATE_CustomerDataQuery = "UPDATE_MUSTERI";
         private const string UPDATE_DoctorDataQuery = "UPDATE_DOCTOR";
@@ -49,7 +47,6 @@ namespace WindowsFormsApp2.Helpers.DB
         private const string GET_RefundProccesNoQuery = "EXEC dbo.POS_GAYTARMA";
         private const string INSERT_ClinicDataQuery = "ClinicReportInsertData";
         public static readonly string GET_ClinicDataLoadQuery = $"EXEC [dbo].[ClinicReportDataLoad]@UserID = {Properties.Settings.Default.UserID}";
-        private const string INSERT_GaimeSalesMainQuery = "INSERT_GAIME_SATISI_MAIN";
         private static readonly string GET_GaimeSalesProccessNoQuery = "EXEC dbo.GAIME_SATISI_EMELIYYAT_NOMRE";
         private static readonly string GET_GaimeRefundProccessNoQuery = "EXEC dbo.GAIME_SATISI_GAYTARMA";
         private const string GET_GetProductSalesDataQuery = "GetProductSalesData";
@@ -706,20 +703,13 @@ namespace WindowsFormsApp2.Helpers.DB
 
         public static string GET_TotalSalesCount()
         {
+            const string query = "SELECT COUNT(*) FROM pos_satis_check_main";
             using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, connection))
             {
-                using (SqlCommand cmd = new SqlCommand(GET_TotalSalesCountQuery, connection))
-                {
-                    connection.Open();
-                    using (SqlDataReader dr = cmd.ExecuteReader())
-                    {
-                        while (dr.Read())
-                        {
-                            return dr[0].ToString();
-                        }
-                        return null;
-                    }
-                }
+                connection.Open();
+                int count = (int)cmd.ExecuteScalar();
+                return count.ToString();
             }
         }
 
@@ -1441,20 +1431,13 @@ FROM
 
         public static string GET_CustomerProccessNo()
         {
+            const string query = "EXEC dbo.MUSTERI_EMELIYYAT_NOMRE";
             using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, connection))
             {
                 connection.Open();
-                using (SqlCommand cmd = new SqlCommand(GET_CustomerProccessNoQuery, connection))
-                {
-                    using (SqlDataReader dr = cmd.ExecuteReader())
-                    {
-                        while (dr.Read())
-                        {
-                            return dr[0].ToString();
-                        }
-                        return null;
-                    }
-                }
+                var result = cmd.ExecuteScalar();
+                return result.ToString();
             }
         }
 
@@ -2437,7 +2420,7 @@ FROM
             using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
             {
                 con.Open();
-                using (SqlCommand cmd = new SqlCommand(INSERT_GaimeSalesMainQuery, con))
+                using (SqlCommand cmd = new SqlCommand("INSERT_GAIME_SATISI_MAIN", con))
                 {
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlParameter param;
@@ -2866,23 +2849,20 @@ WHERE
         public static string GET_CreditSaleProccessNo()
         {
             using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlCommand cmd = new SqlCommand("EXEC dbo.KREDIT_SATISI_EMELIYYAT_NOMRE", connection))
             {
                 connection.Open();
-                using (SqlCommand cmd = new SqlCommand("EXEC dbo.KREDIT_SATISI_EMELIYYAT_NOMRE", connection))
+
+                using (SqlDataReader dr = cmd.ExecuteReader())
                 {
-                    using (SqlDataReader dr = cmd.ExecuteReader())
-                    {
-                        if (dr.Read())
-                        {
-                            return dr[0].ToString();
-                        }
-                        return null;
-                    }
+                    if (dr.Read())
+                        return dr[0].ToString();
+                    return null;
                 }
             }
         }
 
-        public async static Task Insert_CreditMain(CreditMain item)
+        public async static Task<int> Insert_CreditMain(CreditMain item)
         {
             using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
             using (SqlCommand cmd = new SqlCommand("INSERT_KREDIT_SATISI_MAIN", con))
@@ -2911,10 +2891,20 @@ WHERE
                 cmd.Parameters.AddWithValue("@MonthAmount", item.MonthAmount);
                 cmd.Parameters.AddWithValue("@Cashier", item.Cashier);
                 cmd.Parameters.AddWithValue("@UserId", item.UserId);
-                cmd.Parameters.AddWithValue("@LonfFiskalId", item.LonfFiskalId);
-                cmd.Parameters.AddWithValue("@ShortFiskalId", item.ShortFiskalId);
+                cmd.Parameters.AddWithValue("@LonfFiskalId", item.LonfFiskalId ?? "");
+                cmd.Parameters.AddWithValue("@ShortFiskalId", item.ShortFiskalId ?? "");
+
+                SqlParameter outputIdParam = new SqlParameter("@ReturnId", SqlDbType.Int)
+                {
+                    Direction = ParameterDirection.Output
+                };
+                cmd.Parameters.Add(outputIdParam);
+
                 await con.OpenAsync();
                 await cmd.ExecuteNonQueryAsync();
+
+                int newId = (int)outputIdParam.Value;
+                return newId;
             }
         }
 

@@ -14,14 +14,7 @@ namespace WindowsFormsApp2.Forms
         public fQuickProductList()
         {
             InitializeComponent();
-            GridLocalizer.Active = new MyGridLocalizer();
         }
-
-        //public class ProductInfo
-        //{
-        //    public string barcode { get; set; }
-        //    public decimal stockAmount { get; set; } = 0;
-        //}
 
         private void GetDataLoad()
         {
@@ -37,7 +30,8 @@ PURCHASEPRICE decimal(18, 3),
 SALEPRICE decimal(18, 3),
 STOCK decimal(9,2),
 BARCODE NVARCHAR(100),
-EDV NVARCHAR(50));
+EDV NVARCHAR(50),
+UNITNAME NVARCHAR(50));
 INSERT INTO @Result
 EXEC dbo.gaime_Satis_mal_load;
 
@@ -48,7 +42,8 @@ PRODUCTNAME AS ProductName,
 BARCODE AS Barcode,
 PURCHASEPRICE AS PurchasePrice,
 SALEPRICE AS SalePrice,
-STOCK AS Amount
+STOCK AS Amount,
+UNITNAME AS Unit
 FROM @Result";
 
             var data = DbProsedures.ConvertToDataTable(query);

@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 using RestSharp;
 using WindowsFormsApp2.Helpers;
-using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
+using static DTOs;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
 using static WindowsFormsApp2.Helpers.Enums;
 using static WindowsFormsApp2.POS_GAYTARMA_LAYOUT;
@@ -19,7 +20,7 @@ namespace WindowsFormsApp2.NKA
 {
     public static class AzSmart
     {
-        public const string FiskalPort = "10155"; //prod port: 8008 - test port: 10155
+        public const string FiskalPort = "8008"; //prod port: 8008 - test port: 10155
         private static readonly RestClient _restClient = new RestClient();
 
         private static readonly bool MessageVisible = FormHelpers.SuccessMessageVisible();
@@ -41,6 +42,7 @@ namespace WindowsFormsApp2.NKA
             }
 
             var responseData = System.Text.Json.JsonSerializer.Deserialize<T>(response.Content);
+
             return new BaseRequestResponse<T>
             {
                 requestJson = json,
@@ -487,144 +489,226 @@ namespace WindowsFormsApp2.NKA
             }
         }
 
-        public static Tuple<bool, string, string> CreditSale(DTOs.CreditSaleDto salesData)
+        public static Tuple<bool, string, string> CreditSale(DTOs.CreditSaleDto creditData)
         {
-            string requestJson = null;
-            string responseJson = null;
-            int posSalesId = 0;
-            try
+            List<CreditSaleRequest.Item> items = new List<CreditSaleRequest.Item>();
+
+            int quantity = Convert.ToInt32(creditData.item.Quantity * 1000);
+            int price = (int)(creditData.item.SalePrice * 100);
+
+
+            string vatTypeName = "ƏDV 18%";
+            switch (creditData.item.VatType)
             {
-                Cursor.Current = Cursors.WaitCursor;
-                List<RequestSale.Item> items = new List<RequestSale.Item>();
-                string query = "GetItems_AzSmart";
+                case 1: vatTypeName = "ƏDV 18%"; break;
+                case 2: vatTypeName = "Ticarət əlavəsi 18%"; break;
+                case 3: vatTypeName = "ƏDV-dən azad"; break;
+                case 4: vatTypeName = "SV-2%"; break;
+                case 5: vatTypeName = "SV-8%"; break;
+            }
 
-                SqlConnection conn = new SqlConnection(DbHelpers.DbConnectionString);
-                SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@UserID", UserCacheService.User.Id);
-                conn.Open();
+            int vatType = 1800;
+            switch (creditData.item.VatType)
+            {
+                case 1:
+                case 2:
+                    vatType = 1800;
+                    break;
+                case 3: vatType = 0; break;
+                case 4: vatType = 200; break;
+                case 5: vatType = 800; break;
+            }
 
-                SqlDataReader dr = cmd.ExecuteReader();
-                while (dr.Read())
+            CreditSaleRequest.Item item = new CreditSaleRequest.Item()
+            {
+                itemId = Guid.NewGuid().ToString(),
+                itemName = creditData.item.ProductName,
+                itemAmount = price,
+                itemBarcode = creditData.item.ProductCode,
+                itemQty = quantity,
+                itemTaxes = new List<CreditSaleRequest.ItemTaxis>()
                 {
-                    string name = dr["name"].ToString();
-                    string Id = dr["item_id"].ToString();
-                    string barcode = dr["code"].ToString();
-                    decimal salePrice = Convert.ToDecimal(dr["salePrice"]);
-                    decimal _purchasePrice = Convert.ToDecimal(dr["purchasePrice"]);
-                    decimal quantity = Convert.ToDecimal(dr["quantity"]);
-                    string taxName = dr["TaxName"].ToString();
-                    int TaxCode = Convert.ToInt32(dr["TaxCode"]);
-                    int calcType = Convert.ToInt32(dr["calcType"]);
-                    int TaxPrc = Convert.ToInt32(dr["TaxPrc"]);
-
-
-                    int miqdar = Convert.ToInt32(quantity * 1000);
-                    int price = Convert.ToInt32(salePrice * quantity * 100);
-
-                    int? purchasePrice = Convert.ToInt32(_purchasePrice * 100);
-                    int? purchasePriceSum = Convert.ToInt32(_purchasePrice * quantity * 100);
-
-                    if (taxName != "Ticarət əlavəsi 18%")
+                    new CreditSaleRequest.ItemTaxis()
                     {
-                        purchasePriceSum = null;
-                        purchasePrice = null;
+                        fullName =vatTypeName,
+                        taxName = vatTypeName,
+                        taxPrc = vatType,
                     }
-
-                    var taxs = new List<RequestSale.itemTaxes>
-                    {
-                        new RequestSale.itemTaxes
-                        {
-                            fullName = taxName,
-                            taxName = taxName,
-                            taxPrc = TaxPrc,
-                            calcType = calcType,
-                            //taxCode = 0
-                        }
-                    };
-
-                    RequestSale.Item itemProduct = new RequestSale.Item
-                    {
-                        itemId = Id,
-                        itemName = name,
-                        itemBarcode = barcode,
-                        itemQty = miqdar,
-                        itemAmount = price,
-                        itemMarginPrice = purchasePrice,
-                        itemMarginSum = purchasePriceSum,
-                        itemTaxes = taxs
-                    };
-                    items.Add(itemProduct);
                 }
+            };
+            items.Add(item);
 
-                int cash = Convert.ToInt32(salesData.IncomingSum * 100);
-                int card = Convert.ToInt32(salesData.CardPayment * 100);
-                int total = Convert.ToInt32(salesData.Total * 100);
+            int cash = Convert.ToInt32(creditData.IncomingSum * 100);
+            int card = Convert.ToInt32(creditData.CardPayment * 100);
+            int total = Convert.ToInt32(creditData.Total * 100);
+            int creditAmount = Convert.ToInt32(creditData.creditPayment * 100);
+            CreditSaleRequest.Payments payment = new CreditSaleRequest.Payments()
+            {
+                cashAmount = cash,
+                cashlessAmount = card,
+                creditAmount = creditAmount,
+                rrn = string.IsNullOrWhiteSpace(creditData.Rrn) ? null : creditData.Rrn
+            };
 
-                RequestSale.Payments payments = new RequestSale.Payments
+
+            CreditSaleRequest.Root root = new CreditSaleRequest.Root()
+            {
+                items = items,
+                payments = payment,
+                amount = items.Sum(x => (x.itemAmount * x.itemQty) / 1000),
+                employeeName = creditData.Cashier,
+                clientName = creditData.CustomerName,
+                creditContract = creditData.CreditContract,
+            };
+
+
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(root, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            });
+
+            var response = RequestPOST<ResponseSale>($"{creditData.Url}/sale", creditData.MerchantId, json);
+
+            FormHelpers.OperationLog(new OperationLogs
+            {
+                OperationType = OperationType.CreditSale,
+                OperationId = 11,
+                Message = response.data?.message ?? "Success",
+                RequestCode = response.requestJson,
+                ResponseCode = response.responseJson,
+            });
+
+
+            if (response.code != 506)
+            {
+                if (response.data?.status == "success")
                 {
-                    cashAmount = cash,
-                    cashlessAmount = card,
-                    rrn = string.IsNullOrWhiteSpace(salesData.Rrn) ? null : salesData.Rrn,
-                };
+                    if (MessageVisible)
+                        ReadyMessages.SUCCESS_CREDIT_SALES_MESSAGE();
 
-                string docnumber = ReturnHeaderId();
-
-                RequestSale.Root root = new RequestSale.Root
-                {
-                    employeeName = salesData.Cashier,
-                    items = items,
-                    payments = payments,
-                    amount = total,
-                    docNumber = docnumber
-                };
-
-                string json = Newtonsoft.Json.JsonConvert.SerializeObject(root, new JsonSerializerSettings
-                {
-                    NullValueHandling = NullValueHandling.Ignore
-                });
-
-
-                var response = RequestPOST<ResponseSale>($"{salesData.Url}/sale", salesData.MerchantId, json);
-                requestJson = response.requestJson;
-                responseJson = response.responseJson;
-
-                if (response.code != 506)
-                {
-                    if (response.data.status == "success")
-                    {
-
-                        if (MessageVisible)
-                            ReadyMessages.SUCCESS_CREDIT_SALES_MESSAGE();
-
-                        FormHelpers.Log($"Kredit satışı uğurla edildi. Qəbz No: {response.data.fiscalNum}");
-                        return new Tuple<bool, string, string>(true, response.data.fiscalID, response.data.fiscalID.Substring(0, 12));
-                    }
-                    else
-                    {
-                        return new Tuple<bool, string, string>(false, null, null);
-                    }
+                    FormHelpers.Log($"Kredit satışı uğurla edildi. Qəbz No: {response.data.fiscalNum}");
+                    return new Tuple<bool, string, string>(
+                        true,
+                        response.data.fiscalID,
+                        string.IsNullOrWhiteSpace(response.data.fiscalID) ? null
+                            : response.data.fiscalID?.Substring(0, 12));
                 }
                 else
                 {
+                    ReadyMessages.ERROR_SALES_MESSAGE(response.data.message);
+                    FormHelpers.Log($"Kredit satışı xətası - Xəta mesajı: {response.data.message}");
                     return new Tuple<bool, string, string>(false, null, null);
                 }
             }
-            catch (Exception ex)
+            else
             {
+                ReadyMessages.ERROR_SALES_MESSAGE($"Kassa ilə əlaqə zamanı xəta yarandı\n{response.message}");
                 return new Tuple<bool, string, string>(false, null, null);
             }
-            finally
+        }
+
+        public static bool CreditPay(CreditPayDto creditData)
+        {
+            List<CreditPayRequest.Item> items = new List<CreditPayRequest.Item>();
+
+            int quantity = Convert.ToInt32(creditData.item.Quantity * 1000);
+            int price = (int)(creditData.item.SalePrice * quantity * 100 / 1000);
+
+
+            string vatTypeName = "ƏDV 18%";
+            switch (creditData.item.VatType)
             {
-                FormHelpers.OperationLog(new OperationLogs
+                case 1: vatTypeName = "ƏDV 18%"; break;
+                case 2: vatTypeName = "Ticarət əlavəsi 18%"; break;
+                case 3: vatTypeName = "ƏDV-dən azad"; break;
+                case 4: vatTypeName = "SV-2%"; break;
+                case 5: vatTypeName = "SV-8%"; break;
+            }
+
+            int vatType = 1800;
+            switch (creditData.item.VatType)
+            {
+                case 1:
+                case 2:
+                    vatType = 1800;
+                    break;
+                case 3: vatType = 0; break;
+                case 4: vatType = 200; break;
+                case 5: vatType = 800; break;
+            }
+
+            CreditPayRequest.Item item = new CreditPayRequest.Item()
+            {
+                itemId = Guid.NewGuid().ToString(),
+                itemName = creditData.item.Name,
+                itemAmount = price,
+                itemBarcode = creditData.item.Code,
+                itemQty = quantity,
+                itemTaxes = new List<CreditPayRequest.ItemTaxis>()
                 {
-                    OperationType = OperationType.PosSales,
-                    OperationId = posSalesId,
-                    Message = posSalesId == 0 ? "Error" : "Success",
-                    RequestCode = requestJson,
-                    ResponseCode = responseJson,
-                });
-                Cursor.Current = Cursors.Default;
+                    new CreditPayRequest.ItemTaxis()
+                    {
+                        fullName =vatTypeName,
+                        taxName = vatTypeName,
+                        taxPrc = vatType,
+                    }
+                }
+            };
+            items.Add(item);
+
+            int cash = Convert.ToInt32(creditData.IncomingSum * 100);
+            int card = Convert.ToInt32(creditData.CardPayment * 100);
+            int total = Convert.ToInt32(creditData.Total * 100);
+            //int residue = Convert.ToInt32(creditData.Residue * 100);
+            CreditPayRequest.Payments payment = new CreditPayRequest.Payments()
+            {
+                cashAmount = cash,
+                cashlessAmount = card,
+                rrn = string.IsNullOrWhiteSpace(creditData.Rrn) ? null : creditData.Rrn
+            };
+
+
+            CreditPayRequest.Root root = new CreditPayRequest.Root()
+            {
+                items = items,
+                payments = payment,
+                amount = items.Sum(x => x.itemAmount),
+                employeeName = creditData.CashierName,
+                clientName = creditData.CustomerName,
+                creditContract = creditData.CreditContract,
+                documentID = creditData.ParenDocumentId
+            };
+
+
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(root, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            });
+
+            var response = RequestPOST<ResponseSale>($"{creditData.Url}/creditpay", creditData.MerchantId, json);
+            if (response.code != 506)
+            {
+                if (response.data.status == "success")
+                {
+                    if (MessageVisible)
+                        ReadyMessages.SUCCES_CREDIT_PAYMENT_MESSAGE();
+
+                    DbProsedures.UPDATE_CreditPay(response.data.fiscalID.Substring(0, 12), response.data.fiscalID, creditData.CreditMonthId);
+                    FormHelpers.Log($"{creditData.CreditContract} nömrəli müqavilənin kredit ödənişi edildi. Qəbz No: {response.data.fiscalNum}");
+                    return true;
+                }
+                else
+                {
+                    ReadyMessages.ERROR_SALES_MESSAGE(response.data.message);
+                    FormHelpers.Log($"Kredit ödənişi xətası - Xəta mesajı: {response.data.message}");
+                    return false;
+                }
+            }
+            else
+            {
+                ReadyMessages.ERROR_SALES_MESSAGE(response.message);
+                FormHelpers.Log($"Kredit ödənişi xətası - Xəta mesajı: {response.message}");
+                return false;
             }
         }
 
@@ -1156,6 +1240,94 @@ namespace WindowsFormsApp2.NKA
             }
         }
 
+        private class CreditSaleRequest
+        {
+            public class Item
+            {
+                public string itemId { get; set; }
+                public string itemName { get; set; }
+                public string itemBarcode { get; set; }
+                public int itemQty { get; set; }
+                public int itemAmount { get; set; }
+                public int discount { get; set; }
+                public List<ItemTaxis> itemTaxes { get; set; }
+            }
+
+            public class ItemTaxis
+            {
+                public string taxName { get; set; }
+                public string fullName { get; set; }
+                public int taxPrc { get; set; }
+                public int calcType { get; set; } = 1;
+            }
+
+            public class Payments
+            {
+                public int cashAmount { get; set; }
+                public int cashlessAmount { get; set; }
+                public int creditAmount { get; set; }
+                public string rrn { get; set; }
+                public int bonusesAmount { get; set; }
+                public int prepaymentAmount { get; set; }
+                public int prepaymentCashlessAmount { get; set; }
+                public int installmentAmount { get; set; }
+
+            }
+
+            public class Root
+            {
+                public string employeeName { get; set; }
+                public string clientName { get; set; }
+                public int amount { get; set; }
+                public string creditContract { get; set; }
+                public string currency { get; set; } = "AZN";
+                public List<Item> items { get; set; }
+                public Payments payments { get; set; }
+            }
+        }
+
+        private class CreditPayRequest
+        {
+            public class Item
+            {
+                public string itemId { get; set; }
+                public string itemName { get; set; }
+                public string itemBarcode { get; set; }
+                public int itemQty { get; set; }
+                public int itemAmount { get; set; }
+                public int discount { get; set; }
+                public List<ItemTaxis> itemTaxes { get; set; }
+            }
+
+            public class ItemTaxis
+            {
+                public string taxName { get; set; }
+                public string fullName { get; set; }
+                public int taxPrc { get; set; }
+                public int calcType { get; set; } = 1;
+            }
+
+            public class Payments
+            {
+                public int cashAmount { get; set; }
+                public int cashlessAmount { get; set; }
+                public string rrn { get; set; }
+            }
+
+            public class Root
+            {
+                public string documentID { get; set; }
+                public string docNumber { get; set; }
+                public string employeeName { get; set; }
+                public string clientName { get; set; }
+                public int amount { get; set; }
+                public string creditContract { get; set; }
+                public string currency { get; set; } = "AZN";
+                public List<Item> items { get; set; }
+                public Payments payments { get; set; }
+            }
+        }
+
         private class RequestPeriodicReport
         {
             public string employeeName { get; set; }
@@ -1219,7 +1391,6 @@ namespace WindowsFormsApp2.NKA
             public int? originAmount { get; set; } = null;
             public string rrn { get; set; } = null;
         }
-
 
         #endregion [..Request Classes..]
 
