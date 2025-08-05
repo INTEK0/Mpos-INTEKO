@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
+using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.NKA;
 using static DTOs;
@@ -227,6 +228,12 @@ where kredit_id={_creditMainId}";
                         RefreshData();
                     break;
                 case "2":
+                    if (Cash > 0 && Card > 0)
+                    {
+                        FormHelpers.Alert("Kreditin bir ödənişi yalnız bir növ ödənişlə həyata keçirilə bilər.", MessageType.Warning);
+                        break;
+                    }
+                    
                     bool AzSmartIsSuccess = AzSmart.CreditPay(payData);
                     if (AzSmartIsSuccess)
                         RefreshData();

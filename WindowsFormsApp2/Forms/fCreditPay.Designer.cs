@@ -889,6 +889,8 @@
             this.ClientSize = new System.Drawing.Size(1314, 811);
             this.Controls.Add(this.tablePanel1);
             this.IconOptions.Image = global::WindowsFormsApp2.Properties.Resources.Mpos_png1;
+            this.LookAndFeel.SkinName = "WXI";
+            this.LookAndFeel.UseDefaultLookAndFeel = false;
             this.Name = "fCreditPay";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "KREDİT ÖDƏNİŞİ";

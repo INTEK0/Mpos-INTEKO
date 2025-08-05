@@ -20,7 +20,7 @@ namespace WindowsFormsApp2.NKA
 {
     public static class AzSmart
     {
-        public const string FiskalPort = "8008"; //prod port: 8008 - test port: 10155
+        public const string FiskalPort = "10155"; //prod port: 8008 - test port: 10155
         private static readonly RestClient _restClient = new RestClient();
 
         private static readonly bool MessageVisible = FormHelpers.SuccessMessageVisible();
