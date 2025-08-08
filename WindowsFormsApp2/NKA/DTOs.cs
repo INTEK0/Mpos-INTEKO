@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using WindowsFormsApp2.Helpers;
+﻿using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
-using WindowsFormsApp2.NKA;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
 
 public static class DTOs

@@ -719,7 +719,7 @@ namespace WindowsFormsApp2.NKA
             }
         }
 
-        public static Tuple<bool, string, string> CreditSale(CreditSaleDto dataDto)
+        public static Tuple<bool, string, string, string> CreditSale(CreditSaleDto dataDto)
         {
             List<CreditSaleRequest.Item> items = new List<CreditSaleRequest.Item>();
             CreditSaleRequest.Item item = new CreditSaleRequest.Item()
@@ -769,10 +769,13 @@ namespace WindowsFormsApp2.NKA
                             ReadyMessages.SUCCESS_CREDIT_SALES_MESSAGE();
                         }
                         FormHelpers.Log($"Kredit satışı uğurla edildi. Qəbz No: {response.data.number}");
-                        return new Tuple<bool, string, string>(true,response.data.document_id, response.data.short_document_id);
+                        return new Tuple<bool, string, string,string>(true,
+                            response.data.document_id,
+                            response.data.short_document_id,
+                            response.data.number);
                     case "document: invalid shift duration":
                         XtraMessageBox.Show("GÜN SONU (Z) HESABATI ÇIXARILMAYIB !\n\nPos Satış səhifəsindən daxil olaraq günü sonlandırın", "Mesaj", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        return new Tuple<bool, string, string>(false, null, null);
+                        return new Tuple<bool, string, string, string>(false, null, null, null);
                     default:
                         ReadyMessages.ERROR_CREDIT_SALES_MESSAGE(response.message);
                         FormHelpers.Log($"Kredit satışı xətası - Xəta mesajı: {response.message}");
@@ -784,13 +787,13 @@ namespace WindowsFormsApp2.NKA
                             OperationType = OperationType.CreditSale,
                             OperationId = 506
                         });
-                        return new Tuple<bool, string, string>(false, null, null);
+                        return new Tuple<bool, string, string, string>(false, null, null, null);
                 }
             }
             else
             {
                 ReadyMessages.ERROR_CREDIT_SALES_MESSAGE("Kassa ilə əlaqə zamanı xəta yarandı");
-                return new Tuple<bool, string, string>(false, null, null);
+                return new Tuple<bool, string, string, string>(false, null, null, null);
             }
         }
 

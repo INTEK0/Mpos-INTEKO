@@ -1480,13 +1480,13 @@ case A.VERGI_DERECESI
             return Math.Truncate(value * 100) / 100;
         }
 
-        public static Tuple<bool, string, string> CreditSale(CreditSaleDto creditData)
+        public static Tuple<bool, string, string, string> CreditSale(CreditSaleDto creditData)
         {
             if (string.IsNullOrWhiteSpace(creditData.AccessToken))
             {
                 creditData.AccessToken = Login(creditData.Url);
                 if (string.IsNullOrWhiteSpace(creditData.AccessToken))
-                    return new Tuple<bool, string, string>(false, null, null); ;
+                    return new Tuple<bool, string, string, string>(false, null, null, null); ;
             }
 
             List<CreditSaleRequest.Item> items = new List<CreditSaleRequest.Item>();
@@ -1572,31 +1572,31 @@ case A.VERGI_DERECESI
                     if (MessageVisible)
                         ReadyMessages.SUCCESS_CREDIT_SALES_MESSAGE();
                     FormHelpers.Log($"Kredit satışı uğurla edildi. Qəbz No: {response.document_number}");
-                    return new Tuple<bool, string, string>(true, response.long_id, response.short_id);
+                    return new Tuple<bool, string, string,string>(true, response.long_id, response.short_id, response.document_number.ToString());
                 }
                 else if (response.message == "document: invalid shift duration")
                 {
                     XtraMessageBox.Show("GÜN SONU (Z) HESABATI ÇIXARILMAYIB !\n\nZəhmət olmasa pos bağla düyməsinə vuraraq günü sonlandırın.", "Mesaj", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return new Tuple<bool, string, string>(false, null, null);
+                    return new Tuple<bool, string, string, string>(false, null, null, null);
                 }
                 else if (response.message == "document: invalid shift status")
                 {
                     XtraMessageBox.Show("NÖVBƏ AÇILMAYIB !\n\nZəhmət olmasa pos aç düyməsinə vuraraq növbəni açın.", "Mesaj", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return new Tuple<bool, string, string>(false, null, null);
+                    return new Tuple<bool, string, string, string>(false, null, null, null);
                 }
                 else
                 {
                     ReadyMessages.ERROR_SALES_MESSAGE(response.message);
                     FormHelpers.Log($"Kredit satışı xətası - Xəta mesajı: {response.message}");
-                    return new Tuple<bool, string, string>(false, null, null);
+                    return new Tuple<bool, string, string, string>(false, null, null, null);
                 }
             }
             else
             {
-                return new Tuple<bool, string, string>(false, null, null);
+                return new Tuple<bool, string, string, string>(false, null, null, null);
             }
 
-            return new Tuple<bool, string, string>(false, null, null);
+            return new Tuple<bool, string, string, string>(false, null, null, null);
         }
 
         public static bool CreditPay(CreditPayDto creditData)

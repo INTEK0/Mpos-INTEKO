@@ -258,6 +258,7 @@ namespace WindowsFormsApp2
             this.tabModul = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.tileControl1 = new DevExpress.XtraEditors.TileControl();
             this.tileGroup1 = new DevExpress.XtraEditors.TileGroup();
+            this.accordionControlElement72 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.fluentDesignFormContainer1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
@@ -1819,7 +1820,8 @@ namespace WindowsFormsApp2
             this.accordionControlElement24,
             this.accordionControlElement25,
             this.accordionControlElement26,
-            this.accordionControlElement27});
+            this.accordionControlElement27,
+            this.accordionControlElement72});
             this.accordionControlElement21.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("accordionControlElement21.ImageOptions.SvgImage")));
             this.accordionControlElement21.Name = "accordionControlElement21";
             this.accordionControlElement21.Text = "Kredit";
@@ -3436,6 +3438,13 @@ namespace WindowsFormsApp2
             this.tileGroup1.Name = "tileGroup1";
             this.tileGroup1.Text = "tileGroup1";
             // 
+            // accordionControlElement72
+            // 
+            this.accordionControlElement72.Name = "accordionControlElement72";
+            this.accordionControlElement72.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
+            this.accordionControlElement72.Text = "Geri qaytarma";
+            this.accordionControlElement72.Click += new System.EventHandler(this.accordionControlElement72_Click);
+            // 
             // MAINSCRRENS
             // 
             this.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(245)))), ((int)(((byte)(250)))));
@@ -3796,6 +3805,7 @@ namespace WindowsFormsApp2
         private DevExpress.XtraEditors.LabelControl labelControl20;
         private DevExpress.XtraEditors.SimpleButton bDbDelete;
         private DevExpress.XtraEditors.LabelControl labelControl21;
+        private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement72;
     }
 }
 

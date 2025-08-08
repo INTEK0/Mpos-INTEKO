@@ -159,10 +159,11 @@ namespace WindowsFormsApp2
             tProccessNo.Text = DbProsedures.GET_CreditSaleProccessNo();
         }
 
-        private async void CreditSaleMain(DatabaseClasses.CreditMain data, string longFiscalId, string shortFiscalId)
+        private async void CreditSaleMain(DatabaseClasses.CreditMain data, string longFiscalId, string shortFiscalId, string receiptNo)
         {
             data.LonfFiskalId = longFiscalId;
             data.ShortFiskalId = shortFiscalId;
+            data.ReceiptNo = receiptNo;
             int id = await DbProsedures.Insert_CreditMain(data);
 
             DbProsedures.InsertCustomerDebt(CustomerDebtType.CreditSale,
@@ -740,6 +741,11 @@ namespace WindowsFormsApp2
                     }
                 };
 
+
+                data.PaymentType = (short)(
+                    (creditDto.CashPayment > 0 ? 1 : 0) +
+                    (creditDto.CardPayment > 0 ? 2 : 0));
+
                 switch (lModel.Text)
                 {
                     case "1":
@@ -747,7 +753,7 @@ namespace WindowsFormsApp2
 
                         if (SunmiResult.Item1 == true)
                         {
-                            CreditSaleMain(data, SunmiResult.Item2, SunmiResult.Item3);
+                            CreditSaleMain(data, SunmiResult.Item2, SunmiResult.Item3, SunmiResult.Item4);
                         }
                         break;
                     case "2":
@@ -755,16 +761,14 @@ namespace WindowsFormsApp2
 
                         if (AzSmartResult.Item1)
                         {
-                            CreditSaleMain(data, AzSmartResult.Item2, AzSmartResult.Item3);
+                            CreditSaleMain(data, AzSmartResult.Item2, AzSmartResult.Item3, "");
                         }
                         break;
                     case "3":
                         var OmnitechResult = Omnitech.CreditSale(creditDto);
 
                         if (OmnitechResult.Item1)
-                        {
-                            CreditSaleMain(data, OmnitechResult.Item2, OmnitechResult.Item3);
-                        }
+                            CreditSaleMain(data, OmnitechResult.Item2, OmnitechResult.Item3, OmnitechResult.Item4);
                         break;
                 }
             }

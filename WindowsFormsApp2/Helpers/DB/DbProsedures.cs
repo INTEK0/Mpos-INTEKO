@@ -2893,6 +2893,7 @@ WHERE
                 cmd.Parameters.AddWithValue("@UserId", item.UserId);
                 cmd.Parameters.AddWithValue("@LonfFiskalId", item.LonfFiskalId ?? "");
                 cmd.Parameters.AddWithValue("@ShortFiskalId", item.ShortFiskalId ?? "");
+                cmd.Parameters.AddWithValue("@ReceiptNo", item.ReceiptNo ?? "");
 
                 SqlParameter outputIdParam = new SqlParameter("@ReturnId", SqlDbType.Int)
                 {

@@ -20,8 +20,7 @@ namespace WindowsFormsApp2.Forms
         public fPrepaymentProducts(int posMainId)
         {
             InitializeComponent();
-            GridLocalizer.Active = new MyGridLocalizer();
-            GridPanelText(gridAvans);
+            GridPanelText(gridView1);
             _posMainId = posMainId;
         }
 
@@ -50,7 +49,7 @@ inner join VAHIDLER v ON v.VAHIDLER_ID = psd.quantity_type
 where psd.pos_satis_check_main_id = {_posMainId}";
 
             var data = DbProsedures.ConvertToDataTable(query);
-            gridControlAvans.DataSource = data;
+            gridControl1.DataSource = data;
         }
     }
 }

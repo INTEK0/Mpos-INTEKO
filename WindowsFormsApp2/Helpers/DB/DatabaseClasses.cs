@@ -65,6 +65,15 @@ namespace WindowsFormsApp2.Helpers.DB
             public string Name { get; set; }
             public string Surname { get; set; }
             public string FatherName { get; set; }
+
+            public string NameSurname
+            {
+                get
+                {
+                    return $"{Name} {Surname} {FatherName}";
+                }
+            }
+
             public DateTime DateBirth { get; set; }
             public string SvNo { get; set; }
             public string FinCode { get; set; }
@@ -433,7 +442,10 @@ namespace WindowsFormsApp2.Helpers.DB
             public string ProcessNo { get; set; }
             public string ContractNo { get; set; }
             public decimal OdenilenMebleg { get; set; }
-            public short PaymentType { get; set; } = 1;
+            /// <summary>
+            /// 0-Nisyə, 1-Nağd, 2-Kart, 3-Nağd-Kart
+            /// </summary>
+            public short PaymentType { get; set; } = 0; 
             public int CustomerId { get; set; }
             public string CustomerName { get; set; }
             public int ZaminId { get; set; }
@@ -455,6 +467,7 @@ namespace WindowsFormsApp2.Helpers.DB
             public DateTime Date { get; set; } = DateTime.Now;
             public string LonfFiskalId { get; set; }
             public string ShortFiskalId { get; set; }
+            public string ReceiptNo { get; set; }
         } 
 
         public class CreditSaleMonth

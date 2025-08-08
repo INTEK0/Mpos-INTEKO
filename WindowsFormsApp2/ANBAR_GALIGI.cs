@@ -50,7 +50,7 @@ namespace WindowsFormsApp2
                 Cursor.Current = Cursors.WaitCursor;
                 using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
                 {
-                    string queryString = "gaime_Satis_mal_load_tarixle  @d1 = @pricepoint1 ";
+                    string queryString = "gaime_Satis_mal_load_tarixle @d1 = @pricepoint1";
                     using (SqlCommand cmd = new SqlCommand(queryString, con))
                     {
                         cmd.Parameters.AddWithValue("@pricepoint1", D2_);
@@ -81,7 +81,6 @@ namespace WindowsFormsApp2
                                 };
                                 gridView1.Columns["ANBAR QALIĞI"].Summary.Add(stockSum);
                                 gridView1.Columns["ALIŞ QİYMƏTİ"].Summary.Add(PuchaseSum);
-
                             }
                         }
                     }

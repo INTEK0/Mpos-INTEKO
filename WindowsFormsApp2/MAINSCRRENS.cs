@@ -623,9 +623,9 @@ FROM[terazimalzeme]";
 
         private async Task LicenceCheck()
         {
-            //lLicenceExpireDate.Text = "-";
-            //lLicenceExpireDate.ForeColor = Color.Black;
-            //return;
+            lLicenceExpireDate.Text = "-";
+            lLicenceExpireDate.ForeColor = Color.Black;
+            return;
 
             var licenceUser = await LicenseService.Instance.RequestKeyControl(LicenseService.Instance.GetLicenceKey());
             if (licenceUser is null)
@@ -1539,6 +1539,11 @@ FROM (
                 return;
             }
             OpenForm<bank_odenisleri>(Properties.Settings.Default.UserID);
+        }
+
+        private void accordionControlElement72_Click(object sender, EventArgs e)
+        {
+            OpenForm<fCreditRefund>();
         }
 
         private void chTerminalPrintReceipt_CheckedChanged(object sender, EventArgs e)

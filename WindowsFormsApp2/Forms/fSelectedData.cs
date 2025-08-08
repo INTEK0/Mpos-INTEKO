@@ -15,6 +15,7 @@ namespace WindowsFormsApp2.Forms
         private readonly TParent _parent;
         private Customer _customer;
         private Doctor _doctor;
+        private Guarantor _zamin;
 
         public fSelectedData(TParent parentForm, SelectedDataType selectedData)
         {
@@ -23,7 +24,7 @@ namespace WindowsFormsApp2.Forms
             _selectedData = selectedData;
             GridPanelText(gridCustomers);
             GridPanelText(gridDoctor);
-            GridLocalizer.Active = new MyGridLocalizer();
+            GridPanelText(gridZamin);
         }
 
         private void fSelectedData_Load(object sender, EventArgs e)
@@ -36,6 +37,9 @@ namespace WindowsFormsApp2.Forms
                     bAdd.Text = "YENİ MÜŞTƏRİ";
                     break;
                 case SelectedDataType.Guarantor:
+                    GuarantorDataLoad();
+                    gridControl1.MainView = gridZamin;
+                    bAdd.Text = "YENİ ZAMİN";
                     break;
                 case SelectedDataType.Doctor:
                     DoctorDataLoad();
@@ -53,6 +57,27 @@ namespace WindowsFormsApp2.Forms
             var data = DbProsedures.ConvertToDataTable("SELECT * FROM dbo.fn_MUSTERI()");
             gridControl1.DataSource = data;
             gridCustomers.GroupPanelText = $"Müştəri sayı: {gridCustomers.RowCount}";
+        }
+
+        private void GuarantorDataLoad()
+        {
+            this.Text = "ZAMİN SEÇİMİ";
+            string query = @"SELECT 
+  ZAMINLER_ID As ID, 
+  CompanyName, 
+  AD as [Name], 
+  SOYAD as Surname, 
+  ATAADI AS FatherName,
+  AD + ' ' + SOYAD + '' + ATAADI AS NameSurname,
+  DOGUM_TARIX as DateBirth, 
+  FINKOD as FinCode, 
+  MOBIL as MobPhone
+FROM 
+  ZAMINLER
+WHERE IsDeleted = 0";
+            var data = DbProsedures.ConvertToDataTable(query);
+            gridControl1.DataSource = data;
+            gridDoctor.GroupPanelText = $"Zamin sayı: {gridZamin.RowCount}";
         }
 
         private void DoctorDataLoad()
@@ -123,6 +148,47 @@ namespace WindowsFormsApp2.Forms
             }
         }
 
+        private void gridZamin_DoubleClick(object sender, EventArgs e)
+        {
+            int Id = Convert.ToInt32(gridZamin.GetFocusedRowCellValue("ID").ToString());
+
+            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            {
+                connection.Open();
+                string query = $@"SELECT 
+  ZAMINLER_ID As ID, 
+  CompanyName, 
+  AD as [Name], 
+  SOYAD as Surname, 
+  ATAADI AS FatherName,
+  DOGUM_TARIX as DateBirth, 
+  FINKOD as FinCode, 
+  MOBIL as MobPhone
+FROM 
+  ZAMINLER
+WHERE IsDeleted = 0 AND ZAMINLER_ID = @Id";
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@Id", Id);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            _zamin = FormHelpers.MapReaderToObject<DatabaseClasses.Guarantor>(reader);
+                        }
+                    }
+                }
+            }
+
+
+            var method = _parent.GetType().GetMethod("ReceiveData");
+            if (method != null)
+            {
+                method.MakeGenericMethod(_zamin.GetType()).Invoke(_parent, new object[] { _zamin });
+                this.Close();
+            }
+        }
+
         private void bAdd_Click(object sender, EventArgs e)
         {
             switch (_selectedData)
@@ -131,6 +197,7 @@ namespace WindowsFormsApp2.Forms
                     OpenForm<fAddCustomer>();
                     break;
                 case SelectedDataType.Guarantor:
+                    OpenForm<fAddGuarantor>();
                     break;
                 case SelectedDataType.Doctor:
                     OpenForm<fAddDoctor>();
@@ -141,6 +208,20 @@ namespace WindowsFormsApp2.Forms
             gridControl1.RefreshDataSource();
         }
 
-        
+        private void bRefresh_Click(object sender, EventArgs e)
+        {
+            switch (_selectedData)
+            {
+                case SelectedDataType.Customer:
+                    CustomerDataLoad();
+                    break;
+                case SelectedDataType.Guarantor:
+                    GuarantorDataLoad();
+                    break;
+                case SelectedDataType.Doctor:
+                    DoctorDataLoad();
+                    break;
+            }
+        }
     }
 }

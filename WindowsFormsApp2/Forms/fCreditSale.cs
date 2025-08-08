@@ -16,13 +16,18 @@ using WindowsFormsApp2.NKA;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
 using WindowsFormsApp2.Validations;
 using static WindowsFormsApp2.Helpers.Enums;
+using System.Data.SqlClient;
 
 namespace WindowsFormsApp2.Forms
 {
-    public partial class fCreditSale : DevExpress.XtraEditors.XtraForm
+    public partial class fCreditSale : BaseForm
     {
         private readonly DatabaseClasses.User _user = DbProsedures.GetUser();
         private readonly FormHelpers.IpModel _terminal = FormHelpers.GetIpModel();
+        private Customer _customer;
+        private Guarantor _guarantor;
+        private string productId = "0";
+        private string taxId = "";
         public fCreditSale()
         {
             InitializeComponent();
@@ -36,17 +41,63 @@ namespace WindowsFormsApp2.Forms
 
         private void tCustomerName_Properties_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
-
+            fSelectedData<fCreditSale> data = new fSelectedData<fCreditSale>(this, SelectedDataType.Customer);
+            data.ShowDialog();
         }
 
         private void tZamin_Properties_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
-
+            fSelectedData<fCreditSale> data = new fSelectedData<fCreditSale>(this, SelectedDataType.Guarantor);
+            data.ShowDialog();
         }
 
         private void tProductName_Properties_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
 
+        }
+
+        public override void ReceiveData<T>(T data)
+        {
+            if (data is Customer customer)
+            {
+                _customer = customer;
+                tCustomerName.Text = $"{customer.Name} {customer.Surname} {customer.FatherName}";
+            }
+            else if (data is Guarantor guarantor)
+            {
+                _guarantor = guarantor;
+                tZamin.Text = guarantor.NameSurname;
+            }
+        }
+
+        private string get_vahid()
+        {
+            string query = $"SELECT [VAHID] FROM [MAL_ALISI_DETAILS] where [MAL_ALISI_DETAILS_ID] = {productId}";
+
+            using (SqlConnection conn = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                conn.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    if (dr.Read())
+                        return dr["VAHID"].ToString();
+                    else
+                        return null;
+                }
+            }
+        }
+
+        private void evdkontrol(string edvs)
+        {
+            string query = $"SELECT  [EDV_ID] FROM  [VERGI_DERECESI] WHERE [EDV] = N'{edvs}'";
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, con))
+            {
+                con.Open();
+                object result = cmd.ExecuteScalar();
+                taxId = result != null ? result.ToString() : "";
+            }
         }
 
         private void bPay_Click(object sender, EventArgs e)
@@ -69,7 +120,7 @@ namespace WindowsFormsApp2.Forms
         private void Payment(decimal Total, decimal Cash, decimal Card, decimal IncomingSum)
         {
             string uuid = Guid.NewGuid().ToString();
-            string vahid = null;// get_vahid();
+            string vahid = get_vahid();
 
             var data = Validation();
             if (data is null) return;
@@ -78,7 +129,7 @@ namespace WindowsFormsApp2.Forms
             {
                 decimal quantity = Convert.ToDecimal(tQuantity.Text);
 
-                //int vatType = Convert.ToInt32(label9.Text);
+                int vatType = Convert.ToInt32(taxId);
                 int quantityType = Convert.ToInt32(vahid);
 
                 decimal creditPayment = Convert.ToDecimal(tTotalAmount.Text);
@@ -103,7 +154,7 @@ namespace WindowsFormsApp2.Forms
                         Quantity = quantity,
                         QuantityType = quantityType,
                         SalePrice = Convert.ToDecimal(tSalePrice.Text),
-                        VatType = 0 //VatType
+                        VatType = vatType
                     }
                 };
 
@@ -179,41 +230,46 @@ namespace WindowsFormsApp2.Forms
 
         private DatabaseClasses.CreditMain Validation()
         {
-            //DatabaseClasses.CreditMain credit = new DatabaseClasses.CreditMain();
-            //credit.ProcessNo = tProccessNo.Text;
-            //credit.ContractNo = tContractNo.Text.Trim();
-            //credit.OdenilenMebleg = Decimal.Parse(tTotal.Text);
-            //credit.CustomerName = tCustomerName.Text.Trim();
-            //credit.CustomerId = string.IsNullOrWhiteSpace(customerId) ? 0 : Convert.ToInt32(customerId);
-            //credit.ZaminName = string.IsNullOrWhiteSpace(tZamin.Text) ? "YOXDUR" : tZamin.Text.Trim();
-            //credit.ZaminId = string.IsNullOrWhiteSpace(zaminId) ? 1 : Convert.ToInt32(zaminId);
-            //credit.SupplierName = tSupplier.Text;
-            //credit.ProductId = string.IsNullOrWhiteSpace(mal_alisi_details_id) ? 0 : Convert.ToInt32(mal_alisi_details_id);
-            //credit.ProductName = tProductName.Text;
-            //credit.Quantity = Decimal.Parse(tQuantity.Text);
-            //credit.SalePrice = Decimal.Parse(tSalePrice.Text);
-            //credit.DiscountPercent = Decimal.Parse(tDiscountPercent.Text);
-            //credit.DiscountAmount = Decimal.Parse(tDiscountAmount.Text);
-            //credit.Taksit = string.IsNullOrWhiteSpace(cmbMonth.Text) ? 0 : Convert.ToInt32(cmbMonth.Text);
-            //credit.Total = Decimal.Parse(tTotal.Text);
-            //credit.IlkinOdenis = Decimal.Parse(tIlkinOdenis.Text);
-            //credit.Comment = memoEdit1.Text.Trim();
-            //credit.MonthAmount = Decimal.Parse(tAyliqOdenis.Text);
+            DatabaseClasses.CreditMain credit = new DatabaseClasses.CreditMain();
+            credit.ProcessNo = tProccessNo.Text;
+            credit.ContractNo = tContractNo.Text.Trim();
+            credit.OdenilenMebleg = Decimal.Parse(tTotalAmount.Text);
+            credit.CustomerName = tCustomerName.Text.Trim();
+            credit.CustomerId = _customer == null ? 0 : _customer.CustomerID;
+            credit.ZaminName = string.IsNullOrWhiteSpace(tZamin.Text) ? "YOXDUR" : tZamin.Text.Trim();
+            credit.ZaminId = _guarantor == null ? 1 : Convert.ToInt32(_guarantor.ID);
+            credit.SupplierName = tProductName.Properties.Buttons[0].Caption;
+            credit.ProductId = string.IsNullOrWhiteSpace(productId) ? 0 : Convert.ToInt32(productId);
+            credit.ProductName = tProductName.Text;
+            credit.Quantity = Decimal.Parse(tQuantity.Text);
+            credit.SalePrice = Decimal.Parse(tSalePrice.Text);
+            credit.DiscountPercent = 0; /*Decimal.Parse(tDiscountPercent.Text);*/
+            credit.DiscountAmount = 0;/* Decimal.Parse(tDiscountAmount.Text);*/
+            credit.Taksit = string.IsNullOrWhiteSpace(cmbMonth.Text) ? 0 : Convert.ToInt32(cmbMonth.Text);
+            credit.Total = Decimal.Parse(tTotalAmount.Text);
+            credit.IlkinOdenis = Decimal.Parse(tInitialAmount.Text);
+            credit.Comment = tComment.Text.Trim();
+            credit.MonthAmount = Decimal.Parse(tCreditPeriodAmount.Text);
 
 
-            //var validator = new CreditValidation();
-            //var validateResult = validator.Validate(credit);
+            var validator = new CreditValidation();
+            var validateResult = validator.Validate(credit);
 
-            //if (!validateResult.IsValid)
-            //{
-            //    foreach (var error in validateResult.Errors)
-            //    {
-            //        FormHelpers.Alert(error.ErrorMessage, Enums.MessageType.Warning);
-            //        return null;
-            //    }
-            //}
+            if (!validateResult.IsValid)
+            {
+                foreach (var error in validateResult.Errors)
+                {
+                    FormHelpers.Alert(error.ErrorMessage, Enums.MessageType.Warning);
+                    return null;
+                }
+            }
 
             return null;
+        }
+
+        private void bCalc_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
