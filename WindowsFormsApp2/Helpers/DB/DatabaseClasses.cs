@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using WindowsFormsApp2.Helpers.Messages;
 
 namespace WindowsFormsApp2.Helpers.DB
 {
@@ -65,7 +64,6 @@ namespace WindowsFormsApp2.Helpers.DB
             public string Name { get; set; }
             public string Surname { get; set; }
             public string FatherName { get; set; }
-
             public string NameSurname
             {
                 get
@@ -73,7 +71,6 @@ namespace WindowsFormsApp2.Helpers.DB
                     return $"{Name} {Surname} {FatherName}";
                 }
             }
-
             public DateTime DateBirth { get; set; }
             public string SvNo { get; set; }
             public string FinCode { get; set; }
@@ -236,7 +233,7 @@ namespace WindowsFormsApp2.Helpers.DB
             public byte[] ProductImage { get; set; }
         }
 
-        public class    User
+        public class User
         {
             public int Id { get; set; }
             public string Username { get; set; }
@@ -445,7 +442,7 @@ namespace WindowsFormsApp2.Helpers.DB
             /// <summary>
             /// 0-Nisyə, 1-Nağd, 2-Kart, 3-Nağd-Kart
             /// </summary>
-            public short PaymentType { get; set; } = 0; 
+            public short PaymentType { get; set; } = 0;
             public int CustomerId { get; set; }
             public string CustomerName { get; set; }
             public int ZaminId { get; set; }
@@ -468,7 +465,7 @@ namespace WindowsFormsApp2.Helpers.DB
             public string LonfFiskalId { get; set; }
             public string ShortFiskalId { get; set; }
             public string ReceiptNo { get; set; }
-        } 
+        }
 
         public class CreditSaleMonth
         {
@@ -482,6 +479,19 @@ namespace WindowsFormsApp2.Helpers.DB
             public string LongFiscalId { get; set; }
             public string ShortFiscalId { get; set; }
             public DateTime PayDate { get; set; }
+        }
+
+        public class CreditSaleRefund
+        {
+            public int Id { get; set; }
+            public int CreditSaleId { get; set; }
+            public DateTime RefundDate { get; set; }
+            public short PaymentTypeId { get; set; }
+            public decimal TotalAmount { get; set; }
+            public string Comment { get; set; }
+            public string LongFiscalId { get; set; }
+            public string ReceiptNo { get; set; }
+            public int UserId { get; set; }
         }
     }
 }

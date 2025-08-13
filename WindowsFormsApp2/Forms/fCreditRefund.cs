@@ -7,14 +7,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DevExpress.XtraCharts;
 using DevExpress.XtraEditors;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
+using WindowsFormsApp2.NKA;
+using static DTOs;
+using static WindowsFormsApp2.Helpers.FormHelpers;
 
 namespace WindowsFormsApp2.Forms
 {
     public partial class fCreditRefund : DevExpress.XtraEditors.XtraForm
     {
+        private readonly IpModel _terminal = GetIpModel();
+
         public fCreditRefund()
         {
             InitializeComponent();
@@ -67,66 +73,67 @@ namespace WindowsFormsApp2.Forms
             {
                 case SearchType.All:
                     query = @"SELECT 
-  KREDIT_SATISI_MAIN_ID as Id, 
-  EMELIIYYAT_NOMRE as ProccessNo, 
-  TARIX as CreditDate, 
-  GAIME_NOMRE as ContractNo, 
-  MUSTERI as CustomerName, 
-  ReceiptNo, 
-  longids as FiscalId, 
-  personel as Cashier, 
-  CAST(ilkinodenis as decimal(18, 2)) as InitialAmount, 
-  CAST(prd_qty * prd_price AS DECIMAL(18, 2)) AS Total, 
-  CAST(yekun AS decimal(18, 2)) as CreditAmount 
-FROM 
-  [KREDIT_SATISI_MAIN]
+  ks.KREDIT_SATISI_MAIN_ID as Id, 
+  ks.EMELIIYYAT_NOMRE as ProccessNo, 
+  ks.TARIX as CreditDate, 
+  ks.GAIME_NOMRE as ContractNo, 
+  ks.MUSTERI as CustomerName, 
+  ks.ReceiptNo, 
+  ks.longids as FiscalId, 
+  ks.personel as Cashier, 
+  CAST(ks.ilkinodenis as decimal(18, 2)) as InitialAmount, 
+  CAST(ks.prd_qty * ks.prd_price AS DECIMAL(18, 2)) AS Total, 
+  CAST(ks.yekun AS decimal(18, 2)) as CreditAmount 
+FROM KREDIT_SATISI_MAIN ks
+LEFT JOIN KREDIT_SATISI_MAIN_QAYTARMA kr
+    ON kr.KreditSatisMainId = ks.KREDIT_SATISI_MAIN_ID
+WHERE kr.KreditSatisMainId IS NULL;
 ";
                     break;
                 case SearchType.ReceiptNo:
-                    query = @"SELECT 
-  KREDIT_SATISI_MAIN_ID as Id, 
-  EMELIIYYAT_NOMRE as ProccessNo, 
-  TARIX as CreditDate, 
-  GAIME_NOMRE as ContractNo, 
-  MUSTERI as CustomerName, 
-  ReceiptNo, 
-  longids as FiscalId, 
-  personel as Cashier, 
-  CAST(ilkinodenis as decimal(18, 2)) as InitialAmount, 
-  CAST(prd_qty * prd_price AS DECIMAL(18, 2)) AS Total, 
-  CAST(yekun AS decimal(18, 2)) as CreditAmount 
-FROM 
-  [KREDIT_SATISI_MAIN]
-WHERE
---Çek nömrəsinə görə axtarışı əlavə et
+                    query = $@"SELECT 
+  ks.KREDIT_SATISI_MAIN_ID as Id, 
+  ks.EMELIIYYAT_NOMRE as ProccessNo, 
+  ks.TARIX as CreditDate, 
+  ks.GAIME_NOMRE as ContractNo, 
+  ks.MUSTERI as CustomerName, 
+  ks.ReceiptNo, 
+  ks.longids as FiscalId, 
+  ks.personel as Cashier, 
+  CAST(ks.ilkinodenis as decimal(18, 2)) as InitialAmount, 
+  CAST(ks.prd_qty * ks.prd_price AS DECIMAL(18, 2)) AS Total, 
+  CAST(ks.yekun AS decimal(18, 2)) as CreditAmount 
+FROM KREDIT_SATISI_MAIN ks
+LEFT JOIN KREDIT_SATISI_MAIN_QAYTARMA kr
+    ON kr.KreditSatisMainId = ks.KREDIT_SATISI_MAIN_ID
+WHERE kr.KreditSatisMainId IS NULL AND ks.ReceiptNo = N'{tSearch.Text.Trim()}';
 ";
                     break;
                 case SearchType.Date:
                     string start = dateStart.DateTime.ToString("yyyy-MM-dd");
                     string end = dateEnd.DateTime.ToString("yyyy-MM-dd");
                     query = $@"SELECT 
-  KREDIT_SATISI_MAIN_ID as Id, 
-  EMELIIYYAT_NOMRE as ProccessNo, 
-  TARIX as CreditDate, 
-  GAIME_NOMRE as ContractNo, 
-  MUSTERI as CustomerName, 
-  ReceiptNo, 
-  longids as FiscalId, 
-  personel as Cashier, 
-  CAST(ilkinodenis as decimal(18, 2)) as InitialAmount, 
-  CAST(prd_qty * prd_price AS DECIMAL(18, 2)) AS Total, 
-  CAST(yekun AS decimal(18, 2)) as CreditAmount 
-FROM 
-  [KREDIT_SATISI_MAIN]
-WHERE 
-  TARIX BETWEEN '{start}' AND '{end}';
+  ks.KREDIT_SATISI_MAIN_ID as Id, 
+  ks.EMELIIYYAT_NOMRE as ProccessNo, 
+  ks.TARIX as CreditDate, 
+  ks.GAIME_NOMRE as ContractNo, 
+  ks.MUSTERI as CustomerName, 
+  ks.ReceiptNo, 
+  ks.longids as FiscalId, 
+  ks.personel as Cashier, 
+  CAST(ks.ilkinodenis as decimal(18, 2)) as InitialAmount, 
+  CAST(ks.prd_qty * ks.prd_price AS DECIMAL(18, 2)) AS Total, 
+  CAST(ks.yekun AS decimal(18, 2)) as CreditAmount 
+FROM KREDIT_SATISI_MAIN ks
+LEFT JOIN KREDIT_SATISI_MAIN_QAYTARMA kr
+    ON kr.KreditSatisMainId = ks.KREDIT_SATISI_MAIN_ID
+WHERE kr.KreditSatisMainId IS NULL AND ks.TARIX BETWEEN '{start}' AND '{end}';
 ";
                     break;
             }
 
             var data = DbProsedures.ConvertToDataTable(query);
             gridControl1.DataSource = data;
-
         }
 
         private void chDate_CheckedChanged(object sender, EventArgs e)
@@ -161,13 +168,91 @@ WHERE
         private void bRefund_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
 
+            Refund();
         }
 
         private void bDetail_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
-            int Id = Convert.ToInt32(gridView1.GetFocusedRowCellValue("Id"));
+            int Id = Convert.ToInt32(gridView1.GetFocusedRowCellValue("CreditSaleId"));
             fCreditRefundDetail f = new fCreditRefundDetail(Id);
             f.ShowDialog();
+        }
+
+        private async void Refund()
+        {
+            int Id = Convert.ToInt32(gridView1.GetFocusedRowCellValue("Id"));
+
+            string query = $@"SELECT 
+  km.KREDIT_SATISI_MAIN_ID as Id, 
+  km.GAIME_NOMRE as ContractNo, 
+  km.MUSTERI as CustomerName,
+  CAST(km.prd_qty as decimal(18, 3)) as Quantity, 
+  CAST(km.prd_price as decimal(18, 2)) as SalePrice, 
+  CAST(km.ilkinodenis as decimal(18, 2)) as PayAmount, 
+  CAST(km.yekun as decimal(18, 2)) as CreditAmount,
+  km.ODEME_TIPI as PaymentTypeId,
+  md.MEHSUL_ADI as ProductName,
+  md.BARKOD as Barcode,
+  md.VERGI_DERECESI as TaxId,
+  tax.EDV as TaxName,
+  md.VAHID as UnitId,
+  unit.VAHIDLER_NAME as UnitName,
+  km.longids as LongFiscalId,
+  km.shortids as ShortFiscalId,
+  km.ReceiptNo as ReceiptNo
+FROM 
+  [KREDIT_SATISI_MAIN] km
+INNER JOIN MAL_ALISI_DETAILS md ON md.MAL_ALISI_DETAILS_ID = km.product_id
+INNER JOIN VERGI_DERECESI tax ON tax.EDV_ID = md.VERGI_DERECESI
+INNER JOIN VAHIDLER unit ON unit.VAHIDLER_ID = md.VAHID
+WHERE
+  km.KREDIT_SATISI_MAIN_ID = {Id}";
+
+            var sqlData = DbProsedures.ConvertToDataTable(query);
+            CreditSaleRefundDto data = new CreditSaleRefundDto();
+            foreach (DataRow row in sqlData.Rows)
+            {
+                data.Url = _terminal.Ip;
+                data.MerchantId = _terminal.MerchantId;
+                data.Cashier = _terminal.Cashier;
+                data.item = new CreditSaleRefundDto.Item()
+                {
+                    ProductName = row["ProductName"].ToString(),
+                    ProductCode = row["Barcode"].ToString(),
+                    Quantity = Decimal.Parse(row["Quantity"].ToString()),
+                    QuantityType = Convert.ToInt32(row["UnitId"].ToString()),
+                    SalePrice = Decimal.Parse(row["SalePrice"].ToString()),
+                    VatType = Convert.ToInt32(row["TaxId"].ToString())
+                };
+                data.Total = Decimal.Parse(row["PayAmount"].ToString());
+                data.CustomerName = row["CustomerName"].ToString();
+                data.ParentLongFiscalId = row["LongFiscalId"].ToString();
+                data.ParentShortFiscalId = row["ShortFiscalId"].ToString();
+                data.ParentDocumentNumber = row["ReceiptNo"].ToString();
+                data.creditPayment = Decimal.Parse(row["CreditAmount"].ToString());
+                data.PaymentTypeId = Convert.ToInt16(row["PaymentTypeId"].ToString());
+            }
+
+            if (data is null)
+                return;
+
+            var result = Omnitech.CreditRefund(data);
+            if (result.Item1 is true)
+            {
+                await DbProsedures.Insert_CreditSaleRefund(new DatabaseClasses.CreditSaleRefund
+                {
+                    CreditSaleId = Id,
+                    Comment = "",
+                    PaymentTypeId = data.PaymentTypeId,
+                    TotalAmount = data.Total,
+                    LongFiscalId = result.Item2,
+                    ReceiptNo = result.Item3,
+                    UserId = Properties.Settings.Default.UserID,
+                });
+                gridControl1.DataSource = null;
+            }
+               
+
         }
     }
 }

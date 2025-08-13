@@ -28,6 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions2 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions1 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -98,6 +103,8 @@
             this.gridColumn17 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn18 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn19 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn28 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.bRefund = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).BeginInit();
             this.tablePanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl2)).BeginInit();
@@ -122,6 +129,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.tContractDate.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bRefund)).BeginInit();
             this.SuspendLayout();
             // 
             // tablePanel1
@@ -153,7 +161,8 @@
             this.gridControl2.MainView = this.gridView2;
             this.gridControl2.Name = "gridControl2";
             this.gridControl2.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
-            this.bPay});
+            this.bPay,
+            this.bRefund});
             this.tablePanel1.SetRow(this.gridControl2, 1);
             this.gridControl2.Size = new System.Drawing.Size(1306, 383);
             this.gridControl2.TabIndex = 29;
@@ -172,9 +181,10 @@
             this.gridColumn22,
             this.gridColumn23,
             this.gridColumn24,
-            this.gridColumn25,
             this.gridColumn26,
             this.gridColumn27,
+            this.gridColumn25,
+            this.gridColumn28,
             this.colPay});
             this.gridView2.DetailHeight = 431;
             this.gridView2.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFullFocus;
@@ -208,7 +218,7 @@
             this.gridColumn22.OptionsColumn.AllowEdit = false;
             this.gridColumn22.Visible = true;
             this.gridColumn22.VisibleIndex = 0;
-            this.gridColumn22.Width = 169;
+            this.gridColumn22.Width = 158;
             // 
             // gridColumn23
             // 
@@ -220,7 +230,7 @@
             this.gridColumn23.OptionsColumn.AllowEdit = false;
             this.gridColumn23.Visible = true;
             this.gridColumn23.VisibleIndex = 1;
-            this.gridColumn23.Width = 296;
+            this.gridColumn23.Width = 278;
             // 
             // gridColumn24
             // 
@@ -232,7 +242,7 @@
             this.gridColumn24.OptionsColumn.AllowEdit = false;
             this.gridColumn24.Visible = true;
             this.gridColumn24.VisibleIndex = 2;
-            this.gridColumn24.Width = 388;
+            this.gridColumn24.Width = 364;
             // 
             // gridColumn25
             // 
@@ -240,11 +250,12 @@
             this.gridColumn25.DisplayFormat.FormatString = "C2";
             this.gridColumn25.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
             this.gridColumn25.FieldName = "ÖDƏNİŞ";
+            this.gridColumn25.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.MiddleLeft;
             this.gridColumn25.Name = "gridColumn25";
             this.gridColumn25.OptionsColumn.AllowEdit = false;
             this.gridColumn25.Visible = true;
             this.gridColumn25.VisibleIndex = 3;
-            this.gridColumn25.Width = 307;
+            this.gridColumn25.Width = 277;
             // 
             // gridColumn26
             // 
@@ -267,20 +278,21 @@
             this.colPay.FieldName = "Pay";
             this.colPay.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.MiddleLeft;
             this.colPay.Name = "colPay";
+            this.colPay.OptionsColumn.FixedWidth = true;
             this.colPay.OptionsColumn.ShowCaption = false;
             this.colPay.Visible = true;
-            this.colPay.VisibleIndex = 4;
-            this.colPay.Width = 144;
+            this.colPay.VisibleIndex = 5;
+            this.colPay.Width = 107;
             // 
             // bPay
             // 
             this.bPay.AutoHeight = false;
-            serializableAppearanceObject1.Font = new System.Drawing.Font("Nunito", 11F, System.Drawing.FontStyle.Bold);
-            serializableAppearanceObject1.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Information;
-            serializableAppearanceObject1.Options.UseFont = true;
-            serializableAppearanceObject1.Options.UseForeColor = true;
+            serializableAppearanceObject5.Font = new System.Drawing.Font("Nunito", 11F, System.Drawing.FontStyle.Bold);
+            serializableAppearanceObject5.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Information;
+            serializableAppearanceObject5.Options.UseFont = true;
+            serializableAppearanceObject5.Options.UseForeColor = true;
             this.bPay.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "ÖDƏNİŞ ET", -1, true, true, false, editorButtonImageOptions1, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "ÖDƏNİŞ ET", -1, true, true, false, editorButtonImageOptions2, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.bPay.Name = "bPay";
             this.bPay.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.bPay.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.bPay_ButtonClick);
@@ -882,6 +894,31 @@
             this.gridColumn19.VisibleIndex = 6;
             this.gridColumn19.Width = 67;
             // 
+            // gridColumn28
+            // 
+            this.gridColumn28.Caption = "QAYTAR";
+            this.gridColumn28.ColumnEdit = this.bRefund;
+            this.gridColumn28.FieldName = "Refund";
+            this.gridColumn28.Name = "gridColumn28";
+            this.gridColumn28.OptionsColumn.FixedWidth = true;
+            this.gridColumn28.OptionsColumn.ShowCaption = false;
+            this.gridColumn28.Visible = true;
+            this.gridColumn28.VisibleIndex = 4;
+            this.gridColumn28.Width = 120;
+            // 
+            // bRefund
+            // 
+            this.bRefund.AutoHeight = false;
+            serializableAppearanceObject1.Font = new System.Drawing.Font("Nunito", 11F, System.Drawing.FontStyle.Bold);
+            serializableAppearanceObject1.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Critical;
+            serializableAppearanceObject1.Options.UseFont = true;
+            serializableAppearanceObject1.Options.UseForeColor = true;
+            this.bRefund.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "QAYTAR", -1, true, true, false, editorButtonImageOptions1, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
+            this.bRefund.Name = "bRefund";
+            this.bRefund.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.bRefund.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.bRefund_ButtonClick);
+            // 
             // fCreditPay
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -921,6 +958,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.tContractDate.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bRefund)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -992,5 +1030,7 @@
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn27;
         private DevExpress.XtraGrid.Columns.GridColumn colPay;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit bPay;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn28;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit bRefund;
     }
 }

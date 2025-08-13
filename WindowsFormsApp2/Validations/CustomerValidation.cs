@@ -8,7 +8,7 @@ namespace WindowsFormsApp2.Validations
         public static readonly string NAMESURNAME_NOTNULLMESSAGE = "Ad, Soyad, Ata adı məlumatları doğru daxil edilmədi";
         public CustomerValidation()
         {
-            //RuleFor(x=> x.CompanyName).NotEmpty().WithMessage("F.Şəxs vəya H.Şəxsin adını daxil edin");
+            RuleFor(x=> x.CompanyName).NotEmpty().WithMessage("F.Şəxs vəya H.Şəxsin adını daxil edin");
             //RuleFor(x=> x.Voen).NotEmpty().WithMessage("VÖEN kodunu daxil edin");
             //RuleFor(x=> x.DateBirth).NotEmpty().WithMessage("Doğum tarixini daxil edin");
             //RuleFor(x=> x.SvNo).NotEmpty().WithMessage("ŞV seriya nömrəsini daxil edin");

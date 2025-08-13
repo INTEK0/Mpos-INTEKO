@@ -1546,6 +1546,11 @@ FROM (
             OpenForm<fCreditRefund>();
         }
 
+        private void accordionControlElement73_Click(object sender, EventArgs e)
+        {
+            OpenForm<fCreditRefundReport>();
+        }
+
         private void chTerminalPrintReceipt_CheckedChanged(object sender, EventArgs e)
         {
             if (chTerminalPrintReceipt.Checked)

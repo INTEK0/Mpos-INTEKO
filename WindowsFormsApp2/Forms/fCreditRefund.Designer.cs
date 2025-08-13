@@ -74,6 +74,7 @@
             this.chAll = new DevExpress.XtraEditors.CheckEdit();
             this.chDate = new DevExpress.XtraEditors.CheckEdit();
             this.chReceiptNo = new DevExpress.XtraEditors.CheckEdit();
+            this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.bDetail)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bPay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).BeginInit();
@@ -192,6 +193,7 @@
             this.gridView1.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.gridView1.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
             this.gridColumn12,
+            this.gridColumn14,
             this.gridColumn1,
             this.gridColumn2,
             this.gridColumn9,
@@ -516,6 +518,11 @@
             this.chReceiptNo.TabStop = false;
             this.chReceiptNo.Tag = "ReceiptNo";
             // 
+            // gridColumn14
+            // 
+            this.gridColumn14.Caption = "CreditSaleId";
+            this.gridColumn14.Name = "gridColumn14";
+            // 
             // fCreditRefund
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -587,5 +594,6 @@
         private DevExpress.XtraEditors.DateEdit dateEnd;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit bPay;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit bRefund;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn14;
     }
 }

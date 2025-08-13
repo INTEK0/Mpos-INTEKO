@@ -2,6 +2,7 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using static WindowsFormsApp2.Helpers.FormHelpers;
 
@@ -30,7 +31,7 @@ namespace WindowsFormsApp2
             string queryString = "SELECT * FROM  dbo.IZAHLI_GAYTARMA_HESABAT( @pricepoint,@pricepoint1) order by 1 ASC";
             try
             {
-                SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
+                SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString);
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Parameters.AddWithValue("@pricepoint", D1_);
                 command.Parameters.AddWithValue("@pricepoint1", D2_);

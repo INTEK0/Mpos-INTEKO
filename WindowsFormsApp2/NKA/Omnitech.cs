@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
+using DevExpress.XtraMap.Native;
 using Newtonsoft.Json;
 using RestSharp;
 using WindowsFormsApp2.Helpers;
@@ -1110,6 +1111,8 @@ case A.VERGI_DERECESI
             if (string.IsNullOrWhiteSpace(accessToken))
             {
                 accessToken = Login(ipAddress);
+                if (string.IsNullOrWhiteSpace(accessToken))
+                    return false;
             }
 
             string _fiskallID = "", _shortFiskallID = "", _checkNum = "";
@@ -1318,6 +1321,125 @@ case A.VERGI_DERECESI
                 XtraMessageBox.Show(response.message);
                 FormHelpers.Log($"Qəbz geri qaytarma xətası. Xəta mesajı: {response.message}");
                 return false;
+            }
+        }
+
+        public static Tuple<bool, string, string> CreditRefund(CreditSaleRefundDto refundDto)
+        {
+            if (string.IsNullOrWhiteSpace(refundDto.AccessToken))
+            {
+                refundDto.AccessToken = Login(refundDto.Url);
+                if (string.IsNullOrWhiteSpace(refundDto.AccessToken))
+                    return new Tuple<bool, string, string>(false, null, null);
+            }
+
+
+            int vatType = 18;
+            switch (refundDto.item.VatType)
+            {
+                case 1:
+                case 2:
+                    vatType = 18;
+                    break;
+                case 3: vatType = 0; break;
+                case 4: vatType = 2; break;
+                case 6: vatType = 2; break;
+                case 5: vatType = 8; break;
+            }
+
+            var items = new List<CreditSaleRefund.Item>
+            {
+                new CreditSaleRefund.Item()
+                {
+                    itemName = refundDto.item.ProductName,
+                    itemCode = refundDto.item.ProductCode,
+                    itemQuantityType = refundDto.item.QuantityType,
+                    itemQuantity = refundDto.item.Quantity,
+                    itemPrice = refundDto.item.SalePrice,
+                    itemSum = refundDto.item.Total,
+                    itemVatPercent = vatType,
+                }
+            };
+
+            var vatAmounts = new List<CreditSaleRefund.VatAmount>()
+            {
+                new CreditSaleRefund.VatAmount()
+                {
+                    vatPercent = vatType,
+                    vatSum = refundDto.PaymentTypeId == 0 ? 0 : refundDto.Total
+                }
+            };
+
+            var data = new CreditSaleRefund.Data()
+            {
+                cashier = refundDto.Cashier,
+                parentDocument = refundDto.ParentLongFiscalId,
+                refund_short_document_id = refundDto.ParentShortFiscalId,
+                refund_document_number = refundDto.ParentDocumentNumber,
+                sum = refundDto.Total,
+                items = items,
+                cashSum = refundDto.PaymentTypeId == 1 ? refundDto.Total : 0,
+                cashlessSum = refundDto.PaymentTypeId == 2 ? refundDto.Total : 0,
+                creditSum = refundDto.creditPayment,
+                vatAmounts = vatAmounts
+            };
+
+            CreditSaleRefund.RequestData requestData = new CreditSaleRefund.RequestData()
+            {
+                access_token = refundDto.AccessToken,
+                tokenData = new CreditSaleRefund.TokenData()
+                {
+                    parameters = new CreditSaleRefund.Parameters()
+                    {
+                        data = data
+                    },
+                },
+                checkData = new CreditSaleRefund.CheckData() { }
+            };
+
+            CreditSaleRefund root = new CreditSaleRefund()
+            {
+                requestData = requestData
+            };
+
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(root, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            });
+
+            var response = RequestPOST(refundDto.Url, json);
+
+
+            if (response != null)
+            {
+                if (response.message == "Successful operation")
+                {
+                    if (MessageVisible)
+                        ReadyMessages.SUCCESS_RETURN_SALES_MESSAGE();
+
+                    FormHelpers.Log($"Kredit satışı uğurla geri qaytarıldı. Qəbz No: {response.document_number}");
+                    return new Tuple<bool, string, string>(true, response.long_id, response.document_number.ToString());
+                }
+                else if (response.message == "document: invalid shift duration")
+                {
+                    XtraMessageBox.Show("GÜN SONU (Z) HESABATI ÇIXARILMAYIB !\n\nZəhmət olmasa pos bağla düyməsinə vuraraq günü sonlandırın.", "Mesaj", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return new Tuple<bool, string, string>(false, null, null);
+                }
+                else if (response.message == "document: invalid shift status")
+                {
+                    XtraMessageBox.Show("NÖVBƏ AÇILMAYIB !\n\nZəhmət olmasa pos aç düyməsinə vuraraq növbəni açın.", "Mesaj", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return new Tuple<bool, string, string>(false, null, null);
+                }
+                else
+                {
+                    ReadyMessages.ERROR_SALES_MESSAGE(response.message);
+                    FormHelpers.Log($"Kredit geri qaytarma xətası - Xəta mesajı: {response.message}");
+                    return new Tuple<bool, string, string>(false, null, null);
+                }
+            }
+            else
+            {
+                return new Tuple<bool, string, string>(false, null, null);
             }
         }
 
@@ -1572,7 +1694,7 @@ case A.VERGI_DERECESI
                     if (MessageVisible)
                         ReadyMessages.SUCCESS_CREDIT_SALES_MESSAGE();
                     FormHelpers.Log($"Kredit satışı uğurla edildi. Qəbz No: {response.document_number}");
-                    return new Tuple<bool, string, string,string>(true, response.long_id, response.short_id, response.document_number.ToString());
+                    return new Tuple<bool, string, string, string>(true, response.long_id, response.short_id, response.document_number.ToString());
                 }
                 else if (response.message == "document: invalid shift duration")
                 {
@@ -1879,6 +2001,67 @@ case A.VERGI_DERECESI
                 public RequestData requestData { get; set; }
             }
 
+            public RequestData requestData { get; set; }
+        }
+
+        public class CreditSaleRefund
+        {
+            public class CheckData
+            {
+                public int check_type { get; set; } = 100;
+            }
+            public class Item
+            {
+                public string itemName { get; set; }
+                public int itemCodeType { get; set; } = 0;
+                public string itemCode { get; set; }
+                public int itemQuantityType { get; set; }
+                public decimal itemQuantity { get; set; }
+                public decimal itemPrice { get; set; }
+                public decimal itemSum { get; set; }
+                public decimal itemVatPercent { get; set; }
+                public decimal discount { get; set; } = 0;
+                public decimal? itemMarginPrice { get; set; } = null;
+                public decimal? itemMarginSum { get; set; } = null;
+            }
+            public class VatAmount
+            {
+                public int vatPercent { get; set; }
+                public decimal vatSum { get; set; }
+            }
+            public class Data
+            {
+                public decimal bonusSum { get; set; }
+                public decimal cashSum { get; set; }
+                public string cashier { get; set; }
+                public decimal cashlessSum { get; set; }
+                public decimal creditSum { get; set; }
+                public string currency { get; set; } = "AZN";
+                public List<Item> items { get; set; }
+                public string parentDocument { get; set; }
+                public decimal prepaymentSum { get; set; }
+                public string refund_document_number { get; set; }
+                public string refund_short_document_id { get; set; }
+                public decimal sum { get; set; }
+                public List<VatAmount> vatAmounts { get; set; }
+            }
+            public class Parameters
+            {
+                public Data data { get; set; }
+                public string doc_type { get; set; } = "money_back";
+            }
+            public class TokenData
+            {
+                public string operationId { get; set; } = "createDocument";
+                public Parameters parameters { get; set; }
+                public int version { get; set; } = 1;
+            }
+            public class RequestData
+            {
+                public string access_token { get; set; }
+                public TokenData tokenData { get; set; }
+                public CheckData checkData { get; set; }
+            }
             public RequestData requestData { get; set; }
         }
 

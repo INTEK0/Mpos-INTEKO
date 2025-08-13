@@ -367,6 +367,12 @@
     <Compile Include="Forms\fCreditRefundDetail.Designer.cs">
       <DependentUpon>fCreditRefundDetail.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\fCreditRefundReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\fCreditRefundReport.Designer.cs">
+      <DependentUpon>fCreditRefundReport.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\fCreditSale.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1122,6 +1128,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fCreditRefundDetail.resx">
       <DependentUpon>fCreditRefundDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\fCreditRefundReport.resx">
+      <DependentUpon>fCreditRefundReport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fCreditSale.resx">
       <DependentUpon>fCreditSale.cs</DependentUpon>

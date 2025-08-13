@@ -246,6 +246,14 @@ where kredit_id={_creditMainId}";
             }
         }
 
+        private void bRefund_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            if (XtraMessageBox.Show("Ödənişi geri qaytarmaq istədiyinizə əminsiniz ?", "Bildiriş", MessageBoxButtons.YesNo, MessageBoxIcon.Question) is DialogResult.Yes)
+            {
+
+            }
+        }
+
         private void RefreshData()
         {
             CreditDataLoad();

@@ -139,6 +139,7 @@ namespace WindowsFormsApp2
             this.accordionControlElement25 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement26 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement27 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
+            this.accordionControlElement72 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement17 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement18 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement19 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
@@ -258,7 +259,7 @@ namespace WindowsFormsApp2
             this.tabModul = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.tileControl1 = new DevExpress.XtraEditors.TileControl();
             this.tileGroup1 = new DevExpress.XtraEditors.TileGroup();
-            this.accordionControlElement72 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
+            this.accordionControlElement73 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.fluentDesignFormContainer1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
@@ -1819,9 +1820,10 @@ namespace WindowsFormsApp2
             this.accordionControlElement23,
             this.accordionControlElement24,
             this.accordionControlElement25,
+            this.accordionControlElement72,
             this.accordionControlElement26,
             this.accordionControlElement27,
-            this.accordionControlElement72});
+            this.accordionControlElement73});
             this.accordionControlElement21.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("accordionControlElement21.ImageOptions.SvgImage")));
             this.accordionControlElement21.Name = "accordionControlElement21";
             this.accordionControlElement21.Text = "Kredit";
@@ -1867,6 +1869,13 @@ namespace WindowsFormsApp2
             this.accordionControlElement27.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
             this.accordionControlElement27.Text = "Kredit ödəniş hesabatı";
             this.accordionControlElement27.Click += new System.EventHandler(this.accordionControlElement27_Click);
+            // 
+            // accordionControlElement72
+            // 
+            this.accordionControlElement72.Name = "accordionControlElement72";
+            this.accordionControlElement72.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
+            this.accordionControlElement72.Text = "Kredit satışını geri qaytarma";
+            this.accordionControlElement72.Click += new System.EventHandler(this.accordionControlElement72_Click);
             // 
             // accordionControlElement17
             // 
@@ -3438,12 +3447,12 @@ namespace WindowsFormsApp2
             this.tileGroup1.Name = "tileGroup1";
             this.tileGroup1.Text = "tileGroup1";
             // 
-            // accordionControlElement72
+            // accordionControlElement73
             // 
-            this.accordionControlElement72.Name = "accordionControlElement72";
-            this.accordionControlElement72.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
-            this.accordionControlElement72.Text = "Geri qaytarma";
-            this.accordionControlElement72.Click += new System.EventHandler(this.accordionControlElement72_Click);
+            this.accordionControlElement73.Name = "accordionControlElement73";
+            this.accordionControlElement73.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
+            this.accordionControlElement73.Text = "Kredit satış qaytarma hesabatı";
+            this.accordionControlElement73.Click += new System.EventHandler(this.accordionControlElement73_Click);
             // 
             // MAINSCRRENS
             // 
@@ -3806,6 +3815,7 @@ namespace WindowsFormsApp2
         private DevExpress.XtraEditors.SimpleButton bDbDelete;
         private DevExpress.XtraEditors.LabelControl labelControl21;
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement72;
+        private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement73;
     }
 }
 

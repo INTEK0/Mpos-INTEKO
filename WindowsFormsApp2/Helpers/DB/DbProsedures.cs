@@ -2950,6 +2950,33 @@ WHERE KREDIT_SATISI_AYLIK_ID= {Id}";
             }
         }
 
+        public async static Task Insert_CreditSaleRefund(CreditSaleRefund item)
+        {
+            dynamic query = @"INSERT INTO KREDIT_SATISI_MAIN_QAYTARMA 
+VALUES 
+  (
+    @CreditSaleId, @RefundDate, @PaymentTypeId, 
+    @TotalAmount, @Comment, @LongId, 
+    @ReceiptNo, @UserId
+  );
+";
+            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query,con))
+            {
+                cmd.CommandType = CommandType.Text;
+                cmd.Parameters.AddWithValue("@CreditSaleId", item.CreditSaleId);
+                cmd.Parameters.AddWithValue("@RefundDate", DateTime.Now);
+                cmd.Parameters.AddWithValue("@PaymentTypeId", item.PaymentTypeId);
+                cmd.Parameters.AddWithValue("@TotalAmount", item.TotalAmount);
+                cmd.Parameters.AddWithValue("@Comment", item.Comment);
+                cmd.Parameters.AddWithValue("@LongId", item.LongFiscalId);
+                cmd.Parameters.AddWithValue("@ReceiptNo", item.ReceiptNo);
+                cmd.Parameters.AddWithValue("@UserId", item.UserId);
+                await con.OpenAsync();
+                await cmd.ExecuteNonQueryAsync();
+            }
+        }
+
         #endregion
 
         #endregion [...PROCEDURES METHODS...]
