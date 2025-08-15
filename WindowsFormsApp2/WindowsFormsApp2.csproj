@@ -331,6 +331,12 @@
     <Compile Include="Forms\fBasket.Designer.cs">
       <DependentUpon>fBasket.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\fBranch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\fBranch.Designer.cs">
+      <DependentUpon>fBranch.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\fCardAndOtherPay.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1108,6 +1114,9 @@
     <EmbeddedResource Include="Forms\fBasket.resx">
       <DependentUpon>fBasket.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\fBranch.resx">
+      <DependentUpon>fBranch.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\fCardAndOtherPay.resx">
       <DependentUpon>fCardAndOtherPay.cs</DependentUpon>
     </EmbeddedResource>
@@ -1423,6 +1432,9 @@
     <EmbeddedResource Include="ZAMINKREDIT.resx">
       <DependentUpon>ZAMINKREDIT.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="LocalFiles\Branches.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="LocalFiles\GridColumnsSettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -20,10 +20,12 @@ namespace WindowsFormsApp2
 {
     public partial class ANBAR_GALIGI : BaseForm
     {
-        public ANBAR_GALIGI()
+        private readonly string _connectionString = null;
+        public ANBAR_GALIGI(string connectionString = null)
         {
             InitializeComponent();
             GridPanelText(gridView1);
+            _connectionString = connectionString ?? DbHelpers.DbConnectionString;
         }
 
         private void simpleButton2_Click(object sender, EventArgs e)
@@ -48,7 +50,7 @@ namespace WindowsFormsApp2
             try
             {
                 Cursor.Current = Cursors.WaitCursor;
-                using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+                using (SqlConnection con = new SqlConnection(_connectionString))
                 {
                     string queryString = "gaime_Satis_mal_load_tarixle @d1 = @pricepoint1";
                     using (SqlCommand cmd = new SqlCommand(queryString, con))
@@ -111,7 +113,7 @@ namespace WindowsFormsApp2
         {
             string barcode = gridView1.GetFocusedRowCellValue("MƏHSUL KODU").ToString();
 
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
                 string query = $"EXEC SELECT_PRODUCT_DATA_LOAD '{barcode}'";

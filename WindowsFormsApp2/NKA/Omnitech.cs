@@ -4,7 +4,6 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
-using DevExpress.XtraMap.Native;
 using Newtonsoft.Json;
 using RestSharp;
 using WindowsFormsApp2.Helpers;

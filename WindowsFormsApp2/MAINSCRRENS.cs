@@ -560,8 +560,31 @@ FROM[terazimalzeme]";
 
         private void accordionControlElement3_Click(object sender, EventArgs e)
         {
-            FormHelpers.Alert("Bu modul aktiv deyildir. Servis xidmətinə müraciət edin", Enums.MessageType.Warning);
+            navigationFrame1.SelectedPage = pageBranch;
+            Branch();
+            //FormHelpers.Alert("Bu modul aktiv deyildir. Servis xidmətinə müraciət edin", Enums.MessageType.Warning);
             //OpenForm<Magaza>();
+        }
+
+        private void Branch()
+        {
+            for (int i = 1; i <= 5; i++)
+            {
+                SimpleButton btn = new SimpleButton
+                {
+                    Text = $"Button {i}",
+                    Width = 100,
+                    Height = 40
+                };
+
+                // Click event eklemek istersen
+                btn.Click += (s, e) =>
+                {
+                    XtraMessageBox.Show(((SimpleButton)s).Text + " tıklandı!");
+                };
+
+              /*  flowLayoutPanel1.Controls.Add(btn)*/;
+            }
         }
 
         private void accordionControlElement55_Click(object sender, EventArgs e)
@@ -572,7 +595,6 @@ FROM[terazimalzeme]";
                 return;
             }
             OpenForm<fPrintBarcode>();
-
         }
 
         private void MainScreen_FormClosing(object sender, FormClosingEventArgs e)
@@ -1576,5 +1598,16 @@ FROM (
         }
 
         #endregion [..SETTINGS..]
+
+
+        #region [..BRANCHES..]
+
+        private void bBranchStock_Click(object sender, EventArgs e)
+        {
+            OpenForm<ANBAR_GALIGI>();
+        }
+
+        #endregion [..BRANCHES..]
+
     }
 }

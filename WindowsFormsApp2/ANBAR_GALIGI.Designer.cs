@@ -348,6 +348,7 @@ namespace WindowsFormsApp2
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1198, 766);
             this.Controls.Add(this.tableLayoutPanel1);
+            this.IconOptions.Image = global::WindowsFormsApp2.Properties.Resources.Mpos_png1;
             this.LookAndFeel.SkinName = "WXI";
             this.LookAndFeel.UseDefaultLookAndFeel = false;
             this.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);

@@ -1,0 +1,24 @@
+{
+    "Branches": [
+        {
+            "Name": "Sədərək",
+            "ConnectionString": "Server=192.168.1.10;Database=MyDB;User Id=sa;Password=1234;"
+        },
+        {
+            "Name": "Xaçmaz",
+            "ConnectionString": "Server=192.168.1.11;Database=MyDB;User Id=sa;Password=1234;"
+        },
+        {
+            "Name": "İmişli",
+            "ConnectionString": "Server=192.168.1.12;Database=MyDB;User Id=sa;Password=1234;"
+        },
+        {
+            "Name": "Ağcabədi",
+            "ConnectionString": "Server=192.168.1.13;Database=MyDB;User Id=sa;Password=1234;"
+        },
+        {
+            "Name": "Sabirabad",
+            "ConnectionString": "Server=192.168.1.14;Database=MyDB;User Id=sa;Password=1234;"
+        }
+    ]
+}
