@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DevExpress.CodeParser;
 using DevExpress.DataAccess.Native.Data;
 using DevExpress.XtraBars.Navigation;
 using DevExpress.XtraEditors;
@@ -16,6 +17,7 @@ using DevExpress.XtraGrid;
 using DevExpress.XtraGrid.Localization;
 using Licence.Services;
 using Microsoft.Win32;
+using Newtonsoft.Json;
 using WindowsFormsApp2.Forms;
 using WindowsFormsApp2.Forms.PrintPages;
 using WindowsFormsApp2.Helpers;
@@ -240,7 +242,7 @@ namespace WindowsFormsApp2
                 }
 
 
-                using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+                using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
                 {
                     con.Open();
                     using (SqlCommand cmd = new SqlCommand(query, con))
@@ -561,30 +563,9 @@ FROM[terazimalzeme]";
         private void accordionControlElement3_Click(object sender, EventArgs e)
         {
             navigationFrame1.SelectedPage = pageBranch;
-            Branch();
+            LoadBranches();
             //FormHelpers.Alert("Bu modul aktiv deyildir. Servis xidmətinə müraciət edin", Enums.MessageType.Warning);
             //OpenForm<Magaza>();
-        }
-
-        private void Branch()
-        {
-            for (int i = 1; i <= 5; i++)
-            {
-                SimpleButton btn = new SimpleButton
-                {
-                    Text = $"Button {i}",
-                    Width = 100,
-                    Height = 40
-                };
-
-                // Click event eklemek istersen
-                btn.Click += (s, e) =>
-                {
-                    XtraMessageBox.Show(((SimpleButton)s).Text + " tıklandı!");
-                };
-
-              /*  flowLayoutPanel1.Controls.Add(btn)*/;
-            }
         }
 
         private void accordionControlElement55_Click(object sender, EventArgs e)
@@ -787,7 +768,7 @@ ORDER BY TotalAmount DESC;";
         /// </summary>
         private async Task TotalSalesInformation()
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 await con.OpenAsync();
 
@@ -832,7 +813,7 @@ FROM (
         /// </summary>
         private async Task TotalRefundInformation()
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 await con.OpenAsync();
                 string query = $@"SELECT 
@@ -876,7 +857,7 @@ FROM (
         /// </summary>
         private async Task TotalPurchaseInformation()
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 await con.OpenAsync();
                 string query = $@"SELECT 
@@ -1019,7 +1000,7 @@ FROM (
             //if (chStockAmount.Checked)
             //{
             //    gridProducts.ViewCaption = "Miqdarı az olan məhsullar";
-            //    using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            //    using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             //    {
             //        string query = $@"exec [StockDecreasingAmount]";
 
@@ -1360,12 +1341,12 @@ FROM (
             //if (chStockAmount.Checked)
             //{
             //    Registry.CurrentUser.CreateSubKey("Mpos").SetValue("DecreasingAmount", true);
-              
+
             //}
             //else
             //{
             //    Registry.CurrentUser.CreateSubKey("Mpos").SetValue("DecreasingAmount", false);
-               
+
             //}
         }
 
@@ -1520,6 +1501,23 @@ FROM (
             }
         }
 
+        private void navigationFrame1_SelectedPageChanged(object sender, SelectedPageChangedEventArgs e)
+        {
+            if (navigationFrame1.SelectedPage != pageBranch)
+            {
+                foreach (var btn in tablePanel2.Controls.OfType<CheckButton>())
+                {
+                    RemoteDbManager.ClearConnection();
+                    btn.GroupIndex = -1;
+                    btn.Checked = false;
+                    btn.GroupIndex = 1;
+                    groupControl5.Text = null;
+                    xtraTabControl1.Visible = false;
+                }
+
+            }
+        }
+
         private void accordionControlElement68_Click(object sender, EventArgs e)
         {
             if (!UserCacheService.User.UserRole.ProductDiscount)
@@ -1530,8 +1528,6 @@ FROM (
             OpenForm<fDiscountProduct>();
 
         }
-
-
 
         private void accordionControlElement71_Click(object sender, EventArgs e)
         {
@@ -1601,12 +1597,305 @@ FROM (
 
 
         #region [..BRANCHES..]
+        private List<BranchesRoot.Branch> _branches;
+        private class BranchesRoot
+        {
+            public List<Branch> Branches { get; set; }
+
+            public class Branch
+            {
+                public string Name { get; set; }
+                public string ConnectionString { get; set; }
+            }
+        }
+
+        private void LoadBranches()
+        {
+            string filePath = Path.Combine(Application.StartupPath, "LocalFiles", "Branches.json");
+            if (File.Exists(filePath))
+            {
+                string json = File.ReadAllText(filePath);
+                var root = JsonConvert.DeserializeObject<BranchesRoot>(json);
+                _branches = root?.Branches ?? new List<BranchesRoot.Branch>();
+            }
+            else
+                FormHelpers.Alert("Fliallar tapılmadı !", MessageType.Error);
+        }
+
+        private async void CheckedBranches(object sender, EventArgs e)
+        {
+            var check = (CheckButton)sender;
+            if (check == null || !check.Checked) return;
+
+
+            foreach (var c in tablePanel2.Controls.OfType<CheckButton>().Where(x => !x.Checked))
+                c.Enabled = false;
+
+
+            xtraTabControl1.Visible = false;
+            xtraTabControl1.SelectedTabPage = xtraTabPage1;
+
+            var branch = _branches.FirstOrDefault(x => x.Name.Equals(check.Text, StringComparison.OrdinalIgnoreCase));
+            if (branch != null)
+            {
+                string con = branch.ConnectionString;
+                RemoteDbManager.SetConnectionString(con);
+
+                groupControl5.Text = $"Flial: <b><color=#FF8C00>{branch.Name}</color></b>  -  Status: <b><color=#FF8C00>Qoşulur...</color></b>";
+
+                bool result = await RemoteDbManager.ServerConnectionAsync();
+                if (result)
+                {
+                    groupControl5.Text = $"Flial: <b><color=#FF8C00>{branch.Name}</color></b>  -  Status: <b><color=#018574>Uğurlu</color></b>";
+                    xtraTabControl1.Visible = true;
+                    //MessageBox.Show($"Seçilen Branch: {branch.Name}\nConnectionString: {con}");
+                }
+                else
+                {
+                    groupControl5.Text = $"Flial: <b><color=#FF8C00>{branch.Name}</color></b>  -  Status: <b><color=#E74856>Uğursuz</color></b>";
+                    xtraTabControl1.Visible = false;
+                }
+            }
+
+            foreach (var c in tablePanel2.Controls.OfType<CheckButton>())
+                c.Enabled = true;
+        }
+
+        private void bBranchAddProduct_Click(object sender, EventArgs e)
+        {
+            DbHelpers.UseRemoteConnection(RemoteDbManager.BranchConnectionString);
+            fAddProduct f = new fAddProduct();
+            f.FormClosed += (s, args) =>
+            {
+                DbHelpers.UseLocalConnection();
+            };
+            f.ShowDialog();
+        }
+
+        private void bBranchExcelImport_Click(object sender, EventArgs e)
+        {
+            DbHelpers.UseRemoteConnection(RemoteDbManager.BranchConnectionString);
+            EXCELL_IMPORT f = new EXCELL_IMPORT();
+            f.FormClosed += (s, args) =>
+            {
+                DbHelpers.UseLocalConnection();
+            };
+            f.ShowDialog();
+        }
+
+        private void bBranchRefundProduct_Click(object sender, EventArgs e)
+        {
+            DbHelpers.UseRemoteConnection(RemoteDbManager.BranchConnectionString);
+            MEHSUL_GAYTARMA_LAYOUT f = new MEHSUL_GAYTARMA_LAYOUT();
+            f.FormClosed += (s, args) =>
+            {
+                DbHelpers.UseLocalConnection();
+            };
+            f.ShowDialog();
+        }
+
+        private void bBranchBankSale_Click(object sender, EventArgs e)
+        {
+            DbHelpers.UseRemoteConnection(RemoteDbManager.BranchConnectionString);
+            GAIME_SATISI_LAYOUT f = new GAIME_SATISI_LAYOUT();
+            f.FormClosed += (s, args) =>
+            {
+                DbHelpers.UseLocalConnection();
+            };
+            f.ShowDialog();
+        }
+
+        private void bBranchBankRefund_Click(object sender, EventArgs e)
+        {
+            DbHelpers.UseRemoteConnection(RemoteDbManager.BranchConnectionString);
+            QAIME_SATISI_QAYTARMA_LAYOUT f = new QAIME_SATISI_QAYTARMA_LAYOUT();
+            f.FormClosed += (s, args) =>
+            {
+                DbHelpers.UseLocalConnection();
+            };
+            f.ShowDialog();
+        }
 
         private void bBranchStock_Click(object sender, EventArgs e)
         {
-            OpenForm<ANBAR_GALIGI>();
+            DbHelpers.UseRemoteConnection(RemoteDbManager.BranchConnectionString);
+            ANBAR_GALIGI f = new ANBAR_GALIGI();
+            f.FormClosed += (s, args) =>
+            {
+                DbHelpers.UseLocalConnection();
+            };
+            f.ShowDialog();
         }
 
+        private void bBranchAlisHesabat_Click(object sender, EventArgs e)
+        {
+            DbHelpers.UseRemoteConnection(RemoteDbManager.BranchConnectionString);
+            MEHSUL_ALIS_HESABATI f = new MEHSUL_ALIS_HESABATI();
+            f.FormClosed += (s, args) =>
+            {
+                DbHelpers.UseLocalConnection();
+            };
+            f.ShowDialog();
+        }
+
+        private void bBranchAlisQaytarma_Click(object sender, EventArgs e)
+        {
+            DbHelpers.UseRemoteConnection(RemoteDbManager.BranchConnectionString);
+            MEHSUL_GAYTARMA_HESABAT f = new MEHSUL_GAYTARMA_HESABAT();
+            f.FormClosed += (s, args) =>
+            {
+                DbHelpers.UseLocalConnection();
+            };
+            f.ShowDialog();
+        }
+
+        private void bBranchUmumiSatis_Click(object sender, EventArgs e)
+        {
+            DbHelpers.UseRemoteConnection(RemoteDbManager.BranchConnectionString);
+            UMUMI_SATIS_HESABATI f = new UMUMI_SATIS_HESABATI();
+            f.FormClosed += (s, args) =>
+            {
+                DbHelpers.UseLocalConnection();
+            };
+            f.ShowDialog();
+        }
+
+        private void bBranchSatisNov_Click(object sender, EventArgs e)
+        {
+            DbHelpers.UseRemoteConnection(RemoteDbManager.BranchConnectionString);
+            BANK_NEGD_HESABAT f = new BANK_NEGD_HESABAT();
+            f.FormClosed += (s, args) =>
+            {
+                DbHelpers.UseLocalConnection();
+            };
+            f.ShowDialog();
+        }
+
+        private void bBranchIzahliMehsulSatisi_Click(object sender, EventArgs e)
+        {
+            DbHelpers.UseRemoteConnection(RemoteDbManager.BranchConnectionString);
+            IZAHLI_MEHSUL_SATISI f = new IZAHLI_MEHSUL_SATISI();
+            f.FormClosed += (s, args) =>
+            {
+                DbHelpers.UseLocalConnection();
+            };
+            f.ShowDialog();
+        }
+
+        private void bBranchIzahliMehsulQaytarma_Click(object sender, EventArgs e)
+        {
+            DbHelpers.UseRemoteConnection(RemoteDbManager.BranchConnectionString);
+            izahli_mehsul_gaytarma f = new izahli_mehsul_gaytarma();
+            f.FormClosed += (s, args) =>
+            {
+                DbHelpers.UseLocalConnection();
+            };
+            f.ShowDialog();
+        }
+
+        private void bBranchAvansHesabati_Click(object sender, EventArgs e)
+        {
+            DbHelpers.UseRemoteConnection(RemoteDbManager.BranchConnectionString);
+            fAvansReport f = new fAvansReport();
+            f.FormClosed += (s, args) =>
+            {
+                DbHelpers.UseLocalConnection();
+            };
+            f.ShowDialog();
+        }
+
+        private void bBranchCreditSale_Click(object sender, EventArgs e)
+        {
+            DbHelpers.UseRemoteConnection(RemoteDbManager.BranchConnectionString);
+            KREDITHESABATI f = new KREDITHESABATI();
+            f.FormClosed += (s, args) =>
+            {
+                DbHelpers.UseLocalConnection();
+            };
+            f.ShowDialog();
+        }
+
+        private void bBranchCreditPay_Click(object sender, EventArgs e)
+        {
+            DbHelpers.UseRemoteConnection(RemoteDbManager.BranchConnectionString);
+            KREDITODENISHESABAT1 f = new KREDITODENISHESABAT1();
+            f.FormClosed += (s, args) =>
+            {
+                DbHelpers.UseLocalConnection();
+            };
+            f.ShowDialog();
+        }
+
+        private void bBranchCreditSaleRefund_Click(object sender, EventArgs e)
+        {
+            DbHelpers.UseRemoteConnection(RemoteDbManager.BranchConnectionString);
+            fCreditRefundReport f = new fCreditRefundReport();
+            f.FormClosed += (s, args) =>
+            {
+                DbHelpers.UseLocalConnection();
+            };
+            f.ShowDialog();
+        }
+
+        private void bBranchSuppliers_Click(object sender, EventArgs e)
+        {
+            DbHelpers.UseRemoteConnection(RemoteDbManager.BranchConnectionString);
+            fAddSupplier f = new fAddSupplier();
+            f.FormClosed += (s, args) =>
+            {
+                DbHelpers.UseLocalConnection();
+            };
+            f.ShowDialog();
+        }
+
+        private void bBranchUsers_Click(object sender, EventArgs e)
+        {
+            DbHelpers.UseRemoteConnection(RemoteDbManager.BranchConnectionString);
+            fUser f = new fUser();
+            f.FormClosed += (s, args) =>
+            {
+                DbHelpers.UseLocalConnection();
+            };
+            f.ShowDialog();
+        }
+
+        private void bBranchTerminal_Click(object sender, EventArgs e)
+        {
+            DbHelpers.UseRemoteConnection(RemoteDbManager.BranchConnectionString);
+            fKassalar f = new fKassalar();
+            f.FormClosed += (s, args) =>
+            {
+                DbHelpers.UseLocalConnection();
+            };
+            f.ShowDialog();
+        }
+
+        private void MAINSCRRENS_Shown(object sender, EventArgs e)
+        {
+            DbHelpers.UseLocalConnection();
+        }
+
+        private void bBranchLog_Click(object sender, EventArgs e)
+        {
+            DbHelpers.UseRemoteConnection(RemoteDbManager.BranchConnectionString);
+
+            //f.Show();
+            //f.FormClosed += (s, args) =>
+            //{
+            //    DbHelpers.UseLocalConnection();
+            //};
+        }
+
+        private void bBranchMinusCountControl_Click(object sender, EventArgs e)
+        {
+            DbHelpers.UseRemoteConnection(RemoteDbManager.BranchConnectionString);
+
+            //f.Show();
+            //f.FormClosed += (s, args) =>
+            //{
+            //    DbHelpers.UseLocalConnection();
+            //};
+        }
         #endregion [..BRANCHES..]
 
     }

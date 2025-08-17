@@ -68,7 +68,7 @@ namespace WindowsFormsApp2
 
         public void GetallData_t_id(DateTime D1_, DateTime D2_, int _t_id)
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 string queryString = "SELECT * FROM dbo.GAYTARMA_HESABAT_t_id (cast(@pricePoint AS DATE) , CAST(@pricePoint1 AS DATE),@pricePoint2)  ";
 
@@ -91,7 +91,7 @@ namespace WindowsFormsApp2
 
         public void GetallData(DateTime D1_, DateTime D2_)
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 string queryString = "SELECT * FROM dbo.GAYTARMA_HESABAT (cast(@pricePoint AS DATE),CAST(@pricePoint1 AS DATE))";
 

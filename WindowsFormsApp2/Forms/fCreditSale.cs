@@ -74,7 +74,7 @@ namespace WindowsFormsApp2.Forms
         {
             string query = $"SELECT [VAHID] FROM [MAL_ALISI_DETAILS] where [MAL_ALISI_DETAILS_ID] = {productId}";
 
-            using (SqlConnection conn = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection conn = new SqlConnection(DbHelpers.CurrentConnectionString))
             using (SqlCommand cmd = new SqlCommand(query, conn))
             {
                 conn.Open();
@@ -91,7 +91,7 @@ namespace WindowsFormsApp2.Forms
         private void evdkontrol(string edvs)
         {
             string query = $"SELECT  [EDV_ID] FROM  [VERGI_DERECESI] WHERE [EDV] = N'{edvs}'";
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             using (SqlCommand cmd = new SqlCommand(query, con))
             {
                 con.Open();

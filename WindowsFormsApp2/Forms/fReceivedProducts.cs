@@ -40,7 +40,7 @@ namespace WindowsFormsApp2.Forms
         private void DataLoad(DateTime start, DateTime finish)
         {
             string query = "SELECT * FROM dbo.ALINAN_MEHSUL(@pricePoint,@pricePoint1)";
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 connection.Open();
                 using (SqlCommand cmd = new SqlCommand(query,connection))

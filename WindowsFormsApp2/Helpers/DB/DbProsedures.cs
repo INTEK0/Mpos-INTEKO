@@ -67,12 +67,12 @@ namespace WindowsFormsApp2.Helpers.DB
             try
             {
                 Cursor.Current = Cursors.WaitCursor;
-                using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+                using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
                 using (SqlCommand cmd = new SqlCommand(SqlQuery, connection))
                 {
                     connection.Open();
                     cmd.CommandType = type;
-                    cmd.CommandTimeout = 120;
+                    cmd.CommandTimeout = 150;
                     using (SqlDataAdapter dataAdapter = new SqlDataAdapter(cmd))
                     {
                         using (DataTable data = new DataTable())
@@ -97,7 +97,7 @@ namespace WindowsFormsApp2.Helpers.DB
 
         public static int InsertCompany(Company data)
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 string query = "INSERT_COMPANY";
                 using (SqlCommand cmd = new SqlCommand(query, connection))
@@ -165,7 +165,7 @@ namespace WindowsFormsApp2.Helpers.DB
 
         public static Company GetCompany()
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 string query = "SELECT *  FROM SELECT_COMPANY_DATA_LOAD(@userID)";
                 connection.Open();
@@ -196,7 +196,7 @@ namespace WindowsFormsApp2.Helpers.DB
             if (userId is 0)
                 userId = Properties.Settings.Default.UserID;
 
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 string query = "SELECT * FROM SELECT_USER_DATA_LOAD(@userID)";
                 connection.Open();
@@ -219,7 +219,7 @@ namespace WindowsFormsApp2.Helpers.DB
 
         public static int InsertUser(User item)
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 string query = "userParol_insert";
                 using (SqlCommand cmd = new SqlCommand(query, connection))
@@ -258,7 +258,7 @@ namespace WindowsFormsApp2.Helpers.DB
 
         public static void UpdateUser(User item)
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 string query = "userParol_update";
                 using (SqlCommand cmd = new SqlCommand(query, connection))
@@ -291,7 +291,7 @@ namespace WindowsFormsApp2.Helpers.DB
 
         public static void DeleteUser(int userId)
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 string query = "userParol_delete";
                 using (SqlCommand cmd = new SqlCommand(query, connection))
@@ -309,7 +309,7 @@ namespace WindowsFormsApp2.Helpers.DB
 
         public static void InsertRole(UserRole item)
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             using (SqlCommand cmd = new SqlCommand("userRole_insert", con))
             {
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
@@ -348,7 +348,7 @@ namespace WindowsFormsApp2.Helpers.DB
 
         public static void UpdateRole(UserRole item)
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             using (SqlCommand cmd = new SqlCommand("userRole_update", con))
             {
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
@@ -387,7 +387,7 @@ namespace WindowsFormsApp2.Helpers.DB
 
         private static void DeleteRole(int userId)
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 string query = $"DELETE FROM UserRole WHERE UserId = {userId}";
                 using (SqlCommand cmd = new SqlCommand(query, connection))
@@ -403,7 +403,7 @@ namespace WindowsFormsApp2.Helpers.DB
             if (userId is 0)
                 userId = Properties.Settings.Default.UserID;
 
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 string query = "SELECT * FROM GetUserRole(@userID)";
                 connection.Open();
@@ -431,7 +431,7 @@ namespace WindowsFormsApp2.Helpers.DB
 
         public static int InsertPosSales(PosSales item)
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand(INSERT_PosSalesQuery, connection))
                 {
@@ -500,7 +500,7 @@ namespace WindowsFormsApp2.Helpers.DB
 
         public static void InsertItem(DatabaseClasses.Item item)
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 string query = "INSERT_Item";
                 using (SqlCommand cmd = new SqlCommand(query, connection))
@@ -545,7 +545,7 @@ namespace WindowsFormsApp2.Helpers.DB
 
         public static void DeleteItem()
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand(DELETE_ItemQuery, connection))
                 {
@@ -561,7 +561,7 @@ namespace WindowsFormsApp2.Helpers.DB
 
         public static void InsertHeader(Header item)
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand(INSERT_HeaderQuery, connection))
                 {
@@ -599,7 +599,7 @@ namespace WindowsFormsApp2.Helpers.DB
 
         public static void DeleteHeader()
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand($"DELETE FROM header WHERE userId = {Properties.Settings.Default.UserID}", connection))
                 {
@@ -612,7 +612,7 @@ namespace WindowsFormsApp2.Helpers.DB
 
         public static void InsertCalculation(Calculation item)
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand(INSERT_CalculationQuery, connection))
                 {
@@ -640,7 +640,7 @@ namespace WindowsFormsApp2.Helpers.DB
 
         public static int InsertPosRefund(PosRefund item)
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand(INSERT_PosRefundQuery, connection))
                 {
@@ -684,7 +684,7 @@ namespace WindowsFormsApp2.Helpers.DB
 
         public static string GET_SalesProcessNo()
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand(GET_PosSalesProccesNoQuery, connection))
                 {
@@ -704,7 +704,7 @@ namespace WindowsFormsApp2.Helpers.DB
         public static string GET_TotalSalesCount()
         {
             const string query = "SELECT COUNT(*) FROM pos_satis_check_main";
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             using (SqlCommand cmd = new SqlCommand(query, connection))
             {
                 connection.Open();
@@ -718,7 +718,7 @@ namespace WindowsFormsApp2.Helpers.DB
             try
             {
                 Cursor.Current = Cursors.WaitCursor;
-                using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+                using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
                 {
                     using (SqlCommand cmd = new SqlCommand(INSERT_PosBasketQuery, connection))
                     {
@@ -751,7 +751,7 @@ namespace WindowsFormsApp2.Helpers.DB
             try
             {
                 Cursor.Current = Cursors.WaitCursor;
-                using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+                using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
                 {
                     using (SqlCommand cmd = new SqlCommand(ExportPosBasketQuery, connection))
                     {
@@ -783,7 +783,7 @@ namespace WindowsFormsApp2.Helpers.DB
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+                using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
                 {
                     using (SqlCommand cmd = new SqlCommand(GET_BasketDataLoadQuery, connection))
                     {
@@ -812,7 +812,7 @@ namespace WindowsFormsApp2.Helpers.DB
 
         public static string GET_RefundProccessNo()
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand(GET_RefundProccesNoQuery, connection))
                 {
@@ -831,7 +831,7 @@ namespace WindowsFormsApp2.Helpers.DB
 
         public static void INSERT_PosDiscount(PosDiscount item)
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand("pos_guzest_insert", con))
                 {
@@ -866,7 +866,7 @@ namespace WindowsFormsApp2.Helpers.DB
 
         public static int Exists_Category(string CategoryName)
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 connection.Open();
                 using (SqlCommand cmd = new SqlCommand(GET_CategoryExistsQuery, connection))
@@ -888,7 +888,7 @@ namespace WindowsFormsApp2.Helpers.DB
 
         public static int Insert_Category(string CategoryName)
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 connection.Open();
                 using (SqlCommand cmd = new SqlCommand(INSERT_CategoryQuery, connection))
@@ -910,7 +910,7 @@ namespace WindowsFormsApp2.Helpers.DB
 
         public static int UpdateCategory(Categories item)
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 connection.Open();
                 using (SqlCommand cmd = new SqlCommand())
@@ -940,7 +940,7 @@ namespace WindowsFormsApp2.Helpers.DB
 
         public static int Exists_ProductCode(string productCode, int supplierId)
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 connection.Open();
                 string query = "yoxlama_mehsul_kodu";
@@ -971,7 +971,7 @@ namespace WindowsFormsApp2.Helpers.DB
         /// </summary>
         public static int Exists_ProductBarcode(string barcode, string productName)
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 connection.Open();
                 string query = "CheckProductBarcodeControl";
@@ -997,7 +997,7 @@ namespace WindowsFormsApp2.Helpers.DB
 
         public static int InsertProductMain(ProductsMain item)
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 connection.Open();
                 using (SqlCommand cmd = new SqlCommand(INSERT_MALALISIMAINQuery, connection))
@@ -1045,7 +1045,7 @@ namespace WindowsFormsApp2.Helpers.DB
 
         public static int InsertImportProductMain(ProductsMain item)
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 connection.Open();
                 using (SqlCommand cmd = new SqlCommand(INSERT_IMPORT_MALALISIMAINQuery, connection))
@@ -1096,7 +1096,7 @@ namespace WindowsFormsApp2.Helpers.DB
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+                using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
                 {
                     string query = "INSERT_MAL_ALISI_DETAILS";
                     connection.Open();
@@ -1179,7 +1179,7 @@ namespace WindowsFormsApp2.Helpers.DB
         private async static Task UpdateProductImage(int Id, string barcode)
         {
             //Məhsulda şəkil varsa yalnız bu kod işləyir
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 await con.OpenAsync();
                 string query = $@"
@@ -1197,7 +1197,7 @@ WHERE BARKOD = '{barcode}'";
 
         public static int DeleteProduct(ProductsDetail item)
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 connection.Open();
                 using (SqlCommand cmd = new SqlCommand(DELETE_MALALISIDETAILQuery, connection))
@@ -1224,7 +1224,7 @@ WHERE BARKOD = '{barcode}'";
 
         public static string GET_ProductProcessNo()
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 string query = "EXEC dbo.MAL_ALISI_EMELIYYAT_NOMRE";
                 using (SqlCommand cmd = new SqlCommand(query, connection))
@@ -1244,7 +1244,7 @@ WHERE BARKOD = '{barcode}'";
 
         public static int ProductNegativeStatus(bool status)
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand("MENFI_AC_BAGLA_CRUD", connection))
                 {
@@ -1265,7 +1265,7 @@ WHERE BARKOD = '{barcode}'";
 
         private static void ProductNegativeStatus()
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand("SELECT STATUS FROM MENFI_AC_BAGLA", connection))
                 {
@@ -1282,7 +1282,7 @@ WHERE BARKOD = '{barcode}'";
 
         public static string GET_ProductReturnProcessNo()
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 string query = "EXEC  dbo.MAL_GAYTARMA_KOD";
                 using (SqlCommand cmd = new SqlCommand(query, connection))
@@ -1353,7 +1353,7 @@ FROM
   ) X ON X.ID = Y.ID
 ";
 
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand(query, connection))
                 {
@@ -1372,7 +1372,7 @@ FROM
 
         public static int InsertRefundProductMain(string proccessNo, DateTime date)
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 string query = "INSERT_MAL_GAYTARMA_MAIN";
                 using (SqlCommand cmd = new SqlCommand(query, con))
@@ -1397,7 +1397,7 @@ FROM
 
         public static int InsertRefundProductDetail(int RefundProductId, int ProductId, decimal RefundQuantity, string Comment = null)
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 string query = "INSERT_MAL_GAYTARMA_DETAILS";
                 using (SqlCommand cmd = new SqlCommand(query, con))
@@ -1432,7 +1432,7 @@ FROM
         public static string GET_CustomerProccessNo()
         {
             const string query = "EXEC dbo.MUSTERI_EMELIYYAT_NOMRE";
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             using (SqlCommand cmd = new SqlCommand(query, connection))
             {
                 connection.Open();
@@ -1443,7 +1443,7 @@ FROM
 
         public static int InsertCustomer(Customer data)
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand(INSERT_CustomerQuery, connection))
                 {
@@ -1542,7 +1542,7 @@ FROM
 
         public static bool DeleteCustomer(int customerId)
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand(DELETE_CustomerQuery, con))
                 {
@@ -1563,7 +1563,7 @@ FROM
 
         public static bool UpdateCustomer(Customer data)
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand(UPDATE_CustomerDataQuery, connection))
                 {
@@ -1654,7 +1654,7 @@ FROM
         public static void InsertCustomerDebt(CustomerDebtType type, DateTime date, int customerId, decimal amount)
         {
             string _date = date.ToString("yyyy-MM-dd HH:mm:ss");
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 string query = $@"INSERT INTO [MUSTERILER_DEBTS] (OperationType, OperationDate, CustomerId, Amount) VALUES (
     {(int)type},
@@ -1677,7 +1677,7 @@ FROM
 
         public static string GET_DoctorProccessNo()
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 connection.Open();
                 using (SqlCommand cmd = new SqlCommand(GET_DoctorProccessNoQuery, connection))
@@ -1696,7 +1696,7 @@ FROM
 
         public static int InsertDoctor(Doctor data)
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand(INSERT_DoctorQuery, connection))
                 {
@@ -1738,7 +1738,7 @@ FROM
 
         public static bool DeleteDoctor(int doctorID)
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand(DELETE_DoctorQuery, con))
                 {
@@ -1759,7 +1759,7 @@ FROM
 
         public static bool UpdateDoctor(Doctor data)
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand(UPDATE_DoctorDataQuery, connection))
                 {
@@ -1804,7 +1804,7 @@ FROM
 
         public static string GET_GuarantorProccessNo()
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 connection.Open();
                 using (SqlCommand cmd = new SqlCommand(GET_GuarantorProccessNoQuery, connection))
@@ -1823,7 +1823,7 @@ FROM
 
         public static int InsertGuarantor(Guarantor data)
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand(INSERT_GuarantorQuery, connection))
                 {
@@ -1922,7 +1922,7 @@ FROM
 
         public static bool DeleteGuarantor(int customerID)
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand(DELETE_GuarantorQuery, con))
                 {
@@ -1943,7 +1943,7 @@ FROM
 
         public static bool UpdateGuarantor(Guarantor data)
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand(UPDATE_GuarantorDataQuery, connection))
                 {
@@ -2039,7 +2039,7 @@ FROM
 
         public static string GET_SupplierProccessNo()
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 connection.Open();
                 using (SqlCommand cmd = new SqlCommand(GET_SupplierProccessNoQuery, connection))
@@ -2058,7 +2058,7 @@ FROM
 
         public static int InsertSupplier(Supplier data)
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             using (SqlCommand cmd = new SqlCommand("INSERT_TECHIZATCI", connection))
             {
                 connection.Open();
@@ -2110,7 +2110,7 @@ FROM
 
         public static bool UpdateSupplier(Supplier data)
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             using (SqlCommand cmd = new SqlCommand("search_techizatci_update", connection))
             {
                 connection.Open();
@@ -2158,7 +2158,7 @@ FROM
 
         public static bool DeleteSupplier(int customerID)
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand(DELETE_SupplierQuery, con))
                 {
@@ -2179,7 +2179,7 @@ FROM
 
         public static async Task<int> InsertSupplierDebt(SupplierDebt item)
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 string query = "INSERT_SUPPLIER_DEBT";
                 await con.OpenAsync();
@@ -2211,7 +2211,7 @@ FROM
 
         public static string GET_SupplierDebtPayProccessNo()
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 string query = "techizatci_odenis_emeliyyat_nomre";
 
@@ -2232,7 +2232,7 @@ FROM
 
         public static async Task<int> InsertSupplierPay(SupplierDebtPay item)
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 string query = "INSERT_TECHIZATCI_ODENIS";
                 await con.OpenAsync();
@@ -2278,7 +2278,7 @@ FROM
 
         public static async Task<(decimal totalAmount, decimal mainAmount, decimal taxAmount)> GET_SupplierTotalDebt(int supplierId)
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 await connection.OpenAsync();
                 string query = "sp_GetSupplierDebt";
@@ -2330,7 +2330,7 @@ FROM
 
         public static DataTable Get_ClinicDataLoad()
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand(GET_ClinicDataLoadQuery, connection))
                 {
@@ -2351,7 +2351,7 @@ FROM
 
         public static void Insert_ClinicData(string customerName, string doctorName)
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand(INSERT_ClinicDataQuery, connection))
                 {
@@ -2379,7 +2379,7 @@ FROM
 
         public static string GET_GaimeSalesProccessNo()
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 connection.Open();
                 using (SqlCommand cmd = new SqlCommand(GET_GaimeSalesProccessNoQuery, connection))
@@ -2398,7 +2398,7 @@ FROM
 
         public static string GET_GaimeRefundProccessNo()
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 connection.Open();
                 using (SqlCommand cmd = new SqlCommand(GET_GaimeRefundProccessNoQuery, connection))
@@ -2417,7 +2417,7 @@ FROM
 
         public static int InsertGaimeMain(GaimeMain data)
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 con.Open();
                 using (SqlCommand cmd = new SqlCommand("INSERT_GAIME_SATISI_MAIN", con))
@@ -2462,7 +2462,7 @@ FROM
 
         public static async Task<DataTable> Get_ProductSalesDataAsync(string barcode)
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 await con.OpenAsync();
                 using (SqlCommand cmd = new SqlCommand(GET_GetProductSalesDataQuery, con))
@@ -2482,7 +2482,7 @@ FROM
 
         public static async Task<DataTable> Get_ProductPurchasesDataAsync(string barcode)
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 await con.OpenAsync();
                 using (SqlCommand cmd = new SqlCommand(GET_GetProductPurchaseDataQuery, con))
@@ -2508,7 +2508,7 @@ FROM
 
         public static async Task<int> InsertIncomeAndExpense(IncomeAndExpense item)
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 await con.OpenAsync();
                 using (SqlCommand cmd = new SqlCommand(INSERT_IncomeAndExpenseDataQuery, con))
@@ -2547,7 +2547,7 @@ FROM
 
         public static int TerminalAdd(Terminal item)
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             using (SqlCommand cmd = new SqlCommand("KASSA_IP_INSERT", con))
             {
                 con.Open();
@@ -2574,7 +2574,7 @@ FROM
 
         public static void TerminalRemove(int Id)
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 string query = $"DELETE FROM KASSA_IP WHERE KASSA_IP_ID ={Id}";
                 using (SqlCommand cmd = new SqlCommand(query, con))
@@ -2593,7 +2593,7 @@ FROM
 
         public static bool TereziAdd(Terezi item)
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 con.Open();
                 using (SqlCommand cmd = new SqlCommand("TERAZI_IP_INSERT", con))
@@ -2624,7 +2624,7 @@ FROM
 
         public static void TereziRemove(int Id)
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 string query = $"DELETE FROM TERAZI_IP WHERE TERAZI_IP_ID={Id}";
                 using (SqlCommand cmd = new SqlCommand(query, con))
@@ -2637,7 +2637,7 @@ FROM
 
         public static TeraziDTO GetTerezi()
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 string query = $@"SELECT 
 TERAZI_IP_ID AS Id,
@@ -2673,7 +2673,7 @@ WHERE UserId = {Properties.Settings.Default.UserID}";
 
         public static int PrinterAdd(Printer item)
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 string query = "PRINTER_INSERT";
                 con.Open();
@@ -2703,7 +2703,7 @@ WHERE UserId = {Properties.Settings.Default.UserID}";
 
         public static void PrinterRemove(int Id)
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 string query = $"DELETE FROM PRINTERS WHERE Id ={Id}";
                 using (SqlCommand cmd = new SqlCommand(query, con))
@@ -2716,7 +2716,7 @@ WHERE UserId = {Properties.Settings.Default.UserID}";
 
         public static List<Printer> GetSelectedPrinter()
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 string query = "SELECT * FROM SELECT_PRINTER_DATA_LOAD(@userID)";
                 connection.Open();
@@ -2740,7 +2740,7 @@ WHERE UserId = {Properties.Settings.Default.UserID}";
 
         public async static Task INSERT_DiscountProductAsync(List<DiscountProduct> items)
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 await con.OpenAsync();
                 foreach (DiscountProduct item in items)
@@ -2774,7 +2774,7 @@ WHERE UserId = {Properties.Settings.Default.UserID}";
 
         public async static Task UPDATE_DiscountProductAsync(DiscountProduct item)
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 await con.OpenAsync();
 
@@ -2807,7 +2807,7 @@ WHERE
 
         public async static Task DELETE_DiscountProductAsync(List<DiscountProduct> items)
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 await con.OpenAsync();
                 foreach (DiscountProduct item in items)
@@ -2828,7 +2828,7 @@ WHERE
         {
             string query = "UPDATE DISCOUNT_PRODUCTS SET Status = @Status WHERE Barcode = @barcode";
 
-            using (SqlConnection conn = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection conn = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
@@ -2848,7 +2848,7 @@ WHERE
 
         public static string GET_CreditSaleProccessNo()
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             using (SqlCommand cmd = new SqlCommand("EXEC dbo.KREDIT_SATISI_EMELIYYAT_NOMRE", connection))
             {
                 connection.Open();
@@ -2864,7 +2864,7 @@ WHERE
 
         public async static Task<int> Insert_CreditMain(CreditMain item)
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             using (SqlCommand cmd = new SqlCommand("INSERT_KREDIT_SATISI_MAIN", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -2919,7 +2919,7 @@ VALUES
     @CreditSaleId, @Month, @PaymentDay, 
     @Amount, @CreditSaleFiscalId
   )";
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             using (SqlCommand cmd = new SqlCommand(query, con))
             {
                 cmd.CommandType = CommandType.Text;
@@ -2935,7 +2935,7 @@ VALUES
 
         public static void UPDATE_CreditPay(string shortId, string longId, int Id)
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 string query = $@"UPDATE [dbo].[KREDIT_SATISI_AYLIKODEME] SET [DATE2_]=GETDATE(),
 [ODENILEN_MEBLEG]=[ODENILECEK_MEBLEG],
@@ -2960,7 +2960,7 @@ VALUES
     @ReceiptNo, @UserId
   );
 ";
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             using (SqlCommand cmd = new SqlCommand(query,con))
             {
                 cmd.CommandType = CommandType.Text;

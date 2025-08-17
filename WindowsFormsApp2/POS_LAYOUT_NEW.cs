@@ -1,4 +1,11 @@
-﻿using System;
+﻿using DevExpress.Data.Linq.Helpers;
+using DevExpress.XtraBars.Navigation;
+using DevExpress.XtraEditors;
+using DevExpress.XtraGrid.Views.Grid;
+using Microsoft.Win32;
+using Newtonsoft.Json.Linq;
+using RestSharp;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -12,13 +19,6 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DevExpress.Data.Linq.Helpers;
-using DevExpress.XtraBars.Navigation;
-using DevExpress.XtraEditors;
-using DevExpress.XtraGrid.Views.Grid;
-using Microsoft.Win32;
-using Newtonsoft.Json.Linq;
-using RestSharp;
 using WindowsFormsApp2.Forms;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.CacheData;
@@ -136,7 +136,7 @@ namespace WindowsFormsApp2
 
         private void CalculationDelete()
         {
-            using (SqlConnection conn = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection conn = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 conn.Open();
                 string deleteQuery = $"DELETE FROM calculation WHERE userId = {Properties.Settings.Default.UserID}";
@@ -155,7 +155,7 @@ namespace WindowsFormsApp2
         {
             await Task.Run(() =>
             {
-                using (SqlConnection conn = new SqlConnection(DbHelpers.DbConnectionString))
+                using (SqlConnection conn = new SqlConnection(DbHelpers.CurrentConnectionString))
                 {
                     conn.Open();
                     string deleteQuery = $"DELETE FROM pos_guzest WHERE userId = {Properties.Settings.Default.UserID}";
@@ -174,7 +174,7 @@ namespace WindowsFormsApp2
 
             await Task.Run(() =>
             {
-                using (SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM dbo.POS_autocomplete_search_mehsul_Adi_distinct()", DbHelpers.DbConnectionString))
+                using (SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM dbo.POS_autocomplete_search_mehsul_Adi_distinct()", DbHelpers.CurrentConnectionString))
                 {
                     DataTable dt = new DataTable();
                     da.Fill(dt);
@@ -220,7 +220,7 @@ namespace WindowsFormsApp2
                             kg = kontrol.Substring(7, 2);
                             gr = kontrol.Substring(9, 3);
 
-                            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+                            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
                             {
                                 con.Open();
                                 //string query = $@"select BARKOD from [MAL_ALISI_DETAILS] where [MAL_ALISI_DETAILS_ID]={kod}";
@@ -289,7 +289,7 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                             kg = kontrol.Substring(7, 2);
                             gr = kontrol.Substring(9, 3);
 
-                            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+                            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
                             {
                                 con.Open();
                                 string query = $@"SELECT TOP 1 BARKOD,MAL_ALISI_DETAILS_ID 
@@ -407,7 +407,7 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
         /// </summary>
         private async Task DiscountProductsLoad()
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 await con.OpenAsync();
                 string query = @"
@@ -489,7 +489,7 @@ SELECT [Id]
             /*
             try
             {
-                using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+                using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
                 {
                     connection.Open();
 
@@ -546,7 +546,7 @@ LEFT JOIN pos_guzest pg
             try
             {
                 Cursor.Current = Cursors.WaitCursor;
-                using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+                using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
                 {
                     await connection.OpenAsync();
 
@@ -581,7 +581,7 @@ LEFT JOIN pos_guzest pg
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+                using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
                 {
                     connection.Open();
                     string query = "exec CALC_SAY_CALCULATION @barkod=@pricepoint ,@emeliyyat_nomre=@pricepoint1,@userID=@userId";
@@ -661,7 +661,7 @@ LEFT JOIN pos_guzest pg
             /*
             try
             {
-                using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+                using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
                 {
                     connection.Open();
                     string query = "SELECT * FROM  dbo.POS_SATIS(1,@pricePoint);";
@@ -705,7 +705,7 @@ LEFT JOIN pos_guzest pg
             try
             {
                 Cursor.Current = Cursors.WaitCursor;
-                using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+                using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
                 {
                     await connection.OpenAsync();
 
@@ -974,7 +974,7 @@ LEFT JOIN pos_guzest pg
                 int numberkontrol = 0;
 
                 //Məhsulların mənfiyə getməsinə icazə verilib verilmədiyini kontrol edir
-                using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+                using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
                 {
                     string queryString = "SELECT STATUS FROM MENFI_AC_BAGLA";
                     using (SqlCommand command = new SqlCommand(queryString, connection))
@@ -997,7 +997,7 @@ LEFT JOIN pos_guzest pg
                         for (int i = 0; i < gridView1.DataRowCount; i++)
                         {
                             DataRow row = gridView1.GetDataRow(i);
-                            SqlConnection connection4 = new SqlConnection(DbHelpers.DbConnectionString);
+                            SqlConnection connection4 = new SqlConnection(DbHelpers.CurrentConnectionString);
                             string queryStringk = "SELECT sum(migdar_) as miktar FROM dbo.GAIME_SATIS_SEARCH_menfi_ACIG() where [MƏHSUL ADI]=N'" + row["MƏHSUL ADI"].ToString() + "' and [MƏHSUL KODU]=(select [MEHSUL_KODU]from [MAL_ALISI_DETAILS] where [MAL_ALISI_DETAILS_ID]=" + Convert.ToInt32(row["MAL_ALISI_DETAILS_ID"]) + " ) group by TECHIZATCI_ID ,[TƏCHİZATÇI] ,[MƏHSUL ADI],  [MƏHSUL KODU], BARKOD";
                             connection4.Open();
                             SqlCommand command4 = new SqlCommand(queryStringk, connection4);
@@ -2124,6 +2124,11 @@ LEFT JOIN pos_guzest pg
             OpenForm<fCreditPay>();
         }
 
+        private void POS_LAYOUT_NEW_Shown(object sender, EventArgs e)
+        {
+            DbHelpers.UseLocalConnection();
+        }
+
         private void bPeriodicReport_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             fKassaReport f = new fKassaReport();
@@ -2994,7 +2999,7 @@ LEFT JOIN pos_guzest pg
             try
             {
                 string query = "select * from  dbo.POS_autocomplete_search_mehsul_Adi(@pricePoint);";
-                using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+                using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
                 using (SqlCommand cmd = new SqlCommand(query, connection))
                 {
                     connection.Open();
@@ -3310,7 +3315,7 @@ LEFT JOIN pos_guzest pg
 
                 SqlConnection conn2 = new SqlConnection();
                 SqlCommand cmd2 = new SqlCommand();
-                conn2.ConnectionString = DbHelpers.DbConnectionString;
+                conn2.ConnectionString = DbHelpers.CurrentConnectionString;
                 conn2.Open();
                 string query2 = DbHelpers.GetHeaderDataQuery;
 
@@ -3339,7 +3344,7 @@ LEFT JOIN pos_guzest pg
 
                     SqlConnection connvat = new SqlConnection();
                     SqlCommand cmdvat = new SqlCommand();
-                    connvat.ConnectionString = DbHelpers.DbConnectionString;
+                    connvat.ConnectionString = DbHelpers.CurrentConnectionString;
                     connvat.Open();
                     string queryvat = $@"select t.vatType,sum(t.ssum) as ssum,sum(t.ssumvat) as ssumvat from
                 (select  case  vatType when 1 then '18.0' when 2 then '18.0' when 3 then '0.0' when 4 then '2.0' when 5 then '8.0' else 'bos' end as vatType,
@@ -3406,7 +3411,7 @@ LEFT JOIN pos_guzest pg
 
                 SqlConnection conn = new SqlConnection();
                 SqlCommand cmd = new SqlCommand();
-                conn.ConnectionString = DbHelpers.DbConnectionString;
+                conn.ConnectionString = DbHelpers.CurrentConnectionString;
                 conn.Open();
                 string query = $@"select name,Item.item_id,salePrice,quantity,
 case  vatType 
@@ -4058,7 +4063,7 @@ from  dbo.item where user_id = {Properties.Settings.Default.UserID}";
         {
             try
             {
-                SqlConnection conn2 = new SqlConnection(DbHelpers.DbConnectionString);
+                SqlConnection conn2 = new SqlConnection(DbHelpers.CurrentConnectionString);
                 SqlCommand cmd2 = new SqlCommand();
                 conn2.Open();
                 string query2 = DbHelpers.GetHeaderDataQuery;
@@ -5376,7 +5381,7 @@ from  dbo.item where user_id = {Properties.Settings.Default.UserID}";
 
             string ustbaslik = "TS Adı :" + obyetname + "\r\n" + "TS Ünvanı :" + obyektadres + "\r\n" + "\r\n" + "VÖ Adı :" + customer + "\r\n" + "VÖEN :" + customervoen + "\r\n" + "Obyektin kodu :" + obyektkod;
 
-            using (SqlConnection connection1 = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection1 = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 connection1.Open();
                 string query1 = $@"
@@ -5423,7 +5428,7 @@ WHERE userId = 3044";
             }
 
 
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 string query = $@"select name,
 code,
@@ -5882,7 +5887,7 @@ FROM  dbo.item WHERE user_id = {Properties.Settings.Default.UserID}";
             var control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("HotSalesShow").ToString());
             if (control)
             {
-                SqlConnection conn2 = new SqlConnection(DbHelpers.DbConnectionString);
+                SqlConnection conn2 = new SqlConnection(DbHelpers.CurrentConnectionString);
                 SqlCommand cmd2 = new SqlCommand();
                 conn2.Open();
 

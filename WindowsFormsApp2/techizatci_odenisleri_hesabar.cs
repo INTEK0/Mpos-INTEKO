@@ -48,7 +48,7 @@ namespace WindowsFormsApp2
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+                using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
                 {
                     string queryString = "select * from dbo.TECHIZATCI_borclu_all_HESABAT (@endDate) ";
                     using (SqlCommand command = new SqlCommand(queryString, connection))
@@ -75,7 +75,7 @@ namespace WindowsFormsApp2
 
         private async Task TotalSupplierDebt()
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 await connection.OpenAsync();
                 string query = "sp_GetAllSupplierDebt";

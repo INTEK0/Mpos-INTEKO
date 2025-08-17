@@ -1,5 +1,4 @@
-﻿using DevExpress.XtraGrid.Localization;
-using System;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
 using WindowsFormsApp2.Helpers.DB;
@@ -14,7 +13,6 @@ namespace WindowsFormsApp2
         {
             InitializeComponent();
             GridPanelText(gridView1);
-            GridLocalizer.Active = new MyGridLocalizer();
         }
 
         private void simpleButton2_Click(object sender, EventArgs e)
@@ -31,7 +29,7 @@ namespace WindowsFormsApp2
             string queryString = "SELECT * FROM  dbo.IZAHLI_GAYTARMA_HESABAT( @pricepoint,@pricepoint1) order by 1 ASC";
             try
             {
-                SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString);
+                SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString);
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Parameters.AddWithValue("@pricepoint", D1_);
                 command.Parameters.AddWithValue("@pricepoint1", D2_);
@@ -50,7 +48,7 @@ namespace WindowsFormsApp2
         }
         private void izahli_mehsul_gaytarma_Load(object sender, EventArgs e)
         {
-            DateTime dateTime = DateTime.UtcNow.Date;
+            DateTime dateTime = DateTime.Now;
 
             dateEdit3.Text = dateTime.ToShortDateString();
             dateEdit4.Text = dateTime.ToShortDateString();

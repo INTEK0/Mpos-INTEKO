@@ -93,7 +93,7 @@ namespace WindowsFormsApp2.Forms
 
         private void Delete()
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 string query = $"DELETE FROM COMPANY.COMPANY WHERE UserId = {Properties.Settings.Default.UserID}";
                 using (SqlCommand cmd = new SqlCommand(query, connection))
@@ -158,7 +158,7 @@ namespace WindowsFormsApp2.Forms
         private void CompanyCount()
         {
             int count = 0;
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 string query = $"SELECT COUNT(*) FROM COMPANY.COMPANY WHERE UserId = {UserCacheService.User.Id}";
                 using (SqlCommand cmd = new SqlCommand(query, connection))
@@ -187,7 +187,7 @@ namespace WindowsFormsApp2.Forms
 
         private void CompanyDataLoad()
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 string query = "select * from dbo.fn_company(@userID)";
                 using (SqlCommand cmd = new SqlCommand(query, connection))

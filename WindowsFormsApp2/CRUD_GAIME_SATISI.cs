@@ -27,7 +27,7 @@ namespace WindowsFormsApp2
         public int test_proc_(string EMELIYYAT_NOMRE_, string musteri_)
         {
             // Create ADO.NET objects.
-            SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString);
+            SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString);
             SqlCommand cmd = new SqlCommand(proceduretest, con);
             // Configure command and add input parameters.
             cmd.CommandType = CommandType.StoredProcedure;
@@ -55,7 +55,7 @@ namespace WindowsFormsApp2
             int empCount = 0;
             int returnMainId = 0;
 
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand("insert_gaime_satis_gaytarma", con))
                 {
@@ -98,7 +98,7 @@ namespace WindowsFormsApp2
             int empCount = 0;
             int returnMainId = 0;
 
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand("update_gaime_satis", con))
                 {

@@ -92,7 +92,7 @@ WHERE IsDeleted = 0";
         {
             int Id = Convert.ToInt32(gridCustomers.GetFocusedRowCellValue("MUSTERILER_ID").ToString());
 
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 connection.Open();
                 string query = "SELECT * FROM SELECT_MUSTERI_DATA_LOAD(@CustomerID)";
@@ -122,7 +122,7 @@ WHERE IsDeleted = 0";
         {
             int Id = Convert.ToInt32(gridDoctor.GetFocusedRowCellValue("Id").ToString());
 
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 connection.Open();
                 string query = "SELECT * FROM SELECT_DOCTOR_DATA_LOAD(@DoctorID)";
@@ -152,7 +152,7 @@ WHERE IsDeleted = 0";
         {
             int Id = Convert.ToInt32(gridZamin.GetFocusedRowCellValue("ID").ToString());
 
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 connection.Open();
                 string query = $@"SELECT 

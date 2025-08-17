@@ -51,7 +51,7 @@ namespace WindowsFormsApp2.Forms
                 AND D.IsDeleted = 0
 ";
 
-                using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+                using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
                 {
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {

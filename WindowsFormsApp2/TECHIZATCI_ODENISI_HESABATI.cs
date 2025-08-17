@@ -76,7 +76,7 @@ namespace WindowsFormsApp2
 
         private async Task DataLoadToSupplier(DateTime start, DateTime end, int supplierId)
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 await con.OpenAsync();
                 string query = "SELECT * FROM dbo.fn_TECHIZATCI_ODENILENLER_hesabat_t_id (CAST(@startDate AS DATE) , CAST(@endDate AS DATE),@supplierId)";
@@ -108,7 +108,7 @@ namespace WindowsFormsApp2
 
         private async Task DataLoadAsync(DateTime start, DateTime end)
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 string queryString = "SELECT * FROM dbo.fn_TECHIZATCI_ODENILENLER_hesabat (cast(@startDate AS DATE), CAST(@endDate AS DATE))";
                 await con.OpenAsync();
@@ -286,7 +286,7 @@ ORDER BY h.SiraTarihi;
         {
             DateTime contractDate = DateTime.MinValue;
             decimal amount = default;
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 await con.OpenAsync();
                 string query = @"SELECT ContractDate, Amount FROM COMPANY.SupplierDebt WHERE Id = @Id";
@@ -310,7 +310,7 @@ ORDER BY h.SiraTarihi;
         {
             DateTime contractDate = DateTime.MinValue;
             decimal amount = default;
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 await con.OpenAsync();
                 string query = @"SELECT 

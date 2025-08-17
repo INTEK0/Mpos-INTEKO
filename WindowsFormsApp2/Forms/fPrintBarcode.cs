@@ -296,7 +296,7 @@ namespace WindowsFormsApp2.Forms
         private void MehsulAlisiDataLoad()
         {
             _data.Clear();       
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             using (SqlCommand cmd = new SqlCommand("ProductLoadWithDate", connection))
             {
                 connection.Open();

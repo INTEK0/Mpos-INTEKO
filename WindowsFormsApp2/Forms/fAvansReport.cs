@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using DevExpress.XtraGrid.Localization;
+using System;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using DevExpress.XtraEditors;
-using DevExpress.XtraGrid.Localization;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
 using static WindowsFormsApp2.Helpers.Enums;
@@ -23,7 +17,6 @@ namespace WindowsFormsApp2.Forms
             InitializeComponent();
             GridPanelText(gridSale);
             GridPanelText(gridPay);
-            GridLocalizer.Active = new MyGridLocalizer();
         }
 
         private enum ReportType
@@ -52,7 +45,7 @@ namespace WindowsFormsApp2.Forms
             lookReportType.Properties.Columns["Key"].Visible = false;
             lookReportType.EditValue = ReportType.AvansPay;
 
-            DateTime dateTime = DateTime.UtcNow.Date;
+            DateTime dateTime = DateTime.Now;
 
             dateStart.Text = dateTime.ToShortDateString();
             dateFinish.Text = dateTime.ToShortDateString();

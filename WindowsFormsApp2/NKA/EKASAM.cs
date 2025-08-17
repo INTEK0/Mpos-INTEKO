@@ -284,7 +284,7 @@ namespace WindowsFormsApp2.NKA
             List<Itemticaretelave> items2 = new List<Itemticaretelave>();
             List<VatAmount> vatAmounts = new List<VatAmount>();
 
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 con.Open();
                 string query = $@"
@@ -570,7 +570,7 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
             string _fiskallID = "", _shortFiskallID = "", _checkNum = "";
             decimal _cash = default, _card = default, _total2 = default;
 
-            using (SqlConnection conn2 = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection conn2 = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 conn2.Open();
                 string query2 = $@"SELECT [pos_satis_check_main_id],
@@ -604,7 +604,7 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
             decimal totalMarginSum = 0;  // Toplam itemMarginSum'u tutacak
             decimal totalItemSum = 0;    // Toplam itemSum'u tutacak
 
-            using (SqlConnection conn = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection conn = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 conn.Open();
                 string query = $@"(SELECT md.MEHSUL_ADI AS name,
@@ -786,7 +786,7 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
         public static void LastReceiptCopy(string ipAdress, string accessToken)
         {
             string fiskalID = string.Empty;
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 con.Open();
                 using (SqlCommand cmd = new SqlCommand(DbHelpers.LastDocumentFiskalId, con))

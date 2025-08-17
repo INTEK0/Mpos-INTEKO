@@ -350,7 +350,7 @@ namespace WindowsFormsApp2.NKA
 
             SqlConnection conn = new SqlConnection();
             SqlCommand cmd = new SqlCommand();
-            conn.ConnectionString = DbHelpers.DbConnectionString;
+            conn.ConnectionString = DbHelpers.CurrentConnectionString;
             conn.Open();
             string query = $@"
 select 
@@ -584,7 +584,7 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
             List<Item> items = new List<Item>();
             List<VatAmount> vatAmounts = new List<VatAmount>();
 
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 con.Open();
                 string query = $@"
@@ -821,7 +821,7 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
             decimal vatSumFor0Percent = 0;
             decimal total = 0;
 
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 con.Open();
                 string query = $@"
@@ -1011,7 +1011,7 @@ case A.VERGI_DERECESI
             {
                 if (response.message == "Successful operation")
                 {
-                    using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+                    using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
                     {
                         string query = $@"UPDATE [dbo].[pos_satis_check_main] SET 
                                        NEGD_={salesData.Cash.ToString("N2").Replace(',', '.')} + NEGD_,
@@ -1117,7 +1117,7 @@ case A.VERGI_DERECESI
             string _fiskallID = "", _shortFiskallID = "", _checkNum = "";
             decimal _cash = default, _card = default, _total2 = default;
 
-            using (SqlConnection conn2 = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection conn2 = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 conn2.Open();
                 string query2 = $@"SELECT [pos_satis_check_main_id],
@@ -1149,7 +1149,7 @@ case A.VERGI_DERECESI
 
             List<Item> items = new List<Item>();
             items.Clear();
-            using (SqlConnection conn = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection conn = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 conn.Open();
                 string query = $@"(SELECT md.MEHSUL_ADI AS name,
@@ -1452,7 +1452,7 @@ case A.VERGI_DERECESI
             }
 
             string fiskalID = string.Empty;
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 con.Open();
                 using (SqlCommand cmd = new SqlCommand(DbHelpers.LastDocumentFiskalId, con))

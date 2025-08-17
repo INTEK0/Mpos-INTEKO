@@ -359,7 +359,7 @@ FROM @Result rs";
                 if (!string.IsNullOrWhiteSpace(barcode))
                 {
                     _product = new DiscountProduct();
-                    using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+                    using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
                     {
                         connection.Open();
                         string query = "SELECT TOP 1 * FROM  DISCOUNT_PRODUCTS WHERE Barcode = @barcode";

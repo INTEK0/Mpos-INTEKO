@@ -1,8 +1,8 @@
-﻿using DevExpress.XtraGrid.Localization;
-using System;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
 using WindowsFormsApp2.Helpers;
+using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using static WindowsFormsApp2.Helpers.FormHelpers;
 
@@ -14,12 +14,11 @@ namespace WindowsFormsApp2
         {
             InitializeComponent();
             GridPanelText(gridView1);
-            GridLocalizer.Active = new MyGridLocalizer();
         }
 
         private void KREDITHESABATI_Load(object sender, EventArgs e)
         {
-            DateTime dateTime = DateTime.UtcNow.Date;
+            DateTime dateTime = DateTime.Now;
             dateEdit1.Text = dateTime.ToShortDateString();
             dateEdit2.Text = dateTime.ToShortDateString();
         }
@@ -38,7 +37,7 @@ namespace WindowsFormsApp2
 
         public void GetallData_id_(DateTime D1_, DateTime D2_)
         {
-            SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
+            SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString);
             string queryString = "EXEC dbo.KREDIT_HESABAT1  @d1 = @pricepoint  ,@d2=@pricepoint1 ";
 
             SqlCommand command = new SqlCommand(queryString, connection);

@@ -1,28 +1,21 @@
-﻿using DevExpress.XtraBars;
-using DevExpress.XtraEditors;
+﻿using DevExpress.XtraEditors;
+using DevExpress.XtraGrid.Localization;
 using DevExpress.XtraGrid.Views.Grid;
-using WindowsFormsApp2;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using WindowsFormsApp2.Helpers;
-using DevExpress.XtraGrid.Localization;
-using static WindowsFormsApp2.Helpers.FormHelpers;
-using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Forms;
+using WindowsFormsApp2.Helpers;
+using WindowsFormsApp2.Helpers.DB;
+using static WindowsFormsApp2.Helpers.FormHelpers;
 
 namespace WindowsFormsApp2
 {
     public partial class GAIME_SATISI_LAYOUT : DevExpress.XtraEditors.XtraForm
     {
-        private readonly MAINSCRRENS frm1;
         public static string radio = "";
         public static string mal_alisi_details_id = "0";
         public static string edv = "";
@@ -56,15 +49,10 @@ namespace WindowsFormsApp2
         private DataTable dt;
         private SqlDataAdapter da;
 
-        SqlConnection con = new SqlConnection(Properties.Settings.Default.SqlCon);
-        public static int _g_user_id;
-        public GAIME_SATISI_LAYOUT(int _userid, MAINSCRRENS frm_)
+        public GAIME_SATISI_LAYOUT()
         {
             InitializeComponent();
-            _g_user_id = _userid;
-            frm1 = frm_;
             GridPanelText(gridView1);
-            GridLocalizer.Active = new MyGridLocalizer();
         }
         public void techizatci_axtar(string techizatci_adi, string Mehsul_ad, string satis_giymeti,
             int mal_Details, string anbar_galig, string _edv_)
@@ -101,15 +89,8 @@ namespace WindowsFormsApp2
 
             //  lookUpEdit8GEtData_yeni();
             //ANBAR_LOAD();
-            searchlookupedit();
             //dt = new DataTable(CATEGORIES_TABLE);
 
-
-        }
-
-
-        private void lookUpEdit2_EditValueChanged(object sender, EventArgs e)
-        {
 
         }
 
@@ -134,43 +115,11 @@ namespace WindowsFormsApp2
             }
         }
 
-        private void labelControl2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        public void searchlookupedit()
-        {
-
-            //DataTable dt = null;
-
-            //using (SqlConnection con = new SqlConnection(Properties.Settings.Default.SqlCon))
-
-            //{
-            //    con.Open();
-            //    string strCmd = "SELECT * FROM GAIME_SATIS_SEARCH()";
-            //    using (SqlCommand cmd = new SqlCommand(strCmd, con))
-            //    {
-
-            //        SqlDataAdapter da = new SqlDataAdapter(strCmd, con);
-            //        dt = new DataTable("TName");
-            //        da.Fill(dt);
-
-            //    }
-            //}
-            //searchLookUpEdit1.Properties.DisplayMember = "TƏCHİZATÇI";
-            //searchLookUpEdit1.Properties.ValueMember = "TECHIZATCI_ID";
-            //searchLookUpEdit1.Properties.DataSource = dt;
-            //searchLookUpEdit1.Properties.NullText = "--Seçin--";
-
-
-        }
         public static string mehsul_kod;
 
 
         private void searchLookUpEdit1_TextChanged_1(object sender, EventArgs e)
         {
-            searchlookupedit();
 
             //string marketId = this.searchLookUpEdit1.Properties.View.GetFocusedRowCellValue("MƏHSUL ADI").ToString();
             //string mehsukod = this.searchLookUpEdit1.Properties.View.GetFocusedRowCellValue("MƏHSUL KODU").ToString();
@@ -199,126 +148,12 @@ namespace WindowsFormsApp2
             //mehsul_kod = mehsukod;
         }
 
-
-
-
-        public void lookUpEdit8GEtData_yeni(int id)
-        {
-            //int id = Convert.ToInt32(lookUpEdit7.EditValue.ToString());
-
-            if (id > 0)
-            {
-
-
-                string strQuery = "select * from  [dbo].[GAIME_SATIS_magaza_load] (@IDD)";
-                //string strQuery = "select GRUPLAR_ID No,GRUP as N'Qrup' " +
-                //   " From GRUPLAR  where IXTISAS_ID=@IDD";
-
-                SqlCommand cmd = new SqlCommand(strQuery);
-
-                cmd.Parameters.AddWithValue("@IDD", id);
-
-                DataTable dt = GetData(cmd);
-
-
-
-
-                //lookUpEdit1.Properties.DisplayMember = "MAĞAZA";
-                //lookUpEdit1.Properties.ValueMember = "STOREID";
-                //lookUpEdit1.Properties.DataSource = dt;
-                //lookUpEdit1.Properties.NullText = "--Seçin--";
-                //lookUpEdit1.Properties.PopulateColumns();
-                //lookUpEdit1.Properties.Columns[0].Visible = false;
-                //lookUpEdit1.Properties.Columns[2].Visible = false;
-
-            }
-
-
-        }
-
-
-        //public string ConString = "Data Source=.;Initial Catalog=NewInteko;Integrated Security=True";
-
-
-
-
-        private DataTable GetData(SqlCommand cmd)
-
-        {
-
-            DataTable dt = new DataTable();
-
-
-            SqlConnection con = new SqlConnection(Properties.Settings.Default.SqlCon);
-
-            SqlDataAdapter sda = new SqlDataAdapter();
-
-            cmd.CommandType = CommandType.Text;
-
-            cmd.Connection = con;
-
-            try
-
-            {
-
-                con.Open();
-
-                sda.SelectCommand = cmd;
-
-                sda.Fill(dt);
-
-                return dt;
-
-            }
-
-            catch (Exception ex)
-
-            {
-
-
-
-                return null;
-
-            }
-
-            finally
-
-            {
-
-                con.Close();
-
-                sda.Dispose();
-
-                con.Dispose();
-
-            }
-
-        }
-        private void searchLookUpEdit1_QueryProcessKey(object sender, DevExpress.XtraEditors.Controls.QueryProcessKeyEventArgs e)
-        {
-
-        }
-
-        private void searchLookUpEdit1_QueryPopUp(object sender, CancelEventArgs e)
-        {
-
-
-            //searchLookUpEdit1.Properties.View.Columns["TECHIZATCI_ID"].Visible = false;
-            //searchLookUpEdit1.Properties.View.Columns["MAL_ALISI_DETAILS_ID"].Visible = false;
-
-        }
-
-        private void labelControl3_Click(object sender, EventArgs e)
-        {
-
-        }
-
         public void getmebleg(string paramValue, string paramValue1, string paramValue2, string paramValue3)
         {
             //YEKUN_MEBLEG 
 
             string queryString = " exec yekun_mebleg_calc @migdar =@pricePoint,@alis_giymet =@pricePoint1,@endirim_faiz =@pricePoint2,@endirim_azn =@pricePoint3";
-            SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
+            SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString);
             SqlCommand cmd = new SqlCommand();
             SqlCommand command = new SqlCommand(queryString, connection);
 
@@ -406,7 +241,7 @@ WHERE
   D.GAIME_SATISI_DETAILS_ID = @pricepoint";
 
 
-                using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+                using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
                 {
                     SqlCommand command = new SqlCommand(queryString, connection);
                     command.Parameters.AddWithValue("@pricePoint", paramValue);
@@ -444,13 +279,6 @@ WHERE
         }
 
 
-
-
-
-        private void searchLookUpEdit1_CustomDisplayText(object sender, DevExpress.XtraEditors.Controls.CustomDisplayTextEventArgs e)
-        {
-
-        }
         public void getmebleg_yekun_galig(string emeliyyat_nomre_)
         {
             //YEKUN_MEBLEG 
@@ -459,7 +287,7 @@ WHERE
               " SUM(CAST(ODENILEN_MEBLEG AS decimal(9, 2)))+sum(CAST(ODENILEN_MEBLEG_EDV AS decimal(9, 2))) ODENILEN_MEBLEG , " +
                " (SUM(CAST(YEKUN_MEBLEG AS decimal(9, 2))) - SUM(CAST(ODENILEN_MEBLEG AS decimal(9, 2))) - SUM(CAST(ODENILEN_MEBLEG_EDV AS decimal(9, 2)))) as GALIG " +
                   " from GAIME_SATISI_DETAILS where EMMELIYYAT_NOMRE = @pricePoint ";
-            SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
+            SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString);
             SqlCommand cmd = new SqlCommand();
             SqlCommand command = new SqlCommand(queryString, connection);
 
@@ -475,69 +303,6 @@ WHERE
                 textEdit12.Text = dr["GALIG"].ToString();
             }
             connection.Close();
-        }
-
-        private void lookUpEdit8GEtData_yeni()
-        {
-            //int id = Convert.ToInt32(lookUpEdit7.EditValue.ToString());
-
-
-
-            string strQuery = "select WAREHOUSE_ID,WAREHOUSE_NAME as 'Anbar' from COMPANY.WAREHOUSE";
-            //string strQuery = "select GRUPLAR_ID No,GRUP as N'Qrup' " +
-            //   " From GRUPLAR  where IXTISAS_ID=@IDD";
-
-            SqlCommand cmd = new SqlCommand(strQuery);
-
-            //cmd.Parameters.AddWithValue("@IDD", a);
-
-            DataTable dt = GetData(cmd);
-
-
-
-
-            //lookUpEdit7.Properties.DisplayMember = "Anbar";
-            //lookUpEdit7.Properties.ValueMember = "WAREHOUSE_ID";
-            //lookUpEdit7.Properties.DataSource = dt;
-            //lookUpEdit7.Properties.NullText = "--Seçin--";
-            //lookUpEdit7.Properties.PopulateColumns();
-            //lookUpEdit7.Properties.Columns[0].Visible = false;
-
-
-
-        }
-
-
-
-        private void magazaLoad(string a)
-        {
-            //int id = Convert.ToInt32(lookUpEdit7.EditValue.ToString());
-
-
-
-
-            string strQuery = "SELECT distinct( STOREID), OBYEKT FROM[dbo].[fn_MAGAZA_ANBAR_LOAD]('') where ANBAR = @IDD";
-            //string strQuery = "select GRUPLAR_ID No,GRUP as N'Qrup' " +
-            //   " From GRUPLAR  where IXTISAS_ID=@IDD";
-
-            SqlCommand cmd = new SqlCommand(strQuery);
-
-            cmd.Parameters.AddWithValue("@IDD", a);
-
-            DataTable dt = GetData(cmd);
-
-
-
-
-            lookUpEdit1.Properties.DisplayMember = "OBYEKT";
-            lookUpEdit1.Properties.ValueMember = "STOREID";
-            lookUpEdit1.Properties.DataSource = dt;
-            lookUpEdit1.Properties.NullText = "--Seçin--";
-            lookUpEdit1.Properties.PopulateColumns();
-            lookUpEdit1.Properties.Columns[0].Visible = false;
-
-
-
         }
 
         private void gridclear()
@@ -742,7 +507,7 @@ WHERE
         {
             try
             {
-                SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
+                SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString);
                 string queryString = "SELECT STATUS FROM MENFI_AC_BAGLA ";
                 SqlCommand command = new SqlCommand(queryString, connection);
 
@@ -793,7 +558,7 @@ WHERE
 
             try
             {
-                SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
+                SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString);
                 string queryString = "select  D.GAIME_SATISI_DETAILS_ID, " +
                     "CT.SIRKET_ADI,m.MUSTERI,MD.MEHSUL_ADI,MD.MEHSUL_KODU,d.MIGDARI,d.SATIS_GIYMETI, " +
                    " CAST(D.MIGDARI AS DECIMAL(9, 2)) * CAST(D.SATIS_GIYMETI AS DECIMAL(9, 2)) AS YEKUN_MEBLEG " +
@@ -830,7 +595,7 @@ WHERE
 
             try
             {
-                SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
+                SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString);
                 string queryString = "SELECT * FROM dbo.fn_GAIME_SATISI_LOAD(@pricepoint) ";
 
                 SqlCommand command = new SqlCommand(queryString, connection);
@@ -949,7 +714,7 @@ WHERE
                   " inner join GAIME_SATISI_MAIN gm on gm.GAIME_SATISI_MAIN_ID = gd.GAIME_SATISI_MAIN_ID " +
                   " where gd.GAIME_SATISI_DETAILS_ID = @pricePoint ";
 
-                using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon))
+                using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
                 {
                     SqlCommand command = new SqlCommand(queryString, connection);
                     command.Parameters.AddWithValue("@pricePoint", paramValue);
@@ -1019,7 +784,7 @@ WHERE
                   " inner join GAIME_SATISI_MAIN gm on gm.GAIME_SATISI_MAIN_ID = gd.GAIME_SATISI_MAIN_ID " +
                   " where gd.GAIME_SATISI_DETAILS_ID = @pricePoint ";
 
-                using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon))
+                using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
                 {
                     SqlCommand command = new SqlCommand(queryString, connection);
                     command.Parameters.AddWithValue("@pricePoint", paramValue);
@@ -1104,7 +869,7 @@ WHERE
         {
 
             string queryString = " exec mehsul_alisi_edv @yekun_mebleg_=@pricePoint,@vergi_derece =@pricePoint1";
-            SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
+            SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString);
             SqlCommand cmd = new SqlCommand();
             SqlCommand command = new SqlCommand(queryString, connection);
 

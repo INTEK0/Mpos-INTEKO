@@ -1,17 +1,14 @@
-﻿using System;
+﻿using DevExpress.XtraGrid.Views.Grid;
+using System;
 using System.Data;
-using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
-using DevExpress.XtraGrid.Localization;
-using DevExpress.XtraGrid.Views.Grid;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using WindowsFormsApp2.Validations;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
-using static WindowsFormsApp2.Helpers.DB.DatabaseClasses.ProductDetail;
 using static WindowsFormsApp2.Helpers.Enums;
 using static WindowsFormsApp2.Helpers.FormHelpers;
 
@@ -24,7 +21,6 @@ namespace WindowsFormsApp2.Forms
         {
             InitializeComponent();
             GridPanelText(gridView1);
-            GridLocalizer.Active = new MyGridLocalizer();
         }
 
         private void fKassalar_Load(object sender, EventArgs e)

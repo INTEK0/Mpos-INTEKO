@@ -1,8 +1,8 @@
-﻿using DevExpress.XtraGrid.Localization;
-using System;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
+using WindowsFormsApp2.Helpers.DB;
 using static WindowsFormsApp2.Helpers.FormHelpers;
 
 namespace WindowsFormsApp2
@@ -13,7 +13,6 @@ namespace WindowsFormsApp2
         {
             InitializeComponent();
             GridPanelText(gridView1);
-            GridLocalizer.Active = new MyGridLocalizer();
         }
 
         private void simpleButton1_Click(object sender, EventArgs e)
@@ -25,7 +24,7 @@ namespace WindowsFormsApp2
         {
             try
             {
-                SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
+                SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString);
 
 
                 string queryString =
@@ -40,6 +39,7 @@ namespace WindowsFormsApp2
                 DataTable dt = new DataTable();
                 da.Fill(dt);
                 gridControl1.DataSource = dt;
+                connection.Dispose();
                 //gridView1.Columns[0].Visible = false;
             }
             catch (Exception e)

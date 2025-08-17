@@ -43,7 +43,7 @@ namespace WindowsFormsApp2.Helpers
 
         public static void Log(string message)
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
 
                 string query = "INSERT INTO Logs (UserID, Operation, Date, Time) VALUES (@UserID, @Operation, @Date, @Time)";
@@ -69,7 +69,7 @@ namespace WindowsFormsApp2.Helpers
 
         public static void OperationLog(DatabaseClasses.OperationLogs logs)
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 string query = "INSERT INTO OperationLogs (UserID, TypeId,OperationId, Tarix, Saat, Message,RequestCode,ResponseCode) VALUES (@UserID, @TypeId, @OperationId, @Date, @Time, @Message, @RequestCode, @ResponseCode)";
 
@@ -209,7 +209,7 @@ namespace WindowsFormsApp2.Helpers
             try
             {
                 string ip = null, model = null, merchantId = null, cashier = null, bank = null;
-                using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+                using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
                 {
                     connection.Open();
                     //AzSmart - 8008

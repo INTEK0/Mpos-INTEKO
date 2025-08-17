@@ -1,8 +1,8 @@
 ﻿using DevExpress.XtraEditors;
-using DevExpress.XtraGrid.Localization;
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using WindowsFormsApp2.Helpers.DB;
 using static WindowsFormsApp2.Helpers.FormHelpers;
 
 namespace WindowsFormsApp2
@@ -12,7 +12,6 @@ namespace WindowsFormsApp2
         public BANK_NEGD_HESABAT()
         {
             InitializeComponent();
-            GridLocalizer.Active = new MyGridLocalizer();
             GridPanelText(gridView1);
         }
 
@@ -36,10 +35,9 @@ namespace WindowsFormsApp2
         {
             try
             {
-                SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
+                SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString);
 
 
-                // Provide the query string with a parameter placeholder.
                 string queryString =
                   " SELECT * FROM  dbo.fn_GAIME__NEGD_KART_HESABAT( @pricepoint,@pricepoint1)";
 
@@ -52,11 +50,7 @@ namespace WindowsFormsApp2
                 DataTable dt = new DataTable();
                 da.Fill(dt);
                 gridControl1.DataSource = dt;
-                //gridView1.Columns[0].Visible = false;
-
-                //gridView1.OptionsSelection.MultiSelect = true;
-                //gridView1.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
-               
+             connection.Dispose();
             }
             catch (Exception e)
             {
@@ -66,7 +60,7 @@ namespace WindowsFormsApp2
 
         private void BANK_NEGD_HESABAT_Load(object sender, EventArgs e)
         {
-            DateTime dateTime = DateTime.UtcNow.Date;
+            DateTime dateTime = DateTime.Now;
 
             dateEdit1.Text = dateTime.ToShortDateString();
             dateEdit2.Text = dateTime.ToShortDateString();

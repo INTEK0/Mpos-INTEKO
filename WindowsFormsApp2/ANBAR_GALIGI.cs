@@ -1,11 +1,9 @@
 ﻿using DevExpress.XtraEditors;
 using DevExpress.XtraGrid;
-using DevExpress.XtraGrid.Localization;
 using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApp2.Forms;
@@ -13,19 +11,16 @@ using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
-using static WindowsFormsApp2.Helpers.Enums;
 using static WindowsFormsApp2.Helpers.FormHelpers;
 
 namespace WindowsFormsApp2
 {
     public partial class ANBAR_GALIGI : BaseForm
     {
-        private readonly string _connectionString = null;
-        public ANBAR_GALIGI(string connectionString = null)
+        public ANBAR_GALIGI()
         {
             InitializeComponent();
             GridPanelText(gridView1);
-            _connectionString = connectionString ?? DbHelpers.DbConnectionString;
         }
 
         private void simpleButton2_Click(object sender, EventArgs e)
@@ -50,7 +45,7 @@ namespace WindowsFormsApp2
             try
             {
                 Cursor.Current = Cursors.WaitCursor;
-                using (SqlConnection con = new SqlConnection(_connectionString))
+                using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
                 {
                     string queryString = "gaime_Satis_mal_load_tarixle @d1 = @pricepoint1";
                     using (SqlCommand cmd = new SqlCommand(queryString, con))
@@ -113,12 +108,14 @@ namespace WindowsFormsApp2
         {
             string barcode = gridView1.GetFocusedRowCellValue("MƏHSUL KODU").ToString();
 
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 await connection.OpenAsync();
                 string query = $"EXEC SELECT_PRODUCT_DATA_LOAD '{barcode}'";
+                
                 using (SqlCommand cmd = new SqlCommand(query, connection))
                 {
+                    cmd.CommandTimeout = 200;
                     using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
                     {
                         ProductDetail _detail = null;
@@ -178,7 +175,7 @@ namespace WindowsFormsApp2
             //Asenkron olandan imtina edilərsə və bir neçə təchizatçının gəlməsindən imtina edilərsə bu kodu istifadə et
             string barcode = gridView1.GetFocusedRowCellValue("BARKOD").ToString();
 
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 connection.Open();
                 string query = $"EXEC SELECT_PRODUCT_DATA_LOAD '{barcode}'";

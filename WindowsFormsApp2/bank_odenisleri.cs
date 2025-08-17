@@ -114,7 +114,7 @@ GROUP BY
     TARIX
 ORDER BY TARIX;
 ";
-                using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+                using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
                 {
                     using (SqlCommand cmd = new SqlCommand(queryString, connection))
                     {

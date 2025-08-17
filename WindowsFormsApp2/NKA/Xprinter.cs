@@ -57,7 +57,7 @@ namespace WindowsFormsApp2.NKA
         public static void PrepaymentSale(SalesDto salesData, decimal pos_satis_main_id)
         {
             var receiptNo = (Math.Abs(Guid.NewGuid().GetHashCode()) % 1000000000).ToString();
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 string query = $"UPDATE [dbo].[pos_satis_check_main] SET NEGD_={salesData.Cash.ToString("N2").Replace(',', '.')}+NEGD_,KART_={salesData.Card.ToString("N2").Replace(',', '.')}+KART_, [PREdate_]=getdate(),PREfiscal_id='{receiptNo}' where pos_satis_check_main_id={pos_satis_main_id}";
                 using (SqlCommand cmd = new SqlCommand(query, con))
@@ -109,7 +109,7 @@ namespace WindowsFormsApp2.NKA
             //            e.Graphics.DrawString("Toplam", f8, Brushes.Black, 240, offset2 + 120);
             //            e.Graphics.DrawString("_______________________________________________", font2, Brushes.Black, new Point(5, offset2 + 130));
 
-            //            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            //            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             //            {
             //                string query = $@"SELECT [name],
             //code,

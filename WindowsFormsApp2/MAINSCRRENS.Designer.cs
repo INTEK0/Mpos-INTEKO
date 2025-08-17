@@ -261,6 +261,36 @@ namespace WindowsFormsApp2
             this.tileControl1 = new DevExpress.XtraEditors.TileControl();
             this.tileGroup1 = new DevExpress.XtraEditors.TileGroup();
             this.pageBranch = new DevExpress.XtraBars.Navigation.NavigationPage();
+            this.groupControl5 = new DevExpress.XtraEditors.GroupControl();
+            this.xtraTabControl1 = new DevExpress.XtraTab.XtraTabControl();
+            this.xtraTabPage1 = new DevExpress.XtraTab.XtraTabPage();
+            this.bBranchRefundProduct = new DevExpress.XtraEditors.SimpleButton();
+            this.bBranchExcelImport = new DevExpress.XtraEditors.SimpleButton();
+            this.bBranchAddProduct = new DevExpress.XtraEditors.SimpleButton();
+            this.xtraTabPage6 = new DevExpress.XtraTab.XtraTabPage();
+            this.bBranchBankRefund = new DevExpress.XtraEditors.SimpleButton();
+            this.bBranchBankSale = new DevExpress.XtraEditors.SimpleButton();
+            this.xtraTabPage2 = new DevExpress.XtraTab.XtraTabPage();
+            this.bBranchAvansHesabati = new DevExpress.XtraEditors.SimpleButton();
+            this.bBranchIzahliMehsulQaytarma = new DevExpress.XtraEditors.SimpleButton();
+            this.bBranchIzahliMehsulSatisi = new DevExpress.XtraEditors.SimpleButton();
+            this.bBranchSatisNov = new DevExpress.XtraEditors.SimpleButton();
+            this.bBranchUmumiSatis = new DevExpress.XtraEditors.SimpleButton();
+            this.bBranchAlisQaytarma = new DevExpress.XtraEditors.SimpleButton();
+            this.bBranchAlisHesabat = new DevExpress.XtraEditors.SimpleButton();
+            this.bBranchStock = new DevExpress.XtraEditors.SimpleButton();
+            this.xtraTabPage3 = new DevExpress.XtraTab.XtraTabPage();
+            this.bBranchCreditSaleRefund = new DevExpress.XtraEditors.SimpleButton();
+            this.bBranchCreditPay = new DevExpress.XtraEditors.SimpleButton();
+            this.bBranchCreditSale = new DevExpress.XtraEditors.SimpleButton();
+            this.xtraTabPage5 = new DevExpress.XtraTab.XtraTabPage();
+            this.bBranchSuppliers = new DevExpress.XtraEditors.SimpleButton();
+            this.xtraTabPage4 = new DevExpress.XtraTab.XtraTabPage();
+            this.bBranchUsers = new DevExpress.XtraEditors.SimpleButton();
+            this.xtraTabPage7 = new DevExpress.XtraTab.XtraTabPage();
+            this.bBranchMinusCountControl = new DevExpress.XtraEditors.SimpleButton();
+            this.bBranchLog = new DevExpress.XtraEditors.SimpleButton();
+            this.bBranchTerminal = new DevExpress.XtraEditors.SimpleButton();
             this.groupControl4 = new DevExpress.XtraEditors.GroupControl();
             this.tablePanel2 = new DevExpress.Utils.Layout.TablePanel();
             this.checkButton1 = new DevExpress.XtraEditors.CheckButton();
@@ -268,36 +298,6 @@ namespace WindowsFormsApp2
             this.checkButton3 = new DevExpress.XtraEditors.CheckButton();
             this.checkButton4 = new DevExpress.XtraEditors.CheckButton();
             this.checkButton5 = new DevExpress.XtraEditors.CheckButton();
-            this.groupControl5 = new DevExpress.XtraEditors.GroupControl();
-            this.xtraTabControl1 = new DevExpress.XtraTab.XtraTabControl();
-            this.xtraTabPage1 = new DevExpress.XtraTab.XtraTabPage();
-            this.xtraTabPage2 = new DevExpress.XtraTab.XtraTabPage();
-            this.xtraTabPage3 = new DevExpress.XtraTab.XtraTabPage();
-            this.xtraTabPage4 = new DevExpress.XtraTab.XtraTabPage();
-            this.xtraTabPage5 = new DevExpress.XtraTab.XtraTabPage();
-            this.xtraTabPage6 = new DevExpress.XtraTab.XtraTabPage();
-            this.xtraTabPage7 = new DevExpress.XtraTab.XtraTabPage();
-            this.simpleButton4 = new DevExpress.XtraEditors.SimpleButton();
-            this.simpleButton5 = new DevExpress.XtraEditors.SimpleButton();
-            this.simpleButton6 = new DevExpress.XtraEditors.SimpleButton();
-            this.simpleButton7 = new DevExpress.XtraEditors.SimpleButton();
-            this.simpleButton8 = new DevExpress.XtraEditors.SimpleButton();
-            this.bBranchStock = new DevExpress.XtraEditors.SimpleButton();
-            this.simpleButton10 = new DevExpress.XtraEditors.SimpleButton();
-            this.simpleButton11 = new DevExpress.XtraEditors.SimpleButton();
-            this.simpleButton12 = new DevExpress.XtraEditors.SimpleButton();
-            this.simpleButton13 = new DevExpress.XtraEditors.SimpleButton();
-            this.simpleButton14 = new DevExpress.XtraEditors.SimpleButton();
-            this.simpleButton15 = new DevExpress.XtraEditors.SimpleButton();
-            this.simpleButton16 = new DevExpress.XtraEditors.SimpleButton();
-            this.simpleButton17 = new DevExpress.XtraEditors.SimpleButton();
-            this.simpleButton18 = new DevExpress.XtraEditors.SimpleButton();
-            this.simpleButton19 = new DevExpress.XtraEditors.SimpleButton();
-            this.simpleButton20 = new DevExpress.XtraEditors.SimpleButton();
-            this.simpleButton21 = new DevExpress.XtraEditors.SimpleButton();
-            this.simpleButton22 = new DevExpress.XtraEditors.SimpleButton();
-            this.simpleButton23 = new DevExpress.XtraEditors.SimpleButton();
-            this.simpleButton24 = new DevExpress.XtraEditors.SimpleButton();
             this.fluentDesignFormContainer1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
@@ -394,21 +394,21 @@ namespace WindowsFormsApp2
             this.panelControl15.SuspendLayout();
             this.tabModul.SuspendLayout();
             this.pageBranch.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.groupControl4)).BeginInit();
-            this.groupControl4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tablePanel2)).BeginInit();
-            this.tablePanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl5)).BeginInit();
             this.groupControl5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).BeginInit();
             this.xtraTabControl1.SuspendLayout();
             this.xtraTabPage1.SuspendLayout();
+            this.xtraTabPage6.SuspendLayout();
             this.xtraTabPage2.SuspendLayout();
             this.xtraTabPage3.SuspendLayout();
-            this.xtraTabPage4.SuspendLayout();
             this.xtraTabPage5.SuspendLayout();
-            this.xtraTabPage6.SuspendLayout();
+            this.xtraTabPage4.SuspendLayout();
             this.xtraTabPage7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.groupControl4)).BeginInit();
+            this.groupControl4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tablePanel2)).BeginInit();
+            this.tablePanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // fluentDesignFormContainer1
@@ -954,7 +954,9 @@ namespace WindowsFormsApp2
             // 
             this.bGridExcelExport.AllowFocus = false;
             this.bGridExcelExport.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Success;
+            this.bGridExcelExport.Appearance.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Warning;
             this.bGridExcelExport.Appearance.Options.UseBackColor = true;
+            this.bGridExcelExport.Appearance.Options.UseForeColor = true;
             this.bGridExcelExport.Dock = System.Windows.Forms.DockStyle.Right;
             this.bGridExcelExport.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bGridExcelExport.ImageOptions.SvgImage")));
             this.bGridExcelExport.ImageOptions.SvgImageSize = new System.Drawing.Size(20, 20);
@@ -2292,6 +2294,7 @@ namespace WindowsFormsApp2
             this.navigationFrame1.Size = new System.Drawing.Size(1157, 806);
             this.navigationFrame1.TabIndex = 3;
             this.navigationFrame1.TransitionAnimationProperties.FrameInterval = 5000;
+            this.navigationFrame1.SelectedPageChanged += new DevExpress.XtraBars.Navigation.SelectedPageChangedEventHandler(this.navigationFrame1_SelectedPageChanged);
             // 
             // pageDashboard
             // 
@@ -3517,6 +3520,425 @@ namespace WindowsFormsApp2
             this.pageBranch.Name = "pageBranch";
             this.pageBranch.Size = new System.Drawing.Size(1157, 806);
             // 
+            // groupControl5
+            // 
+            this.groupControl5.AllowHtmlText = true;
+            this.groupControl5.Appearance.BackColor = System.Drawing.Color.Transparent;
+            this.groupControl5.Appearance.Options.UseBackColor = true;
+            this.groupControl5.AppearanceCaption.Font = new System.Drawing.Font("Nunito", 12F);
+            this.groupControl5.AppearanceCaption.Options.UseFont = true;
+            this.groupControl5.Controls.Add(this.xtraTabControl1);
+            this.groupControl5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupControl5.Location = new System.Drawing.Point(0, 87);
+            this.groupControl5.LookAndFeel.SkinName = "WXI";
+            this.groupControl5.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.groupControl5.Name = "groupControl5";
+            this.groupControl5.Size = new System.Drawing.Size(1157, 719);
+            this.groupControl5.TabIndex = 3;
+            // 
+            // xtraTabControl1
+            // 
+            this.xtraTabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.xtraTabControl1.Location = new System.Drawing.Point(2, 29);
+            this.xtraTabControl1.LookAndFeel.SkinName = "WXI";
+            this.xtraTabControl1.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.xtraTabControl1.Name = "xtraTabControl1";
+            this.xtraTabControl1.SelectedTabPage = this.xtraTabPage1;
+            this.xtraTabControl1.Size = new System.Drawing.Size(1153, 688);
+            this.xtraTabControl1.TabIndex = 0;
+            this.xtraTabControl1.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
+            this.xtraTabPage1,
+            this.xtraTabPage6,
+            this.xtraTabPage2,
+            this.xtraTabPage3,
+            this.xtraTabPage5,
+            this.xtraTabPage4,
+            this.xtraTabPage7});
+            this.xtraTabControl1.Visible = false;
+            // 
+            // xtraTabPage1
+            // 
+            this.xtraTabPage1.Controls.Add(this.bBranchRefundProduct);
+            this.xtraTabPage1.Controls.Add(this.bBranchExcelImport);
+            this.xtraTabPage1.Controls.Add(this.bBranchAddProduct);
+            this.xtraTabPage1.Name = "xtraTabPage1";
+            this.xtraTabPage1.Size = new System.Drawing.Size(1151, 657);
+            this.xtraTabPage1.Text = "Məhsullar";
+            // 
+            // bBranchRefundProduct
+            // 
+            this.bBranchRefundProduct.AllowFocus = false;
+            this.bBranchRefundProduct.Appearance.Options.UseTextOptions = true;
+            this.bBranchRefundProduct.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.bBranchRefundProduct.Location = new System.Drawing.Point(297, 5);
+            this.bBranchRefundProduct.LookAndFeel.SkinName = "WXI";
+            this.bBranchRefundProduct.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.bBranchRefundProduct.Name = "bBranchRefundProduct";
+            this.bBranchRefundProduct.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bBranchRefundProduct.Size = new System.Drawing.Size(140, 75);
+            this.bBranchRefundProduct.TabIndex = 0;
+            this.bBranchRefundProduct.Text = "Məhsul qaytarma";
+            this.bBranchRefundProduct.Click += new System.EventHandler(this.bBranchRefundProduct_Click);
+            // 
+            // bBranchExcelImport
+            // 
+            this.bBranchExcelImport.AllowFocus = false;
+            this.bBranchExcelImport.Appearance.Options.UseTextOptions = true;
+            this.bBranchExcelImport.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.bBranchExcelImport.Location = new System.Drawing.Point(151, 5);
+            this.bBranchExcelImport.LookAndFeel.SkinName = "WXI";
+            this.bBranchExcelImport.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.bBranchExcelImport.Name = "bBranchExcelImport";
+            this.bBranchExcelImport.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bBranchExcelImport.Size = new System.Drawing.Size(140, 75);
+            this.bBranchExcelImport.TabIndex = 0;
+            this.bBranchExcelImport.Text = "Məhsul alışı (Excel)";
+            this.bBranchExcelImport.Click += new System.EventHandler(this.bBranchExcelImport_Click);
+            // 
+            // bBranchAddProduct
+            // 
+            this.bBranchAddProduct.AllowFocus = false;
+            this.bBranchAddProduct.Appearance.Options.UseTextOptions = true;
+            this.bBranchAddProduct.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.bBranchAddProduct.Location = new System.Drawing.Point(5, 5);
+            this.bBranchAddProduct.LookAndFeel.SkinName = "WXI";
+            this.bBranchAddProduct.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.bBranchAddProduct.Name = "bBranchAddProduct";
+            this.bBranchAddProduct.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bBranchAddProduct.Size = new System.Drawing.Size(140, 75);
+            this.bBranchAddProduct.TabIndex = 0;
+            this.bBranchAddProduct.Text = "Məhsul alışı (Manual)";
+            this.bBranchAddProduct.Click += new System.EventHandler(this.bBranchAddProduct_Click);
+            // 
+            // xtraTabPage6
+            // 
+            this.xtraTabPage6.Controls.Add(this.bBranchBankRefund);
+            this.xtraTabPage6.Controls.Add(this.bBranchBankSale);
+            this.xtraTabPage6.Name = "xtraTabPage6";
+            this.xtraTabPage6.Size = new System.Drawing.Size(1151, 657);
+            this.xtraTabPage6.Text = "Satış";
+            // 
+            // bBranchBankRefund
+            // 
+            this.bBranchBankRefund.AllowFocus = false;
+            this.bBranchBankRefund.Appearance.Options.UseTextOptions = true;
+            this.bBranchBankRefund.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.bBranchBankRefund.Location = new System.Drawing.Point(151, 5);
+            this.bBranchBankRefund.LookAndFeel.SkinName = "WXI";
+            this.bBranchBankRefund.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.bBranchBankRefund.Name = "bBranchBankRefund";
+            this.bBranchBankRefund.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bBranchBankRefund.Size = new System.Drawing.Size(140, 75);
+            this.bBranchBankRefund.TabIndex = 1;
+            this.bBranchBankRefund.Text = "Qaimə qaytarma";
+            this.bBranchBankRefund.Click += new System.EventHandler(this.bBranchBankRefund_Click);
+            // 
+            // bBranchBankSale
+            // 
+            this.bBranchBankSale.AllowFocus = false;
+            this.bBranchBankSale.Appearance.Options.UseTextOptions = true;
+            this.bBranchBankSale.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.bBranchBankSale.Location = new System.Drawing.Point(5, 5);
+            this.bBranchBankSale.LookAndFeel.SkinName = "WXI";
+            this.bBranchBankSale.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.bBranchBankSale.Name = "bBranchBankSale";
+            this.bBranchBankSale.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bBranchBankSale.Size = new System.Drawing.Size(140, 75);
+            this.bBranchBankSale.TabIndex = 1;
+            this.bBranchBankSale.Text = "Qaimə satışı";
+            this.bBranchBankSale.Click += new System.EventHandler(this.bBranchBankSale_Click);
+            // 
+            // xtraTabPage2
+            // 
+            this.xtraTabPage2.Appearance.Header.Options.UseTextOptions = true;
+            this.xtraTabPage2.Appearance.Header.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.xtraTabPage2.Appearance.PageClient.Options.UseTextOptions = true;
+            this.xtraTabPage2.Appearance.PageClient.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.xtraTabPage2.Controls.Add(this.bBranchAvansHesabati);
+            this.xtraTabPage2.Controls.Add(this.bBranchIzahliMehsulQaytarma);
+            this.xtraTabPage2.Controls.Add(this.bBranchIzahliMehsulSatisi);
+            this.xtraTabPage2.Controls.Add(this.bBranchSatisNov);
+            this.xtraTabPage2.Controls.Add(this.bBranchUmumiSatis);
+            this.xtraTabPage2.Controls.Add(this.bBranchAlisQaytarma);
+            this.xtraTabPage2.Controls.Add(this.bBranchAlisHesabat);
+            this.xtraTabPage2.Controls.Add(this.bBranchStock);
+            this.xtraTabPage2.Name = "xtraTabPage2";
+            this.xtraTabPage2.Size = new System.Drawing.Size(1151, 657);
+            this.xtraTabPage2.Text = "Hesabatlar";
+            // 
+            // bBranchAvansHesabati
+            // 
+            this.bBranchAvansHesabati.AllowFocus = false;
+            this.bBranchAvansHesabati.Appearance.Options.UseTextOptions = true;
+            this.bBranchAvansHesabati.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.bBranchAvansHesabati.Location = new System.Drawing.Point(5, 86);
+            this.bBranchAvansHesabati.LookAndFeel.SkinName = "WXI";
+            this.bBranchAvansHesabati.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.bBranchAvansHesabati.Name = "bBranchAvansHesabati";
+            this.bBranchAvansHesabati.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bBranchAvansHesabati.Size = new System.Drawing.Size(140, 75);
+            this.bBranchAvansHesabati.TabIndex = 2;
+            this.bBranchAvansHesabati.Text = "Avans hesabatı";
+            this.bBranchAvansHesabati.Click += new System.EventHandler(this.bBranchAvansHesabati_Click);
+            // 
+            // bBranchIzahliMehsulQaytarma
+            // 
+            this.bBranchIzahliMehsulQaytarma.AllowFocus = false;
+            this.bBranchIzahliMehsulQaytarma.Appearance.Options.UseTextOptions = true;
+            this.bBranchIzahliMehsulQaytarma.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.bBranchIzahliMehsulQaytarma.Location = new System.Drawing.Point(881, 5);
+            this.bBranchIzahliMehsulQaytarma.LookAndFeel.SkinName = "WXI";
+            this.bBranchIzahliMehsulQaytarma.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.bBranchIzahliMehsulQaytarma.Name = "bBranchIzahliMehsulQaytarma";
+            this.bBranchIzahliMehsulQaytarma.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bBranchIzahliMehsulQaytarma.Size = new System.Drawing.Size(140, 75);
+            this.bBranchIzahliMehsulQaytarma.TabIndex = 2;
+            this.bBranchIzahliMehsulQaytarma.Text = "İzahlı məhsul qaytarma";
+            this.bBranchIzahliMehsulQaytarma.Click += new System.EventHandler(this.bBranchIzahliMehsulQaytarma_Click);
+            // 
+            // bBranchIzahliMehsulSatisi
+            // 
+            this.bBranchIzahliMehsulSatisi.AllowFocus = false;
+            this.bBranchIzahliMehsulSatisi.Appearance.Options.UseTextOptions = true;
+            this.bBranchIzahliMehsulSatisi.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.bBranchIzahliMehsulSatisi.Location = new System.Drawing.Point(735, 5);
+            this.bBranchIzahliMehsulSatisi.LookAndFeel.SkinName = "WXI";
+            this.bBranchIzahliMehsulSatisi.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.bBranchIzahliMehsulSatisi.Name = "bBranchIzahliMehsulSatisi";
+            this.bBranchIzahliMehsulSatisi.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bBranchIzahliMehsulSatisi.Size = new System.Drawing.Size(140, 75);
+            this.bBranchIzahliMehsulSatisi.TabIndex = 2;
+            this.bBranchIzahliMehsulSatisi.Text = "İzahlı məhsul satışı";
+            this.bBranchIzahliMehsulSatisi.Click += new System.EventHandler(this.bBranchIzahliMehsulSatisi_Click);
+            // 
+            // bBranchSatisNov
+            // 
+            this.bBranchSatisNov.AllowFocus = false;
+            this.bBranchSatisNov.Appearance.Options.UseTextOptions = true;
+            this.bBranchSatisNov.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.bBranchSatisNov.Location = new System.Drawing.Point(589, 5);
+            this.bBranchSatisNov.LookAndFeel.SkinName = "WXI";
+            this.bBranchSatisNov.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.bBranchSatisNov.Name = "bBranchSatisNov";
+            this.bBranchSatisNov.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bBranchSatisNov.Size = new System.Drawing.Size(140, 75);
+            this.bBranchSatisNov.TabIndex = 2;
+            this.bBranchSatisNov.Text = "Satış növ hesabatı";
+            this.bBranchSatisNov.Click += new System.EventHandler(this.bBranchSatisNov_Click);
+            // 
+            // bBranchUmumiSatis
+            // 
+            this.bBranchUmumiSatis.AllowFocus = false;
+            this.bBranchUmumiSatis.Appearance.Options.UseTextOptions = true;
+            this.bBranchUmumiSatis.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.bBranchUmumiSatis.Location = new System.Drawing.Point(443, 5);
+            this.bBranchUmumiSatis.LookAndFeel.SkinName = "WXI";
+            this.bBranchUmumiSatis.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.bBranchUmumiSatis.Name = "bBranchUmumiSatis";
+            this.bBranchUmumiSatis.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bBranchUmumiSatis.Size = new System.Drawing.Size(140, 75);
+            this.bBranchUmumiSatis.TabIndex = 2;
+            this.bBranchUmumiSatis.Text = "Ümumi satış hesabatı";
+            this.bBranchUmumiSatis.Click += new System.EventHandler(this.bBranchUmumiSatis_Click);
+            // 
+            // bBranchAlisQaytarma
+            // 
+            this.bBranchAlisQaytarma.AllowFocus = false;
+            this.bBranchAlisQaytarma.Appearance.Options.UseTextOptions = true;
+            this.bBranchAlisQaytarma.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.bBranchAlisQaytarma.Location = new System.Drawing.Point(297, 5);
+            this.bBranchAlisQaytarma.LookAndFeel.SkinName = "WXI";
+            this.bBranchAlisQaytarma.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.bBranchAlisQaytarma.Name = "bBranchAlisQaytarma";
+            this.bBranchAlisQaytarma.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bBranchAlisQaytarma.Size = new System.Drawing.Size(140, 75);
+            this.bBranchAlisQaytarma.TabIndex = 2;
+            this.bBranchAlisQaytarma.Text = "Məhsul alış qaytarma hesabatı";
+            this.bBranchAlisQaytarma.Click += new System.EventHandler(this.bBranchAlisQaytarma_Click);
+            // 
+            // bBranchAlisHesabat
+            // 
+            this.bBranchAlisHesabat.AllowFocus = false;
+            this.bBranchAlisHesabat.Appearance.Options.UseTextOptions = true;
+            this.bBranchAlisHesabat.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.bBranchAlisHesabat.Location = new System.Drawing.Point(151, 5);
+            this.bBranchAlisHesabat.LookAndFeel.SkinName = "WXI";
+            this.bBranchAlisHesabat.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.bBranchAlisHesabat.Name = "bBranchAlisHesabat";
+            this.bBranchAlisHesabat.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bBranchAlisHesabat.Size = new System.Drawing.Size(140, 75);
+            this.bBranchAlisHesabat.TabIndex = 2;
+            this.bBranchAlisHesabat.Text = "Məhsul alış hesabatı";
+            this.bBranchAlisHesabat.Click += new System.EventHandler(this.bBranchAlisHesabat_Click);
+            // 
+            // bBranchStock
+            // 
+            this.bBranchStock.AllowFocus = false;
+            this.bBranchStock.Appearance.Options.UseTextOptions = true;
+            this.bBranchStock.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.bBranchStock.Location = new System.Drawing.Point(5, 5);
+            this.bBranchStock.LookAndFeel.SkinName = "WXI";
+            this.bBranchStock.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.bBranchStock.Name = "bBranchStock";
+            this.bBranchStock.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bBranchStock.Size = new System.Drawing.Size(140, 75);
+            this.bBranchStock.TabIndex = 2;
+            this.bBranchStock.Text = "Anbar qalığı";
+            this.bBranchStock.Click += new System.EventHandler(this.bBranchStock_Click);
+            // 
+            // xtraTabPage3
+            // 
+            this.xtraTabPage3.Controls.Add(this.bBranchCreditSaleRefund);
+            this.xtraTabPage3.Controls.Add(this.bBranchCreditPay);
+            this.xtraTabPage3.Controls.Add(this.bBranchCreditSale);
+            this.xtraTabPage3.Name = "xtraTabPage3";
+            this.xtraTabPage3.Size = new System.Drawing.Size(1151, 657);
+            this.xtraTabPage3.Text = "Kredit";
+            // 
+            // bBranchCreditSaleRefund
+            // 
+            this.bBranchCreditSaleRefund.AllowFocus = false;
+            this.bBranchCreditSaleRefund.Appearance.Options.UseTextOptions = true;
+            this.bBranchCreditSaleRefund.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.bBranchCreditSaleRefund.Enabled = false;
+            this.bBranchCreditSaleRefund.Location = new System.Drawing.Point(297, 5);
+            this.bBranchCreditSaleRefund.LookAndFeel.SkinName = "WXI";
+            this.bBranchCreditSaleRefund.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.bBranchCreditSaleRefund.Name = "bBranchCreditSaleRefund";
+            this.bBranchCreditSaleRefund.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bBranchCreditSaleRefund.Size = new System.Drawing.Size(140, 75);
+            this.bBranchCreditSaleRefund.TabIndex = 3;
+            this.bBranchCreditSaleRefund.Text = "Kredit satış qaytarma hesabatı";
+            this.bBranchCreditSaleRefund.Click += new System.EventHandler(this.bBranchCreditSaleRefund_Click);
+            // 
+            // bBranchCreditPay
+            // 
+            this.bBranchCreditPay.AllowFocus = false;
+            this.bBranchCreditPay.Appearance.Options.UseTextOptions = true;
+            this.bBranchCreditPay.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.bBranchCreditPay.Location = new System.Drawing.Point(151, 5);
+            this.bBranchCreditPay.LookAndFeel.SkinName = "WXI";
+            this.bBranchCreditPay.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.bBranchCreditPay.Name = "bBranchCreditPay";
+            this.bBranchCreditPay.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bBranchCreditPay.Size = new System.Drawing.Size(140, 75);
+            this.bBranchCreditPay.TabIndex = 3;
+            this.bBranchCreditPay.Text = "Kredit ödəniş hesabatı";
+            this.bBranchCreditPay.Click += new System.EventHandler(this.bBranchCreditPay_Click);
+            // 
+            // bBranchCreditSale
+            // 
+            this.bBranchCreditSale.AllowFocus = false;
+            this.bBranchCreditSale.Appearance.Options.UseTextOptions = true;
+            this.bBranchCreditSale.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.bBranchCreditSale.Location = new System.Drawing.Point(5, 5);
+            this.bBranchCreditSale.LookAndFeel.SkinName = "WXI";
+            this.bBranchCreditSale.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.bBranchCreditSale.Name = "bBranchCreditSale";
+            this.bBranchCreditSale.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bBranchCreditSale.Size = new System.Drawing.Size(140, 75);
+            this.bBranchCreditSale.TabIndex = 3;
+            this.bBranchCreditSale.Text = "Kredit satış hesabatı";
+            this.bBranchCreditSale.Click += new System.EventHandler(this.bBranchCreditSale_Click);
+            // 
+            // xtraTabPage5
+            // 
+            this.xtraTabPage5.Controls.Add(this.bBranchSuppliers);
+            this.xtraTabPage5.Name = "xtraTabPage5";
+            this.xtraTabPage5.Size = new System.Drawing.Size(1151, 657);
+            this.xtraTabPage5.Text = "Təchizatçılar";
+            // 
+            // bBranchSuppliers
+            // 
+            this.bBranchSuppliers.AllowFocus = false;
+            this.bBranchSuppliers.Appearance.Options.UseTextOptions = true;
+            this.bBranchSuppliers.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.bBranchSuppliers.Location = new System.Drawing.Point(5, 5);
+            this.bBranchSuppliers.LookAndFeel.SkinName = "WXI";
+            this.bBranchSuppliers.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.bBranchSuppliers.Name = "bBranchSuppliers";
+            this.bBranchSuppliers.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bBranchSuppliers.Size = new System.Drawing.Size(140, 75);
+            this.bBranchSuppliers.TabIndex = 2;
+            this.bBranchSuppliers.Text = "Təchizatçı yarat";
+            this.bBranchSuppliers.Click += new System.EventHandler(this.bBranchSuppliers_Click);
+            // 
+            // xtraTabPage4
+            // 
+            this.xtraTabPage4.Controls.Add(this.bBranchUsers);
+            this.xtraTabPage4.Name = "xtraTabPage4";
+            this.xtraTabPage4.Size = new System.Drawing.Size(1151, 657);
+            this.xtraTabPage4.Text = "İstifadəçilər";
+            // 
+            // bBranchUsers
+            // 
+            this.bBranchUsers.AllowFocus = false;
+            this.bBranchUsers.Appearance.Options.UseTextOptions = true;
+            this.bBranchUsers.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.bBranchUsers.Location = new System.Drawing.Point(5, 5);
+            this.bBranchUsers.LookAndFeel.SkinName = "WXI";
+            this.bBranchUsers.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.bBranchUsers.Name = "bBranchUsers";
+            this.bBranchUsers.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bBranchUsers.Size = new System.Drawing.Size(140, 75);
+            this.bBranchUsers.TabIndex = 2;
+            this.bBranchUsers.Text = "İstifadəçilər";
+            this.bBranchUsers.Click += new System.EventHandler(this.bBranchUsers_Click);
+            // 
+            // xtraTabPage7
+            // 
+            this.xtraTabPage7.Controls.Add(this.bBranchMinusCountControl);
+            this.xtraTabPage7.Controls.Add(this.bBranchLog);
+            this.xtraTabPage7.Controls.Add(this.bBranchTerminal);
+            this.xtraTabPage7.Name = "xtraTabPage7";
+            this.xtraTabPage7.Size = new System.Drawing.Size(1151, 657);
+            this.xtraTabPage7.Text = "Sazlamalar";
+            // 
+            // bBranchMinusCountControl
+            // 
+            this.bBranchMinusCountControl.AllowFocus = false;
+            this.bBranchMinusCountControl.Appearance.Options.UseTextOptions = true;
+            this.bBranchMinusCountControl.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.bBranchMinusCountControl.Location = new System.Drawing.Point(297, 5);
+            this.bBranchMinusCountControl.LookAndFeel.SkinName = "WXI";
+            this.bBranchMinusCountControl.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.bBranchMinusCountControl.Name = "bBranchMinusCountControl";
+            this.bBranchMinusCountControl.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bBranchMinusCountControl.Size = new System.Drawing.Size(140, 75);
+            this.bBranchMinusCountControl.TabIndex = 3;
+            this.bBranchMinusCountControl.Text = "Mənfiyə doğru azalma";
+            this.bBranchMinusCountControl.Click += new System.EventHandler(this.bBranchMinusCountControl_Click);
+            // 
+            // bBranchLog
+            // 
+            this.bBranchLog.AllowFocus = false;
+            this.bBranchLog.Appearance.Options.UseTextOptions = true;
+            this.bBranchLog.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.bBranchLog.Location = new System.Drawing.Point(151, 5);
+            this.bBranchLog.LookAndFeel.SkinName = "WXI";
+            this.bBranchLog.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.bBranchLog.Name = "bBranchLog";
+            this.bBranchLog.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bBranchLog.Size = new System.Drawing.Size(140, 75);
+            this.bBranchLog.TabIndex = 3;
+            this.bBranchLog.Text = "Arxiv";
+            this.bBranchLog.Click += new System.EventHandler(this.bBranchLog_Click);
+            // 
+            // bBranchTerminal
+            // 
+            this.bBranchTerminal.AllowFocus = false;
+            this.bBranchTerminal.Appearance.Options.UseTextOptions = true;
+            this.bBranchTerminal.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.bBranchTerminal.Location = new System.Drawing.Point(5, 5);
+            this.bBranchTerminal.LookAndFeel.SkinName = "WXI";
+            this.bBranchTerminal.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.bBranchTerminal.Name = "bBranchTerminal";
+            this.bBranchTerminal.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bBranchTerminal.Size = new System.Drawing.Size(140, 75);
+            this.bBranchTerminal.TabIndex = 3;
+            this.bBranchTerminal.Text = "Kassalar";
+            this.bBranchTerminal.Click += new System.EventHandler(this.bBranchTerminal_Click);
+            // 
             // groupControl4
             // 
             this.groupControl4.AppearanceCaption.Font = new System.Drawing.Font("Nunito", 12F);
@@ -3571,6 +3993,7 @@ namespace WindowsFormsApp2
             this.checkButton1.TabStop = false;
             this.checkButton1.Tag = "SƏDƏRƏK";
             this.checkButton1.Text = "SƏDƏRƏK";
+            this.checkButton1.CheckedChanged += new System.EventHandler(this.CheckedBranches);
             // 
             // checkButton2
             // 
@@ -3589,6 +4012,7 @@ namespace WindowsFormsApp2
             this.checkButton2.TabStop = false;
             this.checkButton2.Tag = "XAÇMAZ";
             this.checkButton2.Text = "XAÇMAZ";
+            this.checkButton2.CheckedChanged += new System.EventHandler(this.CheckedBranches);
             // 
             // checkButton3
             // 
@@ -3607,6 +4031,7 @@ namespace WindowsFormsApp2
             this.checkButton3.TabStop = false;
             this.checkButton3.Tag = "İMİŞLİ";
             this.checkButton3.Text = "İMİŞLİ";
+            this.checkButton3.CheckedChanged += new System.EventHandler(this.CheckedBranches);
             // 
             // checkButton4
             // 
@@ -3625,6 +4050,7 @@ namespace WindowsFormsApp2
             this.checkButton4.TabStop = false;
             this.checkButton4.Tag = "AĞCABƏDİ";
             this.checkButton4.Text = "AĞCABƏDİ";
+            this.checkButton4.CheckedChanged += new System.EventHandler(this.CheckedBranches);
             // 
             // checkButton5
             // 
@@ -3643,404 +4069,7 @@ namespace WindowsFormsApp2
             this.checkButton5.TabStop = false;
             this.checkButton5.Tag = "SABİRABAD";
             this.checkButton5.Text = "SABİRABAD";
-            // 
-            // groupControl5
-            // 
-            this.groupControl5.Appearance.BackColor = System.Drawing.Color.Transparent;
-            this.groupControl5.Appearance.Options.UseBackColor = true;
-            this.groupControl5.AppearanceCaption.Font = new System.Drawing.Font("Nunito", 12F);
-            this.groupControl5.AppearanceCaption.Options.UseFont = true;
-            this.groupControl5.Controls.Add(this.xtraTabControl1);
-            this.groupControl5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupControl5.Location = new System.Drawing.Point(0, 87);
-            this.groupControl5.LookAndFeel.SkinName = "WXI";
-            this.groupControl5.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.groupControl5.Name = "groupControl5";
-            this.groupControl5.Size = new System.Drawing.Size(1157, 719);
-            this.groupControl5.TabIndex = 3;
-            this.groupControl5.Text = "Flial: Status:";
-            // 
-            // xtraTabControl1
-            // 
-            this.xtraTabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.xtraTabControl1.Location = new System.Drawing.Point(2, 29);
-            this.xtraTabControl1.LookAndFeel.SkinName = "WXI";
-            this.xtraTabControl1.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.xtraTabControl1.Name = "xtraTabControl1";
-            this.xtraTabControl1.SelectedTabPage = this.xtraTabPage1;
-            this.xtraTabControl1.Size = new System.Drawing.Size(1153, 688);
-            this.xtraTabControl1.TabIndex = 0;
-            this.xtraTabControl1.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
-            this.xtraTabPage1,
-            this.xtraTabPage6,
-            this.xtraTabPage2,
-            this.xtraTabPage3,
-            this.xtraTabPage5,
-            this.xtraTabPage4,
-            this.xtraTabPage7});
-            // 
-            // xtraTabPage1
-            // 
-            this.xtraTabPage1.Controls.Add(this.simpleButton6);
-            this.xtraTabPage1.Controls.Add(this.simpleButton5);
-            this.xtraTabPage1.Controls.Add(this.simpleButton4);
-            this.xtraTabPage1.Name = "xtraTabPage1";
-            this.xtraTabPage1.Size = new System.Drawing.Size(1151, 657);
-            this.xtraTabPage1.Text = "Məhsullar";
-            // 
-            // xtraTabPage2
-            // 
-            this.xtraTabPage2.Appearance.Header.Options.UseTextOptions = true;
-            this.xtraTabPage2.Appearance.Header.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.xtraTabPage2.Appearance.PageClient.Options.UseTextOptions = true;
-            this.xtraTabPage2.Appearance.PageClient.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.xtraTabPage2.Controls.Add(this.simpleButton24);
-            this.xtraTabPage2.Controls.Add(this.simpleButton20);
-            this.xtraTabPage2.Controls.Add(this.simpleButton19);
-            this.xtraTabPage2.Controls.Add(this.simpleButton18);
-            this.xtraTabPage2.Controls.Add(this.simpleButton17);
-            this.xtraTabPage2.Controls.Add(this.simpleButton16);
-            this.xtraTabPage2.Controls.Add(this.simpleButton10);
-            this.xtraTabPage2.Controls.Add(this.bBranchStock);
-            this.xtraTabPage2.Name = "xtraTabPage2";
-            this.xtraTabPage2.Size = new System.Drawing.Size(1151, 657);
-            this.xtraTabPage2.Text = "Hesabatlar";
-            // 
-            // xtraTabPage3
-            // 
-            this.xtraTabPage3.Controls.Add(this.simpleButton23);
-            this.xtraTabPage3.Controls.Add(this.simpleButton22);
-            this.xtraTabPage3.Controls.Add(this.simpleButton21);
-            this.xtraTabPage3.Name = "xtraTabPage3";
-            this.xtraTabPage3.Size = new System.Drawing.Size(1151, 657);
-            this.xtraTabPage3.Text = "Kredit";
-            // 
-            // xtraTabPage4
-            // 
-            this.xtraTabPage4.Controls.Add(this.simpleButton12);
-            this.xtraTabPage4.Name = "xtraTabPage4";
-            this.xtraTabPage4.Size = new System.Drawing.Size(1151, 657);
-            this.xtraTabPage4.Text = "İstifadəçilər";
-            // 
-            // xtraTabPage5
-            // 
-            this.xtraTabPage5.Controls.Add(this.simpleButton11);
-            this.xtraTabPage5.Name = "xtraTabPage5";
-            this.xtraTabPage5.Size = new System.Drawing.Size(1151, 657);
-            this.xtraTabPage5.Text = "Təchizatçılar";
-            // 
-            // xtraTabPage6
-            // 
-            this.xtraTabPage6.Controls.Add(this.simpleButton8);
-            this.xtraTabPage6.Controls.Add(this.simpleButton7);
-            this.xtraTabPage6.Name = "xtraTabPage6";
-            this.xtraTabPage6.Size = new System.Drawing.Size(1151, 657);
-            this.xtraTabPage6.Text = "Satış";
-            // 
-            // xtraTabPage7
-            // 
-            this.xtraTabPage7.Controls.Add(this.simpleButton15);
-            this.xtraTabPage7.Controls.Add(this.simpleButton14);
-            this.xtraTabPage7.Controls.Add(this.simpleButton13);
-            this.xtraTabPage7.Name = "xtraTabPage7";
-            this.xtraTabPage7.Size = new System.Drawing.Size(1151, 657);
-            this.xtraTabPage7.Text = "Sazlamalar";
-            // 
-            // simpleButton4
-            // 
-            this.simpleButton4.AllowFocus = false;
-            this.simpleButton4.Appearance.Options.UseTextOptions = true;
-            this.simpleButton4.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.simpleButton4.Location = new System.Drawing.Point(5, 5);
-            this.simpleButton4.LookAndFeel.SkinName = "WXI";
-            this.simpleButton4.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.simpleButton4.Name = "simpleButton4";
-            this.simpleButton4.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.simpleButton4.Size = new System.Drawing.Size(140, 75);
-            this.simpleButton4.TabIndex = 0;
-            this.simpleButton4.Text = "Məhsul alışı (Manual)";
-            // 
-            // simpleButton5
-            // 
-            this.simpleButton5.AllowFocus = false;
-            this.simpleButton5.Appearance.Options.UseTextOptions = true;
-            this.simpleButton5.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.simpleButton5.Location = new System.Drawing.Point(151, 5);
-            this.simpleButton5.LookAndFeel.SkinName = "WXI";
-            this.simpleButton5.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.simpleButton5.Name = "simpleButton5";
-            this.simpleButton5.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.simpleButton5.Size = new System.Drawing.Size(140, 75);
-            this.simpleButton5.TabIndex = 0;
-            this.simpleButton5.Text = "Məhsul alışı (Excel)";
-            // 
-            // simpleButton6
-            // 
-            this.simpleButton6.AllowFocus = false;
-            this.simpleButton6.Appearance.Options.UseTextOptions = true;
-            this.simpleButton6.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.simpleButton6.Location = new System.Drawing.Point(297, 5);
-            this.simpleButton6.LookAndFeel.SkinName = "WXI";
-            this.simpleButton6.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.simpleButton6.Name = "simpleButton6";
-            this.simpleButton6.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.simpleButton6.Size = new System.Drawing.Size(140, 75);
-            this.simpleButton6.TabIndex = 0;
-            this.simpleButton6.Text = "Məhsul qaytarma";
-            // 
-            // simpleButton7
-            // 
-            this.simpleButton7.AllowFocus = false;
-            this.simpleButton7.Appearance.Options.UseTextOptions = true;
-            this.simpleButton7.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.simpleButton7.Location = new System.Drawing.Point(5, 5);
-            this.simpleButton7.LookAndFeel.SkinName = "WXI";
-            this.simpleButton7.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.simpleButton7.Name = "simpleButton7";
-            this.simpleButton7.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.simpleButton7.Size = new System.Drawing.Size(140, 75);
-            this.simpleButton7.TabIndex = 1;
-            this.simpleButton7.Text = "Qaimə satışı";
-            // 
-            // simpleButton8
-            // 
-            this.simpleButton8.AllowFocus = false;
-            this.simpleButton8.Appearance.Options.UseTextOptions = true;
-            this.simpleButton8.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.simpleButton8.Location = new System.Drawing.Point(151, 5);
-            this.simpleButton8.LookAndFeel.SkinName = "WXI";
-            this.simpleButton8.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.simpleButton8.Name = "simpleButton8";
-            this.simpleButton8.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.simpleButton8.Size = new System.Drawing.Size(140, 75);
-            this.simpleButton8.TabIndex = 1;
-            this.simpleButton8.Text = "Qaimə qaytarma";
-            // 
-            // bBranchStock
-            // 
-            this.bBranchStock.AllowFocus = false;
-            this.bBranchStock.Appearance.Options.UseTextOptions = true;
-            this.bBranchStock.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.bBranchStock.Location = new System.Drawing.Point(5, 5);
-            this.bBranchStock.LookAndFeel.SkinName = "WXI";
-            this.bBranchStock.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.bBranchStock.Name = "bBranchStock";
-            this.bBranchStock.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.bBranchStock.Size = new System.Drawing.Size(140, 75);
-            this.bBranchStock.TabIndex = 2;
-            this.bBranchStock.Text = "Anbar qalığı";
-            this.bBranchStock.Click += new System.EventHandler(this.bBranchStock_Click);
-            // 
-            // simpleButton10
-            // 
-            this.simpleButton10.AllowFocus = false;
-            this.simpleButton10.Appearance.Options.UseTextOptions = true;
-            this.simpleButton10.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.simpleButton10.Location = new System.Drawing.Point(151, 5);
-            this.simpleButton10.LookAndFeel.SkinName = "WXI";
-            this.simpleButton10.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.simpleButton10.Name = "simpleButton10";
-            this.simpleButton10.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.simpleButton10.Size = new System.Drawing.Size(140, 75);
-            this.simpleButton10.TabIndex = 2;
-            this.simpleButton10.Text = "Məhsul alış hesabatı";
-            // 
-            // simpleButton11
-            // 
-            this.simpleButton11.AllowFocus = false;
-            this.simpleButton11.Appearance.Options.UseTextOptions = true;
-            this.simpleButton11.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.simpleButton11.Location = new System.Drawing.Point(5, 5);
-            this.simpleButton11.LookAndFeel.SkinName = "WXI";
-            this.simpleButton11.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.simpleButton11.Name = "simpleButton11";
-            this.simpleButton11.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.simpleButton11.Size = new System.Drawing.Size(140, 75);
-            this.simpleButton11.TabIndex = 2;
-            this.simpleButton11.Text = "Təchizatçı yarat";
-            // 
-            // simpleButton12
-            // 
-            this.simpleButton12.AllowFocus = false;
-            this.simpleButton12.Appearance.Options.UseTextOptions = true;
-            this.simpleButton12.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.simpleButton12.Location = new System.Drawing.Point(5, 5);
-            this.simpleButton12.LookAndFeel.SkinName = "WXI";
-            this.simpleButton12.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.simpleButton12.Name = "simpleButton12";
-            this.simpleButton12.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.simpleButton12.Size = new System.Drawing.Size(140, 75);
-            this.simpleButton12.TabIndex = 2;
-            this.simpleButton12.Text = "İstifadəçilər";
-            // 
-            // simpleButton13
-            // 
-            this.simpleButton13.AllowFocus = false;
-            this.simpleButton13.Appearance.Options.UseTextOptions = true;
-            this.simpleButton13.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.simpleButton13.Location = new System.Drawing.Point(5, 5);
-            this.simpleButton13.LookAndFeel.SkinName = "WXI";
-            this.simpleButton13.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.simpleButton13.Name = "simpleButton13";
-            this.simpleButton13.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.simpleButton13.Size = new System.Drawing.Size(140, 75);
-            this.simpleButton13.TabIndex = 3;
-            this.simpleButton13.Text = "Kassalar";
-            // 
-            // simpleButton14
-            // 
-            this.simpleButton14.AllowFocus = false;
-            this.simpleButton14.Appearance.Options.UseTextOptions = true;
-            this.simpleButton14.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.simpleButton14.Location = new System.Drawing.Point(151, 5);
-            this.simpleButton14.LookAndFeel.SkinName = "WXI";
-            this.simpleButton14.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.simpleButton14.Name = "simpleButton14";
-            this.simpleButton14.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.simpleButton14.Size = new System.Drawing.Size(140, 75);
-            this.simpleButton14.TabIndex = 3;
-            this.simpleButton14.Text = "Arxiv";
-            // 
-            // simpleButton15
-            // 
-            this.simpleButton15.AllowFocus = false;
-            this.simpleButton15.Appearance.Options.UseTextOptions = true;
-            this.simpleButton15.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.simpleButton15.Location = new System.Drawing.Point(297, 5);
-            this.simpleButton15.LookAndFeel.SkinName = "WXI";
-            this.simpleButton15.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.simpleButton15.Name = "simpleButton15";
-            this.simpleButton15.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.simpleButton15.Size = new System.Drawing.Size(140, 75);
-            this.simpleButton15.TabIndex = 3;
-            this.simpleButton15.Text = "Mənfiyə doğru azalma";
-            // 
-            // simpleButton16
-            // 
-            this.simpleButton16.AllowFocus = false;
-            this.simpleButton16.Appearance.Options.UseTextOptions = true;
-            this.simpleButton16.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.simpleButton16.Location = new System.Drawing.Point(297, 5);
-            this.simpleButton16.LookAndFeel.SkinName = "WXI";
-            this.simpleButton16.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.simpleButton16.Name = "simpleButton16";
-            this.simpleButton16.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.simpleButton16.Size = new System.Drawing.Size(140, 75);
-            this.simpleButton16.TabIndex = 2;
-            this.simpleButton16.Text = "Məhsul alış qaytarma hesabatı";
-            // 
-            // simpleButton17
-            // 
-            this.simpleButton17.AllowFocus = false;
-            this.simpleButton17.Appearance.Options.UseTextOptions = true;
-            this.simpleButton17.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.simpleButton17.Location = new System.Drawing.Point(443, 5);
-            this.simpleButton17.LookAndFeel.SkinName = "WXI";
-            this.simpleButton17.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.simpleButton17.Name = "simpleButton17";
-            this.simpleButton17.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.simpleButton17.Size = new System.Drawing.Size(140, 75);
-            this.simpleButton17.TabIndex = 2;
-            this.simpleButton17.Text = "Ümumi satış hesabatı";
-            // 
-            // simpleButton18
-            // 
-            this.simpleButton18.AllowFocus = false;
-            this.simpleButton18.Appearance.Options.UseTextOptions = true;
-            this.simpleButton18.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.simpleButton18.Location = new System.Drawing.Point(589, 5);
-            this.simpleButton18.LookAndFeel.SkinName = "WXI";
-            this.simpleButton18.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.simpleButton18.Name = "simpleButton18";
-            this.simpleButton18.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.simpleButton18.Size = new System.Drawing.Size(140, 75);
-            this.simpleButton18.TabIndex = 2;
-            this.simpleButton18.Text = "Satış növ hesabatı";
-            // 
-            // simpleButton19
-            // 
-            this.simpleButton19.AllowFocus = false;
-            this.simpleButton19.Appearance.Options.UseTextOptions = true;
-            this.simpleButton19.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.simpleButton19.Location = new System.Drawing.Point(735, 5);
-            this.simpleButton19.LookAndFeel.SkinName = "WXI";
-            this.simpleButton19.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.simpleButton19.Name = "simpleButton19";
-            this.simpleButton19.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.simpleButton19.Size = new System.Drawing.Size(140, 75);
-            this.simpleButton19.TabIndex = 2;
-            this.simpleButton19.Text = "İzahlı məhsul satışı";
-            // 
-            // simpleButton20
-            // 
-            this.simpleButton20.AllowFocus = false;
-            this.simpleButton20.Appearance.Options.UseTextOptions = true;
-            this.simpleButton20.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.simpleButton20.Location = new System.Drawing.Point(881, 5);
-            this.simpleButton20.LookAndFeel.SkinName = "WXI";
-            this.simpleButton20.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.simpleButton20.Name = "simpleButton20";
-            this.simpleButton20.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.simpleButton20.Size = new System.Drawing.Size(140, 75);
-            this.simpleButton20.TabIndex = 2;
-            this.simpleButton20.Text = "İzahlı məhsul qaytarma";
-            // 
-            // simpleButton21
-            // 
-            this.simpleButton21.AllowFocus = false;
-            this.simpleButton21.Appearance.Options.UseTextOptions = true;
-            this.simpleButton21.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.simpleButton21.Location = new System.Drawing.Point(5, 5);
-            this.simpleButton21.LookAndFeel.SkinName = "WXI";
-            this.simpleButton21.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.simpleButton21.Name = "simpleButton21";
-            this.simpleButton21.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.simpleButton21.Size = new System.Drawing.Size(140, 75);
-            this.simpleButton21.TabIndex = 3;
-            this.simpleButton21.Text = "Kredit satış hesabatı";
-            // 
-            // simpleButton22
-            // 
-            this.simpleButton22.AllowFocus = false;
-            this.simpleButton22.Appearance.Options.UseTextOptions = true;
-            this.simpleButton22.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.simpleButton22.Location = new System.Drawing.Point(151, 5);
-            this.simpleButton22.LookAndFeel.SkinName = "WXI";
-            this.simpleButton22.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.simpleButton22.Name = "simpleButton22";
-            this.simpleButton22.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.simpleButton22.Size = new System.Drawing.Size(140, 75);
-            this.simpleButton22.TabIndex = 3;
-            this.simpleButton22.Text = "Kredit ödəniş hesabatı";
-            // 
-            // simpleButton23
-            // 
-            this.simpleButton23.AllowFocus = false;
-            this.simpleButton23.Appearance.Options.UseTextOptions = true;
-            this.simpleButton23.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.simpleButton23.Enabled = false;
-            this.simpleButton23.Location = new System.Drawing.Point(297, 5);
-            this.simpleButton23.LookAndFeel.SkinName = "WXI";
-            this.simpleButton23.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.simpleButton23.Name = "simpleButton23";
-            this.simpleButton23.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.simpleButton23.Size = new System.Drawing.Size(140, 75);
-            this.simpleButton23.TabIndex = 3;
-            this.simpleButton23.Text = "Kredit satış qaytarma hesabatı";
-            // 
-            // simpleButton24
-            // 
-            this.simpleButton24.AllowFocus = false;
-            this.simpleButton24.Appearance.Options.UseTextOptions = true;
-            this.simpleButton24.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.simpleButton24.Location = new System.Drawing.Point(5, 86);
-            this.simpleButton24.LookAndFeel.SkinName = "WXI";
-            this.simpleButton24.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.simpleButton24.Name = "simpleButton24";
-            this.simpleButton24.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.simpleButton24.Size = new System.Drawing.Size(140, 75);
-            this.simpleButton24.TabIndex = 2;
-            this.simpleButton24.Text = "Avans hesabatı";
+            this.checkButton5.CheckedChanged += new System.EventHandler(this.CheckedBranches);
             // 
             // MAINSCRRENS
             // 
@@ -4066,6 +4095,7 @@ namespace WindowsFormsApp2
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainScreen_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MAINSCRRENS_FormClosed);
             this.Load += new System.EventHandler(this.MainScreen_Load);
+            this.Shown += new System.EventHandler(this.MAINSCRRENS_Shown);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MAINSCRRENS_KeyDown);
             this.fluentDesignFormContainer1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -4172,21 +4202,21 @@ namespace WindowsFormsApp2
             this.panelControl15.PerformLayout();
             this.tabModul.ResumeLayout(false);
             this.pageBranch.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.groupControl4)).EndInit();
-            this.groupControl4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.tablePanel2)).EndInit();
-            this.tablePanel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.groupControl5)).EndInit();
             this.groupControl5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).EndInit();
             this.xtraTabControl1.ResumeLayout(false);
             this.xtraTabPage1.ResumeLayout(false);
+            this.xtraTabPage6.ResumeLayout(false);
             this.xtraTabPage2.ResumeLayout(false);
             this.xtraTabPage3.ResumeLayout(false);
-            this.xtraTabPage4.ResumeLayout(false);
             this.xtraTabPage5.ResumeLayout(false);
-            this.xtraTabPage6.ResumeLayout(false);
+            this.xtraTabPage4.ResumeLayout(false);
             this.xtraTabPage7.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.groupControl4)).EndInit();
+            this.groupControl4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.tablePanel2)).EndInit();
+            this.tablePanel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -4437,27 +4467,27 @@ namespace WindowsFormsApp2
         private DevExpress.XtraTab.XtraTabPage xtraTabPage5;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage4;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage7;
-        private DevExpress.XtraEditors.SimpleButton simpleButton4;
-        private DevExpress.XtraEditors.SimpleButton simpleButton6;
-        private DevExpress.XtraEditors.SimpleButton simpleButton5;
-        private DevExpress.XtraEditors.SimpleButton simpleButton8;
-        private DevExpress.XtraEditors.SimpleButton simpleButton7;
-        private DevExpress.XtraEditors.SimpleButton simpleButton10;
+        private DevExpress.XtraEditors.SimpleButton bBranchAddProduct;
+        private DevExpress.XtraEditors.SimpleButton bBranchRefundProduct;
+        private DevExpress.XtraEditors.SimpleButton bBranchExcelImport;
+        private DevExpress.XtraEditors.SimpleButton bBranchBankRefund;
+        private DevExpress.XtraEditors.SimpleButton bBranchBankSale;
+        private DevExpress.XtraEditors.SimpleButton bBranchAlisHesabat;
         private DevExpress.XtraEditors.SimpleButton bBranchStock;
-        private DevExpress.XtraEditors.SimpleButton simpleButton11;
-        private DevExpress.XtraEditors.SimpleButton simpleButton12;
-        private DevExpress.XtraEditors.SimpleButton simpleButton15;
-        private DevExpress.XtraEditors.SimpleButton simpleButton14;
-        private DevExpress.XtraEditors.SimpleButton simpleButton13;
-        private DevExpress.XtraEditors.SimpleButton simpleButton20;
-        private DevExpress.XtraEditors.SimpleButton simpleButton19;
-        private DevExpress.XtraEditors.SimpleButton simpleButton18;
-        private DevExpress.XtraEditors.SimpleButton simpleButton17;
-        private DevExpress.XtraEditors.SimpleButton simpleButton16;
-        private DevExpress.XtraEditors.SimpleButton simpleButton23;
-        private DevExpress.XtraEditors.SimpleButton simpleButton22;
-        private DevExpress.XtraEditors.SimpleButton simpleButton21;
-        private DevExpress.XtraEditors.SimpleButton simpleButton24;
+        private DevExpress.XtraEditors.SimpleButton bBranchSuppliers;
+        private DevExpress.XtraEditors.SimpleButton bBranchUsers;
+        private DevExpress.XtraEditors.SimpleButton bBranchMinusCountControl;
+        private DevExpress.XtraEditors.SimpleButton bBranchLog;
+        private DevExpress.XtraEditors.SimpleButton bBranchTerminal;
+        private DevExpress.XtraEditors.SimpleButton bBranchIzahliMehsulQaytarma;
+        private DevExpress.XtraEditors.SimpleButton bBranchIzahliMehsulSatisi;
+        private DevExpress.XtraEditors.SimpleButton bBranchSatisNov;
+        private DevExpress.XtraEditors.SimpleButton bBranchUmumiSatis;
+        private DevExpress.XtraEditors.SimpleButton bBranchAlisQaytarma;
+        private DevExpress.XtraEditors.SimpleButton bBranchCreditSaleRefund;
+        private DevExpress.XtraEditors.SimpleButton bBranchCreditPay;
+        private DevExpress.XtraEditors.SimpleButton bBranchCreditSale;
+        private DevExpress.XtraEditors.SimpleButton bBranchAvansHesabati;
     }
 }
 

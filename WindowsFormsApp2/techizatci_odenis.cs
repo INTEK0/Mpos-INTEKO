@@ -45,7 +45,7 @@ namespace WindowsFormsApp2
         }
         public void DELETE_import_exc()
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 con.Open();
                 string query = "DELETE FROM EXCELL_IMPORT_DATA_NEW";
@@ -221,7 +221,7 @@ string _faktura_nom, DateTime date_, int user_id, Decimal esas_borc_odenis, Deci
             string gaime_n, string geyd, DateTime tarix, string emeliyyat_nomre, string faktura_nom, int _user_id, decimal _ESAS_BORC_ODENIS,
             decimal _EDV_BORC)
         {
-            SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString);
+            SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString);
             SqlCommand cmd = new SqlCommand(procedure, con);
             cmd.CommandType = CommandType.StoredProcedure;
             SqlParameter param;

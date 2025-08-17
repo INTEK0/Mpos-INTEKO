@@ -13,7 +13,7 @@ namespace WindowsFormsApp2.Helpers.CacheData
         /// </summary>
         public static async Task<bool> IsCacheCurrentAsync(string cacheName)
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             using (SqlCommand cmd = new SqlCommand("SELECT IsCurrent FROM Cache_Control WHERE CacheName = @cacheName", con))
             {
                 cmd.Parameters.AddWithValue("@cacheName", cacheName);
@@ -28,7 +28,7 @@ namespace WindowsFormsApp2.Helpers.CacheData
         /// </summary>
         public static async Task RefreshStockCacheAsync()
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             using (SqlCommand cmd = new SqlCommand("gaime_Satis_mal_load_to_cache", con))
             {
                 cmd.CommandTimeout = 120;
@@ -43,7 +43,7 @@ namespace WindowsFormsApp2.Helpers.CacheData
         /// </summary>
         public static DataTable GetCachedStockAsync()
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             using (SqlCommand cmd = new SqlCommand("SELECT * FROM GAIME_SATIS_MAL_LOAD_CACHE", con))
             using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
             {

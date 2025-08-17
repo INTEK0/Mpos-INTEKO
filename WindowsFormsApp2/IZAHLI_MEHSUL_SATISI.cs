@@ -1,8 +1,8 @@
-﻿using DevExpress.XtraGrid.Localization;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using static WindowsFormsApp2.Helpers.FormHelpers;
 
@@ -13,7 +13,6 @@ namespace WindowsFormsApp2
         public IZAHLI_MEHSUL_SATISI()
         {
             InitializeComponent();
-            GridLocalizer.Active = new MyGridLocalizer();
             GridPanelText(gridView1);
         }
 
@@ -25,7 +24,7 @@ namespace WindowsFormsApp2
         private void IZAHLI_MEHSUL_SATISI_Load(object sender, EventArgs e)
         {
             ClinicModuleShow();
-            DateTime dateTime = DateTime.UtcNow.Date;
+            DateTime dateTime = DateTime.Now;
 
             dateEdit3.Text = dateTime.ToShortDateString();
             dateEdit4.Text = dateTime.ToShortDateString();
@@ -40,22 +39,20 @@ namespace WindowsFormsApp2
         {
             try
             {
-                SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
-
                 string queryString = "SELECT * FROM  dbo.fn_IZAHLI_SATIS_HESABAT( @pricepoint,@pricepoint1) order by 1 asc";
 
-                SqlCommand command = new SqlCommand(queryString, connection);
-                command.Parameters.AddWithValue("@pricepoint", D1_);
-                command.Parameters.AddWithValue("@pricepoint1", D2_);
-                SqlDataAdapter da = new SqlDataAdapter(command);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-
-                gridControl1.DataSource = dt;
-
-                gridView1.Columns["TARİX"].DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-                gridView1.Columns["TARİX"].DisplayFormat.FormatString = "dd-MM-yyyy HH:mm:ss";
-
+                using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+                using (SqlCommand command = new SqlCommand(queryString, connection))
+                {
+                    command.Parameters.AddWithValue("@pricepoint", D1_);
+                    command.Parameters.AddWithValue("@pricepoint1", D2_);
+                    SqlDataAdapter da = new SqlDataAdapter(command);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+                    gridControl1.DataSource = dt;
+                    gridView1.Columns["TARİX"].DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+                    gridView1.Columns["TARİX"].DisplayFormat.FormatString = "dd-MM-yyyy HH:mm:ss";
+                }
             }
             catch (Exception e)
             {

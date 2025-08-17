@@ -370,7 +370,7 @@ namespace WindowsFormsApp2.NKA
                 List<SalesRequest.Item> items = new List<SalesRequest.Item>();
                 List<SalesRequest.VatAmount> vatAmounts = new List<SalesRequest.VatAmount>();
 
-                using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+                using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
                 {
                     string query = $@"
 select 

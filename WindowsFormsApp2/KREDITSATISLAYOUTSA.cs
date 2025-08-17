@@ -72,7 +72,7 @@ namespace WindowsFormsApp2
         private void evdkontrol(string edvs)
         {
             string query = $"SELECT  [EDV_ID] FROM  [VERGI_DERECESI] WHERE [EDV] = N'{edvs}'";
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             using (SqlCommand cmd = new SqlCommand(query, con))
             {
                 con.Open();
@@ -84,7 +84,7 @@ namespace WindowsFormsApp2
         private void getmebleg(string paramValue, string paramValue1, string paramValue2, string paramValue3)
         {
             string queryString = " exec yekun_mebleg_calc @migdar =@pricePoint,@alis_giymet =@pricePoint1,@endirim_faiz =@pricePoint2,@endirim_azn =@pricePoint3";
-            SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString);
+            SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString);
             SqlCommand cmd = new SqlCommand();
             SqlCommand command = new SqlCommand(queryString, connection);
 
@@ -252,7 +252,7 @@ namespace WindowsFormsApp2
         public void getmebleg_(string paramValue, string paramValue1)
         {
             string queryString = " exec mehsul_alisi_edv @yekun_mebleg_=@pricePoint,@vergi_derece =@pricePoint1";
-            SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString);
+            SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString);
             SqlCommand cmd = new SqlCommand();
             SqlCommand command = new SqlCommand(queryString, connection);
 
@@ -397,7 +397,7 @@ namespace WindowsFormsApp2
         {
             string query = $"SELECT [VAHID] FROM [MAL_ALISI_DETAILS] where [MAL_ALISI_DETAILS_ID]={mal_alisi_details_id}";
 
-            using (SqlConnection conn = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection conn = new SqlConnection(DbHelpers.CurrentConnectionString))
             using (SqlCommand cmd = new SqlCommand(query, conn))
             {
                 conn.Open();

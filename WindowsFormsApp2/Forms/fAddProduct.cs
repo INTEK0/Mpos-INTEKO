@@ -26,7 +26,6 @@ namespace WindowsFormsApp2.Forms
         public fAddProduct()
         {
             InitializeComponent();
-            dateTarix.DateTime = DateTime.Now;
         }
 
         private enum ProductOperation
@@ -38,7 +37,7 @@ namespace WindowsFormsApp2.Forms
 
         private void fAddProduct_Load(object sender, EventArgs e)
         {
-
+            dateTarix.DateTime = DateTime.Now;
             SupplierDataLoad();
             UnitDataLoad();
             CurrencyDataLoad();
@@ -50,7 +49,7 @@ namespace WindowsFormsApp2.Forms
         private void SupplierDataLoad()
         {
             string query = "select TECHIZATCI_ID,SIRKET_ADI AS N'ŞİRKƏT ADI' from COMPANY.TECHIZATCI WHERE IsDeleted = 0";
-            var data = DbProsedures.ConvertToDataTable(query);
+            var data = DbProsedures.ConvertToDataTable(query, CommandType.Text);
             lookSupplier.Properties.DisplayMember = "ŞİRKƏT ADI";
             lookSupplier.Properties.ValueMember = "TECHIZATCI_ID";
             lookSupplier.Properties.DataSource = data;
@@ -61,7 +60,7 @@ namespace WindowsFormsApp2.Forms
         private void UnitDataLoad()
         {
             string query = "select VAHIDLER_ID, VAHIDLER_NAME as N'VAHİDLƏR' from VAHIDLER";
-            var data = DbProsedures.ConvertToDataTable(query);
+            var data = DbProsedures.ConvertToDataTable(query, CommandType.Text);
             lookUnit.Properties.DisplayMember = "VAHİDLƏR";
             lookUnit.Properties.ValueMember = "VAHIDLER_ID";
             lookUnit.Properties.DataSource = data;
@@ -72,7 +71,7 @@ namespace WindowsFormsApp2.Forms
         private void CurrencyDataLoad()
         {
             string query = "select VALYUTALAR_ID,VALYUTALAR from VALYUTALAR";
-            var data = DbProsedures.ConvertToDataTable(query);
+            var data = DbProsedures.ConvertToDataTable(query, CommandType.Text);
             lookCurrency.Properties.DisplayMember = "VALYUTALAR";
             lookCurrency.Properties.ValueMember = "VALYUTALAR_ID";
             lookCurrency.Properties.DataSource = data;
@@ -84,7 +83,7 @@ namespace WindowsFormsApp2.Forms
         private void TaxDataLoad()
         {
             string query = "select EDV_ID,EDV as N'VERGİ DƏRƏCƏSİ' from VERGI_DERECESI";
-            var data = DbProsedures.ConvertToDataTable(query);
+            var data = DbProsedures.ConvertToDataTable(query, CommandType.Text);
             lookTaxType.Properties.DisplayMember = "VERGİ DƏRƏCƏSİ";
             lookTaxType.Properties.ValueMember = "EDV_ID";
             lookTaxType.Properties.DataSource = data;
@@ -95,7 +94,7 @@ namespace WindowsFormsApp2.Forms
         private void WarehouseDataLoad()
         {
             string query = "select WAREHOUSE_ID,WAREHOUSE_NAME AS N'ANBAR ADI' from COMPANY.WAREHOUSE";
-            var data = DbProsedures.ConvertToDataTable(query);
+            var data = DbProsedures.ConvertToDataTable(query, CommandType.Text);
             lookWarehouse.Properties.DisplayMember = "ANBAR ADI";
             lookWarehouse.Properties.ValueMember = "WAREHOUSE_ID";
             lookWarehouse.Properties.DataSource = data;
@@ -157,9 +156,6 @@ namespace WindowsFormsApp2.Forms
 
             //int IsExists = DbProsedures.Exists_ProductCode(tProductCode.Text, Convert.ToInt32(lookSupplier.EditValue));
             int IsExistsBarcode = DbProsedures.Exists_ProductBarcode(tBarcode.Text.Trim(), tProductName.Text.TrimStart().Trim());
-
-
-
 
             if (IsExistsBarcode != 1)
             {
@@ -235,7 +231,7 @@ namespace WindowsFormsApp2.Forms
             INNER JOIN MAL_ALISI_MAIN MM ON MM.MAL_ALISI_MAIN_ID = MD.MAL_ALISI_MAIN_ID
             WHERE MM.TECHIZATCI_ID = @pricePoint)X ON X.ID = Y.ID";
 
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 connection.Open();
                 using (SqlCommand cmd = new SqlCommand(query, connection))
@@ -458,7 +454,7 @@ namespace WindowsFormsApp2.Forms
         {
             if (operation is ProductOperation.Add)
             {
-                using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+                using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
                 {
                     connection.Open();
                     using (SqlCommand cmd = new SqlCommand("SELECT * FROM dbo.fn_MAL_ALISI_LOAD(@pricepoint)", connection))
@@ -580,7 +576,7 @@ namespace WindowsFormsApp2.Forms
             @endirim_azn =@pricePoint3";
             try
             {
-                using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+                using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
                 {
                     connection.Open();
                     using (SqlCommand cmd = new SqlCommand(query, connection))

@@ -51,7 +51,7 @@ namespace WindowsFormsApp2.Forms
         {
             int Id = Convert.ToInt32(gridView1.GetFocusedRowCellValue("Id").ToString());
 
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 connection.Open();
                 string query = "SELECT * FROM SELECT_DOCTOR_DATA_LOAD(@DoctorID)";

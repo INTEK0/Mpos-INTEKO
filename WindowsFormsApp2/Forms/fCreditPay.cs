@@ -89,7 +89,7 @@ ORDER BY KREDIT_SATISI_MAIN_ID DESC";
 
         private void GetUnitAndTaxData()
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 con.Open();
 
@@ -361,7 +361,7 @@ FROM
   [KREDIT_SATISI_MAIN] 
 where 
   [KREDIT_SATISI_MAIN_ID] = @Id";
-                using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+                using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
                     cmd.Parameters.AddWithValue("@Id", _creditMainId);

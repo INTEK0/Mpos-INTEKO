@@ -1,5 +1,6 @@
 ﻿using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
+using WindowsFormsApp2.Helpers.DB;
 
 namespace WindowsFormsApp2.Helpers
 {

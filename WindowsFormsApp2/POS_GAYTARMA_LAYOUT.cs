@@ -46,12 +46,11 @@ namespace WindowsFormsApp2
         private readonly string Cashier;
         private PayType _payType;
 
-        public POS_GAYTARMA_LAYOUT(string keysa_, string _cashier)
+        public POS_GAYTARMA_LAYOUT(string accessToken, string _cashier)
         {
             InitializeComponent();
-            keys_ = keysa_;
+            keys_ = accessToken;
             Cashier = _cashier;
-            GridLocalizer.Active = new MyGridLocalizer();
             GridPanelText(gridView1);
         }
 
@@ -134,7 +133,7 @@ namespace WindowsFormsApp2
         {
             try
             {
-                using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+                using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
                 {
                     string queryString = "select * from  dbo.fn_pos_gaytarma_date_load (@pricePoint ,@pricePoint1) ";
                     using (SqlCommand cmd = new SqlCommand(queryString, con))
@@ -692,8 +691,8 @@ namespace WindowsFormsApp2
 
             try
             {
-                SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString);
-                SqlConnection conn2 = new SqlConnection(DbHelpers.DbConnectionString);
+                SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString);
+                SqlConnection conn2 = new SqlConnection(DbHelpers.CurrentConnectionString);
                 SqlCommand cmd2 = new SqlCommand();
                 conn2.Open();
                 string query2 = $@"SELECT  [pos_satis_check_main_id],
@@ -753,7 +752,7 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
 
                 SqlConnection conn = new SqlConnection();
                 SqlCommand cmd = new SqlCommand();
-                conn.ConnectionString = DbHelpers.DbConnectionString;
+                conn.ConnectionString = DbHelpers.CurrentConnectionString;
                 conn.Open();
 
                 //string query = $@"SELECT
@@ -1964,6 +1963,11 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
             e.Graphics.DrawString("Satış Çekinin Fiskal ID:", font2, Brushes.Black, new Point(70, offset2 + 170));
         }
 
+        private void POS_GAYTARMA_LAYOUT_Activated(object sender, EventArgs e)
+        {
+            DbHelpers.UseLocalConnection();
+        }
+
         private void ReturnSales(Enums.PayType type)
         {
             Cursor.Current = Cursors.WaitCursor;
@@ -2038,7 +2042,7 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
                                 }
                                 break; /*OMNITECH*/
                             case "4":
-                                using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+                                using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
                                 {
                                     connection.Open();
                                     string query = $"SELECT MAX([pos_gaytarma_manual_id]) as ids4 FROM [pos_gaytarma_manual] WHERE user_id_ = {Properties.Settings.Default.UserID}";

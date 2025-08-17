@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using WindowsFormsApp2.Helpers;
+using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 
 namespace WindowsFormsApp2
@@ -11,11 +12,12 @@ namespace WindowsFormsApp2
         public KREDITODENISHESABAT1()
         {
             InitializeComponent();
+            FormHelpers.GridPanelText(gridView1);
         }
 
         private void KREDITODENISHESABAT1_Load(object sender, EventArgs e)
         {
-            DateTime dateTime = DateTime.UtcNow.Date;
+            DateTime dateTime = DateTime.Now;
 
             dateEdit1.Text = dateTime.ToShortDateString();
             dateEdit2.Text = dateTime.ToShortDateString();
@@ -35,7 +37,7 @@ namespace WindowsFormsApp2
 
         public void GetallData_id_(DateTime D1_, DateTime D2_)
         {
-            SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
+            SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString);
             string queryString = "EXEC dbo.KREDIT_HESABAT2  @d1 = @pricepoint  ,@d2=@pricepoint1 ";
 
             SqlCommand command = new SqlCommand(queryString, connection);

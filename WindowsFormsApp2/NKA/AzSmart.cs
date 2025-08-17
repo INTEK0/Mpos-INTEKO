@@ -171,7 +171,7 @@ namespace WindowsFormsApp2.NKA
                 List<RequestSale.Item> items = new List<RequestSale.Item>();
                 string query = "GetItems_AzSmart";
 
-                SqlConnection conn = new SqlConnection(DbHelpers.DbConnectionString);
+                SqlConnection conn = new SqlConnection(DbHelpers.CurrentConnectionString);
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@UserID", Properties.Settings.Default.UserID);
@@ -329,7 +329,7 @@ namespace WindowsFormsApp2.NKA
             decimal _total2 = default;
             List<Item> items = new List<Item>();
 
-            using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 connection.Open();
                 using (SqlCommand cmd = new SqlCommand(DbHelpers.GetPosGaytarmaManualQuery, connection))
@@ -715,7 +715,7 @@ namespace WindowsFormsApp2.NKA
         public static void LastReceiptCopy(string ipAddress, string merchantId, string cashier)
         {
             string fiskalID = string.Empty;
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 con.Open();
                 using (SqlCommand cmd = new SqlCommand(DbHelpers.LastDocumentFiskalId, con))
@@ -775,7 +775,7 @@ namespace WindowsFormsApp2.NKA
                 List<RequestSale.Item> items = new List<RequestSale.Item>();
                 string query = "GetItems_AzSmart";
 
-                SqlConnection conn = new SqlConnection(DbHelpers.DbConnectionString);
+                SqlConnection conn = new SqlConnection(DbHelpers.CurrentConnectionString);
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@UserID", Properties.Settings.Default.UserID);
@@ -925,7 +925,7 @@ namespace WindowsFormsApp2.NKA
 
             /*
             List<Item> items = new List<Item>();
-            SqlConnection conn = new SqlConnection(DbHelpers.DbConnectionString);
+            SqlConnection conn = new SqlConnection(DbHelpers.CurrentConnectionString);
             SqlCommand cmd = new SqlCommand();
             conn.Open();
             string query = $@"select name,
@@ -1128,7 +1128,7 @@ namespace WindowsFormsApp2.NKA
 
         private static string ReturnHeaderId()
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             using (SqlCommand cmd = new SqlCommand())
             {
                 cmd.Connection = con;

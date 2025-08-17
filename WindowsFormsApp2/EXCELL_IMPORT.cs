@@ -116,9 +116,9 @@ namespace WindowsFormsApp2
 
         private void WriteToSQL(System.Data.DataTable dt)
         {
-            //  string connection = new SqlConnection(Properties.Settings.Default.SqlCon);
+            //  string connection = new SqlConnection(DbHelpers.CurrentConnectionString);
             //   string connectionStringSQL = "Your connection string";
-            using (SqlConnection sqlConn = new SqlConnection(Properties.Settings.Default.SqlCon))
+            using (SqlConnection sqlConn = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 SqlBulkCopy sqlBulkCopy = new SqlBulkCopy(sqlConn);
                 // Setting the database table name
@@ -181,8 +181,8 @@ namespace WindowsFormsApp2
 
             // Tezhizatci Acilmasi
 
-            SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString);
-            SqlConnection cont = new SqlConnection(DbHelpers.DbConnectionString);
+            SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString);
+            SqlConnection cont = new SqlConnection(DbHelpers.CurrentConnectionString);
 
 
             string query = @"SELECT count(*) AS COUNTS,TECHIZATCI_ADI
@@ -222,8 +222,8 @@ group by TECHIZATCI_ADI";
 
 
 
-            con.ConnectionString = Properties.Settings.Default.SqlCon;
-            cont.ConnectionString = Properties.Settings.Default.SqlCon;
+            con.ConnectionString = DbHelpers.CurrentConnectionString;
+            cont.ConnectionString = DbHelpers.CurrentConnectionString;
 
             string querykategori = "SELECT count(*) AS COUNTS,KATEGORIYA FROM [EXCELL_IMPORT_DATA_NEW] WHERE KATEGORIYA NOT IN\r\n  (\r\n  SELECT KATEGORIYA FROM KATEGORIYA\r\n  )\r\n  GROUP BY KATEGORIYA";
 
@@ -261,8 +261,8 @@ group by TECHIZATCI_ADI";
 
 
 
-            con.ConnectionString = Properties.Settings.Default.SqlCon;
-            cont.ConnectionString = Properties.Settings.Default.SqlCon;
+            con.ConnectionString = DbHelpers.CurrentConnectionString;
+            cont.ConnectionString = DbHelpers.CurrentConnectionString;
 
             string queryfat = "SELECT COUNT(*) AS COUNTS FROM [EXCELL_IMPORT_DATA_NEW] WHERE (LEN(FAKTURA_NO)<2 OR LEN(FAKTURA_NO) IS NULL)";
 
@@ -288,8 +288,8 @@ group by TECHIZATCI_ADI";
 
 
 
-            con.ConnectionString = Properties.Settings.Default.SqlCon;
-            cont.ConnectionString = Properties.Settings.Default.SqlCon;
+            con.ConnectionString = DbHelpers.CurrentConnectionString;
+            cont.ConnectionString = DbHelpers.CurrentConnectionString;
 
             string querymalzeme = @"SELECT *, 
 CASE WHEN ( SELECT TOP 1 MEHSUL_ADI FROM [MAL_ALISI_DETAILS] WHERE BARKOD=[EXCELL_IMPORT_DATA_NEW].BARKOD)=MEHSUL_ADI    THEN 1 ELSE   
@@ -601,8 +601,8 @@ CASE
             SqlConnection con = new SqlConnection();
             SqlConnection cont = new SqlConnection();
 
-            con.ConnectionString = Properties.Settings.Default.SqlCon;
-            cont.ConnectionString = Properties.Settings.Default.SqlCon;
+            con.ConnectionString = DbHelpers.CurrentConnectionString;
+            cont.ConnectionString = DbHelpers.CurrentConnectionString;
 
             string query = "SELECT count(*) AS COUNTS,TECHIZATCI_ADI FROM [EXCELL_IMPORT_DATA_NEW] WHERE TECHIZATCI_ADI NOT IN (SELECT  [SIRKET_ADI] FROM [COMPANY].[TECHIZATCI] WHERE IsDeleted=0) group by TECHIZATCI_ADI";
 
@@ -656,8 +656,8 @@ CASE
 
 
 
-            con.ConnectionString = Properties.Settings.Default.SqlCon;
-            cont.ConnectionString = Properties.Settings.Default.SqlCon;
+            con.ConnectionString = DbHelpers.CurrentConnectionString;
+            cont.ConnectionString = DbHelpers.CurrentConnectionString;
 
             string querykategori = "SELECT count(*) AS COUNTS,KATEGORIYA FROM [EXCELL_IMPORT_DATA_NEW] WHERE KATEGORIYA NOT IN\r\n  (\r\n  SELECT KATEGORIYA FROM KATEGORIYA\r\n  )\r\n  GROUP BY KATEGORIYA";
 
@@ -711,8 +711,8 @@ CASE
 
 
 
-            con.ConnectionString = Properties.Settings.Default.SqlCon;
-            cont.ConnectionString = Properties.Settings.Default.SqlCon;
+            con.ConnectionString = DbHelpers.CurrentConnectionString;
+            cont.ConnectionString = DbHelpers.CurrentConnectionString;
 
             string queryfat = "SELECT COUNT(*) AS COUNTS FROM [EXCELL_IMPORT_DATA_NEW] WHERE\r\n\r\n(LEN(FAKTURA_NO)<2 OR LEN(FAKTURA_NO) IS NULL)";
 
@@ -759,8 +759,8 @@ CASE
 
 
 
-            con.ConnectionString = Properties.Settings.Default.SqlCon;
-            cont.ConnectionString = Properties.Settings.Default.SqlCon;
+            con.ConnectionString = DbHelpers.CurrentConnectionString;
+            cont.ConnectionString = DbHelpers.CurrentConnectionString;
 
             string querymalzeme = "SELECT *   ,\r\n\r\n CASE WHEN \r\n \r\n ( SELECT TOP 1 MEHSUL_ADI   FROM [MAL_ALISI_DETAILS] WHERE BARKOD=[EXCELL_IMPORT_DATA_NEW].BARKOD)=MEHSUL_ADI   \r\n THEN 1 ELSE    \r\n \r\n (   CASE WHEN    ( SELECT  TOP 1 MEHSUL_ADI   FROM [MAL_ALISI_DETAILS] WHERE MEHSUL_KODU=[EXCELL_IMPORT_DATA_NEW].MEHSUL_KODU)=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI    \r\n \r\n   THEN  1 else 0 end)   \r\n \r\n  END AS [KNTBARKODSTOK] ,\r\n  \r\n\r\n  CASE WHEN \r\n \r\n ( SELECT TOP 1 MEHSUL_ADI   FROM [MAL_ALISI_DETAILS] WHERE MEHSUL_ADI=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI)=MEHSUL_ADI   \r\n THEN 1 ELSE    \r\n 0 end MALZEMEADI\r\n  \r\n    \r\n   FROM [EXCELL_IMPORT_DATA_NEW] ";
 

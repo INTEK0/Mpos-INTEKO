@@ -32,7 +32,7 @@ namespace WindowsFormsApp2
             DataTable dt = new DataTable();
 
 
-            SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString);
+            SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString);
 
             SqlDataAdapter sda = new SqlDataAdapter();
 

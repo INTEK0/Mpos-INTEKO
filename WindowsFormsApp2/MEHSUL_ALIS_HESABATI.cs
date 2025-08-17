@@ -1,5 +1,4 @@
-﻿using DevExpress.XtraGrid.Localization;
-using System;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
@@ -15,7 +14,6 @@ namespace WindowsFormsApp2
         {
             InitializeComponent();
             GridPanelText(gridView1);
-            GridLocalizer.Active = new MyGridLocalizer();
         }
 
         private void MEHSUL_ALIS_HESABATI_Load(object sender, EventArgs e)
@@ -52,7 +50,7 @@ namespace WindowsFormsApp2
 
         public void GetallData_tech_id(DateTime D1_, DateTime D2_, int te_id)
         {
-            SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
+            SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString);
             string queryString = "EXEC dbo.MEHSUL_ALIS_HESABAT_t_id  @d1 = @pricepoint  ,@d2=@pricepoint1 ,@t_id =@pricepoint2  ";
 
 
@@ -68,7 +66,7 @@ namespace WindowsFormsApp2
 
         public void GetallData_id_(DateTime D1_, DateTime D2_)
         {
-            SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
+            SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString);
             string queryString = "EXEC MEHSUL_ALIS_HESABAT  @d1 = @pricepoint  ,@d2=@pricepoint1 ";
 
             SqlCommand command = new SqlCommand(queryString, connection);

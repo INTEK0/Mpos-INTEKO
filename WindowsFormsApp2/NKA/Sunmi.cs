@@ -363,7 +363,7 @@ namespace WindowsFormsApp2.NKA
             {
                 List<Item> items = new List<Item>();
 
-                using (SqlConnection conn = new SqlConnection(DbHelpers.DbConnectionString))
+                using (SqlConnection conn = new SqlConnection(DbHelpers.CurrentConnectionString))
                 {
                     string query = $@"SELECT 
                               name,
@@ -511,7 +511,7 @@ namespace WindowsFormsApp2.NKA
                 "  FROM [pos_satis_check_main] WHERE[pos_satis_check_main_id] IN(SELECT[pos_satis_check_main_id]  " +
                 " FROM [pos_gaytarma_manual] where [pos_gaytarma_manual_id] =(select max([pos_gaytarma_manual_id]) " +
                 "from [pos_gaytarma_manual])); ";
-            SqlConnection conn2 = new SqlConnection(DbHelpers.DbConnectionString);
+            SqlConnection conn2 = new SqlConnection(DbHelpers.CurrentConnectionString);
             SqlCommand cmd2 = new SqlCommand(query2, conn2);
             conn2.Open();
 
@@ -544,7 +544,7 @@ namespace WindowsFormsApp2.NKA
                        INNER JOIN MAL_ALISI_DETAILS md ON p.mal_alisi_details_id = md.MAL_ALISI_DETAILS_ID
                        INNER JOIN pos_gaytarma_manual pl ON p.pos_satis_check_details_id = pl.pos_satis_check_details
               WHERE pl.emeliyyat_nomre = '{refundData.ProccessNo}')";
-            SqlConnection conn = new SqlConnection(DbHelpers.DbConnectionString);
+            SqlConnection conn = new SqlConnection(DbHelpers.CurrentConnectionString);
             SqlCommand cmd = new SqlCommand(query, conn);
             conn.Open();
 
@@ -842,7 +842,7 @@ namespace WindowsFormsApp2.NKA
         {
             List<PrepaymentRequest.Item> items = new List<PrepaymentRequest.Item>();
             int _vatType = 0;
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 con.Open();
                 string query = $@"SELECT 
@@ -969,7 +969,7 @@ namespace WindowsFormsApp2.NKA
         public static bool PrepaymentSale(SalesDto salesData, decimal pos_satis_main_id)
         {
             List<PrepaymentSaleRequest.Item> items = new List<PrepaymentSaleRequest.Item>();
-            using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 con.Open();
                 string query = $@"select 
@@ -1044,7 +1044,7 @@ WHERE psd.pos_satis_check_main_id = {pos_satis_main_id} AND psm.user_id_ = {Prop
             {
                 if (response.message is "Success operation" || response.message is "Successful operation")
                 {
-                    using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+                    using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
                     {
                         string query = $"UPDATE [dbo].[pos_satis_check_main] SET NEGD_={salesData.Cash.ToString("N2").Replace(',', '.')}+NEGD_,KART_={salesData.Card.ToString("N2").Replace(',', '.')}+KART_, [PREdate_]=getdate(),PREfiscal_id='{response.data.short_document_id}' where pos_satis_check_main_id={pos_satis_main_id}";
                         using (SqlCommand cmd = new SqlCommand(query, con))

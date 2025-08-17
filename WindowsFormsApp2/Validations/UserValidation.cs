@@ -33,7 +33,7 @@ namespace WindowsFormsApp2.Validations
             {
                 try
                 {
-                    using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+                    using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
                     {
                         connection.Open();
                         using (SqlCommand cmd = new SqlCommand("ValidateUser", connection))
@@ -73,7 +73,7 @@ namespace WindowsFormsApp2.Validations
             try
             {
                 string query = $"SELECT COUNT(1) FROM userParol WHERE Ulogin = @username AND IsDeleted = 0";
-                using (SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString))
+                using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
                 {
                     connection.Open();
                     

@@ -36,7 +36,7 @@ namespace WindowsFormsApp2
         public void del_grid_data(int mal_id_, string emeliyyat_nomr_)
         {
             // Create ADO.NET objects.
-            SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString);
+            SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString);
             SqlCommand cmd = new SqlCommand(delete_grid_pos, con);
             // Configure command and add input parameters.
             cmd.CommandType = CommandType.StoredProcedure;
@@ -102,7 +102,7 @@ namespace WindowsFormsApp2
 
         public void del_migdarnewsa_calculation(string mal_id_, string say_, string emeliyyat_nomr_)
         {
-            SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString);
+            SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString);
             SqlCommand cmd = new SqlCommand(del_migdarnewsa, con);
             cmd.CommandType = CommandType.StoredProcedure;
             SqlParameter param;

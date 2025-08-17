@@ -52,7 +52,7 @@ namespace WindowsFormsApp2
         {
             try
             {
-                SqlConnection connection = new SqlConnection(DbHelpers.DbConnectionString);
+                SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString);
                 string queryString = "SELECT STATUS FROM MENFI_AC_BAGLA ";
                 SqlCommand command = new SqlCommand(queryString, connection);
 

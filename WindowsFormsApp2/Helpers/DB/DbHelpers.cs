@@ -9,7 +9,7 @@ namespace WindowsFormsApp2.Helpers.DB
 {
     public class DbHelpers
     {
-        public static readonly string DbConnectionString = Properties.Settings.Default.SqlCon;
+        private static string DbConnectionString = Properties.Settings.Default.SqlCon;
         public static readonly string LastDocumentFiskalId = $"SELECT TOP 1 fiscal_id FROM pos_satis_check_main WHERE user_id_ = {Properties.Settings.Default.UserID} ORDER BY pos_satis_check_main_id DESC";
         public static readonly string GetItemDataQuery = $"select name,Item.item_id,salePrice,quantity,case vatType when 1 then '18' when 3 then '0' when 4 then '2' when 5 then '8' else 0 end as vatType,quantityType,salePrice*quantity as ssum from  dbo.item where user_id = {Properties.Settings.Default.UserID}";
         public static readonly string GetHeaderDataQuery = $@"SELECT 
@@ -32,6 +32,23 @@ namespace WindowsFormsApp2.Helpers.DB
         (SELECT [pos_satis_check_main_id] FROM [pos_gaytarma_manual] WHERE [pos_gaytarma_manual_id] = 
         (SELECT MAX([pos_gaytarma_manual_id]) FROM [pos_gaytarma_manual] WHERE user_id_ = {Properties.Settings.Default.UserID}));";
 
+        private static string _currentConnectionString = DbConnectionString;
+
+        public static string CurrentConnectionString
+        {
+            get => _currentConnectionString;
+            set => _currentConnectionString = value;
+        }
+
+        public static void UseRemoteConnection(string con)
+        {
+            _currentConnectionString = con;
+        }
+
+        public static void UseLocalConnection()
+        {
+            _currentConnectionString = DbConnectionString;
+        }
 
         public static void DatabaseBackup()
         {
@@ -48,7 +65,7 @@ namespace WindowsFormsApp2.Helpers.DB
 
                 if (save.ShowDialog() is DialogResult.OK)
                 {
-                    using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon))
+                    using (SqlConnection connection = new SqlConnection(CurrentConnectionString))
                     {
                         connection.Open();
                         using (SqlCommand command = new SqlCommand($@"BACKUP DATABASE {connection.Database} TO DISK='{save.FileName}'", connection))
@@ -72,5 +89,7 @@ namespace WindowsFormsApp2.Helpers.DB
             }
             finally { Cursor.Current = Cursors.Default; }
         }
+
+
     }
 }

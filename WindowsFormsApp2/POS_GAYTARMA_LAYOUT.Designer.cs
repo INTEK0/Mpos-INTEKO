@@ -840,6 +840,7 @@ namespace WindowsFormsApp2
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "POS QAYTARMA";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Activated += new System.EventHandler(this.POS_GAYTARMA_LAYOUT_Activated);
             this.Load += new System.EventHandler(this.POS_GAYTARMA_LAYOUT_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);

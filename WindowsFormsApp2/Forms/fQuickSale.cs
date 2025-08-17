@@ -87,7 +87,7 @@ WHERE rn = 1;
                 string supplier = row[0].ToString();
                 if (!string.IsNullOrWhiteSpace(product))
                 {
-                    using (SqlConnection con = new SqlConnection(DbHelpers.DbConnectionString))
+                    using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
                     {
                         con.Open();
                         using (SqlCommand cmd = new SqlCommand(AddQuickSaleProduct, con))

@@ -55,7 +55,7 @@ namespace WindowsFormsApp2.Forms
                 { "ScalesDelete", ("Digər", "Tərəzi silmə") },
             };
 
-            using (SqlConnection conn = new SqlConnection(DbHelpers.DbConnectionString))
+            using (SqlConnection conn = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 conn.Open();
                 string query = $"SELECT * FROM UserRole WHERE UserId = {_userId}";
