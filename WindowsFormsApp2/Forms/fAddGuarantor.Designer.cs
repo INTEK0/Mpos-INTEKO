@@ -424,6 +424,7 @@
             this.labelControl19.Size = new System.Drawing.Size(6, 18);
             this.labelControl19.TabIndex = 34;
             this.labelControl19.Text = "*";
+            this.labelControl19.Visible = false;
             // 
             // labelControl11
             // 
@@ -725,6 +726,7 @@
             this.labelControl21.Size = new System.Drawing.Size(6, 18);
             this.labelControl21.TabIndex = 34;
             this.labelControl21.Text = "*";
+            this.labelControl21.Visible = false;
             // 
             // labelControl20
             // 
@@ -738,6 +740,7 @@
             this.labelControl20.Size = new System.Drawing.Size(6, 18);
             this.labelControl20.TabIndex = 34;
             this.labelControl20.Text = "*";
+            this.labelControl20.Visible = false;
             // 
             // labelControl26
             // 

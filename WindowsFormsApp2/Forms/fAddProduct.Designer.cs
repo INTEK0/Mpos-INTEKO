@@ -2009,8 +2009,8 @@
             this.tBarcode.Size = new System.Drawing.Size(344, 30);
             this.tBarcode.TabIndex = 4;
             this.tBarcode.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.tBarcode_ButtonClick);
-            this.tBarcode.EditValueChanged += new System.EventHandler(this.tBarcode_EditValueChanged);
-            this.tBarcode.EditValueChanging += new DevExpress.XtraEditors.Controls.ChangingEventHandler(this.tBarcode_EditValueChanging);
+            this.tBarcode.TextChanged += new System.EventHandler(this.tBarcode_TextChanged);
+            this.tBarcode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tBarcode_KeyDown);
             // 
             // tProductName
             // 

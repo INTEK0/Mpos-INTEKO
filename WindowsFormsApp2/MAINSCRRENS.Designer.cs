@@ -3899,6 +3899,7 @@ namespace WindowsFormsApp2
             this.bBranchMinusCountControl.AllowFocus = false;
             this.bBranchMinusCountControl.Appearance.Options.UseTextOptions = true;
             this.bBranchMinusCountControl.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.bBranchMinusCountControl.Enabled = false;
             this.bBranchMinusCountControl.Location = new System.Drawing.Point(297, 5);
             this.bBranchMinusCountControl.LookAndFeel.SkinName = "WXI";
             this.bBranchMinusCountControl.LookAndFeel.UseDefaultLookAndFeel = false;

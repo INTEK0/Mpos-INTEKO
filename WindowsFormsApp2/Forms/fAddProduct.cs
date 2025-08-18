@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -6,14 +7,15 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
+using DevExpress.XtraReports.UI;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Validations;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
 using static WindowsFormsApp2.Helpers.Enums;
 using static WindowsFormsApp2.Helpers.FormHelpers;
-using BasselTech.UsbBarcodeScanner;
 
 namespace WindowsFormsApp2.Forms
 {
@@ -720,37 +722,47 @@ namespace WindowsFormsApp2.Forms
             Cursor.Current = Cursors.Default;
         }
 
-        private UsbBarcodeScanner scanner = new UsbBarcodeScanner();
-
-        private void BarcodeScanner()
+        private HashSet<string> _barcode = new HashSet<string>();
+        private void tBarcode_KeyDown(object sender, KeyEventArgs e)
         {
-            scanner.BarcodeScanned += (sender, args) =>
+            if (e.KeyCode is Keys.Enter)
             {
-                tBarcode.Text = args.Barcode;
-            };
-            scanner.Start();
+                string barcode = tBarcode.Text.Trim();
+                if (_barcode.Contains(barcode))
+                {
+                    tBarcode.Clear();
+                    tBarcode.Text = barcode;
+                }
+                else
+                {
+                    _barcode.Add(barcode);
+                    tBarcode.Clear();
+                    tBarcode.Text = barcode;
+                }
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
         }
 
-        private string _barcode;
-
-        private void tBarcode_EditValueChanged(object sender, EventArgs e)
+        private void tBarcode_TextChanged(object sender, EventArgs e)
         {
-            //string barcode = tBarcode.Text;
-            //if (_barcode == tBarcode.Text.Trim())
-            //{
-            //    tBarcode.Text = null;
-            //    tBarcode.Text = barcode;
-            //    _barcode = barcode;
-            //}
-            //else
-            //{
-            //    _barcode = barcode;
-            //}
-        }
-
-        private void tBarcode_EditValueChanging(object sender, DevExpress.XtraEditors.Controls.ChangingEventArgs e)
-        {
-            
+            if (e.KeyCode is Keys.Enter)
+            {
+                string barcode = tBarcode.Text.Trim();
+                if (_barcode.Contains(barcode))
+                {
+                    tBarcode.Clear();
+                    tBarcode.Text = barcode;
+                }
+                else
+                {
+                    _barcode.Add(barcode);
+                    tBarcode.Clear();
+                    tBarcode.Text = barcode;
+                }
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
         }
     }
 }

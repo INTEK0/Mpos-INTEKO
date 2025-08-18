@@ -626,9 +626,9 @@ FROM[terazimalzeme]";
 
         private async Task LicenceCheck()
         {
-            lLicenceExpireDate.Text = "-";
-            lLicenceExpireDate.ForeColor = Color.Black;
-            return;
+            //lLicenceExpireDate.Text = "-";
+            //lLicenceExpireDate.ForeColor = Color.Black;
+            //return;
 
             var licenceUser = await LicenseService.Instance.RequestKeyControl(LicenseService.Instance.GetLicenceKey());
             if (licenceUser is null)
@@ -1597,7 +1597,9 @@ FROM (
 
 
         #region [..BRANCHES..]
+
         private List<BranchesRoot.Branch> _branches;
+
         private class BranchesRoot
         {
             public List<Branch> Branches { get; set; }
@@ -1661,6 +1663,8 @@ FROM (
                 c.Enabled = true;
         }
 
+        #region [..PRODUCTS..]
+
         private void bBranchAddProduct_Click(object sender, EventArgs e)
         {
             DbHelpers.UseRemoteConnection(RemoteDbManager.BranchConnectionString);
@@ -1694,6 +1698,11 @@ FROM (
             f.ShowDialog();
         }
 
+        #endregion [..PRODUCTS..]
+
+
+        #region [..BANK..]
+
         private void bBranchBankSale_Click(object sender, EventArgs e)
         {
             DbHelpers.UseRemoteConnection(RemoteDbManager.BranchConnectionString);
@@ -1715,6 +1724,11 @@ FROM (
             };
             f.ShowDialog();
         }
+
+        #endregion [..BANK..]
+
+
+        #region [..REPORT..]
 
         private void bBranchStock_Click(object sender, EventArgs e)
         {
@@ -1804,6 +1818,11 @@ FROM (
             f.ShowDialog();
         }
 
+        #endregion [..REPORT..]
+
+
+        #region [..CREDİT..]
+
         private void bBranchCreditSale_Click(object sender, EventArgs e)
         {
             DbHelpers.UseRemoteConnection(RemoteDbManager.BranchConnectionString);
@@ -1837,6 +1856,11 @@ FROM (
             f.ShowDialog();
         }
 
+        #endregion [..CREDİT..]
+
+
+        #region [..SUPPLİERS..]
+
         private void bBranchSuppliers_Click(object sender, EventArgs e)
         {
             DbHelpers.UseRemoteConnection(RemoteDbManager.BranchConnectionString);
@@ -1847,6 +1871,11 @@ FROM (
             };
             f.ShowDialog();
         }
+
+        #endregion [..SUPPLİERS..]
+
+
+        #region [..USERS..]
 
         private void bBranchUsers_Click(object sender, EventArgs e)
         {
@@ -1859,6 +1888,11 @@ FROM (
             f.ShowDialog();
         }
 
+        #endregion [..USERS..]
+
+
+        #region [..SETTINGS..]
+
         private void bBranchTerminal_Click(object sender, EventArgs e)
         {
             DbHelpers.UseRemoteConnection(RemoteDbManager.BranchConnectionString);
@@ -1870,20 +1904,15 @@ FROM (
             f.ShowDialog();
         }
 
-        private void MAINSCRRENS_Shown(object sender, EventArgs e)
-        {
-            DbHelpers.UseLocalConnection();
-        }
-
         private void bBranchLog_Click(object sender, EventArgs e)
         {
             DbHelpers.UseRemoteConnection(RemoteDbManager.BranchConnectionString);
-
-            //f.Show();
-            //f.FormClosed += (s, args) =>
-            //{
-            //    DbHelpers.UseLocalConnection();
-            //};
+            fLogs f = new fLogs();
+            f.Show();
+            f.FormClosed += (s, args) =>
+            {
+                DbHelpers.UseLocalConnection();
+            };
         }
 
         private void bBranchMinusCountControl_Click(object sender, EventArgs e)
@@ -1896,7 +1925,15 @@ FROM (
             //    DbHelpers.UseLocalConnection();
             //};
         }
-        #endregion [..BRANCHES..]
 
+        #endregion [..SETTINGS..]
+
+
+        #endregion [..BRANCHES..]
+        
+        private void MAINSCRRENS_Shown(object sender, EventArgs e)
+        {
+            DbHelpers.UseLocalConnection();
+        }
     }
 }
