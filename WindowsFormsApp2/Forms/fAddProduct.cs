@@ -725,44 +725,23 @@ namespace WindowsFormsApp2.Forms
         private HashSet<string> _barcode = new HashSet<string>();
         private void tBarcode_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode is Keys.Enter)
-            {
-                string barcode = tBarcode.Text.Trim();
-                if (_barcode.Contains(barcode))
-                {
-                    tBarcode.Clear();
-                    tBarcode.Text = barcode;
-                }
-                else
-                {
-                    _barcode.Add(barcode);
-                    tBarcode.Clear();
-                    tBarcode.Text = barcode;
-                }
-                e.Handled = true;
-                e.SuppressKeyPress = true;
-            }
-        }
-
-        private void tBarcode_TextChanged(object sender, EventArgs e)
-        {
-            if (e.KeyCode is Keys.Enter)
-            {
-                string barcode = tBarcode.Text.Trim();
-                if (_barcode.Contains(barcode))
-                {
-                    tBarcode.Clear();
-                    tBarcode.Text = barcode;
-                }
-                else
-                {
-                    _barcode.Add(barcode);
-                    tBarcode.Clear();
-                    tBarcode.Text = barcode;
-                }
-                e.Handled = true;
-                e.SuppressKeyPress = true;
-            }
+            //if (e.KeyCode is Keys.Enter)
+            //{
+            //    string barcode = tBarcode.Text.Trim();
+            //    if (_barcode.Contains(barcode))
+            //    {
+            //        tBarcode.Clear();
+            //        tBarcode.Text = barcode;
+            //    }
+            //    else
+            //    {
+            //        _barcode.Add(barcode);
+            //        tBarcode.Clear();
+            //        tBarcode.Text = barcode;
+            //    }
+            //    e.Handled = true;
+            //    e.SuppressKeyPress = true;
+            //}
         }
     }
 }

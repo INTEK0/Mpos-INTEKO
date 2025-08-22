@@ -1654,18 +1654,16 @@ FROM
         public static void InsertCustomerDebt(CustomerDebtType type, DateTime date, int customerId, decimal amount)
         {
             string _date = date.ToString("yyyy-MM-dd HH:mm:ss");
-            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
-            {
-                string query = $@"INSERT INTO [MUSTERILER_DEBTS] (OperationType, OperationDate, CustomerId, Amount) VALUES (
+            string query = $@"INSERT INTO [MUSTERILER_DEBTS] (OperationType, OperationDate, CustomerId, Amount) VALUES (
     {(int)type},
     '{_date}',
     {customerId},
     {amount.ToString().Replace(",", ".")})";
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, con))
+            {
                 con.Open();
-                using (SqlCommand cmd = new SqlCommand(query, con))
-                {
-                    cmd.ExecuteNonQuery();
-                }
+                cmd.ExecuteNonQuery();
             }
         }
 
@@ -2915,10 +2913,8 @@ WHERE
 ([kredit_id], [taksitno], [DATEODEMEGUNU_], 
   [ODENILECEK_MEBLEG], longidsana) 
 VALUES 
-  (
-    @CreditSaleId, @Month, @PaymentDay, 
-    @Amount, @CreditSaleFiscalId
-  )";
+  (@CreditSaleId, @Month, @PaymentDay, 
+    @Amount, @CreditSaleFiscalId)";
             using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             using (SqlCommand cmd = new SqlCommand(query, con))
             {
@@ -2928,25 +2924,27 @@ VALUES
                 cmd.Parameters.AddWithValue("@PaymentDay", item.PaymentDay);
                 cmd.Parameters.AddWithValue("@Amount", item.Amount);
                 cmd.Parameters.AddWithValue("@CreditSaleFiscalId", item.CreditSaleFiscalId);
+                cmd.Parameters.AddWithValue("@ReceiptNo", item.ReceiptNo);
+                cmd.Parameters.AddWithValue("@PaymentTypeId", item.PaymentTypeId);
                 await con.OpenAsync();
                 await cmd.ExecuteNonQueryAsync();
             }
         }
 
-        public static void UPDATE_CreditPay(string shortId, string longId, int Id)
+        public static void UPDATE_CreditPay(string shortId, string longId, string receiptNo, short paymentTypeId, int Id)
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
-            {
-                string query = $@"UPDATE [dbo].[KREDIT_SATISI_AYLIKODEME] SET [DATE2_]=GETDATE(),
+            string query = $@"UPDATE [dbo].[KREDIT_SATISI_AYLIKODEME] SET [DATE2_]=GETDATE(),
 [ODENILEN_MEBLEG]=[ODENILECEK_MEBLEG],
 [longids]=N'{longId}',
-[shortids]=N'{shortId}'  
+[shortids]=N'{shortId}',
+ReceiptNo = N'{receiptNo}',
+PaymentTypeId = {paymentTypeId}
 WHERE KREDIT_SATISI_AYLIK_ID= {Id}";
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, con))
+            {
                 con.Open();
-                using (SqlCommand cmd = new SqlCommand(query, con))
-                {
-                    cmd.ExecuteNonQuery();
-                }
+                cmd.ExecuteNonQuery();
             }
         }
 
@@ -2961,7 +2959,7 @@ VALUES
   );
 ";
             using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
-            using (SqlCommand cmd = new SqlCommand(query,con))
+            using (SqlCommand cmd = new SqlCommand(query, con))
             {
                 cmd.CommandType = CommandType.Text;
                 cmd.Parameters.AddWithValue("@CreditSaleId", item.CreditSaleId);
@@ -2970,6 +2968,26 @@ VALUES
                 cmd.Parameters.AddWithValue("@TotalAmount", item.TotalAmount);
                 cmd.Parameters.AddWithValue("@Comment", item.Comment);
                 cmd.Parameters.AddWithValue("@LongId", item.LongFiscalId);
+                cmd.Parameters.AddWithValue("@ReceiptNo", item.ReceiptNo);
+                cmd.Parameters.AddWithValue("@UserId", item.UserId);
+                await con.OpenAsync();
+                await cmd.ExecuteNonQueryAsync();
+            }
+        }
+
+        public async static Task Insert_CreditPayRefund(CreditPayRefund item)
+        {
+            dynamic query = @"INSERT INTO KREDIT_SATISI_AYLIQ_QAYTARMA 
+VALUES (@CreditPayId, @RefundDate, @FiscalId, @ReceiptNo, @UserId);
+";
+
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, con))
+            {
+                cmd.CommandType = CommandType.Text;
+                cmd.Parameters.AddWithValue("@CreditPayId", item.CreditPayId);
+                cmd.Parameters.AddWithValue("@RefundDate", DateTime.Now);
+                cmd.Parameters.AddWithValue("@FiscalId", item.FiscalId);
                 cmd.Parameters.AddWithValue("@ReceiptNo", item.ReceiptNo);
                 cmd.Parameters.AddWithValue("@UserId", item.UserId);
                 await con.OpenAsync();

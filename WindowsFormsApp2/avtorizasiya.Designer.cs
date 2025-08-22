@@ -79,9 +79,9 @@ namespace WindowsFormsApp2
             this.lForgetPassword.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lForgetPassword.Location = new System.Drawing.Point(772, 327);
             this.lForgetPassword.Name = "lForgetPassword";
-            this.lForgetPassword.Size = new System.Drawing.Size(93, 18);
+            this.lForgetPassword.Size = new System.Drawing.Size(96, 18);
             this.lForgetPassword.TabIndex = 17;
-            this.lForgetPassword.Text = "Şifrəmi unuttum";
+            this.lForgetPassword.Text = "Şifrəmi unutdum";
             this.lForgetPassword.Click += new System.EventHandler(this.lForgetPassword_Click);
             // 
             // kryptonButton2

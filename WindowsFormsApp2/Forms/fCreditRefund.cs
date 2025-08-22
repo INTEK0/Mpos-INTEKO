@@ -167,7 +167,6 @@ WHERE kr.KreditSatisMainId IS NULL AND ks.TARIX BETWEEN '{start}' AND '{end}';
 
         private void bRefund_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
-
             Refund();
         }
 
@@ -233,11 +232,8 @@ WHERE
                 data.PaymentTypeId = Convert.ToInt16(row["PaymentTypeId"].ToString());
             }
 
-            if (data is null)
-                return;
-
             var result = Omnitech.CreditRefund(data);
-            if (result.Item1 is true)
+            if (result.Item1)
             {
                 await DbProsedures.Insert_CreditSaleRefund(new DatabaseClasses.CreditSaleRefund
                 {

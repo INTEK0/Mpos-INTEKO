@@ -711,8 +711,14 @@ namespace WindowsFormsApp2.NKA
                         ReadyMessages.SUCCES_CREDIT_PAYMENT_MESSAGE();
                     }
 
-                    DbProsedures.UPDATE_CreditPay(payResponse.data.short_document_id, payResponse.data.document_id, creditData.CreditMonthId);
-                    FormHelpers.Log($"{data.creditContract} nömrəli müqavilənin kredit ödənişi edildi. Qəbz No: {payResponse.data.document_number}");
+                    short paymentType = (short)(creditData.IncomingSum > 0 ? 1 : 2);
+                    DbProsedures.UPDATE_CreditPay(payResponse.data.short_document_id, 
+                        payResponse.data.document_id,
+                        payResponse.data.document_number.ToString(),
+                        paymentType,
+                        creditData.CreditMonthId);
+                   
+                    FormHelpers.Log($"{data.creditContract} nömrəli kredit müqaviləsinin ödənişi edildi. Qəbz No: {payResponse.data.document_number}");
 
                     return true;
                 }

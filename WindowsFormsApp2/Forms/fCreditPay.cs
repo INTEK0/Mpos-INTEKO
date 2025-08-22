@@ -89,25 +89,22 @@ ORDER BY KREDIT_SATISI_MAIN_ID DESC";
 
         private void GetUnitAndTaxData()
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
-            {
-                con.Open();
-
-                string query = $@"SELECT  
+            string query = $@"SELECT  
 [VAHID], 
 [VERGI_DERECESI] 
 FROM  [MAL_ALISI_DETAILS] 
 WHERE 
 [MAL_ALISI_DETAILS_ID] = {_productId}";
-                using (SqlCommand cmd = new SqlCommand(query, con))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, con))
+            {
+                con.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
                 {
-                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    if (dr.Read())
                     {
-                        if (dr.Read())
-                        {
-                            _unitId = dr["VAHID"].ToString();
-                            _taxId = dr["VERGI_DERECESI"].ToString();
-                        }
+                        _unitId = dr["VAHID"].ToString();
+                        _taxId = dr["VERGI_DERECESI"].ToString();
                     }
                 }
             }
@@ -122,7 +119,8 @@ WHERE
 [ODENILECEK_MEBLEG] AS  'AYLIQ ÖDƏNİŞ' ,
 [ODENILEN_MEBLEG] 'ÖDƏNİŞ',
 CASE WHEN [ODENILEN_MEBLEG]>=ODENILECEK_MEBLEG THEN 1 ELSE 0 END AS KONTROL,
-[longidsana]  
+[longidsana],
+[longids]
 FROM  [KREDIT_SATISI_AYLIKODEME] 
 where kredit_id={_creditMainId}";
             var data = DbProsedures.ConvertToDataTable(queryString);
@@ -223,9 +221,14 @@ where kredit_id={_creditMainId}";
             switch (_terminal.Model)
             {
                 case "1":
-                    bool SunmiIsSuccess = Sunmi.CreditPay(payData);
-                    if (SunmiIsSuccess)
+                    if (Sunmi.CreditPay(payData))
+                    {
+                        DbProsedures.InsertCustomerDebt(CustomerDebtType.CreditPay,
+                            DateTime.Now,
+                            Convert.ToInt32(_customerId),
+                            Math.Round(Convert.ToDecimal(_creditPayData.AYLIQ_ODENIS), 2));
                         RefreshData();
+                    }
                     break;
                 case "2":
                     if (Cash > 0 && Card > 0)
@@ -233,34 +236,135 @@ where kredit_id={_creditMainId}";
                         FormHelpers.Alert("Kreditin bir ödənişi yalnız bir növ ödənişlə həyata keçirilə bilər.", MessageType.Warning);
                         break;
                     }
-                    
-                    bool AzSmartIsSuccess = AzSmart.CreditPay(payData);
-                    if (AzSmartIsSuccess)
+
+                    if (AzSmart.CreditPay(payData))
+                    {
+                        DbProsedures.InsertCustomerDebt(CustomerDebtType.CreditPay,
+                            DateTime.Now,
+                            Convert.ToInt32(_customerId),
+                            Math.Round(Convert.ToDecimal(_creditPayData.AYLIQ_ODENIS), 2));
                         RefreshData();
+                    }
                     break;
                 case "3":
-                    bool OmnitechIsSuccess = Omnitech.CreditPay(payData);
-                    if (OmnitechIsSuccess)
+                    if (Omnitech.CreditPay(payData))
+                    {
+                        DbProsedures.InsertCustomerDebt(CustomerDebtType.CreditPay,
+                            DateTime.Now,
+                            Convert.ToInt32(_customerId),
+                            Math.Round(Convert.ToDecimal(_creditPayData.AYLIQ_ODENIS), 2));
                         RefreshData();
+
+                    }
                     break;
             }
         }
 
         private void bRefund_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
+            var control = gridView2.GetFocusedRowCellValue("ÖDƏNİŞ").ToString();
+
+            if (string.IsNullOrWhiteSpace(control))
+                return;
+
+
             if (XtraMessageBox.Show("Ödənişi geri qaytarmaq istədiyinizə əminsiniz ?", "Bildiriş", MessageBoxButtons.YesNo, MessageBoxIcon.Question) is DialogResult.Yes)
             {
 
+                Refund();
             }
+        }
+
+        private async void Refund()
+        {
+            try
+            {
+                var Id = gridView2.GetFocusedRowCellValue("KREDIT_SATISI_AYLIK_ID").ToString();
+
+                string query = $@"SELECT 
+  ka.KREDIT_SATISI_AYLIK_ID as Id, 
+  ka.kredit_id as CreditSaleId, 
+  km.GAIME_NOMRE as ContractNo, 
+  km.MUSTERI as CustomerName, 
+  CAST(km.prd_qty as decimal(18, 3)) as Quantity, 
+  CAST(km.prd_price as decimal(18, 2)) as SalePrice, 
+  CAST(ka.ODENILEN_MEBLEG as decimal(18, 2)) as PayAmount,
+  ka.PaymentTypeId,
+  md.MEHSUL_ADI as ProductName, 
+  md.BARKOD as Barcode, 
+  md.VERGI_DERECESI as TaxId, 
+  tax.EDV as TaxName, 
+  md.VAHID as UnitId, 
+  unit.VAHIDLER_NAME as UnitName, 
+  ka.longids as LongFiscalId, 
+  ka.shortids as ShortFiscalId, 
+  ka.ReceiptNo 
+FROM 
+  KREDIT_SATISI_AYLIKODEME ka 
+  INNER JOIN KREDIT_SATISI_MAIN km ON km.KREDIT_SATISI_MAIN_ID = ka.kredit_id 
+  INNER JOIN MAL_ALISI_DETAILS md ON md.MAL_ALISI_DETAILS_ID = km.product_id 
+  INNER JOIN VERGI_DERECESI tax ON tax.EDV_ID = md.VERGI_DERECESI 
+  INNER JOIN VAHIDLER unit ON unit.VAHIDLER_ID = md.VAHID 
+WHERE 
+  ka.KREDIT_SATISI_AYLIK_ID = {Id}
+";
+
+                var sqlData = DbProsedures.ConvertToDataTable(query);
+                CreditPayRefundDto data = new CreditPayRefundDto();
+                foreach (DataRow row in sqlData.Rows)
+                {
+                    data.Url = _terminal.Ip;
+                    data.MerchantId = _terminal.MerchantId;
+                    data.Cashier = _terminal.Cashier;
+                    data.item = new CreditPayRefundDto.Item()
+                    {
+                        ProductName = row["ProductName"].ToString(),
+                        ProductCode = row["Barcode"].ToString(),
+                        Quantity = Decimal.Parse(row["Quantity"].ToString()),
+                        QuantityType = Convert.ToInt32(row["UnitId"].ToString()),
+                        SalePrice = Decimal.Parse(row["SalePrice"].ToString()),
+                        VatType = Convert.ToInt32(row["TaxId"].ToString())
+                    };
+                    data.Total = Decimal.Parse(row["PayAmount"].ToString());
+                    data.CustomerName = row["CustomerName"].ToString();
+                    data.ParentLongFiscalId = row["LongFiscalId"].ToString();
+                    data.ParentShortFiscalId = row["ShortFiscalId"].ToString();
+                    data.ParentDocumentNumber = row["ReceiptNo"].ToString();
+                    data.PaymentTypeId = Convert.ToInt16(row["PaymentTypeId"].ToString());
+                }
+
+                switch (_terminal.Model)
+                {
+                    case "3":
+
+                        var result = Omnitech.CreditPayRefund(data);
+                        if (result.Item1)
+                        {
+                            await DbProsedures.Insert_CreditPayRefund(new DatabaseClasses.CreditPayRefund()
+                            {
+                                CreditPayId = Convert.ToInt32(Id),
+                                UserId = DbProsedures.GetUser().Id,
+                                FiscalId = result.Item2,
+                                ReceiptNo = result.Item3
+                            });
+                            RefreshData();
+                        }
+
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                Helpers.Messages.ReadyMessages.ERROR_DEFAULT_MESSAGE(e.Message);
+                FormHelpers.Log($"Kredit ödənişinin geri qaytarılması zamanı xəta yarandı. {e.Message}");
+            }
+
         }
 
         private void RefreshData()
         {
             CreditDataLoad();
             PeriodicPayDataLoad();
-            DbProsedures.InsertCustomerDebt(CustomerDebtType.CreditPay,
-                DateTime.Now, Convert.ToInt32(_customerId),
-                Math.Round(Convert.ToDecimal(_creditPayData.AYLIQ_ODENIS), 2));
             LoadCreditDetailsSelectedRow();
         }
 

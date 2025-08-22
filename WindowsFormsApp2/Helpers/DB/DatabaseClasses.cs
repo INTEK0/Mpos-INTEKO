@@ -479,6 +479,8 @@ namespace WindowsFormsApp2.Helpers.DB
             public string LongFiscalId { get; set; }
             public string ShortFiscalId { get; set; }
             public DateTime PayDate { get; set; }
+            public string ReceiptNo { get; set; }
+            public short PaymentTypeId { get; set; }
         }
 
         public class CreditSaleRefund
@@ -486,10 +488,23 @@ namespace WindowsFormsApp2.Helpers.DB
             public int Id { get; set; }
             public int CreditSaleId { get; set; }
             public DateTime RefundDate { get; set; }
+            /// <summary>
+            /// 0-Nisyə, 1-Nağd, 2-Kart, 3-Nağd-Kart
+            /// </summary>
             public short PaymentTypeId { get; set; }
             public decimal TotalAmount { get; set; }
             public string Comment { get; set; }
             public string LongFiscalId { get; set; }
+            public string ReceiptNo { get; set; }
+            public int UserId { get; set; }
+        }
+
+        public class CreditPayRefund
+        {
+            public int Id { get; set; }
+            public int CreditPayId { get; set; }
+            public DateTime Date { get; set; }
+            public string FiscalId { get; set; }
             public string ReceiptNo { get; set; }
             public int UserId { get; set; }
         }

@@ -693,8 +693,13 @@ namespace WindowsFormsApp2.NKA
                     if (MessageVisible)
                         ReadyMessages.SUCCES_CREDIT_PAYMENT_MESSAGE();
 
-                    DbProsedures.UPDATE_CreditPay(response.data.fiscalID.Substring(0, 12), response.data.fiscalID, creditData.CreditMonthId);
-                    FormHelpers.Log($"{creditData.CreditContract} nömrəli müqavilənin kredit ödənişi edildi. Qəbz No: {response.data.fiscalNum}");
+                    short paymentType = (short)(creditData.IncomingSum > 0 ? 1 : 2);
+                    DbProsedures.UPDATE_CreditPay(response.data.fiscalID.Substring(0, 12),
+                        response.data.fiscalID,
+                        response.data.fiscalNum,
+                        paymentType,
+                        creditData.CreditMonthId);
+                    FormHelpers.Log($"{creditData.CreditContract} nömrəli kredit müqaviləsinin ödənişi edildi. Qəbz No: {response.data.fiscalNum}");
                     return true;
                 }
                 else

@@ -113,7 +113,6 @@ public static class DTOs
                     return SalePrice * Quantity;
                 }
             }
-
             public int VatType { get; set; }
             public int quantityType { get; set; }
         };
@@ -164,6 +163,9 @@ public static class DTOs
         public string ParentLongFiscalId { get; set; }
         public string ParentShortFiscalId { get; set; }
         public string ParentDocumentNumber { get; set; }
+        /// <summary>
+        /// 0-Nisyə, 1-Nağd, 2-Kart, 3-Nağd-Kart
+        /// </summary>
         public short PaymentTypeId { get; set; }
         public decimal CashPayment { get; set; }
         public decimal CardPayment { get; set; }
@@ -172,6 +174,48 @@ public static class DTOs
         public decimal IncomingSum { get; set; }
         public string Cashier { get; set; }
         public string CreditContract { get; set; }
+        public string CustomerName { get; set; }
+        public string Note { get; set; }
+        public string Url { get; set; }
+        public string Rrn { get; set; }
+        public string AccessToken { get; set; }
+        public string MerchantId { get; set; }
+    }
+
+    public class CreditPayRefundDto
+    {
+        public class Item
+        {
+            public string ProductName { get; set; }
+            public string ProductCode { get; set; }
+            public decimal Quantity { get; set; }
+            public decimal SalePrice { get; set; }
+
+            public decimal Total
+            {
+                get
+                {
+                    return SalePrice * Quantity;
+                }
+            }
+
+            public int VatType { get; set; }
+            public int QuantityType { get; set; }
+        }
+        public Item item { get; set; }
+        public string DocumentUUID { get; set; }
+        public string ParentLongFiscalId { get; set; }
+        public string ParentShortFiscalId { get; set; }
+        public string ParentDocumentNumber { get; set; }
+        /// <summary>
+        /// 0-Nisyə, 1-Nağd, 2-Kart, 3-Nağd-Kart
+        /// </summary>
+        public short PaymentTypeId { get; set; }
+        public decimal CashPayment { get; set; }
+        public decimal CardPayment { get; set; }
+        public decimal Total { get; set; }
+        public decimal IncomingSum { get; set; }
+        public string Cashier { get; set; }
         public string CustomerName { get; set; }
         public string Note { get; set; }
         public string Url { get; set; }
