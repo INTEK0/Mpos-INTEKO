@@ -1,11 +1,4 @@
-﻿using DevExpress.Data.Linq.Helpers;
-using DevExpress.XtraBars.Navigation;
-using DevExpress.XtraEditors;
-using DevExpress.XtraGrid.Views.Grid;
-using Microsoft.Win32;
-using Newtonsoft.Json.Linq;
-using RestSharp;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -15,10 +8,19 @@ using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DevExpress.Data.Linq.Helpers;
+using DevExpress.XtraBars.Navigation;
+using DevExpress.XtraEditors;
+using DevExpress.XtraGrid;
+using DevExpress.XtraGrid.Views.Grid;
+using Microsoft.Win32;
+using Newtonsoft.Json.Linq;
+using RestSharp;
 using WindowsFormsApp2.Forms;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.CacheData;
@@ -36,6 +38,8 @@ namespace WindowsFormsApp2
 {
     public partial class POS_LAYOUT_NEW : BaseForm
     {
+        private GridControl _gridScale;
+        private GridView _viewScale;
         private readonly bool MessageVisible = FormHelpers.SuccessMessageVisible();
         private bool _IsReceipt;
         private int pagesCount = 1;
@@ -65,22 +69,26 @@ namespace WindowsFormsApp2
 
         private async void POS_LAYOUT_NEW_Load(object sender, EventArgs e)
         {
-            lModel.Visible = false;
-            await AutoAsync();
+
             tUsername.Text = _user?.NameSurname;
             textEdit2.Text = DateTime.Now.ToShortDateString();
-
             textEdit1.Text = DbProsedures.GET_SalesProcessNo();
-            textEdit11.Text = DbProsedures.GET_TotalSalesCount();
-            get_ip_model();
-            bankttnmWrite();
+            textEdit11.Text = await DbProsedures.GET_TotalSalesCount();
+            AutoAsync();
+
+            PrintKassaOrPrinterShow();
             CalculationDelete();
+            bankttnmWrite();
+            get_ip_model();
+            ClinicModule();
             tileproduct();
             BasketDataControl();
-            PrintKassaOrPrinterShow();
-            ClinicModule();
+
+
             await Task.Run(() => PosDiscountDeleteAsync());
             await Task.Run(() => DiscountProductsLoad());
+
+
             tBarcode.Focus();
         }
 
@@ -170,21 +178,20 @@ namespace WindowsFormsApp2
 
         private async Task AutoAsync()
         {
+            Cursor.Current = Cursors.WaitCursor;
             AutoCompleteStringCollection coll_ = new AutoCompleteStringCollection();
 
             await Task.Run(() =>
             {
                 using (SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM dbo.POS_autocomplete_search_mehsul_Adi_distinct()", DbHelpers.CurrentConnectionString))
+                using (DataTable dt = new DataTable())
                 {
-                    DataTable dt = new DataTable();
                     da.Fill(dt);
 
                     foreach (DataRow row in dt.Rows)
                     {
                         if (row["MEHSUL_ADI"] != DBNull.Value)
-                        {
                             coll_.Add(row["MEHSUL_ADI"].ToString());
-                        }
                     }
                 }
             });
@@ -192,12 +199,14 @@ namespace WindowsFormsApp2
             textBox5.AutoCompleteCustomSource = coll_;
             textBox5.AutoCompleteMode = AutoCompleteMode.Suggest;
             textBox5.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            Cursor.Current = Cursors.Default;
         }
 
         private async void tBarcode_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode is Keys.Enter)
             {
+
                 string kontrol = tBarcode.Text;
                 string kod;
                 string kg;
@@ -241,7 +250,6 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                                             await getall(barkod);
                                             //get(textEdit1.Text);
 
-                                            //get_say_birmal(barkod, textEdit1.Text);
                                         }
                                     }
                                 }
@@ -257,7 +265,7 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
 
 
                             await get(textEdit1.Text);
-                            get_say_birmal(barkodsa, textEdit1.Text);
+                            //  get_say_birmal(barkodsa, textEdit1.Text);
                             tBarcode.Text = string.Empty;
 
                             get_cem(textEdit1.Text);
@@ -271,7 +279,7 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                         {
                             await getall(tBarcode.Text);
                             await get(textEdit1.Text);
-                            get_say_birmal(tBarcode.Text, textEdit1.Text);
+                            // get_say_birmal(tBarcode.Text, textEdit1.Text);
                             get_cem(textEdit1.Text);
                         }
                     }
@@ -301,7 +309,7 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                                 {
                                     using (SqlDataReader dr = cmd.ExecuteReader())
                                     {
-                                        while (dr.Read())
+                                        if (dr.Read())
                                         {
                                             barkodsa = dr["BARKOD"].ToString();
                                             barkod = dr["BARKOD"].ToString();
@@ -326,7 +334,7 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
 
 
                             await get(textEdit1.Text);
-                            get_say_birmal(barkodsa, textEdit1.Text);
+                            // get_say_birmal(barkodsa, textEdit1.Text);
                             tBarcode.Text = string.Empty;
 
                             get_cem(textEdit1.Text);
@@ -375,7 +383,7 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                         {
                             await getall(tBarcode.Text);
                             await get(textEdit1.Text);
-                            get_say_birmal(tBarcode.Text, textEdit1.Text);
+                            //get_say_birmal(tBarcode.Text, textEdit1.Text);
                             get_cem(textEdit1.Text);
                         }
                     }
@@ -383,7 +391,7 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                     {
                         await getall(tBarcode.Text);
                         await get(textEdit1.Text);
-                        get_say_birmal(tBarcode.Text, textEdit1.Text);
+                        //get_say_birmal(tBarcode.Text, textEdit1.Text);
                         get_cem(textEdit1.Text);
                     }
                 }
@@ -400,6 +408,37 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                 tCustomer.Text = string.Empty;
                 tBarcode.Text = string.Empty;
             }
+        }
+
+        private void get_say_birmal(string barkod, string em_nomre)
+        {
+            //try
+            //{
+            //    using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon))
+            //    {
+            //        connection.Open();
+            //        string query = "exec CALC_SAY_CALCULATION @barkod=@pricepoint ,@emeliyyat_nomre=@pricepoint1,@userID=@userId";
+            //        using (SqlCommand cmd = new SqlCommand(query, connection))
+            //        {
+            //            cmd.Parameters.AddWithValue("@pricepoint", barkod);
+            //            cmd.Parameters.AddWithValue("@pricepoint1", em_nomre);
+            //            cmd.Parameters.AddWithValue("@userId", Properties.Settings.Default.UserID);
+            //            using (SqlDataReader dr = cmd.ExecuteReader())
+            //            {
+            //                while (dr.Read())
+            //                {
+            //                    textEdit10.Text = dr["SAY"].ToString();
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+            //catch (Exception e)
+            //{
+            //    ReadyMessages.ERROR_DEFAULT_MESSAGE("Xəta!\n" + e.Message);
+            //}
+
+
         }
 
         /// <summary>
@@ -550,7 +589,7 @@ LEFT JOIN pos_guzest pg
                 {
                     await connection.OpenAsync();
 
-                    string queryString = "SELECT * FROM dbo.fn_POS_SATIS_LOAD(@EMELIYYAT_NOMRE, @userID)";
+                    string queryString = "SELECT * FROM dbo.fn_POS_SATIS_LOAD(@EMELIYYAT_NOMRE, @userID) ORDER BY calc_id";
 
                     using (SqlCommand command = new SqlCommand(queryString, connection))
                     {
@@ -576,37 +615,6 @@ LEFT JOIN pos_guzest pg
             }
         }
 
-
-        private void get_say_birmal(string barkod, string em_nomre)
-        {
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
-                {
-                    connection.Open();
-                    string query = "exec CALC_SAY_CALCULATION @barkod=@pricepoint ,@emeliyyat_nomre=@pricepoint1,@userID=@userId";
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@pricepoint", barkod);
-                        cmd.Parameters.AddWithValue("@pricepoint1", em_nomre);
-                        cmd.Parameters.AddWithValue("@userId", Properties.Settings.Default.UserID);
-                        using (SqlDataReader dr = cmd.ExecuteReader())
-                        {
-                            while (dr.Read())
-                            {
-                                textEdit10.Text = dr["SAY"].ToString();
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                ReadyMessages.ERROR_DEFAULT_MESSAGE("Xəta!\n" + e.Message);
-            }
-
-
-        }
 
         /// <summary>
         /// Məhsulun alış qiymətini sağ üst küncə göstərilməsi üçündür. Deaktiv edilmə səbəbi odur ki gridView-ə məhsul gəldiyində ən sağ tərəfdə məhsulun alış qiyməti zatən qeyd olunur.
@@ -705,42 +713,48 @@ LEFT JOIN pos_guzest pg
             try
             {
                 Cursor.Current = Cursors.WaitCursor;
+                string query = "SELECT * FROM dbo.POS_SATIS(1, @pricePoint);";
+
                 using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+                using (SqlCommand cmd = new SqlCommand(query, connection))
                 {
                     await connection.OpenAsync();
 
-                    string query = "SELECT * FROM dbo.POS_SATIS(1, @pricePoint);";
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    cmd.Parameters.AddWithValue("@pricePoint", barcode);
+
+                    using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
                     {
-                        cmd.Parameters.AddWithValue("@pricePoint", barcode);
-
-                        using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
+                        if (await dr.ReadAsync())
                         {
-                            if (await dr.ReadAsync())
+                            int count = Convert.ToInt32(dr["say"]);
+
+                            for (int i = 0; i < count; i++)
                             {
-                                int count = Convert.ToInt32(dr["say"]);
+                                int productID = Convert.ToInt32(dr["mal_details_id"]);
+                                decimal salePrice = Convert.ToDecimal(dr["SATIŞ QİYMƏTİ"]);
+                                decimal purchasePrice = Convert.ToDecimal(dr["ALIŞ QİYMƏTİ"]);
 
-                                for (int i = 0; i < count; i++)
+
+                                DbProsedures.InsertCalculation(new Calculation
                                 {
-                                    int productID = Convert.ToInt32(dr["mal_details_id"]);
-                                    decimal salePrice = Convert.ToDecimal(dr["SATIŞ QİYMƏTİ"]);
-                                    decimal purchasePrice = Convert.ToDecimal(dr["ALIŞ QİYMƏTİ"]);
+                                    proccessNo = textEdit1.Text,
+                                    ProductID = productID,
+                                    Barcode = barcode.Trim(),
+                                    ProductName = dr["MƏHSUL ADI"].ToString(),
+                                    SalePrice = salePrice,
+                                    PurchasePrice = purchasePrice
+                                });
 
+                                DiscountProductControl(barcode, productID);
 
-                                    DbProsedures.InsertCalculation(new Calculation
-                                    {
-                                        proccessNo = textEdit1.Text,
-                                        ProductID = productID,
-                                        Barcode = barcode.Trim(),
-                                        ProductName = dr["MƏHSUL ADI"].ToString(),
-                                        SalePrice = salePrice,
-                                        PurchasePrice = purchasePrice
-                                    });
-
-                                    DiscountProductControl(barcode, productID);
-
-                                }
                             }
+                        }
+                        else
+                        {
+                            XtraMessageBox.Show("Məhsul tapılmadı",
+                                nameof(Enums.HeaderMessage.Bildiriş),
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
                         }
                     }
                 }
@@ -770,7 +784,7 @@ LEFT JOIN pos_guzest pg
                 {
                     st.del_migdar_calculation(dele_migdar_mal_id.ToString(), textEdit10.Text, textEdit1.Text);
                     await get(textEdit1.Text);
-                    get_say_birmal(tBarcode.Text, textEdit1.Text);
+                    //get_say_birmal(tBarcode.Text, textEdit1.Text);
                     tBarcode.Text = string.Empty;
 
                     get_cem(textEdit1.Text);
@@ -808,7 +822,6 @@ LEFT JOIN pos_guzest pg
                 {
                     st.update_satis_giymeti_(dele_migdar_mal_id, Convert.ToDecimal(textEdit9.Text));
                     await get(textEdit1.Text);
-                    get_say_birmal(tBarcode.Text, textEdit1.Text);
 
                     get_cem(textEdit1.Text);
 
@@ -853,7 +866,6 @@ LEFT JOIN pos_guzest pg
 
                         await get(textEdit1.Text);
 
-                        get_say_birmal(barcode, textEdit1.Text); //barcode hissəsi isə tBarcode.text dən gələn datanı alırdı
 
                         get_cem(textEdit1.Text);
                     }
@@ -900,7 +912,6 @@ LEFT JOIN pos_guzest pg
 
                         await get(textEdit1.Text);
 
-                        get_say_birmal(barcode, textEdit1.Text); //barcode hissəsi isə tBarcode.text dən gələn datanı alırdı
 
                         get_cem(textEdit1.Text);
                     }
@@ -938,7 +949,6 @@ LEFT JOIN pos_guzest pg
             }
 
             await get(textEdit1.Text);
-            get_say_birmal(tBarcode.Text, textEdit1.Text);
             tBarcode.Text = string.Empty;
 
             get_cem(textEdit1.Text);
@@ -2124,6 +2134,8 @@ LEFT JOIN pos_guzest pg
             OpenForm<fCreditPay>();
         }
 
+
+
         private void POS_LAYOUT_NEW_Shown(object sender, EventArgs e)
         {
             DbHelpers.UseLocalConnection();
@@ -2133,6 +2145,43 @@ LEFT JOIN pos_guzest pg
         {
             fKassaReport f = new fKassaReport();
             f.ShowDialog();
+        }
+
+        private void gridView1_RowClick(object sender, RowClickEventArgs e)
+        {
+            DataRow dr = gridView1.GetDataRow(gridView1.FocusedRowHandle);
+            if (dr != null)
+            {
+                int paramValue = Convert.ToInt32(dr[0]);
+                dele_migdar_mal_id = Convert.ToInt32(dr[0]);
+
+                textEdit10.Text = dr["say"].ToString();
+                textEdit9.Text = dr["SATIŞ QİYMƏTİ"].ToString();
+                string queryString = "exec CALC_SAY_CALCULATION @MAL_ALISI_DETAILS_ID=@pricePoint ";
+
+                using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+                {
+                    SqlCommand command = new SqlCommand(queryString, connection);
+                    command.Parameters.AddWithValue("@pricePoint", paramValue);
+
+                    try
+                    {
+                        connection.Open();
+                        SqlDataReader reader = command.ExecuteReader();
+
+                        while (reader.Read())
+                        {
+                            textEdit10.Text = reader[0].ToString();
+                        }
+
+                        reader.Close();
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                }
+            }
         }
 
         private void bAddProduct_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
@@ -2174,7 +2223,6 @@ LEFT JOIN pos_guzest pg
                 //}
 
                 await get(textEdit1.Text);
-                get_say_birmal(tBarcode.Text, textEdit1.Text);
                 tBarcode.Text = string.Empty;
 
                 get_cem(textEdit1.Text);
@@ -2349,7 +2397,7 @@ LEFT JOIN pos_guzest pg
             {
                 clear();
                 textEdit1.Text = DbProsedures.GET_SalesProcessNo();
-                textEdit11.Text = DbProsedures.GET_TotalSalesCount();
+                textEdit11.Text = await DbProsedures.GET_TotalSalesCount();
                 CalculationDelete();
             }
         }
@@ -2412,7 +2460,6 @@ LEFT JOIN pos_guzest pg
             {
                 await getall(tBarcode.Text);
                 await get(textEdit1.Text);
-                get_say_birmal(tBarcode.Text, textEdit1.Text);
 
                 get_cem(textEdit1.Text);
                 textBox5.Text = "";
@@ -2502,44 +2549,6 @@ LEFT JOIN pos_guzest pg
                     f.Show();
 
                     break;
-            }
-        }
-
-        private void gridView1_RowClick(object sender, RowClickEventArgs e)
-        {
-            DataRow dr = gridView1.GetDataRow(gridView1.FocusedRowHandle);
-            if (dr != null)
-            {
-
-                int paramValue = Convert.ToInt32(dr[0]);
-                dele_migdar_mal_id = Convert.ToInt32(dr[0]);
-
-                textEdit10.Text = dr["say"].ToString();
-                textEdit9.Text = dr[4].ToString();
-                string queryString = "exec CALC_SAY_CALCULATION @MAL_ALISI_DETAILS_ID=@pricePoint ";
-
-                using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon))
-                {
-                    SqlCommand command = new SqlCommand(queryString, connection);
-                    command.Parameters.AddWithValue("@pricePoint", paramValue);
-
-                    try
-                    {
-                        connection.Open();
-                        SqlDataReader reader = command.ExecuteReader();
-
-                        while (reader.Read())
-                        {
-                            textEdit10.Text = reader[0].ToString();
-                        }
-
-                        reader.Close();
-                    }
-                    catch (Exception)
-                    {
-
-                    }
-                }
             }
         }
 
@@ -2668,7 +2677,6 @@ LEFT JOIN pos_guzest pg
                         if (IsSuccess)
                         {
                             clear();
-                            textEdit11.Text = DbProsedures.GET_TotalSalesCount();
                             CalculationDelete();
                         }
                         break; /*SUNMI*/
@@ -2689,7 +2697,6 @@ LEFT JOIN pos_guzest pg
                         if (IsSuccess)
                         {
                             clear();
-                            textEdit11.Text = DbProsedures.GET_TotalSalesCount();
                             CalculationDelete();
                         }
                         break; /*AZSMART*/
@@ -2709,7 +2716,6 @@ LEFT JOIN pos_guzest pg
                         if (IsSuccess)
                         {
                             clear();
-                            textEdit11.Text = DbProsedures.GET_TotalSalesCount();
                             CalculationDelete();
                         }
                         break; /*OMNITECH*/
@@ -2749,11 +2755,13 @@ LEFT JOIN pos_guzest pg
                         if (IsSuccess)
                         {
                             clear();
-                            textEdit11.Text = DbProsedures.GET_TotalSalesCount();
                             CalculationDelete();
                         }
                         break; /*EKASSAM*/
                 }
+
+                textEdit11.Text = await DbProsedures.GET_TotalSalesCount();
+
             }
             catch (Exception ex)
             {
@@ -2767,7 +2775,7 @@ LEFT JOIN pos_guzest pg
             tBarcode.Focus();
         }
 
-        public void gelen_data_negd_pos_pre(decimal cash_, decimal card_, decimal umumi_mebleg_, decimal incomingSum = default, decimal _qaliq = default, bool clinic = false)
+        public async void gelen_data_negd_pos_pre(decimal cash_, decimal card_, decimal umumi_mebleg_, decimal incomingSum = default, decimal _qaliq = default, bool clinic = false)
         {
             try
             {
@@ -2871,7 +2879,6 @@ LEFT JOIN pos_guzest pg
                         if (IsSuccess)
                         {
                             clear();
-                            textEdit11.Text = DbProsedures.GET_TotalSalesCount();
                             CalculationDelete();
                         }
                         break; /*SUNMI*/
@@ -2893,7 +2900,6 @@ LEFT JOIN pos_guzest pg
                         if (IsSuccess)
                         {
                             clear();
-                            textEdit11.Text = DbProsedures.GET_TotalSalesCount();
                             CalculationDelete();
                         }
                         break; /*OMNITECH*/
@@ -2912,10 +2918,11 @@ LEFT JOIN pos_guzest pg
                         });
 
                         clear();
-                        textEdit11.Text = DbProsedures.GET_TotalSalesCount();
                         CalculationDelete();
                         break; /*XPRINTER*/
                 }
+
+
             }
             catch (WebException ex) when (ex.Status is WebExceptionStatus.ConnectFailure)
             {
@@ -2930,6 +2937,7 @@ LEFT JOIN pos_guzest pg
             finally
             {
                 textEdit1.Text = DbProsedures.GET_SalesProcessNo();
+                textEdit11.Text = await DbProsedures.GET_TotalSalesCount();
             }
 
             tBarcode.Focus();
@@ -3288,7 +3296,7 @@ LEFT JOIN pos_guzest pg
         }
 
 
-        private void nbasales(DTOs.SalesDto salesData/*decimal cash_, decimal card_, decimal umumi_mebleg_, decimal _incomingSum = default, decimal _qaliq = default*/)
+        private async void nbasales(DTOs.SalesDto salesData/*decimal cash_, decimal card_, decimal umumi_mebleg_, decimal _incomingSum = default, decimal _qaliq = default*/)
         {
             string RequestSendJson = string.Empty;
             string ResponseSendJson = string.Empty;
@@ -3691,7 +3699,7 @@ from  dbo.item where user_id = {Properties.Settings.Default.UserID}";
                     textBox3.Text = weatherForecast.data.document_id;
                     clear();
                     textEdit1.Text = DbProsedures.GET_SalesProcessNo();
-                    textEdit11.Text = DbProsedures.GET_TotalSalesCount();
+                    textEdit11.Text = await DbProsedures.GET_TotalSalesCount();
 
                     Log($"Pos satışı uğurla edildi. Qəbz №: {weatherForecast.data.document_number}");
 
@@ -3929,7 +3937,7 @@ from  dbo.item where user_id = {Properties.Settings.Default.UserID}";
 
         }
 
-        private void paysales(decimal cash_, decimal card_, decimal umumi_mebleg_)
+        private async void paysales(decimal cash_, decimal card_, decimal umumi_mebleg_)
         {
             string p = "";
             string productsa = "\"items\":[";
@@ -3938,10 +3946,8 @@ from  dbo.item where user_id = {Properties.Settings.Default.UserID}";
 
             try
             {
-                SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
-                SqlConnection conn2 = new SqlConnection();
+                SqlConnection conn2 = new SqlConnection(DbHelpers.CurrentConnectionString);
                 SqlCommand cmd2 = new SqlCommand();
-                conn2.ConnectionString = Properties.Settings.Default.SqlCon;
                 conn2.Open();
                 string query2 = DbHelpers.GetHeaderDataQuery;
 
@@ -4033,7 +4039,7 @@ from  dbo.item where user_id = {Properties.Settings.Default.UserID}";
                 textBox3.Text = a;
                 clear();
                 textEdit1.Text = DbProsedures.GET_SalesProcessNo();
-                textEdit11.Text = DbProsedures.GET_TotalSalesCount();
+                textEdit11.Text = await DbProsedures.GET_TotalSalesCount();
 
                 //     st_.azmart_sale_insert_(weatherForecast.documentId, weatherForecast.documentNumber.ToString(),
                 //weatherForecast.shortDocumentId, response.Content.ToString(), p_id, textEdit1.Text.ToString(), cash_, card_, umumi_mebleg_);
@@ -4059,7 +4065,7 @@ from  dbo.item where user_id = {Properties.Settings.Default.UserID}";
             }
         }
 
-        private void xprintersales(decimal cash_, decimal card_, decimal umumi_mebleg_, decimal incomingSum = default)
+        private async void xprintersales(decimal cash_, decimal card_, decimal umumi_mebleg_, decimal incomingSum = default)
         {
             try
             {
@@ -4088,7 +4094,8 @@ from  dbo.item where user_id = {Properties.Settings.Default.UserID}";
                 SqlCommand cmd = new SqlCommand();
                 conn.ConnectionString = Properties.Settings.Default.SqlCon;
                 conn.Open();
-                string query = $"select name,code,salePrice,quantity,case  vatType when 1 then '18' when 3 then '0' when 4 then '2' when 5 then '8' else 0 end as vatType,quantityType,salePrice*quantity as ssum from  dbo.item WHERE user_id = {Properties.Settings.Default.UserID};";
+                string query =
+                    $"select name,code,salePrice,quantity,case  vatType when 1 then '18' when 3 then '0' when 4 then '2' when 5 then '8' else 0 end as vatType,quantityType,salePrice*quantity as ssum from  dbo.item WHERE user_id = {Properties.Settings.Default.UserID};";
 
                 cmd.Connection = conn;
                 cmd.CommandText = query;
@@ -4129,7 +4136,6 @@ from  dbo.item where user_id = {Properties.Settings.Default.UserID}";
                 });
 
                 clear();
-                textEdit11.Text = DbProsedures.GET_TotalSalesCount();
                 CalculationDelete();
 
                 if (_IsReceipt)
@@ -4140,6 +4146,10 @@ from  dbo.item where user_id = {Properties.Settings.Default.UserID}";
             catch (Exception e)
             {
                 ReadyMessages.ERROR_DEFAULT_MESSAGE(e.Message);
+            }
+            finally
+            {
+                textEdit11.Text = await DbProsedures.GET_TotalSalesCount();
             }
         }
 
@@ -6000,7 +6010,6 @@ WHERE rn = 1;";
 
             await getall(tBarcode.Text);
             await get(textEdit1.Text);
-            get_say_birmal(tBarcode.Text, textEdit1.Text);
             tBarcode.Text = string.Empty;
 
             get_cem(textEdit1.Text);
@@ -6086,6 +6095,246 @@ WHERE rn = 1;";
                     }
                 }
             }
+        }
+
+        private void bScaleSync_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            if (!UserCacheService.User.UserRole.ScalesProductDownload)
+            {
+                FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
+                return;
+            }
+
+            var terezi = DbProsedures.GetTerezi();
+
+            if (terezi == null)
+            {
+                FormHelpers.Alert("Tərəzi seçimi edilməyib", MessageType.Warning);
+                return;
+            }
+
+            CreateGridControlScale();
+
+
+            try
+            {
+                string message = "Excel faylına istəyə görə bütün məhsulları vəya KQ olan məhsulları yazdıra bilərsiniz.\n\n" +
+             "Yes/Да - Bütün məhsulları yazdır\n" +
+             "No/Нет - Vahidi KQ olan məhsulları yazdır\n" +
+             "Cancel/Отмена - Ləğv et";
+
+                DialogResult result = MessageBox.Show(message, "Mesaj", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                string query = string.Empty;
+
+                switch (result)
+                {
+                    case DialogResult.Yes:
+                        query = "exec InsertIntoTerazimalzemeAllProducts";
+                        break;
+                    case DialogResult.No:
+                        query = "exec InsertIntoTerazimalzemeFilteredByVahid";
+                        break;
+                    default: return;
+
+                }
+
+                using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    con.Open();
+                    cmd.CommandTimeout = 60;
+                    cmd.ExecuteNonQuery();
+                    _viewScale.ClearSelection();
+                    _gridScale.DataSource = null;
+                }
+
+                string queryString = null;
+
+                switch (terezi.ModelName.Trim())
+                {
+                    case "Rongta RLS 1100":
+                        queryString = @"SELECT  ROW_NUMBER() OVER(ORDER BY [MƏHSUL ADI]) AS Hotkey,
+REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE([MƏHSUL ADI],N'Ə','E'),N'ə','e'),N'ı','i'),N'ü','u'),N'ğ','g'),N'Ğ','G' ),N'Ü','U'),N'Ş','S'),N'ş','s'),N'Ç','C'),N'ç','c')  as Name  ,
+[MAL_ALISI_DETAILS_ID] as LFCode,
+[MAL_ALISI_DETAILS_ID] as Code ,
+7 AS [Barcode Type],
+CAST([SATIŞ QİYMƏTİ] * 100 AS INT) AS [Unit Price],
+4 AS [Unit Weight],
+0 AS [Department],
+0 AS [Unit Amount] ,
+15 AS [Shelf Time],
+0 AS [PT Weight],
+0 AS [Pack Type],
+0 AS [Tare],
+0 AS [Error(%)],
+0 AS [Message1],
+0 AS [Message2],
+0 AS [Label],
+0 AS [Discount/Table],
+0 AS [Account],
+0 AS [sPluFieldTitle20],
+0 AS [Account],	
+0 AS [Recommend days],
+0 AS [nutrition],
+0 AS [Ice(%)] FROM[terazimalzeme]";
+                        break;
+                    case "MERC LB 1100":
+                        queryString = @"SELECT
+[MAL_ALISI_DETAILS_ID], 
+REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE([MƏHSUL ADI],N'Ə','E'),N'ə','e'),N'ı','i'),N'ü','u'),N'ğ','g'),N'Ğ','G' ),N'Ü','U'),N'Ş','S'),N'ş','s'),N'Ç','C'),N'ç','c'),
+[MAL_ALISI_DETAILS_ID],
+[MAL_ALISI_DETAILS_ID],
+07,
+CAST([SATIŞ QİYMƏTİ] * 100 AS INT) AS SALEPRİCE,
+4,
+0,
+0,
+000,
+15,
+0,
+0,
+000,
+0,
+1,
+0,
+0,
+0,
+4
+FROM[terazimalzeme]";
+                        break;
+                }
+
+                var data = DbProsedures.ConvertToDataTable(queryString);
+
+                _gridScale.DataSource = data;
+
+                _viewScale.OptionsView.ShowColumnHeaders = false;
+
+
+
+                if (terezi.ModelName.Trim() is "Rongta RLS 1100")
+                {
+                    string filePath = string.Empty;
+                    if (!string.IsNullOrWhiteSpace(terezi.FilePath))
+                    {
+                        string directoryPath = Path.GetDirectoryName(terezi.FilePath); //plu.exe ni almadan filePath alır
+                        filePath = $@"{directoryPath}\rtPLU_EN.TXP"; //C:\Program Files (x86)\RLS1000\rtPLU_EN.TXP
+                    }
+                    else
+                    {
+                        using (SaveFileDialog saveFile = new SaveFileDialog())
+                        {
+                            saveFile.Filter = "TXP Faylı|*.txp";
+                            saveFile.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                            saveFile.OverwritePrompt = true;
+                            saveFile.FileName = "rtPLU_EN.TXP";
+                            if (saveFile.ShowDialog() is DialogResult.OK)
+                            {
+                                filePath = saveFile.FileName;
+                            }
+                        }
+                    }
+
+                    using (StreamWriter writer = new StreamWriter(filePath, false, Encoding.UTF8))
+                    {
+                        for (int i = 0; i < _viewScale.RowCount; i++)
+                        {
+                            var values = new List<string>();
+                            for (int j = 0; j < _viewScale.VisibleColumns.Count; j++)
+                            {
+                                var value = _viewScale.GetRowCellValue(i, _viewScale.VisibleColumns[j])?.ToString()?.Trim() ?? "";
+                                values.Add(value);
+                            }
+                            string line = string.Join("\t", values);
+                            writer.WriteLine(line);
+                        }
+                    }
+                    if (!string.IsNullOrWhiteSpace(terezi.FilePath))
+                    {
+                        Cursor.Current = Cursors.WaitCursor;
+                        Process.Start(terezi.FilePath);
+                        Cursor.Current = Cursors.Default;
+                    }
+                    Alert($"{terezi.ModelName} tərəzisinin məhsulları sinxron edildi", MessageType.Success);
+                    #region BEFORE CODE
+                    //using (SaveFileDialog saveFile = new SaveFileDialog())
+                    //{
+                    //    saveFile.Filter = "Excel Faylı|*.xls";
+                    //    saveFile.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                    //    saveFile.OverwritePrompt = true;
+                    //    saveFile.FileName = "Terezi_Mehsullar.xls";
+                    //    if (saveFile.ShowDialog() is DialogResult.OK)
+                    //    {
+                    //        gridView2.ExportToCsv(saveFile.FileName, new DevExpress.XtraPrinting.CsvExportOptions { Separator = "\t" });
+                    //        Alert($"{terezi.ModelName} tərəzisinin məhsulları export edildi", MessageType.Success);
+                    //    }
+                    //}
+                    #endregion BEFORE CODE
+                }
+                else
+                {
+                    string filePath = string.Empty;
+
+                    if (!string.IsNullOrWhiteSpace(terezi.FilePath))
+                    {
+                        string directoryPath = Path.GetDirectoryName(terezi.FilePath); //plu.exe ni almadan sadəcə filePath alır
+                        string parentPath = Directory.GetParent(directoryPath).FullName; //bin folderindəndə çıxaraq LB-MNE papkasının içində olur
+                        filePath = $@"{parentPath}\demos\PLU.CSV";
+                    }
+                    else
+                    {
+                        using (SaveFileDialog saveFile = new SaveFileDialog())
+                        {
+                            saveFile.Filter = "CSV Faylı|*.csv";
+                            saveFile.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                            saveFile.OverwritePrompt = true;
+                            saveFile.FileName = "PLU.csv";
+                            if (saveFile.ShowDialog() is DialogResult.OK)
+                            {
+                                filePath = saveFile.FileName;
+                            }
+                        }
+                    }
+
+                    using (StreamWriter writer = new StreamWriter(filePath, false, Encoding.UTF8))
+                    {
+                        for (int i = 0; i < _viewScale.RowCount; i++)
+                        {
+                            var values = new List<string>();
+                            for (int j = 0; j < _viewScale.VisibleColumns.Count; j++)
+                            {
+                                var value = _viewScale.GetRowCellValue(i, _viewScale.VisibleColumns[j])?.ToString()?.Trim() ?? "";
+                                values.Add(value);
+                            }
+                            string line = string.Join(",", values);
+                            writer.WriteLine(line);
+                        }
+                    }
+                    if (!string.IsNullOrWhiteSpace(terezi.FilePath))
+                    {
+                        Cursor.Current = Cursors.WaitCursor;
+                        Process.Start(terezi.FilePath);
+                        Cursor.Current = Cursors.Default;
+                    }
+                    Alert($"{terezi.ModelName} tərəzisinin məhsulları sinxron edildi", MessageType.Success);
+                }
+            }
+            catch (Exception ex)
+            {
+                ReadyMessages.ERROR_DEFAULT_MESSAGE(ex.Message);
+            }
+        }
+
+        private void CreateGridControlScale()
+        {
+            _gridScale = new GridControl
+            {
+                Visible = false,
+            };
+
+            _viewScale = new GridView();
+            _gridScale.MainView = _viewScale;
+            _gridScale.ViewCollection.Add(_viewScale);
         }
     }
 }

@@ -526,7 +526,6 @@
             this.bProductDelete.TabIndex = 10;
             this.bProductDelete.Text = "MƏHSULU SİL";
             this.bProductDelete.Visible = false;
-            this.bProductDelete.Click += new System.EventHandler(this.bProductDelete_Click);
             // 
             // panelControl1
             // 
@@ -624,10 +623,10 @@
             // 
             this.tStockAmount.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tStockAmount.Location = new System.Drawing.Point(219, 260);
+            this.tStockAmount.Location = new System.Drawing.Point(182, 260);
             this.tStockAmount.Name = "tStockAmount";
             this.tStockAmount.Properties.ReadOnly = true;
-            this.tStockAmount.Size = new System.Drawing.Size(583, 30);
+            this.tStockAmount.Size = new System.Drawing.Size(620, 30);
             this.tStockAmount.TabIndex = 7;
             this.tStockAmount.TabStop = false;
             // 
@@ -635,10 +634,10 @@
             // 
             this.tTaxtType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tTaxtType.Location = new System.Drawing.Point(219, 224);
+            this.tTaxtType.Location = new System.Drawing.Point(182, 224);
             this.tTaxtType.Name = "tTaxtType";
             this.tTaxtType.Properties.ReadOnly = true;
-            this.tTaxtType.Size = new System.Drawing.Size(583, 30);
+            this.tTaxtType.Size = new System.Drawing.Size(620, 30);
             this.tTaxtType.TabIndex = 7;
             this.tTaxtType.TabStop = false;
             // 
@@ -646,10 +645,10 @@
             // 
             this.tSalePrice.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tSalePrice.Location = new System.Drawing.Point(219, 188);
+            this.tSalePrice.Location = new System.Drawing.Point(182, 188);
             this.tSalePrice.Name = "tSalePrice";
             this.tSalePrice.Properties.ReadOnly = true;
-            this.tSalePrice.Size = new System.Drawing.Size(583, 30);
+            this.tSalePrice.Size = new System.Drawing.Size(620, 30);
             this.tSalePrice.TabIndex = 7;
             this.tSalePrice.TabStop = false;
             // 
@@ -657,10 +656,10 @@
             // 
             this.tPurchasePrice.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tPurchasePrice.Location = new System.Drawing.Point(219, 152);
+            this.tPurchasePrice.Location = new System.Drawing.Point(182, 152);
             this.tPurchasePrice.Name = "tPurchasePrice";
             this.tPurchasePrice.Properties.ReadOnly = true;
-            this.tPurchasePrice.Size = new System.Drawing.Size(583, 30);
+            this.tPurchasePrice.Size = new System.Drawing.Size(620, 30);
             this.tPurchasePrice.TabIndex = 7;
             this.tPurchasePrice.TabStop = false;
             // 
@@ -668,10 +667,10 @@
             // 
             this.tProductCode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tProductCode.Location = new System.Drawing.Point(219, 116);
+            this.tProductCode.Location = new System.Drawing.Point(182, 116);
             this.tProductCode.Name = "tProductCode";
             this.tProductCode.Properties.ReadOnly = true;
-            this.tProductCode.Size = new System.Drawing.Size(583, 30);
+            this.tProductCode.Size = new System.Drawing.Size(620, 30);
             this.tProductCode.TabIndex = 7;
             this.tProductCode.TabStop = false;
             // 
@@ -679,10 +678,10 @@
             // 
             this.tBarcode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tBarcode.Location = new System.Drawing.Point(219, 80);
+            this.tBarcode.Location = new System.Drawing.Point(182, 80);
             this.tBarcode.Name = "tBarcode";
             this.tBarcode.Properties.ReadOnly = true;
-            this.tBarcode.Size = new System.Drawing.Size(583, 30);
+            this.tBarcode.Size = new System.Drawing.Size(620, 30);
             this.tBarcode.TabIndex = 7;
             this.tBarcode.TabStop = false;
             // 
@@ -690,10 +689,10 @@
             // 
             this.tProductName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tProductName.Location = new System.Drawing.Point(219, 44);
+            this.tProductName.Location = new System.Drawing.Point(182, 44);
             this.tProductName.Name = "tProductName";
             this.tProductName.Properties.ReadOnly = true;
-            this.tProductName.Size = new System.Drawing.Size(583, 30);
+            this.tProductName.Size = new System.Drawing.Size(620, 30);
             this.tProductName.TabIndex = 7;
             this.tProductName.TabStop = false;
             // 
@@ -701,10 +700,10 @@
             // 
             this.tSupplierName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tSupplierName.Location = new System.Drawing.Point(219, 8);
+            this.tSupplierName.Location = new System.Drawing.Point(182, 8);
             this.tSupplierName.Name = "tSupplierName";
             this.tSupplierName.Properties.ReadOnly = true;
-            this.tSupplierName.Size = new System.Drawing.Size(583, 30);
+            this.tSupplierName.Size = new System.Drawing.Size(620, 30);
             this.tSupplierName.TabIndex = 7;
             this.tSupplierName.TabStop = false;
             // 
@@ -735,6 +734,7 @@
             this.picImage.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Stretch;
             this.picImage.Size = new System.Drawing.Size(387, 297);
             this.picImage.TabIndex = 0;
+            this.picImage.Visible = false;
             // 
             // chSaleHistory
             // 

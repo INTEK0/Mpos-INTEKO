@@ -2,28 +2,21 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Data.SqlClient;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using DevExpress.Xpo.DB.Helpers;
-using DevExpress.XtraEditors;
-using DevExpress.XtraGrid.Columns;
 using Newtonsoft.Json;
-using WindowsFormsApp2.Helpers.DB;
 
 namespace WindowsFormsApp2.Forms
 {
     public partial class fColumnSettings : DevExpress.XtraEditors.XtraForm
     {
         private readonly string filePath = $@"{Application.StartupPath}\LocalFiles\GridColumnsSettings.json";
-        public fColumnSettings()
+        private readonly string _tableName; 
+        public fColumnSettings(string tableName)
         {
             InitializeComponent();
+            _tableName = tableName;
             JsonDataLoad();
         }
 
@@ -35,7 +28,7 @@ namespace WindowsFormsApp2.Forms
 
                 var tables = JsonConvert.DeserializeObject<List<dynamic>>(jsonData);
 
-                var table = tables.FirstOrDefault(t => t.TableName == "Customers");
+                var table = tables.FirstOrDefault(t => t.TableName == _tableName);
                 if (table != null)
                 {
                     DataTable dt = new DataTable();
@@ -83,11 +76,11 @@ namespace WindowsFormsApp2.Forms
             string jsonData = File.ReadAllText(filePath);
             var settings = JsonConvert.DeserializeObject<List<dynamic>>(jsonData);
 
-            settings.RemoveAll(s => s.TableName == "Customers");
+            settings.RemoveAll(s => s.TableName == _tableName);
 
             var newSettings = new
             {
-                TableName = "Customers",  
+                TableName = _tableName,  
                 Columns = allRows        
             };
 
@@ -108,10 +101,13 @@ namespace WindowsFormsApp2.Forms
 
         private void gridView1_ShowingEditor(object sender, CancelEventArgs e)
         {
-            string fieldName = gridView1.GetRowCellValue(gridView1.FocusedRowHandle, "FieldName").ToString();
-            if (fieldName == "MUSTERILER_ID")
+            if (_tableName == "Customers")
             {
-                e.Cancel = true;  // Düzenlemeyi iptal et
+                string fieldName = gridView1.GetRowCellValue(gridView1.FocusedRowHandle, "FieldName").ToString();
+                if (fieldName == "MUSTERILER_ID")
+                {
+                    e.Cancel = true;
+                }
             }
         }
     }

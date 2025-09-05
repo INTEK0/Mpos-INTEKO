@@ -279,16 +279,24 @@ namespace WindowsFormsApp2.NKA
 
             var response = RequestPOST(ipAddress, json);
 
-            if (response.message is "Successful operation")
+            if (response != null)
             {
-                if (MessageVisible)
+                if (response.message is "Successful operation")
                 {
-                    ReadyMessages.SUCCESS_CLOSE_SHIFT_MESSAGE();
+                    if (MessageVisible)
+                    {
+                        ReadyMessages.SUCCESS_CLOSE_SHIFT_MESSAGE();
+                    }
+                    FormHelpers.Log($"{CommonData.SUCCESS_CLOSE_SHIFT}\n" +
+                                    $"Növbənin açılma vaxtı: {response.data.shiftOpenAtUtc}\n" +
+                                    $"Növbənin bağlanma vaxtı: {response.data.createdAtUtc}");
                 }
-                FormHelpers.Log($"{CommonData.SUCCESS_CLOSE_SHIFT}\n" +
-                                $"Növbənin açılma vaxtı: {response.data.shiftOpenAtUtc}\n" +
-                                $"Növbənin bağlanma vaxtı: {response.data.createdAtUtc}");
             }
+            else
+            {
+                
+            }
+
         }
 
         public static void XReport(string ipAddress, string accessToken)
@@ -1696,7 +1704,7 @@ case A.VERGI_DERECESI
 
                     short paymentType = (short)(creditData.CashPayment > 0 ? 1 : 2);
 
-                    DbProsedures.UPDATE_CreditPay(response.short_id, 
+                    DbProsedures.UPDATE_CreditPay(response.short_id,
                         response.long_id,
                         response.document_number.ToString(),
                         paymentType,

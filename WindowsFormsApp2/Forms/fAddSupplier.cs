@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Data;
+using System.Data.SqlClient;
 using System.Windows.Forms;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
@@ -136,8 +138,7 @@ namespace WindowsFormsApp2.Forms
                 }
             }
 
-            bool response = DbProsedures.UpdateSupplier(supplier);
-            if (response)
+            if (DbProsedures.UpdateSupplier(supplier))
             {
                 string message = $"{tSupplierName.Text} təchizatçısında düzəliş edildi";
                 FormHelpers.Alert(message, Enums.MessageType.Success);
@@ -166,7 +167,23 @@ namespace WindowsFormsApp2.Forms
                 tBankCode.Text = supplier?.BankCode;
                 tBankSwift.Text = supplier?.BankSwift;
                 bAdd.Text = Enums.GetEnumDescription(Enums.Operation.Update);
-                tSupplierName.Enabled = false;
+
+                string query = $@"SELECT COUNT(*) from MAL_ALISI_MAIN ma
+inner join COMPANY.TECHIZATCI t ON ma.TECHIZATCI_ID = t.TECHIZATCI_ID
+inner join MAL_ALISI_DETAILS md ON md.MAL_ALISI_MAIN_ID = ma.MAL_ALISI_MAIN_ID
+where ma.TECHIZATCI_ID = {supplier.SupplierID} AND md.IsDeleted = 0";
+                using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
+                using (SqlCommand cmd = new SqlCommand(query,con))
+                {
+                    if (con.State != ConnectionState.Open)
+                        con.Open();
+
+                    int count = (int)cmd.ExecuteScalar();
+                    if (count is 0)
+                        tSupplierName.Enabled = true;
+                    else
+                        tSupplierName.Enabled = false;
+                }
             }
         }
 

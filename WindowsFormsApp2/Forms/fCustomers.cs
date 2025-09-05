@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using DevExpress.Xpo.DB.Helpers;
+using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Localization;
 using Newtonsoft.Json;
 using WindowsFormsApp2.Helpers;
@@ -26,7 +27,6 @@ namespace WindowsFormsApp2.Forms
             parentForm = _parent;
             InitializeComponent();
             GridPanelText(gridView1);
-            GridLocalizer.Active = new MyGridLocalizer();
         }
 
         private void fCustomers_Load(object sender, EventArgs e)
@@ -36,22 +36,30 @@ namespace WindowsFormsApp2.Forms
 
         private void bDelete_Click(object sender, EventArgs e)
         {
-            int[] selectedRows = gridView1.GetSelectedRows();
+            var message = XtraMessageBox.Show("Müştərini silmək istədiyinizə əminsiniz ?",
+                nameof(Enums.HeaderMessage.Bildiriş),
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
 
-            foreach (int item in selectedRows)
+            if (message is DialogResult.Yes)
             {
-                var row = gridView1.GetDataRow(item);
-                if (row == null) { return; }
-                int customerId = Convert.ToInt32(row["MUSTERILER_ID"].ToString());
-                string nameSurname = row["AD SOYAD ATA ADI"].ToString();
-                if (!string.IsNullOrWhiteSpace(customerId.ToString()))
+                int[] selectedRows = gridView1.GetSelectedRows();
+
+                foreach (int item in selectedRows)
                 {
-                    bool response = DbProsedures.DeleteCustomer(customerId);
-                    if (response is true)
+                    var row = gridView1.GetDataRow(item);
+                    if (row == null) { return; }
+                    int customerId = Convert.ToInt32(row["MUSTERILER_ID"].ToString());
+                    string nameSurname = row["AD SOYAD ATA ADI"].ToString();
+                    if (!string.IsNullOrWhiteSpace(customerId.ToString()))
                     {
-                        Alert($"{nameSurname} müştərisi uğurla silindi", Enums.MessageType.Success);
-                        Log($"{nameSurname} müştərisi silindi");
-                        CustomerDataLoad();
+                        bool response = DbProsedures.DeleteCustomer(customerId);
+                        if (response is true)
+                        {
+                            Alert($"{nameSurname} müştərisi uğurla silindi", Enums.MessageType.Success);
+                            Log($"{nameSurname} müştərisi silindi");
+                            CustomerDataLoad();
+                        }
                     }
                 }
             }
@@ -114,7 +122,7 @@ namespace WindowsFormsApp2.Forms
 
                     if (visibleColumns != null)
                     {
-                        
+
                         var data = DbProsedures.ConvertToDataTable("SELECT * FROM dbo.fn_MUSTERI()");
 
                         foreach (DataColumn column in data.Columns.Cast<DataColumn>().ToList())
@@ -133,12 +141,12 @@ namespace WindowsFormsApp2.Forms
                     }
                 }
             }
-            
+
         }
 
         private void bShowColumns_Click(object sender, EventArgs e)
         {
-            fColumnSettings f = new fColumnSettings();
+            fColumnSettings f = new fColumnSettings("Customers");
             f.ShowDialog();
         }
     }

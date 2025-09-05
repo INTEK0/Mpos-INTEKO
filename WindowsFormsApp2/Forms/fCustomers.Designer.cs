@@ -55,7 +55,7 @@ namespace WindowsFormsApp2.Forms
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 44F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1053, 586);
             this.tableLayoutPanel1.TabIndex = 0;
@@ -64,11 +64,11 @@ namespace WindowsFormsApp2.Forms
             // 
             this.gridControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gridControl1.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
-            this.gridControl1.Location = new System.Drawing.Point(4, 54);
+            this.gridControl1.Location = new System.Drawing.Point(4, 48);
             this.gridControl1.MainView = this.gridView1;
             this.gridControl1.Margin = new System.Windows.Forms.Padding(4);
             this.gridControl1.Name = "gridControl1";
-            this.gridControl1.Size = new System.Drawing.Size(1045, 528);
+            this.gridControl1.Size = new System.Drawing.Size(1045, 534);
             this.gridControl1.TabIndex = 3;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
@@ -99,7 +99,7 @@ namespace WindowsFormsApp2.Forms
             this.panelControl1.Location = new System.Drawing.Point(1, 1);
             this.panelControl1.Margin = new System.Windows.Forms.Padding(1);
             this.panelControl1.Name = "panelControl1";
-            this.panelControl1.Size = new System.Drawing.Size(1051, 48);
+            this.panelControl1.Size = new System.Drawing.Size(1051, 42);
             this.panelControl1.TabIndex = 4;
             // 
             // bPrint
@@ -116,7 +116,7 @@ namespace WindowsFormsApp2.Forms
             this.bPrint.LookAndFeel.UseDefaultLookAndFeel = false;
             this.bPrint.Name = "bPrint";
             this.bPrint.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.bPrint.Size = new System.Drawing.Size(114, 44);
+            this.bPrint.Size = new System.Drawing.Size(114, 38);
             this.bPrint.TabIndex = 2;
             this.bPrint.TabStop = false;
             this.bPrint.Text = "Çap et";
@@ -130,12 +130,12 @@ namespace WindowsFormsApp2.Forms
             this.bShowColumns.Appearance.Options.UseBackColor = true;
             this.bShowColumns.Appearance.Options.UseFont = true;
             this.bShowColumns.ImageOptions.SvgImageSize = new System.Drawing.Size(24, 24);
-            this.bShowColumns.Location = new System.Drawing.Point(355, 4);
+            this.bShowColumns.Location = new System.Drawing.Point(245, 4);
             this.bShowColumns.LookAndFeel.SkinName = "WXI";
             this.bShowColumns.LookAndFeel.UseDefaultLookAndFeel = false;
             this.bShowColumns.Name = "bShowColumns";
             this.bShowColumns.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.bShowColumns.Size = new System.Drawing.Size(190, 42);
+            this.bShowColumns.Size = new System.Drawing.Size(190, 34);
             this.bShowColumns.TabIndex = 2;
             this.bShowColumns.TabStop = false;
             this.bShowColumns.Text = "Göstəriləcək sütunlar";
@@ -149,12 +149,12 @@ namespace WindowsFormsApp2.Forms
             this.bDelete.Appearance.Options.UseBackColor = true;
             this.bDelete.Appearance.Options.UseFont = true;
             this.bDelete.ImageOptions.SvgImageSize = new System.Drawing.Size(24, 24);
-            this.bDelete.Location = new System.Drawing.Point(183, 4);
+            this.bDelete.Location = new System.Drawing.Point(149, 4);
             this.bDelete.LookAndFeel.SkinName = "WXI";
             this.bDelete.LookAndFeel.UseDefaultLookAndFeel = false;
             this.bDelete.Name = "bDelete";
             this.bDelete.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.bDelete.Size = new System.Drawing.Size(166, 42);
+            this.bDelete.Size = new System.Drawing.Size(90, 34);
             this.bDelete.TabIndex = 2;
             this.bDelete.TabStop = false;
             this.bDelete.Text = "Sil";
@@ -172,7 +172,7 @@ namespace WindowsFormsApp2.Forms
             this.bEdit.LookAndFeel.UseDefaultLookAndFeel = false;
             this.bEdit.Name = "bEdit";
             this.bEdit.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.bEdit.Size = new System.Drawing.Size(166, 42);
+            this.bEdit.Size = new System.Drawing.Size(132, 34);
             this.bEdit.TabIndex = 2;
             this.bEdit.TabStop = false;
             this.bEdit.Text = "Düzəliş et";

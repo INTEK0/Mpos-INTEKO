@@ -424,7 +424,6 @@ where
                 chProductBarcodePrint.Checked = false;
                 chProductBarcodePrint.Enabled = false;
                 chScalesProductDownload.Checked = false;
-                chScalesProductDownload.Enabled = false;
                 chSuppliers.Checked = false;
                 chSuppliers.Enabled = false;
                 chCustomers.Checked = false;

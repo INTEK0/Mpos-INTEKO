@@ -1,15 +1,13 @@
-﻿using DevExpress.XtraEditors;
-using DevExpress.XtraGrid;
-using System;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DevExpress.XtraGrid;
 using WindowsFormsApp2.Forms;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
-using WindowsFormsApp2.Helpers.Messages;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
 using static WindowsFormsApp2.Helpers.FormHelpers;
 
@@ -17,6 +15,7 @@ namespace WindowsFormsApp2
 {
     public partial class ANBAR_GALIGI : BaseForm
     {
+        private readonly string filePath = $@"{Application.StartupPath}\LocalFiles\GridColumnsSettings.json";
         public ANBAR_GALIGI()
         {
             InitializeComponent();
@@ -31,72 +30,62 @@ namespace WindowsFormsApp2
         private void simpleButton3_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(dateEdit4.Text))
-            {
-                XtraMessageBox.Show("TARİX ARALIĞI SEÇİLMƏYİB");
-            }
+                FormHelpers.Alert("Tarix seçimi edilməyib", Enums.MessageType.Warning);
             else
-            {
                 getall(Convert.ToDateTime(dateEdit4.Text));
-            }
         }
 
         private void getall(DateTime D2_)
         {
-            try
+            Cursor.Current = Cursors.WaitCursor;
+            if (D2_.Date == DateTime.Now.Date)
+                D2_ = D2_.AddDays(1);
+
+            string queryString = "gaime_Satis_mal_load_tarixle @d1 = @pricepoint1";
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(queryString, con))
             {
-                Cursor.Current = Cursors.WaitCursor;
-                using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
+                cmd.CommandTimeout = 300;
+                cmd.Parameters.AddWithValue("@pricepoint1", D2_);
+                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                using (DataTable dt = new DataTable())
                 {
-                    string queryString = "gaime_Satis_mal_load_tarixle @d1 = @pricepoint1";
-                    using (SqlCommand cmd = new SqlCommand(queryString, con))
+                    da.Fill(dt);
+
+                    gridControl1.DataSource = dt;
+                    gridView1.Columns["ANBAR QALIĞI"].Summary.Clear();
+                    gridView1.Columns["ALIŞ QİYMƏTİ"].Summary.Clear();
+                    gridView1.Columns["SATIŞ QİYMƏTİ"].Summary.Clear();
+                    GridColumnSummaryItem stockSum = new GridColumnSummaryItem
                     {
-                        cmd.Parameters.AddWithValue("@pricepoint1", D2_);
-                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-                        {
-                            using (DataTable dt = new DataTable())
-                            {
-                                da.Fill(dt);
-                                gridControl1.DataSource = dt;
-                                gridView1.Columns["TECHIZATCI_ID"].Visible = false;
-                                gridView1.Columns["MAL_ALISI_DETAILS_ID"].Visible = false;
+                        FieldName = "ANBAR QALIĞI",
+                        SummaryType = DevExpress.Data.SummaryItemType.Sum,
+                        DisplayFormat = "{0:N2}"
+                    };
+                    GridColumnSummaryItem PuchaseSum = new GridColumnSummaryItem
+                    {
+                        FieldName = "ALIŞ QİYMƏTİ",
+                        SummaryType = DevExpress.Data.SummaryItemType.Sum,
+                        DisplayFormat = "{0:N2}",
 
-                                gridView1.OptionsView.ShowFooter = true;
-                                gridView1.Columns["ANBAR QALIĞI"].Summary.Clear();
-                                gridView1.Columns["ALIŞ QİYMƏTİ"].Summary.Clear();
-                                GridColumnSummaryItem stockSum = new GridColumnSummaryItem
-                                {
-                                    FieldName = "ANBAR QALIĞI",
-                                    SummaryType = DevExpress.Data.SummaryItemType.Sum,
-                                    DisplayFormat = "{0:N2}"
-                                };
-                                GridColumnSummaryItem PuchaseSum = new GridColumnSummaryItem
-                                {
-                                    FieldName = "ALIŞ QİYMƏTİ",
-                                    SummaryType = DevExpress.Data.SummaryItemType.Sum,
-                                    DisplayFormat = "{0:N2}",
+                    };
+                    GridColumnSummaryItem SaleSum = new GridColumnSummaryItem
+                    {
+                        FieldName = "SATIŞ QİYMƏTİ",
+                        SummaryType = DevExpress.Data.SummaryItemType.Sum,
+                        DisplayFormat = "{0:N2}",
 
-                                };
-                                gridView1.Columns["ANBAR QALIĞI"].Summary.Add(stockSum);
-                                gridView1.Columns["ALIŞ QİYMƏTİ"].Summary.Add(PuchaseSum);
-                            }
-                        }
-                    }
+                    };
+                    gridView1.Columns["ANBAR QALIĞI"].Summary.Add(stockSum);
+                    gridView1.Columns["ALIŞ QİYMƏTİ"].Summary.Add(PuchaseSum);
+                    gridView1.Columns["SATIŞ QİYMƏTİ"].Summary.Add(SaleSum);
                 }
-            }
-            catch (Exception e)
-            {
-                ReadyMessages.ERROR_DEFAULT_MESSAGE("Xəta!\n" + e);
-            }
-            finally
-            {
-                Cursor.Current = Cursors.Default;
             }
         }
 
         private void ANBAR_GALIGI_Load(object sender, EventArgs e)
         {
             dateEdit4.DateTime = DateTime.Now;
-            //dateEdit3.Text = dateTime.ToShortDateString();
         }
 
         private async void gridView1_DoubleClick(object sender, EventArgs e)
@@ -106,98 +95,30 @@ namespace WindowsFormsApp2
 
         private async Task GetProduct()
         {
-            string barcode = gridView1.GetFocusedRowCellValue("MƏHSUL KODU").ToString();
-
-            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            string supplierName = gridView1.GetFocusedRowCellValue("TƏCHİZATÇI")?.ToString() ?? "Yoxdur";
+            string name = gridView1.GetFocusedRowCellValue("MƏHSUL ADI")?.ToString() ?? "Yoxdur";
+            string code = gridView1.GetFocusedRowCellValue("MƏHSUL KODU")?.ToString() ?? "Yoxdur";
+            string barcode = gridView1.GetFocusedRowCellValue("MƏHSUL BARKOD")?.ToString() ?? "Yoxdur";
+            string unit = gridView1.GetFocusedRowCellValue("VAHİD")?.ToString() ?? "Yoxdur";
+            string tax = gridView1.GetFocusedRowCellValue("EDV")?.ToString() ?? "Yoxdur";
+            decimal purchasePrice = Convert.ToDecimal(gridView1.GetFocusedRowCellValue("ALIŞ QİYMƏTİ")?.ToString() ?? "0");
+            decimal salePrice = Convert.ToDecimal(gridView1.GetFocusedRowCellValue("SATIŞ QİYMƏTİ")?.ToString() ?? "0");
+            decimal quantity = Convert.ToDecimal(gridView1.GetFocusedRowCellValue("ANBAR QALIĞI")?.ToString() ?? "0");
+            ProductDetail _detail = new ProductDetail()
             {
-                await connection.OpenAsync();
-                string query = $"EXEC SELECT_PRODUCT_DATA_LOAD '{barcode}'";
-                
-                using (SqlCommand cmd = new SqlCommand(query, connection))
-                {
-                    cmd.CommandTimeout = 200;
-                    using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
-                    {
-                        ProductDetail _detail = null;
+                SupplierName = supplierName,
+                ProductName = name,
+                ProductCode = code,
+                Barcode = barcode,
+                UnitName = unit,
+                TaxName = tax,
+                PurchasePrice = purchasePrice,
+                SalePrice = salePrice,
+                StockAmount = quantity
 
-                        while (reader.Read())
-                        {
-                            if (_detail == null)
-                            {
-                                _detail = new ProductDetail
-                                {
-                                    ProductId = Convert.ToInt32(reader["ProductId"]),
-                                    ProductName = reader["ProductName"].ToString(),
-                                    ProductCode = reader["ProductCode"].ToString(),
-                                    Barcode = reader["Barcode"].ToString(),
-                                    //UnitName = reader["UnitName"].ToString(),
-                                    TaxName = reader["TaxName"].ToString(),
-                                    PurchasePrice = Convert.ToDecimal(reader["PurchasePrice"]),
-                                    SalePrice = Convert.ToDecimal(reader["SalePrice"]),
-                                    ProductImage = reader["ProductImage"] as byte[],
-                                    StockAmount = Convert.ToDecimal(reader["StockAmount"])
-                                };
-                            }
-
-                            string supplierId = reader["SupplierId"].ToString();
-                            if (!_detail.Suppliers.Exists(x => x.Id == supplierId))
-                            {
-                                _detail.Suppliers.Add(new ProductDetail.Supplier
-                                {
-                                    Id = supplierId,
-                                    Name = reader["SupplierName"].ToString()
-                                });
-                            }
-
-
-                            string unitName = reader["UnitName"].ToString();
-                            if (!_detail.Units.Exists(x => x.Name == unitName))
-                            {
-                                _detail.Units.Add(new ProductDetail.Unit
-                                {
-                                    Name = unitName
-                                });
-                            }
-                        }
-
-                        if (_detail != null)
-                        {
-                            fProductDetail detail = new fProductDetail(_detail);
-                            detail.ShowDialog();
-                        }
-                    }
-                }
-            }
-        }
-
-        public void GetProductSingleSupplier()
-        {
-            //Asenkron olandan imtina edilərsə və bir neçə təchizatçının gəlməsindən imtina edilərsə bu kodu istifadə et
-            string barcode = gridView1.GetFocusedRowCellValue("BARKOD").ToString();
-
-            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
-            {
-                connection.Open();
-                string query = $"EXEC SELECT_PRODUCT_DATA_LOAD '{barcode}'";
-                using (SqlCommand cmd = new SqlCommand(query, connection))
-                {
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            ProductDetail _detail = FormHelpers.MapReaderToObject<DatabaseClasses.ProductDetail>(reader);
-
-                            fProductDetail detail = new fProductDetail(_detail);
-                            detail.ShowDialog();
-                        }
-                    }
-                }
-            }
-        }
-
-        private void gridView1_CustomDrawFooter(object sender, DevExpress.XtraGrid.Views.Base.RowObjectCustomDrawEventArgs e)
-        {
-          
+            };
+            fProductDetail detail = new fProductDetail(_detail);
+            detail.ShowDialog();
         }
 
         private void gridView1_CustomDrawFooterCell(object sender, DevExpress.XtraGrid.Views.Grid.FooterCellCustomDrawEventArgs e)
@@ -205,10 +126,17 @@ namespace WindowsFormsApp2
             if (e.Column.SummaryItem.SummaryType == DevExpress.Data.SummaryItemType.Sum)
             {
                 e.Handled = true;
-                e.Appearance.BackColor = Color.Yellow;
+                e.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Question;
+                e.Appearance.ForeColor = Color.AliceBlue;
                 e.Appearance.DrawBackground(e.Cache, e.Bounds);
                 e.Appearance.DrawString(e.Cache, e.Info.DisplayText, e.Bounds);
             }
+        }
+
+        private void bShowColumns_Click(object sender, EventArgs e)
+        {
+            fColumnSettings f = new fColumnSettings("Stock");
+            f.ShowDialog();
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Web.Security;
 using System.Windows.Forms;
 using WindowsFormsApp2.Helpers.Messages;
+using static DevExpress.Xpo.Helpers.AssociatedCollectionCriteriaHelper;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
 using static WindowsFormsApp2.Helpers.DB.DTOs;
 using static WindowsFormsApp2.Helpers.Enums;
@@ -21,7 +22,6 @@ namespace WindowsFormsApp2.Helpers.DB
         private const string DELETE_ItemQuery = "delete_item";
         private const string INSERT_HeaderQuery = "INSERT_header";
         private const string INSERT_CalculationQuery = "insert_calculation";
-        private const string INSERT_PosRefundQuery = "insert_pos_gaytarma_manual";
         private const string GET_PosSalesProccesNoQuery = "exec dbo.pos_emeliyyat_nomre";
         private const string INSERT_PosBasketQuery = "InsertBasketData";
         private const string ExportPosBasketQuery = "ExportBasketDataToCalculation";
@@ -33,10 +33,8 @@ namespace WindowsFormsApp2.Helpers.DB
         private const string DELETE_MALALISIDETAILQuery = "DELETE_PRODUCT_MAL_ALIS_DETAILS";
         private const string INSERT_CustomerQuery = "INSERT_MUSTERI";
         private const string INSERT_DoctorQuery = "INSERT_DOCTOR";
-        private const string DELETE_CustomerQuery = "delete_customer";
         private const string DELETE_DoctorQuery = "delete_doctor";
         private const string GET_DoctorProccessNoQuery = "EXEC dbo.DOCTOR_EMELIYYAT_NOMRE";
-        private const string UPDATE_CustomerDataQuery = "UPDATE_MUSTERI";
         private const string UPDATE_DoctorDataQuery = "UPDATE_DOCTOR";
         private const string GET_SupplierProccessNoQuery = "EXEC dbo.TECHIZATCI_NOMRE";
         private const string DELETE_SupplierQuery = "search_techizatci_delete";
@@ -640,46 +638,46 @@ namespace WindowsFormsApp2.Helpers.DB
 
         public static int InsertPosRefund(PosRefund item)
         {
+            const string query = "insert_pos_gaytarma_manual";
             using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, connection))
             {
-                using (SqlCommand cmd = new SqlCommand(INSERT_PosRefundQuery, connection))
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlParameter param;
+                param = cmd.Parameters.Add("@emeliyyat_nomre", SqlDbType.NVarChar, 100);
+                param.Value = item.proccessNo;
+
+                param = cmd.Parameters.Add("@pos_satis_check_main_id", SqlDbType.Int);
+                param.Value = item.pos_satis_check_main_id;
+
+                param = cmd.Parameters.Add("@pos_satis_check_details", SqlDbType.Int);
+                param.Value = item.pos_satis_check_details_id;
+
+                param = cmd.Parameters.Add("@say", SqlDbType.Decimal);
+                param.Value = item.quantity;
+
+                param = cmd.Parameters.Add("@user_id_", SqlDbType.Int);
+                param.Value = Properties.Settings.Default.UserID;
+
+                param = cmd.Parameters.Add("@GEYD", SqlDbType.NVarChar, 250);
+                param.Value = item.comment;
+
+                connection.Open();
+                param = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
+                param.Direction = ParameterDirection.Output;
+                cmd.ExecuteNonQuery();
+
+
+                FormHelpers.OperationLog(new OperationLogs
                 {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    SqlParameter param;
-                    param = cmd.Parameters.Add("@emeliyyat_nomre", SqlDbType.NVarChar, 100);
-                    param.Value = item.proccessNo;
-
-                    param = cmd.Parameters.Add("@pos_satis_check_main_id", SqlDbType.Int);
-                    param.Value = item.pos_satis_check_main_id;
-
-                    param = cmd.Parameters.Add("@pos_satis_check_details", SqlDbType.Int);
-                    param.Value = item.pos_satis_check_details_id;
-
-                    param = cmd.Parameters.Add("@say", SqlDbType.Decimal);
-                    param.Value = item.quantity;
-
-                    param = cmd.Parameters.Add("@user_id_", SqlDbType.Int);
-                    param.Value = Properties.Settings.Default.UserID;
-
-                    param = cmd.Parameters.Add("@GEYD", SqlDbType.NVarChar, 250);
-                    param.Value = item.comment;
-
-                    connection.Open();
-                    param = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
-                    param.Direction = ParameterDirection.Output;
-                    cmd.ExecuteNonQuery();
+                    OperationType = OperationType.RefundPosSales,
+                    OperationId = Convert.ToInt32(param.Value)
+                });
 
 
-                    FormHelpers.OperationLog(new OperationLogs
-                    {
-                        OperationType = OperationType.RefundPosSales,
-                        OperationId = Convert.ToInt32(param.Value)
-                    });
-
-
-                    return Convert.ToInt32(param.Value);
-                }
+                return Convert.ToInt32(param.Value);
             }
+
         }
 
         public static string GET_SalesProcessNo()
@@ -701,14 +699,17 @@ namespace WindowsFormsApp2.Helpers.DB
             }
         }
 
-        public static string GET_TotalSalesCount()
+        public async static Task<string> GET_TotalSalesCount()
         {
-            const string query = "SELECT COUNT(*) FROM pos_satis_check_main";
+            const string query = @"SELECT COUNT(*) 
+FROM pos_satis_check_main
+WHERE date_ BETWEEN CAST(GETDATE() AS DATE) AND DATEADD(DAY, 1, CAST(GETDATE() AS DATE));";
             using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             using (SqlCommand cmd = new SqlCommand(query, connection))
             {
-                connection.Open();
-                int count = (int)cmd.ExecuteScalar();
+                await connection.OpenAsync();
+                var result = await cmd.ExecuteScalarAsync();
+                int count = (result == null || result == DBNull.Value) ? 0 : Convert.ToInt32(result);
                 return count.ToString();
             }
         }
@@ -813,18 +814,16 @@ namespace WindowsFormsApp2.Helpers.DB
         public static string GET_RefundProccessNo()
         {
             using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(GET_RefundProccesNoQuery, connection))
             {
-                using (SqlCommand cmd = new SqlCommand(GET_RefundProccesNoQuery, connection))
+                connection.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
                 {
-                    connection.Open();
-                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    if (dr.Read())
                     {
-                        if (dr.Read())
-                        {
-                            return dr[0].ToString();
-                        }
-                        return null;
+                        return dr[0].ToString();
                     }
+                    return null;
                 }
             }
         }
@@ -1311,7 +1310,7 @@ FROM
       cast(
         sum(
           isnull(BORC, 0.00)
-        ) as decimal(9, 3)
+        ) as decimal(18, 3)
       ) as BORC 
     from 
       (
@@ -1339,7 +1338,7 @@ FROM
       1 AS ID, 
       ISNULL(
         CAST(
-          SUM(MD.ALIS_GIYMETI * D.MIGDARI) AS decimal(9, 3)
+          SUM(MD.ALIS_GIYMETI * D.MIGDARI) AS decimal(18, 3)
         ), 
         0.00
       ) AS GAYTARMA_MEBLEG 
@@ -1354,18 +1353,16 @@ FROM
 ";
 
             using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, connection))
             {
-                using (SqlCommand cmd = new SqlCommand(query, connection))
+                connection.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
                 {
-                    connection.Open();
-                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    while (dr.Read())
                     {
-                        while (dr.Read())
-                        {
-                            return dr[0].ToString();
-                        }
-                        return null;
+                        return dr[0].ToString();
                     }
+                    return null;
                 }
             }
         }
@@ -1543,111 +1540,111 @@ FROM
         public static bool DeleteCustomer(int customerId)
         {
             using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand("delete_customer", con))
             {
-                using (SqlCommand cmd = new SqlCommand(DELETE_CustomerQuery, con))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    SqlParameter param;
-                    param = cmd.Parameters.Add("@id", SqlDbType.Int);
-                    param.Value = customerId;
-                    param = cmd.Parameters.Add("@emp_count", SqlDbType.Bit);
-                    param.Direction = ParameterDirection.Output;
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlParameter param;
+                param = cmd.Parameters.Add("@id", SqlDbType.Int);
+                param.Value = customerId;
+                param = cmd.Parameters.Add("@emp_count", SqlDbType.Bit);
+                param.Direction = ParameterDirection.Output;
 
-                    con.Open();
-                    cmd.ExecuteNonQuery();
-                    con.Close();
-                    return Convert.ToBoolean(param.Value);
-                }
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+                return Convert.ToBoolean(param.Value);
             }
         }
 
         public static bool UpdateCustomer(Customer data)
         {
+            const string query = "UPDATE_MUSTERI";
             using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, connection))
             {
-                using (SqlCommand cmd = new SqlCommand(UPDATE_CustomerDataQuery, connection))
-                {
-                    connection.Open();
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    SqlParameter param;
+                connection.Open();
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlParameter param;
 
-                    param = cmd.Parameters.Add("@CustomerID", SqlDbType.NVarChar, 100);
-                    param.Value = data.CustomerID;
+                param = cmd.Parameters.Add("@CustomerID", SqlDbType.NVarChar, 100);
+                param.Value = data.CustomerID;
 
-                    param = cmd.Parameters.Add("@VOEN", SqlDbType.NVarChar, 500);
-                    param.Value = data.Voen;
+                param = cmd.Parameters.Add("@COMPANYNAME", SqlDbType.NVarChar, 500);
+                param.Value = data.CompanyName;
 
-                    param = cmd.Parameters.Add("@AD", SqlDbType.NVarChar, 250);
-                    param.Value = data.Name;
+                param = cmd.Parameters.Add("@VOEN", SqlDbType.NVarChar, 500);
+                param.Value = data.Voen;
 
-                    param = cmd.Parameters.Add("@SOYAD", SqlDbType.NVarChar, 250);
-                    param.Value = data.Surname;
+                param = cmd.Parameters.Add("@AD", SqlDbType.NVarChar, 250);
+                param.Value = data.Name;
 
-                    param = cmd.Parameters.Add("@ATAADI", SqlDbType.NVarChar, 250);
-                    param.Value = data.FatherName;
+                param = cmd.Parameters.Add("@SOYAD", SqlDbType.NVarChar, 250);
+                param.Value = data.Surname;
 
-                    param = cmd.Parameters.Add("@DOGUM_TARIX", SqlDbType.Date);
-                    param.Value = data.DateBirth;
+                param = cmd.Parameters.Add("@ATAADI", SqlDbType.NVarChar, 250);
+                param.Value = data.FatherName;
 
-                    param = cmd.Parameters.Add("@SVNO", SqlDbType.NVarChar, 250);
-                    param.Value = data.SvNo;
+                param = cmd.Parameters.Add("@DOGUM_TARIX", SqlDbType.Date);
+                param.Value = data.DateBirth;
 
-                    param = cmd.Parameters.Add("@FINKOD", SqlDbType.NVarChar, 250);
-                    param.Value = data.FinCode;
+                param = cmd.Parameters.Add("@SVNO", SqlDbType.NVarChar, 250);
+                param.Value = data.SvNo;
 
-                    param = cmd.Parameters.Add("@UNVAN", SqlDbType.NVarChar, 500);
-                    param.Value = data.Address;
+                param = cmd.Parameters.Add("@FINKOD", SqlDbType.NVarChar, 250);
+                param.Value = data.FinCode;
 
-                    param = cmd.Parameters.Add("@FAKTIKI_YASAYIS_YERI", SqlDbType.NVarChar, 500);
-                    param.Value = data.ResidentialAddress;
+                param = cmd.Parameters.Add("@UNVAN", SqlDbType.NVarChar, 500);
+                param.Value = data.Address;
 
-                    param = cmd.Parameters.Add("@SV_VERILME_TARIX", SqlDbType.Date);
-                    param.Value = data.SV_Start;
+                param = cmd.Parameters.Add("@FAKTIKI_YASAYIS_YERI", SqlDbType.NVarChar, 500);
+                param.Value = data.ResidentialAddress;
 
-                    param = cmd.Parameters.Add("@SV_BITME_TARIX", SqlDbType.Date);
-                    param.Value = data.SV_End;
+                param = cmd.Parameters.Add("@SV_VERILME_TARIX", SqlDbType.Date);
+                param.Value = data.SV_Start;
 
-                    param = cmd.Parameters.Add("@CINSI", SqlDbType.NVarChar, 20);
-                    param.Value = data.Gender;
+                param = cmd.Parameters.Add("@SV_BITME_TARIX", SqlDbType.Date);
+                param.Value = data.SV_End;
 
-                    param = cmd.Parameters.Add("@VETENDASLIG", SqlDbType.NVarChar, 250);
-                    param.Value = data.Nation;
+                param = cmd.Parameters.Add("@CINSI", SqlDbType.NVarChar, 20);
+                param.Value = data.Gender;
 
-                    param = cmd.Parameters.Add("@EMAIL", SqlDbType.NVarChar, 250);
-                    param.Value = data.Email;
+                param = cmd.Parameters.Add("@VETENDASLIG", SqlDbType.NVarChar, 250);
+                param.Value = data.Nation;
 
-                    param = cmd.Parameters.Add("@MOBIL", SqlDbType.NVarChar, 250);
-                    param.Value = data.MobPhone;
+                param = cmd.Parameters.Add("@EMAIL", SqlDbType.NVarChar, 250);
+                param.Value = data.Email;
 
-                    param = cmd.Parameters.Add("@EV", SqlDbType.NVarChar, 250);
-                    param.Value = data.HomePhone;
+                param = cmd.Parameters.Add("@MOBIL", SqlDbType.NVarChar, 250);
+                param.Value = data.MobPhone;
 
-                    param = cmd.Parameters.Add("@GEYD", SqlDbType.NVarChar, 250);
-                    param.Value = data.Comment;
+                param = cmd.Parameters.Add("@EV", SqlDbType.NVarChar, 250);
+                param.Value = data.HomePhone;
 
-                    param = cmd.Parameters.Add("@HESAB_NOM", SqlDbType.NVarChar, 500);
-                    param.Value = data.BankAccountNumber;
+                param = cmd.Parameters.Add("@GEYD", SqlDbType.NVarChar, 250);
+                param.Value = data.Comment;
 
-                    param = cmd.Parameters.Add("@BANK_ADI", SqlDbType.NVarChar, 500);
-                    param.Value = data.BankName;
+                param = cmd.Parameters.Add("@HESAB_NOM", SqlDbType.NVarChar, 500);
+                param.Value = data.BankAccountNumber;
 
-                    param = cmd.Parameters.Add("@BANK_VOEN", SqlDbType.NVarChar, 500);
-                    param.Value = data.BankVoen;
+                param = cmd.Parameters.Add("@BANK_ADI", SqlDbType.NVarChar, 500);
+                param.Value = data.BankName;
 
-                    param = cmd.Parameters.Add("@KOD", SqlDbType.NVarChar, 500);
-                    param.Value = data.BankCode;
+                param = cmd.Parameters.Add("@BANK_VOEN", SqlDbType.NVarChar, 500);
+                param.Value = data.BankVoen;
 
-                    param = cmd.Parameters.Add("@SWIFT", SqlDbType.NVarChar, 500);
-                    param.Value = data.BankSwift;
+                param = cmd.Parameters.Add("@KOD", SqlDbType.NVarChar, 500);
+                param.Value = data.BankCode;
 
-                    param = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
+                param = cmd.Parameters.Add("@SWIFT", SqlDbType.NVarChar, 500);
+                param.Value = data.BankSwift;
 
-                    param.Direction = ParameterDirection.Output;
-                    cmd.ExecuteNonQuery();
+                param = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
+
+                param.Direction = ParameterDirection.Output;
+                cmd.ExecuteNonQuery();
 
 
-                    return Convert.ToBoolean(param.Value);
-                }
+                return Convert.ToBoolean(param.Value);
             }
         }
 
@@ -2119,6 +2116,8 @@ FROM
                 param.Value = data.SupplierID;
                 param = cmd.Parameters.Add("@CONTRACTDATE", SqlDbType.Date);
                 param.Value = data.ContractDate;
+                param = cmd.Parameters.Add("@SupplierName", SqlDbType.NVarChar, 500);
+                param.Value = data.SupplierName;
                 param = cmd.Parameters.Add("@MUGAVİLE_NOM", SqlDbType.NVarChar, 500);
                 param.Value = data.ContractNo;
                 param = cmd.Parameters.Add("@UNVAN", SqlDbType.NVarChar, 500);
@@ -2635,9 +2634,7 @@ FROM
 
         public static TeraziDTO GetTerezi()
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
-            {
-                string query = $@"SELECT 
+            string query = $@"SELECT 
 TERAZI_IP_ID AS Id,
 tf.TERAZI_FIRMALAR AS ModelName,
 ti.IP_ADRESS AS IpAddress,
@@ -2646,19 +2643,18 @@ UserId
 FROM TERAZI_IP ti
 INNER JOIN TERAZI_FIRMALAR tf ON tf.TERAZI_FIRMALAR_ID = ti.TERAZI_FIRMA_IP
 WHERE UserId = {Properties.Settings.Default.UserID}";
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
                 connection.Open();
-                using (SqlCommand cmd = new SqlCommand(query, connection))
+                using (SqlDataReader dr = cmd.ExecuteReader())
                 {
-                    //cmd.Parameters.AddWithValue("@userID", Properties.Settings.Default.UserID);
-                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    if (dr.Read())
                     {
-                        if (dr.Read())
-                        {
-                            var data = FormHelpers.MapReaderToObject<TeraziDTO>(dr);
-                            return data;
-                        }
-                        return null;
+                        var data = FormHelpers.MapReaderToObject<TeraziDTO>(dr);
+                        return data;
                     }
+                    return null;
                 }
             }
         }
@@ -2924,8 +2920,10 @@ VALUES
                 cmd.Parameters.AddWithValue("@PaymentDay", item.PaymentDay);
                 cmd.Parameters.AddWithValue("@Amount", item.Amount);
                 cmd.Parameters.AddWithValue("@CreditSaleFiscalId", item.CreditSaleFiscalId);
-                cmd.Parameters.AddWithValue("@ReceiptNo", item.ReceiptNo);
-                cmd.Parameters.AddWithValue("@PaymentTypeId", item.PaymentTypeId);
+                //cmd.Parameters.Add("@ReceiptNo", SqlDbType.NVarChar).Value = (object)item.ReceiptNo ?? DBNull.Value;
+                //cmd.Parameters.AddWithValue("@PaymentTypeId", item.PaymentTypeId ?? null);
+
+
                 await con.OpenAsync();
                 await cmd.ExecuteNonQueryAsync();
             }

@@ -122,7 +122,7 @@ namespace WindowsFormsApp2.Forms
             {
                 name = nameParts[0];
                 surname = nameParts[1];
-                fatherName = nameParts[2];
+                fatherName = nameParts.Length > 2 ? nameParts[2] : string.Empty;
             }
             else
             {

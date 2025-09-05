@@ -9,12 +9,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DevExpress.CodeParser;
-using DevExpress.DataAccess.Native.Data;
 using DevExpress.XtraBars.Navigation;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid;
-using DevExpress.XtraGrid.Localization;
 using Licence.Services;
 using Microsoft.Win32;
 using Newtonsoft.Json;
@@ -63,7 +60,6 @@ namespace WindowsFormsApp2
             //    tabLog.PageEnabled = false;
             //    tabDatabase.PageEnabled = false;
             //}
-            GridPanelText(gridProducts);
             GridPanelText(gridLogs);
         }
 
@@ -112,7 +108,7 @@ namespace WindowsFormsApp2
                 FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
                 return;
             }
-            OpenForm<GAIME_SATISI_LAYOUT>(Properties.Settings.Default.UserID, this);
+            OpenForm<GAIME_SATISI_LAYOUT>();
         }
 
         private void accordionControlElement12_Click(object sender, EventArgs e)
@@ -626,9 +622,9 @@ FROM[terazimalzeme]";
 
         private async Task LicenceCheck()
         {
-            lLicenceExpireDate.Text = "-";
-            lLicenceExpireDate.ForeColor = Color.Black;
-            return;
+            //lLicenceExpireDate.Text = "-";
+            //lLicenceExpireDate.ForeColor = Color.Black;
+            //return;
 
             var licenceUser = await LicenseService.Instance.RequestKeyControl(LicenseService.Instance.GetLicenceKey());
             if (licenceUser is null)
@@ -671,7 +667,6 @@ FROM[terazimalzeme]";
                 await StockProductsList(); //Anbar qalığı
 
                 BestsellingProducts(); //Ən çox satılan məhsullar
-                ExpensesDataLoad(); //Cari xərclər
             }
             catch (Exception ex)
             {
@@ -691,7 +686,6 @@ FROM[terazimalzeme]";
                 await StockProductsList();//Anbar qalığı
 
                 BestsellingProducts(); //Ən çox satılan məhsullar
-                ExpensesDataLoad(); //Cari xərclər
             }
             catch (Exception ex)
             {
@@ -701,32 +695,30 @@ FROM[terazimalzeme]";
 
         private void ExpensesDataLoad()
         {
+//            string query = @"WITH Headers AS (
+//    SELECT DISTINCT Header FROM IncomeAndExpensesData
+//)
+//SELECT 
+//    h.Header, 
+//    COALESCE(SUM(i.Amount), 0) AS Amount
+//FROM Headers h
+//LEFT JOIN IncomeAndExpensesData i 
+//    ON h.Header = i.Header 
+//    AND i.Date = CAST(GETDATE() AS DATE) AND i.Type = 4
+//GROUP BY h.Header;";
 
-
-            string query = @"WITH Headers AS (
-    SELECT DISTINCT Header FROM IncomeAndExpensesData
-)
-SELECT 
-    h.Header, 
-    COALESCE(SUM(i.Amount), 0) AS Amount
-FROM Headers h
-LEFT JOIN IncomeAndExpensesData i 
-    ON h.Header = i.Header 
-    AND i.Date = CAST(GETDATE() AS DATE) AND i.Type = 4
-GROUP BY h.Header;";
-
-            var data = DbProsedures.ConvertToDataTable(query);
-            gridControlExpenses.DataSource = data;
-            gridExpenses.ViewCaption = $"XƏRCLƏR - {DateTime.Now.ToString("dd.MM.yyyy")}";
-            gridExpenses.OptionsView.ShowFooter = true;
-            gridExpenses.Columns["Amount"].Summary.Clear();
-            GridColumnSummaryItem summaryItem = new GridColumnSummaryItem
-            {
-                FieldName = "Amount",
-                SummaryType = DevExpress.Data.SummaryItemType.Sum,
-                DisplayFormat = "{0:N2}"
-            };
-            gridExpenses.Columns["Amount"].Summary.Add(summaryItem);
+//            var data = DbProsedures.ConvertToDataTable(query);
+//            gridControlExpenses.DataSource = data;
+//            gridExpenses.ViewCaption = $"XƏRCLƏR - {DateTime.Now.ToString("dd.MM.yyyy")}";
+//            gridExpenses.OptionsView.ShowFooter = true;
+//            gridExpenses.Columns["Amount"].Summary.Clear();
+//            GridColumnSummaryItem summaryItem = new GridColumnSummaryItem
+//            {
+//                FieldName = "Amount",
+//                SummaryType = DevExpress.Data.SummaryItemType.Sum,
+//                DisplayFormat = "{0:N2}"
+//            };
+//            gridExpenses.Columns["Amount"].Summary.Add(summaryItem);
 
         }
 
@@ -791,6 +783,16 @@ FROM (
        ISNULL(COUNT(DISTINCT g.GAIME_SATISI_DETAILS_ID), 0) AS SalesCount
     FROM [dbo].[GAIME_SATISI_DETAILS] g
     WHERE CAST(g.TARIX AS DATE) = CAST(GETDATE() AS DATE)
+
+    
+    UNION ALL
+
+    -- KREDIT_SATIS_MAIN
+    SELECT 
+        ISNULL(SUM(CAST(k.prd_qty * k.prd_price AS DECIMAL(18, 5))), 0) AS TotalSalePrice,
+        ISNULL(COUNT(DISTINCT k.KREDIT_SATISI_MAIN_ID), 0) AS SalesCount
+    FROM [dbo].KREDIT_SATISI_MAIN k
+    WHERE CAST(k.TARIX AS DATE) = CAST(GETDATE() AS DATE)
 ) t;
 ";
 
@@ -886,32 +888,6 @@ FROM (
             }
         }
 
-        private async void chShowStock_CheckedChanged(object sender, EventArgs e)
-        {
-            CheckButton checkEdit = (CheckButton)sender;
-            if (checkEdit.Checked)
-            {
-                await StockProductsList();
-            }
-        }
-
-        private void chStockDecreasingAmount_CheckedChanged(object sender, EventArgs e)
-        {
-            //CheckButton checkEdit = (CheckButton)sender;
-            //if (checkEdit.Checked)
-            //{
-            //    StockDecreasingAmountLoad();
-            //}
-        }
-
-        private void bGridExcelExport_Click(object sender, EventArgs e)
-        {
-            if (chShowStock.Checked)
-            {
-                FormHelpers.ExcelExport(gridControlProducts, "Anbar Qalığı");
-            }
-        }
-
         private void accordionControlElement56_Click(object sender, EventArgs e)
         {
             fKassaReport f = new fKassaReport();
@@ -930,7 +906,6 @@ FROM (
                 accordionControlElement66.Visible = true;//Printer module
             }
         }
-
 
         private void accordionControlElement58_Click(object sender, EventArgs e)
         {
@@ -972,12 +947,12 @@ FROM (
         /// </summary>
         private async Task StockProductsList()
         {
-            Cursor.Current = Cursors.WaitCursor;
-            var data = await StockCacheService.LoadStockAsync();
-            gridControlProducts.DataSource = data;
-            gridProducts.RefreshData();
-            lStockCount.Text = gridProducts.DataRowCount.ToString();
-            Cursor.Current = Cursors.Default;
+            //Cursor.Current = Cursors.WaitCursor;
+            //var data = await StockCacheService.LoadStockAsync();
+            //gridControlProducts.DataSource = data;
+            //gridProducts.RefreshData();
+            //lStockCount.Text = gridProducts.DataRowCount.ToString();
+            //Cursor.Current = Cursors.Default;
         }
 
         private void accordionControlElement54_Click_1(object sender, EventArgs e)
@@ -1401,40 +1376,18 @@ FROM (
         private void accordionControlElement29_Click(object sender, EventArgs e)
         {
             fAddIncomeAndExpenses f = new fAddIncomeAndExpenses(SelectedDataType.Income, null);
-            if (f.ShowDialog() is DialogResult.OK)
-            {
-                ExpensesDataLoad();
-            }
+            f.ShowDialog();
         }
 
         private void accordionControlElement62_Click(object sender, EventArgs e)
         {
             fAddIncomeAndExpenses f = new fAddIncomeAndExpenses(SelectedDataType.Expense, null);
-            if (f.ShowDialog() is DialogResult.OK)
-            {
-                ExpensesDataLoad();
-            }
+            f.ShowDialog();
         }
 
         private void accordionControlElement63_Click(object sender, EventArgs e)
         {
             OpenForm<fIncomeAndExpensesReport>();
-        }
-
-        private void gridExpenses_RowClick(object sender, DevExpress.XtraGrid.Views.Grid.RowClickEventArgs e)
-        {
-            if (e.Button is MouseButtons.Left && e.Clicks is 2)
-            {
-                if (gridExpenses != null && gridExpenses.FocusedRowHandle >= 0)
-                {
-                    string Name = gridExpenses.GetFocusedRowCellValue("Header").ToString();
-                    fAddIncomeAndExpenses f = new fAddIncomeAndExpenses(SelectedDataType.Expense, Name);
-                    if (f.ShowDialog() is DialogResult.OK)
-                    {
-                        ExpensesDataLoad();
-                    };
-                }
-            }
         }
 
         private void accordionControlElement65_Click(object sender, EventArgs e)
@@ -1476,11 +1429,11 @@ FROM (
 
         private void gridProducts_DoubleClick(object sender, EventArgs e)
         {
-            if (gridProducts.GetFocusedDataRow() != null)
-            {
-                string barcode = gridProducts.GetFocusedRowCellValue("MƏHSUL BARKOD").ToString();
-                OpenForm<fQuickAddProduct>(barcode);
-            }
+            //if (gridProducts.GetFocusedDataRow() != null)
+            //{
+            //    string barcode = gridProducts.GetFocusedRowCellValue("MƏHSUL BARKOD").ToString();
+            //    OpenForm<fQuickAddProduct>(barcode);
+            //}
         }
 
         private void accordionControlElement66_Click(object sender, EventArgs e)
@@ -1930,10 +1883,99 @@ FROM (
 
 
         #endregion [..BRANCHES..]
-        
-        private void MAINSCRRENS_Shown(object sender, EventArgs e)
+
+        private async void MAINSCRRENS_Shown(object sender, EventArgs e)
         {
             DbHelpers.UseLocalConnection();
+            await MonthEarningLoadAsync();
+        }
+
+        private async Task MonthEarningLoadAsync()
+        {
+            int year = DateTime.Today.Year;
+            DateTime startMonth = new DateTime(year, 1, 1);
+
+            var list = new List<DashboardStatisticsDto>();
+
+            // Öncə bütün ayları 0 ilə doldur (SQL’də boş aylar olmayabilər)
+            for (int i = 0; i < 12; i++)
+            {
+                var monthDate = startMonth.AddMonths(i);
+                var name = (Enums.Month)monthDate.Month;
+
+                list.Add(new DashboardStatisticsDto
+                {
+                    Day = Enums.GetEnumDescription(name),
+                    Date = monthDate,
+                    TotalGain = 0
+                });
+            }
+
+            const string query = @"SELECT 
+    SaleMonth,
+    SUM(TotalGain) AS TotalGain
+FROM (
+    -- POS
+    SELECT 
+        MONTH(psm.date_) AS SaleMonth, 
+        ISNULL(SUM(CAST(psm.UMUMI_MEBLEG AS DECIMAL(18,5))), 0) AS TotalGain
+    FROM pos_satis_check_main psm
+    WHERE YEAR(psm.date_) = @Year
+    GROUP BY MONTH(psm.date_)
+
+    UNION ALL
+
+    -- GAIME
+    SELECT 
+        MONTH(g.TARIX) AS SaleMonth, 
+        ISNULL(SUM(CAST(g.YEKUN_MEBLEG AS DECIMAL(18,5))), 0) AS TotalGain
+    FROM GAIME_SATISI_DETAILS g
+    WHERE YEAR(g.TARIX) = @Year
+    GROUP BY MONTH(g.TARIX)
+
+    UNION ALL
+
+    -- KREDİT
+    SELECT 
+        MONTH(k.TARIX) AS SaleMonth, 
+        ISNULL(SUM(CAST(k.prd_qty * k.prd_price AS DECIMAL(18,5))), 0) AS TotalGain
+    FROM KREDIT_SATISI_MAIN k
+    WHERE YEAR(k.TARIX) = @Year
+    GROUP BY MONTH(k.TARIX)
+) t
+GROUP BY SaleMonth
+ORDER BY SaleMonth;";
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                cmd.Parameters.Add("@Year", SqlDbType.Int).Value = year;
+                cmd.CommandTimeout = 300;
+                await connection.OpenAsync();
+                using (var reader = await cmd.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        int month = reader.GetInt32(0);
+                        decimal total = reader.GetDecimal(1);
+
+                        var dto = list.First(x => x.Date.Month == month);
+                        dto.TotalGain = total;
+                    }
+                }
+            }
+
+            var series = chartWeek.Series[0];
+            series.DataSource = list;
+            series.ArgumentDataMember = "Day";
+            series.ValueDataMembers.Clear();
+            series.ValueDataMembers.AddRange(new[] { "TotalGain" });
+        }
+
+        private class DashboardStatisticsDto
+        {
+            public string Day { get; set; }
+            public DateTime Date { get; set; }
+            public decimal TotalGain { get; set; }
         }
     }
 }

@@ -315,18 +315,18 @@ namespace WindowsFormsApp2.Helpers.DB
 
         public class ProductDetail
         {
-            public class Supplier
-            {
-                public string Id { get; set; }
-                public string Name { get; set; }
-            }
-            public class Unit
-            {
-                public string Name { get; set; }
-            }
-            public List<Supplier> Suppliers { get; set; } = new List<Supplier>();
-            public List<Unit> Units { get; set; } = new List<Unit>();
-            public int ProductId { get; set; }
+            //public class Supplier
+            //{
+            //    public string Id { get; set; }
+            //    public string Name { get; set; }
+            //}
+            //public class Unit
+            //{
+            //    public string Name { get; set; }
+            //}
+            //public List<Supplier> Suppliers { get; set; } = new List<Supplier>();
+            //public List<Unit> Units { get; set; } = new List<Unit>();
+            public string SupplierName { get; set; }
             public string ProductName { get; set; }
             public string ProductCode { get; set; }
             public string Barcode { get; set; }
@@ -334,7 +334,7 @@ namespace WindowsFormsApp2.Helpers.DB
             public string TaxName { get; set; }
             public decimal PurchasePrice { get; set; }
             public decimal SalePrice { get; set; }
-            public byte[] ProductImage { get; set; }
+            //public byte[] ProductImage { get; set; }
             public decimal StockAmount { get; set; }
         }
 
@@ -480,7 +480,7 @@ namespace WindowsFormsApp2.Helpers.DB
             public string ShortFiscalId { get; set; }
             public DateTime PayDate { get; set; }
             public string ReceiptNo { get; set; }
-            public short PaymentTypeId { get; set; }
+            public short? PaymentTypeId { get; set; }
         }
 
         public class CreditSaleRefund

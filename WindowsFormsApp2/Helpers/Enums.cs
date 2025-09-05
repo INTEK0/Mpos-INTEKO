@@ -6,6 +6,13 @@ namespace WindowsFormsApp2.Helpers
 {
     public static class Enums
     {
+        public static string GetEnumDescription(Enum value)
+        {
+            FieldInfo field = value.GetType().GetField(value.ToString());
+            DescriptionAttribute attribute = (DescriptionAttribute)Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute));
+            return attribute != null ? attribute.Description : value.ToString();
+        }
+
         public enum MessageType
         {
             Success,
@@ -125,11 +132,38 @@ namespace WindowsFormsApp2.Helpers
             CreditPay
         }
 
-        public static string GetEnumDescription(Enum value)
+        public enum NameOfDays
         {
-            FieldInfo field = value.GetType().GetField(value.ToString());
-            DescriptionAttribute attribute = (DescriptionAttribute)Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute));
-            return attribute != null ? attribute.Description : value.ToString();
+            [Description("Bazar ertəsi")]
+            Monday ,
+            [Description("Çərşənbə axşamı")]
+            Tuesday,
+            [Description("Çərşənbə")]
+            Wednesday,
+            [Description("Cümə axşamı")]
+            Thursday,
+            [Description("Cümə")]
+            Friday,
+            [Description("Şənbə")]
+            Saturday,
+            [Description("Bazar")]
+            Sunday
+        }
+
+        public enum Month
+        {
+            Yanvar = 1,
+            Fevral,
+            Mart,
+            Aprel,
+            May,
+            İyun,
+            İyul,
+            Avqust,
+            Sentyabr,
+            Oktyabr,
+            Noyabr,
+            Dekabr
         }
     }
 }

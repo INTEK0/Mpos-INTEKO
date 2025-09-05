@@ -1,15 +1,10 @@
-﻿using DevExpress.XtraEditors;
-using DevExpress.XtraGrid.Views.Grid;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DevExpress.XtraEditors;
+using DevExpress.XtraGrid.Views.Grid;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
@@ -23,6 +18,7 @@ namespace WindowsFormsApp2.Forms
         {
             InitializeComponent();
             parentForm = _parent;
+            FormHelpers.GridPanelText(gridView1);
         }
 
         private void fCategory_Load(object sender, EventArgs e)
@@ -35,16 +31,14 @@ namespace WindowsFormsApp2.Forms
             string query = "select KATEGORIYA_ID,KATEGORIYA as  N'KATEQORİYA' from KATEGORIYA";
             var data = DbProsedures.ConvertToDataTable(query);
             gridControl1.DataSource = data;
-            //gridView1.Columns[0].Visible = false;
-            gridView1.OptionsSelection.MultiSelect = true;
-            gridView1.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
+            gridView1.GroupPanelText = $"Kateqoriya sayı: {data.Rows.Count.ToString()}";
         }
 
         private async void gridView1_RowClick(object sender, RowClickEventArgs e)
         {
             if (e.Button is MouseButtons.Left && e.Clicks is 2)
             {
-                GridView view = sender as GridView;
+                GridView view = gridView1;
                 if (view != null && view.FocusedRowHandle >= 0)
                 {
                     int Id = Convert.ToInt32(gridView1.GetFocusedRowCellValue("KATEGORIYA_ID").ToString());
@@ -100,9 +94,47 @@ namespace WindowsFormsApp2.Forms
             tCategoryName.Text = categories.KATEGORIYA;
         }
 
-        private void bSave_Click(object sender, EventArgs e)
+        private void bRemove_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
+            int Id = Convert.ToInt32(gridView1.GetFocusedRowCellValue("KATEGORIYA_ID")?.ToString() ?? "0");
 
+            if (Id is 0)
+                return;
+
+            CheckCategory(Id);
+        }
+
+        private void CheckCategory(int Id)
+        {
+            string query = $@"SELECT COUNT(*) AS Say FROM MAL_ALISI_DETAILS WHERE IsDeleted = 0 AND KATEGORIYA = {Id}";
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                if (connection.State != ConnectionState.Open)
+                    connection.Open();
+
+                int count = (int)cmd.ExecuteScalar();
+
+                if (count == 0)
+                {
+                    var message = XtraMessageBox.Show("Kateqoriyanı silmək istədiyinizə əminsiniz ?",
+                        nameof(Enums.HeaderMessage.Bildiriş),
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question);
+
+                    if (message is DialogResult.Yes)
+                    {
+                        cmd.CommandText = $"DELETE FROM KATEGORIYA WHERE KATEGORIYA_ID = {Id}";
+                        cmd.ExecuteNonQuery();
+                        FormHelpers.Alert("Kateqoriya uğurla silindi", Enums.MessageType.Success);
+                        GetDataLoad();
+                    }
+                }
+                else
+                {
+                    FormHelpers.Alert($"Kateqoriyaya bağlı məhsul olduğu üçün silinmə edilə bilməz", Enums.MessageType.Info);
+                }
+            }
         }
     }
 }

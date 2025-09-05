@@ -28,25 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions1 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions2 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.bCategoryEdit = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.bRemove = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
-            this.bSave = new DevExpress.XtraEditors.SimpleButton();
             this.tCategoryName = new DevExpress.XtraEditors.TextEdit();
             this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
-            this.bDelete = new DevExpress.XtraEditors.SimpleButton();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bCategoryEdit)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bRemove)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
             this.panelControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tCategoryName.Properties)).BeginInit();
@@ -64,7 +62,7 @@
             this.gridControl1.Margin = new System.Windows.Forms.Padding(2);
             this.gridControl1.Name = "gridControl1";
             this.gridControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
-            this.bCategoryEdit});
+            this.bRemove});
             this.tablePanel1.SetRow(this.gridControl1, 1);
             this.gridControl1.Size = new System.Drawing.Size(1188, 686);
             this.gridControl1.TabIndex = 1;
@@ -85,9 +83,10 @@
             this.gridView1.GridControl = this.gridControl1;
             this.gridView1.Name = "gridView1";
             this.gridView1.OptionsEditForm.PopupEditFormWidth = 1067;
+            this.gridView1.OptionsSelection.MultiSelect = true;
+            this.gridView1.OptionsSelection.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.CheckBoxRowSelect;
             this.gridView1.OptionsView.EnableAppearanceEvenRow = true;
             this.gridView1.OptionsView.EnableAppearanceOddRow = true;
-            this.gridView1.OptionsView.ShowGroupPanel = false;
             this.gridView1.OptionsView.ShowIndicator = false;
             this.gridView1.RowClick += new DevExpress.XtraGrid.Views.Grid.RowClickEventHandler(this.gridView1_RowClick);
             // 
@@ -107,8 +106,8 @@
             this.gridColumn2.Name = "gridColumn2";
             this.gridColumn2.OptionsColumn.AllowEdit = false;
             this.gridColumn2.Visible = true;
-            this.gridColumn2.VisibleIndex = 0;
-            this.gridColumn2.Width = 961;
+            this.gridColumn2.VisibleIndex = 1;
+            this.gridColumn2.Width = 1111;
             // 
             // gridColumn3
             // 
@@ -119,28 +118,33 @@
             this.gridColumn3.AppearanceHeader.TextOptions.Trimming = DevExpress.Utils.Trimming.EllipsisCharacter;
             this.gridColumn3.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.gridColumn3.Caption = "DÜZƏLİŞ";
-            this.gridColumn3.ColumnEdit = this.bCategoryEdit;
+            this.gridColumn3.ColumnEdit = this.bRemove;
             this.gridColumn3.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Right;
-            this.gridColumn3.MaxWidth = 100;
-            this.gridColumn3.MinWidth = 100;
             this.gridColumn3.Name = "gridColumn3";
+            this.gridColumn3.OptionsColumn.FixedWidth = true;
             this.gridColumn3.OptionsColumn.ShowCaption = false;
+            this.gridColumn3.OptionsFilter.AllowAutoFilter = false;
+            this.gridColumn3.OptionsFilter.AllowFilter = false;
+            this.gridColumn3.Visible = true;
+            this.gridColumn3.VisibleIndex = 2;
             this.gridColumn3.Width = 100;
             // 
-            // bCategoryEdit
+            // bRemove
             // 
-            this.bCategoryEdit.AutoHeight = false;
-            this.bCategoryEdit.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "DÜZƏLİŞ ET", -1, true, true, false, editorButtonImageOptions1, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
-            this.bCategoryEdit.Name = "bCategoryEdit";
-            this.bCategoryEdit.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
-            this.bCategoryEdit.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.bCategoryEdit_ButtonClick);
+            this.bRemove.AutoHeight = false;
+            serializableAppearanceObject5.Font = new System.Drawing.Font("Nunito", 11F, System.Drawing.FontStyle.Bold);
+            serializableAppearanceObject5.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Critical;
+            serializableAppearanceObject5.Options.UseFont = true;
+            serializableAppearanceObject5.Options.UseForeColor = true;
+            this.bRemove.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "SİL", -1, true, true, false, editorButtonImageOptions2, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
+            this.bRemove.Name = "bRemove";
+            this.bRemove.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.bRemove.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.bRemove_ButtonClick);
             // 
             // panelControl1
             // 
             this.tablePanel1.SetColumn(this.panelControl1, 0);
-            this.panelControl1.Controls.Add(this.bDelete);
-            this.panelControl1.Controls.Add(this.bSave);
             this.panelControl1.Controls.Add(this.tCategoryName);
             this.panelControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelControl1.Location = new System.Drawing.Point(6, 6);
@@ -148,19 +152,6 @@
             this.tablePanel1.SetRow(this.panelControl1, 0);
             this.panelControl1.Size = new System.Drawing.Size(1186, 64);
             this.panelControl1.TabIndex = 2;
-            // 
-            // bSave
-            // 
-            this.bSave.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Primary;
-            this.bSave.Appearance.Options.UseBackColor = true;
-            this.bSave.ImageOptions.SvgImageSize = new System.Drawing.Size(24, 24);
-            this.bSave.Location = new System.Drawing.Point(387, 16);
-            this.bSave.Margin = new System.Windows.Forms.Padding(4);
-            this.bSave.Name = "bSave";
-            this.bSave.Size = new System.Drawing.Size(121, 30);
-            this.bSave.TabIndex = 6;
-            this.bSave.Text = "DƏYİŞDİR";
-            this.bSave.Click += new System.EventHandler(this.bSave_Click);
             // 
             // tCategoryName
             // 
@@ -188,19 +179,6 @@
             this.tablePanel1.TabIndex = 3;
             this.tablePanel1.UseSkinIndents = true;
             // 
-            // bDelete
-            // 
-            this.bDelete.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Danger;
-            this.bDelete.Appearance.Options.UseBackColor = true;
-            this.bDelete.ImageOptions.SvgImageSize = new System.Drawing.Size(24, 24);
-            this.bDelete.Location = new System.Drawing.Point(516, 16);
-            this.bDelete.Margin = new System.Windows.Forms.Padding(4);
-            this.bDelete.Name = "bDelete";
-            this.bDelete.Size = new System.Drawing.Size(75, 30);
-            this.bDelete.TabIndex = 6;
-            this.bDelete.Text = "SİL";
-            this.bDelete.Visible = false;
-            // 
             // fCategory
             // 
             this.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(245)))), ((int)(((byte)(250)))));
@@ -219,7 +197,7 @@
             this.Load += new System.EventHandler(this.fCategory_Load);
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bCategoryEdit)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bRemove)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).EndInit();
             this.panelControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tCategoryName.Properties)).EndInit();
@@ -238,9 +216,7 @@
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn1;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn2;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn3;
-        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit bCategoryEdit;
-        private DevExpress.XtraEditors.SimpleButton bSave;
         private DevExpress.Utils.Layout.TablePanel tablePanel1;
-        private DevExpress.XtraEditors.SimpleButton bDelete;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit bRemove;
     }
 }

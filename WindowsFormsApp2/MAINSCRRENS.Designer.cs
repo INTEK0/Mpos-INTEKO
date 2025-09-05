@@ -31,6 +31,12 @@ namespace WindowsFormsApp2
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            DevExpress.XtraCharts.XYDiagram xyDiagram2 = new DevExpress.XtraCharts.XYDiagram();
+            DevExpress.XtraCharts.Series series3 = new DevExpress.XtraCharts.Series();
+            DevExpress.XtraCharts.ChartTitle chartTitle3 = new DevExpress.XtraCharts.ChartTitle();
+            DevExpress.XtraCharts.Series series4 = new DevExpress.XtraCharts.Series();
+            DevExpress.XtraCharts.DoughnutSeriesView doughnutSeriesView2 = new DevExpress.XtraCharts.DoughnutSeriesView();
+            DevExpress.XtraCharts.ChartTitle chartTitle4 = new DevExpress.XtraCharts.ChartTitle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MAINSCRRENS));
             this.fluentDesignFormContainer1 = new DevExpress.XtraBars.FluentDesignSystem.FluentDesignFormContainer();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -52,23 +58,6 @@ namespace WindowsFormsApp2
             this.b10 = new DevExpress.XtraEditors.SimpleButton();
             this.b15 = new DevExpress.XtraEditors.SimpleButton();
             this.b20 = new DevExpress.XtraEditors.SimpleButton();
-            this.panelControl9 = new DevExpress.XtraEditors.PanelControl();
-            this.gridControlProducts = new DevExpress.XtraGrid.GridControl();
-            this.gridProducts = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn17 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn16 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn15 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn18 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn19 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.panelControl10 = new DevExpress.XtraEditors.PanelControl();
-            this.chShowStock = new DevExpress.XtraEditors.CheckButton();
-            this.bGridExcelExport = new DevExpress.XtraEditors.SimpleButton();
             this.groupControl2 = new DevExpress.XtraEditors.GroupControl();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
@@ -98,13 +87,12 @@ namespace WindowsFormsApp2
             this.panelControl6 = new DevExpress.XtraEditors.PanelControl();
             this.lPurchaseCount = new DevExpress.XtraEditors.LabelControl();
             this.labelControl11 = new DevExpress.XtraEditors.LabelControl();
-            this.gridControlExpenses = new DevExpress.XtraGrid.GridControl();
-            this.gridExpenses = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridControl2 = new DevExpress.XtraGrid.GridControl();
             this.gridView2 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.pictureEdit3 = new DevExpress.XtraEditors.PictureEdit();
+            this.chartWeek = new DevExpress.XtraCharts.ChartControl();
+            this.chartSalesType = new DevExpress.XtraCharts.ChartControl();
+            this.pictureEdit4 = new DevExpress.XtraEditors.PictureEdit();
             this.accordionControl1 = new DevExpress.XtraBars.Navigation.AccordionControl();
             this.accordionControlElement59 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement2 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
@@ -308,12 +296,6 @@ namespace WindowsFormsApp2
             this.tableLayoutPanel8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl9)).BeginInit();
-            this.panelControl9.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gridControlProducts)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridProducts)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl10)).BeginInit();
-            this.panelControl10.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).BeginInit();
             this.groupControl2.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -337,11 +319,16 @@ namespace WindowsFormsApp2
             this.panelControl5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl6)).BeginInit();
             this.panelControl6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gridControlExpenses)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridExpenses)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit3.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartWeek)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(xyDiagram2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(series3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartSalesType)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(series4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(doughnutSeriesView2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureEdit4.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.accordionControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fluentDesignFormControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView3)).BeginInit();
@@ -433,11 +420,12 @@ namespace WindowsFormsApp2
             this.tableLayoutPanel1.Controls.Add(this.groupControl1, 3, 3);
             this.tableLayoutPanel1.Controls.Add(this.pictureEdit1, 3, 4);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel8, 3, 1);
-            this.tableLayoutPanel1.Controls.Add(this.panelControl9, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.groupControl2, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.gridControlExpenses, 3, 2);
             this.tableLayoutPanel1.Controls.Add(this.gridControl2, 2, 4);
             this.tableLayoutPanel1.Controls.Add(this.pictureEdit3, 0, 4);
+            this.tableLayoutPanel1.Controls.Add(this.chartWeek, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.chartSalesType, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.pictureEdit4, 3, 2);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -658,7 +646,7 @@ namespace WindowsFormsApp2
             // 
             // gridColumn1
             // 
-            this.gridColumn1.AppearanceHeader.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold);
+            this.gridColumn1.AppearanceHeader.Font = new System.Drawing.Font("Nunito", 11F, System.Drawing.FontStyle.Bold);
             this.gridColumn1.AppearanceHeader.Options.UseFont = true;
             this.gridColumn1.Caption = "Məhsul adı";
             this.gridColumn1.FieldName = "ProductName";
@@ -671,7 +659,7 @@ namespace WindowsFormsApp2
             // 
             this.gridColumn2.AppearanceCell.Options.UseTextOptions = true;
             this.gridColumn2.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.gridColumn2.AppearanceHeader.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold);
+            this.gridColumn2.AppearanceHeader.Font = new System.Drawing.Font("Nunito", 11F, System.Drawing.FontStyle.Bold);
             this.gridColumn2.AppearanceHeader.Options.UseFont = true;
             this.gridColumn2.AppearanceHeader.Options.UseTextOptions = true;
             this.gridColumn2.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
@@ -752,225 +740,6 @@ namespace WindowsFormsApp2
             this.b20.Text = "20";
             this.b20.Click += new System.EventHandler(this.BestSellingProductListCount);
             // 
-            // panelControl9
-            // 
-            this.panelControl9.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.tableLayoutPanel1.SetColumnSpan(this.panelControl9, 3);
-            this.panelControl9.Controls.Add(this.gridControlProducts);
-            this.panelControl9.Controls.Add(this.panelControl10);
-            this.panelControl9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelControl9.Location = new System.Drawing.Point(3, 119);
-            this.panelControl9.LookAndFeel.SkinName = "WXI";
-            this.panelControl9.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.panelControl9.Name = "panelControl9";
-            this.tableLayoutPanel1.SetRowSpan(this.panelControl9, 3);
-            this.panelControl9.Size = new System.Drawing.Size(855, 634);
-            this.panelControl9.TabIndex = 6;
-            // 
-            // gridControlProducts
-            // 
-            this.gridControlProducts.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gridControlProducts.Location = new System.Drawing.Point(0, 33);
-            this.gridControlProducts.LookAndFeel.SkinName = "WXI";
-            this.gridControlProducts.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.gridControlProducts.MainView = this.gridProducts;
-            this.gridControlProducts.Name = "gridControlProducts";
-            this.gridControlProducts.Size = new System.Drawing.Size(855, 601);
-            this.gridControlProducts.TabIndex = 0;
-            this.gridControlProducts.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.gridProducts});
-            // 
-            // gridProducts
-            // 
-            this.gridProducts.Appearance.EvenRow.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.gridProducts.Appearance.EvenRow.Options.UseBackColor = true;
-            this.gridProducts.Appearance.OddRow.BackColor = System.Drawing.Color.White;
-            this.gridProducts.Appearance.OddRow.Options.UseBackColor = true;
-            this.gridProducts.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
-            this.gridColumn9,
-            this.gridColumn10,
-            this.gridColumn11,
-            this.gridColumn12,
-            this.gridColumn13,
-            this.gridColumn17,
-            this.gridColumn14,
-            this.gridColumn16,
-            this.gridColumn15,
-            this.gridColumn18,
-            this.gridColumn19});
-            this.gridProducts.DetailHeight = 294;
-            this.gridProducts.GridControl = this.gridControlProducts;
-            this.gridProducts.Name = "gridProducts";
-            this.gridProducts.OptionsBehavior.KeepFocusedRowOnUpdate = false;
-            this.gridProducts.OptionsEditForm.PopupEditFormWidth = 1067;
-            this.gridProducts.OptionsNavigation.AutoFocusNewRow = true;
-            this.gridProducts.OptionsScrollAnnotations.ShowFocusedRow = DevExpress.Utils.DefaultBoolean.False;
-            this.gridProducts.OptionsView.EnableAppearanceEvenRow = true;
-            this.gridProducts.OptionsView.ShowIndicator = false;
-            this.gridProducts.OptionsView.ShowViewCaption = true;
-            this.gridProducts.ViewCaption = "Anbar qalığı";
-            this.gridProducts.DoubleClick += new System.EventHandler(this.gridProducts_DoubleClick);
-            // 
-            // gridColumn9
-            // 
-            this.gridColumn9.Caption = "TECHIZATCI_ID";
-            this.gridColumn9.FieldName = "TECHIZATCI_ID";
-            this.gridColumn9.Name = "gridColumn9";
-            this.gridColumn9.OptionsColumn.AllowEdit = false;
-            // 
-            // gridColumn10
-            // 
-            this.gridColumn10.Caption = "TƏCHİZATÇI";
-            this.gridColumn10.FieldName = "TƏCHİZATÇI";
-            this.gridColumn10.Name = "gridColumn10";
-            this.gridColumn10.OptionsColumn.AllowEdit = false;
-            this.gridColumn10.Visible = true;
-            this.gridColumn10.VisibleIndex = 0;
-            this.gridColumn10.Width = 114;
-            // 
-            // gridColumn11
-            // 
-            this.gridColumn11.Caption = "MAL_ALISI_DETAILS_ID";
-            this.gridColumn11.FieldName = "MAL_ALISI_DETAILS_ID";
-            this.gridColumn11.Name = "gridColumn11";
-            this.gridColumn11.OptionsColumn.AllowEdit = false;
-            // 
-            // gridColumn12
-            // 
-            this.gridColumn12.Caption = "MƏHSUL ADI";
-            this.gridColumn12.FieldName = "MƏHSUL ADI";
-            this.gridColumn12.Name = "gridColumn12";
-            this.gridColumn12.OptionsColumn.AllowEdit = false;
-            this.gridColumn12.Visible = true;
-            this.gridColumn12.VisibleIndex = 1;
-            this.gridColumn12.Width = 235;
-            // 
-            // gridColumn13
-            // 
-            this.gridColumn13.Caption = "MƏHSUL KODU";
-            this.gridColumn13.FieldName = "MƏHSUL KODU";
-            this.gridColumn13.Name = "gridColumn13";
-            this.gridColumn13.OptionsColumn.AllowEdit = false;
-            this.gridColumn13.Visible = true;
-            this.gridColumn13.VisibleIndex = 2;
-            this.gridColumn13.Width = 134;
-            // 
-            // gridColumn17
-            // 
-            this.gridColumn17.AppearanceCell.Options.UseTextOptions = true;
-            this.gridColumn17.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.gridColumn17.Caption = "ALIŞ QİYMƏTİ";
-            this.gridColumn17.DisplayFormat.FormatString = "C2";
-            this.gridColumn17.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
-            this.gridColumn17.FieldName = "ALIŞ QİYMƏTİ";
-            this.gridColumn17.Name = "gridColumn17";
-            this.gridColumn17.OptionsColumn.AllowEdit = false;
-            // 
-            // gridColumn14
-            // 
-            this.gridColumn14.AppearanceCell.Options.UseTextOptions = true;
-            this.gridColumn14.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.gridColumn14.Caption = "SATIŞ QİYMƏTİ";
-            this.gridColumn14.DisplayFormat.FormatString = "C2";
-            this.gridColumn14.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
-            this.gridColumn14.FieldName = "SATIŞ QİYMƏTİ";
-            this.gridColumn14.Name = "gridColumn14";
-            this.gridColumn14.OptionsColumn.AllowEdit = false;
-            this.gridColumn14.Visible = true;
-            this.gridColumn14.VisibleIndex = 3;
-            this.gridColumn14.Width = 134;
-            // 
-            // gridColumn16
-            // 
-            this.gridColumn16.AppearanceCell.Options.UseTextOptions = true;
-            this.gridColumn16.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.gridColumn16.Caption = "BARKOD";
-            this.gridColumn16.FieldName = "MƏHSUL BARKOD";
-            this.gridColumn16.Name = "gridColumn16";
-            this.gridColumn16.OptionsColumn.AllowEdit = false;
-            this.gridColumn16.Visible = true;
-            this.gridColumn16.VisibleIndex = 5;
-            this.gridColumn16.Width = 92;
-            // 
-            // gridColumn15
-            // 
-            this.gridColumn15.AppearanceCell.Options.UseTextOptions = true;
-            this.gridColumn15.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.gridColumn15.Caption = "ANBAR QALIĞI";
-            this.gridColumn15.DisplayFormat.FormatString = "N3";
-            this.gridColumn15.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
-            this.gridColumn15.FieldName = "ANBAR QALIĞI";
-            this.gridColumn15.Name = "gridColumn15";
-            this.gridColumn15.OptionsColumn.AllowEdit = false;
-            this.gridColumn15.Visible = true;
-            this.gridColumn15.VisibleIndex = 4;
-            this.gridColumn15.Width = 144;
-            // 
-            // gridColumn18
-            // 
-            this.gridColumn18.Caption = "EDV";
-            this.gridColumn18.FieldName = "EDV";
-            this.gridColumn18.Name = "gridColumn18";
-            this.gridColumn18.OptionsColumn.AllowEdit = false;
-            // 
-            // gridColumn19
-            // 
-            this.gridColumn19.Caption = "CacheDate";
-            this.gridColumn19.FieldName = "CacheDate";
-            this.gridColumn19.Name = "gridColumn19";
-            this.gridColumn19.OptionsColumn.AllowEdit = false;
-            // 
-            // panelControl10
-            // 
-            this.panelControl10.Controls.Add(this.chShowStock);
-            this.panelControl10.Controls.Add(this.bGridExcelExport);
-            this.panelControl10.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelControl10.Location = new System.Drawing.Point(0, 0);
-            this.panelControl10.Name = "panelControl10";
-            this.panelControl10.Size = new System.Drawing.Size(855, 33);
-            this.panelControl10.TabIndex = 1;
-            // 
-            // chShowStock
-            // 
-            this.chShowStock.AllowFocus = false;
-            this.chShowStock.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.chShowStock.Appearance.Options.UseFont = true;
-            this.chShowStock.AutoSize = true;
-            this.chShowStock.Checked = true;
-            this.chShowStock.Dock = System.Windows.Forms.DockStyle.Left;
-            this.chShowStock.GroupIndex = 1;
-            this.chShowStock.Location = new System.Drawing.Point(2, 2);
-            this.chShowStock.LookAndFeel.SkinName = "WXI";
-            this.chShowStock.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.chShowStock.Margin = new System.Windows.Forms.Padding(2, 0, 3, 0);
-            this.chShowStock.Name = "chShowStock";
-            this.chShowStock.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.chShowStock.Size = new System.Drawing.Size(81, 29);
-            this.chShowStock.TabIndex = 12;
-            this.chShowStock.Text = "Anbar qalığı";
-            this.chShowStock.CheckedChanged += new System.EventHandler(this.chShowStock_CheckedChanged);
-            // 
-            // bGridExcelExport
-            // 
-            this.bGridExcelExport.AllowFocus = false;
-            this.bGridExcelExport.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Success;
-            this.bGridExcelExport.Appearance.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Warning;
-            this.bGridExcelExport.Appearance.Options.UseBackColor = true;
-            this.bGridExcelExport.Appearance.Options.UseForeColor = true;
-            this.bGridExcelExport.Dock = System.Windows.Forms.DockStyle.Right;
-            this.bGridExcelExport.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bGridExcelExport.ImageOptions.SvgImage")));
-            this.bGridExcelExport.ImageOptions.SvgImageSize = new System.Drawing.Size(20, 20);
-            this.bGridExcelExport.Location = new System.Drawing.Point(764, 2);
-            this.bGridExcelExport.LookAndFeel.SkinName = "WXI";
-            this.bGridExcelExport.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.bGridExcelExport.Margin = new System.Windows.Forms.Padding(5);
-            this.bGridExcelExport.Name = "bGridExcelExport";
-            this.bGridExcelExport.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.bGridExcelExport.Size = new System.Drawing.Size(89, 29);
-            this.bGridExcelExport.TabIndex = 2;
-            this.bGridExcelExport.Text = "Çap et";
-            this.bGridExcelExport.Click += new System.EventHandler(this.bGridExcelExport_Click);
-            // 
             // groupControl2
             // 
             this.groupControl2.AppearanceCaption.Font = new System.Drawing.Font("Nunito", 12F);
@@ -1041,7 +810,7 @@ namespace WindowsFormsApp2
             // 
             // lStockCount
             // 
-            this.lStockCount.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
+            this.lStockCount.Appearance.Font = new System.Drawing.Font("Nunito", 12F, System.Drawing.FontStyle.Bold);
             this.lStockCount.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.lStockCount.Appearance.Options.UseFont = true;
             this.lStockCount.Appearance.Options.UseForeColor = true;
@@ -1059,7 +828,7 @@ namespace WindowsFormsApp2
             // 
             // labelControl8
             // 
-            this.labelControl8.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold);
+            this.labelControl8.Appearance.Font = new System.Drawing.Font("Nunito", 14F, System.Drawing.FontStyle.Bold);
             this.labelControl8.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(181)))), ((int)(((byte)(1)))));
             this.labelControl8.Appearance.Options.UseFont = true;
             this.labelControl8.Appearance.Options.UseForeColor = true;
@@ -1135,7 +904,7 @@ namespace WindowsFormsApp2
             // 
             // lSalePriceTotal
             // 
-            this.lSalePriceTotal.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
+            this.lSalePriceTotal.Appearance.Font = new System.Drawing.Font("Nunito", 12F, System.Drawing.FontStyle.Bold);
             this.lSalePriceTotal.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.lSalePriceTotal.Appearance.Options.UseFont = true;
             this.lSalePriceTotal.Appearance.Options.UseForeColor = true;
@@ -1153,7 +922,7 @@ namespace WindowsFormsApp2
             // 
             // labelControl1
             // 
-            this.labelControl1.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold);
+            this.labelControl1.Appearance.Font = new System.Drawing.Font("Nunito", 14F, System.Drawing.FontStyle.Bold);
             this.labelControl1.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(197)))), ((int)(((byte)(148)))));
             this.labelControl1.Appearance.Options.UseFont = true;
             this.labelControl1.Appearance.Options.UseForeColor = true;
@@ -1188,7 +957,7 @@ namespace WindowsFormsApp2
             // 
             // lSalesCount
             // 
-            this.lSalesCount.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold);
+            this.lSalesCount.Appearance.Font = new System.Drawing.Font("Nunito", 13F, System.Drawing.FontStyle.Bold);
             this.lSalesCount.Appearance.ForeColor = System.Drawing.Color.White;
             this.lSalesCount.Appearance.Options.UseFont = true;
             this.lSalesCount.Appearance.Options.UseForeColor = true;
@@ -1207,7 +976,7 @@ namespace WindowsFormsApp2
             // 
             // labelControl9
             // 
-            this.labelControl9.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.labelControl9.Appearance.Font = new System.Drawing.Font("Nunito", 10F);
             this.labelControl9.Appearance.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.labelControl9.Appearance.Options.UseFont = true;
             this.labelControl9.Appearance.Options.UseForeColor = true;
@@ -1256,7 +1025,7 @@ namespace WindowsFormsApp2
             // 
             // lRefuntPrice
             // 
-            this.lRefuntPrice.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
+            this.lRefuntPrice.Appearance.Font = new System.Drawing.Font("Nunito", 12F, System.Drawing.FontStyle.Bold);
             this.lRefuntPrice.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.lRefuntPrice.Appearance.Options.UseFont = true;
             this.lRefuntPrice.Appearance.Options.UseForeColor = true;
@@ -1274,7 +1043,7 @@ namespace WindowsFormsApp2
             // 
             // labelControl4
             // 
-            this.labelControl4.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold);
+            this.labelControl4.Appearance.Font = new System.Drawing.Font("Nunito", 14F, System.Drawing.FontStyle.Bold);
             this.labelControl4.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(197)))), ((int)(((byte)(108)))), ((int)(((byte)(240)))));
             this.labelControl4.Appearance.Options.UseFont = true;
             this.labelControl4.Appearance.Options.UseForeColor = true;
@@ -1307,7 +1076,7 @@ namespace WindowsFormsApp2
             // 
             // lRefundCount
             // 
-            this.lRefundCount.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold);
+            this.lRefundCount.Appearance.Font = new System.Drawing.Font("Nunito", 13F, System.Drawing.FontStyle.Bold);
             this.lRefundCount.Appearance.ForeColor = System.Drawing.Color.White;
             this.lRefundCount.Appearance.Options.UseFont = true;
             this.lRefundCount.Appearance.Options.UseForeColor = true;
@@ -1317,16 +1086,16 @@ namespace WindowsFormsApp2
             this.lRefundCount.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.lRefundCount.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.lRefundCount.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lRefundCount.Location = new System.Drawing.Point(0, 26);
+            this.lRefundCount.Location = new System.Drawing.Point(0, 38);
             this.lRefundCount.Name = "lRefundCount";
             this.lRefundCount.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
-            this.lRefundCount.Size = new System.Drawing.Size(76, 47);
+            this.lRefundCount.Size = new System.Drawing.Size(76, 35);
             this.lRefundCount.TabIndex = 2;
             this.lRefundCount.Text = "0";
             // 
             // labelControl10
             // 
-            this.labelControl10.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.labelControl10.Appearance.Font = new System.Drawing.Font("Nunito", 10F);
             this.labelControl10.Appearance.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.labelControl10.Appearance.Options.UseFont = true;
             this.labelControl10.Appearance.Options.UseForeColor = true;
@@ -1339,7 +1108,7 @@ namespace WindowsFormsApp2
             this.labelControl10.Location = new System.Drawing.Point(0, 0);
             this.labelControl10.Name = "labelControl10";
             this.labelControl10.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
-            this.labelControl10.Size = new System.Drawing.Size(76, 26);
+            this.labelControl10.Size = new System.Drawing.Size(76, 38);
             this.labelControl10.TabIndex = 2;
             this.labelControl10.Text = "Qaytarma sayı";
             // 
@@ -1375,7 +1144,7 @@ namespace WindowsFormsApp2
             // 
             // lPurchaseTotalPrice
             // 
-            this.lPurchaseTotalPrice.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
+            this.lPurchaseTotalPrice.Appearance.Font = new System.Drawing.Font("Nunito", 12F, System.Drawing.FontStyle.Bold);
             this.lPurchaseTotalPrice.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.lPurchaseTotalPrice.Appearance.Options.UseFont = true;
             this.lPurchaseTotalPrice.Appearance.Options.UseForeColor = true;
@@ -1393,7 +1162,7 @@ namespace WindowsFormsApp2
             // 
             // labelControl6
             // 
-            this.labelControl6.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold);
+            this.labelControl6.Appearance.Font = new System.Drawing.Font("Nunito", 14F, System.Drawing.FontStyle.Bold);
             this.labelControl6.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(123)))), ((int)(((byte)(173)))));
             this.labelControl6.Appearance.Options.UseFont = true;
             this.labelControl6.Appearance.Options.UseForeColor = true;
@@ -1426,7 +1195,7 @@ namespace WindowsFormsApp2
             // 
             // lPurchaseCount
             // 
-            this.lPurchaseCount.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold);
+            this.lPurchaseCount.Appearance.Font = new System.Drawing.Font("Nunito", 13F, System.Drawing.FontStyle.Bold);
             this.lPurchaseCount.Appearance.ForeColor = System.Drawing.Color.White;
             this.lPurchaseCount.Appearance.Options.UseFont = true;
             this.lPurchaseCount.Appearance.Options.UseForeColor = true;
@@ -1445,7 +1214,7 @@ namespace WindowsFormsApp2
             // 
             // labelControl11
             // 
-            this.labelControl11.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.labelControl11.Appearance.Font = new System.Drawing.Font("Nunito", 10F);
             this.labelControl11.Appearance.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.labelControl11.Appearance.Options.UseFont = true;
             this.labelControl11.Appearance.Options.UseForeColor = true;
@@ -1461,71 +1230,6 @@ namespace WindowsFormsApp2
             this.labelControl11.Size = new System.Drawing.Size(76, 38);
             this.labelControl11.TabIndex = 2;
             this.labelControl11.Text = "Alınan məhsul sayı";
-            // 
-            // gridControlExpenses
-            // 
-            this.gridControlExpenses.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gridControlExpenses.Location = new System.Drawing.Point(864, 408);
-            this.gridControlExpenses.LookAndFeel.SkinName = "WXI";
-            this.gridControlExpenses.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.gridControlExpenses.MainView = this.gridExpenses;
-            this.gridControlExpenses.Name = "gridControlExpenses";
-            this.gridControlExpenses.Size = new System.Drawing.Size(290, 248);
-            this.gridControlExpenses.TabIndex = 0;
-            this.gridControlExpenses.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.gridExpenses});
-            // 
-            // gridExpenses
-            // 
-            this.gridExpenses.Appearance.EvenRow.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.gridExpenses.Appearance.EvenRow.Options.UseBackColor = true;
-            this.gridExpenses.Appearance.OddRow.BackColor = System.Drawing.Color.White;
-            this.gridExpenses.Appearance.OddRow.Options.UseBackColor = true;
-            this.gridExpenses.Appearance.ViewCaption.Font = new System.Drawing.Font("Verdana", 10F);
-            this.gridExpenses.Appearance.ViewCaption.Options.UseFont = true;
-            this.gridExpenses.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
-            this.gridColumn7,
-            this.gridColumn8});
-            this.gridExpenses.DetailHeight = 294;
-            this.gridExpenses.FooterPanelHeight = 1;
-            this.gridExpenses.GridControl = this.gridControlExpenses;
-            this.gridExpenses.Name = "gridExpenses";
-            this.gridExpenses.OptionsBehavior.KeepFocusedRowOnUpdate = false;
-            this.gridExpenses.OptionsBehavior.ReadOnly = true;
-            this.gridExpenses.OptionsEditForm.PopupEditFormWidth = 1067;
-            this.gridExpenses.OptionsMenu.EnableFooterMenu = false;
-            this.gridExpenses.OptionsNavigation.AutoFocusNewRow = true;
-            this.gridExpenses.OptionsScrollAnnotations.ShowFocusedRow = DevExpress.Utils.DefaultBoolean.False;
-            this.gridExpenses.OptionsView.ShowGroupPanel = false;
-            this.gridExpenses.OptionsView.ShowIndicator = false;
-            this.gridExpenses.OptionsView.ShowViewCaption = true;
-            this.gridExpenses.ViewCaption = "XƏRCLƏR";
-            this.gridExpenses.RowClick += new DevExpress.XtraGrid.Views.Grid.RowClickEventHandler(this.gridExpenses_RowClick);
-            // 
-            // gridColumn7
-            // 
-            this.gridColumn7.Caption = "Başlıq";
-            this.gridColumn7.FieldName = "Header";
-            this.gridColumn7.Name = "gridColumn7";
-            this.gridColumn7.OptionsColumn.AllowEdit = false;
-            this.gridColumn7.Visible = true;
-            this.gridColumn7.VisibleIndex = 0;
-            this.gridColumn7.Width = 194;
-            // 
-            // gridColumn8
-            // 
-            this.gridColumn8.AppearanceCell.Options.UseTextOptions = true;
-            this.gridColumn8.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.gridColumn8.AppearanceHeader.Options.UseTextOptions = true;
-            this.gridColumn8.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.gridColumn8.Caption = "Məbləğ";
-            this.gridColumn8.FieldName = "Amount";
-            this.gridColumn8.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.MiddleLeft;
-            this.gridColumn8.Name = "gridColumn8";
-            this.gridColumn8.OptionsColumn.AllowEdit = false;
-            this.gridColumn8.Visible = true;
-            this.gridColumn8.VisibleIndex = 1;
-            this.gridColumn8.Width = 95;
             // 
             // gridControl2
             // 
@@ -1571,6 +1275,71 @@ namespace WindowsFormsApp2
             this.pictureEdit3.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Zoom;
             this.pictureEdit3.Size = new System.Drawing.Size(509, 44);
             this.pictureEdit3.TabIndex = 5;
+            // 
+            // chartWeek
+            // 
+            this.tableLayoutPanel1.SetColumnSpan(this.chartWeek, 3);
+            xyDiagram2.AxisX.VisibleInPanesSerializable = "-1";
+            xyDiagram2.AxisY.VisibleInPanesSerializable = "-1";
+            this.chartWeek.Diagram = xyDiagram2;
+            this.chartWeek.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.chartWeek.EmptyChartText.DXFont = new DevExpress.Drawing.DXFont("Nunito", 14F);
+            this.chartWeek.EmptyChartText.Text = "Məlumat yoxdur";
+            this.chartWeek.Legend.Visibility = DevExpress.Utils.DefaultBoolean.False;
+            this.chartWeek.Location = new System.Drawing.Point(3, 119);
+            this.chartWeek.Name = "chartWeek";
+            series3.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+            series3.LegendTextPattern = "{V}";
+            series3.Name = "Series 1";
+            series3.SeriesID = 0;
+            this.chartWeek.SeriesSerializable = new DevExpress.XtraCharts.Series[] {
+        series3};
+            this.chartWeek.Size = new System.Drawing.Size(855, 283);
+            this.chartWeek.TabIndex = 14;
+            chartTitle3.DXFont = new DevExpress.Drawing.DXFont("Verdana", 16F);
+            chartTitle3.Text = "Aylıq satış hesabatı";
+            chartTitle3.TitleID = 0;
+            this.chartWeek.Titles.AddRange(new DevExpress.XtraCharts.ChartTitle[] {
+            chartTitle3});
+            // 
+            // chartSalesType
+            // 
+            this.tableLayoutPanel1.SetColumnSpan(this.chartSalesType, 3);
+            this.chartSalesType.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.chartSalesType.EmptyChartText.DXFont = new DevExpress.Drawing.DXFont("Nunito", 14F);
+            this.chartSalesType.EmptyChartText.Text = "Məlumat yoxdur";
+            this.chartSalesType.IndicatorsPaletteName = "Concourse";
+            this.chartSalesType.Legend.Visibility = DevExpress.Utils.DefaultBoolean.False;
+            this.chartSalesType.Location = new System.Drawing.Point(3, 408);
+            this.chartSalesType.Name = "chartSalesType";
+            this.chartSalesType.PaletteName = "Civic";
+            this.tableLayoutPanel1.SetRowSpan(this.chartSalesType, 2);
+            series4.Name = "Series 1";
+            series4.SeriesID = 1;
+            series4.View = doughnutSeriesView2;
+            this.chartSalesType.SeriesSerializable = new DevExpress.XtraCharts.Series[] {
+        series4};
+            this.chartSalesType.Size = new System.Drawing.Size(855, 345);
+            this.chartSalesType.TabIndex = 15;
+            chartTitle4.DXFont = new DevExpress.Drawing.DXFont("Verdana", 16F);
+            chartTitle4.Text = "Cari satış növ hesabatı";
+            chartTitle4.TitleID = 0;
+            this.chartSalesType.Titles.AddRange(new DevExpress.XtraCharts.ChartTitle[] {
+            chartTitle4});
+            // 
+            // pictureEdit4
+            // 
+            this.pictureEdit4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureEdit4.Location = new System.Drawing.Point(864, 408);
+            this.pictureEdit4.MenuManager = this.fluentFormDefaultManager1;
+            this.pictureEdit4.Name = "pictureEdit4";
+            this.pictureEdit4.Properties.AllowFocused = false;
+            this.pictureEdit4.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.pictureEdit4.Properties.NullText = "Məlumat yoxdur";
+            this.pictureEdit4.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
+            this.pictureEdit4.Properties.ShowMenu = false;
+            this.pictureEdit4.Size = new System.Drawing.Size(290, 248);
+            this.pictureEdit4.TabIndex = 16;
             // 
             // accordionControl1
             // 
@@ -1659,6 +1428,7 @@ namespace WindowsFormsApp2
             this.accordionControlElement3.Name = "accordionControlElement3";
             this.accordionControlElement3.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
             this.accordionControlElement3.Text = "Fliallar";
+            this.accordionControlElement3.Visible = false;
             this.accordionControlElement3.Click += new System.EventHandler(this.accordionControlElement3_Click);
             // 
             // accordionControlElement4
@@ -4110,13 +3880,6 @@ namespace WindowsFormsApp2
             this.tableLayoutPanel8.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl9)).EndInit();
-            this.panelControl9.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.gridControlProducts)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridProducts)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl10)).EndInit();
-            this.panelControl10.ResumeLayout(false);
-            this.panelControl10.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).EndInit();
             this.groupControl2.ResumeLayout(false);
             this.groupControl2.PerformLayout();
@@ -4141,11 +3904,16 @@ namespace WindowsFormsApp2
             this.panelControl5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.panelControl6)).EndInit();
             this.panelControl6.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.gridControlExpenses)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridExpenses)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit3.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(xyDiagram2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(series3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartWeek)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(doughnutSeriesView2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(series4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartSalesType)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureEdit4.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.accordionControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.fluentDesignFormControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView3)).EndInit();
@@ -4313,11 +4081,6 @@ namespace WindowsFormsApp2
         private DevExpress.XtraEditors.SimpleButton b10;
         private DevExpress.XtraEditors.SimpleButton b15;
         private DevExpress.XtraEditors.SimpleButton b20;
-        private DevExpress.XtraEditors.PanelControl panelControl9;
-        private DevExpress.XtraEditors.SimpleButton bGridExcelExport;
-        private DevExpress.XtraGrid.GridControl gridControlProducts;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridProducts;
-        private DevExpress.XtraEditors.PanelControl panelControl10;
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement56;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
         private DevExpress.XtraEditors.PanelControl panelControl7;
@@ -4394,7 +4157,6 @@ namespace WindowsFormsApp2
         private DevExpress.XtraEditors.LabelControl labelControl26;
         private DevExpress.XtraEditors.LabelControl lLicenceKey;
         private DevExpress.XtraEditors.LabelControl labelControl30;
-        private DevExpress.XtraEditors.CheckButton chShowStock;
         private DevExpress.XtraEditors.CheckEdit chSendToKassa;
         private DevExpress.XtraEditors.CheckEdit chTerminalPrintReceipt;
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement49;
@@ -4409,10 +4171,6 @@ namespace WindowsFormsApp2
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement62;
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement29;
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement63;
-        private DevExpress.XtraGrid.GridControl gridControlExpenses;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridExpenses;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumn7;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumn8;
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement64;
         private DevExpress.XtraEditors.GroupControl groupControl1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
@@ -4431,17 +4189,6 @@ namespace WindowsFormsApp2
         private DevExpress.XtraEditors.PictureEdit pictureEdit3;
         private DevExpress.XtraGrid.GridControl gridControl2;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView2;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumn9;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumn10;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumn11;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumn12;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumn13;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumn14;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumn16;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumn15;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumn17;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumn18;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumn19;
         private DevExpress.XtraEditors.LabelControl labelControl17;
         private DevExpress.XtraEditors.LabelControl labelControl16;
         private DevExpress.XtraEditors.SimpleButton bDbCacheDelete;
@@ -4489,6 +4236,9 @@ namespace WindowsFormsApp2
         private DevExpress.XtraEditors.SimpleButton bBranchCreditPay;
         private DevExpress.XtraEditors.SimpleButton bBranchCreditSale;
         private DevExpress.XtraEditors.SimpleButton bBranchAvansHesabati;
+        private DevExpress.XtraCharts.ChartControl chartWeek;
+        private DevExpress.XtraCharts.ChartControl chartSalesType;
+        private DevExpress.XtraEditors.PictureEdit pictureEdit4;
     }
 }
 

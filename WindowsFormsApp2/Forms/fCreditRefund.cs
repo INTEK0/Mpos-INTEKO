@@ -232,23 +232,43 @@ WHERE
                 data.PaymentTypeId = Convert.ToInt16(row["PaymentTypeId"].ToString());
             }
 
-            var result = Omnitech.CreditRefund(data);
-            if (result.Item1)
+            switch (_terminal.Model)
             {
-                await DbProsedures.Insert_CreditSaleRefund(new DatabaseClasses.CreditSaleRefund
-                {
-                    CreditSaleId = Id,
-                    Comment = "",
-                    PaymentTypeId = data.PaymentTypeId,
-                    TotalAmount = data.Total,
-                    LongFiscalId = result.Item2,
-                    ReceiptNo = result.Item3,
-                    UserId = Properties.Settings.Default.UserID,
-                });
-                gridControl1.DataSource = null;
+                case "1":
+                    var resultSunmi = Sunmi.CreditRefund(data);
+                    if (resultSunmi.Item1)
+                    {
+                        await DbProsedures.Insert_CreditSaleRefund(new DatabaseClasses.CreditSaleRefund
+                        {
+                            CreditSaleId = Id,
+                            Comment = "",
+                            PaymentTypeId = data.PaymentTypeId,
+                            TotalAmount = data.Total,
+                            LongFiscalId = resultSunmi.Item2,
+                            ReceiptNo = resultSunmi.Item3,
+                            UserId = Properties.Settings.Default.UserID,
+                        });
+                        gridControl1.DataSource = null;
+                    }
+                    break;
+                case "3":
+                    var result = Omnitech.CreditRefund(data);
+                    if (result.Item1)
+                    {
+                        await DbProsedures.Insert_CreditSaleRefund(new DatabaseClasses.CreditSaleRefund
+                        {
+                            CreditSaleId = Id,
+                            Comment = "",
+                            PaymentTypeId = data.PaymentTypeId,
+                            TotalAmount = data.Total,
+                            LongFiscalId = result.Item2,
+                            ReceiptNo = result.Item3,
+                            UserId = Properties.Settings.Default.UserID,
+                        });
+                        gridControl1.DataSource = null;
+                    }
+                    break;
             }
-               
-
         }
     }
 }

@@ -74,16 +74,6 @@
             this.labelControl22 = new DevExpress.XtraEditors.LabelControl();
             this.tComment = new DevExpress.XtraEditors.TextEdit();
             this.tabNavigationPage2 = new DevExpress.XtraBars.Navigation.TabNavigationPage();
-            this.tBankAccountNumber = new DevExpress.XtraEditors.TextEdit();
-            this.labelControl7 = new DevExpress.XtraEditors.LabelControl();
-            this.labelControl8 = new DevExpress.XtraEditors.LabelControl();
-            this.tBankSwift = new DevExpress.XtraEditors.TextEdit();
-            this.labelControl5 = new DevExpress.XtraEditors.LabelControl();
-            this.labelControl10 = new DevExpress.XtraEditors.LabelControl();
-            this.tBankName = new DevExpress.XtraEditors.TextEdit();
-            this.labelControl6 = new DevExpress.XtraEditors.LabelControl();
-            this.tBankCode = new DevExpress.XtraEditors.TextEdit();
-            this.tBankVoen = new DevExpress.XtraEditors.TextEdit();
             this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
             this.bCustomerList = new DevExpress.XtraEditors.SimpleButton();
@@ -91,6 +81,17 @@
             this.bAdd = new DevExpress.XtraEditors.SimpleButton();
             this.tProccessNo = new DevExpress.XtraEditors.ButtonEdit();
             this.lCustomerID = new DevExpress.XtraEditors.LabelControl();
+            this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
+            this.tBankAccountNumber = new DevExpress.XtraEditors.TextEdit();
+            this.labelControl7 = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl8 = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl5 = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl10 = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl6 = new DevExpress.XtraEditors.LabelControl();
+            this.tBankSwift = new DevExpress.XtraEditors.TextEdit();
+            this.tBankName = new DevExpress.XtraEditors.TextEdit();
+            this.tBankCode = new DevExpress.XtraEditors.TextEdit();
+            this.tBankVoen = new DevExpress.XtraEditors.TextEdit();
             ((System.ComponentModel.ISupportInitialize)(this.tabPane1)).BeginInit();
             this.tabPane1.SuspendLayout();
             this.tabNavigationPage1.SuspendLayout();
@@ -118,16 +119,18 @@
             ((System.ComponentModel.ISupportInitialize)(this.tMobPhone.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tComment.Properties)).BeginInit();
             this.tabNavigationPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tBankAccountNumber.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tBankSwift.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tBankName.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tBankCode.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tBankVoen.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).BeginInit();
             this.tablePanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
             this.panelControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tProccessNo.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).BeginInit();
+            this.panelControl2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tBankAccountNumber.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tBankSwift.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tBankName.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tBankCode.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tBankVoen.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // tabPane1
@@ -680,133 +683,9 @@
             this.tabNavigationPage2.Appearance.Options.UseBackColor = true;
             this.tabNavigationPage2.Appearance.Options.UseFont = true;
             this.tabNavigationPage2.Caption = "Bank məlumatları";
-            this.tabNavigationPage2.Controls.Add(this.tBankAccountNumber);
-            this.tabNavigationPage2.Controls.Add(this.labelControl7);
-            this.tabNavigationPage2.Controls.Add(this.labelControl8);
-            this.tabNavigationPage2.Controls.Add(this.tBankSwift);
-            this.tabNavigationPage2.Controls.Add(this.labelControl5);
-            this.tabNavigationPage2.Controls.Add(this.labelControl10);
-            this.tabNavigationPage2.Controls.Add(this.tBankName);
-            this.tabNavigationPage2.Controls.Add(this.labelControl6);
-            this.tabNavigationPage2.Controls.Add(this.tBankCode);
-            this.tabNavigationPage2.Controls.Add(this.tBankVoen);
+            this.tabNavigationPage2.Controls.Add(this.panelControl2);
             this.tabNavigationPage2.Name = "tabNavigationPage2";
-            this.tabNavigationPage2.Size = new System.Drawing.Size(1173, 654);
-            // 
-            // tBankAccountNumber
-            // 
-            this.tBankAccountNumber.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tBankAccountNumber.Location = new System.Drawing.Point(154, 6);
-            this.tBankAccountNumber.Margin = new System.Windows.Forms.Padding(4);
-            this.tBankAccountNumber.Name = "tBankAccountNumber";
-            this.tBankAccountNumber.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tBankAccountNumber.Properties.Appearance.Options.UseFont = true;
-            this.tBankAccountNumber.Size = new System.Drawing.Size(777, 34);
-            this.tBankAccountNumber.TabIndex = 0;
-            // 
-            // labelControl7
-            // 
-            this.labelControl7.Appearance.Font = new System.Drawing.Font("Nunito", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelControl7.Appearance.Options.UseFont = true;
-            this.labelControl7.Location = new System.Drawing.Point(7, 79);
-            this.labelControl7.Margin = new System.Windows.Forms.Padding(4);
-            this.labelControl7.Name = "labelControl7";
-            this.labelControl7.Size = new System.Drawing.Size(37, 18);
-            this.labelControl7.TabIndex = 15;
-            this.labelControl7.Text = "VÖEN";
-            // 
-            // labelControl8
-            // 
-            this.labelControl8.Appearance.Font = new System.Drawing.Font("Nunito", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelControl8.Appearance.Options.UseFont = true;
-            this.labelControl8.Location = new System.Drawing.Point(7, 113);
-            this.labelControl8.Margin = new System.Windows.Forms.Padding(4);
-            this.labelControl8.Name = "labelControl8";
-            this.labelControl8.Size = new System.Drawing.Size(29, 18);
-            this.labelControl8.TabIndex = 16;
-            this.labelControl8.Text = "KOD";
-            // 
-            // tBankSwift
-            // 
-            this.tBankSwift.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tBankSwift.Location = new System.Drawing.Point(154, 140);
-            this.tBankSwift.Margin = new System.Windows.Forms.Padding(4);
-            this.tBankSwift.Name = "tBankSwift";
-            this.tBankSwift.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tBankSwift.Properties.Appearance.Options.UseFont = true;
-            this.tBankSwift.Size = new System.Drawing.Size(777, 34);
-            this.tBankSwift.TabIndex = 4;
-            // 
-            // labelControl5
-            // 
-            this.labelControl5.Appearance.Font = new System.Drawing.Font("Nunito", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelControl5.Appearance.Options.UseFont = true;
-            this.labelControl5.Location = new System.Drawing.Point(7, 12);
-            this.labelControl5.Margin = new System.Windows.Forms.Padding(4);
-            this.labelControl5.Name = "labelControl5";
-            this.labelControl5.Size = new System.Drawing.Size(111, 18);
-            this.labelControl5.TabIndex = 18;
-            this.labelControl5.Text = "HESAB NÖMRƏSİ";
-            // 
-            // labelControl10
-            // 
-            this.labelControl10.Appearance.Font = new System.Drawing.Font("Nunito", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelControl10.Appearance.Options.UseFont = true;
-            this.labelControl10.Location = new System.Drawing.Point(7, 146);
-            this.labelControl10.Margin = new System.Windows.Forms.Padding(4);
-            this.labelControl10.Name = "labelControl10";
-            this.labelControl10.Size = new System.Drawing.Size(42, 18);
-            this.labelControl10.TabIndex = 19;
-            this.labelControl10.Text = "SWIFT";
-            // 
-            // tBankName
-            // 
-            this.tBankName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tBankName.Location = new System.Drawing.Point(154, 39);
-            this.tBankName.Margin = new System.Windows.Forms.Padding(4);
-            this.tBankName.Name = "tBankName";
-            this.tBankName.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tBankName.Properties.Appearance.Options.UseFont = true;
-            this.tBankName.Size = new System.Drawing.Size(777, 34);
-            this.tBankName.TabIndex = 1;
-            // 
-            // labelControl6
-            // 
-            this.labelControl6.Appearance.Font = new System.Drawing.Font("Nunito", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelControl6.Appearance.Options.UseFont = true;
-            this.labelControl6.Location = new System.Drawing.Point(7, 46);
-            this.labelControl6.Margin = new System.Windows.Forms.Padding(4);
-            this.labelControl6.Name = "labelControl6";
-            this.labelControl6.Size = new System.Drawing.Size(66, 18);
-            this.labelControl6.TabIndex = 20;
-            this.labelControl6.Text = "BANK ADI";
-            // 
-            // tBankCode
-            // 
-            this.tBankCode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tBankCode.Location = new System.Drawing.Point(154, 106);
-            this.tBankCode.Margin = new System.Windows.Forms.Padding(4);
-            this.tBankCode.Name = "tBankCode";
-            this.tBankCode.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tBankCode.Properties.Appearance.Options.UseFont = true;
-            this.tBankCode.Size = new System.Drawing.Size(777, 34);
-            this.tBankCode.TabIndex = 3;
-            // 
-            // tBankVoen
-            // 
-            this.tBankVoen.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tBankVoen.Location = new System.Drawing.Point(154, 73);
-            this.tBankVoen.Margin = new System.Windows.Forms.Padding(4);
-            this.tBankVoen.Name = "tBankVoen";
-            this.tBankVoen.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tBankVoen.Properties.Appearance.Options.UseFont = true;
-            this.tBankVoen.Size = new System.Drawing.Size(778, 34);
-            this.tBankVoen.TabIndex = 2;
+            this.tabNavigationPage2.Size = new System.Drawing.Size(1170, 650);
             // 
             // tablePanel1
             // 
@@ -897,7 +776,7 @@
             // 
             this.tProccessNo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tProccessNo.EditValue = "";
-            this.tProccessNo.Location = new System.Drawing.Point(862, 9);
+            this.tProccessNo.Location = new System.Drawing.Point(865, 9);
             this.tProccessNo.Margin = new System.Windows.Forms.Padding(4);
             this.tProccessNo.Name = "tProccessNo";
             this.tProccessNo.Properties.AllowFocused = false;
@@ -927,6 +806,137 @@
             this.lCustomerID.TabIndex = 6;
             this.lCustomerID.Text = "CustomerID";
             this.lCustomerID.Visible = false;
+            // 
+            // panelControl2
+            // 
+            this.panelControl2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelControl2.Controls.Add(this.tBankAccountNumber);
+            this.panelControl2.Controls.Add(this.labelControl7);
+            this.panelControl2.Controls.Add(this.labelControl8);
+            this.panelControl2.Controls.Add(this.labelControl5);
+            this.panelControl2.Controls.Add(this.labelControl10);
+            this.panelControl2.Controls.Add(this.labelControl6);
+            this.panelControl2.Controls.Add(this.tBankSwift);
+            this.panelControl2.Controls.Add(this.tBankName);
+            this.panelControl2.Controls.Add(this.tBankCode);
+            this.panelControl2.Controls.Add(this.tBankVoen);
+            this.panelControl2.Location = new System.Drawing.Point(3, 3);
+            this.panelControl2.Name = "panelControl2";
+            this.panelControl2.Size = new System.Drawing.Size(1164, 218);
+            this.panelControl2.TabIndex = 22;
+            // 
+            // tBankAccountNumber
+            // 
+            this.tBankAccountNumber.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tBankAccountNumber.Location = new System.Drawing.Point(190, 7);
+            this.tBankAccountNumber.Margin = new System.Windows.Forms.Padding(4);
+            this.tBankAccountNumber.Name = "tBankAccountNumber";
+            this.tBankAccountNumber.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tBankAccountNumber.Properties.Appearance.Options.UseFont = true;
+            this.tBankAccountNumber.Size = new System.Drawing.Size(965, 34);
+            this.tBankAccountNumber.TabIndex = 21;
+            // 
+            // labelControl7
+            // 
+            this.labelControl7.Appearance.Font = new System.Drawing.Font("Nunito", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelControl7.Appearance.Options.UseFont = true;
+            this.labelControl7.Location = new System.Drawing.Point(10, 99);
+            this.labelControl7.Name = "labelControl7";
+            this.labelControl7.Size = new System.Drawing.Size(37, 18);
+            this.labelControl7.TabIndex = 26;
+            this.labelControl7.Text = "VÖEN";
+            // 
+            // labelControl8
+            // 
+            this.labelControl8.Appearance.Font = new System.Drawing.Font("Nunito", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelControl8.Appearance.Options.UseFont = true;
+            this.labelControl8.Location = new System.Drawing.Point(10, 141);
+            this.labelControl8.Name = "labelControl8";
+            this.labelControl8.Size = new System.Drawing.Size(29, 18);
+            this.labelControl8.TabIndex = 27;
+            this.labelControl8.Text = "KOD";
+            // 
+            // labelControl5
+            // 
+            this.labelControl5.Appearance.Font = new System.Drawing.Font("Nunito", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelControl5.Appearance.Options.UseFont = true;
+            this.labelControl5.Location = new System.Drawing.Point(10, 15);
+            this.labelControl5.Name = "labelControl5";
+            this.labelControl5.Size = new System.Drawing.Size(111, 18);
+            this.labelControl5.TabIndex = 28;
+            this.labelControl5.Text = "HESAB NÖMRƏSİ";
+            // 
+            // labelControl10
+            // 
+            this.labelControl10.Appearance.Font = new System.Drawing.Font("Nunito", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelControl10.Appearance.Options.UseFont = true;
+            this.labelControl10.Location = new System.Drawing.Point(10, 183);
+            this.labelControl10.Name = "labelControl10";
+            this.labelControl10.Size = new System.Drawing.Size(42, 18);
+            this.labelControl10.TabIndex = 29;
+            this.labelControl10.Text = "SWIFT";
+            // 
+            // labelControl6
+            // 
+            this.labelControl6.Appearance.Font = new System.Drawing.Font("Nunito", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelControl6.Appearance.Options.UseFont = true;
+            this.labelControl6.Location = new System.Drawing.Point(10, 57);
+            this.labelControl6.Name = "labelControl6";
+            this.labelControl6.Size = new System.Drawing.Size(66, 18);
+            this.labelControl6.TabIndex = 30;
+            this.labelControl6.Text = "BANK ADI";
+            // 
+            // tBankSwift
+            // 
+            this.tBankSwift.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tBankSwift.Location = new System.Drawing.Point(190, 175);
+            this.tBankSwift.Margin = new System.Windows.Forms.Padding(4);
+            this.tBankSwift.Name = "tBankSwift";
+            this.tBankSwift.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tBankSwift.Properties.Appearance.Options.UseFont = true;
+            this.tBankSwift.Size = new System.Drawing.Size(965, 34);
+            this.tBankSwift.TabIndex = 25;
+            // 
+            // tBankName
+            // 
+            this.tBankName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tBankName.Location = new System.Drawing.Point(190, 49);
+            this.tBankName.Margin = new System.Windows.Forms.Padding(4);
+            this.tBankName.Name = "tBankName";
+            this.tBankName.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tBankName.Properties.Appearance.Options.UseFont = true;
+            this.tBankName.Size = new System.Drawing.Size(965, 34);
+            this.tBankName.TabIndex = 22;
+            // 
+            // tBankCode
+            // 
+            this.tBankCode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tBankCode.Location = new System.Drawing.Point(190, 133);
+            this.tBankCode.Margin = new System.Windows.Forms.Padding(4);
+            this.tBankCode.Name = "tBankCode";
+            this.tBankCode.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tBankCode.Properties.Appearance.Options.UseFont = true;
+            this.tBankCode.Properties.MaxLength = 5;
+            this.tBankCode.Size = new System.Drawing.Size(965, 34);
+            this.tBankCode.TabIndex = 24;
+            // 
+            // tBankVoen
+            // 
+            this.tBankVoen.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tBankVoen.Location = new System.Drawing.Point(190, 91);
+            this.tBankVoen.Margin = new System.Windows.Forms.Padding(4);
+            this.tBankVoen.Name = "tBankVoen";
+            this.tBankVoen.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tBankVoen.Properties.Appearance.Options.UseFont = true;
+            this.tBankVoen.Properties.MaxLength = 10;
+            this.tBankVoen.Size = new System.Drawing.Size(966, 34);
+            this.tBankVoen.TabIndex = 23;
             // 
             // fAddCustomer
             // 
@@ -971,18 +981,20 @@
             ((System.ComponentModel.ISupportInitialize)(this.tMobPhone.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tComment.Properties)).EndInit();
             this.tabNavigationPage2.ResumeLayout(false);
-            this.tabNavigationPage2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tBankAccountNumber.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tBankSwift.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tBankName.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tBankCode.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tBankVoen.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).EndInit();
             this.tablePanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).EndInit();
             this.panelControl1.ResumeLayout(false);
             this.panelControl1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tProccessNo.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).EndInit();
+            this.panelControl2.ResumeLayout(false);
+            this.panelControl2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tBankAccountNumber.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tBankSwift.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tBankName.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tBankCode.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tBankVoen.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1003,16 +1015,6 @@
         private DevExpress.XtraEditors.LabelControl labelControl1;
         private DevExpress.XtraEditors.TextEdit tCompanyName;
         private DevExpress.XtraBars.Navigation.TabNavigationPage tabNavigationPage2;
-        private DevExpress.XtraEditors.TextEdit tBankAccountNumber;
-        private DevExpress.XtraEditors.LabelControl labelControl7;
-        private DevExpress.XtraEditors.LabelControl labelControl8;
-        private DevExpress.XtraEditors.TextEdit tBankSwift;
-        private DevExpress.XtraEditors.LabelControl labelControl5;
-        private DevExpress.XtraEditors.LabelControl labelControl10;
-        private DevExpress.XtraEditors.TextEdit tBankName;
-        private DevExpress.XtraEditors.LabelControl labelControl6;
-        private DevExpress.XtraEditors.TextEdit tBankCode;
-        private DevExpress.XtraEditors.TextEdit tBankVoen;
         private DevExpress.XtraEditors.GroupControl groupControl1;
         private DevExpress.XtraEditors.LabelControl labelControl22;
         private DevExpress.XtraEditors.LabelControl labelControl23;
@@ -1046,5 +1048,16 @@
         private DevExpress.XtraEditors.DateEdit dateBirth;
         private DevExpress.XtraEditors.DateEdit dateSVStart;
         private DevExpress.XtraEditors.LabelControl lCustomerID;
+        private DevExpress.XtraEditors.PanelControl panelControl2;
+        private DevExpress.XtraEditors.TextEdit tBankAccountNumber;
+        private DevExpress.XtraEditors.LabelControl labelControl7;
+        private DevExpress.XtraEditors.LabelControl labelControl8;
+        private DevExpress.XtraEditors.LabelControl labelControl5;
+        private DevExpress.XtraEditors.LabelControl labelControl10;
+        private DevExpress.XtraEditors.LabelControl labelControl6;
+        private DevExpress.XtraEditors.TextEdit tBankSwift;
+        private DevExpress.XtraEditors.TextEdit tBankName;
+        private DevExpress.XtraEditors.TextEdit tBankCode;
+        private DevExpress.XtraEditors.TextEdit tBankVoen;
     }
 }

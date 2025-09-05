@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Windows.Forms;
+using DevExpress.DashboardCommon;
+using DevExpress.DashboardWin.Design;
 using DevExpress.Data.Helpers;
 using DevExpress.DataAccess.Native.Web;
 using DevExpress.XtraEditors;
@@ -766,6 +768,7 @@ namespace WindowsFormsApp2.NKA
 
             if (response.message != "error" && response.code != "506")
             {
+               
                 switch (response.message)
                 {
                     case "Success operation":
@@ -1092,6 +1095,95 @@ WHERE psd.pos_satis_check_main_id = {pos_satis_main_id} AND psm.user_id_ = {Prop
             }
         }
 
+        public static Tuple<bool, string, string> CreditRefund(CreditSaleRefundDto refundDto)
+        {
+            int vatType = 18;
+            switch (refundDto.item.VatType)
+            {
+                case 1:
+                case 2:
+                    vatType = 18;
+                    break;
+                case 3: vatType = 0; break;
+                case 4: vatType = 2; break;
+                case 6: vatType = 2; break;
+                case 5: vatType = 8; break;
+            }
+
+
+            var items = new List<CreditRefundRequest.Item>
+            {
+                new CreditRefundRequest.Item()
+                {
+                    name = refundDto.item.ProductName,
+                    code = refundDto.item.ProductCode,
+                    quantityType = refundDto.item.QuantityType,
+                    quantity = refundDto.item.Quantity,
+                    salePrice = refundDto.item.SalePrice,
+                    vatType = vatType,
+                }
+            };
+
+
+            CreditRefundRequest.Data data = new CreditRefundRequest.Data
+            {
+                documentUUID = Guid.NewGuid().ToString(),
+                parentDocumentId = refundDto.ParentLongFiscalId,
+                cashPayment = refundDto.IncomingSum,
+                cardPayment = refundDto.CardPayment,
+                items = items,
+                moneyBackType = 0,
+                cashierName = refundDto.Cashier,
+                rrn = refundDto.Rrn,
+                clientName = refundDto.CustomerName
+            };
+
+            CreditRefundRequest.Root rootObject = new CreditRefundRequest.Root
+            {
+                data = data,
+            };
+
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(rootObject, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            });
+            Clipboard.SetText(json);
+            return new Tuple<bool, string, string>(false, null, null);
+            var response = RequestPOST(refundDto.Url, json);
+
+            if (response != null)
+            {
+                if (response.message == "Successful operation")
+                {
+                    if (MessageVisible)
+                        ReadyMessages.SUCCESS_RETURN_SALES_MESSAGE();
+
+                    FormHelpers.Log($"Kredit satışı uğurla geri qaytarıldı. Qəbz No: {response.data.document_number.ToString()}");
+                    return new Tuple<bool, string, string>(true, response.data.document_id, response.data.document_number.ToString());
+                }
+                else if (response.message == "document: invalid shift duration")
+                {
+                    XtraMessageBox.Show("GÜN SONU (Z) HESABATI ÇIXARILMAYIB !\n\nZəhmət olmasa pos bağla düyməsinə vuraraq günü sonlandırın.", "Mesaj", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return new Tuple<bool, string, string>(false, null, null);
+                }
+                else if (response.message == "document: invalid shift status")
+                {
+                    XtraMessageBox.Show("NÖVBƏ AÇILMAYIB !\n\nZəhmət olmasa pos aç düyməsinə vuraraq növbəni açın.", "Mesaj", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return new Tuple<bool, string, string>(false, null, null);
+                }
+                else
+                {
+                    ReadyMessages.ERROR_SALES_MESSAGE(response.message);
+                    FormHelpers.Log($"Kredit geri qaytarma xətası - Xəta mesajı: {response.message}");
+                    return new Tuple<bool, string, string>(false, null, null);
+                }
+            }
+            else
+            {
+                return new Tuple<bool, string, string>(false, null, null);
+            }
+        }
+
 
         #region [..REQUEST CLASS..]
 
@@ -1368,7 +1460,54 @@ WHERE psd.pos_satis_check_main_id = {pos_satis_main_id} AND psm.user_id_ = {Prop
             }
 
             public Data data { get; set; }
-            public string Operation { get; set; } = "credit";
+            public string operation { get; set; } = "credit";
+        }
+
+        public class CreditRefundRequest
+        {
+            public class Data
+            {
+                public string parentDocumentId { get; set; }
+                public string documentUUID { get; set; }
+                public decimal cashPayment { get; set; }
+                public decimal creditPayment { get; set; }
+                public decimal depositPayment { get; set; }
+                public decimal cardPayment { get; set; }
+                public decimal bonusPayment { get; set; }
+                public List<Item> items { get; set; }
+                public bool isManual { get; set; } = true;
+                public int moneyBackType { get; set; }
+                public string clientName { get; set; }
+                public decimal clientTotalBonus { get; set; }
+                public int clientEarnedBonus { get; set; }
+                public string clientBonusCardNumber { get; set; }
+                public string cashierName { get; set; }
+                public string currency { get; set; } = "AZN";
+                public string rrn { get; set; }
+                public string note { get; set; }
+            }
+
+            public class Item
+            {
+                public string name { get; set; }
+                public string code { get; set; }
+                public decimal quantity { get; set; }
+                public decimal salePrice { get; set; }
+                public double? realPrice { get; set; } = null;
+                public decimal? purchasePrice { get; set; } = null;
+                public int? codeType { get; set; } = null;
+                public int quantityType { get; set; }
+                public int vatType { get; set; }
+                public decimal? discountAmount { get; set; } = null;
+            }
+
+            public class Root
+            {
+                public Data data { get; set; }
+                public string operation { get; set; } = "moneyBack";
+                public string username { get; set; } = "username";
+                public string password { get; set; } = "password";
+            }
         }
         
         #endregion [..REQUEST CLASS..]

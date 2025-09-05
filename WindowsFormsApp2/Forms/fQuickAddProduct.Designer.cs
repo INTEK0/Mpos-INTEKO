@@ -51,6 +51,7 @@
             this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.bQuantity = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
             this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -61,6 +62,8 @@
             this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.bDeleteRow = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.bDelete = new DevExpress.XtraEditors.SimpleButton();
+            this.tSalePrice = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
+            this.tPurchasePrice = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).BeginInit();
             this.tablePanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
@@ -71,7 +74,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.tBarcode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bQuantity)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bDeleteRow)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tSalePrice)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tPurchasePrice)).BeginInit();
             this.SuspendLayout();
             // 
             // tablePanel1
@@ -111,7 +117,7 @@
             this.bAdd.Name = "bAdd";
             this.tablePanel1.SetRow(this.bAdd, 1);
             this.bAdd.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.bAdd.Size = new System.Drawing.Size(67, 28);
+            this.bAdd.Size = new System.Drawing.Size(88, 28);
             this.bAdd.TabIndex = 4;
             this.bAdd.TabStop = false;
             this.bAdd.Text = "Yadda saxla";
@@ -125,12 +131,12 @@
             this.bSelectedProducts.AutoSize = true;
             this.tablePanel1.SetColumn(this.bSelectedProducts, 1);
             this.bSelectedProducts.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.bSelectedProducts.Location = new System.Drawing.Point(74, 123);
+            this.bSelectedProducts.Location = new System.Drawing.Point(95, 123);
             this.bSelectedProducts.Margin = new System.Windows.Forms.Padding(2);
             this.bSelectedProducts.Name = "bSelectedProducts";
             this.tablePanel1.SetRow(this.bSelectedProducts, 1);
             this.bSelectedProducts.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.bSelectedProducts.Size = new System.Drawing.Size(113, 28);
+            this.bSelectedProducts.Size = new System.Drawing.Size(154, 28);
             this.bSelectedProducts.TabIndex = 4;
             this.bSelectedProducts.TabStop = false;
             this.bSelectedProducts.Text = "Toplu məhsul əlavə et";
@@ -164,7 +170,7 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dateTarix.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dateTarix.Size = new System.Drawing.Size(246, 28);
+            this.dateTarix.Size = new System.Drawing.Size(246, 30);
             this.dateTarix.TabIndex = 0;
             this.dateTarix.TabStop = false;
             // 
@@ -172,7 +178,7 @@
             // 
             this.labelControl1.Location = new System.Drawing.Point(8, 12);
             this.labelControl1.Name = "labelControl1";
-            this.labelControl1.Size = new System.Drawing.Size(30, 13);
+            this.labelControl1.Size = new System.Drawing.Size(40, 16);
             this.labelControl1.TabIndex = 3;
             this.labelControl1.Text = "TARİX";
             // 
@@ -180,7 +186,7 @@
             // 
             this.labelControl2.Location = new System.Drawing.Point(8, 84);
             this.labelControl2.Name = "labelControl2";
-            this.labelControl2.Size = new System.Drawing.Size(33, 13);
+            this.labelControl2.Size = new System.Drawing.Size(44, 16);
             this.labelControl2.TabIndex = 3;
             this.labelControl2.Text = "Barkod";
             // 
@@ -188,7 +194,7 @@
             // 
             this.labelControl3.Location = new System.Drawing.Point(8, 48);
             this.labelControl3.Name = "labelControl3";
-            this.labelControl3.Size = new System.Drawing.Size(62, 13);
+            this.labelControl3.Size = new System.Drawing.Size(80, 16);
             this.labelControl3.TabIndex = 3;
             this.labelControl3.Text = "FAKTURA №";
             // 
@@ -196,7 +202,7 @@
             // 
             this.tInvoiceNo.Location = new System.Drawing.Point(106, 41);
             this.tInvoiceNo.Name = "tInvoiceNo";
-            this.tInvoiceNo.Size = new System.Drawing.Size(246, 28);
+            this.tInvoiceNo.Size = new System.Drawing.Size(246, 30);
             this.tInvoiceNo.TabIndex = 1;
             this.tInvoiceNo.TabStop = false;
             // 
@@ -211,7 +217,7 @@
             this.tBarcode.Properties.Appearance.ForeColor = System.Drawing.Color.Black;
             this.tBarcode.Properties.Appearance.Options.UseBackColor = true;
             this.tBarcode.Properties.Appearance.Options.UseForeColor = true;
-            this.tBarcode.Size = new System.Drawing.Size(246, 28);
+            this.tBarcode.Size = new System.Drawing.Size(246, 30);
             this.tBarcode.TabIndex = 2;
             this.tBarcode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tBarcode_KeyDown);
             // 
@@ -226,7 +232,10 @@
             this.gridControl1.MainView = this.gridView1;
             this.gridControl1.Name = "gridControl1";
             this.gridControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
-            this.bDeleteRow});
+            this.bDeleteRow,
+            this.bQuantity,
+            this.tSalePrice,
+            this.tPurchasePrice});
             this.tablePanel1.SetRow(this.gridControl1, 2);
             this.gridControl1.Size = new System.Drawing.Size(1227, 585);
             this.gridControl1.TabIndex = 3;
@@ -356,6 +365,7 @@
             this.gridColumn4.AppearanceHeader.TextOptions.Trimming = DevExpress.Utils.Trimming.EllipsisCharacter;
             this.gridColumn4.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.gridColumn4.Caption = "Miqdar";
+            this.gridColumn4.ColumnEdit = this.bQuantity;
             this.gridColumn4.DisplayFormat.FormatString = "N3";
             this.gridColumn4.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
             this.gridColumn4.FieldName = "Amount";
@@ -363,6 +373,18 @@
             this.gridColumn4.Visible = true;
             this.gridColumn4.VisibleIndex = 6;
             this.gridColumn4.Width = 86;
+            // 
+            // bQuantity
+            // 
+            this.bQuantity.AutoHeight = false;
+            this.bQuantity.DisplayFormat.FormatString = "N3";
+            this.bQuantity.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.bQuantity.EditFormat.FormatString = "N3";
+            this.bQuantity.EditFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.bQuantity.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.NumericMaskManager));
+            this.bQuantity.MaskSettings.Set("MaskManagerSignature", "allowNull=False");
+            this.bQuantity.MaskSettings.Set("mask", "N3");
+            this.bQuantity.Name = "bQuantity";
             // 
             // gridColumn5
             // 
@@ -387,6 +409,7 @@
             this.gridColumn6.AppearanceHeader.TextOptions.Trimming = DevExpress.Utils.Trimming.EllipsisCharacter;
             this.gridColumn6.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.gridColumn6.Caption = "Alış qiyməti";
+            this.gridColumn6.ColumnEdit = this.tPurchasePrice;
             this.gridColumn6.DisplayFormat.FormatString = "N2";
             this.gridColumn6.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
             this.gridColumn6.FieldName = "PurchasePrice";
@@ -436,6 +459,7 @@
             this.gridColumn8.AppearanceHeader.TextOptions.Trimming = DevExpress.Utils.Trimming.EllipsisCharacter;
             this.gridColumn8.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.gridColumn8.Caption = "Satış qiyməti";
+            this.gridColumn8.ColumnEdit = this.tSalePrice;
             this.gridColumn8.DisplayFormat.FormatString = "N2";
             this.gridColumn8.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
             this.gridColumn8.FieldName = "SalePrice";
@@ -526,16 +550,40 @@
             this.bDelete.AutoSize = true;
             this.tablePanel1.SetColumn(this.bDelete, 2);
             this.bDelete.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.bDelete.Location = new System.Drawing.Point(191, 123);
+            this.bDelete.Location = new System.Drawing.Point(253, 123);
             this.bDelete.Margin = new System.Windows.Forms.Padding(2);
             this.bDelete.Name = "bDelete";
             this.tablePanel1.SetRow(this.bDelete, 1);
             this.bDelete.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.bDelete.Size = new System.Drawing.Size(94, 28);
+            this.bDelete.Size = new System.Drawing.Size(130, 28);
             this.bDelete.TabIndex = 4;
             this.bDelete.TabStop = false;
             this.bDelete.Text = "Seçili məhsulları sil";
             this.bDelete.Click += new System.EventHandler(this.bDelete_Click);
+            // 
+            // tSalePrice
+            // 
+            this.tSalePrice.AutoHeight = false;
+            this.tSalePrice.Name = "tSalePrice";
+            this.tSalePrice.DisplayFormat.FormatString = "N2";
+            this.tSalePrice.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.tSalePrice.EditFormat.FormatString = "N2";
+            this.tSalePrice.EditFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.tSalePrice.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.NumericMaskManager));
+            this.tSalePrice.MaskSettings.Set("MaskManagerSignature", "allowNull=False");
+            this.tSalePrice.MaskSettings.Set("mask", "N2");
+            // 
+            // tPurchasePrice
+            // 
+            this.tPurchasePrice.AutoHeight = false;
+            this.tPurchasePrice.DisplayFormat.FormatString = "N2";
+            this.tPurchasePrice.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.tPurchasePrice.EditFormat.FormatString = "N2";
+            this.tPurchasePrice.EditFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.tPurchasePrice.Name = "tPurchasePrice";
+            this.tPurchasePrice.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.NumericMaskManager));
+            this.tPurchasePrice.MaskSettings.Set("MaskManagerSignature", "allowNull=False");
+            this.tPurchasePrice.MaskSettings.Set("mask", "N2");
             // 
             // fQuickAddProduct
             // 
@@ -561,7 +609,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.tBarcode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bQuantity)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bDeleteRow)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tSalePrice)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tPurchasePrice)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -596,5 +647,8 @@
         private DevExpress.XtraEditors.SimpleButton bDelete;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn13;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn14;
+        private DevExpress.XtraEditors.Repository.RepositoryItemTextEdit bQuantity;
+        private DevExpress.XtraEditors.Repository.RepositoryItemTextEdit tPurchasePrice;
+        private DevExpress.XtraEditors.Repository.RepositoryItemTextEdit tSalePrice;
     }
 }

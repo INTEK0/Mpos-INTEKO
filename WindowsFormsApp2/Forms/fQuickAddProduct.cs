@@ -29,6 +29,7 @@ namespace WindowsFormsApp2.Forms
             public string SupplierName { get; set; }
             public string CategoryName { get; set; }
             public string ProductName { get; set; }
+            public string Code { get; set; }
             public string Barcode { get; set; }
             public decimal StockAmount { get; set; }
             public decimal Amount { get; set; }
@@ -57,6 +58,7 @@ namespace WindowsFormsApp2.Forms
             public string SupplierName { get; set; }
             public string CategoryName { get; set; }
             public string ProductName { get; set; }
+            public string Code { get; set; }
             public string Barcode { get; set; }
             public decimal PurchasePrice { get; set; }
             public decimal SalePrice { get; set; }
@@ -88,6 +90,7 @@ MAL_ALIS_DETAILS_ID AS Id,
 TECHIZATCI AS SupplierName,
 k.KATEGORIYA AS CategoryName, 
 PRODUCTNAME AS ProductName,
+PRODUCTCODE AS Code,
 BARCODE AS Barcode,
 v.VAHIDLER_NAME AS UnitName,
 PURCHASEPRICE AS PurchasePrice,
@@ -108,6 +111,7 @@ INNER JOIN VERGI_DERECESI vd ON vd.EDV_ID = mad.VERGI_DERECESI
                 product.Id = Convert.ToInt32(item["Id"].ToString());
                 product.SupplierName = item["SupplierName"].ToString();
                 product.ProductName = item["ProductName"].ToString();
+                product.Code = item["Code"]?.ToString();
                 product.CategoryName = item["CategoryName"].ToString();
                 product.Barcode = item["Barcode"].ToString();
                 product.TaxName = item["TaxName"].ToString();
@@ -163,6 +167,7 @@ INNER JOIN VERGI_DERECESI vd ON vd.EDV_ID = mad.VERGI_DERECESI
                             SupplierName = data.SupplierName,
                             CategoryName = data.CategoryName,
                             ProductName = data.ProductName,
+                            Code = data.Code,
                             Barcode = data.Barcode,
                             StockAmount = data.Amount,
                             Amount = 1,
@@ -268,7 +273,7 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                     }
                 }
                 gridControl1.DataSource = null;
-                gridControl1.DataSource = _products;
+                gridControl1.DataSource = _products.OrderBy(x=> x.No);
             }
         }
 
@@ -306,7 +311,7 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                         product.CategoryName = item.CategoryName;
                         product.Barocde = item.Barcode;
                         product.ProductName = item.ProductName;
-                        product.ProductCode = item.Barcode;
+                        product.ProductCode = item.Code;
                         product.WarehouseName = "- MƏRKƏZ ANBAR - (ƏSAS)";
                         product.Quantity = item.Amount;
                         product.UnitName = item.UnitName;

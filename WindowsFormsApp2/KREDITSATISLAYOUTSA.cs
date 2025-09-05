@@ -200,7 +200,7 @@ namespace WindowsFormsApp2
                     Month = i,
                     PaymentDay = DateTime.Today.AddDays(j),
                     Amount = Convert.ToDecimal(tAyliqOdenis.Text),
-                    CreditSaleFiscalId = fiscalId
+                    CreditSaleFiscalId = fiscalId,
                 };
 
                 await DbProsedures.Insert_CreditMonth(item);
