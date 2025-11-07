@@ -70,28 +70,17 @@ namespace WindowsFormsApp2
             labelControl9.Text = ID;
             textEdit3.Text = MUSTERI_AD;
         }
-
-
         
         private void GAIME_SATISI_LAYOUT_Load(object sender, EventArgs e)
         {
             clear();
-            //labelControl1.Visible = false;
             InitLookUpEdit_();
             radioButton1.Checked = true;
-            DateTime dateTime = DateTime.UtcNow.Date;
-            //dateEdit1.Text = dateTime.ToString();
-
-            dateEdit1.Text = dateTime.ToShortDateString();
+            dateEdit1.Properties.MaxDate = DateTime.Today;
+            dateEdit1.Text = DateTime.Now.ToShortDateString();
             gridControl1.TabStop = false;
             textEdit5.Enabled = false;
             textEdit5.Text = DbProsedures.GET_GaimeSalesProccessNo();
-
-            //  lookUpEdit8GEtData_yeni();
-            //ANBAR_LOAD();
-            //dt = new DataTable(CATEGORIES_TABLE);
-
-
         }
 
         private void radioButton1_CheckedChanged_1(object sender, EventArgs e)
@@ -532,6 +521,7 @@ WHERE
         
         private void button21_Click(object sender, EventArgs e)
         {
+
             int[] selectedRows = gridView1.GetSelectedRows();
 
 

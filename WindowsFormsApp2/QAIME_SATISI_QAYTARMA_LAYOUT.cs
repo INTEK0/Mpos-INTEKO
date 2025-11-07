@@ -19,8 +19,8 @@ namespace WindowsFormsApp2
 
         private void QAIME_SATISI_QAYTARMA_LAYOUT_Load(object sender, EventArgs e)
         {
-            DateTime dateTime = DateTime.UtcNow.Date;
-            dateTarix.Text = dateTime.ToShortDateString();
+            dateTarix.Properties.MaxDate = DateTime.Today;
+            dateTarix.Text = DateTime.Now.ToShortDateString();
             tProccessNo.Text = DbProsedures.GET_GaimeRefundProccessNo();
         }
 

@@ -31,12 +31,12 @@ namespace WindowsFormsApp2
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            DevExpress.XtraCharts.XYDiagram xyDiagram2 = new DevExpress.XtraCharts.XYDiagram();
-            DevExpress.XtraCharts.Series series3 = new DevExpress.XtraCharts.Series();
-            DevExpress.XtraCharts.ChartTitle chartTitle3 = new DevExpress.XtraCharts.ChartTitle();
-            DevExpress.XtraCharts.Series series4 = new DevExpress.XtraCharts.Series();
-            DevExpress.XtraCharts.DoughnutSeriesView doughnutSeriesView2 = new DevExpress.XtraCharts.DoughnutSeriesView();
-            DevExpress.XtraCharts.ChartTitle chartTitle4 = new DevExpress.XtraCharts.ChartTitle();
+            DevExpress.XtraCharts.XYDiagram xyDiagram1 = new DevExpress.XtraCharts.XYDiagram();
+            DevExpress.XtraCharts.Series series1 = new DevExpress.XtraCharts.Series();
+            DevExpress.XtraCharts.ChartTitle chartTitle1 = new DevExpress.XtraCharts.ChartTitle();
+            DevExpress.XtraCharts.Series series2 = new DevExpress.XtraCharts.Series();
+            DevExpress.XtraCharts.DoughnutSeriesView doughnutSeriesView1 = new DevExpress.XtraCharts.DoughnutSeriesView();
+            DevExpress.XtraCharts.ChartTitle chartTitle2 = new DevExpress.XtraCharts.ChartTitle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MAINSCRRENS));
             this.fluentDesignFormContainer1 = new DevExpress.XtraBars.FluentDesignSystem.FluentDesignFormContainer();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -323,11 +323,11 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit3.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartWeek)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(xyDiagram2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(series3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(xyDiagram1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(series1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartSalesType)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(series4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(doughnutSeriesView2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(series2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(doughnutSeriesView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit4.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.accordionControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fluentDesignFormControl1)).BeginInit();
@@ -1279,28 +1279,28 @@ namespace WindowsFormsApp2
             // chartWeek
             // 
             this.tableLayoutPanel1.SetColumnSpan(this.chartWeek, 3);
-            xyDiagram2.AxisX.VisibleInPanesSerializable = "-1";
-            xyDiagram2.AxisY.VisibleInPanesSerializable = "-1";
-            this.chartWeek.Diagram = xyDiagram2;
+            xyDiagram1.AxisX.VisibleInPanesSerializable = "-1";
+            xyDiagram1.AxisY.VisibleInPanesSerializable = "-1";
+            this.chartWeek.Diagram = xyDiagram1;
             this.chartWeek.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chartWeek.EmptyChartText.DXFont = new DevExpress.Drawing.DXFont("Nunito", 14F);
             this.chartWeek.EmptyChartText.Text = "Məlumat yoxdur";
             this.chartWeek.Legend.Visibility = DevExpress.Utils.DefaultBoolean.False;
             this.chartWeek.Location = new System.Drawing.Point(3, 119);
             this.chartWeek.Name = "chartWeek";
-            series3.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
-            series3.LegendTextPattern = "{V}";
-            series3.Name = "Series 1";
-            series3.SeriesID = 0;
+            series1.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+            series1.LegendTextPattern = "{V}";
+            series1.Name = "Series 1";
+            series1.SeriesID = 0;
             this.chartWeek.SeriesSerializable = new DevExpress.XtraCharts.Series[] {
-        series3};
+        series1};
             this.chartWeek.Size = new System.Drawing.Size(855, 283);
             this.chartWeek.TabIndex = 14;
-            chartTitle3.DXFont = new DevExpress.Drawing.DXFont("Verdana", 16F);
-            chartTitle3.Text = "Aylıq satış hesabatı";
-            chartTitle3.TitleID = 0;
+            chartTitle1.DXFont = new DevExpress.Drawing.DXFont("Verdana", 16F);
+            chartTitle1.Text = "Aylıq satış hesabatı";
+            chartTitle1.TitleID = 0;
             this.chartWeek.Titles.AddRange(new DevExpress.XtraCharts.ChartTitle[] {
-            chartTitle3});
+            chartTitle1});
             // 
             // chartSalesType
             // 
@@ -1314,18 +1314,18 @@ namespace WindowsFormsApp2
             this.chartSalesType.Name = "chartSalesType";
             this.chartSalesType.PaletteName = "Civic";
             this.tableLayoutPanel1.SetRowSpan(this.chartSalesType, 2);
-            series4.Name = "Series 1";
-            series4.SeriesID = 1;
-            series4.View = doughnutSeriesView2;
+            series2.Name = "Series 1";
+            series2.SeriesID = 1;
+            series2.View = doughnutSeriesView1;
             this.chartSalesType.SeriesSerializable = new DevExpress.XtraCharts.Series[] {
-        series4};
+        series2};
             this.chartSalesType.Size = new System.Drawing.Size(855, 345);
             this.chartSalesType.TabIndex = 15;
-            chartTitle4.DXFont = new DevExpress.Drawing.DXFont("Verdana", 16F);
-            chartTitle4.Text = "Cari satış növ hesabatı";
-            chartTitle4.TitleID = 0;
+            chartTitle2.DXFont = new DevExpress.Drawing.DXFont("Verdana", 16F);
+            chartTitle2.Text = "Cari satış növ hesabatı";
+            chartTitle2.TitleID = 0;
             this.chartSalesType.Titles.AddRange(new DevExpress.XtraCharts.ChartTitle[] {
-            chartTitle4});
+            chartTitle2});
             // 
             // pictureEdit4
             // 
@@ -1428,7 +1428,6 @@ namespace WindowsFormsApp2
             this.accordionControlElement3.Name = "accordionControlElement3";
             this.accordionControlElement3.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
             this.accordionControlElement3.Text = "Fliallar";
-            this.accordionControlElement3.Visible = false;
             this.accordionControlElement3.Click += new System.EventHandler(this.accordionControlElement3_Click);
             // 
             // accordionControlElement4
@@ -3907,11 +3906,11 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.gridControl2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit3.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(xyDiagram2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(series3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(xyDiagram1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(series1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartWeek)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(doughnutSeriesView2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(series4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(doughnutSeriesView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(series2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartSalesType)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit4.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.accordionControl1)).EndInit();

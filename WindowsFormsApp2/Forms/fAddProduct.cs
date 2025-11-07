@@ -7,7 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
-using DevExpress.XtraReports.UI;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.DB;
@@ -39,6 +38,7 @@ namespace WindowsFormsApp2.Forms
 
         private void fAddProduct_Load(object sender, EventArgs e)
         {
+            dateTarix.Properties.MaxDate = DateTime.Today;
             dateTarix.DateTime = DateTime.Now;
             SupplierDataLoad();
             UnitDataLoad();
@@ -329,7 +329,7 @@ namespace WindowsFormsApp2.Forms
                 int count = DbProsedures.Exists_Category(tCategoryName.Text);
                 if (count is -1)
                 {
-                    DialogResult dialogResult = XtraMessageBox.Show("YENİ KATEGORİYA YARADILSIN ?", nameof(HeaderMessage.Bildiriş), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    DialogResult dialogResult = XtraMessageBox.Show("YENİ KATEQORİYA YARADILSIN ?", nameof(HeaderMessage.Bildiriş), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (dialogResult is DialogResult.Yes)
                     {
                         int categorySuccess = DbProsedures.Insert_Category(tCategoryName.Text);
@@ -743,5 +743,42 @@ namespace WindowsFormsApp2.Forms
             //    e.SuppressKeyPress = true;
             //}
         }
+
+        private void tTotalAmount_TextChanged(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(tTotalAmount.Text))
+            {
+                TaxCalculation();
+            }
+        }
+
+        private void lookTaxType_TextChanged(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(tTotalAmount.Text))
+            {
+                TaxCalculation();
+            }
+        }
+
+        private void TaxCalculation()
+        {
+            string query = "exec mehsul_alisi_edv @yekun_mebleg_=@totalAmount,@vergi_derece =@taxType";
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, con))
+            {
+                cmd.Parameters.AddWithValue("totalAmount", tTotalAmount.Text);
+                cmd.Parameters.AddWithValue("taxType", lookTaxType.Text);
+                con.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                    if (dr.Read())
+                    {
+                        tMainAmount.Text = dr["vergisiz"].ToString();
+                        tTaxAmount.Text = dr["vergi"].ToString();
+                    }
+
+            }
+        }
+
+       
     }
 }

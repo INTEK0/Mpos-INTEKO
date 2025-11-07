@@ -293,6 +293,7 @@ namespace WindowsFormsApp2
             // 
             // tTotalAmount
             // 
+            this.tTotalAmount.Enabled = false;
             this.tTotalAmount.Location = new System.Drawing.Point(139, 267);
             this.tTotalAmount.Margin = new System.Windows.Forms.Padding(4);
             this.tTotalAmount.Name = "tTotalAmount";
@@ -313,7 +314,7 @@ namespace WindowsFormsApp2
             this.tComment.Properties.Appearance.Options.UseFont = true;
             this.tComment.Size = new System.Drawing.Size(517, 87);
             this.tComment.StyleController = this.layoutControl1;
-            this.tComment.TabIndex = 94;
+            this.tComment.TabIndex = 2;
             // 
             // lookSupplier
             // 
@@ -328,11 +329,12 @@ namespace WindowsFormsApp2
             this.lookSupplier.Properties.NullValuePrompt = "Təchizatçı seçimi";
             this.lookSupplier.Size = new System.Drawing.Size(517, 30);
             this.lookSupplier.StyleController = this.layoutControl1;
-            this.lookSupplier.TabIndex = 93;
+            this.lookSupplier.TabIndex = 1;
             this.lookSupplier.TextChanged += new System.EventHandler(this.lookSupplier_TextChanged);
             // 
             // tProccessNo
             // 
+            this.tProccessNo.Enabled = false;
             this.tProccessNo.Location = new System.Drawing.Point(139, 102);
             this.tProccessNo.Margin = new System.Windows.Forms.Padding(4);
             this.tProccessNo.Name = "tProccessNo";
@@ -348,16 +350,14 @@ namespace WindowsFormsApp2
             this.dateTarix.Location = new System.Drawing.Point(139, 66);
             this.dateTarix.Margin = new System.Windows.Forms.Padding(4);
             this.dateTarix.Name = "dateTarix";
-            this.dateTarix.Properties.Appearance.Font = new System.Drawing.Font("Verdana", 10F);
-            this.dateTarix.Properties.Appearance.Options.UseFont = true;
+            this.dateTarix.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
             this.dateTarix.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dateTarix.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dateTarix.Properties.MaskSettings.Set("mask", "2/11/2021");
             this.dateTarix.Size = new System.Drawing.Size(517, 30);
             this.dateTarix.StyleController = this.layoutControl1;
-            this.dateTarix.TabIndex = 91;
+            this.dateTarix.TabIndex = 0;
             // 
             // Root
             // 

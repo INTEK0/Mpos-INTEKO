@@ -156,33 +156,60 @@ namespace WindowsFormsApp2.Forms
                     string status = RawPrinterHelper.GetPrinterDetailedStatus(lookPrinters.Text);
                     if (status is "Online")
                     {
-                        Enums.BarcodeType barcodeType = Enums.BarcodeType.Code128;
-
-                        barcodeType = barcode.Length == 13 ? BarcodeType.EAN13 : BarcodeType.Code128;
+                        Enums.BarcodeType barcodeType = barcode.Length == 13 ? BarcodeType.EAN13 : BarcodeType.Code128;
 
 
-                        if ((PrintType)lookPrintType.EditValue is PrintType.minimum)
+                        switch ((PrintType)lookPrintType.EditValue)
                         {
-                            for (int i = 0; i < printCount; i++)
-                            {
-                                PrinterCacheData.PrintLabel30x20(name.Trim(), salesPrice, barcode.Trim(), lookPrinters.Text, barcodeType);
-                            }
-                        }
-                        else
-                        {
-                            for (int i = 0; i < printCount; i++)
-                            {
-                                if (unit is "KQ")
+                            case PrintType.minimum:
+                                for (int i = 0; i < printCount; i++)
                                 {
-                                    PrinterCacheData.PrintLabel60x40(companyName, $"{name.Trim()} - {productId}", salesPrice, barcode.Trim(), lookPrinters.Text);
+                                    PrinterCacheData.PrintLabel30x20(name.Trim(), salesPrice, barcode.Trim(), lookPrinters.Text, barcodeType);
                                 }
-                                else
+                                break;
+                            case PrintType.medium:
+                                for (int i = 0; i < printCount; i++)
                                 {
-                                    PrinterCacheData.PrintLabel60x40(companyName, name.Trim(), salesPrice, barcode.Trim(), lookPrinters.Text);
+                                    if (unit is "KQ")
+                                        PrinterCacheData.PrintLabel45x25(companyName, $"{name.Trim()} - {productId}", salesPrice, barcode.Trim(), lookPrinters.Text);
+                                    else
+                                        PrinterCacheData.PrintLabel45x25(companyName, name.Trim(), salesPrice, barcode.Trim(), lookPrinters.Text);
                                 }
-                                // PrinterCacheData.PrintLabel60x40(companyName, name.Trim(), salesPrice, barcode.Trim(), lookPrinters.Text);
-                            }
+                                break;
+                            case PrintType.maximum:
+                                for (int i = 0; i < printCount; i++)
+                                {
+                                    if (unit is "KQ")
+                                        PrinterCacheData.PrintLabel60x40(companyName, $"{name.Trim()} - {productId}", salesPrice, barcode.Trim(), lookPrinters.Text);
+                                    else
+                                        PrinterCacheData.PrintLabel60x40(companyName, name.Trim(), salesPrice, barcode.Trim(), lookPrinters.Text);
+                                }
+                                break;
                         }
+
+
+                        //if ((PrintType)lookPrintType.EditValue is PrintType.minimum)
+                        //{
+                        //    for (int i = 0; i < printCount; i++)
+                        //    {
+                        //        PrinterCacheData.PrintLabel30x20(name.Trim(), salesPrice, barcode.Trim(), lookPrinters.Text, barcodeType);
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    for (int i = 0; i < printCount; i++)
+                        //    {
+                        //        if (unit is "KQ")
+                        //        {
+                        //            PrinterCacheData.PrintLabel60x40(companyName, $"{name.Trim()} - {productId}", salesPrice, barcode.Trim(), lookPrinters.Text);
+                        //        }
+                        //        else
+                        //        {
+                        //            PrinterCacheData.PrintLabel60x40(companyName, name.Trim(), salesPrice, barcode.Trim(), lookPrinters.Text);
+                        //        }
+                        //        // PrinterCacheData.PrintLabel60x40(companyName, name.Trim(), salesPrice, barcode.Trim(), lookPrinters.Text);
+                        //    }
+                        //}
                     }
                     else
                     {
@@ -205,6 +232,8 @@ namespace WindowsFormsApp2.Forms
             string name = gridProducts.GetRowCellValue(rowHandle, colProductName).ToString();
             string unit = gridProducts.GetRowCellValue(rowHandle, colUnitName).ToString();
             string salesPrice = Convert.ToDouble(gridProducts.GetRowCellValue(rowHandle, coLSalePrice).ToString()).ToString("N2");
+            int printCount = Convert.ToInt32(gridProducts.GetRowCellValue(rowHandle, colPrintCount).ToString());
+
 
             if (string.IsNullOrWhiteSpace(lookPrinters.Text) || lookPrinters.Text is "PRİNTER SEÇİMİ")
             {
@@ -215,29 +244,32 @@ namespace WindowsFormsApp2.Forms
                 string status = RawPrinterHelper.GetPrinterDetailedStatus(lookPrinters.Text);
                 if (status is "Online")
                 {
-                    if ((PrintType)lookPrintType.EditValue is PrintType.minimum)
+                    Enums.BarcodeType barcodeType = barcode.Length == 13 ? BarcodeType.EAN13 : BarcodeType.Code128;
+
+                    switch ((PrintType)lookPrintType.EditValue)
                     {
-                        Enums.BarcodeType barcodeType = Enums.BarcodeType.Code128;
-                        if (barcode.Length is 13)
-                        {
-                            barcodeType = BarcodeType.EAN13;
-                        }
-                        else
-                        {
-                            barcodeType = BarcodeType.Code128;
-                        }
-                        PrinterCacheData.PrintLabel30x20(name.Trim(), salesPrice, barcode.Trim(), lookPrinters.Text, barcodeType);
-                    }
-                    else
-                    {
-                        if (unit is "KQ")
-                        {
-                            PrinterCacheData.PrintLabel60x40(companyName, $"{name.Trim()} - {productId}", salesPrice, barcode.Trim(), lookPrinters.Text);
-                        }
-                        else
-                        {
-                            PrinterCacheData.PrintLabel60x40(companyName, name.Trim(), salesPrice, barcode.Trim(), lookPrinters.Text);
-                        }
+                        case PrintType.minimum:
+                            for (int i = 0; i < printCount; i++)
+                                PrinterCacheData.PrintLabel30x20(name.Trim(), salesPrice, barcode.Trim(), lookPrinters.Text, barcodeType);
+                            break;
+                        case PrintType.medium:
+                            for (int i = 0; i < printCount; i++)
+                            {
+                                if (unit is "KQ")
+                                    PrinterCacheData.PrintLabel45x25(companyName, $"{name.Trim()} - {productId}", salesPrice, barcode.Trim(), lookPrinters.Text);
+                                else
+                                    PrinterCacheData.PrintLabel45x25(companyName, name.Trim(), salesPrice, barcode.Trim(), lookPrinters.Text);
+                            }
+                            break;
+                        case PrintType.maximum:
+                            for (int i = 0; i < printCount; i++)
+                            {
+                                if (unit is "KQ")
+                                    PrinterCacheData.PrintLabel60x40(companyName, $"{name.Trim()} - {productId}", salesPrice, barcode.Trim(), lookPrinters.Text);
+                                else
+                                    PrinterCacheData.PrintLabel60x40(companyName, name.Trim(), salesPrice, barcode.Trim(), lookPrinters.Text);
+                            }
+                            break;
                     }
                 }
                 else
@@ -295,7 +327,7 @@ namespace WindowsFormsApp2.Forms
 
         private void MehsulAlisiDataLoad()
         {
-            _data.Clear();       
+            _data.Clear();
             using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             using (SqlCommand cmd = new SqlCommand("ProductLoadWithDate", connection))
             {

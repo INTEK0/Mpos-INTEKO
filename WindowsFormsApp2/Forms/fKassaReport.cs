@@ -16,6 +16,7 @@ namespace WindowsFormsApp2.Forms
         public fKassaReport()
         {
             InitializeComponent();
+            dateEdit2.Properties.MaxDate = DateTime.Today;
         }
 
         private void bReport_Click(object sender, EventArgs e)

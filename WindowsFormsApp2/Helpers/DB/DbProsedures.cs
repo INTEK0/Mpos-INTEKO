@@ -2710,18 +2710,17 @@ WHERE UserId = {Properties.Settings.Default.UserID}";
 
         public static List<Printer> GetSelectedPrinter()
         {
+            string query = "SELECT * FROM SELECT_PRINTER_DATA_LOAD(@userID)";
+
             using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, connection))
             {
-                string query = "SELECT * FROM SELECT_PRINTER_DATA_LOAD(@userID)";
                 connection.Open();
-                using (SqlCommand cmd = new SqlCommand(query, connection))
+                cmd.Parameters.AddWithValue("@userID", Properties.Settings.Default.UserID);
+                using (SqlDataReader dr = cmd.ExecuteReader())
                 {
-                    cmd.Parameters.AddWithValue("@userID", Properties.Settings.Default.UserID);
-                    using (SqlDataReader dr = cmd.ExecuteReader())
-                    {
-                        List<Printer> data = FormHelpers.MapReaderToList<Printer>(dr);
-                        return data;
-                    }
+                    List<Printer> data = FormHelpers.MapReaderToList<Printer>(dr);
+                    return data;
                 }
             }
         }

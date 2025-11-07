@@ -22,6 +22,59 @@ namespace WindowsFormsApp2.Helpers.CacheData
                 .Replace("ə", "e").Replace("Ə", "E");
         }
 
+        public static void PrintLabel45x25(string _company, string _product, string _price, string _barcode, string printerName)
+        {
+            string companyName = ReplaceChars(_company);
+            string productName = ReplaceChars(_product);
+
+            double priceY = 140;  
+            double aznY = priceY + 25;
+            double productY = 35;
+            int lineSpacing = 25;
+
+            List<string> productLines = SplitProductName(productName, 12);
+            if (productLines.Count > 3)
+                productLines = productLines.Take(3).ToList();
+
+            string tsplCommand = $@"
+SIZE 45 mm, 25 mm
+GAP 2 mm, 0
+DENSITY 10
+SPEED 4
+DIRECTION 1
+CLS
+
+REM === Company Name: Centered at top ===
+TEXT 110,10,""3"",0,1,1,""{companyName}"" 
+
+REM === Draw line under company name ===
+BAR 0,30,420,2
+";
+
+            for (int i = 0; i < productLines.Count; i++)
+            {
+                tsplCommand += $@"
+REM === Product name, line {i + 1} ===
+TEXT 10,{productY + (i * lineSpacing)},""3"",0,1,1,""{productLines[i]}""
+";
+            }
+
+            tsplCommand += $@"
+REM === Price ===
+TEXT 10,{priceY},""3"",0,1,1,""{_price}""
+
+REM === AZN ===
+TEXT 10,{aznY},""3"",0,1,1,""AZN""
+
+REM === Barcode ===
+BARCODE  160,130,""128"",60,1,0,2,2,""{_barcode}""
+
+PRINT 1,1
+";
+
+            bool result = RawPrinterHelper.SendStringToPrinter(printerName, tsplCommand);
+        }
+
         public static void PrintLabel60x40(string _company, string _product, string _price, string _barcode, string printerName)
         {
             string companyName = ReplaceChars(_company);

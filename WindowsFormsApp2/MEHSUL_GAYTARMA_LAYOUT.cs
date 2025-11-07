@@ -17,8 +17,10 @@ namespace WindowsFormsApp2
 
         private void MEHSUL_GAYTARMA_LAYOUT_Load(object sender, EventArgs e)
         {
+            dateTarix.Properties.MaxDate = DateTime.Today;
+            dateTarix.DateTime = DateTime.Now;
             tProccessNo.Text = DbProsedures.GET_ProductReturnProcessNo();
-            dateTarix.Text = DateTime.UtcNow.Date.ToString();
+           
 
             SupplierDataLoad();
         }

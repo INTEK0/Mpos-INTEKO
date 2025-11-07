@@ -301,7 +301,7 @@ namespace WindowsFormsApp2
             this.simpleButton1.Size = new System.Drawing.Size(107, 28);
             this.simpleButton1.StyleController = this.layoutControl1;
             this.simpleButton1.TabIndex = 4;
-            this.simpleButton1.Text = "AXTAR";
+            this.simpleButton1.Text = " AXTAR";
             this.simpleButton1.Click += new System.EventHandler(this.simpleButton1_Click);
             // 
             // tComment
@@ -320,6 +320,7 @@ namespace WindowsFormsApp2
             this.tContractNo.Name = "tContractNo";
             this.tContractNo.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tContractNo.Properties.Appearance.Options.UseFont = true;
+            this.tContractNo.Properties.ReadOnly = true;
             this.tContractNo.Size = new System.Drawing.Size(893, 28);
             this.tContractNo.StyleController = this.layoutControl1;
             this.tContractNo.TabIndex = 7;
@@ -331,6 +332,7 @@ namespace WindowsFormsApp2
             this.tCustomerName.Name = "tCustomerName";
             this.tCustomerName.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tCustomerName.Properties.Appearance.Options.UseFont = true;
+            this.tCustomerName.Properties.ReadOnly = true;
             this.tCustomerName.Size = new System.Drawing.Size(780, 28);
             this.tCustomerName.StyleController = this.layoutControl1;
             this.tCustomerName.TabIndex = 3;
@@ -342,6 +344,7 @@ namespace WindowsFormsApp2
             this.tProccessNo.Name = "tProccessNo";
             this.tProccessNo.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tProccessNo.Properties.Appearance.Options.UseFont = true;
+            this.tProccessNo.Properties.ReadOnly = true;
             this.tProccessNo.Size = new System.Drawing.Size(893, 28);
             this.tProccessNo.StyleController = this.layoutControl1;
             this.tProccessNo.TabIndex = 2;

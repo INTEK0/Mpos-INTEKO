@@ -236,9 +236,15 @@ namespace WindowsFormsApp2
             // 
             // textEdit11
             // 
+            this.textEdit11.EditValue = "";
             this.textEdit11.Location = new System.Drawing.Point(1021, 134);
             this.textEdit11.Margin = new System.Windows.Forms.Padding(4);
             this.textEdit11.Name = "textEdit11";
+            this.textEdit11.Properties.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.NumericMaskManager));
+            this.textEdit11.Properties.MaskSettings.Set("MaskManagerSignature", "allowNull=False");
+            this.textEdit11.Properties.MaskSettings.Set("mask", "f2");
+            this.textEdit11.Properties.NullText = "0";
+            this.textEdit11.Properties.UseMaskAsDisplayFormat = true;
             this.textEdit11.Size = new System.Drawing.Size(107, 30);
             this.textEdit11.StyleController = this.layoutControl1;
             this.textEdit11.TabIndex = 31;
@@ -287,7 +293,7 @@ namespace WindowsFormsApp2
             this.simpleButton6.Size = new System.Drawing.Size(129, 30);
             this.simpleButton6.StyleController = this.layoutControl1;
             this.simpleButton6.TabIndex = 18;
-            this.simpleButton6.Text = "AXTAR";
+            this.simpleButton6.Text = "MƏHSUL SEÇ";
             this.simpleButton6.Click += new System.EventHandler(this.simpleButton6_Click);
             // 
             // labelControl9
@@ -337,6 +343,7 @@ namespace WindowsFormsApp2
             // 
             // textEdit4
             // 
+            this.textEdit4.EditValue = "";
             this.textEdit4.Location = new System.Drawing.Point(640, 342);
             this.textEdit4.Margin = new System.Windows.Forms.Padding(4);
             this.textEdit4.Name = "textEdit4";
@@ -344,7 +351,7 @@ namespace WindowsFormsApp2
             this.textEdit4.Properties.Appearance.Options.UseFont = true;
             this.textEdit4.Properties.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.NumericMaskManager));
             this.textEdit4.Properties.MaskSettings.Set("MaskManagerSignature", "allowNull=False");
-            this.textEdit4.Properties.MaskSettings.Set("mask", "f3");
+            this.textEdit4.Properties.MaskSettings.Set("mask", "f2");
             this.textEdit4.Properties.NullText = "0";
             this.textEdit4.Properties.UseMaskAsDisplayFormat = true;
             this.textEdit4.Size = new System.Drawing.Size(52, 28);
@@ -354,12 +361,13 @@ namespace WindowsFormsApp2
             // 
             // textEdit10
             // 
+            this.textEdit10.EditValue = "";
             this.textEdit10.Location = new System.Drawing.Point(427, 340);
             this.textEdit10.Margin = new System.Windows.Forms.Padding(4);
             this.textEdit10.Name = "textEdit10";
             this.textEdit10.Properties.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.NumericMaskManager));
             this.textEdit10.Properties.MaskSettings.Set("MaskManagerSignature", "allowNull=False");
-            this.textEdit10.Properties.MaskSettings.Set("mask", "f3");
+            this.textEdit10.Properties.MaskSettings.Set("mask", "f2");
             this.textEdit10.Properties.NullText = "0";
             this.textEdit10.Properties.UseMaskAsDisplayFormat = true;
             this.textEdit10.Size = new System.Drawing.Size(52, 30);
@@ -369,12 +377,13 @@ namespace WindowsFormsApp2
             // 
             // textEdit13
             // 
+            this.textEdit13.EditValue = "";
             this.textEdit13.Location = new System.Drawing.Point(163, 342);
             this.textEdit13.Margin = new System.Windows.Forms.Padding(4);
             this.textEdit13.Name = "textEdit13";
             this.textEdit13.Properties.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.NumericMaskManager));
             this.textEdit13.Properties.MaskSettings.Set("MaskManagerSignature", "allowNull=False");
-            this.textEdit13.Properties.MaskSettings.Set("mask", "f3");
+            this.textEdit13.Properties.MaskSettings.Set("mask", "f2");
             this.textEdit13.Properties.NullText = "0";
             this.textEdit13.Properties.UseMaskAsDisplayFormat = true;
             this.textEdit13.Size = new System.Drawing.Size(103, 30);
@@ -384,6 +393,7 @@ namespace WindowsFormsApp2
             // 
             // textEdit7
             // 
+            this.textEdit7.EditValue = "";
             this.textEdit7.Location = new System.Drawing.Point(640, 306);
             this.textEdit7.Margin = new System.Windows.Forms.Padding(4);
             this.textEdit7.Name = "textEdit7";
@@ -399,6 +409,7 @@ namespace WindowsFormsApp2
             // 
             // textEdit6
             // 
+            this.textEdit6.EditValue = "";
             this.textEdit6.Location = new System.Drawing.Point(427, 306);
             this.textEdit6.Margin = new System.Windows.Forms.Padding(4);
             this.textEdit6.Name = "textEdit6";
@@ -406,7 +417,7 @@ namespace WindowsFormsApp2
             this.textEdit6.Properties.Appearance.Options.UseFont = true;
             this.textEdit6.Properties.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.NumericMaskManager));
             this.textEdit6.Properties.MaskSettings.Set("MaskManagerSignature", "allowNull=False");
-            this.textEdit6.Properties.MaskSettings.Set("mask", "f3");
+            this.textEdit6.Properties.MaskSettings.Set("mask", "f2");
             this.textEdit6.Properties.NullText = "0";
             this.textEdit6.Properties.UseMaskAsDisplayFormat = true;
             this.textEdit6.Size = new System.Drawing.Size(52, 28);
@@ -431,11 +442,17 @@ namespace WindowsFormsApp2
             // 
             // textEdit1
             // 
+            this.textEdit1.EditValue = "";
             this.textEdit1.Location = new System.Drawing.Point(1021, 100);
             this.textEdit1.Margin = new System.Windows.Forms.Padding(4);
             this.textEdit1.Name = "textEdit1";
             this.textEdit1.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textEdit1.Properties.Appearance.Options.UseFont = true;
+            this.textEdit1.Properties.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.NumericMaskManager));
+            this.textEdit1.Properties.MaskSettings.Set("MaskManagerSignature", "allowNull=False");
+            this.textEdit1.Properties.MaskSettings.Set("mask", "f2");
+            this.textEdit1.Properties.NullText = "0";
+            this.textEdit1.Properties.UseMaskAsDisplayFormat = true;
             this.textEdit1.Size = new System.Drawing.Size(107, 28);
             this.textEdit1.StyleController = this.layoutControl1;
             this.textEdit1.TabIndex = 13;
@@ -585,6 +602,7 @@ namespace WindowsFormsApp2
             this.textEdit9.Name = "textEdit9";
             this.textEdit9.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textEdit9.Properties.Appearance.Options.UseFont = true;
+            this.textEdit9.Properties.ReadOnly = true;
             this.textEdit9.Size = new System.Drawing.Size(526, 28);
             this.textEdit9.StyleController = this.layoutControl1;
             this.textEdit9.TabIndex = 20;
@@ -596,12 +614,14 @@ namespace WindowsFormsApp2
             this.textEdit3.Name = "textEdit3";
             this.textEdit3.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textEdit3.Properties.Appearance.Options.UseFont = true;
+            this.textEdit3.Properties.ReadOnly = true;
             this.textEdit3.Size = new System.Drawing.Size(391, 28);
             this.textEdit3.StyleController = this.layoutControl1;
             this.textEdit3.TabIndex = 14;
             // 
             // textEdit5
             // 
+            this.textEdit5.Enabled = false;
             this.textEdit5.Location = new System.Drawing.Point(163, 134);
             this.textEdit5.Margin = new System.Windows.Forms.Padding(4);
             this.textEdit5.Name = "textEdit5";
@@ -630,7 +650,6 @@ namespace WindowsFormsApp2
             // button21
             // 
             this.button21.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.button21.Cursor = System.Windows.Forms.Cursors.No;
             this.button21.Font = new System.Drawing.Font("Nunito", 10F, System.Drawing.FontStyle.Bold);
             this.button21.Location = new System.Drawing.Point(209, 480);
             this.button21.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);

@@ -54,10 +54,12 @@ namespace WindowsFormsApp2.Helpers
         {
             [Description("30x20")]
             minimum = 0,
-            [Description("60x40")]
+            [Description("45x25")]
             medium,
+            [Description("60x40")]
+            maximum,
             [Description("ÜFÜQİ (Geyim mağazası üçün)")]
-            maximum
+            maximumTextile
         }
 
         public enum BarcodeType
