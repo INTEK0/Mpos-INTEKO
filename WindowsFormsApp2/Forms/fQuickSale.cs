@@ -120,7 +120,7 @@ WHERE rn = 1;
 
                 if (!string.IsNullOrWhiteSpace(product))
                 {
-                    using (SqlConnection con = new SqlConnection(Properties.Settings.Default.SqlCon))
+                    using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
                     {
                         con.Open();
                         using (SqlCommand cmd = new SqlCommand(DeleteQuickSaleProduct, con))

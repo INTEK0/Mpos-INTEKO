@@ -12,6 +12,9 @@ namespace WindowsFormsApp2.Helpers.CacheData
     {
         public static string ReplaceChars(string input)
         {
+            if (input == null)
+                return string.Empty;
+
             return input
                 .Replace("ç", "c").Replace("Ç", "C")
                 .Replace("ğ", "g").Replace("Ğ", "G")

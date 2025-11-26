@@ -192,6 +192,7 @@ namespace WindowsFormsApp2.Forms
 
         private void YeniBorcHesabla()
         {
+            tDebtNew.Clear();
             string query = @"
             SELECT 
             cast(sum(isnull(d.ALIS_GIYMETI,0.00)*isnull(d.MIGDARI,0.00)) as decimal(18,2)) as yeni_borc
@@ -219,6 +220,7 @@ namespace WindowsFormsApp2.Forms
 
         private void QaliqBorcHesabla(int supplierId)
         {
+            tDebtBalance.Clear();
             string query = @"
             SELECT Y.BORC - X.GAYTARMA_MEBLEG AS BORC FROM( select 1 AS ID, cast(sum(isnull(BORC, 0.00)) as decimal(18, 2)) as BORC
             FROM (SELECT f.MAL_ALISI_MAIN_ID, f.[FAKTURA NÖMRƏ],f.TARIX, f.QİYMƏT - isnull(t.odenis, 0.00) BORC,0 AS 'ÖDƏNİŞ'
@@ -255,6 +257,7 @@ namespace WindowsFormsApp2.Forms
             decimal qaliqBorc = Convert.ToDecimal(tDebtBalance.Text);
             decimal yeniBorc = Convert.ToDecimal(tDebtNew.Text);
             decimal yekunBorc = qaliqBorc + yeniBorc;
+            tDebtTotal.Clear();
             if (yekunBorc > 0)
             {
                 tDebtTotal.EditValue = yekunBorc;
@@ -627,7 +630,7 @@ namespace WindowsFormsApp2.Forms
 
         private void lookSupplier_TextChanged(object sender, EventArgs e)
         {
-            if (lookSupplier.EditValue != null)
+            if (!string.IsNullOrWhiteSpace(lookSupplier.Text))
             {
                 YeniBorcHesabla();
                 QaliqBorcHesabla(Convert.ToInt32(lookSupplier.EditValue));

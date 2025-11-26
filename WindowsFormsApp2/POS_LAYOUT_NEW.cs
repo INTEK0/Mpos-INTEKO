@@ -1979,7 +1979,7 @@ LEFT JOIN pos_guzest pg
 
                     DbProsedures.Insert_ClinicData(tCustomer.Text, tDoctor.Text);
 
-                    printXezerClinic zakaz = new printXezerClinic();
+                    printMasterClinic zakaz = new printMasterClinic();
                     zakaz.Print();
                     return true;
                 }
@@ -2770,6 +2770,10 @@ LEFT JOIN pos_guzest pg
             finally
             {
                 textEdit1.Text = DbProsedures.GET_SalesProcessNo();
+                _customer = null;
+                _doctor = null;
+                tCustomer.Clear();
+                tDoctor.Clear();
             }
 
             tBarcode.Focus();
@@ -2948,12 +2952,12 @@ LEFT JOIN pos_guzest pg
             if (data is Customer customer)
             {
                 _customer = customer;
-                tCustomer.Text = $"{customer.Name} {customer.Surname} - ({customer.DateBirth.ToString("dd.MM.yyyy")})";
+                tCustomer.Text = $"{customer?.Name} {customer?.Surname} - ({customer?.DateBirth.ToString("dd.MM.yyyy")})";
             }
             else if (data is Doctor doctor)
             {
                 _doctor = doctor;
-                tDoctor.Text = doctor.NameSurname;
+                tDoctor.Text = doctor?.NameSurname;
             }
         }
 

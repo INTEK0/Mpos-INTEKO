@@ -574,10 +574,8 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
                     return false;
                 }
             }
-            else
-            {
+
                 return false;
-            }
         }
 
         public static bool Prepayment(SalesDto salesData /*string ipAddress, string token, string proccessNo, decimal total, decimal cash, decimal card, decimal incomingSum, string cashier, Customer customer, Doctor doctor, string rrn = ""*/)
@@ -1973,6 +1971,7 @@ case A.VERGI_DERECESI
                 return new Tuple<bool, string, string>(false, null, null);
             }
         }
+
 
         #region [..Request Classes..]
 

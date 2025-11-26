@@ -244,6 +244,7 @@ namespace WindowsFormsApp2
             this.textEdit11.Properties.MaskSettings.Set("MaskManagerSignature", "allowNull=False");
             this.textEdit11.Properties.MaskSettings.Set("mask", "f2");
             this.textEdit11.Properties.NullText = "0";
+            this.textEdit11.Properties.ReadOnly = true;
             this.textEdit11.Properties.UseMaskAsDisplayFormat = true;
             this.textEdit11.Size = new System.Drawing.Size(107, 30);
             this.textEdit11.StyleController = this.layoutControl1;
@@ -452,6 +453,7 @@ namespace WindowsFormsApp2
             this.textEdit1.Properties.MaskSettings.Set("MaskManagerSignature", "allowNull=False");
             this.textEdit1.Properties.MaskSettings.Set("mask", "f2");
             this.textEdit1.Properties.NullText = "0";
+            this.textEdit1.Properties.ReadOnly = true;
             this.textEdit1.Properties.UseMaskAsDisplayFormat = true;
             this.textEdit1.Size = new System.Drawing.Size(107, 28);
             this.textEdit1.StyleController = this.layoutControl1;
@@ -477,6 +479,7 @@ namespace WindowsFormsApp2
             this.textEdit14.Properties.Appearance.ForeColor = System.Drawing.Color.Red;
             this.textEdit14.Properties.Appearance.Options.UseFont = true;
             this.textEdit14.Properties.Appearance.Options.UseForeColor = true;
+            this.textEdit14.Properties.ReadOnly = true;
             this.textEdit14.Size = new System.Drawing.Size(162, 28);
             this.textEdit14.StyleController = this.layoutControl1;
             this.textEdit14.TabIndex = 24;
@@ -488,6 +491,7 @@ namespace WindowsFormsApp2
             this.textEdit12.Name = "textEdit12";
             this.textEdit12.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textEdit12.Properties.Appearance.Options.UseFont = true;
+            this.textEdit12.Properties.ReadOnly = true;
             this.textEdit12.Size = new System.Drawing.Size(170, 28);
             this.textEdit12.StyleController = this.layoutControl1;
             this.textEdit12.TabIndex = 29;

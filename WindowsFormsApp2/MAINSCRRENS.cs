@@ -606,6 +606,8 @@ FROM[terazimalzeme]";
             ClinicModuleShow();
             SysAdminControl();
             await LicenceCheck();
+            if (UserCacheService.User.Id == 0)
+                return;
             if (!UserCacheService.User.UserRole.Report)
             {
                 accordionControlElement30.Enabled = false;

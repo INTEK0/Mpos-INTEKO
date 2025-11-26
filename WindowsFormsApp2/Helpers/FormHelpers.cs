@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -10,6 +11,7 @@ using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DevExpress.XtraEditors;
 using DevExpress.XtraGrid;
 using DevExpress.XtraGrid.Localization;
 using DevExpress.XtraGrid.Views.Grid;
@@ -22,6 +24,45 @@ namespace WindowsFormsApp2.Helpers
 {
     public static class FormHelpers
     {
+        public static void ControlLoad<T>(T data, Control control, string displayMember = "Name", string valueMember = "Id") where T : class
+        {
+            if (control is System.Windows.Forms.ComboBox ctrl)
+            {
+                //var ctrl = control as System.Windows.Forms.ComboBox;
+                ctrl.DisplayMember = displayMember;
+                ctrl.ValueMember = valueMember;
+                ctrl.DataSource = data;
+            }
+            else if (control is GridControl)
+            {
+                var grid = control as GridControl;
+                var view = grid.MainView as DevExpress.XtraGrid.Views.Grid.GridView;
+                grid.DataSource = data;
+                view.GroupPanelText = "Qruplaşdırmaq üçün sütun başlıqlarını buraya sürükləyin";
+                view.OptionsFind.FindNullPrompt = "Axtarış edin..";
+                view.RefreshData();
+            }
+            else if (control is LookUpEdit look)
+            {
+                look.Properties.Columns.Clear();
+
+                look.Properties.DataSource = data;
+                look.Properties.DisplayMember = displayMember;
+                look.Properties.ValueMember = valueMember;
+                look.Properties.Columns.Add(new DevExpress.XtraEditors.Controls.LookUpColumnInfo(displayMember));
+
+                int rowCount = 0;
+                if (data is IList list)
+                    rowCount = list.Count;
+                else if (data is DataTable dt)
+                    rowCount = dt.Rows.Count;
+                else if (data is IEnumerable<object> enumerable)
+                    rowCount = enumerable.Count();
+
+                look.Properties.DropDownRows = rowCount > 7 ? 7 : rowCount;
+            }
+        }
+
         public static void GridPanelText(GridView grid)
         {
             grid.GroupPanelText = "Qruplaşdırmaq üçün sütun başlıqlarını buraya sürükləyin";

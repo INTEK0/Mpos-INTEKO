@@ -2229,47 +2229,44 @@ FROM
 
         public static async Task<int> InsertSupplierPay(SupplierDebtPay item)
         {
+            string query = "INSERT_TECHIZATCI_ODENIS";
             using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, con))
             {
-                string query = "INSERT_TECHIZATCI_ODENIS";
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlParameter param;
+                param = cmd.Parameters.Add("@MAL_ALISI_MAIN_ID", SqlDbType.Int);
+                param.Value = item.ProductMainId;
+                param = cmd.Parameters.Add("@SupplierDebtId", SqlDbType.Int);
+                param.Value = item.SupplierDebtId;
+                param = cmd.Parameters.Add("@SupplierId", SqlDbType.Int);
+                param.Value = item.SupplierId;
+                param = cmd.Parameters.Add("@ODENIS", SqlDbType.Decimal);
+                param.Value = item.Pay;
+                param = cmd.Parameters.Add("@ODENIS_TIPI", SqlDbType.NVarChar);
+                param.Value = item.PaymentType;
+                param = cmd.Parameters.Add("@GAIME_N", SqlDbType.NVarChar);
+                param.Value = item.GaimeNo;
+                param = cmd.Parameters.Add("@GEYD", SqlDbType.NVarChar);
+                param.Value = item.Comment;
+                param = cmd.Parameters.Add("@TARIX", SqlDbType.Date);
+                param.Value = item.PayDate;
+                param = cmd.Parameters.Add("@EMELIYYAT_NOMRE", SqlDbType.NVarChar, 250);
+                param.Value = item.ProccessNo;
+                param = cmd.Parameters.Add("@FAKTURA_NOMRE", SqlDbType.NVarChar, 50);
+                param.Value = item.ContractNo;
+                param = cmd.Parameters.Add("@USER_ID", SqlDbType.Int);
+                param.Value = Properties.Settings.Default.UserID;
+                param = cmd.Parameters.Add("@ESAS_BORC_ODENIS", SqlDbType.Decimal);
+                param.Value = item.MainDebtAmount;
+                param = cmd.Parameters.Add("@EDV_BORC", SqlDbType.Decimal);
+                param.Value = item.TaxDebtAmount;
+
+                param = cmd.Parameters.Add("@EMPCOUNT", SqlDbType.Int);
+                param.Direction = ParameterDirection.Output;
                 await con.OpenAsync();
-                using (SqlCommand cmd = new SqlCommand(query, con))
-                {
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    SqlParameter param;
-                    param = cmd.Parameters.Add("@MAL_ALISI_MAIN_ID", SqlDbType.Int);
-                    param.Value = item.ProductMainId;
-                    param = cmd.Parameters.Add("@SupplierDebtId", SqlDbType.Int);
-                    param.Value = item.SupplierDebtId;
-                    param = cmd.Parameters.Add("@SupplierId", SqlDbType.Int);
-                    param.Value = item.SupplierId;
-                    param = cmd.Parameters.Add("@ODENIS", SqlDbType.Decimal);
-                    param.Value = item.Pay;
-                    param = cmd.Parameters.Add("@ODENIS_TIPI", SqlDbType.NVarChar);
-                    param.Value = item.PaymentType;
-                    param = cmd.Parameters.Add("@GAIME_N", SqlDbType.NVarChar);
-                    param.Value = item.GaimeNo;
-                    param = cmd.Parameters.Add("@GEYD", SqlDbType.NVarChar);
-                    param.Value = item.Comment;
-                    param = cmd.Parameters.Add("@TARIX", SqlDbType.Date);
-                    param.Value = item.PayDate;
-                    param = cmd.Parameters.Add("@EMELIYYAT_NOMRE", SqlDbType.NVarChar, 250);
-                    param.Value = item.ProccessNo;
-                    param = cmd.Parameters.Add("@FAKTURA_NOMRE", SqlDbType.NVarChar, 50);
-                    param.Value = item.ContractNo;
-                    param = cmd.Parameters.Add("@USER_ID", SqlDbType.Int);
-                    param.Value = Properties.Settings.Default.UserID;
-                    param = cmd.Parameters.Add("@ESAS_BORC_ODENIS", SqlDbType.Decimal);
-                    param.Value = item.MainDebtAmount;
-                    param = cmd.Parameters.Add("@EDV_BORC", SqlDbType.Decimal);
-                    param.Value = item.TaxDebtAmount;
-
-                    param = cmd.Parameters.Add("@EMPCOUNT", SqlDbType.Int);
-                    param.Direction = ParameterDirection.Output;
-
-                    await cmd.ExecuteNonQueryAsync();
-                    return Convert.ToInt32(param.Value);
-                }
+                await cmd.ExecuteNonQueryAsync();
+                return Convert.ToInt32(param.Value);
             }
         }
 

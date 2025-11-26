@@ -1,6 +1,8 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
+using System.Windows.Forms;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
@@ -9,6 +11,7 @@ namespace WindowsFormsApp2
 {
     public partial class bank_odenisleri : DevExpress.XtraEditors.XtraForm
     {
+        //BindingList<SupplierPay> debtList = new BindingList<SupplierPay>();
         public static int t_odenis_user_id;
         public bank_odenisleri(int t_user_id)
         {
@@ -18,9 +21,7 @@ namespace WindowsFormsApp2
         }
         private void bank_odenisleri_Load(object sender, EventArgs e)
         {
-            DateTime dateTime = DateTime.UtcNow.Date;
-
-            dateEdit1.Text = dateTime.ToShortDateString();
+            dateEdit1.Text = DateTime.Now.ToShortDateString();
             tProccesNo.Enabled = false;
             tProccesNo.Text = DbProsedures.GET_SupplierDebtPayProccessNo();
             lookUpEdit8GEtData_yeni_anbar();
@@ -34,27 +35,35 @@ namespace WindowsFormsApp2
 
         private void lookUpEdit8GEtData_yeni_anbar()
         {
-            string strQuery = @"SELECT distinct( c.TECHIZATCI_ID),c.SIRKET_ADI 
- AS N'TƏCHİZATÇI ADI' FROM COMPANY.TECHIZATCI c
- inner join MAL_ALISI_MAIN m on m.TECHIZATCI_ID = c.TECHIZATCI_ID 
- inner join (  select MAL_ALISI_MAIN_ID from ( 
- SELECT M.MAL_ALISI_MAIN_ID, M.FAKTURA_NOMRE AS N'FAKTURA NÖMRƏ',M.TARIX, 
- CAST(SUM(MD.ALIS_GIYMETI * MD.MIGDARI) AS DECIMAL(9, 2)) AS N'QİYMƏT' 
- FROM MAL_ALISI_MAIN M INNER JOIN MAL_ALISI_DETAILS MD 
- ON M.MAL_ALISI_MAIN_ID = MD.MAL_ALISI_MAIN_ID  
- INNER JOIN COMPANY.TECHIZATCI CT ON M.TECHIZATCI_ID = CT.TECHIZATCI_ID 
- GROUP BY FAKTURA_NOMRE,M.MAL_ALISI_MAIN_ID,TARIX )t ) x on x.MAL_ALISI_MAIN_ID = m.MAL_ALISI_MAIN_ID
- WHERE c.IsDeleted = 0";
+            string strQuery = @"SELECT 
+    c.TECHIZATCI_ID,
+    c.SIRKET_ADI AS [TƏCHİZATÇI ADI],
+CAST(ISNULL(SUM(CAST(sd.Amount AS DECIMAL(18,2))), 0) AS DECIMAL(18,2)) AS TotalDebt,
+ISNULL(SUM(t.QIYMET), 0) AS TotalPurchaseAmount
 
-            var data = DbProsedures.ConvertToDataTable(strQuery);
+FROM COMPANY.TECHIZATCI c
+LEFT JOIN (
+    SELECT 
+        M.TECHIZATCI_ID,
+        CAST(SUM(MD.ALIS_GIYMETI * MD.MIGDARI) AS DECIMAL(18,2)) AS QIYMET
+    FROM MAL_ALISI_MAIN M
+    INNER JOIN MAL_ALISI_DETAILS MD 
+        ON M.MAL_ALISI_MAIN_ID = MD.MAL_ALISI_MAIN_ID
+    GROUP BY M.TECHIZATCI_ID
+) t 
+    ON t.TECHIZATCI_ID = c.TECHIZATCI_ID
 
-            lookUpEdit1.Properties.DisplayMember = "TƏCHİZATÇI ADI";
-            lookUpEdit1.Properties.ValueMember = "TECHIZATCI_ID";
-            lookUpEdit1.Properties.DataSource = data;
-            lookUpEdit1.Properties.NullText = "--Seçin--";
-            lookUpEdit1.Properties.PopulateColumns();
-            lookUpEdit1.Properties.Columns[0].Visible = false;
+LEFT JOIN COMPANY.SupplierDebt sd 
+    ON sd.SupplierId = c.TECHIZATCI_ID
+WHERE 
+    c.IsDeleted = 0
+GROUP BY 
+    c.TECHIZATCI_ID,
+    c.SIRKET_ADI;";
 
+            var result = DbProsedures.ConvertToDataTable(strQuery);
+
+            FormHelpers.ControlLoad(result, lookUpEdit1, "TƏCHİZATÇI ADI", "TECHIZATCI_ID");
         }
 
         private async void getsum(int paramValue)
@@ -73,13 +82,13 @@ namespace WindowsFormsApp2
 SELECT 
     MAL_ALISI_MAIN_ID,
     SupplierDebtId,
-    [FAKTURA NÖMRƏ],
+    [FAKTURA NÖMRƏ] as ContractNo,
     TARIX,
-    CAST(SUM(ISNULL(ESAS_BORC, 0.00)) AS decimal(18, 3)) AS N'ƏSAS BORC',
-    CAST(SUM(ISNULL(EDV_BORC, 0.00)) AS decimal(18, 3)) AS N'ƏDV BORC',
-    CAST(SUM(ISNULL(BORC, 0.00)) AS decimal(18, 3)) AS N'YEKUN BORC',
-    0.00 AS N'ƏDV ÖDƏ',
-    0.00 AS N'YEKUN BORC ÖDƏ'
+    CAST(SUM(ISNULL(ESAS_BORC, 0.00)) AS decimal(18, 3)) AS ESAS_BORC,
+    CAST(SUM(ISNULL(EDV_BORC, 0.00)) AS decimal(18, 3)) AS EDV_BORC,
+    CAST(SUM(ISNULL(BORC, 0.00)) AS decimal(18, 3)) AS BORC,
+    0.00 AS payEdv,
+    0.00 AS payDebt
 FROM (
     SELECT 
         f.MAL_ALISI_MAIN_ID,
@@ -115,19 +124,17 @@ GROUP BY
 ORDER BY TARIX;
 ";
                 using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+                using (SqlCommand cmd = new SqlCommand(queryString, connection))
                 {
-                    using (SqlCommand cmd = new SqlCommand(queryString, connection))
+                    cmd.Parameters.AddWithValue("@pricePoint", paramValue);
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                     {
-                        cmd.Parameters.AddWithValue("@pricePoint", paramValue);
-                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        using (DataTable dt = new DataTable())
                         {
-                            using (DataTable dt = new DataTable())
-                            {
-                                da.Fill(dt);
-                                gridControl1.DataSource = dt;
-                                gridView1.Columns["MAL_ALISI_MAIN_ID"].Visible = false; //MAL_ALISI_MAIN_ID
-                                gridView1.Columns["SupplierDebtId"].Visible = false; //SupplierDebtId
-                            }
+                            da.Fill(dt);
+                            gridControl1.DataSource = dt;
+                            gridView1.Columns["MAL_ALISI_MAIN_ID"].Visible = false; //MAL_ALISI_MAIN_ID
+                            gridView1.Columns["SupplierDebtId"].Visible = false; //SupplierDebtId
                         }
                     }
                 }
@@ -148,6 +155,7 @@ ORDER BY TARIX;
             getsum(Convert.ToInt32(lookUpEdit1.EditValue));
 
         }
+
         public void refresh()
         {
             int a = Convert.ToInt32(lookUpEdit1.EditValue);
@@ -160,6 +168,46 @@ ORDER BY TARIX;
 
         private async void simpleButton1_Click(object sender, EventArgs e)
         {
+            //MessageBox.Show("Profilaktik işlər getməsi səbəbi ilə müvəqqəti olaraq deaktiv edilmişdir", 
+            //    string.Empty, 
+            //    MessageBoxButtons.OK, 
+            //    MessageBoxIcon.Information);
+            //return;
+
+
+
+
+            if (gridView1.RowCount > 0)
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                gridView1.UpdateCurrentRow();
+                int[] selectedRows = gridView1.GetSelectedRows();
+                if (selectedRows.Length > 0)
+                {
+                    foreach (int item in selectedRows)
+                    {
+                        var row = gridView1.GetDataRow(item);
+                    }
+                }
+                else
+                    FormHelpers.Alert("Seçim edilmədi", Enums.MessageType.Warning);
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             int conf = 0;
 
             foreach (int i in gridView1.GetSelectedRows())
@@ -227,6 +275,40 @@ ORDER BY TARIX;
         {
             FormHelpers.Alert("Müvəqqəti olaraq deaktiv edilmiştir", Enums.MessageType.Info);
             //FormHelpers.OpenForm<TECHIZATCI_ODENILENLER>(this);
+        }
+
+        private class SupplierPay
+        {
+            public int MAL_ALISI_MAIN_ID { get; set; }
+            public int SupplierDebtId { get; set; }
+            public string ContractNo { get; set; }
+            public DateTime TARIX { get; set; }
+            public decimal ESAS_BORC { get; set; }
+            public decimal EDV_BORC { get; set; }
+            public decimal BORC { get; set; }
+            public decimal payEdv { get; set; }
+            public decimal payDebt { get; set; }
+        }
+
+        private void gridView1_InvalidValueException(object sender, DevExpress.XtraEditors.Controls.InvalidValueExceptionEventArgs e)
+        {
+            e.ErrorText = "Dəstəklənməyən simvol !";
+            e.ExceptionMode = DevExpress.XtraEditors.Controls.ExceptionMode.DisplayError;
+        }
+
+        private void gridView1_ShownEditor(object sender, EventArgs e)
+        {
+            if (gridView1.ActiveEditor is DevExpress.XtraEditors.TextEdit editor)
+            {
+                editor.Properties.Mask.EditMask = "N2";
+                editor.Properties.Mask.UseMaskAsDisplayFormat = true;
+
+                editor.KeyPress += (s, ke) =>
+                {
+                    if (ke.KeyChar == '.')
+                        ke.KeyChar = ',';
+                };
+            }
         }
     }
 }
