@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using DevExpress.XtraBars.Navigation;
 using DevExpress.XtraEditors;
-using DevExpress.XtraGrid;
 using Licence.Services;
 using Microsoft.Win32;
 using Newtonsoft.Json;
@@ -170,7 +169,8 @@ namespace WindowsFormsApp2
 
         private void accordionControlElement33_Click(object sender, EventArgs e)
         {
-            OpenForm<ANBAR_MENFEET>();
+            //OpenForm<ANBAR_MENFEET>();
+            OpenForm<fSaleProfitReport>();
         }
 
         private void accordionControlElement37_Click(object sender, EventArgs e)
@@ -697,30 +697,30 @@ FROM[terazimalzeme]";
 
         private void ExpensesDataLoad()
         {
-//            string query = @"WITH Headers AS (
-//    SELECT DISTINCT Header FROM IncomeAndExpensesData
-//)
-//SELECT 
-//    h.Header, 
-//    COALESCE(SUM(i.Amount), 0) AS Amount
-//FROM Headers h
-//LEFT JOIN IncomeAndExpensesData i 
-//    ON h.Header = i.Header 
-//    AND i.Date = CAST(GETDATE() AS DATE) AND i.Type = 4
-//GROUP BY h.Header;";
+            //            string query = @"WITH Headers AS (
+            //    SELECT DISTINCT Header FROM IncomeAndExpensesData
+            //)
+            //SELECT 
+            //    h.Header, 
+            //    COALESCE(SUM(i.Amount), 0) AS Amount
+            //FROM Headers h
+            //LEFT JOIN IncomeAndExpensesData i 
+            //    ON h.Header = i.Header 
+            //    AND i.Date = CAST(GETDATE() AS DATE) AND i.Type = 4
+            //GROUP BY h.Header;";
 
-//            var data = DbProsedures.ConvertToDataTable(query);
-//            gridControlExpenses.DataSource = data;
-//            gridExpenses.ViewCaption = $"XƏRCLƏR - {DateTime.Now.ToString("dd.MM.yyyy")}";
-//            gridExpenses.OptionsView.ShowFooter = true;
-//            gridExpenses.Columns["Amount"].Summary.Clear();
-//            GridColumnSummaryItem summaryItem = new GridColumnSummaryItem
-//            {
-//                FieldName = "Amount",
-//                SummaryType = DevExpress.Data.SummaryItemType.Sum,
-//                DisplayFormat = "{0:N2}"
-//            };
-//            gridExpenses.Columns["Amount"].Summary.Add(summaryItem);
+            //            var data = DbProsedures.ConvertToDataTable(query);
+            //            gridControlExpenses.DataSource = data;
+            //            gridExpenses.ViewCaption = $"XƏRCLƏR - {DateTime.Now.ToString("dd.MM.yyyy")}";
+            //            gridExpenses.OptionsView.ShowFooter = true;
+            //            gridExpenses.Columns["Amount"].Summary.Clear();
+            //            GridColumnSummaryItem summaryItem = new GridColumnSummaryItem
+            //            {
+            //                FieldName = "Amount",
+            //                SummaryType = DevExpress.Data.SummaryItemType.Sum,
+            //                DisplayFormat = "{0:N2}"
+            //            };
+            //            gridExpenses.Columns["Amount"].Summary.Add(summaryItem);
 
         }
 
@@ -797,7 +797,6 @@ FROM (
     WHERE CAST(k.TARIX AS DATE) = CAST(GETDATE() AS DATE)
 ) t;
 ";
-
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
                     using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
@@ -861,30 +860,28 @@ FROM (
         /// </summary>
         private async Task TotalPurchaseInformation()
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
-            {
-                await con.OpenAsync();
-                string query = $@"SELECT 
+            string query = $@"SELECT 
                 ISNULL(SUM(t.TotalPruchasePrice),0) AS TotalPurchasePrice,
                 ISNULL(SUM(t.PurchaseCount),0) AS TotalPurchaseCount
                 FROM (
                 -- MAL_ALISI_MAIN cədvəlindəki datalar
                 SELECT
                 ISNULL(SUM(CAST(md.MIGDARI AS DECIMAL(18, 2)) * CAST(md.ALIS_GIYMETI AS DECIMAL(18, 2))),0) AS TotalPruchasePrice,
-                ISNULL(SUM(CAST(md.MIGDARI AS DECIMAL(18, 2))),0) AS PurchaseCount
+                COUNT(md.MAL_ALISI_DETAILS_ID) AS PurchaseCount
                 FROM [dbo].MAL_ALISI_MAIN ma
                 JOIN [dbo].MAL_ALISI_DETAILS md ON ma.MAL_ALISI_MAIN_ID = md.MAL_ALISI_MAIN_ID
                 WHERE CAST(ma.date_ AS DATE) = CAST(GETDATE() AS DATE)) t;";
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, con))
+            {
+                await con.OpenAsync();
 
-                using (SqlCommand cmd = new SqlCommand(query, con))
+                using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
                 {
-                    using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
+                    if (await dr.ReadAsync())
                     {
-                        if (await dr.ReadAsync())
-                        {
-                            lPurchaseTotalPrice.Text = Convert.ToDecimal(dr["TotalPurchasePrice"]).ToString("C2");
-                            lPurchaseCount.Text = dr["TotalPurchaseCount"].ToString();
-                        }
+                        lPurchaseTotalPrice.Text = Convert.ToDecimal(dr["TotalPurchasePrice"]).ToString("C2");
+                        lPurchaseCount.Text = dr["TotalPurchaseCount"].ToString();
                     }
                 }
             }
@@ -1605,7 +1602,6 @@ FROM (
                 {
                     groupControl5.Text = $"Flial: <b><color=#FF8C00>{branch.Name}</color></b>  -  Status: <b><color=#018574>Uğurlu</color></b>";
                     xtraTabControl1.Visible = true;
-                    //MessageBox.Show($"Seçilen Branch: {branch.Name}\nConnectionString: {con}");
                 }
                 else
                 {

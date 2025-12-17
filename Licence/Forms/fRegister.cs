@@ -30,7 +30,17 @@ namespace Licence.Forms
             guidKeyService = new GuidGeneratorService();
             tLicenceKey.Text = guidKeyService.CurrentString;
 
-            lookTerminalType.Properties.DataSource = Enum.GetValues(typeof(Enums.TerminalType));
+            TerminalDataLoad();
+        }
+
+        private void TerminalDataLoad()
+        {
+            var data = Terminals.SeedTerminalData();
+            lookTerminalType.Properties.DataSource = data;
+            lookTerminalType.Properties.DisplayMember = "CompanyModel";
+            lookTerminalType.Properties.ValueMember = "Id";
+            lookTerminalType.Properties.Columns.Add(new DevExpress.XtraEditors.Controls.LookUpColumnInfo("Company"));
+            lookTerminalType.Properties.Columns.Add(new DevExpress.XtraEditors.Controls.LookUpColumnInfo("Model"));
         }
 
         private void tLicenceKey_Properties_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)

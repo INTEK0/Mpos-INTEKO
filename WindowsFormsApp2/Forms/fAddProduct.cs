@@ -11,7 +11,6 @@ using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Validations;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
 using static WindowsFormsApp2.Helpers.Enums;
 using static WindowsFormsApp2.Helpers.FormHelpers;
@@ -200,7 +199,7 @@ namespace WindowsFormsApp2.Forms
             AND m.TECHIZATCI_ID=@pricePoint1 
             where m.EMELIYYAT_NOMRE = @pricePoint";
 
-            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 connection.Open();
                 using (SqlCommand cmd = new SqlCommand(query, connection))
@@ -209,9 +208,10 @@ namespace WindowsFormsApp2.Forms
                     cmd.Parameters.AddWithValue("@pricePoint1", (int)lookSupplier.EditValue);
                     using (SqlDataReader dr = cmd.ExecuteReader())
                     {
-                        while (dr.Read())
+                        if (dr.Read())
                         {
                             tDebtNew.Text = dr["yeni_borc"].ToString();
+                            TotalBorcHesabla();
                         }
                     }
                 }
@@ -243,7 +243,7 @@ namespace WindowsFormsApp2.Forms
                     cmd.Parameters.AddWithValue("@pricePoint", supplierId);
                     using (SqlDataReader dr = cmd.ExecuteReader())
                     {
-                        while (dr.Read())
+                        if (dr.Read())
                         {
                             tDebtBalance.Text = dr["BORC"].ToString();
                         }
@@ -332,7 +332,8 @@ namespace WindowsFormsApp2.Forms
                 int count = DbProsedures.Exists_Category(tCategoryName.Text);
                 if (count is -1)
                 {
-                    DialogResult dialogResult = XtraMessageBox.Show("YENİ KATEQORİYA YARADILSIN ?", nameof(HeaderMessage.Bildiriş), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    MessageBoxManager.Register();
+                    DialogResult dialogResult = MessageBox.Show("YENİ KATEQORİYA YARADILSIN ?", nameof(HeaderMessage.Bildiriş), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (dialogResult is DialogResult.Yes)
                     {
                         int categorySuccess = DbProsedures.Insert_Category(tCategoryName.Text);
@@ -346,6 +347,7 @@ namespace WindowsFormsApp2.Forms
                     {
                         tCategoryName.Text = null;
                     }
+                    MessageBoxManager.Unregister();
                 }
             }
         }
@@ -653,8 +655,10 @@ namespace WindowsFormsApp2.Forms
                 return;
             }
 
-            if (XtraMessageBox.Show($"{tProductName.Text} məhsulunu silmək istədiyinizə əminsiniz ?", nameof(HeaderMessage.Xəbərdarlıq), MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            MessageBoxManager.Register();
+            if (MessageBox.Show($"{tProductName.Text} məhsulunu silmək istədiyinizə əminsiniz ?", nameof(HeaderMessage.Xəbərdarlıq), MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
+                
                 int response = DbProsedures.DeleteProduct(new ProductsDetail
                 {
                     SupplierName = lookSupplier.Text,
@@ -667,6 +671,7 @@ namespace WindowsFormsApp2.Forms
                     GetAllData(tProccessNo.Text, ProductOperation.Delete);
                 }
             }
+            MessageBoxManager.Unregister();
         }
 
         private void fAddProduct_FormClosing(object sender, FormClosingEventArgs e)
@@ -675,11 +680,12 @@ namespace WindowsFormsApp2.Forms
             {
                 if (e.CloseReason is CloseReason.UserClosing)
                 {
-                    DialogResult result = XtraMessageBox.Show("SƏHİFƏDƏN ÇIXMAQ İSTƏDİYİNİZƏ ƏMİNSİNİZ ?", nameof(HeaderMessage.Xəbərdarlıq), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    MessageBoxManager.Register();
+                    DialogResult result = MessageBox.Show("SƏHİFƏDƏN ÇIXMAQ İSTƏDİYİNİZƏ ƏMİNSİNİZ ?", nameof(HeaderMessage.Xəbərdarlıq), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    MessageBoxManager.Unregister();
                     if (result is DialogResult.No)
-                    {
                         e.Cancel = true;
-                    }
+                    
                 }
             }
         }
@@ -782,6 +788,12 @@ namespace WindowsFormsApp2.Forms
             }
         }
 
-       
+        private void lookUnit_TextChanged(object sender, EventArgs e)
+        {
+            if (lookUnit.Text is "ƏDƏD")
+                tQuantity.Properties.MaskSettings.Set("mask", "f0");
+            else
+                tQuantity.Properties.MaskSettings.Set("mask", "f3");
+        }
     }
 }

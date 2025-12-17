@@ -95,6 +95,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\Terminals.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Forms\fAdmin.cs">
       <SubType>Form</SubType>
@@ -109,7 +110,6 @@
       <DependentUpon>fRegister.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ApiHandler.cs" />
-    <Compile Include="Helpers\Enums.cs" />
     <Compile Include="Helpers\FormHelpers.cs" />
     <Compile Include="Helpers\Implementations\GuidGeneratorService.cs" />
     <Compile Include="Helpers\Implementations\LocalDateTimeService.cs" />

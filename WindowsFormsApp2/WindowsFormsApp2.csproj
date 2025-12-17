@@ -127,6 +127,10 @@
     <Reference Include="HtmlAgilityPack, Version=1.11.59.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>..\packages\HtmlAgilityPack.1.11.59\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
+    <Reference Include="MessageBoxManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\MessageBoxManager.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.7.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -506,6 +510,12 @@
     </Compile>
     <Compile Include="Forms\fReceivedProducts.Designer.cs">
       <DependentUpon>fReceivedProducts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\fSaleProfitReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\fSaleProfitReport.Designer.cs">
+      <DependentUpon>fSaleProfitReport.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\fSearchProduct.cs">
       <SubType>Form</SubType>
@@ -1223,6 +1233,9 @@
     <EmbeddedResource Include="Forms\fReceivedProducts.resx">
       <DependentUpon>fReceivedProducts.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\fSaleProfitReport.resx">
+      <DependentUpon>fSaleProfitReport.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\fSearchProduct.resx">
       <DependentUpon>fSearchProduct.cs</DependentUpon>
     </EmbeddedResource>
@@ -1438,6 +1451,9 @@
     <EmbeddedResource Include="ZAMINKREDIT.resx">
       <DependentUpon>ZAMINKREDIT.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="LocalFiles\Anbar qalığı-Demo.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="LocalFiles\Branches.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

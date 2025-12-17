@@ -1,6 +1,5 @@
 ﻿using Licence.Entities;
 using FluentValidation;
-using static Licence.Helpers.Enums;
 
 namespace Licence.Validations
 {
@@ -31,8 +30,7 @@ namespace Licence.Validations
                           .WithMessage("Kassa seçimi edilmədi");
 
             RuleFor(x => x.TerminalSerialNumber).NotEmpty()
-                                       .When(x => x.TerminalModel != nameof(TerminalType.YOXDUR))
-                                       .When(x => x.TerminalModel != nameof(TerminalType.XPRINTER))
+                                       .When(x => x.TerminalModel != "YOXDUR")
                                        .WithMessage("Kassanın seriya nömrəsi daxil edilmədi");
 
         }

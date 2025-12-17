@@ -30,7 +30,7 @@ namespace WindowsFormsApp2
                 {
                     textEdit1.Text = username;
                     textEdit2.Text = password;
-                    kryptonButton2.PerformClick();
+                    bClose.PerformClick();
                 }
 
             }
@@ -42,7 +42,7 @@ namespace WindowsFormsApp2
         {
             if (e.KeyCode == Keys.Enter)
             {
-                kryptonButton1.PerformClick();
+                bLogin_Click(null, new KeyEventArgs(Keys.Enter));
 
                 e.SuppressKeyPress = true;
                 e.Handled = true;
@@ -58,9 +58,10 @@ namespace WindowsFormsApp2
         {
             if (e.KeyCode == Keys.Enter)
             {
-                kryptonButton1.PerformClick();
                 e.SuppressKeyPress = true;
                 e.Handled = true;
+                bLogin_Click(null, new KeyEventArgs(Keys.Enter));
+                
             }
             if (e.KeyCode == Keys.Down)
             {
@@ -81,7 +82,19 @@ namespace WindowsFormsApp2
         }
 
 
-        private void kryptonButton1_Click(object sender, EventArgs e)
+        private void lForgetPassword_Click(object sender, EventArgs e)
+        {
+            PASSWORDEMAIL PE = new PASSWORDEMAIL();
+            PE.ShowDialog();
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            string target = "https://www.facebook.com/inteko.az/";
+            System.Diagnostics.Process.Start(target);
+        }
+
+        private void bLogin_Click(object sender, EventArgs e)
         {
             var user = UserValidation.ValidateUser(textEdit1.Text.Trim(), textEdit2.Text.Trim());
             if (user != null)
@@ -131,21 +144,9 @@ namespace WindowsFormsApp2
             }
         }
 
-        private void kryptonButton2_Click(object sender, EventArgs e)
+        private void bClose_Click(object sender, EventArgs e)
         {
             Application.Exit();
-        }
-
-        private void lForgetPassword_Click(object sender, EventArgs e)
-        {
-            PASSWORDEMAIL PE = new PASSWORDEMAIL();
-            PE.ShowDialog();
-        }
-
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-            string target = "https://www.facebook.com/inteko.az/";
-            System.Diagnostics.Process.Start(target);
         }
     }
 }

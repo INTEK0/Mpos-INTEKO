@@ -62,7 +62,6 @@ namespace WindowsFormsApp2
             this.memoEdit1 = new DevExpress.XtraEditors.MemoEdit();
             this.textEdit1 = new DevExpress.XtraEditors.TextEdit();
             this.bCardReturn = new DevExpress.XtraEditors.SimpleButton();
-            this.bCashCardReturn = new DevExpress.XtraEditors.SimpleButton();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -83,7 +82,6 @@ namespace WindowsFormsApp2
             this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem16 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem17 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem19 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem7 = new DevExpress.XtraLayout.EmptySpaceItem();
@@ -91,6 +89,7 @@ namespace WindowsFormsApp2
             this.emptySpaceItem9 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem10 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.tReturnQuantity = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.textEdit6.Properties)).BeginInit();
@@ -122,7 +121,6 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem7)).BeginInit();
@@ -130,6 +128,7 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem10)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tReturnQuantity)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -152,7 +151,6 @@ namespace WindowsFormsApp2
             this.layoutControl1.Controls.Add(this.memoEdit1);
             this.layoutControl1.Controls.Add(this.textEdit1);
             this.layoutControl1.Controls.Add(this.bCardReturn);
-            this.layoutControl1.Controls.Add(this.bCashCardReturn);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.HiddenItems.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlItem5,
@@ -335,6 +333,8 @@ namespace WindowsFormsApp2
             this.gridControl1.MainView = this.gridView1;
             this.gridControl1.Margin = new System.Windows.Forms.Padding(4);
             this.gridControl1.Name = "gridControl1";
+            this.gridControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
+            this.tReturnQuantity});
             this.gridControl1.Size = new System.Drawing.Size(1282, 397);
             this.gridControl1.TabIndex = 145;
             this.gridControl1.TabStop = false;
@@ -365,6 +365,8 @@ namespace WindowsFormsApp2
             this.gridView1.OptionsView.EnableAppearanceEvenRow = true;
             this.gridView1.OptionsView.EnableAppearanceOddRow = true;
             this.gridView1.OptionsView.ShowIndicator = false;
+            this.gridView1.ShownEditor += new System.EventHandler(this.gridView1_ShownEditor);
+            this.gridView1.InvalidValueException += new DevExpress.XtraEditors.Controls.InvalidValueExceptionEventHandler(this.gridView1_InvalidValueException);
             // 
             // gridColumn1
             // 
@@ -472,6 +474,8 @@ namespace WindowsFormsApp2
             this.gridColumn12.AppearanceHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.gridColumn12.AppearanceHeader.Options.UseBackColor = true;
             this.gridColumn12.Caption = "QAYTARILACAQ MİQDAR";
+            this.gridColumn12.ColumnEdit = this.tReturnQuantity;
+            this.gridColumn12.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
             this.gridColumn12.FieldName = "QAYTARILACAQ MİQDAR";
             this.gridColumn12.Name = "gridColumn12";
             this.gridColumn12.Visible = true;
@@ -514,21 +518,6 @@ namespace WindowsFormsApp2
             this.bCardReturn.TabIndex = 162;
             this.bCardReturn.Text = "KART";
             this.bCardReturn.Click += new System.EventHandler(this.bCardReturn_Click);
-            // 
-            // bCashCardReturn
-            // 
-            this.bCashCardReturn.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Success;
-            this.bCashCardReturn.Appearance.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Bold);
-            this.bCashCardReturn.Appearance.Options.UseBackColor = true;
-            this.bCashCardReturn.Appearance.Options.UseFont = true;
-            this.bCashCardReturn.Location = new System.Drawing.Point(395, 281);
-            this.bCashCardReturn.Margin = new System.Windows.Forms.Padding(4);
-            this.bCashCardReturn.Name = "bCashCardReturn";
-            this.bCashCardReturn.Size = new System.Drawing.Size(195, 33);
-            this.bCashCardReturn.StyleController = this.layoutControl1;
-            this.bCashCardReturn.TabIndex = 163;
-            this.bCashCardReturn.Text = "NAĞD && KART";
-            this.bCashCardReturn.Click += new System.EventHandler(this.bCashCardReturn_Click);
             // 
             // layoutControlItem5
             // 
@@ -578,7 +567,6 @@ namespace WindowsFormsApp2
             this.layoutControlItem15,
             this.layoutControlItem16,
             this.layoutControlItem17,
-            this.layoutControlItem18,
             this.layoutControlItem19,
             this.layoutControlItem1,
             this.emptySpaceItem7,
@@ -605,9 +593,9 @@ namespace WindowsFormsApp2
             // emptySpaceItem6
             // 
             this.emptySpaceItem6.AllowHotTrack = false;
-            this.emptySpaceItem6.Location = new System.Drawing.Point(580, 265);
+            this.emptySpaceItem6.Location = new System.Drawing.Point(379, 265);
             this.emptySpaceItem6.Name = "emptySpaceItem6";
-            this.emptySpaceItem6.Size = new System.Drawing.Size(509, 39);
+            this.emptySpaceItem6.Size = new System.Drawing.Size(710, 39);
             this.emptySpaceItem6.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem6
@@ -749,19 +737,6 @@ namespace WindowsFormsApp2
             this.layoutControlItem17.TextVisible = false;
             this.layoutControlItem17.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
-            // layoutControlItem18
-            // 
-            this.layoutControlItem18.Control = this.bCashCardReturn;
-            this.layoutControlItem18.Location = new System.Drawing.Point(379, 265);
-            this.layoutControlItem18.MaxSize = new System.Drawing.Size(201, 39);
-            this.layoutControlItem18.MinSize = new System.Drawing.Size(201, 39);
-            this.layoutControlItem18.Name = "layoutControlItem18";
-            this.layoutControlItem18.Size = new System.Drawing.Size(201, 39);
-            this.layoutControlItem18.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
-            this.layoutControlItem18.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem18.TextVisible = false;
-            this.layoutControlItem18.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-            // 
             // layoutControlItem19
             // 
             this.layoutControlItem19.Control = this.bRollback;
@@ -823,6 +798,11 @@ namespace WindowsFormsApp2
             this.emptySpaceItem10.Size = new System.Drawing.Size(892, 72);
             this.emptySpaceItem10.TextSize = new System.Drawing.Size(0, 0);
             // 
+            // tReturnQuantity
+            // 
+            this.tReturnQuantity.AutoHeight = false;
+            this.tReturnQuantity.Name = "tReturnQuantity";
+            // 
             // POS_GAYTARMA_LAYOUT
             // 
             this.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(245)))), ((int)(((byte)(250)))));
@@ -873,7 +853,6 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem7)).EndInit();
@@ -881,6 +860,7 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem10)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tReturnQuantity)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -927,8 +907,6 @@ namespace WindowsFormsApp2
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem16;
         private DevExpress.XtraEditors.SimpleButton bCardReturn;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem17;
-        private DevExpress.XtraEditors.SimpleButton bCashCardReturn;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem18;
         private DevExpress.XtraEditors.SimpleButton bRollback;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem19;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
@@ -948,5 +926,6 @@ namespace WindowsFormsApp2
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn10;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn11;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn12;
+        private DevExpress.XtraEditors.Repository.RepositoryItemTextEdit tReturnQuantity;
     }
 }

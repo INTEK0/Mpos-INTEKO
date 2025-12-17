@@ -24,6 +24,15 @@ namespace WindowsFormsApp2.Helpers
 {
     public static class FormHelpers
     {
+        static FormHelpers()
+        {
+            MessageBoxManager.Yes = "Bəli";
+            MessageBoxManager.No = "Xeyr";
+            MessageBoxManager.OK = "OK";
+            MessageBoxManager.Retry = "Təkrar yoxla";
+            MessageBoxManager.Cancel = "Ləğv et";
+        }
+
         public static void ControlLoad<T>(T data, Control control, string displayMember = "Name", string valueMember = "Id") where T : class
         {
             if (control is System.Windows.Forms.ComboBox ctrl)

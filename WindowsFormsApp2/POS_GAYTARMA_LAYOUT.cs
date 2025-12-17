@@ -1968,6 +1968,27 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
             DbHelpers.UseLocalConnection();
         }
 
+        private void gridView1_InvalidValueException(object sender, DevExpress.XtraEditors.Controls.InvalidValueExceptionEventArgs e)
+        {
+            e.ErrorText = "Dəstəklənməyən simvol !";
+            e.ExceptionMode = DevExpress.XtraEditors.Controls.ExceptionMode.DisplayError;
+        }
+
+        private void gridView1_ShownEditor(object sender, EventArgs e)
+        {
+            if (gridView1.ActiveEditor is DevExpress.XtraEditors.TextEdit editor)
+            {
+                editor.Properties.Mask.EditMask = "N2";
+                editor.Properties.Mask.UseMaskAsDisplayFormat = true;
+
+                editor.KeyPress += (s, ke) =>
+                {
+                    if (ke.KeyChar == '.')
+                        ke.KeyChar = ',';
+                };
+            }
+        }
+
         private void ReturnSales(Enums.PayType type)
         {
             Cursor.Current = Cursors.WaitCursor;
@@ -2466,11 +2487,6 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
         private void bCardReturn_Click(object sender, EventArgs e)
         {
             ReturnSales(Enums.PayType.Card);
-        }
-
-        private void bCashCardReturn_Click(object sender, EventArgs e)
-        {
-            ReturnSales(Enums.PayType.CashCard);
         }
 
         private void bCashReturn_Click(object sender, EventArgs e)

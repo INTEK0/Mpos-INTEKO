@@ -432,6 +432,7 @@
             // 
             // bAlinanMallar
             // 
+            this.bAlinanMallar.AllowFocus = false;
             this.bAlinanMallar.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Question;
             this.bAlinanMallar.Appearance.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold);
             this.bAlinanMallar.Appearance.Options.UseBackColor = true;
@@ -451,6 +452,7 @@
             // 
             // bClear
             // 
+            this.bClear.AllowFocus = false;
             this.bClear.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Danger;
             this.bClear.Appearance.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold);
             this.bClear.Appearance.Options.UseBackColor = true;
@@ -480,6 +482,7 @@
             this.panelControl3.Name = "panelControl3";
             this.panelControl3.Size = new System.Drawing.Size(1346, 35);
             this.panelControl3.TabIndex = 0;
+            this.panelControl3.Visible = false;
             // 
             // chBank
             // 
@@ -2398,6 +2401,7 @@
             this.lookUnit.Properties.ShowFooter = false;
             this.lookUnit.Size = new System.Drawing.Size(318, 30);
             this.lookUnit.TabIndex = 0;
+            this.lookUnit.TextChanged += new System.EventHandler(this.lookUnit_TextChanged);
             // 
             // labelControl14
             // 

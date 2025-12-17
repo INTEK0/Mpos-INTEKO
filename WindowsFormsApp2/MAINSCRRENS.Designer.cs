@@ -31,13 +31,13 @@ namespace WindowsFormsApp2
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            DevExpress.XtraCharts.XYDiagram xyDiagram1 = new DevExpress.XtraCharts.XYDiagram();
+            DevExpress.XtraCharts.Series series1 = new DevExpress.XtraCharts.Series();
+            DevExpress.XtraCharts.ChartTitle chartTitle1 = new DevExpress.XtraCharts.ChartTitle();
+            DevExpress.XtraCharts.Series series2 = new DevExpress.XtraCharts.Series();
+            DevExpress.XtraCharts.DoughnutSeriesView doughnutSeriesView1 = new DevExpress.XtraCharts.DoughnutSeriesView();
+            DevExpress.XtraCharts.ChartTitle chartTitle2 = new DevExpress.XtraCharts.ChartTitle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MAINSCRRENS));
-            DevExpress.XtraCharts.XYDiagram xyDiagram2 = new DevExpress.XtraCharts.XYDiagram();
-            DevExpress.XtraCharts.Series series3 = new DevExpress.XtraCharts.Series();
-            DevExpress.XtraCharts.ChartTitle chartTitle3 = new DevExpress.XtraCharts.ChartTitle();
-            DevExpress.XtraCharts.Series series4 = new DevExpress.XtraCharts.Series();
-            DevExpress.XtraCharts.DoughnutSeriesView doughnutSeriesView2 = new DevExpress.XtraCharts.DoughnutSeriesView();
-            DevExpress.XtraCharts.ChartTitle chartTitle4 = new DevExpress.XtraCharts.ChartTitle();
             this.fluentDesignFormContainer1 = new DevExpress.XtraBars.FluentDesignSystem.FluentDesignFormContainer();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.groupControl1 = new DevExpress.XtraEditors.GroupControl();
@@ -281,6 +281,7 @@ namespace WindowsFormsApp2
             this.bBranchTerminal = new DevExpress.XtraEditors.SimpleButton();
             this.groupControl4 = new DevExpress.XtraEditors.GroupControl();
             this.tablePanel2 = new DevExpress.Utils.Layout.TablePanel();
+            this.checkButton6 = new DevExpress.XtraEditors.CheckButton();
             this.checkButton1 = new DevExpress.XtraEditors.CheckButton();
             this.checkButton2 = new DevExpress.XtraEditors.CheckButton();
             this.checkButton3 = new DevExpress.XtraEditors.CheckButton();
@@ -323,11 +324,11 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit3.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartWeek)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(xyDiagram2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(series3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(xyDiagram1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(series1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartSalesType)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(series4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(doughnutSeriesView2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(series2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(doughnutSeriesView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit4.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.accordionControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fluentDesignFormControl1)).BeginInit();
@@ -1279,28 +1280,28 @@ namespace WindowsFormsApp2
             // chartWeek
             // 
             this.tableLayoutPanel1.SetColumnSpan(this.chartWeek, 3);
-            xyDiagram2.AxisX.VisibleInPanesSerializable = "-1";
-            xyDiagram2.AxisY.VisibleInPanesSerializable = "-1";
-            this.chartWeek.Diagram = xyDiagram2;
+            xyDiagram1.AxisX.VisibleInPanesSerializable = "-1";
+            xyDiagram1.AxisY.VisibleInPanesSerializable = "-1";
+            this.chartWeek.Diagram = xyDiagram1;
             this.chartWeek.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chartWeek.EmptyChartText.DXFont = new DevExpress.Drawing.DXFont("Nunito", 14F);
             this.chartWeek.EmptyChartText.Text = "Məlumat yoxdur";
             this.chartWeek.Legend.Visibility = DevExpress.Utils.DefaultBoolean.False;
             this.chartWeek.Location = new System.Drawing.Point(3, 119);
             this.chartWeek.Name = "chartWeek";
-            series3.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
-            series3.LegendTextPattern = "{V}";
-            series3.Name = "Series 1";
-            series3.SeriesID = 0;
+            series1.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+            series1.LegendTextPattern = "{V}";
+            series1.Name = "Series 1";
+            series1.SeriesID = 0;
             this.chartWeek.SeriesSerializable = new DevExpress.XtraCharts.Series[] {
-        series3};
+        series1};
             this.chartWeek.Size = new System.Drawing.Size(855, 283);
             this.chartWeek.TabIndex = 14;
-            chartTitle3.DXFont = new DevExpress.Drawing.DXFont("Verdana", 16F);
-            chartTitle3.Text = "Aylıq satış hesabatı";
-            chartTitle3.TitleID = 0;
+            chartTitle1.DXFont = new DevExpress.Drawing.DXFont("Verdana", 16F);
+            chartTitle1.Text = "Aylıq satış hesabatı";
+            chartTitle1.TitleID = 0;
             this.chartWeek.Titles.AddRange(new DevExpress.XtraCharts.ChartTitle[] {
-            chartTitle3});
+            chartTitle1});
             // 
             // chartSalesType
             // 
@@ -1314,18 +1315,18 @@ namespace WindowsFormsApp2
             this.chartSalesType.Name = "chartSalesType";
             this.chartSalesType.PaletteName = "Civic";
             this.tableLayoutPanel1.SetRowSpan(this.chartSalesType, 2);
-            series4.Name = "Series 1";
-            series4.SeriesID = 1;
-            series4.View = doughnutSeriesView2;
+            series2.Name = "Series 1";
+            series2.SeriesID = 1;
+            series2.View = doughnutSeriesView1;
             this.chartSalesType.SeriesSerializable = new DevExpress.XtraCharts.Series[] {
-        series4};
+        series2};
             this.chartSalesType.Size = new System.Drawing.Size(855, 345);
             this.chartSalesType.TabIndex = 15;
-            chartTitle4.DXFont = new DevExpress.Drawing.DXFont("Verdana", 16F);
-            chartTitle4.Text = "Cari satış növ hesabatı";
-            chartTitle4.TitleID = 0;
+            chartTitle2.DXFont = new DevExpress.Drawing.DXFont("Verdana", 16F);
+            chartTitle2.Text = "Cari satış növ hesabatı";
+            chartTitle2.TitleID = 0;
             this.chartSalesType.Titles.AddRange(new DevExpress.XtraCharts.ChartTitle[] {
-            chartTitle4});
+            chartTitle2});
             // 
             // pictureEdit4
             // 
@@ -1428,6 +1429,8 @@ namespace WindowsFormsApp2
             this.accordionControlElement3.Name = "accordionControlElement3";
             this.accordionControlElement3.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
             this.accordionControlElement3.Text = "Fliallar";
+            this.accordionControlElement3.Visible = false;
+            this.accordionControlElement3.VisibleInFooter = false;
             this.accordionControlElement3.Click += new System.EventHandler(this.accordionControlElement3_Click);
             // 
             // accordionControlElement4
@@ -1828,7 +1831,7 @@ namespace WindowsFormsApp2
             // 
             this.accordionControlElement33.Name = "accordionControlElement33";
             this.accordionControlElement33.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
-            this.accordionControlElement33.Text = "Anbar Mənfəət Hesabatı";
+            this.accordionControlElement33.Text = "Satış üzrə mənfəət hesabatı";
             this.accordionControlElement33.Click += new System.EventHandler(this.accordionControlElement33_Click);
             // 
             // accordionControlElement34
@@ -1921,6 +1924,8 @@ namespace WindowsFormsApp2
             this.accordionControlElement60.Name = "accordionControlElement60";
             this.accordionControlElement60.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
             this.accordionControlElement60.Text = "Məhsul Mənfəət Hesabatı";
+            this.accordionControlElement60.Visible = false;
+            this.accordionControlElement60.VisibleInFooter = false;
             this.accordionControlElement60.Click += new System.EventHandler(this.accordionControlElement60_Click);
             // 
             // accordionControlElement64
@@ -3730,7 +3735,9 @@ namespace WindowsFormsApp2
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 100F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 100F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 100F),
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 100F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 100F)});
+            this.tablePanel2.Controls.Add(this.checkButton6);
             this.tablePanel2.Controls.Add(this.checkButton1);
             this.tablePanel2.Controls.Add(this.checkButton2);
             this.tablePanel2.Controls.Add(this.checkButton3);
@@ -3746,11 +3753,46 @@ namespace WindowsFormsApp2
             this.tablePanel2.TabIndex = 0;
             this.tablePanel2.UseSkinIndents = true;
             // 
+            // checkButton6
+            // 
+            this.checkButton6.AllowFocus = false;
+            this.checkButton6.Appearance.Font = new System.Drawing.Font("Nunito", 11F);
+            this.checkButton6.Appearance.Options.UseFont = true;
+            this.checkButton6.Appearance.Options.UseTextOptions = true;
+            this.checkButton6.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.checkButton6.AppearanceDisabled.Options.UseTextOptions = true;
+            this.checkButton6.AppearanceDisabled.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.checkButton6.AppearanceHovered.Options.UseTextOptions = true;
+            this.checkButton6.AppearanceHovered.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.checkButton6.AppearancePressed.Options.UseTextOptions = true;
+            this.checkButton6.AppearancePressed.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.tablePanel2.SetColumn(this.checkButton6, 5);
+            this.checkButton6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.checkButton6.GroupIndex = 1;
+            this.checkButton6.Location = new System.Drawing.Point(963, 4);
+            this.checkButton6.Name = "checkButton6";
+            this.tablePanel2.SetRow(this.checkButton6, 0);
+            this.checkButton6.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.checkButton6.Size = new System.Drawing.Size(186, 48);
+            this.checkButton6.TabIndex = 0;
+            this.checkButton6.TabStop = false;
+            this.checkButton6.Tag = "SABİRABAD";
+            this.checkButton6.Text = "SABİRABAD";
+            this.checkButton6.CheckedChanged += new System.EventHandler(this.CheckedBranches);
+            // 
             // checkButton1
             // 
             this.checkButton1.AllowFocus = false;
             this.checkButton1.Appearance.Font = new System.Drawing.Font("Nunito", 11F);
             this.checkButton1.Appearance.Options.UseFont = true;
+            this.checkButton1.Appearance.Options.UseTextOptions = true;
+            this.checkButton1.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.checkButton1.AppearanceDisabled.Options.UseTextOptions = true;
+            this.checkButton1.AppearanceDisabled.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.checkButton1.AppearanceHovered.Options.UseTextOptions = true;
+            this.checkButton1.AppearanceHovered.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.checkButton1.AppearancePressed.Options.UseTextOptions = true;
+            this.checkButton1.AppearancePressed.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.tablePanel2.SetColumn(this.checkButton1, 0);
             this.checkButton1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.checkButton1.GroupIndex = 1;
@@ -3758,7 +3800,7 @@ namespace WindowsFormsApp2
             this.checkButton1.Name = "checkButton1";
             this.tablePanel2.SetRow(this.checkButton1, 0);
             this.checkButton1.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.checkButton1.Size = new System.Drawing.Size(224, 48);
+            this.checkButton1.Size = new System.Drawing.Size(186, 48);
             this.checkButton1.TabIndex = 0;
             this.checkButton1.TabStop = false;
             this.checkButton1.Tag = "SƏDƏRƏK";
@@ -3770,14 +3812,22 @@ namespace WindowsFormsApp2
             this.checkButton2.AllowFocus = false;
             this.checkButton2.Appearance.Font = new System.Drawing.Font("Nunito", 11F);
             this.checkButton2.Appearance.Options.UseFont = true;
+            this.checkButton2.Appearance.Options.UseTextOptions = true;
+            this.checkButton2.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.checkButton2.AppearanceDisabled.Options.UseTextOptions = true;
+            this.checkButton2.AppearanceDisabled.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.checkButton2.AppearanceHovered.Options.UseTextOptions = true;
+            this.checkButton2.AppearanceHovered.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.checkButton2.AppearancePressed.Options.UseTextOptions = true;
+            this.checkButton2.AppearancePressed.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.tablePanel2.SetColumn(this.checkButton2, 1);
             this.checkButton2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.checkButton2.GroupIndex = 1;
-            this.checkButton2.Location = new System.Drawing.Point(234, 4);
+            this.checkButton2.Location = new System.Drawing.Point(196, 4);
             this.checkButton2.Name = "checkButton2";
             this.tablePanel2.SetRow(this.checkButton2, 0);
             this.checkButton2.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.checkButton2.Size = new System.Drawing.Size(224, 48);
+            this.checkButton2.Size = new System.Drawing.Size(186, 48);
             this.checkButton2.TabIndex = 0;
             this.checkButton2.TabStop = false;
             this.checkButton2.Tag = "XAÇMAZ";
@@ -3789,14 +3839,22 @@ namespace WindowsFormsApp2
             this.checkButton3.AllowFocus = false;
             this.checkButton3.Appearance.Font = new System.Drawing.Font("Nunito", 11F);
             this.checkButton3.Appearance.Options.UseFont = true;
+            this.checkButton3.Appearance.Options.UseTextOptions = true;
+            this.checkButton3.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.checkButton3.AppearanceDisabled.Options.UseTextOptions = true;
+            this.checkButton3.AppearanceDisabled.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.checkButton3.AppearanceHovered.Options.UseTextOptions = true;
+            this.checkButton3.AppearanceHovered.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.checkButton3.AppearancePressed.Options.UseTextOptions = true;
+            this.checkButton3.AppearancePressed.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.tablePanel2.SetColumn(this.checkButton3, 2);
             this.checkButton3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.checkButton3.GroupIndex = 1;
-            this.checkButton3.Location = new System.Drawing.Point(464, 4);
+            this.checkButton3.Location = new System.Drawing.Point(388, 4);
             this.checkButton3.Name = "checkButton3";
             this.tablePanel2.SetRow(this.checkButton3, 0);
             this.checkButton3.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.checkButton3.Size = new System.Drawing.Size(224, 48);
+            this.checkButton3.Size = new System.Drawing.Size(186, 48);
             this.checkButton3.TabIndex = 0;
             this.checkButton3.TabStop = false;
             this.checkButton3.Tag = "İMİŞLİ";
@@ -3808,14 +3866,22 @@ namespace WindowsFormsApp2
             this.checkButton4.AllowFocus = false;
             this.checkButton4.Appearance.Font = new System.Drawing.Font("Nunito", 11F);
             this.checkButton4.Appearance.Options.UseFont = true;
+            this.checkButton4.Appearance.Options.UseTextOptions = true;
+            this.checkButton4.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.checkButton4.AppearanceDisabled.Options.UseTextOptions = true;
+            this.checkButton4.AppearanceDisabled.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.checkButton4.AppearanceHovered.Options.UseTextOptions = true;
+            this.checkButton4.AppearanceHovered.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.checkButton4.AppearancePressed.Options.UseTextOptions = true;
+            this.checkButton4.AppearancePressed.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.tablePanel2.SetColumn(this.checkButton4, 3);
             this.checkButton4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.checkButton4.GroupIndex = 1;
-            this.checkButton4.Location = new System.Drawing.Point(695, 4);
+            this.checkButton4.Location = new System.Drawing.Point(580, 4);
             this.checkButton4.Name = "checkButton4";
             this.tablePanel2.SetRow(this.checkButton4, 0);
             this.checkButton4.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.checkButton4.Size = new System.Drawing.Size(224, 48);
+            this.checkButton4.Size = new System.Drawing.Size(186, 48);
             this.checkButton4.TabIndex = 0;
             this.checkButton4.TabStop = false;
             this.checkButton4.Tag = "AĞCABƏDİ";
@@ -3827,18 +3893,20 @@ namespace WindowsFormsApp2
             this.checkButton5.AllowFocus = false;
             this.checkButton5.Appearance.Font = new System.Drawing.Font("Nunito", 11F);
             this.checkButton5.Appearance.Options.UseFont = true;
+            this.checkButton5.Appearance.Options.UseTextOptions = true;
+            this.checkButton5.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.tablePanel2.SetColumn(this.checkButton5, 4);
             this.checkButton5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.checkButton5.GroupIndex = 1;
-            this.checkButton5.Location = new System.Drawing.Point(925, 4);
+            this.checkButton5.Location = new System.Drawing.Point(771, 4);
             this.checkButton5.Name = "checkButton5";
             this.tablePanel2.SetRow(this.checkButton5, 0);
             this.checkButton5.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.checkButton5.Size = new System.Drawing.Size(224, 48);
+            this.checkButton5.Size = new System.Drawing.Size(186, 48);
             this.checkButton5.TabIndex = 0;
             this.checkButton5.TabStop = false;
             this.checkButton5.Tag = "SABİRABAD";
-            this.checkButton5.Text = "SABİRABAD";
+            this.checkButton5.Text = "NAMAZOV BƏXTİYAR";
             this.checkButton5.CheckedChanged += new System.EventHandler(this.CheckedBranches);
             // 
             // MAINSCRRENS
@@ -3906,11 +3974,11 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.gridControl2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit3.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(xyDiagram2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(series3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(xyDiagram1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(series1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartWeek)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(doughnutSeriesView2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(series4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(doughnutSeriesView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(series2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartSalesType)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit4.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.accordionControl1)).EndInit();
@@ -4238,6 +4306,7 @@ namespace WindowsFormsApp2
         private DevExpress.XtraCharts.ChartControl chartWeek;
         private DevExpress.XtraCharts.ChartControl chartSalesType;
         private DevExpress.XtraEditors.PictureEdit pictureEdit4;
+        private DevExpress.XtraEditors.CheckButton checkButton6;
     }
 }
 

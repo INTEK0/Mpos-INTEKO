@@ -2,7 +2,9 @@
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
+using System.Web.UI.WebControls;
 using System.Windows.Forms;
+using DevExpress.Data;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
@@ -27,10 +29,9 @@ namespace WindowsFormsApp2
             lookUpEdit8GEtData_yeni_anbar();
             radioButton2.Checked = true;
 
-            tProccesNo.TabIndex = 2;
-            tContractNo.TabIndex = 3;
-            lookUpEdit1.TabIndex = 4;
-            memoEdit1.TabIndex = 5;
+            gridView1.Columns["BORC"].Summary.Add(SummaryItemType.Sum, "BORC");
+            gridView1.Columns["ESAS_BORC"].Summary.Add(SummaryItemType.Sum, "ESAS_BORC");
+            gridView1.Columns["EDV_BORC"].Summary.Add(SummaryItemType.Sum, "EDV_BORC");
         }
 
         private void lookUpEdit8GEtData_yeni_anbar()
@@ -66,12 +67,16 @@ GROUP BY
             FormHelpers.ControlLoad(result, lookUpEdit1, "TƏCHİZATÇI ADI", "TECHIZATCI_ID");
         }
 
+        /// <summary>
+        /// Deaktiv edilib
+        /// </summary>
+        /// <param name="paramValue"></param>
         private async void getsum(int paramValue)
         {
-            var debt = await DbProsedures.GET_SupplierTotalDebt(paramValue);
-            textEdit14.Text = debt.totalAmount.ToString("N2");
-            textEdit2.Text = debt.mainAmount.ToString("N2");
-            textEdit1.Text = debt.taxAmount.ToString("N2");
+            //var debt = await DbProsedures.GET_SupplierTotalDebt(paramValue);
+            //textEdit14.Text = debt.totalAmount.ToString("N2");
+            //textEdit2.Text = debt.mainAmount.ToString("N2");
+            //textEdit1.Text = debt.taxAmount.ToString("N2");
         }
 
         private void getall(int paramValue)
@@ -133,8 +138,14 @@ ORDER BY TARIX;
                         {
                             da.Fill(dt);
                             gridControl1.DataSource = dt;
-                            gridView1.Columns["MAL_ALISI_MAIN_ID"].Visible = false; //MAL_ALISI_MAIN_ID
-                            gridView1.Columns["SupplierDebtId"].Visible = false; //SupplierDebtId
+                            gridControl1.RefreshDataSource();
+                            
+                            var mainAmount = Convert.ToDecimal(gridView1.Columns["ESAS_BORC"].SummaryText);
+                            decimal taxAmount = Convert.ToDecimal(gridView1.Columns["EDV_BORC"].SummaryText);
+                            decimal totalAmount = Convert.ToDecimal(gridView1.Columns["BORC"].SummaryText);
+                            textEdit2.Text = mainAmount.ToString("N2");
+                            textEdit1.Text = taxAmount.ToString("N2");
+                            textEdit14.Text = totalAmount.ToString("N2");
                         }
                     }
                 }
@@ -168,15 +179,6 @@ ORDER BY TARIX;
 
         private async void simpleButton1_Click(object sender, EventArgs e)
         {
-            //MessageBox.Show("Profilaktik işlər getməsi səbəbi ilə müvəqqəti olaraq deaktiv edilmişdir", 
-            //    string.Empty, 
-            //    MessageBoxButtons.OK, 
-            //    MessageBoxIcon.Information);
-            //return;
-
-
-
-
             if (gridView1.RowCount > 0)
             {
                 Cursor.Current = Cursors.WaitCursor;
@@ -184,80 +186,110 @@ ORDER BY TARIX;
                 int[] selectedRows = gridView1.GetSelectedRows();
                 if (selectedRows.Length > 0)
                 {
+                    int insertData = 0;
                     foreach (int item in selectedRows)
                     {
                         var row = gridView1.GetDataRow(item);
+                        decimal yekunborc = Convert.ToDecimal(row["payDebt"].ToString());
+                        decimal edv = Convert.ToDecimal(row["payEdv"].ToString());
+
+                        decimal odenilen = yekunborc + edv;
+
+                        if (odenilen > 0)
+                        {
+                            int productMainId = string.IsNullOrWhiteSpace(row[0].ToString()) ? 0 : Convert.ToInt32(row[0].ToString());
+                            int supplierDebtId = string.IsNullOrWhiteSpace(row[1].ToString()) ? 0 : Convert.ToInt32(row[1].ToString());
+                            int supplierId = Convert.ToInt32(lookUpEdit1.EditValue);
+                            int resultId = await DbProsedures.InsertSupplierPay(new DatabaseClasses.SupplierDebtPay
+                            {
+                                ProductMainId = productMainId,
+                                SupplierDebtId = supplierDebtId,
+                                SupplierId = supplierId,
+                                Pay = odenilen,
+                                PaymentType = radio,
+                                Comment = memoEdit1.Text.Trim(),
+                                PayDate = dateEdit1.DateTime,
+                                ProccessNo = tProccesNo.Text,
+                                ContractNo = row[2].ToString(), //Alış fakturasının nömrəsi
+                                GaimeNo = tContractNo.Text,
+                                MainDebtAmount = yekunborc,
+                                TaxDebtAmount = edv,
+                            });
+                            insertData += resultId;
+                        }
+                        else
+                        {
+                            FormHelpers.Alert("Ödəniləcək məbləğ daxil edilmədi", Enums.MessageType.Warning);
+                            return;
+                        }
+
+                        
+                        
+                    }
+                    if (insertData > 0)
+                    {
+                        FormHelpers.Alert("Ödəniş uğurla tamamlandı", Enums.MessageType.Success);
+                        tProccesNo.Clear();
+                        tContractNo.Clear();
+                        tProccesNo.Text = DbProsedures.GET_SupplierDebtPayProccessNo();
+                        getall(Convert.ToInt32(lookUpEdit1.EditValue));
+                        getsum(Convert.ToInt32(lookUpEdit1.EditValue));
+                        insertData = 0;
                     }
                 }
                 else
                     FormHelpers.Alert("Seçim edilmədi", Enums.MessageType.Warning);
             }
+            /*
+            //int conf = 0;
+
+            //foreach (int i in gridView1.GetSelectedRows())
+            //{
+            //    DataRow row = gridView1.GetDataRow(i);
+
+            //    decimal yekunborc = Convert.ToDecimal(row["YEKUN BORC ÖDƏ"].ToString());
+            //    decimal edv = Convert.ToDecimal(row["ƏDV ÖDƏ"].ToString());
+
+            //    decimal odenilen = yekunborc + edv;
+
+            //    int productMainId = string.IsNullOrWhiteSpace(row[0].ToString()) ? 0 : Convert.ToInt32(row[0].ToString());
+            //    int supplierDebtId = string.IsNullOrWhiteSpace(row[1].ToString()) ? 0 : Convert.ToInt32(row[1].ToString());
+            //    int supplierId = Convert.ToInt32(lookUpEdit1.EditValue);
+            //    int resultId = await DbProsedures.InsertSupplierPay(new DatabaseClasses.SupplierDebtPay
+            //    {
+            //        ProductMainId = productMainId,
+            //        SupplierDebtId = supplierDebtId,
+            //        SupplierId = supplierId,
+            //        Pay = odenilen,
+            //        PaymentType = radio,
+            //        Comment = memoEdit1.Text.Trim(),
+            //        PayDate = dateEdit1.DateTime,
+            //        ProccessNo = tProccesNo.Text,
+            //        ContractNo = row[2].ToString(), //Alış fakturasının nömrəsi
+            //        GaimeNo = tContractNo.Text,
+            //        MainDebtAmount = yekunborc,
+            //        TaxDebtAmount = edv,
+            //    });
 
 
+            //    conf = conf + resultId;
 
+            //}
 
-
-
-
-
-
-
-
-
-
-
-
-
-            int conf = 0;
-
-            foreach (int i in gridView1.GetSelectedRows())
-            {
-                DataRow row = gridView1.GetDataRow(i);
-
-                decimal yekunborc = Convert.ToDecimal(row["YEKUN BORC ÖDƏ"].ToString());
-                decimal edv = Convert.ToDecimal(row["ƏDV ÖDƏ"].ToString());
-
-                decimal odenilen = yekunborc + edv;
-
-                int productMainId = string.IsNullOrWhiteSpace(row[0].ToString()) ? 0 : Convert.ToInt32(row[0].ToString());
-                int supplierDebtId = string.IsNullOrWhiteSpace(row[1].ToString()) ? 0 : Convert.ToInt32(row[1].ToString());
-                int supplierId = Convert.ToInt32(lookUpEdit1.EditValue);
-                int resultId = await DbProsedures.InsertSupplierPay(new DatabaseClasses.SupplierDebtPay
-                {
-                    ProductMainId = productMainId,
-                    SupplierDebtId = supplierDebtId,
-                    SupplierId = supplierId,
-                    Pay = odenilen,
-                    PaymentType = radio,
-                    Comment = memoEdit1.Text.Trim(),
-                    PayDate = dateEdit1.DateTime,
-                    ProccessNo = tProccesNo.Text,
-                    ContractNo = row[2].ToString(), //Alış fakturasının nömrəsi
-                    GaimeNo = tContractNo.Text,
-                    MainDebtAmount = yekunborc,
-                    TaxDebtAmount = edv,
-                });
-
-
-                conf = conf + resultId;
-
-            }
-
-            if (conf > 0)
-            {
-                FormHelpers.Alert("Ödəniş uğurla tamamlandı", Enums.MessageType.Success);
-                tProccesNo.Clear();
-                tContractNo.Clear();
-                tProccesNo.Text = DbProsedures.GET_SupplierDebtPayProccessNo();
-                getall(Convert.ToInt32(lookUpEdit1.EditValue));
-                getsum(Convert.ToInt32(lookUpEdit1.EditValue));
-                gridControl1.RefreshDataSource();
-            }
+            //if (conf > 0)
+            //{
+            //    FormHelpers.Alert("Ödəniş uğurla tamamlandı", Enums.MessageType.Success);
+            //    tProccesNo.Clear();
+            //    tContractNo.Clear();
+            //    tProccesNo.Text = DbProsedures.GET_SupplierDebtPayProccessNo();
+            //    getall(Convert.ToInt32(lookUpEdit1.EditValue));
+            //    getsum(Convert.ToInt32(lookUpEdit1.EditValue));
+            //    gridControl1.RefreshDataSource();
+            //}
+            */
         }
 
-
-        public static string radio = "NAĞD";
-        public static int r_int = 0;
+        private static string radio = "NAĞD";
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {

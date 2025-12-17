@@ -1281,76 +1281,109 @@ WHERE BARKOD = '{barcode}'";
 
         public static string GET_ProductReturnProcessNo()
         {
+            string query = "EXEC  dbo.MAL_GAYTARMA_KOD";
             using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, connection))
             {
-                string query = "EXEC  dbo.MAL_GAYTARMA_KOD";
-                using (SqlCommand cmd = new SqlCommand(query, connection))
+                connection.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
                 {
-                    connection.Open();
-                    using (SqlDataReader dr = cmd.ExecuteReader())
-                    {
-                        while (dr.Read())
-                        {
-                            return dr[0].ToString();
-                        }
-                        return null;
-                    }
+                    if (dr.Read())
+                        return dr[0].ToString();
+                    return null;
                 }
             }
         }
 
         public static string GET_ProductReturnDebtTotal(int SupplierId)
         {
-            string query = $@"SELECT 
+            /*           string oldquery = $@"SELECT 
+            //  Y.BORC - X.GAYTARMA_MEBLEG AS BORC 
+            //FROM 
+            //  (
+            //    select 
+            //      1 AS ID, 
+            //      cast(
+            //        sum(
+            //          isnull(BORC, 0.00)
+            //        ) as decimal(18, 3)
+            //      ) as BORC 
+            //    from 
+            //      (
+            //        SELECT 
+            //          f.MAL_ALISI_MAIN_ID, 
+            //          f.[FAKTURA NÖMRƏ], 
+            //          f.TARIX, 
+            //          f.QİYMƏT - isnull(t.odenis, 0.00) BORC, 
+            //          0 AS 'ÖDƏNİŞ' 
+            //        FROM 
+            //          dbo.fn_TECHIZATCI_BORC({SupplierId}) f 
+            //          left join(
+            //            select 
+            //              MAL_ALISI_MAIN_ID, 
+            //              sum(ODENIS) odenis 
+            //            from 
+            //              TECHIZATCI_ODENIS 
+            //            group by 
+            //              MAL_ALISI_MAIN_ID
+            //          ) t on f.MAL_ALISI_MAIN_ID = t.MAL_ALISI_MAIN_ID
+            //      ) o
+            //  ) Y 
+            //  LEFT JOIN(
+            //    SELECT 
+            //      1 AS ID, 
+            //      ISNULL(
+            //        CAST(
+            //          SUM(MD.ALIS_GIYMETI * D.MIGDARI) AS decimal(18, 3)
+            //        ), 
+            //        0.00
+            //      ) AS GAYTARMA_MEBLEG 
+            //    FROM 
+            //      MAL_GEYTARMA_MAIN M 
+            //      INNER JOIN MAL_GEYTARMA_DETAILS D ON M.MAL_GEYTARMA_MAIN_ID = D.MAL_GEYTARMA_MAIN_ID 
+            //      INNER JOIN MAL_ALISI_DETAILS MD ON MD.MAL_ALISI_DETAILS_ID = D.MAL_ALISI_DETAILS_ID 
+            //      INNER JOIN MAL_ALISI_MAIN MM ON MM.MAL_ALISI_MAIN_ID = MD.MAL_ALISI_MAIN_ID 
+            //    WHERE 
+            //      MM.TECHIZATCI_ID = {SupplierId}
+            //  ) X ON X.ID = Y.ID
+            //";*/
+
+            string query = $@"WITH DEBT AS (
+  SELECT 
+    SUM(
+      ISNULL(f.QİYMƏT, 0) - ISNULL(t.odenis, 0)
+    ) AS BORC 
+  FROM 
+    dbo.fn_TECHIZATCI_BORC({SupplierId}) f 
+    LEFT JOIN (
+      SELECT 
+        MAL_ALISI_MAIN_ID, 
+        SUM(ODENIS) AS odenis 
+      FROM 
+        TECHIZATCI_ODENIS 
+      GROUP BY 
+        MAL_ALISI_MAIN_ID
+    ) t ON t.MAL_ALISI_MAIN_ID = f.MAL_ALISI_MAIN_ID
+), 
+REFUND AS (
+  SELECT 
+    ISNULL(
+      SUM(MD.ALIS_GIYMETI * D.MIGDARI), 
+      0
+    ) AS GAYTARMA_MEBLEG 
+  FROM 
+    MAL_GEYTARMA_MAIN M 
+    INNER JOIN MAL_GEYTARMA_DETAILS D ON M.MAL_GEYTARMA_MAIN_ID = D.MAL_GEYTARMA_MAIN_ID 
+    INNER JOIN MAL_ALISI_DETAILS MD ON MD.MAL_ALISI_DETAILS_ID = D.MAL_ALISI_DETAILS_ID 
+    INNER JOIN MAL_ALISI_MAIN MM ON MM.MAL_ALISI_MAIN_ID = MD.MAL_ALISI_MAIN_ID 
+  WHERE 
+    MM.TECHIZATCI_ID = {SupplierId}
+) 
+SELECT 
   Y.BORC - X.GAYTARMA_MEBLEG AS BORC 
 FROM 
-  (
-    select 
-      1 AS ID, 
-      cast(
-        sum(
-          isnull(BORC, 0.00)
-        ) as decimal(18, 3)
-      ) as BORC 
-    from 
-      (
-        SELECT 
-          f.MAL_ALISI_MAIN_ID, 
-          f.[FAKTURA NÖMRƏ], 
-          f.TARIX, 
-          f.QİYMƏT - isnull(t.odenis, 0.00) BORC, 
-          0 AS 'ÖDƏNİŞ' 
-        FROM 
-          dbo.fn_TECHIZATCI_BORC({SupplierId}) f 
-          left join(
-            select 
-              MAL_ALISI_MAIN_ID, 
-              sum(ODENIS) odenis 
-            from 
-              TECHIZATCI_ODENIS 
-            group by 
-              MAL_ALISI_MAIN_ID
-          ) t on f.MAL_ALISI_MAIN_ID = t.MAL_ALISI_MAIN_ID
-      ) o
-  ) Y 
-  LEFT JOIN(
-    SELECT 
-      1 AS ID, 
-      ISNULL(
-        CAST(
-          SUM(MD.ALIS_GIYMETI * D.MIGDARI) AS decimal(18, 3)
-        ), 
-        0.00
-      ) AS GAYTARMA_MEBLEG 
-    FROM 
-      MAL_GEYTARMA_MAIN M 
-      INNER JOIN MAL_GEYTARMA_DETAILS D ON M.MAL_GEYTARMA_MAIN_ID = D.MAL_GEYTARMA_MAIN_ID 
-      INNER JOIN MAL_ALISI_DETAILS MD ON MD.MAL_ALISI_DETAILS_ID = D.MAL_ALISI_DETAILS_ID 
-      INNER JOIN MAL_ALISI_MAIN MM ON MM.MAL_ALISI_MAIN_ID = MD.MAL_ALISI_MAIN_ID 
-    WHERE 
-      MM.TECHIZATCI_ID = {SupplierId}
-  ) X ON X.ID = Y.ID
-";
+  DEBT Y CROSS 
+  JOIN REFUND X;";
 
             using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             using (SqlCommand cmd = new SqlCommand(query, connection))
@@ -1358,10 +1391,8 @@ FROM
                 connection.Open();
                 using (SqlDataReader dr = cmd.ExecuteReader())
                 {
-                    while (dr.Read())
-                    {
+                    if (dr.Read())
                         return dr[0].ToString();
-                    }
                     return null;
                 }
             }
@@ -1369,54 +1400,51 @@ FROM
 
         public static int InsertRefundProductMain(string proccessNo, DateTime date)
         {
+            string query = "INSERT_MAL_GAYTARMA_MAIN";
             using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, con))
             {
-                string query = "INSERT_MAL_GAYTARMA_MAIN";
-                using (SqlCommand cmd = new SqlCommand(query, con))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    SqlParameter param;
-                    param = cmd.Parameters.Add("@EMELIYYAT_NOMRE", SqlDbType.NVarChar, 100);
-                    param.Value = proccessNo;
-                    param = cmd.Parameters.Add("@TARIX", SqlDbType.Date);
-                    param.Value = date;
-                    param = cmd.Parameters.Add("@_USER_ID", SqlDbType.Int);
-                    param.Value = Properties.Settings.Default.UserID;
-                    param = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
-                    param.Direction = ParameterDirection.Output;
-                    con.Open();
-                    cmd.ExecuteNonQuery();
-                    con.Close();
-                    return Convert.ToInt32(param.Value);
-                }
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlParameter param;
+                param = cmd.Parameters.Add("@EMELIYYAT_NOMRE", SqlDbType.NVarChar, 100);
+                param.Value = proccessNo;
+                param = cmd.Parameters.Add("@TARIX", SqlDbType.Date);
+                param.Value = date;
+                param = cmd.Parameters.Add("@_USER_ID", SqlDbType.Int);
+                param.Value = Properties.Settings.Default.UserID;
+                param = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
+                param.Direction = ParameterDirection.Output;
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+                return Convert.ToInt32(param.Value);
             }
         }
 
         public static int InsertRefundProductDetail(int RefundProductId, int ProductId, decimal RefundQuantity, string Comment = null)
         {
-            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
-            {
-                string query = "INSERT_MAL_GAYTARMA_DETAILS";
-                using (SqlCommand cmd = new SqlCommand(query, con))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    SqlParameter param;
-                    param = cmd.Parameters.Add("@MAL_GEYTARMA_MAIN_ID", SqlDbType.Int);
-                    param.Value = RefundProductId;
-                    param = cmd.Parameters.Add("@MAL_ALISI_DETAILS_ID", SqlDbType.Int);
-                    param.Value = ProductId;
-                    param = cmd.Parameters.Add("@MIGDARI", SqlDbType.Decimal);
-                    param.Value = RefundQuantity;
-                    param = cmd.Parameters.Add("@COMMENT", SqlDbType.NVarChar, int.MaxValue);
-                    param.Value = Comment;
-                    param = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
-                    param.Direction = ParameterDirection.Output;
+            string query = "INSERT_MAL_GAYTARMA_DETAILS";
 
-                    con.Open();
-                    cmd.ExecuteNonQuery();
-                    con.Close();
-                    return Convert.ToInt32(param.Value);
-                }
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, con))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlParameter param;
+                param = cmd.Parameters.Add("@MAL_GEYTARMA_MAIN_ID", SqlDbType.Int);
+                param.Value = RefundProductId;
+                param = cmd.Parameters.Add("@MAL_ALISI_DETAILS_ID", SqlDbType.Int);
+                param.Value = ProductId;
+                param = cmd.Parameters.Add("@MIGDARI", SqlDbType.Decimal);
+                param.Value = RefundQuantity;
+                param = cmd.Parameters.Add("@COMMENT", SqlDbType.NVarChar, int.MaxValue);
+                param.Value = Comment;
+                param = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
+                param.Direction = ParameterDirection.Output;
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+                return Convert.ToInt32(param.Value);
             }
         }
 
@@ -2272,47 +2300,46 @@ FROM
 
         public static async Task<(decimal totalAmount, decimal mainAmount, decimal taxAmount)> GET_SupplierTotalDebt(int supplierId)
         {
+            string query = "sp_GetSupplierDebt";
+
             using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, connection))
             {
                 await connection.OpenAsync();
-                string query = "sp_GetSupplierDebt";
-                using (SqlCommand cmd = new SqlCommand(query, connection))
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@SupplierId", supplierId);
+
+                var totalAmountParam = new SqlParameter("@TOTAL_DEBT", SqlDbType.Decimal)
                 {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@SupplierId", supplierId);
+                    Precision = 18,
+                    Scale = 4,
+                    Direction = ParameterDirection.Output
+                };
+                var mainAmountParam = new SqlParameter("@MAIN_DEBT", SqlDbType.Decimal)
+                {
+                    Precision = 18,
+                    Scale = 4,
+                    Direction = ParameterDirection.Output
+                };
+                var taxAmountParam = new SqlParameter("@TAX_DEBT", SqlDbType.Decimal)
+                {
+                    Precision = 18,
+                    Scale = 4,
+                    Direction = ParameterDirection.Output
+                };
 
-                    var totalAmountParam = new SqlParameter("@TOTAL_DEBT", SqlDbType.Decimal)
-                    {
-                        Precision = 18,
-                        Scale = 4,
-                        Direction = ParameterDirection.Output
-                    };
-                    var mainAmountParam = new SqlParameter("@MAIN_DEBT", SqlDbType.Decimal)
-                    {
-                        Precision = 18,
-                        Scale = 4,
-                        Direction = ParameterDirection.Output
-                    };
-                    var taxAmountParam = new SqlParameter("@TAX_DEBT", SqlDbType.Decimal)
-                    {
-                        Precision = 18,
-                        Scale = 4,
-                        Direction = ParameterDirection.Output
-                    };
+                cmd.Parameters.Add(totalAmountParam);
+                cmd.Parameters.Add(mainAmountParam);
+                cmd.Parameters.Add(taxAmountParam);
 
-                    cmd.Parameters.Add(totalAmountParam);
-                    cmd.Parameters.Add(mainAmountParam);
-                    cmd.Parameters.Add(taxAmountParam);
-
-                    await cmd.ExecuteNonQueryAsync();
+                await cmd.ExecuteNonQueryAsync();
 
 
-                    decimal totalAmount = (decimal)totalAmountParam.Value;
-                    decimal mainAmount = (decimal)mainAmountParam.Value;
-                    decimal taxAmount = (decimal)taxAmountParam.Value;
+                decimal totalAmount = (decimal)totalAmountParam.Value;
+                decimal mainAmount = (decimal)mainAmountParam.Value;
+                decimal taxAmount = (decimal)taxAmountParam.Value;
 
-                    return (totalAmount, mainAmount, taxAmount);
-                }
+                return (totalAmount, mainAmount, taxAmount);
             }
         }
 

@@ -206,7 +206,6 @@ namespace WindowsFormsApp2
         {
             if (e.KeyCode is Keys.Enter)
             {
-
                 string kontrol = tBarcode.Text;
                 string kod;
                 string kg;

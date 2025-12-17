@@ -32,26 +32,26 @@ namespace WindowsFormsApp2
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(avtorizasiya));
             this.label1 = new System.Windows.Forms.Label();
             this.lForgetPassword = new DevExpress.XtraEditors.LabelControl();
-            this.kryptonButton2 = new ComponentFactory.Krypton.Toolkit.KryptonButton();
-            this.kryptonButton1 = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.textEdit2 = new DevExpress.XtraEditors.TextEdit();
             this.textEdit1 = new DevExpress.XtraEditors.TextEdit();
             this.fluentDesignFormContainer1 = new DevExpress.XtraBars.FluentDesignSystem.FluentDesignFormContainer();
+            this.bClose = new DevExpress.XtraEditors.SimpleButton();
+            this.bLogin = new DevExpress.XtraEditors.SimpleButton();
             this.pictureBox7 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.textEdit2 = new DevExpress.XtraEditors.TextEdit();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.pictureBox6 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textEdit2.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.textEdit1.Properties)).BeginInit();
             this.fluentDesignFormContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.textEdit2.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
@@ -77,143 +77,20 @@ namespace WindowsFormsApp2
             this.lForgetPassword.Appearance.TextOptions.Trimming = DevExpress.Utils.Trimming.EllipsisCharacter;
             this.lForgetPassword.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.lForgetPassword.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lForgetPassword.Location = new System.Drawing.Point(772, 327);
+            this.lForgetPassword.Location = new System.Drawing.Point(771, 318);
             this.lForgetPassword.Name = "lForgetPassword";
             this.lForgetPassword.Size = new System.Drawing.Size(96, 18);
             this.lForgetPassword.TabIndex = 17;
             this.lForgetPassword.Text = "Şifrəmi unutdum";
             this.lForgetPassword.Click += new System.EventHandler(this.lForgetPassword_Click);
             // 
-            // kryptonButton2
-            // 
-            this.kryptonButton2.Location = new System.Drawing.Point(721, 364);
-            this.kryptonButton2.Margin = new System.Windows.Forms.Padding(4);
-            this.kryptonButton2.Name = "kryptonButton2";
-            this.kryptonButton2.OverrideDefault.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(252)))), ((int)(((byte)(252)))));
-            this.kryptonButton2.OverrideDefault.Back.Color2 = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(252)))), ((int)(((byte)(252)))));
-            this.kryptonButton2.OverrideDefault.Back.ColorAngle = 45F;
-            this.kryptonButton2.OverrideDefault.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(142)))), ((int)(((byte)(254)))));
-            this.kryptonButton2.OverrideDefault.Border.Color2 = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(142)))), ((int)(((byte)(254)))));
-            this.kryptonButton2.OverrideDefault.Border.ColorAngle = 45F;
-            this.kryptonButton2.OverrideDefault.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.kryptonButton2.OverrideDefault.Border.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
-            this.kryptonButton2.OverrideDefault.Border.Rounding = 18;
-            this.kryptonButton2.OverrideDefault.Border.Width = 1;
-            this.kryptonButton2.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.ProfessionalSystem;
-            this.kryptonButton2.Size = new System.Drawing.Size(110, 40);
-            this.kryptonButton2.StateCommon.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(252)))), ((int)(((byte)(252)))));
-            this.kryptonButton2.StateCommon.Back.Color2 = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(252)))), ((int)(((byte)(252)))));
-            this.kryptonButton2.StateCommon.Back.ColorAngle = 45F;
-            this.kryptonButton2.StateCommon.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(120)))), ((int)(((byte)(139)))));
-            this.kryptonButton2.StateCommon.Border.Color2 = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(120)))), ((int)(((byte)(139)))));
-            this.kryptonButton2.StateCommon.Border.ColorAngle = 45F;
-            this.kryptonButton2.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.kryptonButton2.StateCommon.Border.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
-            this.kryptonButton2.StateCommon.Border.Rounding = 18;
-            this.kryptonButton2.StateCommon.Border.Width = 1;
-            this.kryptonButton2.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(120)))), ((int)(((byte)(139)))));
-            this.kryptonButton2.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.kryptonButton2.StatePressed.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(146)))), ((int)(((byte)(197)))));
-            this.kryptonButton2.StatePressed.Back.Color2 = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(146)))), ((int)(((byte)(197)))));
-            this.kryptonButton2.StatePressed.Back.ColorAngle = 130F;
-            this.kryptonButton2.StatePressed.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(146)))), ((int)(((byte)(197)))));
-            this.kryptonButton2.StatePressed.Border.Color2 = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(122)))), ((int)(((byte)(206)))));
-            this.kryptonButton2.StatePressed.Border.ColorAngle = 130F;
-            this.kryptonButton2.StatePressed.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.kryptonButton2.StatePressed.Border.Rounding = 18;
-            this.kryptonButton2.StatePressed.Border.Width = 1;
-            this.kryptonButton2.StatePressed.Content.ShortText.Color1 = System.Drawing.Color.White;
-            this.kryptonButton2.StateTracking.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(146)))), ((int)(((byte)(197)))));
-            this.kryptonButton2.StateTracking.Back.Color2 = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(146)))), ((int)(((byte)(197)))));
-            this.kryptonButton2.StateTracking.Back.ColorAngle = 45F;
-            this.kryptonButton2.StateTracking.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(174)))), ((int)(((byte)(244)))));
-            this.kryptonButton2.StateTracking.Border.Color2 = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(142)))), ((int)(((byte)(254)))));
-            this.kryptonButton2.StateTracking.Border.ColorAngle = 45F;
-            this.kryptonButton2.StateTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.kryptonButton2.StateTracking.Border.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
-            this.kryptonButton2.StateTracking.Border.Rounding = 18;
-            this.kryptonButton2.StateTracking.Border.Width = 1;
-            this.kryptonButton2.StateTracking.Content.ShortText.Color1 = System.Drawing.Color.White;
-            this.kryptonButton2.TabIndex = 16;
-            this.kryptonButton2.Values.Text = "Bağla";
-            this.kryptonButton2.Click += new System.EventHandler(this.kryptonButton2_Click);
-            // 
-            // kryptonButton1
-            // 
-            this.kryptonButton1.Location = new System.Drawing.Point(603, 364);
-            this.kryptonButton1.Margin = new System.Windows.Forms.Padding(4);
-            this.kryptonButton1.Name = "kryptonButton1";
-            this.kryptonButton1.OverrideDefault.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(174)))), ((int)(((byte)(244)))));
-            this.kryptonButton1.OverrideDefault.Back.Color2 = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(142)))), ((int)(((byte)(254)))));
-            this.kryptonButton1.OverrideDefault.Back.ColorAngle = 45F;
-            this.kryptonButton1.OverrideDefault.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(174)))), ((int)(((byte)(244)))));
-            this.kryptonButton1.OverrideDefault.Border.Color2 = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(142)))), ((int)(((byte)(254)))));
-            this.kryptonButton1.OverrideDefault.Border.ColorAngle = 45F;
-            this.kryptonButton1.OverrideDefault.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.kryptonButton1.OverrideDefault.Border.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
-            this.kryptonButton1.OverrideDefault.Border.Rounding = 18;
-            this.kryptonButton1.OverrideDefault.Border.Width = 1;
-            this.kryptonButton1.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.ProfessionalSystem;
-            this.kryptonButton1.Size = new System.Drawing.Size(110, 40);
-            this.kryptonButton1.StateCommon.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(120)))), ((int)(((byte)(139)))));
-            this.kryptonButton1.StateCommon.Back.Color2 = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(120)))), ((int)(((byte)(139)))));
-            this.kryptonButton1.StateCommon.Back.ColorAngle = 45F;
-            this.kryptonButton1.StateCommon.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(174)))), ((int)(((byte)(244)))));
-            this.kryptonButton1.StateCommon.Border.Color2 = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(142)))), ((int)(((byte)(254)))));
-            this.kryptonButton1.StateCommon.Border.ColorAngle = 45F;
-            this.kryptonButton1.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.kryptonButton1.StateCommon.Border.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
-            this.kryptonButton1.StateCommon.Border.Rounding = 18;
-            this.kryptonButton1.StateCommon.Border.Width = 1;
-            this.kryptonButton1.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.White;
-            this.kryptonButton1.StateCommon.Content.ShortText.Color2 = System.Drawing.Color.White;
-            this.kryptonButton1.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.kryptonButton1.StatePressed.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(146)))), ((int)(((byte)(197)))));
-            this.kryptonButton1.StatePressed.Back.Color2 = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(122)))), ((int)(((byte)(206)))));
-            this.kryptonButton1.StatePressed.Back.ColorAngle = 130F;
-            this.kryptonButton1.StatePressed.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(146)))), ((int)(((byte)(197)))));
-            this.kryptonButton1.StatePressed.Border.Color2 = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(122)))), ((int)(((byte)(206)))));
-            this.kryptonButton1.StatePressed.Border.ColorAngle = 130F;
-            this.kryptonButton1.StatePressed.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.kryptonButton1.StatePressed.Border.Rounding = 18;
-            this.kryptonButton1.StatePressed.Border.Width = 1;
-            this.kryptonButton1.StateTracking.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(174)))), ((int)(((byte)(244)))));
-            this.kryptonButton1.StateTracking.Back.Color2 = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(174)))), ((int)(((byte)(244)))));
-            this.kryptonButton1.StateTracking.Back.ColorAngle = 45F;
-            this.kryptonButton1.StateTracking.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(174)))), ((int)(((byte)(244)))));
-            this.kryptonButton1.StateTracking.Border.Color2 = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(142)))), ((int)(((byte)(254)))));
-            this.kryptonButton1.StateTracking.Border.ColorAngle = 45F;
-            this.kryptonButton1.StateTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.kryptonButton1.StateTracking.Border.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
-            this.kryptonButton1.StateTracking.Border.Rounding = 18;
-            this.kryptonButton1.StateTracking.Border.Width = 1;
-            this.kryptonButton1.TabIndex = 15;
-            this.kryptonButton1.Values.Text = "Daxil ol";
-            this.kryptonButton1.Click += new System.EventHandler(this.kryptonButton1_Click);
-            // 
             // pictureBox3
             // 
             this.pictureBox3.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox3.Image")));
-            this.pictureBox3.Location = new System.Drawing.Point(531, 287);
+            this.pictureBox3.Location = new System.Drawing.Point(547, 277);
             this.pictureBox3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(32, 32);
+            this.pictureBox3.Size = new System.Drawing.Size(22, 35);
             this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox3.TabIndex = 5;
             this.pictureBox3.TabStop = false;
@@ -221,31 +98,13 @@ namespace WindowsFormsApp2
             // pictureBox2
             // 
             this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(531, 239);
+            this.pictureBox2.Location = new System.Drawing.Point(547, 236);
             this.pictureBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(32, 32);
+            this.pictureBox2.Size = new System.Drawing.Size(22, 35);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox2.TabIndex = 4;
             this.pictureBox2.TabStop = false;
-            // 
-            // textEdit2
-            // 
-            this.textEdit2.EditValue = "";
-            this.textEdit2.Location = new System.Drawing.Point(575, 284);
-            this.textEdit2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textEdit2.Name = "textEdit2";
-            this.textEdit2.Properties.Appearance.BackColor = System.Drawing.Color.Snow;
-            this.textEdit2.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 14F);
-            this.textEdit2.Properties.Appearance.Options.UseBackColor = true;
-            this.textEdit2.Properties.Appearance.Options.UseFont = true;
-            this.textEdit2.Properties.LookAndFeel.SkinName = "WXI";
-            this.textEdit2.Properties.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.textEdit2.Properties.NullText = "Şifrə";
-            this.textEdit2.Properties.PasswordChar = '*';
-            this.textEdit2.Size = new System.Drawing.Size(292, 38);
-            this.textEdit2.TabIndex = 1;
-            this.textEdit2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textEdit2_KeyDown);
             // 
             // textEdit1
             // 
@@ -255,11 +114,10 @@ namespace WindowsFormsApp2
             this.textEdit1.Name = "textEdit1";
             this.textEdit1.Properties.Appearance.BackColor = System.Drawing.Color.Snow;
             this.textEdit1.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 14F);
-            this.textEdit1.Properties.Appearance.Options.UseBackColor = true;
             this.textEdit1.Properties.Appearance.Options.UseFont = true;
             this.textEdit1.Properties.LookAndFeel.SkinName = "WXI";
             this.textEdit1.Properties.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.textEdit1.Properties.NullText = "Login";
+            this.textEdit1.Properties.NullValuePrompt = "İstifadəçi adı";
             this.textEdit1.Size = new System.Drawing.Size(292, 38);
             this.textEdit1.TabIndex = 0;
             this.textEdit1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textEdit1_KeyDown);
@@ -267,11 +125,11 @@ namespace WindowsFormsApp2
             // fluentDesignFormContainer1
             // 
             this.fluentDesignFormContainer1.AutoScroll = false;
+            this.fluentDesignFormContainer1.Controls.Add(this.bClose);
+            this.fluentDesignFormContainer1.Controls.Add(this.bLogin);
             this.fluentDesignFormContainer1.Controls.Add(this.lForgetPassword);
             this.fluentDesignFormContainer1.Controls.Add(this.pictureBox7);
-            this.fluentDesignFormContainer1.Controls.Add(this.kryptonButton2);
             this.fluentDesignFormContainer1.Controls.Add(this.pictureBox1);
-            this.fluentDesignFormContainer1.Controls.Add(this.kryptonButton1);
             this.fluentDesignFormContainer1.Controls.Add(this.pictureBox3);
             this.fluentDesignFormContainer1.Controls.Add(this.label2);
             this.fluentDesignFormContainer1.Controls.Add(this.label1);
@@ -287,6 +145,42 @@ namespace WindowsFormsApp2
             this.fluentDesignFormContainer1.Size = new System.Drawing.Size(953, 517);
             this.fluentDesignFormContainer1.TabIndex = 8;
             this.fluentDesignFormContainer1.TabStop = false;
+            // 
+            // bClose
+            // 
+            this.bClose.AllowFocus = false;
+            this.bClose.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Danger;
+            this.bClose.Appearance.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Bold);
+            this.bClose.Appearance.Options.UseBackColor = true;
+            this.bClose.Appearance.Options.UseFont = true;
+            this.bClose.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.bClose.Location = new System.Drawing.Point(780, 342);
+            this.bClose.LookAndFeel.SkinName = "WXI";
+            this.bClose.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.bClose.Name = "bClose";
+            this.bClose.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bClose.Size = new System.Drawing.Size(87, 32);
+            this.bClose.TabIndex = 70;
+            this.bClose.Text = "Bağla";
+            this.bClose.Click += new System.EventHandler(this.bClose_Click);
+            // 
+            // bLogin
+            // 
+            this.bLogin.AllowFocus = false;
+            this.bLogin.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Primary;
+            this.bLogin.Appearance.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Bold);
+            this.bLogin.Appearance.Options.UseBackColor = true;
+            this.bLogin.Appearance.Options.UseFont = true;
+            this.bLogin.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.bLogin.Location = new System.Drawing.Point(664, 342);
+            this.bLogin.LookAndFeel.SkinName = "WXI";
+            this.bLogin.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.bLogin.Name = "bLogin";
+            this.bLogin.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bLogin.Size = new System.Drawing.Size(110, 32);
+            this.bLogin.TabIndex = 70;
+            this.bLogin.Text = "Daxil ol";
+            this.bLogin.Click += new System.EventHandler(this.bLogin_Click);
             // 
             // pictureBox7
             // 
@@ -323,6 +217,24 @@ namespace WindowsFormsApp2
             this.label2.TabIndex = 0;
             this.label2.Text = "012 311 15 11";
             // 
+            // textEdit2
+            // 
+            this.textEdit2.EditValue = "";
+            this.textEdit2.Location = new System.Drawing.Point(575, 275);
+            this.textEdit2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.textEdit2.Name = "textEdit2";
+            this.textEdit2.Properties.Appearance.BackColor = System.Drawing.Color.Snow;
+            this.textEdit2.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.textEdit2.Properties.Appearance.Options.UseBackColor = true;
+            this.textEdit2.Properties.Appearance.Options.UseFont = true;
+            this.textEdit2.Properties.LookAndFeel.SkinName = "WXI";
+            this.textEdit2.Properties.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.textEdit2.Properties.NullValuePrompt = "Şifrə";
+            this.textEdit2.Properties.PasswordChar = '*';
+            this.textEdit2.Size = new System.Drawing.Size(292, 38);
+            this.textEdit2.TabIndex = 1;
+            this.textEdit2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textEdit2_KeyDown);
+            // 
             // pictureBox5
             // 
             this.pictureBox5.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -351,6 +263,7 @@ namespace WindowsFormsApp2
             // 
             // pictureBox6
             // 
+            this.pictureBox6.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox6.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox6.Image")));
             this.pictureBox6.Location = new System.Drawing.Point(0, 0);
@@ -385,12 +298,12 @@ namespace WindowsFormsApp2
             this.Load += new System.EventHandler(this.avtorizasiya_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textEdit2.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.textEdit1.Properties)).EndInit();
             this.fluentDesignFormContainer1.ResumeLayout(false);
             this.fluentDesignFormContainer1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.textEdit2.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
@@ -400,13 +313,10 @@ namespace WindowsFormsApp2
 
         #endregion
         private System.Windows.Forms.Label label1;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton kryptonButton2;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton kryptonButton1;
         private System.Windows.Forms.PictureBox pictureBox5;
         private System.Windows.Forms.PictureBox pictureBox4;
         private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.PictureBox pictureBox2;
-        private DevExpress.XtraEditors.TextEdit textEdit2;
         private DevExpress.XtraEditors.TextEdit textEdit1;
         private DevExpress.XtraBars.FluentDesignSystem.FluentDesignFormContainer fluentDesignFormContainer1;
         private System.Windows.Forms.PictureBox pictureBox6;
@@ -414,5 +324,8 @@ namespace WindowsFormsApp2
         private System.Windows.Forms.PictureBox pictureBox7;
         private DevExpress.XtraEditors.LabelControl lForgetPassword;
         private System.Windows.Forms.Label label2;
+        private DevExpress.XtraEditors.SimpleButton bLogin;
+        private DevExpress.XtraEditors.TextEdit textEdit2;
+        private DevExpress.XtraEditors.SimpleButton bClose;
     }
 }

@@ -59,6 +59,7 @@ namespace WindowsFormsApp2
                 return;
             }
 
+
             #region [..Licence..]
 
             if (string.IsNullOrWhiteSpace(_licenceKey) || _licenceKey is "Yoxdur")

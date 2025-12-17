@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WindowsFormsApp2.Helpers.DB;
 
 namespace WindowsFormsApp2
@@ -43,18 +39,8 @@ namespace WindowsFormsApp2
             con.Close();
             //return Convert.ToInt32(param.Value);
         }
-        public void DELETE_import_exc()
-        {
-            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
-            {
-                con.Open();
-                string query = "DELETE FROM EXCELL_IMPORT_DATA_NEW";
-                using (SqlCommand cmd = new SqlCommand(query, con))
-                {
-                    cmd.ExecuteNonQuery();
-                }
-            }
-        }
+
+        
 
 
         public int update_kategoriya(int kategoriya_id, string kategoriya)

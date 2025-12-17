@@ -51,7 +51,9 @@ namespace WindowsFormsApp2
             this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.tPayEdit = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
             this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.tPayDebt = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
             this.tContractNo = new DevExpress.XtraEditors.TextEdit();
             this.tProccesNo = new DevExpress.XtraEditors.TextEdit();
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -72,8 +74,6 @@ namespace WindowsFormsApp2
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.tPayEdit = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
-            this.tPayDebt = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.textEdit2.Properties)).BeginInit();
@@ -85,6 +85,8 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.textEdit14.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tPayEdit)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tPayDebt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tContractNo.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tProccesNo.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
@@ -105,8 +107,6 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tPayEdit)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tPayDebt)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -164,7 +164,7 @@ namespace WindowsFormsApp2
             this.lookUpEdit1.Properties.NullText = "--Seçin--";
             this.lookUpEdit1.Size = new System.Drawing.Size(282, 30);
             this.lookUpEdit1.StyleController = this.layoutControl1;
-            this.lookUpEdit1.TabIndex = 14;
+            this.lookUpEdit1.TabIndex = 2;
             this.lookUpEdit1.TextChanged += new System.EventHandler(this.lookUpEdit1_TextChanged);
             // 
             // dateEdit1
@@ -179,7 +179,7 @@ namespace WindowsFormsApp2
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dateEdit1.Size = new System.Drawing.Size(282, 30);
             this.dateEdit1.StyleController = this.layoutControl1;
-            this.dateEdit1.TabIndex = 13;
+            this.dateEdit1.TabIndex = 0;
             // 
             // memoEdit1
             // 
@@ -188,7 +188,7 @@ namespace WindowsFormsApp2
             this.memoEdit1.Name = "memoEdit1";
             this.memoEdit1.Size = new System.Drawing.Size(604, 136);
             this.memoEdit1.StyleController = this.layoutControl1;
-            this.memoEdit1.TabIndex = 12;
+            this.memoEdit1.TabIndex = 3;
             // 
             // simpleButton2
             // 
@@ -380,6 +380,11 @@ namespace WindowsFormsApp2
             this.gridColumn8.Visible = true;
             this.gridColumn8.VisibleIndex = 6;
             // 
+            // tPayEdit
+            // 
+            this.tPayEdit.AutoHeight = false;
+            this.tPayEdit.Name = "tPayEdit";
+            // 
             // gridColumn9
             // 
             this.gridColumn9.AppearanceHeader.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Success;
@@ -394,6 +399,11 @@ namespace WindowsFormsApp2
             this.gridColumn9.Visible = true;
             this.gridColumn9.VisibleIndex = 7;
             // 
+            // tPayDebt
+            // 
+            this.tPayDebt.AutoHeight = false;
+            this.tPayDebt.Name = "tPayDebt";
+            // 
             // tContractNo
             // 
             this.tContractNo.Location = new System.Drawing.Point(178, 139);
@@ -401,7 +411,7 @@ namespace WindowsFormsApp2
             this.tContractNo.Name = "tContractNo";
             this.tContractNo.Size = new System.Drawing.Size(282, 30);
             this.tContractNo.StyleController = this.layoutControl1;
-            this.tContractNo.TabIndex = 4;
+            this.tContractNo.TabIndex = 1;
             // 
             // tProccesNo
             // 
@@ -590,16 +600,6 @@ namespace WindowsFormsApp2
             this.emptySpaceItem1.Size = new System.Drawing.Size(610, 105);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
-            // tPayEdit
-            // 
-            this.tPayEdit.AutoHeight = false;
-            this.tPayEdit.Name = "tPayEdit";
-            // 
-            // tPayDebt
-            // 
-            this.tPayDebt.AutoHeight = false;
-            this.tPayDebt.Name = "tPayDebt";
-            // 
             // bank_odenisleri
             // 
             this.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(245)))), ((int)(((byte)(250)))));
@@ -629,6 +629,8 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.textEdit14.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tPayEdit)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tPayDebt)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tContractNo.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tProccesNo.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
@@ -649,8 +651,6 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tPayEdit)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tPayDebt)).EndInit();
             this.ResumeLayout(false);
 
         }

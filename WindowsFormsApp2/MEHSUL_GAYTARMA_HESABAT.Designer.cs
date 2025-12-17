@@ -338,6 +338,7 @@ namespace WindowsFormsApp2
             this.Name = "MEHSUL_GAYTARMA_HESABAT";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MƏHSUL QAYTARMA HESABATI";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.MEHSUL_GAYTARMA_HESABAT_Load);
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();

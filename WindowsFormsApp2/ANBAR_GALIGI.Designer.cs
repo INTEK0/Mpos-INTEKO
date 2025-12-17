@@ -187,7 +187,7 @@ namespace WindowsFormsApp2
             this.gridColumn8.AppearanceCell.Options.UseTextOptions = true;
             this.gridColumn8.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.gridColumn8.Caption = "ALIŞ QİYMƏTİ";
-            this.gridColumn8.DisplayFormat.FormatString = "C2";
+            this.gridColumn8.DisplayFormat.FormatString = "N2";
             this.gridColumn8.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
             this.gridColumn8.FieldName = "ALIŞ QİYMƏTİ";
             this.gridColumn8.Name = "gridColumn8";
@@ -201,7 +201,7 @@ namespace WindowsFormsApp2
             this.gridColumn9.AppearanceCell.Options.UseTextOptions = true;
             this.gridColumn9.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.gridColumn9.Caption = "SATIŞ QİYMƏTİ";
-            this.gridColumn9.DisplayFormat.FormatString = "C2";
+            this.gridColumn9.DisplayFormat.FormatString = "N2";
             this.gridColumn9.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
             this.gridColumn9.FieldName = "SATIŞ QİYMƏTİ";
             this.gridColumn9.Name = "gridColumn9";
@@ -343,8 +343,8 @@ namespace WindowsFormsApp2
             // 
             this.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(245)))), ((int)(((byte)(250)))));
             this.Appearance.Options.UseBackColor = true;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(1198, 766);
             this.Controls.Add(this.tableLayoutPanel1);
             this.IconOptions.Image = global::WindowsFormsApp2.Properties.Resources.Mpos_png1;
@@ -355,6 +355,7 @@ namespace WindowsFormsApp2
             this.Name = "ANBAR_GALIGI";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ANBAQ QALIĞI";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.ANBAR_GALIGI_Load);
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();

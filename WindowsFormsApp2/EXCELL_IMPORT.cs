@@ -1,28 +1,17 @@
-﻿using DevExpress.XtraEditors;
-using System;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.IO;
-
-
-
-using System.Configuration;
-using ExcelDataReader;
-using DevExpress.DataAccess.Native.Data;
 using System.Data.SqlClient;
+using System.IO;
+using System.Linq;
+using System.Windows.Forms;
+using DevExpress.XtraEditors;
+using ExcelDataReader;
 using WindowsFormsApp2.Helpers;
-using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
-using static WindowsFormsApp2.Helpers.Enums;
-using static WindowsFormsApp2.Helpers.FormHelpers;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
-using DevExpress.XtraCharts.Designer.Native;
+using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
 
 
 
@@ -34,46 +23,6 @@ namespace WindowsFormsApp2
         public EXCELL_IMPORT()
         {
             InitializeComponent();
-        }
-
-
-        private void simpleButton1_Click(object sender, EventArgs e)
-        {
-
-            using (OpenFileDialog openFileDialog = new OpenFileDialog()
-            {
-                Filter = "Excell 97-2003 Workbook|.xls|Excell Workbook|*.xlsx",
-                FilterIndex = 2,
-            })
-            {
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    textEdit1.Text = openFileDialog.FileName;
-                    using (var stream = File.Open(openFileDialog.FileName, FileMode.Open, FileAccess.Read))
-                    {
-                        using (IExcelDataReader reader = ExcelReaderFactory.CreateReader(stream))
-                        {
-                            DataSet result = reader.AsDataSet(new ExcelDataSetConfiguration()
-                            {
-                                ConfigureDataTable = (_) => new ExcelDataTableConfiguration() { UseHeaderRow = true }
-                            });
-                            tableCollection = result.Tables;
-                            comboBox1.Items.Clear();
-                            foreach (System.Data.DataTable table in tableCollection)
-                                comboBox1.Items.Add(table.TableName);
-                        }
-
-                    }
-                }
-
-            }
-        }
-
-        private void selectedindexchanged_Click(object sender, EventArgs e)
-        {
-            System.Data.DataTable dt = tableCollection[comboBox1.SelectedItem.ToString()];
-            //gridControl1.DataSource = dt;
-            dataGridView1.DataSource = dt;
         }
 
         private System.Data.DataTable GetDTfromDGV(DataGridView dgv)
@@ -148,24 +97,31 @@ namespace WindowsFormsApp2
 
         private void simpleButton2_Click(object sender, EventArgs e)
         {
-            var importType = this.Controls.OfType<CheckEdit>().FirstOrDefault(x => x.Checked);
+            var importType = groupControl1.Controls.OfType<CheckEdit>().FirstOrDefault(x => x.Checked);
             if (importType.Tag.ToString() == Enums.OperationType.ExcelImport_Control.ToString())
-            {
                 kontrollu();
-            }
             else
-            {
                 kontrolsuz();
+        }
+
+        private void DeleteImportTable()
+        {
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
+            {
+                con.Open();
+                string query = "TRUNCATE TABLE EXCELL_IMPORT_DATA_NEW";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                    cmd.ExecuteNonQuery();
             }
         }
 
-        public void kontrolsuz()
+        private void kontrolsuz()
         {
         Excelimport:
             string tezhicatci = null, kategori = null, malzeme = null, countstring = null, barkod = null, mkod = null, id = null, fatno = null, fattarih = null;
             int count = 0;
             //delete data
-            tr.DELETE_import_exc();
+            DeleteImportTable();
             //import data 
             // Getting data from DataGridView
             System.Data.DataTable myDt = new System.Data.DataTable();
@@ -203,29 +159,66 @@ group by TECHIZATCI_ADI";
 
                 if (Convert.ToInt32(countstring) > 0)
                 {
-
-                    string query2 = "insert into COMPANY.TECHIZATCI (TECHIZATCI_NOMRE,SIRKET_ADI )    SELECT case when ('T-'+ RTRIM( LTRIM(CAST(MAX(CAST(REPLACE(TECHIZATCI_NOMRE,'T-','')  \r\n   AS INT)+1) AS NCHAR(10)))) ) is null then 'T-1' ELSE\r\n   \r\n   ('T-'+ RTRIM( LTRIM(CAST(MAX(CAST(REPLACE(TECHIZATCI_NOMRE,'T-','')  \r\n   AS INT)+1) AS NCHAR(10)))) )\r\n    END as col,@techizatci FROM COMPANY.TECHIZATCI";
-
-                    SqlCommand command2 = new SqlCommand(query2, cont);
-
-                    command2.Parameters.AddWithValue("@techizatci", tezhicatci);
-                    cont.Open();
-                    command2.ExecuteNonQuery();
-                    cont.Close();
+                    dynamic query2 = @"insert into COMPANY.TECHIZATCI (TECHIZATCI_NOMRE, SIRKET_ADI) 
+SELECT 
+  case when (
+    'T-' + RTRIM(
+      LTRIM(
+        CAST(
+          MAX(
+            CAST(
+              REPLACE(TECHIZATCI_NOMRE, 'T-', '') AS INT
+            )+ 1
+          ) AS NCHAR(10)
+        )
+      )
+    )
+  ) is null then 'T-1' ELSE (
+    'T-' + RTRIM(
+      LTRIM(
+        CAST(
+          MAX(
+            CAST(
+              REPLACE(TECHIZATCI_NOMRE, 'T-', '') AS INT
+            )+ 1
+          ) AS NVARCHAR(10)
+        )
+      )
+    )
+  )  END as col, 
+  @techizatci 
+FROM 
+  COMPANY.TECHIZATCI";
+                    using (SqlCommand cmd = new SqlCommand(query2, cont))
+                    {
+                        cmd.Parameters.AddWithValue("@techizatci", tezhicatci);
+                        cont.Open();
+                        cmd.ExecuteNonQuery();
+                        cont.Close();
+                    }
                 }
             }
 
-           con.Close();
-
-
-            // Kategori Acilmasi
-
-
+            con.Close();
 
             con.ConnectionString = DbHelpers.CurrentConnectionString;
             cont.ConnectionString = DbHelpers.CurrentConnectionString;
+            // Kategori Acilmasi
 
-            string querykategori = "SELECT count(*) AS COUNTS,KATEGORIYA FROM [EXCELL_IMPORT_DATA_NEW] WHERE KATEGORIYA NOT IN\r\n  (\r\n  SELECT KATEGORIYA FROM KATEGORIYA\r\n  )\r\n  GROUP BY KATEGORIYA";
+            string querykategori = @"SELECT 
+  count(*) AS COUNTS, 
+  KATEGORIYA 
+FROM 
+  [EXCELL_IMPORT_DATA_NEW] 
+WHERE 
+  KATEGORIYA NOT IN (
+    SELECT 
+      KATEGORIYA 
+    FROM 
+      KATEGORIYA) 
+GROUP BY 
+  KATEGORIYA";
+
 
             SqlCommand commandkategori = new SqlCommand(querykategori, con);
 
@@ -237,47 +230,42 @@ group by TECHIZATCI_ADI";
                 kategori = drkategori["KATEGORIYA"].ToString();
                 countstring = drkategori["COUNTS"].ToString();
 
-
                 if (Convert.ToInt32(countstring) > 0)
                 {
-
                     string querykategori2 = "INSERT INTO [dbo].[KATEGORIYA] ([KATEGORIYA])  VALUES (@kategoriya)";
-
-                    SqlCommand command2 = new SqlCommand(querykategori2, cont);
-
-                    command2.Parameters.AddWithValue("@kategoriya", kategori);
-                    cont.Open();
-                    command2.ExecuteNonQuery();
-                    cont.Close();
+                    using (SqlCommand cmd = new SqlCommand(querykategori2, cont))
+                    {
+                        cmd.Parameters.AddWithValue("@kategoriya", kategori);
+                        cont.Open();
+                        cmd.ExecuteNonQuery();
+                        cont.Close();
+                    }
                 }
             }
-
             con.Close();
-
-
 
 
             // Fatura No  
 
 
 
-            con.ConnectionString = DbHelpers.CurrentConnectionString;
-            cont.ConnectionString = DbHelpers.CurrentConnectionString;
+            //con.ConnectionString = DbHelpers.CurrentConnectionString;
+            //cont.ConnectionString = DbHelpers.CurrentConnectionString;
 
-            string queryfat = "SELECT COUNT(*) AS COUNTS FROM [EXCELL_IMPORT_DATA_NEW] WHERE (LEN(FAKTURA_NO)<2 OR LEN(FAKTURA_NO) IS NULL)";
+            //string queryfat = "SELECT COUNT(*) AS COUNTS FROM [EXCELL_IMPORT_DATA_NEW] WHERE (LEN(FAKTURA_NO)<2 OR LEN(FAKTURA_NO) IS NULL)";
 
-            SqlCommand commandfat = new SqlCommand(queryfat, con);
+            //SqlCommand commandfat = new SqlCommand(queryfat, con);
 
-            con.Open();
-            SqlDataReader drfat = commandfat.ExecuteReader();
+            //con.Open();
+            //SqlDataReader drfat = commandfat.ExecuteReader();
 
-            if (drfat.Read())
-            {
+            //if (drfat.Read())
+            //{
 
-                countstring = drfat["COUNTS"].ToString();
-            }
+            //    countstring = drfat["COUNTS"].ToString();
+            //}
 
-            con.Close();
+            //con.Close();
 
 
 
@@ -313,81 +301,47 @@ else 0 end) END AS [KNTBARKODSTOK] , CASE WHEN ( SELECT TOP 1 MEHSUL_ADI FROM [M
                 int kontrolmalzemead = Int32.Parse(kontrolad);
                 if (kontrolkodbarkod == 0 && kontrolmalzemead == 1)
                 {
-
-
-
-
                     string querymalzeme2 = "UPDATE  EXCELL_IMPORT_DATA_NEW  set KONTROL=0 where ID= (@id)";
 
-                    SqlCommand command3 = new SqlCommand(querymalzeme2, cont);
-
-                    command3.Parameters.AddWithValue("@id", id);
-                    cont.Open();
-                    command3.ExecuteNonQuery();
-                    cont.Close();
+                    using (SqlCommand cmd = new SqlCommand(querymalzeme2,cont))
+                    {
+                        cmd.Parameters.AddWithValue("@id", id);
+                        cont.Open();
+                        cmd.ExecuteNonQuery();
+                        cont.Close();
+                    }
                 }
-
-
-
-
                 else if (kontrolkodbarkod == 1 && kontrolmalzemead == 0)
                 {
-
-
-
-
                     string querymalzeme2 = "UPDATE  EXCELL_IMPORT_DATA_NEW  set KONTROL=0 where ID= (@id)";
 
-                    SqlCommand command3 = new SqlCommand(querymalzeme2, cont);
-
-                    command3.Parameters.AddWithValue("@id", id);
-                    cont.Open();
-                    command3.ExecuteNonQuery();
-                    cont.Close();
-
-
+                    using (SqlCommand cmd = new SqlCommand(querymalzeme2,cont))
+                    {
+                        cmd.Parameters.AddWithValue("@id", id);
+                        cont.Open();
+                        cmd.ExecuteNonQuery();
+                        cont.Close();
+                    }
                 }
-
                 else if (kontrolkodbarkod == 1 && kontrolmalzemead == 1)
                 {
                     string querymalzeme2 = "UPDATE  EXCELL_IMPORT_DATA_NEW  set KONTROL=0 where ID= (@id)";
 
-                    SqlCommand command3 = new SqlCommand(querymalzeme2, cont);
-
-                    command3.Parameters.AddWithValue("@id", id);
-                    cont.Open();
-                    command3.ExecuteNonQuery();
-                    cont.Close();
-
-                }
-
-                else
-                {
-
-
-
-                    //string querymalzeme2 = "UPDATE  EXCELL_IMPORT_DATA_NEW  set KONTROL=1 where ID= (@id)";
-
-                    //SqlCommand command3 = new SqlCommand(querymalzeme2, cont);
-
-                    //command3.Parameters.AddWithValue("@id", id);
-                    //cont.Open();
-                    //command3.ExecuteNonQuery();
-                    //cont.Close();
-
-
+                    using (SqlCommand cmd  = new SqlCommand(querymalzeme2,cont))
+                    {
+                        cmd.Parameters.AddWithValue("@id", id);
+                        cont.Open();
+                        cmd.ExecuteNonQuery();
+                        cont.Close();
+                    }
                 }
             }
 
             con.Close();
 
 
-
-
             string queryqaimet = "SELECT  COUNT(*) TARIHKONTROL FROM [dbo].[EXCELL_IMPORT_DATA_NEW] \r\n\r\nwhere CONVERT(DATETIME,CONCAT(CONCAT(SUBSTRING(ALIS_TARIHI,7,4),'-',SUBSTRING(ALIS_TARIHI,4,2)),'-',SUBSTRING(ALIS_TARIHI,1,2)) ,102)>GETDATE()\r\n ";
-
             SqlCommand commandqaimet = new SqlCommand(queryqaimet, cont);
-
 
             cont.Open();
             SqlDataReader drqaimet = commandqaimet.ExecuteReader();
@@ -395,26 +349,14 @@ else 0 end) END AS [KNTBARKODSTOK] , CASE WHEN ( SELECT TOP 1 MEHSUL_ADI FROM [M
             while (drqaimet.Read())
             {
                 string ALIS_TARIHIK = drqaimet["TARIHKONTROL"].ToString();
-
-
-
-
+                
                 if (ALIS_TARIHIK != "0")
                 {
                     Helpers.Messages.ReadyMessages.WARNING_DEFAULT_MESSAGE($"Məhsul alış tarixi bugünün({DateTime.Now.ToString("dd.MM.yyyy")}) tarixindən böyük olabilməz");
-                    // MessageBox.Show("Yeni qaime hata tarih bugunden buyuktur. Lutfen gerekli duzenlemeyi yapiniz?");
                     goto closethis;
                 }
-
-
-
             }
             cont.Close();
-
-
-
-
-
 
             string queryqaime = "SELECT  [ALIS_TARIHI] ,[FAKTURA_NO],[TECHIZATCI_ADI],(SELECT TOP 1 [TECHIZATCI_ID]    FROM  [COMPANY].[TECHIZATCI] WHERE SIRKET_ADI=[EXCELL_IMPORT_DATA_NEW].[TECHIZATCI_ADI]) AS TID   FROM [dbo].[EXCELL_IMPORT_DATA_NEW]  group by ALIS_TARIHI,FAKTURA_NO,TECHIZATCI_ADI";
 
@@ -428,13 +370,11 @@ else 0 end) END AS [KNTBARKODSTOK] , CASE WHEN ( SELECT TOP 1 MEHSUL_ADI FROM [M
             {
                 string ALIS_TARIHI = drqaime["ALIS_TARIHI"].ToString();
                 string FAKTURA_NO = drqaime["FAKTURA_NO"].ToString();
-                string TECHIZATCI_ADI = drqaime["TECHIZATCI_ADI"].ToString();
+                string TECHIZATCI_ADI = drqaime["TECHIZATCI_ADI"].ToString().TrimStart().TrimEnd();
                 string TECHIZATCI_ID = drqaime["TID"].ToString();
 
 
                 string mydate = ALIS_TARIHI.Substring(6, 4) + "-" + ALIS_TARIHI.Substring(3, 2) + "-" + ALIS_TARIHI.Substring(0, 2);
-
-
 
                 System.DateTime tarihkontrol = Convert.ToDateTime(mydate);
 
@@ -466,41 +406,39 @@ else 0 end) END AS [KNTBARKODSTOK] , CASE WHEN ( SELECT TOP 1 MEHSUL_ADI FROM [M
 		   ,ENDIRIM_MEBLEGI
 		   ,YEKUN_MEBLEG) 
 SELECT  
-(SELECT MAX(MAL_ALISI_MAIN_ID) FROM MAL_ALISI_MAIN)
-,(SELECT KATEGORIYA_ID FROM KATEGORIYA WHERE [KATEGORIYA]=[EXCELL_IMPORT_DATA_NEW].KATEGORIYA)
-   ,
-   
+(SELECT MAX(MAL_ALISI_MAIN_ID) FROM MAL_ALISI_MAIN),
+(SELECT KATEGORIYA_ID FROM KATEGORIYA WHERE [KATEGORIYA]=LTRIM(RTRIM([EXCELL_IMPORT_DATA_NEW].KATEGORIYA))),
     CASE 
         WHEN [BARKOD] IS NULL THEN 
-            ISNULL((SELECT TOP 1 BARKOD FROM MAL_ALISI_DETAILS 
+            ISNULL(LTRIM(RTRIM((SELECT TOP 1 BARKOD FROM MAL_ALISI_DETAILS 
                     WHERE MEHSUL_ADI=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI 
-                    ORDER BY MAL_ALISI_DETAILS_ID DESC), 
-                   '994' + CAST((ABS(CHECKSUM(NEWID())) % 1000000000) AS NVARCHAR(50)))
-        WHEN BARKOD<>(SELECT TOP 1 BARKOD FROM MAL_ALISI_DETAILS 
-                      WHERE MEHSUL_ADI=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI) THEN 
-            ISNULL((SELECT TOP 1 BARKOD FROM MAL_ALISI_DETAILS 
+                    ORDER BY MAL_ALISI_DETAILS_ID DESC))), 
+                   G.GENERATED_CODE)
+        WHEN LTRIM(RTRIM([BARKOD]))<>LTRIM(RTRIM((SELECT TOP 1 BARKOD FROM MAL_ALISI_DETAILS 
+                      WHERE MEHSUL_ADI=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI))) THEN 
+            ISNULL(LTRIM(RTRIM((SELECT TOP 1 BARKOD FROM MAL_ALISI_DETAILS 
                     WHERE MEHSUL_ADI=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI 
-                    ORDER BY MAL_ALISI_DETAILS_ID DESC), 
-                   '994' + CAST((ABS(CHECKSUM(NEWID())) % 1000000000) AS NVARCHAR(50)))
-        ELSE [BARKOD] 
+                    ORDER BY MAL_ALISI_DETAILS_ID DESC))), 
+                   G.GENERATED_CODE)
+        ELSE LTRIM(RTRIM([BARKOD])) 
    END,
 
 
-   CASE WHEN [MEHSUL_ADI] IS NULL THEN  (SELECT TOP 1 MEHSUL_ADI FROM MAL_ALISI_DETAILS WHERE BARKOD=[EXCELL_IMPORT_DATA_NEW].BARKOD) ELSE [MEHSUL_ADI] END
+   CASE WHEN [MEHSUL_ADI] IS NULL THEN  LTRIM(RTRIM((SELECT TOP 1 MEHSUL_ADI FROM MAL_ALISI_DETAILS WHERE BARKOD=[EXCELL_IMPORT_DATA_NEW].BARKOD))) ELSE LTRIM(RTRIM([MEHSUL_ADI]))  END
  ,
 CASE 
         WHEN MEHSUL_KODU IS NULL THEN 
-            ISNULL((SELECT TOP 1 MEHSUL_KODU FROM MAL_ALISI_DETAILS 
+            ISNULL(LTRIM(RTRIM((SELECT TOP 1 MEHSUL_KODU FROM MAL_ALISI_DETAILS 
                     WHERE MEHSUL_ADI=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI 
-                    ORDER BY MAL_ALISI_DETAILS_ID DESC), 
-                   '994' + CAST((ABS(CHECKSUM(NEWID())) % 1000000000) AS NVARCHAR(50)))
-        WHEN MEHSUL_KODU<>(SELECT TOP 1 MEHSUL_KODU FROM MAL_ALISI_DETAILS 
-                      WHERE MEHSUL_ADI=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI) THEN 
-            ISNULL((SELECT TOP 1 MEHSUL_KODU FROM MAL_ALISI_DETAILS 
+                    ORDER BY MAL_ALISI_DETAILS_ID DESC))), 
+                   G.GENERATED_CODE)
+        WHEN LTRIM(RTRIM(MEHSUL_KODU))<>LTRIM(RTRIM((SELECT TOP 1 MEHSUL_KODU FROM MAL_ALISI_DETAILS 
+                      WHERE MEHSUL_ADI=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI))) THEN 
+           ISNULL(LTRIM(RTRIM((SELECT TOP 1 MEHSUL_KODU FROM MAL_ALISI_DETAILS 
                     WHERE MEHSUL_ADI=[EXCELL_IMPORT_DATA_NEW].MEHSUL_ADI 
-                    ORDER BY MAL_ALISI_DETAILS_ID DESC), 
-                   '994' + CAST((ABS(CHECKSUM(NEWID())) % 1000000000) AS NVARCHAR(50)))
-        ELSE MEHSUL_KODU 
+                    ORDER BY MAL_ALISI_DETAILS_ID DESC))), 
+                   G.GENERATED_CODE)
+        ELSE LTRIM(RTRIM(MEHSUL_KODU)) 
    END,
 	4,
 	cast(replace([MEHSULUN_MIGDARI],',','.') as decimal(18,3)),
@@ -515,12 +453,29 @@ CASE
 	0,0,0,
 	cast(replace([SATINALMA_GIYMETI],',','.') as decimal(18,3)) * cast(replace([MEHSULUN_MIGDARI],',','.') as decimal(18,3))
 	FROM [EXCELL_IMPORT_DATA_NEW]
+	CROSS APPLY (SELECT  '994' + CAST(ABS(CHECKSUM(NEWID())) % 1000000000 AS NVARCHAR(50)) AS GENERATED_CODE) G
 
   WHERE  [KONTROL]=0
   AND ALIS_TARIHI=N'{ALIS_TARIHI}' 
   AND FAKTURA_NO=N'{FAKTURA_NO}'
   AND TECHIZATCI_ADI=N'{TECHIZATCI_ADI}'";
-                string queryambarmagazakontrol = "\r\ndelete from ANBAR_MAGAZA\r\n\r\n   INSERT INTO ANBAR_MAGAZA(ANBAR_ID,MAGAZA_ID,TARIX,EMELIYYAT_NOMRE,mal_details_id,migdar)\r\n\t\tselect 4, 1002,getdate(),1,MAL_ALISI_DETAILS_ID,MIGDARI from MAL_ALISI_DETAILS ";
+
+
+                string queryambarmagazakontrol = @"DELETE FROM
+  ANBAR_MAGAZA INSERT INTO ANBAR_MAGAZA(
+    ANBAR_ID, MAGAZA_ID, TARIX, EMELIYYAT_NOMRE, 
+    mal_details_id, migdar
+  ) 
+SELECT 
+  4, 
+  1002, 
+  getdate(), 
+  1, 
+  MAL_ALISI_DETAILS_ID, 
+  MIGDARI 
+FROM 
+  MAL_ALISI_DETAILS
+";
 
                 int supplierId = Convert.ToInt32(TECHIZATCI_ID);
                 string proccessNo = DbProsedures.GET_ProductProcessNo();
@@ -574,7 +529,7 @@ CASE
 
         }
 
-        public void kontrollu()
+        private void kontrollu()
         {
 
 
@@ -582,7 +537,7 @@ CASE
             string tezhicatci = null, kategori = null, malzeme = null, countstring = null, barkod = null, mkod = null, id = null, fatno = null, fattarih = null;
             int count = 0;
             //delete data
-            tr.DELETE_import_exc();
+            DeleteImportTable();
             //import data 
             // Getting data from DataGridView
             System.Data.DataTable myDt = new System.Data.DataTable();
@@ -604,7 +559,21 @@ CASE
             con.ConnectionString = DbHelpers.CurrentConnectionString;
             cont.ConnectionString = DbHelpers.CurrentConnectionString;
 
-            string query = "SELECT count(*) AS COUNTS,TECHIZATCI_ADI FROM [EXCELL_IMPORT_DATA_NEW] WHERE TECHIZATCI_ADI NOT IN (SELECT  [SIRKET_ADI] FROM [COMPANY].[TECHIZATCI] WHERE IsDeleted=0) group by TECHIZATCI_ADI";
+            string query = @"SELECT 
+  count(*) AS COUNTS, 
+  TECHIZATCI_ADI 
+FROM 
+  [EXCELL_IMPORT_DATA_NEW] 
+WHERE 
+  TECHIZATCI_ADI NOT IN (
+    SELECT 
+      [SIRKET_ADI] 
+    FROM 
+      [COMPANY].[TECHIZATCI] 
+    WHERE 
+      IsDeleted = 0) 
+group by 
+  TECHIZATCI_ADI";
 
             SqlCommand command = new SqlCommand(query, con);
 
@@ -997,16 +966,6 @@ WHERE [KONTROL]=1
                     });
 
 
-
-
-
-                    //SqlCommand commandqaimesave = new SqlCommand(querqayit, con);
-
-                    //con.Open();
-                    //commandqaimesave.ExecuteNonQuery();
-                    //con.Close();
-
-
                     con.Open();
                     SqlCommand commandqaimeDETAILsave = new SqlCommand(querydetailkayit, con);
 
@@ -1029,11 +988,7 @@ WHERE [KONTROL]=1
                 }
 
 
-
-
-
                 cont.Close();
-
 
                 ReadyMessages.SUCCESS_DEFAULT_MESSAGE("Məhsullar sistemə uğurla əlavə edildi");
                 FormHelpers.Log("Yeni məhsullar Excel import ilə sistemə daxil edildi");
@@ -1051,10 +1006,74 @@ WHERE [KONTROL]=1
 
         }
 
-        private void EXCELL_IMPORT_Load(object sender, EventArgs e)
+        private void tFilePath_Properties_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog()
+            {
+                Filter = "Excell 97-2003 Workbook|.xls|Excell Workbook|*.xlsx",
+                FilterIndex = 2,
+            })
+            {
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    tFilePath.Text = openFileDialog.FileName;
+                    using (var stream = File.Open(openFileDialog.FileName, FileMode.Open, FileAccess.Read))
+                    {
+                        using (IExcelDataReader reader = ExcelReaderFactory.CreateReader(stream))
+                        {
+                            DataSet result = reader.AsDataSet(new ExcelDataSetConfiguration()
+                            {
+                                ConfigureDataTable = (_) => new ExcelDataTableConfiguration() { UseHeaderRow = true }
+                            });
+                            tableCollection = result.Tables;
+                            List<string> tableNames = new List<string>();
+                            lookUpEdit1.Clear();
+                            foreach (System.Data.DataTable table in tableCollection)
+                                tableNames.Add(table.TableName);
 
-            comboBox1.Size = new Size(160, 30);
+                            if (tableNames.Count > 0)
+                            {
+                                lookUpEdit1.Enabled = true;
+                                lookUpEdit1.Properties.DataSource = tableNames;
+                                lookUpEdit1.Properties.DropDownRows = tableNames.Count > 7 ? 7 : tableNames.Count;
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+
+        private void lookUpEdit1_EditValueChanged(object sender, EventArgs e)
+        {
+            string selectedTableName = lookUpEdit1.EditValue?.ToString();
+            if (!string.IsNullOrEmpty(selectedTableName))
+            {
+                System.Data.DataTable dt = tableCollection[selectedTableName];
+                dataGridView1.DataSource = dt;
+            }
+        }
+
+        private void bExcelDownload_Click(object sender, EventArgs e)
+        {
+            string sourcePath = Path.Combine(Application.StartupPath, "LocalFiles", "Anbar qalığı-Demo.xlsx");
+            if (!File.Exists(sourcePath))
+            {
+                XtraMessageBox.Show("Nümunəvi excel faylı tapılmadı", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            using (SaveFileDialog saveFile = new SaveFileDialog())
+            {
+                saveFile.FileName = "eMpos-Anbar qalığı(Nümunə).xlsx";
+                saveFile.Filter = "Excel Files (*.xlsx)|*.xlsx";
+                saveFile.Title = "Faylı yadda saxla";
+                if (saveFile.ShowDialog() is DialogResult.OK)
+                {
+                    File.Copy(sourcePath,saveFile.FileName,true);
+                    FormHelpers.Alert("Excel faylı yükləməsi uğurla tamamlandı", Enums.MessageType.Success);
+                }
+            }
         }
     }
 }
