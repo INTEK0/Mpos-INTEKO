@@ -3,6 +3,7 @@ using System;
 using WindowsFormsApp2.Helpers;
 using static WindowsFormsApp2.Helpers.FormHelpers;
 using WindowsFormsApp2.NKA;
+using WindowsFormsApp2.Helpers.CacheData;
 
 namespace WindowsFormsApp2.Forms
 {
@@ -11,7 +12,7 @@ namespace WindowsFormsApp2.Forms
         public decimal depositAmount = 0;
         private readonly POS_LAYOUT_NEW frm1;
         decimal _total = default;
-        private readonly IpModel _IpModel = FormHelpers.GetIpModel();
+        private readonly IpModel _IpModel = UserCacheService.Terminal;
         public static decimal asd;
         public fWithdraw(POS_LAYOUT_NEW frm)
         {

@@ -571,6 +571,7 @@
     <Compile Include="Helpers\CacheData\PrinterCacheData.cs" />
     <Compile Include="Helpers\CacheData\StockCacheService.cs" />
     <Compile Include="Helpers\CacheData\UserCacheService.cs" />
+    <Compile Include="Helpers\CacheData\UUIDGenerateService.cs" />
     <Compile Include="Helpers\DB\DbHelpers.cs" />
     <Compile Include="Helpers\DB\DbProsedures.cs" />
     <Compile Include="EXCELL_IMPORT.cs">

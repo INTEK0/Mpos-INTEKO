@@ -2553,12 +2553,10 @@ LEFT JOIN pos_guzest pg
 
         private void get_ip_model()
         {
-            var data = FormHelpers.GetIpModel();
-
-            lModel.Text = data.Model;
-            lIpAdress.Text = data.Ip;
-            lMerchantId.Text = data.MerchantId;
-            lBankName.Text = data.BankName;
+            lModel.Text = UserCacheService.Terminal.Model;
+            lIpAdress.Text = UserCacheService.Terminal.Ip;
+            lMerchantId.Text = UserCacheService.Terminal.MerchantId;
+            lBankName.Text = UserCacheService.Terminal.BankName;
         }
 
         private void simpleButton25_Click(object sender, EventArgs e)
@@ -2575,6 +2573,7 @@ LEFT JOIN pos_guzest pg
         {
             try
             {
+                string documentUUID = UUIDGenerateService.UUID;
                 st.update_calculation_tr();
                 DbProsedures.DeleteItem();
                 decimal _discount = 0;
@@ -2629,15 +2628,10 @@ LEFT JOIN pos_guzest pg
                 {
                     Bankttnminput bt = new Bankttnminput(this);
                     if (bt.ShowDialog() is DialogResult.Cancel)
-                    {
                         return;
-                    }
-
                 }
                 else
-                {
                     bankttnminputdata = "";
-                }
 
 
                 if (clinic)
@@ -2655,28 +2649,51 @@ LEFT JOIN pos_guzest pg
                     return;
                 }
 
-
-
                 switch (lModel.Text)
                 {
                     case "1":
-                        IsSuccess = Sunmi.Sales(new DTOs.SalesDto
-                        {
-                            IpAddress = lIpAdress.Text,
-                            ProccessNo = textEdit1.Text,
-                            Cash = incomingSum,
-                            Card = card_,
-                            Total = umumi_mebleg_,
-                            Cashier = tUsername.Text,
-                            Customer = _customer,
-                            Doctor = _doctor,
-                            Rrn = bankttnminputdata
-                        });
+                        bool BankIsSuccess = false;
 
-                        if (IsSuccess)
+                        if (card_ > 0 && !string.IsNullOrWhiteSpace(UserCacheService.Terminal.BankName))
                         {
-                            clear();
-                            CalculationDelete();
+                            var responseBank = Sunmi.SalesBank(new DTOs.SalesDto
+                            {
+                                DocumentUUID = documentUUID,
+                                IpAddress = lIpAdress.Text,
+                                Card = card_,
+                            });
+
+                            if (responseBank != null || responseBank.IsSuccess == true)
+                                BankIsSuccess = true;
+                            else
+                                return;
+                            //Manual rrn göndərməni nəzərə al
+                            //bankdan gələn rrni həm kassaya həmdə dbyə göndər
+                        }
+                        else
+                            BankIsSuccess = true;
+
+                        if (BankIsSuccess)
+                        {
+                            IsSuccess = Sunmi.Sales(new DTOs.SalesDto
+                            {
+                                DocumentUUID = documentUUID,
+                                IpAddress = lIpAdress.Text,
+                                ProccessNo = textEdit1.Text,
+                                Cash = incomingSum,
+                                Card = card_,
+                                Total = umumi_mebleg_,
+                                Cashier = tUsername.Text,
+                                Customer = _customer,
+                                Doctor = _doctor,
+                                Rrn = bankttnminputdata
+                            });
+
+                            if (IsSuccess)
+                            {
+                                clear();
+                                CalculationDelete();
+                            }
                         }
                         break; /*SUNMI*/
                     case "2":

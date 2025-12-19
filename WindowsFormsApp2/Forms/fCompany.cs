@@ -15,7 +15,6 @@ namespace WindowsFormsApp2.Forms
     public partial class fCompany : DevExpress.XtraEditors.XtraForm
     {
         private DatabaseClasses.Company _company;
-        private FormHelpers.IpModel _terminal { get; set; } = FormHelpers.GetIpModel();
 
         public fCompany()
         {
@@ -93,18 +92,17 @@ namespace WindowsFormsApp2.Forms
 
         private void Delete()
         {
+            string query = $"DELETE FROM COMPANY.COMPANY WHERE UserId = {UserCacheService.User.Id}";
+
             using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, connection))
             {
-                string query = $"DELETE FROM COMPANY.COMPANY WHERE UserId = {Properties.Settings.Default.UserID}";
-                using (SqlCommand cmd = new SqlCommand(query, connection))
-                {
-                    connection.Open();
-                    cmd.ExecuteNonQuery();
-                    dynamic message = "Obyekt məlumatları silindi";
-                    FormHelpers.Alert(message, Enums.MessageType.Success);
-                    FormHelpers.Log(message);
-                    CompanyCount();
-                }
+                connection.Open();
+                cmd.ExecuteNonQuery();
+                dynamic message = "Obyekt məlumatları silindi";
+                FormHelpers.Alert(message, Enums.MessageType.Success);
+                FormHelpers.Log(message);
+                CompanyCount();
             }
         }
 
@@ -158,17 +156,16 @@ namespace WindowsFormsApp2.Forms
         private void CompanyCount()
         {
             int count = 0;
+            string query = $"SELECT COUNT(*) FROM COMPANY.COMPANY WHERE UserId = {UserCacheService.User.Id}";
+
             using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, connection))
             {
-                string query = $"SELECT COUNT(*) FROM COMPANY.COMPANY WHERE UserId = {UserCacheService.User.Id}";
-                using (SqlCommand cmd = new SqlCommand(query, connection))
+                connection.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
                 {
-                    connection.Open();
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        if (reader.Read())
-                            count = Convert.ToInt32(reader[0]);
-                    }
+                    if (reader.Read())
+                        count = Convert.ToInt32(reader[0]);
                 }
             }
 
@@ -241,7 +238,7 @@ namespace WindowsFormsApp2.Forms
 
         private void bGetDataToken_Click(object sender, EventArgs e)
         {
-            switch (_terminal.Model)
+            switch (UserCacheService.Terminal.Model)
             {
                 case "1": SunmiGetInfo(); break;
                 case "2": break;
@@ -257,7 +254,7 @@ namespace WindowsFormsApp2.Forms
 
         private void SunmiGetInfo()
         {
-            var response = Sunmi.GetInfo(_terminal.Ip);
+            var response = Sunmi.GetInfo(UserCacheService.Terminal.Ip);
             if (response != null)
             {
                 tCompanyName.Text = response.data.company_name;
@@ -280,7 +277,7 @@ namespace WindowsFormsApp2.Forms
 
         private void OmnitechGetInfo()
         {
-            var response = Omnitech.GetInfo(_terminal.Ip);
+            var response = Omnitech.GetInfo(UserCacheService.Terminal.Ip);
             if (response != null)
             {
                 tCompanyName.Text = response.data.company_name;
@@ -303,7 +300,7 @@ namespace WindowsFormsApp2.Forms
 
         private void NbaGetInfo()
         {
-            var response = NBA.GetInfo(_terminal.Ip);
+            var response = NBA.GetInfo(UserCacheService.Terminal.Ip);
             if (response != null)
             {
                 tCompanyName.Text = response.data.company_name;

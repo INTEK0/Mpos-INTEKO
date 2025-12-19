@@ -17,13 +17,14 @@ using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
 using WindowsFormsApp2.Validations;
 using static WindowsFormsApp2.Helpers.Enums;
 using System.Data.SqlClient;
+using WindowsFormsApp2.Helpers.CacheData;
 
 namespace WindowsFormsApp2.Forms
 {
     public partial class fCreditSale : BaseForm
     {
         private readonly DatabaseClasses.User _user = DbProsedures.GetUser();
-        private readonly FormHelpers.IpModel _terminal = FormHelpers.GetIpModel();
+        private readonly FormHelpers.IpModel _terminal = UserCacheService.Terminal;
         private Customer _customer;
         private Guarantor _guarantor;
         private string productId = "0";

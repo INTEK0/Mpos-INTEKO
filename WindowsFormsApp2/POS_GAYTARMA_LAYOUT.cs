@@ -1,27 +1,22 @@
-﻿using DevExpress.Pdf.Native.BouncyCastle.Utilities.Net;
-using DevExpress.XtraEditors;
-using DevExpress.XtraGrid.Localization;
-using DevExpress.XtraGrid.Views.Grid;
-using Newtonsoft.Json;
-using RestSharp;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
-using System.Security.Policy;
 using System.Text;
-using System.Text.Json;
 using System.Threading;
-using System.Web.UI;
 using System.Windows.Forms;
+using DevExpress.XtraEditors;
+using DevExpress.XtraGrid.Views.Grid;
+using Newtonsoft.Json;
+using RestSharp;
 using WindowsFormsApp2.Forms;
 using WindowsFormsApp2.Helpers;
+using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using WindowsFormsApp2.NKA;
@@ -88,10 +83,9 @@ namespace WindowsFormsApp2
 
         public void GetIpModel()
         {
-            var kassa = FormHelpers.GetIpModel();
-            lModel.Text = kassa.Model;
-            lIpAddress.Text = kassa.Ip;
-            lMerchantId.Text = kassa.MerchantId;
+            lModel.Text = UserCacheService.Terminal.Model;
+            lIpAddress.Text = UserCacheService.Terminal.Ip;
+            lMerchantId.Text = UserCacheService.Terminal.MerchantId;
         }
 
         private void simpleButton4_Click(object sender, EventArgs e)
@@ -691,7 +685,6 @@ namespace WindowsFormsApp2
 
             try
             {
-                SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString);
                 SqlConnection conn2 = new SqlConnection(DbHelpers.CurrentConnectionString);
                 SqlCommand cmd2 = new SqlCommand();
                 conn2.Open();
@@ -800,7 +793,7 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
                                 FROM pos_satis_check_details p
                                 INNER JOIN MAL_ALISI_DETAILS md ON p.mal_alisi_details_id = md.MAL_ALISI_DETAILS_ID
                                 INNER JOIN pos_gaytarma_manual pl ON p.pos_satis_check_details_id = pl.pos_satis_check_details
-                                WHERE pl.emeliyyat_nomre = '{textEdit1.Text}' and pl.user_id_ = '{Properties.Settings.Default.UserID}')";
+                                WHERE pl.emeliyyat_nomre = '{textEdit1.Text}' and pl.user_id_ = '{UserCacheService.User.Id}')";
 
                 cmd.Connection = conn;
                 cmd.CommandText = query;
@@ -808,8 +801,6 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
                 SqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
-
-
                     string name = dr["name"].ToString();
                     string code = dr["Code"].ToString();
                     string sprice = dr["satis_giymet"].ToString();
@@ -825,7 +816,7 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
                 string vatkonts = vatkonts2;
                 SqlConnection conn4 = new SqlConnection();
                 SqlCommand cmd4 = new SqlCommand();
-                conn4.ConnectionString = Properties.Settings.Default.SqlCon;
+                conn4.ConnectionString = DbHelpers.CurrentConnectionString;
                 conn4.Open();
                 string query4 = @"SELECT 
                 SUM(tutar) as tut,

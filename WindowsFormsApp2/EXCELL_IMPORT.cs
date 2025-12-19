@@ -25,54 +25,77 @@ namespace WindowsFormsApp2
             InitializeComponent();
         }
 
-        private System.Data.DataTable GetDTfromDGV(DataGridView dgv)
+        private DataTable GetDTfromDGV(DataGridView dgv)
         {
-            // Macking our DataTable
-            System.Data.DataTable dt = new System.Data.DataTable();
-            foreach (DataGridViewColumn column in dgv.Columns)
-            {
-                dt.Columns.Add(column.Name, typeof(string));
-            }
-            // Getting data
+            DataTable dt = new DataTable();
+            // sütunların əlavə edilməsi
+            //foreach (DataGridViewColumn column in dgv.Columns)
+            //    dt.Columns.Add(column.Name, column.ValueType ?? typeof(string));
+            dt.Columns.Add("ALIS_TARIHI", typeof(DateTime));
+            dt.Columns.Add("FAKTURA_NO", typeof(string));
+            dt.Columns.Add("TECHIZATCI_ADI", typeof(string));
+            dt.Columns.Add("MEHSUL_KODU", typeof(string));
+            dt.Columns.Add("KATEGORIYA", typeof(string));
+            dt.Columns.Add("MEHSUL_ADI", typeof(string));
+            dt.Columns.Add("MEHSULUN_MIGDARI", typeof(decimal));
+            dt.Columns.Add("VAHIDI", typeof(int));
+            dt.Columns.Add("SATINALMA_GIYMETI", typeof(decimal));
+            dt.Columns.Add("SATIS_GIYMETI", typeof(decimal));
+            dt.Columns.Add("EDV", typeof(int));
+            dt.Columns.Add("BARKOD", typeof(string));
+            dt.Columns.Add("ISTEHSAL_TARIHI", typeof(DateTime));
+            dt.Columns.Add("SONISTIFADE_TARIHI", typeof(DateTime));
+            dt.Columns.Add("TESVIR", typeof(string));
+
+            // dataların əlavə edilməsi
             foreach (DataGridViewRow dgvRow in dgv.Rows)
             {
+                if (dgvRow.IsNewRow)
+                    continue;
+
+                var satisValue = dgvRow.Cells[9].Value;
+                if (satisValue == null || string.IsNullOrWhiteSpace(satisValue.ToString()))
+                {
+                    MessageBoxManager.Register();
+                    var result =
+                    MessageBox.Show(
+                        $@"Satış qiyməti boş olan sətir tapıldı! 
+Məhsul adı: {dgvRow.Cells[5].Value}
+
+Məhsul istisna edilərək excel faylı sistemə yüklənilsin ?",
+                        "Xəbərdarlıq",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning
+                    ) == DialogResult.Yes;
+                    MessageBoxManager.Unregister();
+
+                    if (result)
+                        continue;
+
+                    // row-u keçmək və ya prosesi dayandırmaq istəyirsənsə buradan `continue` və ya `return null` edə bilərsən
+                    return null; // Bu sətri DataTable-a əlavə etməyəcək
+                }
+
                 DataRow dr = dt.NewRow();
                 for (int col = 0; col < dgv.Columns.Count; col++)
                 {
-                    dr[col] = dgvRow.Cells[col].Value;
+                    dr[col] = dgvRow.Cells[col].Value ?? DBNull.Value;
                 }
+
                 dt.Rows.Add(dr);
             }
-            // removing empty rows
-            for (int row = dt.Rows.Count - 1; row >= 0; row--)
-            {
-                bool flag = true;
-                for (int col = 0; col < dt.Columns.Count; col++)
-                {
-                    if (dt.Rows[row][col] != DBNull.Value)
-                    {
-                        flag = false;
-                        break;
-                    }
-                }
-                if (flag == true)
-                {
-                    dt.Rows.RemoveAt(row);
-                }
-            }
+
+
+
             return dt;
         }
 
         private void WriteToSQL(System.Data.DataTable dt)
         {
-            //  string connection = new SqlConnection(DbHelpers.CurrentConnectionString);
-            //   string connectionStringSQL = "Your connection string";
             using (SqlConnection sqlConn = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 SqlBulkCopy sqlBulkCopy = new SqlBulkCopy(sqlConn);
-                // Setting the database table name
                 sqlBulkCopy.DestinationTableName = "EXCELL_IMPORT_DATA_NEW";
-                // Mapping the DataTable columns with that of the database table
                 sqlBulkCopy.ColumnMappings.Add(dt.Columns[0].ColumnName, "ALIS_TARIHI");
                 sqlBulkCopy.ColumnMappings.Add(dt.Columns[1].ColumnName, "FAKTURA_NO");
                 sqlBulkCopy.ColumnMappings.Add(dt.Columns[2].ColumnName, "TECHIZATCI_ADI");
@@ -93,8 +116,6 @@ namespace WindowsFormsApp2
             }
         }
 
-        techizatci_odenis tr = new techizatci_odenis();
-
         private void simpleButton2_Click(object sender, EventArgs e)
         {
             var importType = groupControl1.Controls.OfType<CheckEdit>().FirstOrDefault(x => x.Checked);
@@ -106,10 +127,10 @@ namespace WindowsFormsApp2
 
         private void DeleteImportTable()
         {
+            string query = "TRUNCATE TABLE EXCELL_IMPORT_DATA_NEW";
             using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 con.Open();
-                string query = "TRUNCATE TABLE EXCELL_IMPORT_DATA_NEW";
                 using (SqlCommand cmd = new SqlCommand(query, con))
                     cmd.ExecuteNonQuery();
             }
@@ -120,20 +141,12 @@ namespace WindowsFormsApp2
         Excelimport:
             string tezhicatci = null, kategori = null, malzeme = null, countstring = null, barkod = null, mkod = null, id = null, fatno = null, fattarih = null;
             int count = 0;
-            //delete data
             DeleteImportTable();
-            //import data 
-            // Getting data from DataGridView
             System.Data.DataTable myDt = new System.Data.DataTable();
             myDt = GetDTfromDGV(dataGridView1);
-
-            // Writing to sql
+            if (myDt is null)
+                return;
             WriteToSQL(myDt);
-
-            // tr.bulk_import_exc();
-
-
-
 
             // Tezhizatci Acilmasi
 
@@ -303,7 +316,7 @@ else 0 end) END AS [KNTBARKODSTOK] , CASE WHEN ( SELECT TOP 1 MEHSUL_ADI FROM [M
                 {
                     string querymalzeme2 = "UPDATE  EXCELL_IMPORT_DATA_NEW  set KONTROL=0 where ID= (@id)";
 
-                    using (SqlCommand cmd = new SqlCommand(querymalzeme2,cont))
+                    using (SqlCommand cmd = new SqlCommand(querymalzeme2, cont))
                     {
                         cmd.Parameters.AddWithValue("@id", id);
                         cont.Open();
@@ -315,7 +328,7 @@ else 0 end) END AS [KNTBARKODSTOK] , CASE WHEN ( SELECT TOP 1 MEHSUL_ADI FROM [M
                 {
                     string querymalzeme2 = "UPDATE  EXCELL_IMPORT_DATA_NEW  set KONTROL=0 where ID= (@id)";
 
-                    using (SqlCommand cmd = new SqlCommand(querymalzeme2,cont))
+                    using (SqlCommand cmd = new SqlCommand(querymalzeme2, cont))
                     {
                         cmd.Parameters.AddWithValue("@id", id);
                         cont.Open();
@@ -327,7 +340,7 @@ else 0 end) END AS [KNTBARKODSTOK] , CASE WHEN ( SELECT TOP 1 MEHSUL_ADI FROM [M
                 {
                     string querymalzeme2 = "UPDATE  EXCELL_IMPORT_DATA_NEW  set KONTROL=0 where ID= (@id)";
 
-                    using (SqlCommand cmd  = new SqlCommand(querymalzeme2,cont))
+                    using (SqlCommand cmd = new SqlCommand(querymalzeme2, cont))
                     {
                         cmd.Parameters.AddWithValue("@id", id);
                         cont.Open();
@@ -349,7 +362,7 @@ else 0 end) END AS [KNTBARKODSTOK] , CASE WHEN ( SELECT TOP 1 MEHSUL_ADI FROM [M
             while (drqaimet.Read())
             {
                 string ALIS_TARIHIK = drqaimet["TARIHKONTROL"].ToString();
-                
+
                 if (ALIS_TARIHIK != "0")
                 {
                     Helpers.Messages.ReadyMessages.WARNING_DEFAULT_MESSAGE($"Məhsul alış tarixi bugünün({DateTime.Now.ToString("dd.MM.yyyy")}) tarixindən böyük olabilməz");
@@ -358,7 +371,9 @@ else 0 end) END AS [KNTBARKODSTOK] , CASE WHEN ( SELECT TOP 1 MEHSUL_ADI FROM [M
             }
             cont.Close();
 
-            string queryqaime = "SELECT  [ALIS_TARIHI] ,[FAKTURA_NO],[TECHIZATCI_ADI],(SELECT TOP 1 [TECHIZATCI_ID]    FROM  [COMPANY].[TECHIZATCI] WHERE SIRKET_ADI=[EXCELL_IMPORT_DATA_NEW].[TECHIZATCI_ADI]) AS TID   FROM [dbo].[EXCELL_IMPORT_DATA_NEW]  group by ALIS_TARIHI,FAKTURA_NO,TECHIZATCI_ADI";
+            string queryqaime = @"SELECT  [ALIS_TARIHI] ,[FAKTURA_NO],LTRIM(RTRIM([TECHIZATCI_ADI])) AS TECHIZATCI_ADI,(SELECT TOP 1 [TECHIZATCI_ID]    FROM  [COMPANY].[TECHIZATCI] 
+WHERE SIRKET_ADI=LTRIM(RTRIM([EXCELL_IMPORT_DATA_NEW].[TECHIZATCI_ADI]))) AS TID FROM [dbo].[EXCELL_IMPORT_DATA_NEW]  
+group by ALIS_TARIHI,FAKTURA_NO,TECHIZATCI_ADI";
 
             SqlCommand commandqaime = new SqlCommand(queryqaime, cont);
 
@@ -370,7 +385,7 @@ else 0 end) END AS [KNTBARKODSTOK] , CASE WHEN ( SELECT TOP 1 MEHSUL_ADI FROM [M
             {
                 string ALIS_TARIHI = drqaime["ALIS_TARIHI"].ToString();
                 string FAKTURA_NO = drqaime["FAKTURA_NO"].ToString();
-                string TECHIZATCI_ADI = drqaime["TECHIZATCI_ADI"].ToString().TrimStart().TrimEnd();
+                string TECHIZATCI_ADI = drqaime["TECHIZATCI_ADI"].ToString();
                 string TECHIZATCI_ID = drqaime["TID"].ToString();
 
 
@@ -536,19 +551,14 @@ FROM
         Excelimport:
             string tezhicatci = null, kategori = null, malzeme = null, countstring = null, barkod = null, mkod = null, id = null, fatno = null, fattarih = null;
             int count = 0;
-            //delete data
             DeleteImportTable();
-            //import data 
-            // Getting data from DataGridView
+
             System.Data.DataTable myDt = new System.Data.DataTable();
             myDt = GetDTfromDGV(dataGridView1);
+            if (myDt is null)
+                return;
 
-            // Writing to sql
             WriteToSQL(myDt);
-
-            // tr.bulk_import_exc();
-
-
 
 
             // Tezhizatci Acilmasi
@@ -1017,7 +1027,7 @@ WHERE [KONTROL]=1
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     tFilePath.Text = openFileDialog.FileName;
-                    using (var stream = File.Open(openFileDialog.FileName, FileMode.Open, FileAccess.Read))
+                    using (var stream = new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                     {
                         using (IExcelDataReader reader = ExcelReaderFactory.CreateReader(stream))
                         {
@@ -1070,10 +1080,15 @@ WHERE [KONTROL]=1
                 saveFile.Title = "Faylı yadda saxla";
                 if (saveFile.ShowDialog() is DialogResult.OK)
                 {
-                    File.Copy(sourcePath,saveFile.FileName,true);
+                    File.Copy(sourcePath, saveFile.FileName, true);
                     FormHelpers.Alert("Excel faylı yükləməsi uğurla tamamlandı", Enums.MessageType.Success);
                 }
             }
+        }
+
+        private void bHelp_Click(object sender, EventArgs e)
+        {
+            //inteko.az saytından istifadə qaydası ilə bağlı məqaləyə yönləndirsin
         }
     }
 }

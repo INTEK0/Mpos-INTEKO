@@ -6,6 +6,7 @@ public static class DTOs
 {
     public class SalesDto
     {
+        public string DocumentUUID { get; set; }
         public string IpAddress { get; set; }
         public string AccessToken { get; set; }
         public string MerchantId { get; set; }

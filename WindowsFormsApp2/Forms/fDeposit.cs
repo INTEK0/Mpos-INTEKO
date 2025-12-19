@@ -2,6 +2,7 @@
 using System;
 using System.Windows.Forms;
 using WindowsFormsApp2.Helpers;
+using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.NKA;
 using static WindowsFormsApp2.Helpers.FormHelpers;
 
@@ -11,7 +12,7 @@ namespace WindowsFormsApp2.Forms
     {
         public decimal depositAmount = 0;
         private POS_LAYOUT_NEW _frm;
-        private readonly IpModel _IpModel = FormHelpers.GetIpModel();
+        private readonly IpModel _IpModel = UserCacheService.Terminal;
         public fDeposit(POS_LAYOUT_NEW frm)
         {
             InitializeComponent();

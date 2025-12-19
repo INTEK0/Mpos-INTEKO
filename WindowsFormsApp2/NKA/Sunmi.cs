@@ -12,6 +12,7 @@ using DevExpress.XtraMap.Native;
 using Newtonsoft.Json;
 using RestSharp;
 using WindowsFormsApp2.Helpers;
+using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using static DTOs;
@@ -257,37 +258,70 @@ namespace WindowsFormsApp2.NKA
 
         public static void CloseShift(string ipAddress, string cashier)
         {
-            RootObject root = new RootObject
+            bool IsBank = true;
+            if (!string.IsNullOrWhiteSpace(UserCacheService.Terminal.BankName))
             {
-                cashierName = cashier,
-                operation = "closeShift"
-            };
-
-            string json = JsonConvert.SerializeObject(root, new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore
-            });
-
-            var response = RequestPOST(ipAddress, json);
-
-            if (response != null)
-            {
-                if ($"{response.message}" == "Success operation" || $"{response.message}" == "Successful operation")
+                IsBank = false;
+                BankRequest bank = new BankRequest()
                 {
-                    if (MessageVisible)
-                    {
-                        ReadyMessages.SUCCESS_CLOSE_SHIFT_MESSAGE();
-                    }
+                    data = null,
+                    operation = "transactionTapXphoneCloseDay"
+                };
 
-                    FormHelpers.Log(CommonData.SUCCESS_CLOSE_SHIFT);
-                }
-                else
+                string Bankjson = JsonConvert.SerializeObject(bank, new JsonSerializerSettings
                 {
-                    ReadyMessages.ERROR_DEFAULT_MESSAGE(response.message);
-                    FormHelpers.Log($"Xəta mesajı: {response.message}");
-                }
+                    NullValueHandling = NullValueHandling.Ignore
+                });
+
+                var Bankresponse = RequestPOST(ipAddress, Bankjson);
+
+                //if (//response success olaraq gələrsə)
+                //{
+                //    IsBank = true;
+                //}else
+                //{
+                //    IsBank = false;
+                //    //Xəta mesajı
+                //}
+                //IsBank = true;
             }
 
+            if (IsBank)
+            {
+                CloseShiftRequest request = new CloseShiftRequest()
+                {
+                    data = new CloseShiftRequest.Data()
+                    {
+                        cashierName = cashier,
+                        documentUUID = Guid.NewGuid().ToString()
+                    }
+                };
+
+
+
+                string json = JsonConvert.SerializeObject(request, new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                });
+
+                var response = RequestPOST(ipAddress, json);
+
+                if (response != null)
+                {
+                    if (response.message is "Success operation" || response.message is "Successful operation")
+                    {
+                        if (MessageVisible)
+                            ReadyMessages.SUCCESS_CLOSE_SHIFT_MESSAGE();
+
+                        FormHelpers.Log(CommonData.SUCCESS_CLOSE_SHIFT);
+                    }
+                    else
+                    {
+                        ReadyMessages.ERROR_DEFAULT_MESSAGE(response.message);
+                        FormHelpers.Log($"Xəta mesajı: {response.message}");
+                    }
+                }
+            }
         }
 
         public static void LastDocument(string ipAddress)
@@ -365,9 +399,7 @@ namespace WindowsFormsApp2.NKA
             {
                 List<Item> items = new List<Item>();
 
-                using (SqlConnection conn = new SqlConnection(DbHelpers.CurrentConnectionString))
-                {
-                    string query = $@"SELECT 
+                string query = $@"SELECT 
                               name,
                               --Item.item_id,
                               code,
@@ -378,42 +410,43 @@ namespace WindowsFormsApp2.NKA
                               quantityType,
                               salePrice*quantity as ssum
                               FROM dbo.item WHERE user_id = {Properties.Settings.Default.UserID};";
+                using (SqlConnection conn = new SqlConnection(DbHelpers.CurrentConnectionString))
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
                     conn.Open();
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    using (SqlDataReader dr = cmd.ExecuteReader())
                     {
-                        using (SqlDataReader dr = cmd.ExecuteReader())
+                        while (dr.Read())
                         {
-                            while (dr.Read())
-                            {
-                                string name = dr["name"].ToString();
-                                string code = dr["code"].ToString();
-                                decimal salePrice = Convert.ToDecimal(dr["salePrice"]);
-                                decimal quantity = Convert.ToDecimal(dr["quantity"]);
-                                int vatType = Convert.ToInt32(dr["vatType"]);
-                                int quantityType = Convert.ToInt32(dr["quantityType"]);
-                                decimal discount = Convert.ToDecimal(dr["discount"]);
-                                salePrice = Math.Round(salePrice, 2);
+                            string name = dr["name"].ToString();
+                            string code = dr["code"].ToString();
+                            decimal salePrice = Convert.ToDecimal(dr["salePrice"]);
+                            decimal quantity = Convert.ToDecimal(dr["quantity"]);
+                            int vatType = Convert.ToInt32(dr["vatType"]);
+                            int quantityType = Convert.ToInt32(dr["quantityType"]);
+                            decimal discount = Convert.ToDecimal(dr["discount"]);
+                            salePrice = Math.Round(salePrice, 2);
 
-                                Item itemProduct = new Item
-                                {
-                                    name = name,
-                                    code = code,
-                                    salePrice = salePrice,
-                                    quantity = quantity,
-                                    vatType = vatType,
-                                    quantityType = quantityType,
-                                    discountAmount = discount
-                                };
-                                items.Add(itemProduct);
-                            }
+                            Item itemProduct = new Item
+                            {
+                                name = name,
+                                code = code,
+                                salePrice = salePrice,
+                                quantity = quantity,
+                                vatType = vatType,
+                                quantityType = quantityType,
+                                discountAmount = discount
+                            };
+                            items.Add(itemProduct);
                         }
                     }
                 }
 
+                
 
                 Data data = new Data
                 {
-                    documentUUID = Guid.NewGuid().ToString(),
+                    documentUUID = salesData.DocumentUUID,
                     cashPayment = salesData.Cash,
                     cardPayment = salesData.Card,
                     bonusPayment = 0,
@@ -500,6 +533,47 @@ namespace WindowsFormsApp2.NKA
                     RequestCode = _requestJson,
                     ResponseCode = _responseJson,
                 });
+            }
+        }
+
+        public static BankResponse SalesBank(SalesDto salesData)
+        {
+            if (salesData.Card > 0 && !string.IsNullOrWhiteSpace(UserCacheService.Terminal.BankName))
+            {
+                BankRequest bank = new BankRequest()
+                {
+                    data = new BankRequest.Data()
+                    {
+                        documentUUID = salesData.DocumentUUID,
+                        operationType = 0,
+                        amount = salesData.Card
+                    }
+                };
+
+                string Bankjson = Newtonsoft.Json.JsonConvert.SerializeObject(bank, new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                });
+
+                var response = RequestPOST(salesData.IpAddress, Bankjson);
+                if (response.message != "error" && response.code != "506")
+                {
+                    switch (response.message)
+                    {
+                        case "Success operation":
+                        case "Successful operation":
+                            return true;
+                        default:
+                            ReadyMessages.ERROR_SALES_MESSAGE(response.message);
+                            FormHelpers.Log($"Bank satış xətası - Xəta mesajı: {response.message}");
+                            return false;
+                    }
+                }
+                else
+                {
+                    ReadyMessages.ERROR_SALES_MESSAGE("Terminal ilə əlaqə zamanı xəta yarandı");
+                    return false;
+                }
             }
         }
 
@@ -714,12 +788,12 @@ namespace WindowsFormsApp2.NKA
                     }
 
                     short paymentType = (short)(creditData.IncomingSum > 0 ? 1 : 2);
-                    DbProsedures.UPDATE_CreditPay(payResponse.data.short_document_id, 
+                    DbProsedures.UPDATE_CreditPay(payResponse.data.short_document_id,
                         payResponse.data.document_id,
                         payResponse.data.document_number.ToString(),
                         paymentType,
                         creditData.CreditMonthId);
-                   
+
                     FormHelpers.Log($"{data.creditContract} nömrəli kredit müqaviləsinin ödənişi edildi. Qəbz No: {payResponse.data.document_number}");
 
                     return true;
@@ -768,7 +842,7 @@ namespace WindowsFormsApp2.NKA
 
             if (response.message != "error" && response.code != "506")
             {
-               
+
                 switch (response.message)
                 {
                     case "Success operation":
@@ -778,7 +852,7 @@ namespace WindowsFormsApp2.NKA
                             ReadyMessages.SUCCESS_CREDIT_SALES_MESSAGE();
                         }
                         FormHelpers.Log($"Kredit satışı uğurla edildi. Qəbz No: {response.data.number}");
-                        return new Tuple<bool, string, string,string>(true,
+                        return new Tuple<bool, string, string, string>(true,
                             response.data.document_id,
                             response.data.short_document_id,
                             response.data.number);
@@ -1238,6 +1312,19 @@ WHERE psd.pos_satis_check_main_id = {pos_satis_main_id} AND psm.user_id_ = {Prop
             public string cashierName { get; set; }
         }
 
+        private class CloseShiftRequest
+        {
+            public class Data
+            {
+                public string documentUUID { get; set; }
+                public string cashierName { get; set; }
+            }
+            public Data data { get; set; }
+            public string operation { get; set; } = "closeShift";
+            public string username { get; set; } = "username";
+            public string password { get; set; } = "password";
+        }
+
         public class PrepaymentRequest
         {
             public class Data
@@ -1367,7 +1454,7 @@ WHERE psd.pos_satis_check_main_id = {pos_satis_main_id} AND psm.user_id_ = {Prop
             }
         }
 
-        public class  CreditSaleRequest
+        public class CreditSaleRequest
         {
             public class Item
             {
@@ -1509,11 +1596,27 @@ WHERE psd.pos_satis_check_main_id = {pos_satis_main_id} AND psm.user_id_ = {Prop
                 public string password { get; set; } = "password";
             }
         }
-        
+
+        private class BankRequest
+        {
+            public class Data
+            {
+                public string documentUUID { get; set; }
+                public int? operationType { get; set; } = null;
+                public decimal? amount { get; set; } = null;
+                public string rrn { get; set; } = null;
+            }
+
+            public Data data { get; set; }
+            public string operation { get; set; } = "transactionTapXPhone";
+            public int version { get; set; } = 1;
+        }
+
         #endregion [..REQUEST CLASS..]
 
 
         #region [..RESPONSE CLASS..]
+
         public abstract class BaseResponse
         {
             public string requestJson { get; set; }
@@ -1622,6 +1725,39 @@ WHERE psd.pos_satis_check_main_id = {pos_satis_main_id} AND psm.user_id_ = {Prop
             }
             public Data data { get; set; }
         }
+
+        public class BankResponse
+        {
+            public class Data
+            {
+                public string aid { get; set; }
+                public string amt { get; set; }
+                public string applbl { get; set; }
+                public string auth_code { get; set; }
+                public string bank_owner { get; set; }
+                public string batch { get; set; }
+                public string card_mask { get; set; }
+                public string cur_code { get; set; }
+                public string date_time { get; set; }
+                public string host_resp_code { get; set; }
+                public string intentResult { get; set; }
+                public string pmt_dest { get; set; }
+                public string pmt_name { get; set; }
+                public string pmt_terminal { get; set; }
+                public string rrn { get; set; }
+                public string stan { get; set; }
+                public string status { get; set; }
+                public string terminal { get; set; }
+                public string trxid { get; set; }
+                public string tvr { get; set; }
+                public string unp { get; set; }
+            }
+            public Data data { get; set; }
+            public string code { get; set; }
+            public string message { get; set; }
+            public bool? IsSuccess { get; set; } = false;
+        }
+
         #endregion [..RESPONSE CLASS..]
     }
 }

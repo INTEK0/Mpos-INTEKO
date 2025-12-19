@@ -2,6 +2,7 @@
 using System.Data;
 using System.Windows.Forms;
 using WindowsFormsApp2.Helpers;
+using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using WindowsFormsApp2.NKA;
@@ -12,7 +13,7 @@ namespace WindowsFormsApp2.Forms
     public partial class fPrepaymentPay : DevExpress.XtraEditors.XtraForm
     {
         private readonly string _fiskalID = null;
-        private readonly IpModel _IpModel = FormHelpers.GetIpModel();
+        private readonly IpModel _IpModel = UserCacheService.Terminal;
 
         private static class PrepaymentPay
         {

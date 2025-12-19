@@ -655,10 +655,12 @@ namespace WindowsFormsApp2.Forms
                 return;
             }
 
+            if (string.IsNullOrWhiteSpace(tBarcode.Text))
+                return;
+
             MessageBoxManager.Register();
             if (MessageBox.Show($"{tProductName.Text} məhsulunu silmək istədiyinizə əminsiniz ?", nameof(HeaderMessage.Xəbərdarlıq), MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                
                 int response = DbProsedures.DeleteProduct(new ProductsDetail
                 {
                     SupplierName = lookSupplier.Text,
@@ -685,7 +687,7 @@ namespace WindowsFormsApp2.Forms
                     MessageBoxManager.Unregister();
                     if (result is DialogResult.No)
                         e.Cancel = true;
-                    
+
                 }
             }
         }

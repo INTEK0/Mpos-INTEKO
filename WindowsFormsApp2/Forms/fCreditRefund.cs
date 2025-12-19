@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using DevExpress.XtraCharts;
 using DevExpress.XtraEditors;
 using WindowsFormsApp2.Helpers;
+using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.NKA;
 using static DTOs;
@@ -19,7 +20,7 @@ namespace WindowsFormsApp2.Forms
 {
     public partial class fCreditRefund : DevExpress.XtraEditors.XtraForm
     {
-        private readonly IpModel _terminal = GetIpModel();
+        private readonly IpModel _terminal = UserCacheService.Terminal;
 
         public fCreditRefund()
         {

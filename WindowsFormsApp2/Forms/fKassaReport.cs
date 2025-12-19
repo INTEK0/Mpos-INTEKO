@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Drawing.Printing;
 using System.Windows.Forms;
 using WindowsFormsApp2.Helpers;
+using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.Messages;
 using WindowsFormsApp2.NKA;
 using static WindowsFormsApp2.NKA.NBA;
@@ -21,7 +22,7 @@ namespace WindowsFormsApp2.Forms
 
         private void bReport_Click(object sender, EventArgs e)
         {
-            var kassa = FormHelpers.GetIpModel();
+            var kassa = UserCacheService.Terminal;
 
             if (dateEdit1.EditValue == null || dateEdit1.DateTime == DateTime.MinValue)
             {
@@ -124,7 +125,7 @@ namespace WindowsFormsApp2.Forms
             sf.LineAlignment = StringAlignment.Center;
             sf.Alignment = StringAlignment.Center;
 
-            string ipAddress = FormHelpers.GetIpModel().Ip;
+            string ipAddress = UserCacheService.Terminal.Ip;
             var info = GetInfo(ipAddress);
 
 

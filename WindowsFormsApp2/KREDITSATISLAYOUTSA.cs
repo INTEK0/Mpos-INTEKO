@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using WindowsFormsApp2.Forms;
 using WindowsFormsApp2.Helpers;
+using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.NKA;
 using WindowsFormsApp2.Validations;
@@ -385,12 +386,10 @@ namespace WindowsFormsApp2
 
         private void get_ip_model()
         {
-            var data = FormHelpers.GetIpModel();
-
-            lModel.Text = data.Model;
-            lIpAdress.Text = data.Ip;
-            lMerchantId.Text = data.MerchantId;
-            lBankName.Text = data.BankName;
+            lModel.Text = UserCacheService.Terminal.Model;
+            lIpAdress.Text = UserCacheService.Terminal.Ip;
+            lMerchantId.Text = UserCacheService.Terminal.MerchantId;
+            lBankName.Text = UserCacheService.Terminal.BankName;
         }
 
         private string get_vahid()

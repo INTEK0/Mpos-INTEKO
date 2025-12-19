@@ -205,6 +205,8 @@ namespace WindowsFormsApp2
             this.bHelp.Size = new System.Drawing.Size(144, 47);
             this.bHelp.TabIndex = 6;
             this.bHelp.Text = "İstifadə qaydası";
+            this.bHelp.Visible = false;
+            this.bHelp.Click += new System.EventHandler(this.bHelp_Click);
             // 
             // bExcelDownload
             // 

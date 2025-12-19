@@ -157,6 +157,8 @@ LEFT JOIN userParol u ON u.id = ki.KASSIR_ID";
                 FormHelpers.Alert($"{tIpAddress.Text} ip adresli {lookKassa.Text} kassası sistemə əlavə edildi", MessageType.Success);
                 FormHelpers.Log($"{tIpAddress.Text} ip adresli {lookKassa.Text} kassası sistemə əlavə edildi");
             }
+
+            UserCacheService.RefreshTerminal();
             GetallData();
         }
 
@@ -171,7 +173,7 @@ LEFT JOIN userParol u ON u.id = ki.KASSIR_ID";
                 groupControl2.Location = new Point(0, 176);
                 gridControl1.Location = new Point(5, 234);
             }
-            else if (lookKassa.Text == "NBA")
+            else if (lookKassa.Text is "NBA" || lookKassa.Text is "CASPOS" || lookKassa.Text is "SUNMI")
             {
                 BankDataLoad();
             }

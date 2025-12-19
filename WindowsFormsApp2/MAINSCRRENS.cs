@@ -1276,8 +1276,7 @@ FROM (
 
         private void bKassaPing_Click(object sender, EventArgs e)
         {
-            var data = GetIpModel();
-            Uri uri = new Uri(data.Ip);
+            Uri uri = new Uri(UserCacheService.Terminal.Ip);
             FormHelpers.PingHostAsync(uri.Host);
         }
 
@@ -1289,9 +1288,9 @@ FROM (
 
         private void bTereziPing_Click(object sender, EventArgs e)
         {
-            var data = GetIpModel();
-            Uri uri = new Uri(data.Ip);
-            FormHelpers.PingHostAsync(uri.Host);
+            //var data = GetIpModel();
+            //Uri uri = new Uri(data.Ip);
+            //FormHelpers.PingHostAsync(uri.Host);
         }
 
         private void chSendToKassa_CheckedChanged(object sender, EventArgs e)

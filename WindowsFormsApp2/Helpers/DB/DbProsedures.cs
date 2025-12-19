@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Threading.Tasks;
 using System.Web.Security;
 using System.Windows.Forms;
+using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.Messages;
 using static DevExpress.Xpo.Helpers.AssociatedCollectionCriteriaHelper;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
@@ -30,7 +31,6 @@ namespace WindowsFormsApp2.Helpers.DB
         private const string INSERT_CategoryQuery = "SELECT_KATEGORY";
         private const string INSERT_MALALISIMAINQuery = "INSERT_MAL_ALISI_MAIN";
         private const string INSERT_IMPORT_MALALISIMAINQuery = "INSERT_IMPORT_MAL_ALISI_MAIN";
-        private const string DELETE_MALALISIDETAILQuery = "DELETE_PRODUCT_MAL_ALIS_DETAILS";
         private const string INSERT_CustomerQuery = "INSERT_MUSTERI";
         private const string INSERT_DoctorQuery = "INSERT_DOCTOR";
         private const string DELETE_DoctorQuery = "delete_doctor";
@@ -1197,27 +1197,22 @@ WHERE BARKOD = '{barcode}'";
         public static int DeleteProduct(ProductsDetail item)
         {
             using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand("DELETE_PRODUCT_MAL_ALIS_DETAILS", connection))
             {
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlParameter param;
+
+                param = cmd.Parameters.Add("@TECHIZATCI", SqlDbType.NVarChar, 500);
+                param.Value = item.SupplierName;
+
+                param = cmd.Parameters.Add("@BARCODE", SqlDbType.NVarChar, 500);
+                param.Value = item.Barocde;
+
+                param = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
+                param.Direction = ParameterDirection.Output;
                 connection.Open();
-                using (SqlCommand cmd = new SqlCommand(DELETE_MALALISIDETAILQuery, connection))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    SqlParameter param;
-
-                    param = cmd.Parameters.Add("@TECHIZATCI", SqlDbType.NVarChar, 500);
-                    param.Value = item.SupplierName;
-
-                    param = cmd.Parameters.Add("@PRODUCTID", SqlDbType.Int);
-                    param.Value = item.ProductId;
-
-                    param = cmd.Parameters.Add("@BARCODE", SqlDbType.NVarChar, 500);
-                    param.Value = item.Barocde;
-
-                    param = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
-                    param.Direction = ParameterDirection.Output;
-                    cmd.ExecuteNonQuery();
-                    return Convert.ToInt32(param.Value);
-                }
+                cmd.ExecuteNonQuery();
+                return Convert.ToInt32(param.Value);
             }
         }
 
@@ -2352,19 +2347,17 @@ FROM
         public static DataTable Get_ClinicDataLoad()
         {
             using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(GET_ClinicDataLoadQuery, connection))
             {
-                using (SqlCommand cmd = new SqlCommand(GET_ClinicDataLoadQuery, connection))
+                connection.Open();
+                cmd.CommandType = CommandType.Text;
+                cmd.Parameters.AddWithValue("@UserID", UserCacheService.User.Id);
+                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                 {
-                    connection.Open();
-                    cmd.CommandType = CommandType.Text;
-                    cmd.Parameters.AddWithValue("@UserID", Properties.Settings.Default.UserID);
-                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    using (DataTable dt = new DataTable())
                     {
-                        using (DataTable dt = new DataTable())
-                        {
-                            da.Fill(dt);
-                            return dt;
-                        }
+                        da.Fill(dt);
+                        return dt;
                     }
                 }
             }
@@ -2401,18 +2394,14 @@ FROM
         public static string GET_GaimeSalesProccessNo()
         {
             using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(GET_GaimeSalesProccessNoQuery, connection))
             {
                 connection.Open();
-                using (SqlCommand cmd = new SqlCommand(GET_GaimeSalesProccessNoQuery, connection))
+                using (SqlDataReader dr = cmd.ExecuteReader())
                 {
-                    using (SqlDataReader dr = cmd.ExecuteReader())
-                    {
-                        if (dr.Read())
-                        {
-                            return dr[0].ToString();
-                        }
-                        return null;
-                    }
+                    if (dr.Read())
+                        return dr[0].ToString();
+                    return null;
                 }
             }
         }
@@ -2420,18 +2409,14 @@ FROM
         public static string GET_GaimeRefundProccessNo()
         {
             using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(GET_GaimeRefundProccessNoQuery, connection))
             {
                 connection.Open();
-                using (SqlCommand cmd = new SqlCommand(GET_GaimeRefundProccessNoQuery, connection))
+                using (SqlDataReader dr = cmd.ExecuteReader())
                 {
-                    using (SqlDataReader dr = cmd.ExecuteReader())
-                    {
-                        if (dr.Read())
-                        {
-                            return dr[0].ToString();
-                        }
-                        return null;
-                    }
+                    if (dr.Read())
+                        return dr[0].ToString();
+                    return null;
                 }
             }
         }
@@ -2439,39 +2424,37 @@ FROM
         public static int InsertGaimeMain(GaimeMain data)
         {
             using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand("INSERT_GAIME_SATISI_MAIN", con))
             {
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlParameter param;
+                param = cmd.Parameters.Add("@EMELIYYAT_NOMRE", SqlDbType.NVarChar, 50);
+                param.Value = data.ProccessNo;
+                param = cmd.Parameters.Add("@GAIME_NOMRE", SqlDbType.NVarChar, 20);
+                param.Value = data.QaimeNomre = string.IsNullOrWhiteSpace(data.QaimeNomre) ? data.ProccessNo.Replace("QS-", "") : data.QaimeNomre;
+                param = cmd.Parameters.Add("@ODENILEN_MEBLEG", SqlDbType.NVarChar, 100);
+                param.Value = data.TotalPaid;
+                param = cmd.Parameters.Add("@TARIX", SqlDbType.Date);
+                param.Value = data.Date;
+                param = cmd.Parameters.Add("@ODEME_TIPI", SqlDbType.NVarChar, 50);
+                param.Value = data.PaymentType;
+                param = cmd.Parameters.Add("@musteri", SqlDbType.NVarChar, 500);
+                param.Value = data.Customer;
+                param = cmd.Parameters.Add("@u_id", SqlDbType.Int);
+                param.Value = UserCacheService.User.Id;
+                param = cmd.Parameters.Add("@ODENILEN_EDV_SIZ_MEBLEG", SqlDbType.NVarChar, 20);
+                param.Value = data.Edvsiz;
+                param = cmd.Parameters.Add("@ODENILEN_MEBLEG_EDV", SqlDbType.NVarChar, 20);
+                param.Value = data.Edvli;
+                param = cmd.Parameters.Add("@musteri_main_id", SqlDbType.Int);
+                param.Value = data.CustomerId;
+
+                param = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
+                param.Direction = ParameterDirection.Output; ;
+
                 con.Open();
-                using (SqlCommand cmd = new SqlCommand("INSERT_GAIME_SATISI_MAIN", con))
-                {
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    SqlParameter param;
-                    param = cmd.Parameters.Add("@EMELIYYAT_NOMRE", SqlDbType.NVarChar, 50);
-                    param.Value = data.ProccessNo;
-                    param = cmd.Parameters.Add("@GAIME_NOMRE", SqlDbType.NVarChar, 20);
-                    param.Value = data.QaimeNomre = string.IsNullOrWhiteSpace(data.QaimeNomre) ? data.ProccessNo.Replace("QS-", "") : data.QaimeNomre;
-                    param = cmd.Parameters.Add("@ODENILEN_MEBLEG", SqlDbType.NVarChar, 100);
-                    param.Value = data.TotalPaid;
-                    param = cmd.Parameters.Add("@TARIX", SqlDbType.Date);
-                    param.Value = data.Date;
-                    param = cmd.Parameters.Add("@ODEME_TIPI", SqlDbType.NVarChar, 50);
-                    param.Value = data.PaymentType;
-                    param = cmd.Parameters.Add("@musteri", SqlDbType.NVarChar, 500);
-                    param.Value = data.Customer;
-                    param = cmd.Parameters.Add("@u_id", SqlDbType.Int);
-                    param.Value = Properties.Settings.Default.UserID;
-                    param = cmd.Parameters.Add("@ODENILEN_EDV_SIZ_MEBLEG", SqlDbType.NVarChar, 20);
-                    param.Value = data.Edvsiz;
-                    param = cmd.Parameters.Add("@ODENILEN_MEBLEG_EDV", SqlDbType.NVarChar, 20);
-                    param.Value = data.Edvli;
-                    param = cmd.Parameters.Add("@musteri_main_id", SqlDbType.Int);
-                    param.Value = data.CustomerId;
-
-                    param = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
-                    param.Direction = ParameterDirection.Output; ;
-
-                    cmd.ExecuteNonQuery();
-                    return Convert.ToInt32(param.Value);
-                }
+                cmd.ExecuteNonQuery();
+                return Convert.ToInt32(param.Value);
             }
         }
 
@@ -2571,7 +2554,6 @@ FROM
             using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             using (SqlCommand cmd = new SqlCommand("KASSA_IP_INSERT", con))
             {
-                con.Open();
                 cmd.CommandType = CommandType.StoredProcedure;
                 SqlParameter param;
                 param = cmd.Parameters.Add("@KASSA_FIRMA_IP", SqlDbType.Int);
@@ -2587,7 +2569,8 @@ FROM
 
                 param = cmd.Parameters.Add("@EMPCOUNT", SqlDbType.Int);
                 param.Direction = ParameterDirection.Output;
-
+          
+                con.Open();
                 cmd.ExecuteNonQuery();
                 return Convert.ToInt32(param.Value);
             }

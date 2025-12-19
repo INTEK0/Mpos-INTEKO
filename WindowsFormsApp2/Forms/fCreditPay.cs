@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
 using WindowsFormsApp2.Helpers;
+using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.NKA;
 using static DTOs;
@@ -19,7 +20,7 @@ namespace WindowsFormsApp2.Forms
         private string _unitId, _taxId, _productId, _creditMainId, _customerId;
         private int index = 0;
         private CreditPayData _creditPayData;
-        private readonly IpModel _terminal = GetIpModel();
+        private readonly IpModel _terminal = UserCacheService.Terminal;
 
         private class CreditPayData
         {

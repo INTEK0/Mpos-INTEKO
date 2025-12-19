@@ -124,6 +124,8 @@ namespace WindowsFormsApp2.Helpers
             PASHA,
             [Description("ABB BANK")]
             ABB,
+            [Description("UNİBANK")]
+            UNIBANK
         }
 
         public enum CustomerDebtType
