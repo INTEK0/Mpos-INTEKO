@@ -63,9 +63,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accessibility" />
-    <Reference Include="ComponentFactory.Krypton.Toolkit">
-      <HintPath>F:\İNTEKO\Mpos-V11\Mpos\ComponentFactory.Krypton.Toolkit.dll</HintPath>
-    </Reference>
     <Reference Include="DevExpress.BonusSkins.v24.1, Version=24.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Charts.v24.1.Core, Version=24.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.CodeParser.v24.1, Version=24.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
@@ -127,9 +124,8 @@
     <Reference Include="HtmlAgilityPack, Version=1.11.59.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>..\packages\HtmlAgilityPack.1.11.59\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
-    <Reference Include="MessageBoxManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\MessageBoxManager.dll</HintPath>
+    <Reference Include="MessageBoxManager">
+      <HintPath>D:\Hasan\PROJECTS\İNTEKO\bin\Debug\MessageBoxManager.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.7.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>

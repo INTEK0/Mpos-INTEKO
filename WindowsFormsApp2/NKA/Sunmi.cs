@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Security.Policy;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using DevExpress.DashboardCommon;
 using DevExpress.DashboardWin.Design;
@@ -442,7 +444,6 @@ namespace WindowsFormsApp2.NKA
                     }
                 }
 
-                
 
                 Data data = new Data
                 {
@@ -491,7 +492,7 @@ namespace WindowsFormsApp2.NKA
                                 total = totalSum,
                                 json = json,
                                 shortFiskalId = response.data.short_document_id,
-                                rrn = response.data.rrn,
+                                rrn = string.IsNullOrWhiteSpace(salesData.Rrn) ? null : salesData.Rrn,
                                 customerId = salesData.Customer?.CustomerID,
                                 doctorId = salesData.Doctor?.Id,
                             });
@@ -536,7 +537,7 @@ namespace WindowsFormsApp2.NKA
             }
         }
 
-        public static BankResponse SalesBank(SalesDto salesData)
+        public static bool SaleBank(SalesDto salesData)
         {
             if (salesData.Card > 0 && !string.IsNullOrWhiteSpace(UserCacheService.Terminal.BankName))
             {
@@ -555,14 +556,27 @@ namespace WindowsFormsApp2.NKA
                     NullValueHandling = NullValueHandling.Ignore
                 });
 
-                var response = RequestPOST(salesData.IpAddress, Bankjson);
+                RestRequest request = new RestRequest(salesData.IpAddress, Method.Post);
+                request.AddHeader("Content-Type", "application/json;charset=utf-8");
+                request.AddStringBody(Bankjson, DataFormat.Json);
+                RestResponse Restresponse = _restClient.Execute(request);
+                if (string.IsNullOrWhiteSpace(Restresponse?.Content))
+                {
+                    ReadyMessages.ERROR_SALES_MESSAGE("Terminal ilə əlaqə zamanı xəta yarandı");
+                    return false;
+                }
+
+                var response = System.Text.Json.JsonSerializer.Deserialize<BankResponse>(Restresponse.Content);
+
                 if (response.message != "error" && response.code != "506")
                 {
                     switch (response.message)
                     {
-                        case "Success operation":
-                        case "Successful operation":
+                        case "İcra olunur":
+                            Task.Delay(3000);
                             return true;
+                        //return BankCheckStatus(salesData.IpAddress, salesData.DocumentUUID);
+
                         default:
                             ReadyMessages.ERROR_SALES_MESSAGE(response.message);
                             FormHelpers.Log($"Bank satış xətası - Xəta mesajı: {response.message}");
@@ -575,6 +589,116 @@ namespace WindowsFormsApp2.NKA
                     return false;
                 }
             }
+            return false;
+        }
+
+        public static bool RefundBank(RefundDto refundData)
+        {
+            if (refundData.Card > 0 && !string.IsNullOrWhiteSpace(UserCacheService.Terminal.BankName))
+            {
+                BankRequest bank = new BankRequest()
+                {
+                    data = new BankRequest.Data()
+                    {
+                        documentUUID = refundData.DocumentUUID,
+                        operationType = 1,
+                        amount = refundData.Card,
+                        rrn = refundData.Rrn,
+                    }
+                };
+
+                string Bankjson = Newtonsoft.Json.JsonConvert.SerializeObject(bank, new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                });
+
+                RestRequest request = new RestRequest(refundData.IpAddress, Method.Post);
+                request.AddHeader("Content-Type", "application/json;charset=utf-8");
+                request.AddStringBody(Bankjson, DataFormat.Json);
+                RestResponse Restresponse = _restClient.Execute(request);
+                if (string.IsNullOrWhiteSpace(Restresponse?.Content))
+                {
+                    ReadyMessages.ERROR_SALES_MESSAGE("Terminal ilə əlaqə zamanı xəta yarandı");
+                    return false;
+                }
+
+                var response = System.Text.Json.JsonSerializer.Deserialize<BankResponse>(Restresponse.Content);
+
+                if (response.message != "error" && response.code != "506")
+                {
+                    switch (response.message)
+                    {
+                        case "İcra olunur":
+                            Task.Delay(3000);
+                            return true;
+                        //return BankCheckStatus(salesData.IpAddress, salesData.DocumentUUID);
+
+                        default:
+                            ReadyMessages.ERROR_SALES_MESSAGE(response.message);
+                            FormHelpers.Log($"Bank qaytarma xətası - Xəta mesajı: {response.message}");
+                            return false;
+                    }
+                }
+                else
+                {
+                    ReadyMessages.ERROR_SALES_MESSAGE("Terminal ilə əlaqə zamanı xəta yarandı");
+                    return false;
+                }
+            }
+            return false;
+        }
+
+        public static BankResponse BankCheckStatus(string IpAdress, string uuid)
+        {
+            BankRequest bank = new BankRequest()
+            {
+                data = new BankRequest.Data()
+                {
+                    documentUUID = uuid
+                },
+                operation = "transactionTapXphoneCheck"
+            };
+
+            string Bankjson = Newtonsoft.Json.JsonConvert.SerializeObject(bank, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            });
+        start:
+            RestRequest request = new RestRequest(IpAdress, Method.Post);
+            request.AddHeader("Content-Type", "application/json;charset=utf-8");
+            request.AddStringBody(Bankjson, DataFormat.Json);
+            RestResponse Restresponse = _restClient.Execute(request);
+            if (string.IsNullOrWhiteSpace(Restresponse?.Content))
+            {
+                ReadyMessages.ERROR_SALES_MESSAGE("Terminal ilə əlaqə zamanı xəta yarandı");
+                return null;
+            }
+
+            var response = System.Text.Json.JsonSerializer.Deserialize<BankResponse>(Restresponse.Content);
+
+            if (response.message != "error" && response.code != "506")
+            {
+                switch (response.message)
+                {
+
+                    case "Success operation":
+                        if (string.IsNullOrWhiteSpace(response?.data.rrn))
+                        {
+                            goto start;
+                            //BankCheckStatus(IpAdress, uuid);
+                        }
+                        return response;
+                    default:
+                        ReadyMessages.ERROR_SALES_MESSAGE(response.message);
+                        FormHelpers.Log($"Bank xətası - Xəta mesajı: {response.message}");
+                        return null;
+                }
+            }
+            else
+            {
+                ReadyMessages.ERROR_SALES_MESSAGE("Terminal ilə əlaqə zamanı xəta yarandı");
+                return null;
+            }
         }
 
         public static bool Refund(RefundDto refundData)
@@ -582,7 +706,8 @@ namespace WindowsFormsApp2.NKA
             string fiskallID = "";
             decimal cash = default;
             decimal card = default;
-            string query2 = "SELECT  [pos_satis_check_main_id],[pos_nomre],[fiscal_id],[date_] ,[user_id_] ," +
+            string rrn = null;
+            string query2 = "SELECT  [pos_satis_check_main_id],[pos_nomre],[fiscal_id],[date_], [bankttnm] ,[user_id_] ," +
                 "[emeliyyat_nomre],[NEGD_],[KART_],[UMUMI_MEBLEG] ,[json_] ,[fiscalNum],[documentID]" +
                 "  FROM [pos_satis_check_main] WHERE[pos_satis_check_main_id] IN(SELECT[pos_satis_check_main_id]  " +
                 " FROM [pos_gaytarma_manual] where [pos_gaytarma_manual_id] =(select max([pos_gaytarma_manual_id]) " +
@@ -598,6 +723,7 @@ namespace WindowsFormsApp2.NKA
             {
                 decimal cash1 = Convert.ToDecimal(dr2["NEGD_"].ToString());
                 decimal card1 = Convert.ToDecimal(dr2["KART_"].ToString());
+                string rrn1 = dr2["bankttnm"].ToString();
 
 
                 string fiscal_id = dr2["fiscal_id"].ToString();
@@ -607,7 +733,10 @@ namespace WindowsFormsApp2.NKA
                 fiskallID = fiscal_id;
                 cash = cash1;
                 card = card1;
+                rrn = rrn1;
             }
+            refundData.Rrn = string.IsNullOrWhiteSpace(rrn) ? refundData.Rrn : rrn;
+
 
             string query = $@"(SELECT md.MEHSUL_ADI AS name,
                        p.item_id AS code,
@@ -663,6 +792,36 @@ namespace WindowsFormsApp2.NKA
                 isManual = true
             };
 
+            if (refundData.PayType is PayType.Card && !string.IsNullOrWhiteSpace(UserCacheService.Terminal.BankName))
+            {
+
+                var responseBank = RefundBank(new RefundDto
+                {
+                    IpAddress = refundData.IpAddress,
+                    Card = card,
+                    Rrn = refundData.Rrn,
+                    DocumentUUID = refundData.DocumentUUID,
+                });
+
+                Sunmi.BankResponse responseCheck = new Sunmi.BankResponse();
+                if (responseBank)
+                {
+                    responseCheck = Sunmi.BankCheckStatus(refundData.IpAddress, refundData.DocumentUUID);
+                }
+
+                if (responseCheck is null || string.IsNullOrWhiteSpace(responseCheck?.data?.rrn))
+                {
+                    // Bank uğursuzdursa, satış dayansın
+                    return false;
+                }
+
+                rrn = responseCheck.data.rrn;
+                data.isSendCardPayment = true;
+                data.rrn = rrn;
+
+            }
+
+
             RootObject rootObject = new RootObject
             {
                 data = data,
@@ -715,6 +874,52 @@ namespace WindowsFormsApp2.NKA
                     RequestCode = response.requestJson,
                     ResponseCode = response.responseJson,
                 });
+            }
+        }
+
+        public static bool CloseShiftBank(string IpAdress)
+        {
+            BankRequest bank = new BankRequest()
+            {
+                data = null,
+                operation = "transactionTapXphoneCloseDay"
+            };
+
+            string Bankjson = Newtonsoft.Json.JsonConvert.SerializeObject(bank, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            });
+
+            RestRequest request = new RestRequest(IpAdress, Method.Post);
+            request.AddHeader("Content-Type", "application/json;charset=utf-8");
+            request.AddStringBody(Bankjson, DataFormat.Json);
+            RestResponse Restresponse = _restClient.Execute(request);
+            if (string.IsNullOrWhiteSpace(Restresponse?.Content))
+            {
+                ReadyMessages.ERROR_SALES_MESSAGE("Terminal ilə əlaqə zamanı xəta yarandı");
+                return false;
+            }
+
+            var response = System.Text.Json.JsonSerializer.Deserialize<BankResponse>(Restresponse.Content);
+
+            if (response.message != "error" && response.code != "506")
+            {
+                switch (response.message)
+                {
+
+                    case "Success operation":
+                    case "Uğurlu":
+                        return true;
+                    default:
+                        ReadyMessages.ERROR_SALES_MESSAGE(response.message);
+                        FormHelpers.Log($"Bank Z hesabat xətası - Xəta mesajı: {response.message}");
+                        return false;
+                }
+            }
+            else
+            {
+                ReadyMessages.ERROR_SALES_MESSAGE("Terminal ilə əlaqə zamanı xəta yarandı");
+                return false;
             }
         }
 
@@ -1277,6 +1482,7 @@ WHERE psd.pos_satis_check_main_id = {pos_satis_main_id} AND psm.user_id_ = {Prop
 
         public class Data
         {
+            public bool? isSendCardPayment { get; set; } = null;
             public bool? isManual { get; set; } = null;
             public string startDate { get; set; } = null;
             public string endDate { get; set; } = null;

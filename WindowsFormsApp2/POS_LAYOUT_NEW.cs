@@ -28,6 +28,7 @@ using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using WindowsFormsApp2.NKA;
 using WindowsFormsApp2.Reports;
+using static DTOs;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
 using static WindowsFormsApp2.Helpers.DB.DTOs;
 using static WindowsFormsApp2.Helpers.Enums;
@@ -69,7 +70,7 @@ namespace WindowsFormsApp2
 
         private async void POS_LAYOUT_NEW_Load(object sender, EventArgs e)
         {
-
+            UUIDGenerateService.Refreshid();
             tUsername.Text = _user?.NameSurname;
             textEdit2.Text = DateTime.Now.ToShortDateString();
             textEdit1.Text = DbProsedures.GET_SalesProcessNo();
@@ -1374,6 +1375,10 @@ LEFT JOIN pos_guzest pg
             switch (lModel.Text)
             {
                 case "1":
+                    if (!string.IsNullOrWhiteSpace(UserCacheService.Terminal.BankName))
+                    {
+                        bool IsSuccess = Sunmi.CloseShiftBank(lIpAdress.Text);
+                    }
                     Sunmi.CloseShift(lIpAdress.Text, tUsername.Text);
                     break; /*SUNMI*/
                 case "2":
@@ -2652,49 +2657,59 @@ LEFT JOIN pos_guzest pg
                 switch (lModel.Text)
                 {
                     case "1":
-                        bool BankIsSuccess = false;
+                        bool bankIsRequired = card_ > 0 &&
+                            !string.IsNullOrWhiteSpace(UserCacheService.Terminal.BankName);
 
-                        if (card_ > 0 && !string.IsNullOrWhiteSpace(UserCacheService.Terminal.BankName))
+                        string rrn = null;
+
+                        if (bankIsRequired)
                         {
-                            var responseBank = Sunmi.SalesBank(new DTOs.SalesDto
+                            var responseBank = Sunmi.SaleBank(new DTOs.SalesDto
                             {
                                 DocumentUUID = documentUUID,
                                 IpAddress = lIpAdress.Text,
-                                Card = card_,
+                                Card = card_
                             });
 
-                            if (responseBank != null || responseBank.IsSuccess == true)
-                                BankIsSuccess = true;
-                            else
-                                return;
-                            //Manual rrn göndərməni nəzərə al
-                            //bankdan gələn rrni həm kassaya həmdə dbyə göndər
-                        }
-                        else
-                            BankIsSuccess = true;
+                            Sunmi.BankResponse response = new Sunmi.BankResponse();
 
-                        if (BankIsSuccess)
-                        {
-                            IsSuccess = Sunmi.Sales(new DTOs.SalesDto
+                            if (responseBank)
                             {
-                                DocumentUUID = documentUUID,
-                                IpAddress = lIpAdress.Text,
-                                ProccessNo = textEdit1.Text,
-                                Cash = incomingSum,
-                                Card = card_,
-                                Total = umumi_mebleg_,
-                                Cashier = tUsername.Text,
-                                Customer = _customer,
-                                Doctor = _doctor,
-                                Rrn = bankttnminputdata
-                            });
-
-                            if (IsSuccess)
-                            {
-                                clear();
-                                CalculationDelete();
+                                response = Sunmi.BankCheckStatus(lIpAdress.Text, documentUUID);
                             }
+
+
+                            if (response is null || string.IsNullOrWhiteSpace(response?.data?.rrn))
+                            {
+                                // Bank uğursuzdursa, satış dayansın
+                                return;
+                            }
+
+                            rrn = response.data.rrn;
+
                         }
+
+                        IsSuccess = Sunmi.Sales(new DTOs.SalesDto
+                        {
+                            DocumentUUID = documentUUID,
+                            IpAddress = lIpAdress.Text,
+                            ProccessNo = textEdit1.Text,
+                            Cash = incomingSum,
+                            Card = card_,
+                            Total = umumi_mebleg_,
+                            Cashier = tUsername.Text,
+                            Customer = _customer,
+                            Doctor = _doctor,
+                            Rrn = !string.IsNullOrWhiteSpace(rrn) ? rrn : bankttnminputdata
+                        });
+
+                        if (IsSuccess)
+                        {
+                            clear();
+                            CalculationDelete();
+                            UUIDGenerateService.Refreshid();
+                        }
+
                         break; /*SUNMI*/
                     case "2":
                         IsSuccess = await AzSmart.Sales(new DTOs.SalesDto

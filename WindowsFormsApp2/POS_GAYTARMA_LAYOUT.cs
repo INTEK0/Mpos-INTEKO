@@ -2020,18 +2020,22 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
                             });
                         }
                         bool isSuccess = false;
+                        string documentUUID = UUIDGenerateService.UUID;
                         switch (lModel.Text)
                         {
                             case "1":
                                 isSuccess = Sunmi.Refund(new DTOs.RefundDto
                                 {
                                     IpAddress = lIpAddress.Text,
+                                    DocumentUUID = documentUUID,
                                     Cashier = Cashier,
-                                    ProccessNo = textEdit1.Text
+                                    ProccessNo = textEdit1.Text,
+                                    PayType = type,
                                 });
 
                                 if (isSuccess)
                                 {
+                                    UUIDGenerateService.Refreshid();
                                     textEdit1.Text = DbProsedures.GET_RefundProccessNo();
                                     gridControl1.DataSource = null;
                                 }
