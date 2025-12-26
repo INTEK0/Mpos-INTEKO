@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 using System.Data.SqlClient;
 using WindowsFormsApp2.Helpers.DB;
 
@@ -11,7 +10,6 @@ namespace WindowsFormsApp2
         string del_migdar = "delete_calaculation_";
         string del_migdarnewsa = "delete_calaculation_newsa";
         string update_satis_giymeti = "update_giymet_calaculation_";
-        string delete_grid_pos = "delete_grid_pos";
         readonly string azsmart_rollback = "azsmart_rollback";
 
         public string AzsmartRollback(int _main_id)
@@ -31,28 +29,6 @@ namespace WindowsFormsApp2
             cmd.ExecuteNonQuery();
             con.Close();
             return param.Value.ToString();
-        }
-
-        public void del_grid_data(int mal_id_, string emeliyyat_nomr_)
-        {
-            // Create ADO.NET objects.
-            SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString);
-            SqlCommand cmd = new SqlCommand(delete_grid_pos, con);
-            // Configure command and add input parameters.
-            cmd.CommandType = CommandType.StoredProcedure;
-            SqlParameter param;
-            param = cmd.Parameters.Add("@mal_details_id", SqlDbType.Int);
-            param.Value = mal_id_;
-            param = cmd.Parameters.Add("@emeliyyat_nomre", SqlDbType.NVarChar, 100);
-            param.Value = emeliyyat_nomr_;
-            param = cmd.Parameters.Add("@userId", SqlDbType.NVarChar, 100);
-            param.Value = Properties.Settings.Default.UserID;
-
-
-            con.Open();
-            cmd.ExecuteNonQuery();
-            con.Close();
-
         }
 
         public void update_satis_giymeti_(int mal_details_id_, decimal giymet_)

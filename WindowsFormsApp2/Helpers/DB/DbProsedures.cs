@@ -857,6 +857,20 @@ WHERE date_ BETWEEN CAST(GETDATE() AS DATE) AND DATEADD(DAY, 1, CAST(GETDATE() A
             }
         }
 
+        public static void DELETE_PosGridScreen(int productId, string proccessNo)
+        {
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand("delete_grid_pos", con))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@mal_details_id", SqlDbType.Int).Value = productId;
+                cmd.Parameters.Add("@emeliyyat_nomre", SqlDbType.NVarChar, 100).Value = proccessNo;
+                cmd.Parameters.Add("@userId", SqlDbType.Int).Value = UserCacheService.User.Id;
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
         #endregion [.. SALES AND REFUND ..]
 
 
@@ -2569,7 +2583,7 @@ FROM
 
                 param = cmd.Parameters.Add("@EMPCOUNT", SqlDbType.Int);
                 param.Direction = ParameterDirection.Output;
-          
+
                 con.Open();
                 cmd.ExecuteNonQuery();
                 return Convert.ToInt32(param.Value);
@@ -2704,14 +2718,12 @@ WHERE UserId = {Properties.Settings.Default.UserID}";
 
         public static void PrinterRemove(int Id)
         {
+            string query = $"DELETE FROM PRINTERS WHERE Id ={Id}";
             using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, con))
             {
-                string query = $"DELETE FROM PRINTERS WHERE Id ={Id}";
-                using (SqlCommand cmd = new SqlCommand(query, con))
-                {
-                    con.Open();
-                    cmd.ExecuteNonQuery();
-                }
+                con.Open();
+                cmd.ExecuteNonQuery();
             }
         }
 

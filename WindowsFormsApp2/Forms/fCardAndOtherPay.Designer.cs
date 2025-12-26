@@ -73,7 +73,7 @@
             this.bCard.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
             this.bCard.Size = new System.Drawing.Size(222, 110);
             this.bCard.TabIndex = 23;
-            this.bCard.Text = "NAĞDSIZ ÖDƏNİŞ";
+            this.bCard.Text = "NFC İLƏ ÖDƏNİŞ";
             this.bCard.Click += new System.EventHandler(this.bCard_Click);
             // 
             // bOtherPay
@@ -96,7 +96,7 @@
             this.bOtherPay.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
             this.bOtherPay.Size = new System.Drawing.Size(222, 110);
             this.bOtherPay.TabIndex = 23;
-            this.bOtherPay.Text = "DİGƏR \r\n(Online ödənişlər)";
+            this.bOtherPay.Text = "SADƏ ÖDƏNİŞ";
             this.bOtherPay.Click += new System.EventHandler(this.bOtherPay_Click);
             // 
             // fCardAndOtherPay
@@ -113,7 +113,7 @@
             this.MinimumSize = new System.Drawing.Size(460, 150);
             this.Name = "fCardAndOtherPay";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Mpos";
+            this.Text = "eMpos";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.fCardAndOtherPay_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).EndInit();
             this.tablePanel1.ResumeLayout(false);

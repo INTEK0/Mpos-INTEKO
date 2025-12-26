@@ -190,6 +190,7 @@ namespace WindowsFormsApp2
             this.Name = "KREDITODENISHESABAT1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Kredit ödəniş hesabatı";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.KREDITODENISHESABAT1_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).EndInit();

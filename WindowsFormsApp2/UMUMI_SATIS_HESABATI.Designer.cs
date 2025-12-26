@@ -189,6 +189,7 @@ namespace WindowsFormsApp2
             this.Name = "UMUMI_SATIS_HESABATI";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ÜMUMİ SATIŞ HESABATI";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.UMUMI_SATIS_HESABATI_Load);
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();

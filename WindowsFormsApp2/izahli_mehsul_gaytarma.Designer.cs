@@ -191,6 +191,7 @@ namespace WindowsFormsApp2
             this.Name = "izahli_mehsul_gaytarma";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "İZAHLI MƏHSUL QAYTARMA";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.izahli_mehsul_gaytarma_Load);
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();

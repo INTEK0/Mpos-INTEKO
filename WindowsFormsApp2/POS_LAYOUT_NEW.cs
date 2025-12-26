@@ -941,11 +941,9 @@ LEFT JOIN pos_guzest pg
             {
                 DataRow row = gridView1.GetDataRow(i);
 
-                int B = Convert.ToInt32(row[0].ToString());
-                if (B > 0)
-                {
-                    st_.del_grid_data(B, textEdit1.Text);
-                }
+                int productId = Convert.ToInt32(row[0].ToString());
+                if (productId > 0)
+                    DbProsedures.DELETE_PosGridScreen(productId, textEdit1.Text);
             }
 
             await get(textEdit1.Text);
@@ -966,6 +964,8 @@ LEFT JOIN pos_guzest pg
         {
             if (!string.IsNullOrEmpty(textEdit6.Text))
             {
+                decimal totalAmount = Convert.ToDecimal(textEdit6.Text);
+
                 Cursor.Current = Cursors.WaitCursor;
                 decimal total = Decimal.Parse(textEdit6.Text);
                 if (UserCacheService.User.UserRole.PosSalePriceLimit != null &&
@@ -977,307 +977,99 @@ LEFT JOIN pos_guzest pg
                     return;
                 }
 
-
-
+                #region Məhsulların mənfiyə getməsinə icazə verilib verilmədiyini kontrol edir
                 int number = 0;
-                decimal saysa24 = 0;
-                int numberkontrol = 0;
+                decimal DbProductquantity = 0;
 
-                //Məhsulların mənfiyə getməsinə icazə verilib verilmədiyini kontrol edir
+                string queryString = "SELECT STATUS FROM MENFI_AC_BAGLA";
+
                 using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+                using (SqlCommand command = new SqlCommand(queryString, connection))
+                using (SqlDataAdapter da = new SqlDataAdapter(command))
+                using (DataTable dt = new DataTable())
                 {
-                    string queryString = "SELECT STATUS FROM MENFI_AC_BAGLA";
-                    using (SqlCommand command = new SqlCommand(queryString, connection))
+                    da.Fill(dt);
+                    number = dt.Rows[0].Field<int>("STATUS");
+                }
+
+                if (number is 0)
+                {
+                    for (int i = 0; i < gridView1.DataRowCount; i++)
                     {
-                        using (SqlDataAdapter da = new SqlDataAdapter(command))
+                        DataRow row = gridView1.GetDataRow(i);
+                        string query = $@"SELECT 
+  sum(migdar_) as miktar 
+FROM 
+  dbo.GAIME_SATIS_SEARCH_menfi_ACIG() 
+where 
+  [MƏHSUL ADI] = N'{row["MƏHSUL ADI"].ToString()}' 
+  and [MƏHSUL KODU] =(
+    select 
+      [MEHSUL_KODU] 
+    from 
+      [MAL_ALISI_DETAILS] 
+    where 
+      [MAL_ALISI_DETAILS_ID] = {Convert.ToInt32(row["MAL_ALISI_DETAILS_ID"])}
+  ) 
+group by 
+  TECHIZATCI_ID, 
+  [TƏCHİZATÇI], 
+  [MƏHSUL ADI], 
+  [MƏHSUL KODU], 
+  BARKOD";
+
+                        using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
+                        using (SqlCommand cmd = new SqlCommand(query, con))
                         {
-                            using (DataTable dt = new DataTable())
+                            con.Open();
+                            decimal selectedProductQuantity = Convert.ToDecimal(row["SAY"]);
+                            using (SqlDataReader dr = cmd.ExecuteReader())
                             {
-                                da.Fill(dt);
-                                number = dt.Rows[0].Field<int>("STATUS");
+                                if (dr.Read())
+                                    DbProductquantity = Convert.ToDecimal(dr["miktar"].ToString());
+                                if ((DbProductquantity - selectedProductQuantity) < 0)
+                                {
+                                    XtraMessageBox.Show($"Satılan məhsul sayı anbardakı qalıqdan çoxdur \nMəhsul adı: {row["MƏHSUL ADI"].ToString()}\nAnbar qalığı: {DbProductquantity.ToString("N2")}", "Bildiriş", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                    //return;
+                                }
                             }
                         }
                     }
                 }
+                #endregion
 
                 if (type is Enums.PayType.Cash)
                 {
-                    if (number == 0)
-                    {
-                        for (int i = 0; i < gridView1.DataRowCount; i++)
-                        {
-                            DataRow row = gridView1.GetDataRow(i);
-                            SqlConnection connection4 = new SqlConnection(DbHelpers.CurrentConnectionString);
-                            string queryStringk = "SELECT sum(migdar_) as miktar FROM dbo.GAIME_SATIS_SEARCH_menfi_ACIG() where [MƏHSUL ADI]=N'" + row["MƏHSUL ADI"].ToString() + "' and [MƏHSUL KODU]=(select [MEHSUL_KODU]from [MAL_ALISI_DETAILS] where [MAL_ALISI_DETAILS_ID]=" + Convert.ToInt32(row["MAL_ALISI_DETAILS_ID"]) + " ) group by TECHIZATCI_ID ,[TƏCHİZATÇI] ,[MƏHSUL ADI],  [MƏHSUL KODU], BARKOD";
-                            connection4.Open();
-                            SqlCommand command4 = new SqlCommand(queryStringk, connection4);
-                            decimal saysa = Convert.ToDecimal(row["SAY"]);
-                            SqlDataReader dr4 = command4.ExecuteReader();
-                            while (dr4.Read())
-                            {
-                                saysa24 = Convert.ToDecimal(dr4["miktar"].ToString());
-                            }
-                            if ((saysa24 - saysa) < 0)
-                            {
-                                numberkontrol = numberkontrol + 1;
-                                XtraMessageBox.Show($"Satılan məhsul sayı anbardakı qalıqdan çoxdur \nMəhsul adı: {row["MƏHSUL ADI"].ToString()}\nAnbar qalığı: {saysa24.ToString("N2")}", "Bildiriş", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            }
-                            else
-                            {
-                                numberkontrol = numberkontrol + 0;
-                            }
-                        }
-                        if (numberkontrol == 0)
-                        {
-                            decimal f = Convert.ToDecimal(textEdit6.Text);
-
-                            bank n = new bank(f, this);
-
-                            n.ShowDialog();
-                        }
-                    }
-                    else
-                    {
-                        decimal f = Convert.ToDecimal(textEdit6.Text);
-                        bank n = new bank(f, this);
-                        n.ShowDialog();
-                    }
+                    bank n = new bank(totalAmount, this);
+                    n.ShowDialog();
                 }
                 else if (type is Enums.PayType.Card)
                 {
-                    if (number == 0)
-                    {
-                        for (int i = 0; i < gridView1.DataRowCount; i++)
-                        {
-                            DataRow row = gridView1.GetDataRow(i);
-
-                            SqlConnection connection4 = new SqlConnection(Properties.Settings.Default.SqlCon);
-                            string queryStringk = "SELECT sum(   migdar_ ) as miktar   FROM dbo.GAIME_SATIS_SEARCH_menfi_ACIG() where [MƏHSUL ADI]=N'" + row["MƏHSUL ADI"].ToString() + "' and [MƏHSUL KODU]=(select [MEHSUL_KODU]from [MAL_ALISI_DETAILS] where [MAL_ALISI_DETAILS_ID]=" + Convert.ToInt32(row["MAL_ALISI_DETAILS_ID"]) + " ) group by TECHIZATCI_ID ,[TƏCHİZATÇI] ,[MƏHSUL ADI],  [MƏHSUL KODU],BARKOD  ";
-                            connection4.Open();
-                            SqlCommand command4 = new SqlCommand(queryStringk, connection4);
-                            decimal saysa = Convert.ToDecimal(row["SAY"]);
-                            SqlDataReader dr4 = command4.ExecuteReader();
-                            while (dr4.Read())
-                            {
-                                saysa24 = Convert.ToDecimal(dr4["miktar"].ToString());
-                            }
-                            if ((saysa24 - saysa) < 0)
-
-                            {
-                                numberkontrol = numberkontrol + 1;
-                                XtraMessageBox.Show($"Satılan məhsul sayı anbardakı qalıqdan çoxdur \nMəhsul adı: {row["MƏHSUL ADI"].ToString()}\nAnbar qalığı: {saysa24.ToString("N2")}", "Bildiriş", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            }
-                            else
-                            {
-                                numberkontrol = numberkontrol + 0;
-
-                            }
-                        }
-                        if (numberkontrol == 0)
-                        {
-
-                            decimal f = Convert.ToDecimal(textEdit6.Text);
-                            //bool clinic = false;
-                            //DialogResult result = XtraMessageBox.Show("A4 sənədi çap edilsin ?", nameof(HeaderMessage.Mesaj), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                            //if (result is DialogResult.Yes)
-                            //{
-                            //    clinic = true;
-                            //}
-
-                            gelen_data_negd_pos(0, f, f, 0, 0, false);
-                        }
-                    }
-                    else
-                    {
-                        decimal f = Convert.ToDecimal(textEdit6.Text);
-
-                        //bool clinic = false;
-                        //DialogResult result = XtraMessageBox.Show("A4 sənədi çap edilsin ?", nameof(HeaderMessage.Mesaj), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                        //if (result is DialogResult.Yes)
-                        //{
-                        //    clinic = true;
-                        //}
-                        gelen_data_negd_pos(0, f, f, 0, 0, false);
-                    }
+                    //bool clinic = false;
+                    //DialogResult result = XtraMessageBox.Show("A4 sənədi çap edilsin ?", nameof(HeaderMessage.Mesaj), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    //if (result is DialogResult.Yes)
+                    //{
+                    //    clinic = true;
+                    //}
+                    gelen_data_negd_pos(0, totalAmount, totalAmount, 0, 0, false, type);
                 }
                 else if (type is Enums.PayType.CashCard)
                 {
-                    if (number == 0)
-                    {
-                        for (int i = 0; i < gridView1.DataRowCount; i++)
-                        {
-                            DataRow row = gridView1.GetDataRow(i);
-
-                            SqlConnection connection4 = new SqlConnection(Properties.Settings.Default.SqlCon);
-                            string queryStringk = "SELECT sum(   migdar_ ) as miktar   FROM dbo.GAIME_SATIS_SEARCH_menfi_ACIG() where [MƏHSUL ADI]=N'" + row["MƏHSUL ADI"].ToString() + "' and [MƏHSUL KODU]=(select [MEHSUL_KODU]from [MAL_ALISI_DETAILS] where [MAL_ALISI_DETAILS_ID]=" + Convert.ToInt32(row["MAL_ALISI_DETAILS_ID"]) + " ) group by TECHIZATCI_ID ,[TƏCHİZATÇI] ,[MƏHSUL ADI],  [MƏHSUL KODU],BARKOD  ";
-                            connection4.Open();
-                            SqlCommand command4 = new SqlCommand(queryStringk, connection4);
-                            decimal saysa = Convert.ToDecimal(row["SAY"]);
-                            SqlDataReader dr4 = command4.ExecuteReader();
-                            while (dr4.Read())
-                            {
-                                saysa24 = Convert.ToDecimal(dr4["miktar"].ToString());
-                            }
-                            if ((saysa24 - saysa) < 0)
-                            {
-                                numberkontrol = numberkontrol + 1;
-                                XtraMessageBox.Show($"Satılan məhsul sayı anbardakı qalıqdan çoxdur \nMəhsul adı: {row["MƏHSUL ADI"].ToString()}\nAnbar qalığı: {saysa24.ToString("N2")}", "Bildiriş", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            }
-                            else
-                            {
-                                numberkontrol = numberkontrol + 0;
-
-                            }
-                        }
-                        if (numberkontrol == 0)
-                        {
-                            decimal f = Convert.ToDecimal(textEdit6.Text);
-
-                            nagd_kart nk = new nagd_kart(f, this);
-                            nk.ShowDialog();
-                        }
-                    }
-                    else
-                    {
-                        decimal f = Convert.ToDecimal(textEdit6.Text);
-
-                        nagd_kart nk = new nagd_kart(f, this);
-                        nk.ShowDialog();
-                    }
+                    nagd_kart nk = new nagd_kart(totalAmount, this);
+                    nk.ShowDialog();
                 }
                 else if (type is Enums.PayType.Prepayment)
                 {
-                    if (number == 0)
-                    {
-                        for (int i = 0; i < gridView1.DataRowCount; i++)
-                        {
-                            DataRow row = gridView1.GetDataRow(i);
-
-                            SqlConnection connection4 = new SqlConnection(Properties.Settings.Default.SqlCon);
-                            string queryStringk = "SELECT sum(   migdar_ ) as miktar   FROM dbo.GAIME_SATIS_SEARCH_menfi_ACIG() where [MƏHSUL ADI]=N'" + row["MƏHSUL ADI"].ToString() + "' and [MƏHSUL KODU]=(select [MEHSUL_KODU]from [MAL_ALISI_DETAILS] where [MAL_ALISI_DETAILS_ID]=" + Convert.ToInt32(row["MAL_ALISI_DETAILS_ID"]) + " ) group by TECHIZATCI_ID ,[TƏCHİZATÇI] ,[MƏHSUL ADI],  [MƏHSUL KODU],BARKOD  ";
-                            connection4.Open();
-                            SqlCommand command4 = new SqlCommand(queryStringk, connection4);
-                            decimal saysa = Convert.ToDecimal(row["SAY"]);
-                            SqlDataReader dr4 = command4.ExecuteReader();
-                            while (dr4.Read())
-                            {
-                                saysa24 = Convert.ToDecimal(dr4["miktar"].ToString());
-                            }
-                            if ((saysa24 - saysa) < 0)
-                            {
-                                numberkontrol = numberkontrol + 1;
-                                XtraMessageBox.Show($"Satılan məhsul sayı anbardakı qalıqdan çoxdur \nMəhsul adı: {row["MƏHSUL ADI"].ToString()}\nAnbar qalığı: {saysa24.ToString("N2")}", "Bildiriş", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            }
-                            else
-                            {
-                                numberkontrol = numberkontrol + 0;
-
-                            }
-                        }
-                        if (numberkontrol == 0)
-                        {
-                            decimal f = Convert.ToDecimal(textEdit6.Text);
-
-                            prenagdkart nk = new prenagdkart(f, this);
-                            nk.ShowDialog();
-                        }
-                    }
-                    else
-                    {
-                        decimal f = Convert.ToDecimal(textEdit6.Text);
-
-                        prenagdkart nk = new prenagdkart(f, this);
-                        nk.ShowDialog();
-                    }
+                    prenagdkart nk = new prenagdkart(totalAmount, this);
+                    nk.ShowDialog();
                 }
                 else if (type is PayType.OtherPay)
                 {
-                    if (number == 0)
-                    {
-
-                        for (int i = 0; i < gridView1.DataRowCount; i++)
-                        {
-                            DataRow row = gridView1.GetDataRow(i);
-
-                            SqlConnection connection4 = new SqlConnection(Properties.Settings.Default.SqlCon);
-                            string queryStringk = "SELECT sum(   migdar_ ) as miktar   FROM dbo.GAIME_SATIS_SEARCH_menfi_ACIG() where [MƏHSUL ADI]=N'" + row["MƏHSUL ADI"].ToString() + "' and [MƏHSUL KODU]=(select [MEHSUL_KODU]from [MAL_ALISI_DETAILS] where [MAL_ALISI_DETAILS_ID]=" + Convert.ToInt32(row["MAL_ALISI_DETAILS_ID"]) + " ) group by TECHIZATCI_ID ,[TƏCHİZATÇI] ,[MƏHSUL ADI],  [MƏHSUL KODU],BARKOD  ";
-                            connection4.Open();
-                            SqlCommand command4 = new SqlCommand(queryStringk, connection4);
-                            decimal saysa = Convert.ToDecimal(row["SAY"]);
-                            SqlDataReader dr4 = command4.ExecuteReader();
-                            while (dr4.Read())
-                            {
-                                saysa24 = Convert.ToDecimal(dr4["miktar"].ToString());
-                            }
-                            if ((saysa24 - saysa) < 0)
-
-                            {
-                                numberkontrol = numberkontrol + 1;
-                                XtraMessageBox.Show($"Satılan məhsul sayı anbardakı qalıqdan çoxdur \nMəhsul adı: {row["MƏHSUL ADI"].ToString()}\nAnbar qalığı: {saysa24.ToString("N2")}", "Bildiriş", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            }
-                            else
-                            {
-                                numberkontrol = numberkontrol + 0;
-
-                            }
-                        }
-                        if (numberkontrol == 0)
-                        {
-                            decimal f = Convert.ToDecimal(textEdit6.Text);
-
-                            gelen_data_negd_pos(0, f, f, 0, 0, false, Enums.PayType.OtherPay);
-                        }
-                    }
-                    else
-                    {
-                        decimal f = Convert.ToDecimal(textEdit6.Text);
-                        gelen_data_negd_pos(0, f, f, 0, 0, false, Enums.PayType.OtherPay);
-                    }
+                    gelen_data_negd_pos(0, totalAmount, totalAmount, 0, 0, false, Enums.PayType.OtherPay);
                 }
                 else if (type is PayType.Installment)
                 {
-                    if (number == 0)
-                    {
-                        for (int i = 0; i < gridView1.DataRowCount; i++)
-                        {
-                            DataRow row = gridView1.GetDataRow(i);
-
-                            SqlConnection connection4 = new SqlConnection(Properties.Settings.Default.SqlCon);
-                            string queryStringk = "SELECT sum(   migdar_ ) as miktar   FROM dbo.GAIME_SATIS_SEARCH_menfi_ACIG() where [MƏHSUL ADI]=N'" + row["MƏHSUL ADI"].ToString() + "' and [MƏHSUL KODU]=(select [MEHSUL_KODU]from [MAL_ALISI_DETAILS] where [MAL_ALISI_DETAILS_ID]=" + Convert.ToInt32(row["MAL_ALISI_DETAILS_ID"]) + " ) group by TECHIZATCI_ID ,[TƏCHİZATÇI] ,[MƏHSUL ADI],  [MƏHSUL KODU],BARKOD  ";
-                            connection4.Open();
-                            SqlCommand command4 = new SqlCommand(queryStringk, connection4);
-                            decimal saysa = Convert.ToDecimal(row["SAY"]);
-                            SqlDataReader dr4 = command4.ExecuteReader();
-                            while (dr4.Read())
-                            {
-                                saysa24 = Convert.ToDecimal(dr4["miktar"].ToString());
-                            }
-                            if ((saysa24 - saysa) < 0)
-
-                            {
-                                numberkontrol = numberkontrol + 1;
-                                XtraMessageBox.Show($"Satılan məhsul sayı anbardakı qalıqdan çoxdur \nMəhsul adı: {row["MƏHSUL ADI"].ToString()}\nAnbar qalığı: {saysa24.ToString("N2")}", "Bildiriş", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            }
-                            else
-                            {
-                                numberkontrol = numberkontrol + 0;
-
-                            }
-                        }
-                        if (numberkontrol == 0)
-                        {
-
-                            decimal f = Convert.ToDecimal(textEdit6.Text);
-
-                            AzSmartInstallmentSales(lIpAdress.Text, tUsername.Text, f);
-                        }
-                    }
-                    else
-                    {
-                        decimal f = Convert.ToDecimal(textEdit6.Text);
-
-                        AzSmartInstallmentSales(lIpAdress.Text, tUsername.Text, f);
-                    }
+                    AzSmartInstallmentSales(lIpAdress.Text, tUsername.Text, totalAmount);
                 }
                 tBarcode.Focus();
             }
@@ -1296,18 +1088,12 @@ LEFT JOIN pos_guzest pg
                 fCardAndOtherPay f = new fCardAndOtherPay();
                 var result = f.ShowDialog();
                 if (result is DialogResult.Yes)
-                {
                     Payment(Enums.PayType.OtherPay);
-                }
                 else if (result is DialogResult.No)
-                {
                     Payment(Enums.PayType.Card);
-                }
             }
             else
-            {
                 Payment(Enums.PayType.Card);
-            }
         }
 
         private void simpleButton7_Click(object sender, EventArgs e)
@@ -2210,21 +1996,11 @@ LEFT JOIN pos_guzest pg
             {
                 var row = gridView1.GetFocusedDataRow();
 
-                int result = Convert.ToInt32(row[0].ToString());
-                if (result > 0)
+                int productId = Convert.ToInt32(row[0].ToString());
+                if (productId > 0)
                 {
-                    st_.del_grid_data(result, textEdit1.Text);
+                    DbProsedures.DELETE_PosGridScreen(productId, textEdit1.Text);
                 }
-                //foreach (int i in gridView1.GetSelectedRows())
-                //{
-                //    DataRow row1 = gridView1.GetDataRow(i);
-
-                //    int B = Convert.ToInt32(row[0].ToString());
-                //    if (B > 0)
-                //    {
-                //        st_.del_grid_data(B, textEdit1.Text);
-                //    }
-                //}
 
                 await get(textEdit1.Text);
                 tBarcode.Text = string.Empty;
@@ -2657,38 +2433,6 @@ LEFT JOIN pos_guzest pg
                 switch (lModel.Text)
                 {
                     case "1":
-                        bool bankIsRequired = card_ > 0 &&
-                            !string.IsNullOrWhiteSpace(UserCacheService.Terminal.BankName);
-
-                        string rrn = null;
-
-                        if (bankIsRequired)
-                        {
-                            var responseBank = Sunmi.SaleBank(new DTOs.SalesDto
-                            {
-                                DocumentUUID = documentUUID,
-                                IpAddress = lIpAdress.Text,
-                                Card = card_
-                            });
-
-                            Sunmi.BankResponse response = new Sunmi.BankResponse();
-
-                            if (responseBank)
-                            {
-                                response = Sunmi.BankCheckStatus(lIpAdress.Text, documentUUID);
-                            }
-
-
-                            if (response is null || string.IsNullOrWhiteSpace(response?.data?.rrn))
-                            {
-                                // Bank uğursuzdursa, satış dayansın
-                                return;
-                            }
-
-                            rrn = response.data.rrn;
-
-                        }
-
                         IsSuccess = Sunmi.Sales(new DTOs.SalesDto
                         {
                             DocumentUUID = documentUUID,
@@ -2700,14 +2444,14 @@ LEFT JOIN pos_guzest pg
                             Cashier = tUsername.Text,
                             Customer = _customer,
                             Doctor = _doctor,
-                            Rrn = !string.IsNullOrWhiteSpace(rrn) ? rrn : bankttnminputdata
+                            PayType = payType,
+                            Rrn = bankttnminputdata
                         });
 
                         if (IsSuccess)
                         {
                             clear();
                             CalculationDelete();
-                            UUIDGenerateService.Refreshid();
                         }
 
                         break; /*SUNMI*/
@@ -2805,6 +2549,7 @@ LEFT JOIN pos_guzest pg
                 _doctor = null;
                 tCustomer.Clear();
                 tDoctor.Clear();
+                UUIDGenerateService.Refreshid();
             }
 
             tBarcode.Focus();

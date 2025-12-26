@@ -217,11 +217,11 @@ namespace WindowsFormsApp2
 
             try
             {
-                string message = "Excel faylına istəyə görə bütün məhsulları vəya KQ olan məhsulları yazdıra bilərsiniz.\n\n" +
-             "Yes/Да - Bütün məhsulları yazdır\n" +
-             "No/Нет - Vahidi KQ olan məhsulları yazdır\n" +
-             "Cancel/Отмена - Ləğv et";
+                string message = "Tərəziyə istəyə görə bütün məhsulları vəya Çəki məhsullarını yazdıra bilərsiniz.\n\n" +
+             "Bəli - Bütün məhsulları yazdır\n" +
+             "Xeyr - Çəki məhsullarını yazdır\n";
 
+                MessageBoxManager.Register();
                 DialogResult result = MessageBox.Show(message, "Mesaj", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
                 string query = string.Empty;
 
@@ -236,6 +236,7 @@ namespace WindowsFormsApp2
                     default: return;
 
                 }
+                MessageBoxManager.Unregister();
 
 
                 using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))

@@ -59,6 +59,7 @@ namespace WindowsFormsApp2
             this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.tReturnQuantity = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
             this.memoEdit1 = new DevExpress.XtraEditors.MemoEdit();
             this.textEdit1 = new DevExpress.XtraEditors.TextEdit();
             this.bCardReturn = new DevExpress.XtraEditors.SimpleButton();
@@ -89,7 +90,6 @@ namespace WindowsFormsApp2
             this.emptySpaceItem9 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem10 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.tReturnQuantity = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.textEdit6.Properties)).BeginInit();
@@ -99,6 +99,7 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.dateEdit4.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tReturnQuantity)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.memoEdit1.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.textEdit1.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
@@ -128,7 +129,6 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem10)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tReturnQuantity)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -481,6 +481,11 @@ namespace WindowsFormsApp2
             this.gridColumn12.Visible = true;
             this.gridColumn12.VisibleIndex = 9;
             // 
+            // tReturnQuantity
+            // 
+            this.tReturnQuantity.AutoHeight = false;
+            this.tReturnQuantity.Name = "tReturnQuantity";
+            // 
             // memoEdit1
             // 
             this.memoEdit1.Location = new System.Drawing.Point(166, 209);
@@ -494,6 +499,7 @@ namespace WindowsFormsApp2
             // 
             // textEdit1
             // 
+            this.textEdit1.Enabled = false;
             this.textEdit1.Location = new System.Drawing.Point(166, 135);
             this.textEdit1.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.textEdit1.Name = "textEdit1";
@@ -735,7 +741,6 @@ namespace WindowsFormsApp2
             this.layoutControlItem17.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem17.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem17.TextVisible = false;
-            this.layoutControlItem17.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // layoutControlItem19
             // 
@@ -798,11 +803,6 @@ namespace WindowsFormsApp2
             this.emptySpaceItem10.Size = new System.Drawing.Size(892, 72);
             this.emptySpaceItem10.TextSize = new System.Drawing.Size(0, 0);
             // 
-            // tReturnQuantity
-            // 
-            this.tReturnQuantity.AutoHeight = false;
-            this.tReturnQuantity.Name = "tReturnQuantity";
-            // 
             // POS_GAYTARMA_LAYOUT
             // 
             this.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(245)))), ((int)(((byte)(250)))));
@@ -831,6 +831,7 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.dateEdit4.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tReturnQuantity)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.memoEdit1.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.textEdit1.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
@@ -860,7 +861,6 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem10)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tReturnQuantity)).EndInit();
             this.ResumeLayout(false);
 
         }

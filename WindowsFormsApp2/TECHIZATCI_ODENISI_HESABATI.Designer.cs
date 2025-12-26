@@ -781,6 +781,7 @@ namespace WindowsFormsApp2
             this.Name = "TECHIZATCI_ODENISI_HESABATI";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "TƏCHİZATÇI ÖDƏNİŞİ HESABATI";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.TECHIZATCI_ODENISI_HESABATI_Load);
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();

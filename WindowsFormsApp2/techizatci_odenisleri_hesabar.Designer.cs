@@ -218,7 +218,7 @@ namespace WindowsFormsApp2
             this.tTaxDebt.Properties.MaskSettings.Set("mask", "f");
             this.tTaxDebt.Properties.NullText = "0";
             this.tTaxDebt.Properties.UseMaskAsDisplayFormat = true;
-            this.tTaxDebt.Size = new System.Drawing.Size(188, 28);
+            this.tTaxDebt.Size = new System.Drawing.Size(188, 30);
             this.tTaxDebt.TabIndex = 15;
             // 
             // labelControl2
@@ -253,7 +253,7 @@ namespace WindowsFormsApp2
             this.tMainDebt.Properties.MaskSettings.Set("mask", "f");
             this.tMainDebt.Properties.NullText = "0";
             this.tMainDebt.Properties.UseMaskAsDisplayFormat = true;
-            this.tMainDebt.Size = new System.Drawing.Size(188, 28);
+            this.tMainDebt.Size = new System.Drawing.Size(188, 30);
             this.tMainDebt.TabIndex = 15;
             // 
             // labelControl1
@@ -288,7 +288,7 @@ namespace WindowsFormsApp2
             this.tTotalAmount.Properties.MaskSettings.Set("mask", "f");
             this.tTotalAmount.Properties.NullText = "0";
             this.tTotalAmount.Properties.UseMaskAsDisplayFormat = true;
-            this.tTotalAmount.Size = new System.Drawing.Size(188, 28);
+            this.tTotalAmount.Size = new System.Drawing.Size(188, 30);
             this.tTotalAmount.TabIndex = 15;
             // 
             // labelControl3
@@ -317,6 +317,7 @@ namespace WindowsFormsApp2
             this.Name = "techizatci_odenisleri_hesabar";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "TƏCHİZATÇI BORCLARI";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Activated += new System.EventHandler(this.techizatci_odenisleri_hesabar_Activated);
             this.Load += new System.EventHandler(this.techizatci_odenisleri_hesabar_Load);
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();

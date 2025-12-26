@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 using RestSharp;
 using WindowsFormsApp2.Helpers;
+using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using static DTOs;
@@ -174,7 +176,7 @@ namespace WindowsFormsApp2.NKA
                 SqlConnection conn = new SqlConnection(DbHelpers.CurrentConnectionString);
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@UserID", Properties.Settings.Default.UserID);
+                cmd.Parameters.AddWithValue("@UserID", UserCacheService.User.Id);
                 conn.Open();
 
                 SqlDataReader dr = cmd.ExecuteReader();
@@ -193,7 +195,7 @@ namespace WindowsFormsApp2.NKA
 
 
                     int miqdar = Convert.ToInt32(quantity * 1000);
-                    int price = Convert.ToInt32(salePrice * quantity * 100);
+                    int price = Convert.ToInt32(Math.Round(salePrice * quantity * 100, MidpointRounding.AwayFromZero));
 
                     int? purchasePrice = Convert.ToInt32(_purchasePrice * 100);
                     int? purchasePriceSum = Convert.ToInt32(_purchasePrice * quantity * 100);
@@ -271,9 +273,9 @@ namespace WindowsFormsApp2.NKA
                             posNomre = response.data.fiscalNum,
                             longFiskalId = response.data.fiscalID,
                             proccessNo = salesData.ProccessNo,
-                            cash = cash,
-                            card = card,
-                            total = total,
+                            cash = salesData.Cash,
+                            card = salesData.Card,
+                            total = salesData.Total,
                             json = json,
                             shortFiskalId = null,
                             rrn = response.data.rrn,
@@ -1436,7 +1438,7 @@ namespace WindowsFormsApp2.NKA
             public string fiscalID { get; set; }
             public string fiscalNum { get; set; }
             public string preview_data { get; set; }
-            public int printError { get; set; }
+            //public int printError { get; set; }
             public string printTime { get; set; }
             public string rrn { get; set; }
             public int shiftOrdersCnt { get; set; }
@@ -1448,7 +1450,7 @@ namespace WindowsFormsApp2.NKA
                 public string card_num { get; set; }
                 public int change { get; set; }
                 public string checkNum { get; set; }
-                public string extraParams { get; set; }
+                //public string extraParams { get; set; }
                 public int id { get; set; }
                 public string name { get; set; }
                 public string notes { get; set; }

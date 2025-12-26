@@ -59,8 +59,6 @@ namespace WindowsFormsApp2
             DateTime dateTime = DateTime.UtcNow.Date;
             dateEdit1.Text = dateTime.ToShortDateString();
             dateEdit4.Text = dateTime.ToShortDateString();
-
-            textEdit1.Enabled = false;
             if (lModel.Text == "1")
             {
                 layoutControlItem4.AllowHide = true;
@@ -73,10 +71,6 @@ namespace WindowsFormsApp2
             else
             {
                 layoutControlItem4.AllowHide = false;
-            }
-            if (lModel.Text is "1" || lModel.Text is "3" || lModel.Text is "5" || lModel.Text is "2" || lModel.Text is "6" || lModel.Text is "7")
-            {
-                layoutControlItem17.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
             }
             bankttnmcontrols();
         }
@@ -1983,27 +1977,18 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
         private void ReturnSales(Enums.PayType type)
         {
             Cursor.Current = Cursors.WaitCursor;
-            int z = count_grid();
-            int a = check_say();
             decimal fr;
-            if (z == 1)
-            {
+            if (ReturnQuantityValidation())
                 XtraMessageBox.Show("MİQDAR 0 OLA BİLMƏZ");
-            }
+
             else
             {
-                if (a > 0)
-                {
-                    XtraMessageBox.Show("QAYTARILACAQ MİQDAR SAY DAN KİÇİK OLA BİLMƏZ");
-                }
+                if (QuantityValidation())
+                    ReadyMessages.ERROR_DEFAULT_MESSAGE("Qaytarılan miqdar satılan miqdardan çox ola bilməz !");
+                
+
                 else
                 {
-                    if (string.IsNullOrEmpty(textEdit1.Text))
-                    {
-                        MessageBox.Show("Əməliyyat nömrəsi boşdur");
-                    }
-                    else
-                    {
                         Cursor.Current = Cursors.WaitCursor;
 
                         foreach (int i in gridView1.GetSelectedRows())
@@ -2406,7 +2391,7 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
                         //}
 
                         #endregion BEFORE CODE
-                    }
+                   
                 }
             }
             Cursor.Current = Cursors.Default;
@@ -2418,41 +2403,25 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
         private void bRollback_Click(object sender, EventArgs e)
         {
             Cursor.Current = Cursors.WaitCursor;
-            int z = count_grid();
-            int a = check_say();
             decimal fr;
-            if (z == 1)
-            {
-                XtraMessageBox.Show("MİQDAR 0 OLA BİLMƏZ");
-            }
+            if (ReturnQuantityValidation())
+                XtraMessageBox.Show("Qaytarılan miqdar 0(sıfır) ola bilməz !");
+
             else
             {
-                if (a > 0)
+                if (!QuantityValidation())
                 {
-                    XtraMessageBox.Show("QAYTARILACAQ MİQDAR SAY DAN KİÇİK OLA BİLMƏZ");
-                }
-                else
-                {
-
-
-                    if (string.IsNullOrEmpty(textEdit1.Text))
+                    if (lModel.Text == "2") //azsmart
                     {
-                        MessageBox.Show("Emeliyyat Nomre bosdur");
-                    }
-                    else
-                    {
-
-
-                        if (lModel.Text == "2") //azsmart
+                        foreach (int i in gridView1.GetSelectedRows())
                         {
-                            foreach (int i in gridView1.GetSelectedRows())
-                            {
-                                DataRow row = gridView1.GetDataRow(i);
-                                AzsmartRollback(lIpAddress.Text, Convert.ToInt32(row[0]));
-                            }
+                            DataRow row = gridView1.GetDataRow(i);
+                            AzsmartRollback(lIpAddress.Text, Convert.ToInt32(row[0]));
                         }
                     }
                 }
+                else
+                    XtraMessageBox.Show("QAYTARILACAQ MİQDAR SAY DAN KİÇİK OLA BİLMƏZ");
             }
             Cursor.Current = Cursors.Default;
         }
@@ -2489,37 +2458,35 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
             ReturnSales(Enums.PayType.Cash);
         }
 
-        public int count_grid()
+        /// <summary>
+        /// Qaytarılan miqdar xanasının boş olub olmadığını kontrol edir
+        /// </summary>
+        private bool ReturnQuantityValidation()
         {
-            int x = 0;
             foreach (int i in gridView1.GetSelectedRows())
             {
                 DataRow row = gridView1.GetDataRow(i);
-                var y = Convert.ToDecimal(row["QAYTARILACAQ MİQDAR"]);
-                if (y <= 0)
-                {
-                    x = 1;
-                }
-
+                var returnQuantity = Convert.ToDecimal(row["QAYTARILACAQ MİQDAR"]);
+                if (returnQuantity <= 0)
+                    return true;
             }
-            return x;
+            return false;
         }
 
-        public int check_say()
+        /// <summary>
+        /// Qaytarılan məhsulun satılan məhsuldan çox olmamasını kontrol edir
+        /// </summary>
+        private bool QuantityValidation()
         {
-            int ch = 0;
             foreach (int i in gridView1.GetSelectedRows())
             {
                 DataRow row = gridView1.GetDataRow(i);
-                var y = Convert.ToDecimal(row["SAY"]);
-                var z = Convert.ToDecimal(row["QAYTARILACAQ MİQDAR"]);
-                if (y < z)
-                {
-                    ch = 1;
-                }
-
+                var count = Convert.ToDecimal(row["SAY"]);
+                var returnCount = Convert.ToDecimal(row["QAYTARILACAQ MİQDAR"]);
+                if (count < returnCount)
+                    return true;
             }
-            return ch;
+            return false;
         }
 
         private void textEdit6_KeyPress(object sender, KeyPressEventArgs e)

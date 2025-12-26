@@ -191,6 +191,7 @@ namespace WindowsFormsApp2
             this.Name = "BANK_NEGD_HESABAT";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SATIŞ NÖV HESABATI";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.BANK_NEGD_HESABAT_Load);
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();

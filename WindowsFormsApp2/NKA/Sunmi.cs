@@ -444,7 +444,6 @@ namespace WindowsFormsApp2.NKA
                     }
                 }
 
-
                 Data data = new Data
                 {
                     documentUUID = salesData.DocumentUUID,
@@ -457,6 +456,22 @@ namespace WindowsFormsApp2.NKA
                     rrn = string.IsNullOrWhiteSpace(salesData.Rrn) ? null : salesData.Rrn,
                     moneyBackType = null
                 };
+
+                if (salesData.PayType is PayType.Card)
+                {
+                    if (SaleBank(salesData))
+                    {
+                        var responseBank = BankCheckStatus(salesData.IpAddress, salesData.DocumentUUID);
+
+                        if (responseBank is null || string.IsNullOrWhiteSpace(responseBank?.data?.rrn))
+                            return false;  // Bank uğursuzdursa, satış dayansın
+
+                        data.rrn = responseBank.data.rrn;
+                    }
+                    else
+                        return false;
+                }
+
 
                 RootObject rootObject = new RootObject
                 {
@@ -532,12 +547,12 @@ namespace WindowsFormsApp2.NKA
                     OperationId = posSaleId,
                     Message = posSaleId == 0 ? "Error" : "Success",
                     RequestCode = _requestJson,
-                    ResponseCode = _responseJson,
+                    ResponseCode = string.IsNullOrWhiteSpace(_responseJson) ? "Əlaqə zamanı xəta yarandı" : _responseJson
                 });
             }
         }
 
-        public static bool SaleBank(SalesDto salesData)
+        private static bool SaleBank(SalesDto salesData)
         {
             if (salesData.Card > 0 && !string.IsNullOrWhiteSpace(UserCacheService.Terminal.BankName))
             {
@@ -568,14 +583,13 @@ namespace WindowsFormsApp2.NKA
 
                 var response = System.Text.Json.JsonSerializer.Deserialize<BankResponse>(Restresponse.Content);
 
-                if (response.message != "error" && response.code != "506")
+                if (response != null)
                 {
                     switch (response.message)
                     {
                         case "İcra olunur":
-                            Task.Delay(3000);
+                            Task.Delay(3500);
                             return true;
-                        //return BankCheckStatus(salesData.IpAddress, salesData.DocumentUUID);
 
                         default:
                             ReadyMessages.ERROR_SALES_MESSAGE(response.message);
@@ -676,17 +690,15 @@ namespace WindowsFormsApp2.NKA
 
             var response = System.Text.Json.JsonSerializer.Deserialize<BankResponse>(Restresponse.Content);
 
-            if (response.message != "error" && response.code != "506")
+            if (response != null)
             {
                 switch (response.message)
                 {
-
+                    case "TƏSDİQLƏNDİ":
                     case "Success operation":
                         if (string.IsNullOrWhiteSpace(response?.data.rrn))
-                        {
                             goto start;
-                            //BankCheckStatus(IpAdress, uuid);
-                        }
+
                         return response;
                     default:
                         ReadyMessages.ERROR_SALES_MESSAGE(response.message);

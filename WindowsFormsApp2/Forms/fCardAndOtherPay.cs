@@ -13,9 +13,7 @@ namespace WindowsFormsApp2.Forms
         private void fCardAndOtherPay_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Escape)
-            {
                 Close();
-            }
         }
 
         private void bCard_Click(object sender, EventArgs e)
@@ -26,7 +24,6 @@ namespace WindowsFormsApp2.Forms
         private void bOtherPay_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Yes;
-
         }
     }
 }

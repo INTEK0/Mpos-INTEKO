@@ -223,6 +223,7 @@ namespace WindowsFormsApp2
             this.Name = "MEHSUL_ALIS_HESABATI";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MƏHSUL ALIŞ HESABATI";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.MEHSUL_ALIS_HESABATI_Load);
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
