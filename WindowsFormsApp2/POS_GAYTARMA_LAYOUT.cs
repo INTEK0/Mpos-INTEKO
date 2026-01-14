@@ -12,6 +12,7 @@ using System.Threading;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
+using Microsoft.Win32;
 using Newtonsoft.Json;
 using RestSharp;
 using WindowsFormsApp2.Forms;
@@ -56,22 +57,22 @@ namespace WindowsFormsApp2
             textEdit1.Text = DbProsedures.GET_RefundProccessNo();
 
 
-            DateTime dateTime = DateTime.UtcNow.Date;
+            DateTime dateTime = DateTime.Now;
             dateEdit1.Text = dateTime.ToShortDateString();
             dateEdit4.Text = dateTime.ToShortDateString();
-            if (lModel.Text == "1")
-            {
-                layoutControlItem4.AllowHide = true;
-            }
-            else if (lModel.Text == "6")
-            {
-                //NBA_GetInfo();
-                layoutControlItem4.AllowHide = false;
-            }
-            else
-            {
-                layoutControlItem4.AllowHide = false;
-            }
+            //if (lModel.Text == "1")
+            //{
+            //    layoutControlItem4.AllowHide = true;
+            //}
+            //else if (lModel.Text == "6")
+            //{
+            //    //NBA_GetInfo();
+            //    layoutControlItem4.AllowHide = false;
+            //}
+            //else
+            //{
+            //    layoutControlItem4.AllowHide = false;
+            //}
             bankttnmcontrols();
         }
 
@@ -84,72 +85,27 @@ namespace WindowsFormsApp2
 
         private void simpleButton4_Click(object sender, EventArgs e)
         {
+            UUIDGenerateService.Refreshid();
             if (!string.IsNullOrEmpty(dateEdit1.Text) || !string.IsNullOrEmpty(dateEdit4.Text))
-            {
-                if (lModel.Text == "1") //model
-                {
-                    get_date(Convert.ToDateTime(dateEdit1.Text), Convert.ToDateTime(dateEdit4.Text));
-                }
-                else if (lModel.Text == "4") //model
-                {
-                    get_date(Convert.ToDateTime(dateEdit1.Text), Convert.ToDateTime(dateEdit4.Text));
-                }
-                else if (lModel.Text == "3") //model
-                {
-                    get_date(Convert.ToDateTime(dateEdit1.Text), Convert.ToDateTime(dateEdit4.Text));
-                }
-                else if (lModel.Text == "5") //model
-                {
-                    get_date(Convert.ToDateTime(dateEdit1.Text), Convert.ToDateTime(dateEdit4.Text));
-                }
-                else if (lModel.Text == "6") //model
-                {
-                    get_date(Convert.ToDateTime(dateEdit1.Text), Convert.ToDateTime(dateEdit4.Text));
-                }
-                else if (lModel.Text == "2") //model
-                {
-                    get_date_aZSMART(Convert.ToDateTime(dateEdit1.Text), Convert.ToDateTime(dateEdit4.Text));
-                }
-                else
-                {
-                    get_date(Convert.ToDateTime(dateEdit1.Text), Convert.ToDateTime(dateEdit4.Text));
-                }
-            }
+                get_date(Convert.ToDateTime(dateEdit1.Text), Convert.ToDateTime(dateEdit4.Text));
         }
 
-        public void get_date_aZSMART(DateTime d1, DateTime d2)
+        private void get_date(DateTime d1, DateTime d2)
         {
             try
             {
+                string queryString = "select * from [dbo].[fn_pos_gaytarma_date_load] (@start ,@end) ";
+
                 using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
+                using (SqlCommand cmd  = new SqlCommand(queryString,con))
                 {
-                    string queryString = "select * from  dbo.fn_pos_gaytarma_date_load (@pricePoint ,@pricePoint1) ";
-                    using (SqlCommand cmd = new SqlCommand(queryString, con))
+                    cmd.Parameters.AddWithValue("@start", d1);
+                    cmd.Parameters.AddWithValue("@end", d2);
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    using (DataTable dt = new DataTable())
                     {
-                        cmd.Parameters.AddWithValue("@pricePoint", d1);
-                        cmd.Parameters.AddWithValue("@pricePoint1", d2);
-                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-                        {
-                            using (DataTable dt = new DataTable())
-                            {
-                                da.Fill(dt);
-                                gridControl1.DataSource = dt;
-                                if (lModel.Text is "2")
-                                {
-                                    gridView1.Columns[0].Visible = false;
-                                    gridView1.Columns[1].Visible = false;
-                                    gridView1.Columns[5].Visible = false;
-                                    gridView1.Columns[7].Visible = true;
-                                    gridView1.Columns[8].Visible = true;
-                                }
-                                else
-                                {
-                                    gridView1.Columns[0].Visible = false;
-                                    gridView1.Columns[7].Visible = false;
-                                    gridView1.Columns[8].Visible = false;
-                                }
-                            }
-                        }
+                        da.Fill(dt);
+                        gridControl1.DataSource = dt;
                     }
                 }
             }
@@ -159,38 +115,9 @@ namespace WindowsFormsApp2
             }
         }
 
-        public void get_date(DateTime d1, DateTime d2)
-        {
-            try
-            {
-                SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
-
-                string queryString = " select * from [dbo].[fn_pos_gaytarma_date_load] (@pricePoint ,@pricePoint1) ";
-
-                SqlCommand command = new SqlCommand(queryString, connection);
-                command.Parameters.AddWithValue("@pricePoint", d1);
-                command.Parameters.AddWithValue("@pricePoint1", d2);
-                SqlDataAdapter da = new SqlDataAdapter(command);
-                DataTable dt1 = new DataTable();
-                da.Fill(dt1);
-                gridControl1.DataSource = dt1;
-
-
-                gridView1.OptionsSelection.MultiSelect = true;
-                gridView1.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
-                gridView1.Columns[0].Visible = false;
-                gridView1.Columns[1].Visible = false;
-                gridView1.Columns[5].Visible = false;
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show("Xəta!\n" + e);
-            }
-        }
-
         satis_json s = new satis_json();
 
-        public void bankttnmcontrols()
+        private void bankttnmcontrols()
         {
             if (File.Exists(Application.StartupPath + @"\BankTTNM.txt"))
             {
@@ -701,8 +628,6 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
 
 
 
-
-
                 cmd2.Connection = conn2;
                 cmd2.CommandText = query2;
 
@@ -710,11 +635,8 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
 
                 while (dr2.Read())
                 {
-
-
                     string cash = dr2["NEGD_"].ToString();
                     string card = dr2["KART_"].ToString();
-
 
                     string fiscal_id = dr2["fiscal_id"].ToString();
                     string fiscalNum = dr2["fiscalNum"].ToString();
@@ -1985,413 +1907,405 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
             {
                 if (QuantityValidation())
                     ReadyMessages.ERROR_DEFAULT_MESSAGE("Qaytarılan miqdar satılan miqdardan çox ola bilməz !");
-                
+
 
                 else
                 {
-                        Cursor.Current = Cursors.WaitCursor;
+                    Cursor.Current = Cursors.WaitCursor;
 
-                        foreach (int i in gridView1.GetSelectedRows())
+                    foreach (int i in gridView1.GetSelectedRows())
+                    {
+                        DataRow row = gridView1.GetDataRow(i);
+                        fr = Convert.ToDecimal(row["QAYTARILACAQ MİQDAR"]);
+                        DbProsedures.InsertPosRefund(new DatabaseClasses.PosRefund
                         {
-                            DataRow row = gridView1.GetDataRow(i);
-                            fr = Convert.ToDecimal(row["QAYTARILACAQ MİQDAR"]);
-                            DbProsedures.InsertPosRefund(new DatabaseClasses.PosRefund
+                            proccessNo = textEdit1.Text,
+                            pos_satis_check_main_id = Convert.ToInt32(row["pos_satis_check_main_id"]),
+                            pos_satis_check_details_id = Convert.ToInt32(row["pos_satis_check_details_id"]),
+                            quantity = fr,
+                            comment = memoEdit1.Text
+                        });
+                    }
+                    bool isSuccess = false;
+                    string documentUUID = UUIDGenerateService.UUID;
+
+                    switch (lModel.Text)
+                    {
+                        case "1":
+
+
+
+
+                            isSuccess = Sunmi.Refund(new DTOs.RefundDto
                             {
-                                proccessNo = textEdit1.Text,
-                                pos_satis_check_main_id = Convert.ToInt32(row["pos_satis_check_main_id"]),
-                                pos_satis_check_details_id = Convert.ToInt32(row["pos_satis_check_details_id"]),
-                                quantity = fr,
-                                comment = memoEdit1.Text
+                                IpAddress = lIpAddress.Text,
+                                DocumentUUID = documentUUID,
+                                Cashier = Cashier,
+                                ProccessNo = textEdit1.Text,
+                                PayType = type,
                             });
-                        }
-                        bool isSuccess = false;
-                        string documentUUID = UUIDGenerateService.UUID;
-                        switch (lModel.Text)
-                        {
-                            case "1":
-                                isSuccess = Sunmi.Refund(new DTOs.RefundDto
-                                {
-                                    IpAddress = lIpAddress.Text,
-                                    DocumentUUID = documentUUID,
-                                    Cashier = Cashier,
-                                    ProccessNo = textEdit1.Text,
-                                    PayType = type,
-                                });
 
-                                if (isSuccess)
+                            if (isSuccess)
+                            {
+                                UUIDGenerateService.Refreshid();
+                                textEdit1.Text = DbProsedures.GET_RefundProccessNo();
+                                gridControl1.DataSource = null;
+                            }
+                            break; /*SUNMI*/
+                        case "2":
+                            isSuccess = AzSmart.Refund(lIpAddress.Text, lMerchantId.Text, Cashier, textEdit1.Text);
+                            if (isSuccess)
+                            {
+                                textEdit1.Text = DbProsedures.GET_RefundProccessNo();
+                                gridControl1.DataSource = null;
+                            }
+                            break; /*AZSMART*/
+                        case "3":
+                            textBox1.Text = Omnitech.Login(lIpAddress.Text); //AccessToken
+                            isSuccess = Omnitech.Refund(lIpAddress.Text, textBox1.Text, type, Cashier, textEdit1.Text);
+                            if (isSuccess)
+                            {
+                                textEdit1.Text = DbProsedures.GET_RefundProccessNo();
+                                gridControl1.DataSource = null;
+                            }
+                            break; /*OMNITECH*/
+                        case "4":
+                            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+                            {
+                                connection.Open();
+                                string query = $"SELECT MAX([pos_gaytarma_manual_id]) as ids4 FROM [pos_gaytarma_manual] WHERE user_id_ = {Properties.Settings.Default.UserID}";
+                                using (SqlCommand cmd = new SqlCommand(query, connection))
                                 {
-                                    UUIDGenerateService.Refreshid();
-                                    textEdit1.Text = DbProsedures.GET_RefundProccessNo();
-                                    gridControl1.DataSource = null;
+                                    using (SqlDataReader dr = cmd.ExecuteReader())
+                                    {
+                                        while (dr.Read())
+                                        {
+                                            string datakontrol = dr["ids4"].ToString();
+                                            textBox2.Text = datakontrol;
+                                        }
+                                    }
                                 }
-                                break; /*SUNMI*/
-                            case "2":
-                                isSuccess = AzSmart.Refund(lIpAddress.Text, lMerchantId.Text, Cashier, textEdit1.Text);
-                                if (isSuccess)
-                                {
-                                    textEdit1.Text = DbProsedures.GET_RefundProccessNo();
-                                    gridControl1.DataSource = null;
-                                }
-                                break; /*AZSMART*/
-                            case "3":
-                                textBox1.Text = Omnitech.Login(lIpAddress.Text); //AccessToken
-                                isSuccess = Omnitech.Refund(lIpAddress.Text, textBox1.Text, type, Cashier, textEdit1.Text);
-                                if (isSuccess)
-                                {
-                                    textEdit1.Text = DbProsedures.GET_RefundProccessNo();
-                                    gridControl1.DataSource = null;
-                                }
-                                break; /*OMNITECH*/
-                            case "4":
+                            }
+
+                            xprinter_gaytarma();
+                            break; /*XPRINTER*/
+                        case "5":
+                            switch (type)
+                            {
+                                case PayType.Cash:
+                                    datapay_gaytarma(lIpAddress.Text, PayType.Cash);
+                                    break;
+                                case PayType.Card:
+                                    datapay_gaytarma(lIpAddress.Text, PayType.Card);
+                                    break;
+                                case PayType.CashCard:
+                                    break;
+                                default:
+                                    break;
+                            }
+                            break; /*DATAPAY*/
+                        case "6":
+                            if (NBA_GetInfo())
+                            {
+                                string query = $"SELECT MAX([pos_gaytarma_manual_id]) as ids4 FROM [pos_gaytarma_manual] WHERE user_id_ = {UserCacheService.User.Id}";
+
                                 using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+                                using (SqlCommand cmd = new SqlCommand(query, connection))
                                 {
                                     connection.Open();
-                                    string query = $"SELECT MAX([pos_gaytarma_manual_id]) as ids4 FROM [pos_gaytarma_manual] WHERE user_id_ = {Properties.Settings.Default.UserID}";
-                                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                                    using (SqlDataReader dr = cmd.ExecuteReader())
                                     {
-                                        using (SqlDataReader dr = cmd.ExecuteReader())
+                                        while (dr.Read())
                                         {
-                                            while (dr.Read())
-                                            {
-                                                string datakontrol = dr["ids4"].ToString();
-                                                textBox2.Text = datakontrol;
-                                            }
+                                            textBox2.Text = dr["ids4"].ToString();
                                         }
                                     }
                                 }
+                                nba_gaytarma(lIpAddress.Text, type);
 
-                                xprinter_gaytarma();
-                                break; /*XPRINTER*/
-                            case "5":
-                                switch (type)
-                                {
-                                    case PayType.Cash:
-                                        datapay_gaytarma(lIpAddress.Text, PayType.Cash);
-                                        break;
-                                    case PayType.Card:
-                                        datapay_gaytarma(lIpAddress.Text, PayType.Card);
-                                        break;
-                                    case PayType.CashCard:
-                                        break;
-                                    default:
-                                        break;
-                                }
-                                break; /*DATAPAY*/
-                            case "6":
-                                if (NBA_GetInfo())
-                                {
-                                    using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon))
+                            }
+                            break; /*NBA*/
+                        case "7":
+                            switch (type)
+                            {
+                                case PayType.Cash:
+                                    isSuccess = EKASAM.Refund(new DTOs.RefundDto
                                     {
-                                        connection.Open();
-                                        string query = $"SELECT MAX([pos_gaytarma_manual_id]) as ids4 FROM [pos_gaytarma_manual] WHERE user_id_ = {Properties.Settings.Default.UserID}";
-                                        using (SqlCommand cmd = new SqlCommand(query, connection))
-                                        {
-                                            using (SqlDataReader dr = cmd.ExecuteReader())
-                                            {
-                                                while (dr.Read())
-                                                {
-                                                    string datakontrol = dr["ids4"].ToString();
-                                                    textBox2.Text = datakontrol;
-                                                }
-                                            }
-                                        }
-                                    }
+                                        IpAddress = lIpAddress.Text,
+                                        PayType = PayType.Cash,
+                                        Cashier = Cashier,
+                                        ProccessNo = textEdit1.Text
+                                    });
 
-                                    switch (type)
+                                    if (isSuccess)
                                     {
-                                        case PayType.Cash:
-                                            nba_gaytarma(lIpAddress.Text, PayType.Cash);
-                                            break;
-                                        case PayType.Card:
-                                            nba_gaytarma(lIpAddress.Text, PayType.Card);
-                                            break;
-                                        default:
-                                            break;
+                                        textEdit1.Text = DbProsedures.GET_RefundProccessNo();
+                                        gridControl1.DataSource = null;
                                     }
-                                }
-                                break; /*NBA*/
-                            case "7":
-                                switch (type)
-                                {
-                                    case PayType.Cash:
-                                        isSuccess = EKASAM.Refund(new DTOs.RefundDto
-                                        {
-                                            IpAddress = lIpAddress.Text,
-                                            PayType = PayType.Cash,
-                                            Cashier = Cashier,
-                                            ProccessNo = textEdit1.Text
-                                        });
+                                    //ekasam_gaytarma(lIpAddress.Text, PayType.Cash);
+                                    break;
+                                case PayType.Card:
+                                    isSuccess = EKASAM.Refund(new DTOs.RefundDto
+                                    {
+                                        IpAddress = lIpAddress.Text,
+                                        PayType = PayType.Card,
+                                        Cashier = Cashier,
+                                        ProccessNo = textEdit1.Text
+                                    });
 
-                                        if (isSuccess)
-                                        {
-                                            textEdit1.Text = DbProsedures.GET_RefundProccessNo();
-                                            gridControl1.DataSource = null;
-                                        }
-                                        //ekasam_gaytarma(lIpAddress.Text, PayType.Cash);
-                                        break;
-                                    case PayType.Card:
-                                        isSuccess = EKASAM.Refund(new DTOs.RefundDto
-                                        {
-                                            IpAddress = lIpAddress.Text,
-                                            PayType = PayType.Card,
-                                            Cashier = Cashier,
-                                            ProccessNo = textEdit1.Text
-                                        });
-
-                                        if (isSuccess)
-                                        {
-                                            textEdit1.Text = DbProsedures.GET_RefundProccessNo();
-                                            gridControl1.DataSource = null;
-                                        }
-                                        //ekasam_gaytarma(lIpAddress.Text, PayType.Card);
-                                        break;
-                                }
-                                break; /*EKASSAM*/
-                        }
-                        Cursor.Current = Cursors.Default;
+                                    if (isSuccess)
+                                    {
+                                        textEdit1.Text = DbProsedures.GET_RefundProccessNo();
+                                        gridControl1.DataSource = null;
+                                    }
+                                    //ekasam_gaytarma(lIpAddress.Text, PayType.Card);
+                                    break;
+                            }
+                            break; /*EKASSAM*/
+                    }
+                    Cursor.Current = Cursors.Default;
 
 
-
-                        #region BEFORE CODE
-
-
-                        //if (lModel.Text == "1")
-                        //{
-                        //    foreach (int i in gridView1.GetSelectedRows())
-                        //    {
-                        //        DataRow row = gridView1.GetDataRow(i);
-                        //        fr = Convert.ToDecimal(row["QAYTARILACAQ MİQDAR"]);
-                        //        DbProsedures.InsertPosRefund(new DatabaseClasses.PosRefund
-                        //        {
-                        //            proccessNo = textEdit1.Text,
-                        //            pos_satis_check_main_id = Convert.ToInt32(row[0]),
-                        //            pos_satis_check_details_id = Convert.ToInt32(row[1]),
-                        //            quantity = fr,
-                        //            comment = memoEdit1.Text
-                        //        });
-
-                        //    }
-
-                        //    //if (type is PayType.Card && bankttnmd == "1")
-                        //    //{
-                        //    //    Bankttnminput bt = new Bankttnminput(null, this);
-                        //    //    bt.ShowDialog();
-
-                        //    //}
-                        //    //else
-                        //    //{
-                        //    //    bankttnminputdata = "";
-                        //    //}
+                    #region BEFORE CODE
 
 
-                        //    Sunmi.ReturnPos(lIpAddress.Text, Cashier, textEdit1.Text);
-                        //    gridControl1.DataSource = null;
-                        //}
-                        //else if (lModel.Text == "3")
-                        //{
-                        //    foreach (int i in gridView1.GetSelectedRows())
-                        //    {
-                        //        DataRow row = gridView1.GetDataRow(i);
+                    //if (lModel.Text == "1")
+                    //{
+                    //    foreach (int i in gridView1.GetSelectedRows())
+                    //    {
+                    //        DataRow row = gridView1.GetDataRow(i);
+                    //        fr = Convert.ToDecimal(row["QAYTARILACAQ MİQDAR"]);
+                    //        DbProsedures.InsertPosRefund(new DatabaseClasses.PosRefund
+                    //        {
+                    //            proccessNo = textEdit1.Text,
+                    //            pos_satis_check_main_id = Convert.ToInt32(row[0]),
+                    //            pos_satis_check_details_id = Convert.ToInt32(row[1]),
+                    //            quantity = fr,
+                    //            comment = memoEdit1.Text
+                    //        });
 
-                        //        fr = Convert.ToDecimal(row["QAYTARILACAQ MİQDAR"]);
+                    //    }
 
-                        //        DbProsedures.InsertPosRefund(new DatabaseClasses.PosRefund
-                        //        {
-                        //            proccessNo = textEdit1.Text,
-                        //            pos_satis_check_main_id = Convert.ToInt32(row[0]),
-                        //            pos_satis_check_details_id = Convert.ToInt32(row[1]),
-                        //            quantity = fr,
-                        //            comment = memoEdit1.Text
-                        //        });
-                        //    }
+                    //    //if (type is PayType.Card && bankttnmd == "1")
+                    //    //{
+                    //    //    Bankttnminput bt = new Bankttnminput(null, this);
+                    //    //    bt.ShowDialog();
 
-                        //    textBox1.Text = Omnitech.Login(lIpAddress.Text); //AccessToken
-                        //    switch (type)
-                        //    {
-                        //        case PayType.Cash:
-                        //            omnitech_gaytarma(lIpAddress.Text, PayType.Cash);
-                        //            break;
-                        //        case PayType.Card:
-                        //            omnitech_gaytarma(lIpAddress.Text, PayType.Card);
-                        //            break;
-                        //        case PayType.CashCard:
-                        //            //  omnitech_gaytarma(labelControl1.Text.ToString(), PayType.CashCard);
-                        //            break;
-                        //        default:
-                        //            break;
-                        //    }
-                        //}
-                        //else if (lModel.Text == "5")
-                        //{
-
-                        //    foreach (int i in gridView1.GetSelectedRows())
-                        //    {
-                        //        DataRow row = gridView1.GetDataRow(i);
-                        //        fr = Convert.ToDecimal(row["QAYTARILACAQ MİQDAR"]);
-                        //        DbProsedures.InsertPosRefund(new DatabaseClasses.PosRefund
-                        //        {
-                        //            proccessNo = textEdit1.Text,
-                        //            pos_satis_check_main_id = Convert.ToInt32(row[0]),
-                        //            pos_satis_check_details_id = Convert.ToInt32(row[1]),
-                        //            quantity = fr,
-                        //            comment = memoEdit1.Text
-                        //        });
-                        //    }
-
-                        //    switch (type)
-                        //    {
-                        //        case PayType.Cash:
-                        //            datapay_gaytarma(lIpAddress.Text, PayType.Cash);
-                        //            break;
-                        //        case PayType.Card:
-                        //            datapay_gaytarma(lIpAddress.Text, PayType.Card);
-                        //            break;
-                        //        case PayType.CashCard:
-                        //            break;
-                        //        default:
-                        //            break;
-                        //    }
+                    //    //}
+                    //    //else
+                    //    //{
+                    //    //    bankttnminputdata = "";
+                    //    //}
 
 
-                        //}
-                        //else if (lModel.Text == "6")
-                        //{
-                        //    try
-                        //    {
-                        //        var response = NBA.GetInfo(lIpAddress.Text);
-                        //        if (response == null) { return; }
-                        //        else
-                        //        {
-                        //            if (response.message is "Successful operation")
-                        //            {
-                        //                customer = response.data.company_name;
-                        //                customervoen = response.data.company_tax_number;
-                        //                obyektkod = response.data.object_tax_number;
-                        //                obyetname = response.data.object_name;
-                        //                obyektadres = response.data.object_address;
-                        //                nkamodel = response.data.cashregister_model;
-                        //                nkanumber = response.data.cashregister_factory_number;
-                        //                nkarnumber = response.data.cashbox_tax_number;
-                        //                textBox4.Text = response.data.cashregister_factory_number;
+                    //    Sunmi.ReturnPos(lIpAddress.Text, Cashier, textEdit1.Text);
+                    //    gridControl1.DataSource = null;
+                    //}
+                    //else if (lModel.Text == "3")
+                    //{
+                    //    foreach (int i in gridView1.GetSelectedRows())
+                    //    {
+                    //        DataRow row = gridView1.GetDataRow(i);
 
-                        //                using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon))
-                        //                {
-                        //                    connection.Open();
-                        //                    string query = $"SELECT MAX([pos_gaytarma_manual_id]) as ids4 FROM [pos_gaytarma_manual] WHERE user_id_ = {Properties.Settings.Default.UserID}";
-                        //                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                        //                    {
-                        //                        using (SqlDataReader dr = cmd.ExecuteReader())
-                        //                        {
-                        //                            while (dr.Read())
-                        //                            {
-                        //                                string datakontrol = dr["ids4"].ToString();
-                        //                                textBox2.Text = datakontrol;
-                        //                            }
-                        //                        }
-                        //                    }
-                        //                }
+                    //        fr = Convert.ToDecimal(row["QAYTARILACAQ MİQDAR"]);
 
-                        //                foreach (int i in gridView1.GetSelectedRows())
-                        //                {
-                        //                    DataRow row = gridView1.GetDataRow(i);
+                    //        DbProsedures.InsertPosRefund(new DatabaseClasses.PosRefund
+                    //        {
+                    //            proccessNo = textEdit1.Text,
+                    //            pos_satis_check_main_id = Convert.ToInt32(row[0]),
+                    //            pos_satis_check_details_id = Convert.ToInt32(row[1]),
+                    //            quantity = fr,
+                    //            comment = memoEdit1.Text
+                    //        });
+                    //    }
 
-                        //                    fr = Convert.ToDecimal(row["QAYTARILACAQ MİQDAR"]);
+                    //    textBox1.Text = Omnitech.Login(lIpAddress.Text); //AccessToken
+                    //    switch (type)
+                    //    {
+                    //        case PayType.Cash:
+                    //            omnitech_gaytarma(lIpAddress.Text, PayType.Cash);
+                    //            break;
+                    //        case PayType.Card:
+                    //            omnitech_gaytarma(lIpAddress.Text, PayType.Card);
+                    //            break;
+                    //        case PayType.CashCard:
+                    //            //  omnitech_gaytarma(labelControl1.Text.ToString(), PayType.CashCard);
+                    //            break;
+                    //        default:
+                    //            break;
+                    //    }
+                    //}
+                    //else if (lModel.Text == "5")
+                    //{
 
-                        //                    DbProsedures.InsertPosRefund(new DatabaseClasses.PosRefund
-                        //                    {
-                        //                        proccessNo = textEdit1.Text,
-                        //                        pos_satis_check_main_id = Convert.ToInt32(row[0]),
-                        //                        pos_satis_check_details_id = Convert.ToInt32(row[1]),
-                        //                        quantity = fr,
-                        //                        comment = memoEdit1.Text
-                        //                    });
-                        //                }
+                    //    foreach (int i in gridView1.GetSelectedRows())
+                    //    {
+                    //        DataRow row = gridView1.GetDataRow(i);
+                    //        fr = Convert.ToDecimal(row["QAYTARILACAQ MİQDAR"]);
+                    //        DbProsedures.InsertPosRefund(new DatabaseClasses.PosRefund
+                    //        {
+                    //            proccessNo = textEdit1.Text,
+                    //            pos_satis_check_main_id = Convert.ToInt32(row[0]),
+                    //            pos_satis_check_details_id = Convert.ToInt32(row[1]),
+                    //            quantity = fr,
+                    //            comment = memoEdit1.Text
+                    //        });
+                    //    }
 
-                        //                switch (type)
-                        //                {
-                        //                    case PayType.Cash:
-                        //                        nba_gaytarma(lIpAddress.Text, PayType.Cash);
-                        //                        break;
-                        //                    case PayType.Card:
-                        //                        nba_gaytarma(lIpAddress.Text, PayType.Card);
-                        //                        break;
-                        //                    default:
-                        //                        break;
-                        //                }
-                        //            }
-                        //        }
-                        //    }
-                        //    catch (Exception ex)
-                        //    {
-                        //        ReadyMessages.ERROR_SERVER_CONNECTION_MESSAGE(ex.Message);
-                        //    }
-
-                        //}
-                        //else if (lModel.Text == "4")
-                        //{
-                        //    SqlConnection conn4 = new SqlConnection();
-                        //    SqlCommand cmd4 = new SqlCommand();
-                        //    conn4.ConnectionString = Properties.Settings.Default.SqlCon;
-                        //    conn4.Open();
-                        //    string query4 = "SELECT MAX([pos_gaytarma_manual_id]) as ids4  FROM  [pos_gaytarma_manual] ";
-
-                        //    cmd4.Connection = conn4;
-                        //    cmd4.CommandText = query4;
-
-                        //    SqlDataReader dr4 = cmd4.ExecuteReader();
-
-                        //    while (dr4.Read())
-                        //    {
-                        //        string datakontrol = dr4["ids4"].ToString();
-                        //        textBox2.Text = datakontrol;
-                        //    }
-                        //    foreach (int i in gridView1.GetSelectedRows())
-                        //    {
-                        //        DataRow row = gridView1.GetDataRow(i);
-
-                        //        fr = Convert.ToDecimal(row["QAYTARILACAQ MİQDAR"]);
-
-                        //        DbProsedures.InsertPosRefund(new DatabaseClasses.PosRefund
-                        //        {
-                        //            proccessNo = textEdit1.Text,
-                        //            pos_satis_check_main_id = Convert.ToInt32(row[0]),
-                        //            pos_satis_check_details_id = Convert.ToInt32(row[1]),
-                        //            quantity = fr,
-                        //            comment = memoEdit1.Text
-                        //        });
-                        //    }
+                    //    switch (type)
+                    //    {
+                    //        case PayType.Cash:
+                    //            datapay_gaytarma(lIpAddress.Text, PayType.Cash);
+                    //            break;
+                    //        case PayType.Card:
+                    //            datapay_gaytarma(lIpAddress.Text, PayType.Card);
+                    //            break;
+                    //        case PayType.CashCard:
+                    //            break;
+                    //        default:
+                    //            break;
+                    //    }
 
 
-                        //    xprinter_gaytarma();
-                        //}
-                        //else if (lModel.Text == "2") //azsmart
-                        //{
-                        //    foreach (int i in gridView1.GetSelectedRows())
-                        //    {
-                        //        DataRow row = gridView1.GetDataRow(i);
+                    //}
+                    //else if (lModel.Text == "6")
+                    //{
+                    //    try
+                    //    {
+                    //        var response = NBA.GetInfo(lIpAddress.Text);
+                    //        if (response == null) { return; }
+                    //        else
+                    //        {
+                    //            if (response.message is "Successful operation")
+                    //            {
+                    //                customer = response.data.company_name;
+                    //                customervoen = response.data.company_tax_number;
+                    //                obyektkod = response.data.object_tax_number;
+                    //                obyetname = response.data.object_name;
+                    //                obyektadres = response.data.object_address;
+                    //                nkamodel = response.data.cashregister_model;
+                    //                nkanumber = response.data.cashregister_factory_number;
+                    //                nkarnumber = response.data.cashbox_tax_number;
+                    //                textBox4.Text = response.data.cashregister_factory_number;
 
-                        //        fr = Convert.ToDecimal(row["QAYTARILACAQ MİQDAR"]);
+                    //                using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon))
+                    //                {
+                    //                    connection.Open();
+                    //                    string query = $"SELECT MAX([pos_gaytarma_manual_id]) as ids4 FROM [pos_gaytarma_manual] WHERE user_id_ = {Properties.Settings.Default.UserID}";
+                    //                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    //                    {
+                    //                        using (SqlDataReader dr = cmd.ExecuteReader())
+                    //                        {
+                    //                            while (dr.Read())
+                    //                            {
+                    //                                string datakontrol = dr["ids4"].ToString();
+                    //                                textBox2.Text = datakontrol;
+                    //                            }
+                    //                        }
+                    //                    }
+                    //                }
 
-                        //        DbProsedures.InsertPosRefund(new DatabaseClasses.PosRefund
-                        //        {
-                        //            proccessNo = textEdit1.Text,
-                        //            pos_satis_check_main_id = Convert.ToInt32(row[0]),
-                        //            pos_satis_check_details_id = Convert.ToInt32(row[1]),
-                        //            quantity = fr,
-                        //            comment = memoEdit1.Text
-                        //        });
-                        //    }
-                        //    bool isSuccess = AzSmart.Refund(lIpAddress.Text, lMerchantId.Text, Cashier, textEdit1.Text);
-                        //    if (isSuccess)
-                        //    {
-                        //        GETKOD();
-                        //        gridControl1.DataSource = null;
-                        //    }
-                        //    //AZSMART_POS_AC(lIpAddress.Text);
-                        //}
+                    //                foreach (int i in gridView1.GetSelectedRows())
+                    //                {
+                    //                    DataRow row = gridView1.GetDataRow(i);
 
-                        #endregion BEFORE CODE
-                   
+                    //                    fr = Convert.ToDecimal(row["QAYTARILACAQ MİQDAR"]);
+
+                    //                    DbProsedures.InsertPosRefund(new DatabaseClasses.PosRefund
+                    //                    {
+                    //                        proccessNo = textEdit1.Text,
+                    //                        pos_satis_check_main_id = Convert.ToInt32(row[0]),
+                    //                        pos_satis_check_details_id = Convert.ToInt32(row[1]),
+                    //                        quantity = fr,
+                    //                        comment = memoEdit1.Text
+                    //                    });
+                    //                }
+
+                    //                switch (type)
+                    //                {
+                    //                    case PayType.Cash:
+                    //                        nba_gaytarma(lIpAddress.Text, PayType.Cash);
+                    //                        break;
+                    //                    case PayType.Card:
+                    //                        nba_gaytarma(lIpAddress.Text, PayType.Card);
+                    //                        break;
+                    //                    default:
+                    //                        break;
+                    //                }
+                    //            }
+                    //        }
+                    //    }
+                    //    catch (Exception ex)
+                    //    {
+                    //        ReadyMessages.ERROR_SERVER_CONNECTION_MESSAGE(ex.Message);
+                    //    }
+
+                    //}
+                    //else if (lModel.Text == "4")
+                    //{
+                    //    SqlConnection conn4 = new SqlConnection();
+                    //    SqlCommand cmd4 = new SqlCommand();
+                    //    conn4.ConnectionString = Properties.Settings.Default.SqlCon;
+                    //    conn4.Open();
+                    //    string query4 = "SELECT MAX([pos_gaytarma_manual_id]) as ids4  FROM  [pos_gaytarma_manual] ";
+
+                    //    cmd4.Connection = conn4;
+                    //    cmd4.CommandText = query4;
+
+                    //    SqlDataReader dr4 = cmd4.ExecuteReader();
+
+                    //    while (dr4.Read())
+                    //    {
+                    //        string datakontrol = dr4["ids4"].ToString();
+                    //        textBox2.Text = datakontrol;
+                    //    }
+                    //    foreach (int i in gridView1.GetSelectedRows())
+                    //    {
+                    //        DataRow row = gridView1.GetDataRow(i);
+
+                    //        fr = Convert.ToDecimal(row["QAYTARILACAQ MİQDAR"]);
+
+                    //        DbProsedures.InsertPosRefund(new DatabaseClasses.PosRefund
+                    //        {
+                    //            proccessNo = textEdit1.Text,
+                    //            pos_satis_check_main_id = Convert.ToInt32(row[0]),
+                    //            pos_satis_check_details_id = Convert.ToInt32(row[1]),
+                    //            quantity = fr,
+                    //            comment = memoEdit1.Text
+                    //        });
+                    //    }
+
+
+                    //    xprinter_gaytarma();
+                    //}
+                    //else if (lModel.Text == "2") //azsmart
+                    //{
+                    //    foreach (int i in gridView1.GetSelectedRows())
+                    //    {
+                    //        DataRow row = gridView1.GetDataRow(i);
+
+                    //        fr = Convert.ToDecimal(row["QAYTARILACAQ MİQDAR"]);
+
+                    //        DbProsedures.InsertPosRefund(new DatabaseClasses.PosRefund
+                    //        {
+                    //            proccessNo = textEdit1.Text,
+                    //            pos_satis_check_main_id = Convert.ToInt32(row[0]),
+                    //            pos_satis_check_details_id = Convert.ToInt32(row[1]),
+                    //            quantity = fr,
+                    //            comment = memoEdit1.Text
+                    //        });
+                    //    }
+                    //    bool isSuccess = AzSmart.Refund(lIpAddress.Text, lMerchantId.Text, Cashier, textEdit1.Text);
+                    //    if (isSuccess)
+                    //    {
+                    //        GETKOD();
+                    //        gridControl1.DataSource = null;
+                    //    }
+                    //    //AZSMART_POS_AC(lIpAddress.Text);
+                    //}
+
+                    #endregion BEFORE CODE
+
                 }
             }
             Cursor.Current = Cursors.Default;
@@ -2450,7 +2364,20 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
 
         private void bCardReturn_Click(object sender, EventArgs e)
         {
-            ReturnSales(Enums.PayType.Card);
+            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("OtherPay").ToString());
+            if (control)
+            {
+                fCardAndOtherPay f = new fCardAndOtherPay();
+                var result = f.ShowDialog();
+                if (result is DialogResult.Yes)
+                    ReturnSales(Enums.PayType.OtherPay);
+                else if (result is DialogResult.No)
+                    ReturnSales(Enums.PayType.Card);
+            }
+            else
+                ReturnSales(Enums.PayType.Card);
+
+            //ReturnSales(Enums.PayType.Card);
         }
 
         private void bCashReturn_Click(object sender, EventArgs e)

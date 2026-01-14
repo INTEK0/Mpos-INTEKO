@@ -457,7 +457,7 @@ namespace WindowsFormsApp2.NKA
                     moneyBackType = null
                 };
 
-                if (salesData.PayType is PayType.Card)
+                if (salesData.PayType is PayType.Card && !string.IsNullOrWhiteSpace(UserCacheService.Terminal.BankName))
                 {
                     if (SaleBank(salesData))
                     {
@@ -716,41 +716,69 @@ namespace WindowsFormsApp2.NKA
         public static bool Refund(RefundDto refundData)
         {
             string fiskallID = "";
+            List<Item> items = new List<Item>();
             decimal cash = default;
             decimal card = default;
             string rrn = null;
-            string query2 = "SELECT  [pos_satis_check_main_id],[pos_nomre],[fiscal_id],[date_], [bankttnm] ,[user_id_] ," +
-                "[emeliyyat_nomre],[NEGD_],[KART_],[UMUMI_MEBLEG] ,[json_] ,[fiscalNum],[documentID]" +
-                "  FROM [pos_satis_check_main] WHERE[pos_satis_check_main_id] IN(SELECT[pos_satis_check_main_id]  " +
-                " FROM [pos_gaytarma_manual] where [pos_gaytarma_manual_id] =(select max([pos_gaytarma_manual_id]) " +
-                "from [pos_gaytarma_manual])); ";
-            SqlConnection conn2 = new SqlConnection(DbHelpers.CurrentConnectionString);
-            SqlCommand cmd2 = new SqlCommand(query2, conn2);
-            conn2.Open();
+            string transactionId = null;
+            string saleDate = null;
+            string query = $@"SELECT 
+  [pos_satis_check_main_id], 
+  [pos_nomre], 
+  [fiscal_id], 
+  [date_], 
+  [bankttnm], 
+  [user_id_], 
+  [emeliyyat_nomre], 
+  [NEGD_], 
+  [KART_], 
+  [UMUMI_MEBLEG], 
+  [json_], 
+  [fiscalNum],
+  [BankTransactionId],
+  [documentID] 
+FROM 
+  [pos_satis_check_main] WHERE[pos_satis_check_main_id] IN(
+    SELECT[pos_satis_check_main_id] 
+    FROM 
+      [pos_gaytarma_manual] 
+    where 
+      [pos_gaytarma_manual_id] =(
+        select 
+          max([pos_gaytarma_manual_id]) 
+        from 
+          [pos_gaytarma_manual] WHERE user_id_ = {UserCacheService.User.Id}));";
 
-
-            SqlDataReader dr2 = cmd2.ExecuteReader();
-
-            while (dr2.Read())
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, con))
             {
-                decimal cash1 = Convert.ToDecimal(dr2["NEGD_"].ToString());
-                decimal card1 = Convert.ToDecimal(dr2["KART_"].ToString());
-                string rrn1 = dr2["bankttnm"].ToString();
+                con.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    if (dr.Read())
+                    {
+                        decimal cash1 = Convert.ToDecimal(dr["NEGD_"].ToString());
+                        decimal card1 = Convert.ToDecimal(dr["KART_"].ToString());
+                        string fiscal_id = dr["fiscal_id"].ToString();
+                        string rrn1 = dr["bankttnm"].ToString();
+                        string bankTransactionId = dr["BankTransactionId"].ToString();
+                        var tarix = Convert.ToDateTime(dr["date_"].ToString());
 
 
-                string fiscal_id = dr2["fiscal_id"].ToString();
-                //string fiscalNum = dr2["fiscalNum"].ToString();
+                        fiskallID = fiscal_id;
+                        cash = cash1;
+                        card = card1;
+                        rrn = rrn1;
+                        transactionId = bankTransactionId;
+                        saleDate = tarix.ToString("dd.MM.yyyy");
+                    }
+                    refundData.Rrn = string.IsNullOrWhiteSpace(rrn) ? refundData.Rrn : rrn;
+                    refundData.BankTransactionId = transactionId;
+                }
 
-
-                fiskallID = fiscal_id;
-                cash = cash1;
-                card = card1;
-                rrn = rrn1;
             }
-            refundData.Rrn = string.IsNullOrWhiteSpace(rrn) ? refundData.Rrn : rrn;
 
-
-            string query = $@"(SELECT md.MEHSUL_ADI AS name,
+            string query2 = $@"(SELECT md.MEHSUL_ADI AS name,
                        p.item_id AS code,
                        pl.say AS say,
                        p.satis_giymet AS satis_giymet,
@@ -761,34 +789,37 @@ namespace WindowsFormsApp2.NKA
                        INNER JOIN MAL_ALISI_DETAILS md ON p.mal_alisi_details_id = md.MAL_ALISI_DETAILS_ID
                        INNER JOIN pos_gaytarma_manual pl ON p.pos_satis_check_details_id = pl.pos_satis_check_details
               WHERE pl.emeliyyat_nomre = '{refundData.ProccessNo}')";
-            SqlConnection conn = new SqlConnection(DbHelpers.CurrentConnectionString);
-            SqlCommand cmd = new SqlCommand(query, conn);
-            conn.Open();
-
-            List<Item> items = new List<Item>();
-            SqlDataReader dr = cmd.ExecuteReader();
-            while (dr.Read())
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query2, con))
             {
-                string name = dr["name"].ToString();
-                string code = dr["code"].ToString();
-                decimal salePrice = Convert.ToDecimal(dr["satis_giymet"]);
-                decimal quantity = Convert.ToDecimal(dr["say"]);
-                int vatType = Convert.ToInt32(dr["vtypes"]);
-                int quantityType = Convert.ToInt32(dr["quantity_type"]);
-                double ssum = Convert.ToDouble(dr["tutar"]);
-
-                Item itemProduct = new Item
+                con.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
                 {
-                    name = name,
-                    code = code,
-                    salePrice = salePrice,
-                    quantity = quantity,
-                    codeType = 1,
-                    vatType = vatType,
-                    quantityType = quantityType,
-                    discountAmount = 0
-                };
-                items.Add(itemProduct);
+                    while (dr.Read())
+                    {
+                        string name = dr["name"].ToString();
+                        string code = dr["code"].ToString();
+                        decimal salePrice = Convert.ToDecimal(dr["satis_giymet"]);
+                        decimal quantity = Convert.ToDecimal(dr["say"]);
+                        int vatType = Convert.ToInt32(dr["vtypes"]);
+                        int quantityType = Convert.ToInt32(dr["quantity_type"]);
+                        double ssum = Convert.ToDouble(dr["tutar"]);
+
+                        Item itemProduct = new Item
+                        {
+                            name = name,
+                            code = code,
+                            salePrice = salePrice,
+                            quantity = quantity,
+                            codeType = 1,
+                            vatType = vatType,
+                            quantityType = quantityType,
+                            discountAmount = 0
+                        };
+                        items.Add(itemProduct);
+                    }
+                }
+
             }
 
             Data data = new Data
@@ -806,12 +837,13 @@ namespace WindowsFormsApp2.NKA
 
             if (refundData.PayType is PayType.Card && !string.IsNullOrWhiteSpace(UserCacheService.Terminal.BankName))
             {
+                string today = DateTime.Now.ToString("dd.MM.yyyy");
 
                 var responseBank = RefundBank(new RefundDto
                 {
                     IpAddress = refundData.IpAddress,
                     Card = card,
-                    Rrn = refundData.Rrn,
+                    Rrn = saleDate == today ? refundData.BankTransactionId : refundData.Rrn, 
                     DocumentUUID = refundData.DocumentUUID,
                 });
 
@@ -828,9 +860,8 @@ namespace WindowsFormsApp2.NKA
                 }
 
                 rrn = responseCheck.data.rrn;
-                data.isSendCardPayment = true;
-                data.rrn = rrn;
-
+                //data.isSendCardPayment = true;
+                data.rrn = refundData.Rrn;
             }
 
 
@@ -887,6 +918,9 @@ namespace WindowsFormsApp2.NKA
                     ResponseCode = response.responseJson,
                 });
             }
+
+
+            return false;
         }
 
         public static bool CloseShiftBank(string IpAdress)

@@ -6,7 +6,10 @@ using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using Newtonsoft.Json;
 using RestSharp;
+using WindowsFormsApp2.App;
+using WindowsFormsApp2.App.Dtos;
 using WindowsFormsApp2.Helpers;
+using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using static DTOs;
@@ -386,7 +389,7 @@ select
     t.quantityType,
     t.salePrice * t.quantity as ssum
 from dbo.item as t
-WHERE user_id = {Properties.Settings.Default.UserID}";
+WHERE user_id = {UserCacheService.User.Id}";
 
             cmd.Connection = conn;
             cmd.CommandText = query;
@@ -535,7 +538,7 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
             {
                 if (response.message == "Successful operation")
                 {
-                    DbProsedures.InsertPosSales(new PosSales
+                   var resultId =  DbProsedures.InsertPosSales(new PosSales
                     {
                         posNomre = response.document_number.ToString(),
                         longFiskalId = response.long_id,
@@ -547,6 +550,21 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
                         shortFiskalId = response.short_id,
                         customerId = customer?.CustomerID,
                         doctorId = doctor?.Id,
+                    });
+
+                    DbOperation.SaleSend(new PosSaleDto
+                    {
+                        Voen = "123456798",
+                        PosSaleId = resultId,
+                        ReceiptNo = response.document_number.ToString(),
+                        ShortFiscalId = response.short_id,
+                        SaleDate = DateTime.Now,
+                        UserId = UserCacheService.User.Id,
+                        ProccessNo = proccessNo,
+                        Cash = cash,
+                        Card = card,
+                        TotalAmount = total,
+                        BankRRN = rrn,
                     });
 
                     if (MessageVisible)

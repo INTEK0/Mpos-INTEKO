@@ -5,7 +5,7 @@ namespace WindowsFormsApp2.Helpers.CacheData
 {
     public class UserCacheService
     {
-        public static DatabaseClasses.User User = DbProsedures.GetUser();
+        public static DatabaseClasses.User User;
         private static IpModel _terminal;
 
         public static IpModel Terminal

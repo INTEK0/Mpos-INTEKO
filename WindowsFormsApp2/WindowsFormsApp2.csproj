@@ -237,6 +237,8 @@
     <Compile Include="ANBAR_MENFEET.Designer.cs">
       <DependentUpon>ANBAR_MENFEET.cs</DependentUpon>
     </Compile>
+    <Compile Include="App\DbOperation.cs" />
+    <Compile Include="App\Dtos\PosSaleDto.cs" />
     <Compile Include="avtorizasiya.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1865,5 +1867,6 @@
       <Name>Licence</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

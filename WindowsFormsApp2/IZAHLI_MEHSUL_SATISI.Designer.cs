@@ -54,6 +54,7 @@ namespace WindowsFormsApp2
             this.dateEdit3 = new DevExpress.XtraEditors.DateEdit();
             this.simpleButton3 = new DevExpress.XtraEditors.SimpleButton();
             this.simpleButton2 = new DevExpress.XtraEditors.SimpleButton();
+            this.gridColumn15 = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
@@ -91,6 +92,7 @@ namespace WindowsFormsApp2
             this.gridColumn13,
             this.gridColumn2,
             this.gridColumn3,
+            this.gridColumn15,
             this.gridColumn4,
             this.gridColumn5,
             this.gridColumn6,
@@ -104,11 +106,12 @@ namespace WindowsFormsApp2
             this.gridView1.DetailHeight = 431;
             this.gridView1.GridControl = this.gridControl1;
             this.gridView1.Name = "gridView1";
-            this.gridView1.OptionsBehavior.Editable = false;
             this.gridView1.OptionsBehavior.ReadOnly = true;
             this.gridView1.OptionsEditForm.PopupEditFormWidth = 1067;
+            this.gridView1.OptionsView.ColumnHeaderAutoHeight = DevExpress.Utils.DefaultBoolean.True;
             this.gridView1.OptionsView.EnableAppearanceEvenRow = true;
             this.gridView1.OptionsView.EnableAppearanceOddRow = true;
+            this.gridView1.OptionsView.RowAutoHeight = true;
             this.gridView1.OptionsView.ShowIndicator = false;
             // 
             // gridColumn1
@@ -142,6 +145,8 @@ namespace WindowsFormsApp2
             this.gridColumn13.Caption = "ƏMƏLİYYAT NÖMRƏSİ";
             this.gridColumn13.FieldName = "ProccessNo";
             this.gridColumn13.Name = "gridColumn13";
+            this.gridColumn13.Visible = true;
+            this.gridColumn13.VisibleIndex = 15;
             // 
             // gridColumn2
             // 
@@ -165,7 +170,7 @@ namespace WindowsFormsApp2
             this.gridColumn4.FieldName = "MƏHSUL ADI";
             this.gridColumn4.Name = "gridColumn4";
             this.gridColumn4.Visible = true;
-            this.gridColumn4.VisibleIndex = 5;
+            this.gridColumn4.VisibleIndex = 6;
             // 
             // gridColumn5
             // 
@@ -175,7 +180,7 @@ namespace WindowsFormsApp2
             this.gridColumn5.FieldName = "MİQDARI";
             this.gridColumn5.Name = "gridColumn5";
             this.gridColumn5.Visible = true;
-            this.gridColumn5.VisibleIndex = 6;
+            this.gridColumn5.VisibleIndex = 7;
             // 
             // gridColumn6
             // 
@@ -183,7 +188,7 @@ namespace WindowsFormsApp2
             this.gridColumn6.FieldName = "VAHİDİ";
             this.gridColumn6.Name = "gridColumn6";
             this.gridColumn6.Visible = true;
-            this.gridColumn6.VisibleIndex = 7;
+            this.gridColumn6.VisibleIndex = 8;
             // 
             // gridColumn7
             // 
@@ -193,7 +198,7 @@ namespace WindowsFormsApp2
             this.gridColumn7.FieldName = "SATIŞ QİYMƏTİ";
             this.gridColumn7.Name = "gridColumn7";
             this.gridColumn7.Visible = true;
-            this.gridColumn7.VisibleIndex = 8;
+            this.gridColumn7.VisibleIndex = 9;
             // 
             // gridColumn8
             // 
@@ -203,7 +208,7 @@ namespace WindowsFormsApp2
             this.gridColumn8.FieldName = "ENDİRİM AZN";
             this.gridColumn8.Name = "gridColumn8";
             this.gridColumn8.Visible = true;
-            this.gridColumn8.VisibleIndex = 9;
+            this.gridColumn8.VisibleIndex = 10;
             // 
             // gridColumn9
             // 
@@ -211,7 +216,7 @@ namespace WindowsFormsApp2
             this.gridColumn9.FieldName = "ÖDƏNİŞ NÖVÜ";
             this.gridColumn9.Name = "gridColumn9";
             this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 10;
+            this.gridColumn9.VisibleIndex = 11;
             // 
             // gridColumn10
             // 
@@ -221,7 +226,7 @@ namespace WindowsFormsApp2
             this.gridColumn10.FieldName = "CƏM ÖDƏNİŞ";
             this.gridColumn10.Name = "gridColumn10";
             this.gridColumn10.Visible = true;
-            this.gridColumn10.VisibleIndex = 11;
+            this.gridColumn10.VisibleIndex = 12;
             // 
             // gridColumn14
             // 
@@ -237,7 +242,7 @@ namespace WindowsFormsApp2
             this.gridColumn11.FieldName = "VERGİ %";
             this.gridColumn11.Name = "gridColumn11";
             this.gridColumn11.Visible = true;
-            this.gridColumn11.VisibleIndex = 12;
+            this.gridColumn11.VisibleIndex = 13;
             // 
             // gridColumn12
             // 
@@ -245,7 +250,7 @@ namespace WindowsFormsApp2
             this.gridColumn12.FieldName = "QƏBZ";
             this.gridColumn12.Name = "gridColumn12";
             this.gridColumn12.Visible = true;
-            this.gridColumn12.VisibleIndex = 13;
+            this.gridColumn12.VisibleIndex = 14;
             // 
             // tableLayoutPanel1
             // 
@@ -343,6 +348,14 @@ namespace WindowsFormsApp2
             this.simpleButton2.Text = "Çap et";
             this.simpleButton2.Click += new System.EventHandler(this.simpleButton2_Click);
             // 
+            // gridColumn15
+            // 
+            this.gridColumn15.Caption = "KATEQORİYA";
+            this.gridColumn15.FieldName = "CATEGORY";
+            this.gridColumn15.Name = "gridColumn15";
+            this.gridColumn15.Visible = true;
+            this.gridColumn15.VisibleIndex = 5;
+            // 
             // IZAHLI_MEHSUL_SATISI
             // 
             this.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(245)))), ((int)(((byte)(250)))));
@@ -399,5 +412,6 @@ namespace WindowsFormsApp2
         private DevExpress.XtraGrid.Columns.GridColumn colDoctor;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn13;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn14;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn15;
     }
 }

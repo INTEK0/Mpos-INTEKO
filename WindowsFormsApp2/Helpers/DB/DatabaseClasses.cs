@@ -157,6 +157,7 @@ namespace WindowsFormsApp2.Helpers.DB
             public string json { get; set; }
             public string shortFiskalId { get; set; }
             public string rrn { get; set; } = null;
+            public string BankTransactionId { get; set; } = null;
             public Nullable<int> customerId { get; set; }
             public Nullable<int> doctorId { get; set; }
             public decimal Prepayment { get; set; } = 0; // Avans satışı

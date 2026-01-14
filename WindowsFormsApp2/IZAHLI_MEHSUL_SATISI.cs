@@ -39,7 +39,7 @@ namespace WindowsFormsApp2
         {
             try
             {
-                string queryString = "SELECT * FROM  dbo.fn_IZAHLI_SATIS_HESABAT( @pricepoint,@pricepoint1) order by 1 asc";
+                string queryString = "SELECT * FROM  dbo.fn_IZAHLI_SATIS_HESABAT(@pricepoint,@pricepoint1) order by 1 asc";
 
                 using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
                 using (SqlCommand command = new SqlCommand(queryString, connection))

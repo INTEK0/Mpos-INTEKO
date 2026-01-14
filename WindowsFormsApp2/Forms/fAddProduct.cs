@@ -155,7 +155,6 @@ namespace WindowsFormsApp2.Forms
             }
 
 
-            //int IsExists = DbProsedures.Exists_ProductCode(tProductCode.Text, Convert.ToInt32(lookSupplier.EditValue));
             int IsExistsBarcode = DbProsedures.Exists_ProductBarcode(tBarcode.Text.Trim(), tProductName.Text.TrimStart().Trim());
 
             if (IsExistsBarcode != 1)

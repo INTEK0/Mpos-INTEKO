@@ -55,6 +55,7 @@ namespace WindowsFormsApp2
             this.dateEdit4 = new DevExpress.XtraEditors.DateEdit();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.groupControl1 = new DevExpress.XtraEditors.GroupControl();
+            this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bDetail)).BeginInit();
@@ -94,6 +95,7 @@ namespace WindowsFormsApp2
             this.gridColumn13,
             this.gridColumn1,
             this.gridColumn2,
+            this.gridColumn3,
             this.gridColumn4,
             this.gridColumn5,
             this.gridColumn8,
@@ -160,7 +162,7 @@ namespace WindowsFormsApp2
             this.gridColumn2.OptionsColumn.ReadOnly = true;
             this.gridColumn2.Visible = true;
             this.gridColumn2.VisibleIndex = 1;
-            this.gridColumn2.Width = 143;
+            this.gridColumn2.Width = 140;
             // 
             // gridColumn4
             // 
@@ -169,8 +171,8 @@ namespace WindowsFormsApp2
             this.gridColumn4.Name = "gridColumn4";
             this.gridColumn4.OptionsColumn.ReadOnly = true;
             this.gridColumn4.Visible = true;
-            this.gridColumn4.VisibleIndex = 2;
-            this.gridColumn4.Width = 185;
+            this.gridColumn4.VisibleIndex = 3;
+            this.gridColumn4.Width = 165;
             // 
             // gridColumn5
             // 
@@ -179,8 +181,8 @@ namespace WindowsFormsApp2
             this.gridColumn5.Name = "gridColumn5";
             this.gridColumn5.OptionsColumn.ReadOnly = true;
             this.gridColumn5.Visible = true;
-            this.gridColumn5.VisibleIndex = 3;
-            this.gridColumn5.Width = 166;
+            this.gridColumn5.VisibleIndex = 4;
+            this.gridColumn5.Width = 148;
             // 
             // gridColumn8
             // 
@@ -193,8 +195,8 @@ namespace WindowsFormsApp2
             this.gridColumn8.Name = "gridColumn8";
             this.gridColumn8.OptionsColumn.ReadOnly = true;
             this.gridColumn8.Visible = true;
-            this.gridColumn8.VisibleIndex = 7;
-            this.gridColumn8.Width = 101;
+            this.gridColumn8.VisibleIndex = 8;
+            this.gridColumn8.Width = 85;
             // 
             // gridColumn9
             // 
@@ -207,8 +209,8 @@ namespace WindowsFormsApp2
             this.gridColumn9.Name = "gridColumn9";
             this.gridColumn9.OptionsColumn.ReadOnly = true;
             this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 8;
-            this.gridColumn9.Width = 104;
+            this.gridColumn9.VisibleIndex = 9;
+            this.gridColumn9.Width = 87;
             // 
             // gridColumn12
             // 
@@ -221,8 +223,8 @@ namespace WindowsFormsApp2
             this.gridColumn12.Name = "gridColumn12";
             this.gridColumn12.OptionsColumn.ReadOnly = true;
             this.gridColumn12.Visible = true;
-            this.gridColumn12.VisibleIndex = 9;
-            this.gridColumn12.Width = 88;
+            this.gridColumn12.VisibleIndex = 10;
+            this.gridColumn12.Width = 87;
             // 
             // gridColumn6
             // 
@@ -231,8 +233,8 @@ namespace WindowsFormsApp2
             this.gridColumn6.Name = "gridColumn6";
             this.gridColumn6.OptionsColumn.ReadOnly = true;
             this.gridColumn6.Visible = true;
-            this.gridColumn6.VisibleIndex = 4;
-            this.gridColumn6.Width = 104;
+            this.gridColumn6.VisibleIndex = 5;
+            this.gridColumn6.Width = 92;
             // 
             // gridColumn10
             // 
@@ -241,8 +243,8 @@ namespace WindowsFormsApp2
             this.gridColumn10.Name = "gridColumn10";
             this.gridColumn10.OptionsColumn.ReadOnly = true;
             this.gridColumn10.Visible = true;
-            this.gridColumn10.VisibleIndex = 6;
-            this.gridColumn10.Width = 100;
+            this.gridColumn10.VisibleIndex = 7;
+            this.gridColumn10.Width = 84;
             // 
             // gridColumn7
             // 
@@ -251,8 +253,8 @@ namespace WindowsFormsApp2
             this.gridColumn7.Name = "gridColumn7";
             this.gridColumn7.OptionsColumn.ReadOnly = true;
             this.gridColumn7.Visible = true;
-            this.gridColumn7.VisibleIndex = 5;
-            this.gridColumn7.Width = 63;
+            this.gridColumn7.VisibleIndex = 6;
+            this.gridColumn7.Width = 73;
             // 
             // repositoryItemPictureEdit1
             // 
@@ -339,6 +341,15 @@ namespace WindowsFormsApp2
             this.groupControl1.TabIndex = 8;
             this.groupControl1.Text = "groupControl1";
             // 
+            // gridColumn3
+            // 
+            this.gridColumn3.Caption = "KATEQORİYA";
+            this.gridColumn3.FieldName = "KATEGORIYA";
+            this.gridColumn3.Name = "gridColumn3";
+            this.gridColumn3.Visible = true;
+            this.gridColumn3.VisibleIndex = 2;
+            this.gridColumn3.Width = 148;
+            // 
             // ANBAR_GALIGI
             // 
             this.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(245)))), ((int)(((byte)(250)))));
@@ -392,5 +403,6 @@ namespace WindowsFormsApp2
         private DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit repositoryItemPictureEdit1;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn13;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit bDetail;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn3;
     }
 }

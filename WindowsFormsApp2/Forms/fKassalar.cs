@@ -176,6 +176,12 @@ LEFT JOIN userParol u ON u.id = ki.KASSIR_ID";
             else if (lookKassa.Text is "NBA" || lookKassa.Text is "CASPOS" || lookKassa.Text is "SUNMI")
             {
                 BankDataLoad();
+                labelControl1.Visible = false;
+                tMerchantId.Visible = false;
+                tMerchantId.Text = "";
+                groupControl1.Height = 130;
+                groupControl2.Location = new Point(0, 134);
+                gridControl1.Location = new Point(5, 192);
             }
             else
             {

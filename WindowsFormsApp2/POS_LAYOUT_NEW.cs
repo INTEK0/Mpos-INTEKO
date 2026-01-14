@@ -21,6 +21,7 @@ using DevExpress.XtraGrid.Views.Grid;
 using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
 using RestSharp;
+using WindowsFormsApp2.App;
 using WindowsFormsApp2.Forms;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.CacheData;
@@ -1045,12 +1046,18 @@ group by
                 }
                 else if (type is Enums.PayType.Card)
                 {
+                    //bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("ClinicModule").ToString());
                     //bool clinic = false;
-                    //DialogResult result = XtraMessageBox.Show("A4 sənədi çap edilsin ?", nameof(HeaderMessage.Mesaj), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    //if (result is DialogResult.Yes)
+
+                    //if (control)
                     //{
-                    //    clinic = true;
+                    //    DialogResult result = XtraMessageBox.Show("A4 sənədi çap edilsin ?", nameof(HeaderMessage.Mesaj), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    //    if (result is DialogResult.Yes)
+                    //    {
+                    //        clinic = true;
+                    //    }
                     //}
+
                     gelen_data_negd_pos(0, totalAmount, totalAmount, 0, 0, false, type);
                 }
                 else if (type is Enums.PayType.CashCard)
@@ -2618,9 +2625,8 @@ group by
                     }
                 }
                 else
-                {
                     bankttnminputdata = string.Empty;
-                }
+
 
 
                 if (clinic)
@@ -2701,8 +2707,6 @@ group by
                         CalculationDelete();
                         break; /*XPRINTER*/
                 }
-
-
             }
             catch (WebException ex) when (ex.Status is WebExceptionStatus.ConnectFailure)
             {

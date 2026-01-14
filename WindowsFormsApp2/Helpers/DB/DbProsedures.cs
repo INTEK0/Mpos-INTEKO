@@ -19,7 +19,6 @@ namespace WindowsFormsApp2.Helpers.DB
 
         #region [...PROCEDURES QUERY...]
 
-        private const string INSERT_PosSalesQuery = "azmart_sale_insert";
         private const string DELETE_ItemQuery = "delete_item";
         private const string INSERT_HeaderQuery = "INSERT_header";
         private const string INSERT_CalculationQuery = "insert_calculation";
@@ -194,23 +193,22 @@ namespace WindowsFormsApp2.Helpers.DB
             if (userId is 0)
                 userId = Properties.Settings.Default.UserID;
 
+            string query = "SELECT * FROM SELECT_USER_DATA_LOAD(@userID)";
+
             using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, connection))
             {
-                string query = "SELECT * FROM SELECT_USER_DATA_LOAD(@userID)";
                 connection.Open();
-                using (SqlCommand cmd = new SqlCommand(query, connection))
+                cmd.Parameters.AddWithValue("@userID", userId);
+                using (SqlDataReader dr = cmd.ExecuteReader())
                 {
-                    cmd.Parameters.AddWithValue("@userID", userId);
-                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    if (dr.Read())
                     {
-                        if (dr.Read())
-                        {
-                            var user = FormHelpers.MapReaderToObject<User>(dr);
-                            user.UserRole = GetRole(userId);
-                            return user;
-                        }
-                        return null;
+                        var user = FormHelpers.MapReaderToObject<User>(dr);
+                        user.UserRole = GetRole(userId);
+                        return user;
                     }
+                    return null;
                 }
             }
         }
@@ -429,70 +427,61 @@ namespace WindowsFormsApp2.Helpers.DB
 
         public static int InsertPosSales(PosSales item)
         {
+            string query = "azmart_sale_insert";
             using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, connection))
             {
-                using (SqlCommand cmd = new SqlCommand(INSERT_PosSalesQuery, connection))
-                {
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    SqlParameter parameter;
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlParameter parameter;
 
-                    parameter = cmd.Parameters.Add("@documentID", SqlDbType.NVarChar, 100);
-                    parameter.Value = item.posNomre;
+                parameter = cmd.Parameters.Add("@documentID", SqlDbType.NVarChar, 100);
+                parameter.Value = item.posNomre;
 
-                    parameter = cmd.Parameters.Add("@fiscalID", SqlDbType.NVarChar, 500);
-                    parameter.Value = item.longFiskalId;
+                parameter = cmd.Parameters.Add("@fiscalID", SqlDbType.NVarChar, 500);
+                parameter.Value = item.longFiskalId;
 
-                    parameter = cmd.Parameters.Add("@user_id", SqlDbType.Int);
-                    parameter.Value = Properties.Settings.Default.UserID;
+                parameter = cmd.Parameters.Add("@user_id", SqlDbType.Int);
+                parameter.Value = Properties.Settings.Default.UserID;
 
-                    parameter = cmd.Parameters.Add("@emeliyyat_nomre", SqlDbType.NVarChar, 50);
-                    parameter.Value = item.proccessNo;
+                parameter = cmd.Parameters.Add("@emeliyyat_nomre", SqlDbType.NVarChar, 50);
+                parameter.Value = item.proccessNo;
 
-                    parameter = cmd.Parameters.Add("@negd", SqlDbType.Decimal);
-                    parameter.Value = item.cash;
+                parameter = cmd.Parameters.Add("@negd", SqlDbType.Decimal);
+                parameter.Value = item.cash;
 
-                    parameter = cmd.Parameters.Add("@kart", SqlDbType.Decimal);
-                    parameter.Value = item.card;
+                parameter = cmd.Parameters.Add("@kart", SqlDbType.Decimal);
+                parameter.Value = item.card;
 
-                    parameter = cmd.Parameters.Add("@umumi_mebleg", SqlDbType.Decimal);
-                    parameter.Value = item.total;
+                parameter = cmd.Parameters.Add("@umumi_mebleg", SqlDbType.Decimal);
+                parameter.Value = item.total;
 
-                    parameter = cmd.Parameters.Add("@json_", SqlDbType.NVarChar, int.MaxValue);
-                    parameter.Value = item.json;
+                parameter = cmd.Parameters.Add("@json_", SqlDbType.NVarChar, int.MaxValue);
+                parameter.Value = item.json;
 
-                    parameter = cmd.Parameters.Add("@fiscalNum", SqlDbType.NVarChar, 250);
-                    parameter.Value = item.shortFiskalId;
+                parameter = cmd.Parameters.Add("@fiscalNum", SqlDbType.NVarChar, 250);
+                parameter.Value = item.shortFiskalId;
 
-                    parameter = cmd.Parameters.Add("@rrncode", SqlDbType.NVarChar);
-                    parameter.Value = item.rrn;
+                parameter = cmd.Parameters.Add("@rrncode", SqlDbType.NVarChar);
+                parameter.Value = item.rrn;
 
-                    parameter = cmd.Parameters.Add("@customerId", SqlDbType.Int);
-                    parameter.Value = item.customerId;
+                parameter = cmd.Parameters.Add("@bankTransactionId", SqlDbType.NVarChar);
+                parameter.Value = item.BankTransactionId;
 
-                    parameter = cmd.Parameters.Add("@doctorId", SqlDbType.Int);
-                    parameter.Value = item.doctorId;
+                parameter = cmd.Parameters.Add("@customerId", SqlDbType.Int);
+                parameter.Value = item.customerId;
 
-                    parameter = cmd.Parameters.Add("@Prepayment", SqlDbType.Int);
-                    parameter.Value = item.Prepayment;
+                parameter = cmd.Parameters.Add("@doctorId", SqlDbType.Int);
+                parameter.Value = item.doctorId;
 
-                    connection.Open();
-                    parameter = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
-                    parameter.Direction = ParameterDirection.Output;
-                    cmd.ExecuteNonQuery();
+                parameter = cmd.Parameters.Add("@Prepayment", SqlDbType.Int);
+                parameter.Value = item.Prepayment;
 
-                    /*
-                    FormHelpers.OperationLog(new OperationLogs
-                    {
-                        OperationType = OperationType.PosSales,
-                        OperationId = posSalesId,
-                        Message = posSalesId == 0 ? "Error" : "Success",
-                        RequestCode = requestJson,
-                        ResponseCode = responseJson,
-                    });
-                    */
+                connection.Open();
+                parameter = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
+                parameter.Direction = ParameterDirection.Output;
+                cmd.ExecuteNonQuery();
 
-                    return Convert.ToInt32(parameter.Value);
-                }
+                return Convert.ToInt32(parameter.Value);
             }
         }
 
@@ -984,27 +973,25 @@ WHERE date_ BETWEEN CAST(GETDATE() AS DATE) AND DATEADD(DAY, 1, CAST(GETDATE() A
         /// </summary>
         public static int Exists_ProductBarcode(string barcode, string productName)
         {
+            string query = "CheckProductBarcodeControl";
+
             using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, connection))
             {
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlParameter param;
+
+                param = cmd.Parameters.Add("@barcode", SqlDbType.NVarChar, 200);
+                param.Value = barcode;
+
+                param = cmd.Parameters.Add("@name", SqlDbType.NVarChar, Int32.MaxValue);
+                param.Value = productName;
+
+                param = cmd.Parameters.Add("@empcount", SqlDbType.Int);
+                param.Direction = ParameterDirection.Output;
                 connection.Open();
-                string query = "CheckProductBarcodeControl";
-                using (SqlCommand cmd = new SqlCommand(query, connection))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    SqlParameter param;
-
-                    param = cmd.Parameters.Add("@barcode", SqlDbType.NVarChar, 200);
-                    param.Value = barcode;
-
-                    param = cmd.Parameters.Add("@name", SqlDbType.NVarChar, Int32.MaxValue);
-                    param.Value = productName;
-
-                    param = cmd.Parameters.Add("@empcount", SqlDbType.Int);
-                    param.Direction = ParameterDirection.Output;
-
-                    cmd.ExecuteNonQuery();
-                    return Convert.ToInt32(param.Value);
-                }
+                cmd.ExecuteNonQuery();
+                return Convert.ToInt32(param.Value);
             }
         }
 

@@ -74,13 +74,6 @@
             this.labelControl22 = new DevExpress.XtraEditors.LabelControl();
             this.tComment = new DevExpress.XtraEditors.TextEdit();
             this.tabNavigationPage2 = new DevExpress.XtraBars.Navigation.TabNavigationPage();
-            this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
-            this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
-            this.bCustomerList = new DevExpress.XtraEditors.SimpleButton();
-            this.bClear = new DevExpress.XtraEditors.SimpleButton();
-            this.bAdd = new DevExpress.XtraEditors.SimpleButton();
-            this.tProccessNo = new DevExpress.XtraEditors.ButtonEdit();
-            this.lCustomerID = new DevExpress.XtraEditors.LabelControl();
             this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
             this.tBankAccountNumber = new DevExpress.XtraEditors.TextEdit();
             this.labelControl7 = new DevExpress.XtraEditors.LabelControl();
@@ -92,6 +85,13 @@
             this.tBankName = new DevExpress.XtraEditors.TextEdit();
             this.tBankCode = new DevExpress.XtraEditors.TextEdit();
             this.tBankVoen = new DevExpress.XtraEditors.TextEdit();
+            this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
+            this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
+            this.bCustomerList = new DevExpress.XtraEditors.SimpleButton();
+            this.bClear = new DevExpress.XtraEditors.SimpleButton();
+            this.bAdd = new DevExpress.XtraEditors.SimpleButton();
+            this.tProccessNo = new DevExpress.XtraEditors.ButtonEdit();
+            this.lCustomerID = new DevExpress.XtraEditors.LabelControl();
             ((System.ComponentModel.ISupportInitialize)(this.tabPane1)).BeginInit();
             this.tabPane1.SuspendLayout();
             this.tabNavigationPage1.SuspendLayout();
@@ -119,11 +119,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.tMobPhone.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tComment.Properties)).BeginInit();
             this.tabNavigationPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).BeginInit();
-            this.tablePanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
-            this.panelControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tProccessNo.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).BeginInit();
             this.panelControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tBankAccountNumber.Properties)).BeginInit();
@@ -131,6 +126,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.tBankName.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tBankCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tBankVoen.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).BeginInit();
+            this.tablePanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
+            this.panelControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tProccessNo.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // tabPane1
@@ -687,126 +687,6 @@
             this.tabNavigationPage2.Name = "tabNavigationPage2";
             this.tabNavigationPage2.Size = new System.Drawing.Size(1170, 650);
             // 
-            // tablePanel1
-            // 
-            this.tablePanel1.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 38.1F)});
-            this.tablePanel1.Controls.Add(this.panelControl1);
-            this.tablePanel1.Controls.Add(this.tabPane1);
-            this.tablePanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tablePanel1.Location = new System.Drawing.Point(0, 0);
-            this.tablePanel1.Name = "tablePanel1";
-            this.tablePanel1.Padding = new System.Windows.Forms.Padding(1);
-            this.tablePanel1.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 51F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
-            this.tablePanel1.Size = new System.Drawing.Size(1178, 756);
-            this.tablePanel1.TabIndex = 3;
-            this.tablePanel1.UseSkinIndents = true;
-            // 
-            // panelControl1
-            // 
-            this.tablePanel1.SetColumn(this.panelControl1, 0);
-            this.panelControl1.Controls.Add(this.bCustomerList);
-            this.panelControl1.Controls.Add(this.bClear);
-            this.panelControl1.Controls.Add(this.bAdd);
-            this.panelControl1.Controls.Add(this.tProccessNo);
-            this.panelControl1.Controls.Add(this.lCustomerID);
-            this.panelControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelControl1.Location = new System.Drawing.Point(2, 2);
-            this.panelControl1.Margin = new System.Windows.Forms.Padding(1);
-            this.panelControl1.Name = "panelControl1";
-            this.tablePanel1.SetRow(this.panelControl1, 0);
-            this.panelControl1.Size = new System.Drawing.Size(1174, 49);
-            this.panelControl1.TabIndex = 0;
-            // 
-            // bCustomerList
-            // 
-            this.bCustomerList.AllowFocus = false;
-            this.bCustomerList.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Primary;
-            this.bCustomerList.Appearance.Font = new System.Drawing.Font("Nunito", 11F, System.Drawing.FontStyle.Bold);
-            this.bCustomerList.Appearance.Options.UseBackColor = true;
-            this.bCustomerList.Appearance.Options.UseFont = true;
-            this.bCustomerList.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bCustomerList.ImageOptions.SvgImage")));
-            this.bCustomerList.Location = new System.Drawing.Point(410, 4);
-            this.bCustomerList.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.bCustomerList.Name = "bCustomerList";
-            this.bCustomerList.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.bCustomerList.Size = new System.Drawing.Size(198, 42);
-            this.bCustomerList.TabIndex = 3;
-            this.bCustomerList.TabStop = false;
-            this.bCustomerList.Text = "MÜŞTƏRİ SİYAHISI";
-            this.bCustomerList.Click += new System.EventHandler(this.bCustomerList_Click);
-            // 
-            // bClear
-            // 
-            this.bClear.AllowFocus = false;
-            this.bClear.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Danger;
-            this.bClear.Appearance.Font = new System.Drawing.Font("Nunito", 11F, System.Drawing.FontStyle.Bold);
-            this.bClear.Appearance.Options.UseBackColor = true;
-            this.bClear.Appearance.Options.UseFont = true;
-            this.bClear.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bClear.ImageOptions.SvgImage")));
-            this.bClear.Location = new System.Drawing.Point(208, 4);
-            this.bClear.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.bClear.Name = "bClear";
-            this.bClear.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.bClear.Size = new System.Drawing.Size(194, 42);
-            this.bClear.TabIndex = 1;
-            this.bClear.TabStop = false;
-            this.bClear.Text = "TƏMİZLƏ";
-            this.bClear.Click += new System.EventHandler(this.bClear_Click);
-            // 
-            // bAdd
-            // 
-            this.bAdd.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Success;
-            this.bAdd.Appearance.Font = new System.Drawing.Font("Nunito", 11F, System.Drawing.FontStyle.Bold);
-            this.bAdd.Appearance.Options.UseBackColor = true;
-            this.bAdd.Appearance.Options.UseFont = true;
-            this.bAdd.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bAdd.ImageOptions.SvgImage")));
-            this.bAdd.Location = new System.Drawing.Point(6, 4);
-            this.bAdd.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.bAdd.Name = "bAdd";
-            this.bAdd.Size = new System.Drawing.Size(194, 42);
-            this.bAdd.TabIndex = 1;
-            this.bAdd.TabStop = false;
-            this.bAdd.Text = "DAXİL ET";
-            this.bAdd.Click += new System.EventHandler(this.bAdd_Click);
-            // 
-            // tProccessNo
-            // 
-            this.tProccessNo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.tProccessNo.EditValue = "";
-            this.tProccessNo.Location = new System.Drawing.Point(865, 9);
-            this.tProccessNo.Margin = new System.Windows.Forms.Padding(4);
-            this.tProccessNo.Name = "tProccessNo";
-            this.tProccessNo.Properties.AllowFocused = false;
-            this.tProccessNo.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tProccessNo.Properties.Appearance.Options.UseFont = true;
-            this.tProccessNo.Properties.Appearance.Options.UseTextOptions = true;
-            this.tProccessNo.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.tProccessNo.Properties.AppearanceReadOnly.Font = new System.Drawing.Font("Tahoma", 12F);
-            this.tProccessNo.Properties.AppearanceReadOnly.Options.UseFont = true;
-            this.tProccessNo.Properties.AppearanceReadOnly.Options.UseTextOptions = true;
-            this.tProccessNo.Properties.AppearanceReadOnly.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.tProccessNo.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "MÜŞTƏRİ NÖMRƏSİ", -1, true, true, true, editorButtonImageOptions1, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
-            this.tProccessNo.Properties.ReadOnly = true;
-            this.tProccessNo.Size = new System.Drawing.Size(302, 34);
-            this.tProccessNo.TabIndex = 0;
-            this.tProccessNo.TabStop = false;
-            // 
-            // lCustomerID
-            // 
-            this.lCustomerID.Appearance.Font = new System.Drawing.Font("Nunito", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lCustomerID.Appearance.Options.UseFont = true;
-            this.lCustomerID.Location = new System.Drawing.Point(626, 16);
-            this.lCustomerID.Margin = new System.Windows.Forms.Padding(4);
-            this.lCustomerID.Name = "lCustomerID";
-            this.lCustomerID.Size = new System.Drawing.Size(72, 18);
-            this.lCustomerID.TabIndex = 6;
-            this.lCustomerID.Text = "CustomerID";
-            this.lCustomerID.Visible = false;
-            // 
             // panelControl2
             // 
             this.panelControl2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -938,6 +818,126 @@
             this.tBankVoen.Size = new System.Drawing.Size(966, 34);
             this.tBankVoen.TabIndex = 23;
             // 
+            // tablePanel1
+            // 
+            this.tablePanel1.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 38.1F)});
+            this.tablePanel1.Controls.Add(this.panelControl1);
+            this.tablePanel1.Controls.Add(this.tabPane1);
+            this.tablePanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tablePanel1.Location = new System.Drawing.Point(0, 0);
+            this.tablePanel1.Name = "tablePanel1";
+            this.tablePanel1.Padding = new System.Windows.Forms.Padding(1);
+            this.tablePanel1.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 51F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
+            this.tablePanel1.Size = new System.Drawing.Size(1178, 756);
+            this.tablePanel1.TabIndex = 3;
+            this.tablePanel1.UseSkinIndents = true;
+            // 
+            // panelControl1
+            // 
+            this.tablePanel1.SetColumn(this.panelControl1, 0);
+            this.panelControl1.Controls.Add(this.bCustomerList);
+            this.panelControl1.Controls.Add(this.bClear);
+            this.panelControl1.Controls.Add(this.bAdd);
+            this.panelControl1.Controls.Add(this.tProccessNo);
+            this.panelControl1.Controls.Add(this.lCustomerID);
+            this.panelControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelControl1.Location = new System.Drawing.Point(2, 2);
+            this.panelControl1.Margin = new System.Windows.Forms.Padding(1);
+            this.panelControl1.Name = "panelControl1";
+            this.tablePanel1.SetRow(this.panelControl1, 0);
+            this.panelControl1.Size = new System.Drawing.Size(1174, 49);
+            this.panelControl1.TabIndex = 0;
+            // 
+            // bCustomerList
+            // 
+            this.bCustomerList.AllowFocus = false;
+            this.bCustomerList.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Primary;
+            this.bCustomerList.Appearance.Font = new System.Drawing.Font("Nunito", 11F, System.Drawing.FontStyle.Bold);
+            this.bCustomerList.Appearance.Options.UseBackColor = true;
+            this.bCustomerList.Appearance.Options.UseFont = true;
+            this.bCustomerList.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bCustomerList.ImageOptions.SvgImage")));
+            this.bCustomerList.Location = new System.Drawing.Point(410, 4);
+            this.bCustomerList.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.bCustomerList.Name = "bCustomerList";
+            this.bCustomerList.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bCustomerList.Size = new System.Drawing.Size(198, 42);
+            this.bCustomerList.TabIndex = 3;
+            this.bCustomerList.TabStop = false;
+            this.bCustomerList.Text = "MÜŞTƏRİ SİYAHISI";
+            this.bCustomerList.Click += new System.EventHandler(this.bCustomerList_Click);
+            // 
+            // bClear
+            // 
+            this.bClear.AllowFocus = false;
+            this.bClear.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Danger;
+            this.bClear.Appearance.Font = new System.Drawing.Font("Nunito", 11F, System.Drawing.FontStyle.Bold);
+            this.bClear.Appearance.Options.UseBackColor = true;
+            this.bClear.Appearance.Options.UseFont = true;
+            this.bClear.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bClear.ImageOptions.SvgImage")));
+            this.bClear.Location = new System.Drawing.Point(208, 4);
+            this.bClear.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.bClear.Name = "bClear";
+            this.bClear.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bClear.Size = new System.Drawing.Size(194, 42);
+            this.bClear.TabIndex = 1;
+            this.bClear.TabStop = false;
+            this.bClear.Text = "TƏMİZLƏ";
+            this.bClear.Click += new System.EventHandler(this.bClear_Click);
+            // 
+            // bAdd
+            // 
+            this.bAdd.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Success;
+            this.bAdd.Appearance.Font = new System.Drawing.Font("Nunito", 11F, System.Drawing.FontStyle.Bold);
+            this.bAdd.Appearance.Options.UseBackColor = true;
+            this.bAdd.Appearance.Options.UseFont = true;
+            this.bAdd.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bAdd.ImageOptions.SvgImage")));
+            this.bAdd.Location = new System.Drawing.Point(6, 4);
+            this.bAdd.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.bAdd.Name = "bAdd";
+            this.bAdd.Size = new System.Drawing.Size(194, 42);
+            this.bAdd.TabIndex = 1;
+            this.bAdd.TabStop = false;
+            this.bAdd.Text = "DAXİL ET";
+            this.bAdd.Click += new System.EventHandler(this.bAdd_Click);
+            // 
+            // tProccessNo
+            // 
+            this.tProccessNo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.tProccessNo.EditValue = "";
+            this.tProccessNo.Location = new System.Drawing.Point(865, 9);
+            this.tProccessNo.Margin = new System.Windows.Forms.Padding(4);
+            this.tProccessNo.Name = "tProccessNo";
+            this.tProccessNo.Properties.AllowFocused = false;
+            this.tProccessNo.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tProccessNo.Properties.Appearance.Options.UseFont = true;
+            this.tProccessNo.Properties.Appearance.Options.UseTextOptions = true;
+            this.tProccessNo.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.tProccessNo.Properties.AppearanceReadOnly.Font = new System.Drawing.Font("Tahoma", 12F);
+            this.tProccessNo.Properties.AppearanceReadOnly.Options.UseFont = true;
+            this.tProccessNo.Properties.AppearanceReadOnly.Options.UseTextOptions = true;
+            this.tProccessNo.Properties.AppearanceReadOnly.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.tProccessNo.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "MÜŞTƏRİ NÖMRƏSİ", -1, true, true, true, editorButtonImageOptions1, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
+            this.tProccessNo.Properties.ReadOnly = true;
+            this.tProccessNo.Size = new System.Drawing.Size(302, 34);
+            this.tProccessNo.TabIndex = 0;
+            this.tProccessNo.TabStop = false;
+            // 
+            // lCustomerID
+            // 
+            this.lCustomerID.Appearance.Font = new System.Drawing.Font("Nunito", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lCustomerID.Appearance.Options.UseFont = true;
+            this.lCustomerID.Location = new System.Drawing.Point(626, 16);
+            this.lCustomerID.Margin = new System.Windows.Forms.Padding(4);
+            this.lCustomerID.Name = "lCustomerID";
+            this.lCustomerID.Size = new System.Drawing.Size(72, 18);
+            this.lCustomerID.TabIndex = 6;
+            this.lCustomerID.Text = "CustomerID";
+            this.lCustomerID.Visible = false;
+            // 
             // fAddCustomer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -981,12 +981,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.tMobPhone.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tComment.Properties)).EndInit();
             this.tabNavigationPage2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).EndInit();
-            this.tablePanel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).EndInit();
-            this.panelControl1.ResumeLayout(false);
-            this.panelControl1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tProccessNo.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).EndInit();
             this.panelControl2.ResumeLayout(false);
             this.panelControl2.PerformLayout();
@@ -995,6 +989,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.tBankName.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tBankCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tBankVoen.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).EndInit();
+            this.tablePanel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).EndInit();
+            this.panelControl1.ResumeLayout(false);
+            this.panelControl1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tProccessNo.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }

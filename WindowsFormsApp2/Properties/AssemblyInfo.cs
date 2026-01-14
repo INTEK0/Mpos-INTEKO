@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("İNTEKO MMC")]
 [assembly: AssemblyProduct("Mpos")]
-[assembly: AssemblyCopyright("Copyright © İNTEKO MMC")]
+[assembly: AssemblyCopyright("Copyright 2021 - 2026 © İNTEKO MMC")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("3.12.3.4")]
-[assembly: AssemblyFileVersion("3.12.3.4")]
+[assembly: AssemblyVersion("3.13.0.0")]
+[assembly: AssemblyFileVersion("3.13.0.0")]
