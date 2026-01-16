@@ -656,10 +656,7 @@ WHERE
        
         private void simpleButton4_Click(object sender, EventArgs e)
         {
-
             FormHelpers.OpenForm<fQaimeSalesReport>(this);
-
-            
         }
 
         private void lookUpEdit7_TextChanged_1(object sender, EventArgs e)

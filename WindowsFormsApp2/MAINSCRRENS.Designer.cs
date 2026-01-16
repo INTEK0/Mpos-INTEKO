@@ -2072,7 +2072,6 @@ namespace WindowsFormsApp2
             // 
             // pageDashboard
             // 
-            this.pageDashboard.Caption = "pageDashboard";
             this.pageDashboard.Controls.Add(this.fluentDesignFormContainer1);
             this.pageDashboard.Margin = new System.Windows.Forms.Padding(0);
             this.pageDashboard.Name = "pageDashboard";
@@ -2080,7 +2079,6 @@ namespace WindowsFormsApp2
             // 
             // pageProducts
             // 
-            this.pageProducts.Caption = "pageProducts";
             this.pageProducts.Controls.Add(this.tableLayoutPanel9);
             this.pageProducts.Margin = new System.Windows.Forms.Padding(0);
             this.pageProducts.Name = "pageProducts";
@@ -2387,7 +2385,6 @@ namespace WindowsFormsApp2
             // 
             // pageSettings
             // 
-            this.pageSettings.Caption = "pageSettings";
             this.pageSettings.Controls.Add(this.tabPaneSettings);
             this.pageSettings.Name = "pageSettings";
             this.pageSettings.Size = new System.Drawing.Size(1157, 806);
@@ -2899,7 +2896,7 @@ namespace WindowsFormsApp2
             this.tabAllSettings.Name = "tabAllSettings";
             this.tabAllSettings.Properties.AppearanceCaption.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.tabAllSettings.Properties.AppearanceCaption.Options.UseFont = true;
-            this.tabAllSettings.Size = new System.Drawing.Size(1157, 761);
+            this.tabAllSettings.Size = new System.Drawing.Size(1157, 759);
             // 
             // panelControl13
             // 
@@ -2918,7 +2915,7 @@ namespace WindowsFormsApp2
             this.panelControl13.LookAndFeel.UseDefaultLookAndFeel = false;
             this.panelControl13.Margin = new System.Windows.Forms.Padding(1);
             this.panelControl13.Name = "panelControl13";
-            this.panelControl13.Size = new System.Drawing.Size(1157, 761);
+            this.panelControl13.Size = new System.Drawing.Size(1157, 759);
             this.panelControl13.TabIndex = 12;
             // 
             // chClinicModul
@@ -3292,7 +3289,6 @@ namespace WindowsFormsApp2
             // 
             // pageBranch
             // 
-            this.pageBranch.Caption = "pageBranch";
             this.pageBranch.Controls.Add(this.groupControl5);
             this.pageBranch.Controls.Add(this.groupControl4);
             this.pageBranch.Name = "pageBranch";
@@ -3393,7 +3389,7 @@ namespace WindowsFormsApp2
             this.xtraTabPage6.Controls.Add(this.bBranchBankRefund);
             this.xtraTabPage6.Controls.Add(this.bBranchBankSale);
             this.xtraTabPage6.Name = "xtraTabPage6";
-            this.xtraTabPage6.Size = new System.Drawing.Size(1151, 657);
+            this.xtraTabPage6.Size = new System.Drawing.Size(1151, 655);
             this.xtraTabPage6.Text = "Satış";
             // 
             // bBranchBankRefund
@@ -3441,7 +3437,7 @@ namespace WindowsFormsApp2
             this.xtraTabPage2.Controls.Add(this.bBranchAlisHesabat);
             this.xtraTabPage2.Controls.Add(this.bBranchStock);
             this.xtraTabPage2.Name = "xtraTabPage2";
-            this.xtraTabPage2.Size = new System.Drawing.Size(1151, 657);
+            this.xtraTabPage2.Size = new System.Drawing.Size(1151, 655);
             this.xtraTabPage2.Text = "Hesabatlar";
             // 
             // bBranchAvansHesabati
@@ -3570,7 +3566,7 @@ namespace WindowsFormsApp2
             this.xtraTabPage3.Controls.Add(this.bBranchCreditPay);
             this.xtraTabPage3.Controls.Add(this.bBranchCreditSale);
             this.xtraTabPage3.Name = "xtraTabPage3";
-            this.xtraTabPage3.Size = new System.Drawing.Size(1151, 657);
+            this.xtraTabPage3.Size = new System.Drawing.Size(1151, 655);
             this.xtraTabPage3.Text = "Kredit";
             // 
             // bBranchCreditSaleRefund
@@ -3623,7 +3619,7 @@ namespace WindowsFormsApp2
             // 
             this.xtraTabPage5.Controls.Add(this.bBranchSuppliers);
             this.xtraTabPage5.Name = "xtraTabPage5";
-            this.xtraTabPage5.Size = new System.Drawing.Size(1151, 657);
+            this.xtraTabPage5.Size = new System.Drawing.Size(1151, 655);
             this.xtraTabPage5.Text = "Təchizatçılar";
             // 
             // bBranchSuppliers
@@ -3645,7 +3641,7 @@ namespace WindowsFormsApp2
             // 
             this.xtraTabPage4.Controls.Add(this.bBranchUsers);
             this.xtraTabPage4.Name = "xtraTabPage4";
-            this.xtraTabPage4.Size = new System.Drawing.Size(1151, 657);
+            this.xtraTabPage4.Size = new System.Drawing.Size(1151, 655);
             this.xtraTabPage4.Text = "İstifadəçilər";
             // 
             // bBranchUsers
@@ -3669,7 +3665,7 @@ namespace WindowsFormsApp2
             this.xtraTabPage7.Controls.Add(this.bBranchLog);
             this.xtraTabPage7.Controls.Add(this.bBranchTerminal);
             this.xtraTabPage7.Name = "xtraTabPage7";
-            this.xtraTabPage7.Size = new System.Drawing.Size(1151, 657);
+            this.xtraTabPage7.Size = new System.Drawing.Size(1151, 655);
             this.xtraTabPage7.Text = "Sazlamalar";
             // 
             // bBranchMinusCountControl
