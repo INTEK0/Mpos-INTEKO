@@ -237,8 +237,9 @@
     <Compile Include="ANBAR_MENFEET.Designer.cs">
       <DependentUpon>ANBAR_MENFEET.cs</DependentUpon>
     </Compile>
-    <Compile Include="App\DbOperation.cs" />
-    <Compile Include="App\Dtos\PosSaleDto.cs" />
+    <Compile Include="App\Dtos\InvoiceProductDto.cs" />
+    <Compile Include="App\Helpers\DbHelpers.cs" />
+    <Compile Include="App\Services\InvoiceService.cs" />
     <Compile Include="avtorizasiya.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -316,6 +317,12 @@
     </Compile>
     <Compile Include="Forms\fAdminPassword.Designer.cs">
       <DependentUpon>fAdminPassword.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\fApiTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\fApiTest.Designer.cs">
+      <DependentUpon>fApiTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\fAvansReport.cs">
       <SubType>Form</SubType>
@@ -1125,6 +1132,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fAdminPassword.resx">
       <DependentUpon>fAdminPassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\fApiTest.resx">
+      <DependentUpon>fApiTest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fAvansReport.resx">
       <DependentUpon>fAvansReport.cs</DependentUpon>

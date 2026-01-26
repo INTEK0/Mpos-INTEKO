@@ -97,7 +97,7 @@ namespace WindowsFormsApp2
                 string queryString = "select * from [dbo].[fn_pos_gaytarma_date_load] (@start ,@end) ";
 
                 using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
-                using (SqlCommand cmd  = new SqlCommand(queryString,con))
+                using (SqlCommand cmd = new SqlCommand(queryString, con))
                 {
                     cmd.Parameters.AddWithValue("@start", d1);
                     cmd.Parameters.AddWithValue("@end", d2);
@@ -753,8 +753,6 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
                 {
                     while (dr4.Read())
                     {
-
-
                         string tutara = dr4["tut"].ToString();
                         string edvsa = dr4["edvs"].ToString();
 
@@ -983,8 +981,10 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
                         };
 
                         pd.Print();
-
                         #endregion [..XƏZİNƏDAR QƏBZİ..]
+
+                        return;
+
                     }
                     else
                     {
@@ -1932,10 +1932,6 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
                     switch (lModel.Text)
                     {
                         case "1":
-
-
-
-
                             isSuccess = Sunmi.Refund(new DTOs.RefundDto
                             {
                                 IpAddress = lIpAddress.Text,

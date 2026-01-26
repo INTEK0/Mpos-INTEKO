@@ -54,19 +54,20 @@ namespace WindowsFormsApp2
                     continue;
 
                 var satisValue = dgvRow.Cells[9].Value;
-                if (satisValue == null || string.IsNullOrWhiteSpace(satisValue.ToString()))
+                if (string.IsNullOrWhiteSpace(satisValue?.ToString()))
                 {
-                    MessageBoxManager.Register();
-                    var result =
-                    MessageBox.Show(
-                        $@"Satış qiyməti boş olan sətir tapıldı! 
-Məhsul adı: {dgvRow.Cells[5].Value}
+                    int excelRowNumber = dgvRow.Index + 2;
 
-Məhsul istisna edilərək excel faylı sistemə yüklənilsin ?",
-                        "Xəbərdarlıq",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Warning
-                    ) == DialogResult.Yes;
+                    MessageBoxManager.Register();
+                    var result = MessageBox.Show(
+                    $@"Satış qiyməti boş olan sətir tapıldı!
+Excel sətri: {excelRowNumber}
+
+Bu sətir istisna edilərək yükləmə davam etdirilsin?",
+                    "Xəbərdarlıq",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning) == DialogResult.Yes;
+
                     MessageBoxManager.Unregister();
 
                     if (result)

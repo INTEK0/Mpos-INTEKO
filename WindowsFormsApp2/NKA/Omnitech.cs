@@ -552,20 +552,6 @@ WHERE user_id = {UserCacheService.User.Id}";
                         doctorId = doctor?.Id,
                     });
 
-                    DbOperation.SaleSend(new PosSaleDto
-                    {
-                        Voen = "123456798",
-                        PosSaleId = resultId,
-                        ReceiptNo = response.document_number.ToString(),
-                        ShortFiscalId = response.short_id,
-                        SaleDate = DateTime.Now,
-                        UserId = UserCacheService.User.Id,
-                        ProccessNo = proccessNo,
-                        Cash = cash,
-                        Card = card,
-                        TotalAmount = total,
-                        BankRRN = rrn,
-                    });
 
                     if (MessageVisible)
                     {

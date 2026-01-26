@@ -106,16 +106,13 @@ namespace WindowsFormsApp2.Forms
 
         private async void bAdd_Click(object sender, EventArgs e)
         {
-
             if (!UserCacheService.User.UserRole.ProductAdd)
             {
                 FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
                 return;
             }
 
-
             var selectedPaymentType = panelControl3.Controls.OfType<CheckEdit>().FirstOrDefault(x => x.Checked);
-
 
             ProductsDetail productsDetail = new ProductsDetail
             {
@@ -175,6 +172,9 @@ namespace WindowsFormsApp2.Forms
                     int? IsSuccess = await DbProsedures.InsertProductDetails(productsDetail);
                     if (IsSuccess > 0)
                     {
+                        var invoiceData = App.Helpers.DbHelpers.GetInvoiceData();
+
+
                         Clear();
                         GetAllData(tProccessNo.Text, ProductOperation.Add);
                         YeniBorcHesabla();
@@ -258,9 +258,7 @@ namespace WindowsFormsApp2.Forms
             decimal yekunBorc = qaliqBorc + yeniBorc;
             tDebtTotal.Clear();
             if (yekunBorc > 0)
-            {
                 tDebtTotal.EditValue = yekunBorc;
-            }
         }
 
         private void bAlinanMallar_Click(object sender, EventArgs e)
