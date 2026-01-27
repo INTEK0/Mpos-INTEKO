@@ -4,23 +4,23 @@ namespace WindowsFormsApp2.App.Dtos
 {
     public class InvoiceProductDto
     {
-        public string voen { get; set; }
-        public List<Row> rows { get; set; }
+        public string Voen { get; set; }
+        public List<Items> items { get; set; }
 
-        public class Row
+        public class Items
         {
-            public string tarix { get; set; }
-            public string istifadeciAdi { get; set; }
-            public string fakturaNo { get; set; }
-            public string techizatciAdi { get; set; }
-            public string mehsulAdi { get; set; }
-            public string mehsulKodu { get; set; }
-            public double miqdari { get; set; }
-            public double alisQiymeti { get; set; }
-            public int endirimFaiz { get; set; }
-            public double endirimAzn { get; set; }
-            public double endirimMeblegi { get; set; }
-            public double odenilecekMebleg { get; set; }
+            public string Date { get; set; }
+            public string Username { get; set; }
+            public string InvoiceNo { get; set; }
+            public string SupplierName { get; set; }
+            public string ProductName { get; set; }
+            public string ProductCode { get; set; }
+            public double Quantity { get; set; }
+            public double PurchasePrice { get; set; }
+            public int DiscountPercantages { get; set; }
+            public double DiscountAzn { get; set; }
+            public double DiscountTotalAmount { get; set; }
+            public double PayableAmount  { get; set; } //Ödəniləcək məbləğ
         }
     }
 }

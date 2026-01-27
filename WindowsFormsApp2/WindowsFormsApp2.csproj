@@ -237,9 +237,19 @@
     <Compile Include="ANBAR_MENFEET.Designer.cs">
       <DependentUpon>ANBAR_MENFEET.cs</DependentUpon>
     </Compile>
+    <Compile Include="App\Dtos\ApiResponseDto.cs" />
     <Compile Include="App\Dtos\InvoiceProductDto.cs" />
+    <Compile Include="App\Dtos\PaymentTypesDto.cs" />
+    <Compile Include="App\Dtos\ProfitReportDto.cs" />
+    <Compile Include="App\Dtos\SaleDetailsDto.cs" />
+    <Compile Include="App\Dtos\StockDto.cs" />
+    <Compile Include="App\Helpers\ApiEndpointResolver.cs" />
+    <Compile Include="App\Helpers\ApiResult.cs" />
     <Compile Include="App\Helpers\DbHelpers.cs" />
-    <Compile Include="App\Services\InvoiceService.cs" />
+    <Compile Include="App\Helpers\Enums.cs" />
+    <Compile Include="App\Services\ApiService.cs" />
+    <Compile Include="App\Services\BackgroundService.cs" />
+    <Compile Include="App\Application\SyncFacade.cs" />
     <Compile Include="avtorizasiya.cs">
       <SubType>Form</SubType>
     </Compile>
