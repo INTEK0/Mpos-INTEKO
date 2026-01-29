@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevExpress.Diagram.Core.Shapes;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
@@ -66,16 +67,40 @@ namespace WindowsFormsApp2
 
         public void GetallData_id_(DateTime D1_, DateTime D2_)
         {
-            SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString);
-            string queryString = "EXEC MEHSUL_ALIS_HESABAT  @d1 = @pricepoint  ,@d2=@pricepoint1 ";
+            //string queryString = "EXEC MEHSUL_ALIS_HESABAT  @d1 = @pricepoint, @d2=@pricepoint1 ";
 
-            SqlCommand command = new SqlCommand(queryString, connection);
-            command.Parameters.AddWithValue("@pricepoint", D1_);
-            command.Parameters.AddWithValue("@pricepoint1", D2_);
-            SqlDataAdapter da = new SqlDataAdapter(command);
-            DataTable dt = new DataTable();
-            da.Fill(dt);
-            gridControl1.DataSource = dt;
+            //using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            //using (SqlCommand cmd = new SqlCommand(queryString, connection))
+            //{
+            //    cmd.Parameters.AddWithValue("@pricepoint", D1_);
+            //    cmd.Parameters.AddWithValue("@pricepoint1", D2_);
+            //    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+            //    using (DataTable dt = new DataTable())
+            //    {
+            //        da.Fill(dt);
+            //        gridControl1.DataSource = dt;
+            //    }
+            //}
+
+
+            string query = "SELECT * FROM dbo.ALINAN_MEHSUL(@pricePoint,@pricePoint1)";
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            {
+                connection.Open();
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@pricePoint", D1_);
+                    cmd.Parameters.AddWithValue("@pricePoint1", D2_);
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    {
+                        using (DataTable dt = new DataTable())
+                        {
+                            da.Fill(dt);
+                            gridControl1.DataSource = dt;
+                        }
+                    }
+                }
+            }
         }
 
         private void simpleButton2_Click(object sender, EventArgs e)

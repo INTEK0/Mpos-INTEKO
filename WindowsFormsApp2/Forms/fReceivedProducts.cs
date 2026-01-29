@@ -22,7 +22,7 @@ namespace WindowsFormsApp2.Forms
             dateEdit1.Text = dateTime.ToShortDateString();
             dateEdit2.Text = dateTime.ToShortDateString();
 
-            DataLoad(dateEdit1.DateTime,dateEdit2.DateTime);
+            DataLoad(dateEdit1.DateTime, dateEdit2.DateTime);
         }
 
         private void simpleButton2_Click(object sender, EventArgs e)
@@ -41,7 +41,7 @@ namespace WindowsFormsApp2.Forms
             using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 connection.Open();
-                using (SqlCommand cmd = new SqlCommand(query,connection))
+                using (SqlCommand cmd = new SqlCommand(query, connection))
                 {
                     cmd.Parameters.AddWithValue("@pricePoint", start);
                     cmd.Parameters.AddWithValue("@pricePoint1", finish);
