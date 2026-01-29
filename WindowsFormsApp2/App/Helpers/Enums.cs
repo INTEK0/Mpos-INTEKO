@@ -4,10 +4,12 @@
     {
         public enum ApiOperation
         {
-            Odenis,
-            Stock,
-            Invoice,
-            Return
+            ProductInvoice = 1,
+            WarehouseStock,
+            Profit,
+            SaleDetail,
+            SaleRefund,
+            PaymentTypes
         }
     }
 }

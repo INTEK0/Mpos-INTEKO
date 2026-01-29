@@ -7,10 +7,10 @@ namespace WindowsFormsApp2.App.Helpers
 {
     public class DbHelpers
     {
-        public static InvoiceProductDto GetInvoiceData()
+        public static InvoiceProductDto InvoiceData()
         {
             var result = new InvoiceProductDto();
-            result.rows = new List<InvoiceProductDto.Row>();
+            result.items = new List<InvoiceProductDto.Items>();
 
             using (var conn = new SqlConnection(WindowsFormsApp2.Helpers.DB.DbHelpers.CurrentConnectionString))
             {
@@ -20,25 +20,25 @@ namespace WindowsFormsApp2.App.Helpers
                 {
                     while (reader.Read())
                     {
-                        if (result.voen == null)
-                            result.voen = reader["VOEN"].ToString();
+                        if (result.Voen == null)
+                            result.Voen = reader["VOEN"].ToString();
 
                         var tarix = ((DateTime)reader["TARİX"]).Date;
 
-                        result.rows.Add(new InvoiceProductDto.Row
+                        result.items.Add(new InvoiceProductDto.Items
                         {
-                            tarix = tarix.ToString("yyyy-MM-dd"),
-                            istifadeciAdi = reader["İSTİFADƏÇİ ADI"].ToString(),
-                            fakturaNo = reader["FAKTURA №"].ToString(),
-                            techizatciAdi = reader["TƏCHİZATÇININ ADI"].ToString(),
-                            mehsulAdi = reader["MƏHSULUN ADI"].ToString(),
-                            mehsulKodu = reader["MƏHSULUN KODU"].ToString(),
-                            miqdari = Convert.ToDouble(reader["MİQDARI"]),
-                            alisQiymeti = Convert.ToDouble(reader["ALIŞ QİYMƏTİ"]),
-                            endirimFaiz = Convert.ToInt32(reader["ENDİRİM FAİZ"]),
-                            endirimAzn = Convert.ToDouble(reader["ENDİRİM AZN"]),
-                            endirimMeblegi = Convert.ToDouble(reader["ENDİRİM MƏBLƏĞİ"]),
-                            odenilecekMebleg = Convert.ToDouble(reader["ÖDƏNİLƏCƏK MƏBLƏĞ"])
+                            Date = tarix.ToString("yyyy-MM-dd"),
+                            Username = reader["İSTİFADƏÇİ ADI"].ToString(),
+                            InvoiceNo = reader["FAKTURA №"].ToString(),
+                            SupplierName = reader["TƏCHİZATÇININ ADI"].ToString(),
+                            ProductName = reader["MƏHSULUN ADI"].ToString(),
+                            ProductCode = reader["MƏHSULUN KODU"].ToString(),
+                            Quantity = Convert.ToDouble(reader["MİQDARI"]),
+                            PurchasePrice = Convert.ToDouble(reader["ALIŞ QİYMƏTİ"]),
+                            DiscountPercantages = Convert.ToInt32(reader["ENDİRİM FAİZ"]),
+                            DiscountAzn = Convert.ToDouble(reader["ENDİRİM AZN"]),
+                            DiscountTotalAmount = Convert.ToDouble(reader["ENDİRİM MƏBLƏĞİ"]),
+                            PayableAmount = Convert.ToDouble(reader["ÖDƏNİLƏCƏK MƏBLƏĞ"])
                         });
                     }
                 }
@@ -47,10 +47,10 @@ namespace WindowsFormsApp2.App.Helpers
             return result;
         }
 
-        public static SaleDetailsDto GetSaleDetailsData()
+        public static SaleDetailsDto SaleDetailsData()
         {
             var result = new SaleDetailsDto();
-            result.rows = new List<SaleDetailsDto.Row>();
+            result.items = new List<SaleDetailsDto.Items>();
 
             using (var conn = new SqlConnection(WindowsFormsApp2.Helpers.DB.DbHelpers.CurrentConnectionString))
             {
@@ -60,27 +60,27 @@ namespace WindowsFormsApp2.App.Helpers
                 {
                     while (reader.Read())
                     {
-                        if (result.voen == null)
-                            result.voen = reader["VOEN"].ToString();
+                        if (result.Voen == null)
+                            result.Voen = reader["VOEN"].ToString();
 
-                        result.rows.Add(new SaleDetailsDto.Row
+                        result.items.Add(new SaleDetailsDto.Items
                         {
-                            tarix = Convert.ToDateTime(reader["TARİX"].ToString()),
-                            istifadeci = reader["İSTİFADƏÇİ"].ToString(),
-                            techizatci = reader["TƏCHİZATÇI"].ToString(),
-                            category = reader["CATEGORY"].ToString(),
-                            mehsulAdi = reader["MƏHSUL ADI"].ToString(),
-                            customerName = reader["CUSTOMER_NAME"].ToString(),
-                            doctorName = reader["DOCTOR_NAME"].ToString(),
-                            miqdari = Convert.ToDouble(reader["MİQDARI"]),
-                            vahidi = reader["VAHİDİ"].ToString(),
-                            satisQiymeti = Convert.ToDouble(reader["SATIŞ QİYMƏTİ"]),
-                            endirimAzn = Convert.ToDouble(reader["ENDİRİM AZN"]),
-                            odenisNovu = reader["ÖDƏNİŞ NÖVÜ"].ToString(),
-                            cemOdenis = Convert.ToDouble(reader["CƏM ÖDƏNİŞ"]),
-                            vergiFaiz = Convert.ToInt32(reader["VERGİ %"]),
-                            processNo = reader["ProccessNo"].ToString(),
-                            qebz = reader["QƏBZ"].ToString(),
+                            Date = Convert.ToDateTime(reader["TARİX"].ToString()),
+                            Username = reader["İSTİFADƏÇİ"].ToString(),
+                            SupplierName = reader["TƏCHİZATÇI"].ToString(),
+                            CategoryName = reader["CATEGORY"].ToString(),
+                            ProductName = reader["MƏHSUL ADI"].ToString(),
+                            CustomerName = reader["CUSTOMER_NAME"].ToString(),
+                            DoctorName = reader["DOCTOR_NAME"].ToString(),
+                            Quantity = Convert.ToDouble(reader["MİQDARI"]),
+                            UnitName = reader["VAHİDİ"].ToString(),
+                            SalePrice = Convert.ToDouble(reader["SATIŞ QİYMƏTİ"]),
+                            DiscountAzn = Convert.ToDouble(reader["ENDİRİM AZN"]),
+                            PaymentType = reader["ÖDƏNİŞ NÖVÜ"].ToString(),
+                            TotalAmount = Convert.ToDouble(reader["CƏM ÖDƏNİŞ"]),
+                            TaxPercantages = Convert.ToInt32(reader["VERGİ %"]),
+                            ProccessNo = reader["ProccessNo"].ToString(),
+                            ReceiptNo = reader["QƏBZ"].ToString(),
                         });
                     }
                 }
@@ -92,7 +92,7 @@ namespace WindowsFormsApp2.App.Helpers
         public static PaymentTypesDto PaymentTypesData()
         {
             var result = new PaymentTypesDto();
-            result.items = new List<PaymentTypesDto.Row>();
+            result.items = new List<PaymentTypesDto.Items>();
 
             using (var conn = new SqlConnection(WindowsFormsApp2.Helpers.DB.DbHelpers.CurrentConnectionString))
             {
@@ -102,24 +102,103 @@ namespace WindowsFormsApp2.App.Helpers
                 {
                     while (reader.Read())
                     {
-                        if (result.voen == null)
-                            result.voen = reader["VOEN"].ToString();
+                        if (result.Voen == null)
+                            result.Voen = reader["VOEN"].ToString();
 
                         var tarix = ((DateTime)reader["TARİX"]).Date;
 
-                        result.items.Add(new PaymentTypesDto.Row
+                        result.items.Add(new PaymentTypesDto.Items
                         {
-                            TARİX = tarix.ToString("yyyy-MM-dd"),
-                            NAĞD = Convert.ToDouble(reader["NAĞD"]),
-                            KART = Convert.ToDouble(reader["KART"]),
-                            BANK = Convert.ToDouble(reader["BANK"]),
-                            NİSYƏ = Convert.ToDouble(reader["NİSYƏ"]),
+                            Date = tarix.ToString("yyyy-MM-dd"),
+                            Cash = Convert.ToDouble(reader["NAĞD"]),
+                            Card = Convert.ToDouble(reader["KART"]),
+                            Bank = Convert.ToDouble(reader["BANK"]),
+                            Credit = Convert.ToDouble(reader["NİSYƏ"]),
                         });
                     }
                 }
             }
 
             return result;
+        }
+
+        public static StockDto StockData()
+        {
+            var result = new StockDto();
+            result.items = new List<StockDto.Items>();
+
+            using (var conn = new SqlConnection(WindowsFormsApp2.Helpers.DB.DbHelpers.CurrentConnectionString))
+            {
+                conn.Open();
+                var cmd = new SqlCommand("SELECT * FROM ODENISGUNLUK", conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        if (result.Voen == null)
+                            result.Voen = reader["VOEN"].ToString();
+
+                        var tarix = ((DateTime)reader["TARİX"]).Date;
+
+                        result.items.Add(new StockDto.Items
+                        {
+                            SupplierId = Convert.ToInt32(reader["TECHIZATCI_ID"].ToString()),
+                            SupplierName = reader["TƏCHİZATÇI"].ToString(),
+
+                        });
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public static ProfitReportDto ProfitData()
+        {
+            var result = new ProfitReportDto();
+            result.items = new List<ProfitReportDto.Items>();
+
+            using (var conn = new SqlConnection(WindowsFormsApp2.Helpers.DB.DbHelpers.CurrentConnectionString))
+            {
+                conn.Open();
+                var cmd = new SqlCommand("SELECT * FROM ODENISGUNLUK", conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        if (result.Voen == null)
+                            result.Voen = reader["VOEN"].ToString();
+
+                        var tarix = (DateTime)reader["TARİX"];
+
+                        result.items.Add(new ProfitReportDto.Items
+                        {
+                            Count = Convert.ToInt32(reader["Count"].ToString()),
+                            Date = tarix,
+                            Username = reader["Username"].ToString(),
+                            ProccessNo = reader["ProccessNo"].ToString(),
+                            SupplierName = reader["SupplierName"].ToString(),
+                            CategoryName = reader["CategoryName"].ToString(),
+                            ProductName = reader["ProductName"].ToString(),
+                            Quantity = Convert.ToDecimal(reader["Quantity"].ToString()),
+                            UnitName = reader["UnitName"].ToString(),
+                            SaleQuantity = Convert.ToDecimal(reader["SaleQuantity"].ToString()),
+                            PurchasePrice = Convert.ToDecimal(reader["PurchasePrice"].ToString()),
+                            SalePrice = Convert.ToDecimal(reader["SalePrice"].ToString()),
+                            TotalPurchaseAmount = Convert.ToDecimal(reader["TotalPurchaseAmount"].ToString()),
+                            TotalSaleAmount = Convert.ToDecimal(reader["TotalSaleAmount"].ToString()),
+                            ProfitAmount = Convert.ToDecimal(reader["ProfitAmount"].ToString()),
+                        });
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public static SaleRefundsDto SaleRefund()
+        {
+            return null;
         }
     }
 }

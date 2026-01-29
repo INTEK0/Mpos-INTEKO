@@ -464,8 +464,14 @@ namespace WindowsFormsApp2.Helpers.DB
                 parameter = cmd.Parameters.Add("@rrncode", SqlDbType.NVarChar);
                 parameter.Value = item.rrn;
 
-                parameter = cmd.Parameters.Add("@bankTransactionId", SqlDbType.NVarChar);
+                parameter = cmd.Parameters.Add("@bankTransactionId", SqlDbType.NVarChar, size:50);
                 parameter.Value = item.BankTransactionId;
+
+                parameter = cmd.Parameters.Add("@bankTransactionNumber", SqlDbType.NVarChar, size: 50);
+                parameter.Value = item.BankTransactionNumber;
+
+                parameter = cmd.Parameters.Add("@bankApprovalCode", SqlDbType.NVarChar, size: 50);
+                parameter.Value = item.BankApprovalCode;
 
                 parameter = cmd.Parameters.Add("@customerId", SqlDbType.Int);
                 parameter.Value = item.customerId;

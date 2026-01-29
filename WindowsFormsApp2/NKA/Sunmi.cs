@@ -261,7 +261,7 @@ namespace WindowsFormsApp2.NKA
         public static void CloseShift(string ipAddress, string cashier)
         {
             bool IsBank = true;
-            if (!string.IsNullOrWhiteSpace(UserCacheService.Terminal.BankName))
+            if (!string.IsNullOrWhiteSpace(UserCacheService.Terminal.BankName) && UserCacheService.Terminal?.BankName != "PAX A35")
             {
                 IsBank = false;
                 BankRequest bank = new BankRequest()
@@ -457,7 +457,9 @@ namespace WindowsFormsApp2.NKA
                     moneyBackType = null
                 };
 
-                if (salesData.PayType is PayType.Card && !string.IsNullOrWhiteSpace(UserCacheService.Terminal.BankName))
+                if (salesData.PayType is PayType.Card &&
+                    !string.IsNullOrWhiteSpace(UserCacheService.Terminal.BankName) &&
+                    UserCacheService.Terminal.BankName != "PAX A35")
                 {
                     if (SaleBank(salesData))
                     {
@@ -507,7 +509,12 @@ namespace WindowsFormsApp2.NKA
                                 total = totalSum,
                                 json = json,
                                 shortFiskalId = response.data.short_document_id,
-                                rrn = string.IsNullOrWhiteSpace(salesData.Rrn) ? null : salesData.Rrn,
+                                rrn = !string.IsNullOrWhiteSpace(response.data.rrn)
+                                    ? response.data.rrn
+                                    : (!string.IsNullOrWhiteSpace(salesData.Rrn) ? salesData.Rrn : null),
+                                BankTransactionId = !string.IsNullOrWhiteSpace(response.data.transaction_id) ? response.data.transaction_id : null,
+                                BankTransactionNumber = !string.IsNullOrWhiteSpace(response.data.transaction_number) ? response.data.transaction_number : null,
+                                BankApprovalCode = !string.IsNullOrWhiteSpace(response.data.approval_code) ? response.data.approval_code : null,
                                 customerId = salesData.Customer?.CustomerID,
                                 doctorId = salesData.Doctor?.Id,
                             });
@@ -721,6 +728,8 @@ namespace WindowsFormsApp2.NKA
             decimal card = default;
             string rrn = null;
             string transactionId = null;
+            string transactionNumber = null;
+            string approvalCode = null;
             string saleDate = null;
             string query = $@"SELECT 
   [pos_satis_check_main_id], 
@@ -736,6 +745,8 @@ namespace WindowsFormsApp2.NKA
   [json_], 
   [fiscalNum],
   [BankTransactionId],
+  [BankTransactionNumber],
+  [BankApprovalCode],
   [documentID] 
 FROM 
   [pos_satis_check_main] WHERE[pos_satis_check_main_id] IN(
@@ -762,6 +773,8 @@ FROM
                         string fiscal_id = dr["fiscal_id"].ToString();
                         string rrn1 = dr["bankttnm"].ToString();
                         string bankTransactionId = dr["BankTransactionId"].ToString();
+                        string bankTransactionNumber = dr["BankTransactionNumber"].ToString();
+                        string bankApprovalCode = dr["BankApprovalCode"].ToString();
                         var tarix = Convert.ToDateTime(dr["date_"].ToString());
 
 
@@ -770,10 +783,14 @@ FROM
                         card = card1;
                         rrn = rrn1;
                         transactionId = bankTransactionId;
+                        transactionNumber = bankTransactionNumber;
+                        approvalCode = bankApprovalCode;
                         saleDate = tarix.ToString("dd.MM.yyyy");
                     }
                     refundData.Rrn = string.IsNullOrWhiteSpace(rrn) ? refundData.Rrn : rrn;
                     refundData.BankTransactionId = transactionId;
+                    refundData.BankTransactionNumber = transactionNumber;
+                    refundData.BankApprovalCode = approvalCode;
                 }
 
             }
@@ -835,7 +852,21 @@ FROM
                 isManual = true
             };
 
-            if (refundData.PayType is PayType.Card && !string.IsNullOrWhiteSpace(UserCacheService.Terminal.BankName))
+            if (card > 0 && UserCacheService.Terminal?.BankName == "PAX A35")
+            {
+                data.sum = card + cash;
+                data.isSendCardPayment = true;
+                data.rrn = refundData.Rrn;
+                data.transactionId = refundData.BankTransactionId;
+                data.transactionNumber = refundData.BankTransactionNumber;
+                data.approvalCode = refundData.BankApprovalCode;
+            }
+
+
+            if (refundData.PayType is PayType.Card &&
+                !string.IsNullOrWhiteSpace(UserCacheService.Terminal?.BankName) &&
+                UserCacheService.Terminal?.BankName != "PAX A35")
+
             {
                 string today = DateTime.Now.ToString("dd.MM.yyyy");
 
@@ -843,7 +874,7 @@ FROM
                 {
                     IpAddress = refundData.IpAddress,
                     Card = card,
-                    Rrn = saleDate == today ? refundData.BankTransactionId : refundData.Rrn, 
+                    Rrn = saleDate == today ? refundData.BankTransactionId : refundData.Rrn,
                     DocumentUUID = refundData.DocumentUUID,
                 });
 
@@ -1529,6 +1560,7 @@ WHERE psd.pos_satis_check_main_id = {pos_satis_main_id} AND psm.user_id_ = {Prop
         public class Data
         {
             public bool? isSendCardPayment { get; set; } = null;
+            public decimal? sum { get; set; } = null;
             public bool? isManual { get; set; } = null;
             public string startDate { get; set; } = null;
             public string endDate { get; set; } = null;
@@ -1547,6 +1579,9 @@ WHERE psd.pos_satis_check_main_id = {pos_satis_main_id} AND psm.user_id_ = {Prop
             public string clientBonusCardNumber { get; set; } = null;
             public string cashierName { get; set; } = null;
             public string rrn { get; set; } = null;
+            public string transactionId { get; set; } = null;
+            public string transactionNumber { get; set; } = null;
+            public string approvalCode { get; set; } = null;
             public string currency { get; set; } = "AZN";
             public string creditPayer { get; set; } = null;
             public double? residue { get; set; } = null;
@@ -1888,6 +1923,9 @@ WHERE psd.pos_satis_check_main_id = {pos_satis_main_id} AND psm.user_id_ = {Prop
             public bool shift_open { get; set; }
             public string shift_open_time { get; set; }
             public string rrn { get; set; }
+            public string transaction_id { get; set; }
+            public string transaction_number { get; set; }
+            public string approval_code { get; set; }
         }
 
         public class ResponseData : BaseResponse

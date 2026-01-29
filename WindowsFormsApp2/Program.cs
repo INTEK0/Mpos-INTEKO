@@ -92,7 +92,7 @@ namespace WindowsFormsApp2
 
             FolderControl();
             CultureInfoData();
-            Application.Run(new fApiTest());
+            Application.Run(new avtorizasiya());
         }
 
         static void CultureInfoData()

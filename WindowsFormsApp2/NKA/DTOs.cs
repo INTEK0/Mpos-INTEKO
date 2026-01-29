@@ -41,6 +41,8 @@ public static class DTOs
         public string Cashier { get; set; }
         public string Rrn { get; set; } = string.Empty;
         public string BankTransactionId { get; set; } = string.Empty;
+        public string BankTransactionNumber { get; set; } = string.Empty;
+        public string BankApprovalCode { get; set; } = string.Empty;
         public Enums.PayType PayType { get; set; }
     }
 

@@ -125,7 +125,9 @@ namespace WindowsFormsApp2.Helpers
             [Description("ABB BANK")]
             ABB,
             [Description("UNİBANK")]
-            UNIBANK
+            UNIBANK,
+            [Description("PAX A35")]
+            PAXA35
         }
 
         public enum CustomerDebtType

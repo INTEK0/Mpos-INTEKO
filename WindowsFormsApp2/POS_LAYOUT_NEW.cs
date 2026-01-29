@@ -1168,7 +1168,8 @@ group by
             switch (lModel.Text)
             {
                 case "1":
-                    if (!string.IsNullOrWhiteSpace(UserCacheService.Terminal.BankName))
+                    if (!string.IsNullOrWhiteSpace(UserCacheService.Terminal?.BankName) &&
+                        UserCacheService.Terminal?.BankName != "PAX A35")
                     {
                         bool IsSuccess = Sunmi.CloseShiftBank(lIpAdress.Text);
                     }

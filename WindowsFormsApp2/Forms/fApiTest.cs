@@ -15,15 +15,15 @@ namespace WindowsFormsApp2.Forms
 
         private async void fApiTest_Load(object sender, EventArgs e)
         {
-            var invoiceData = App.Helpers.DbHelpers.GetInvoiceData();
-            var saleData = App.Helpers.DbHelpers.GetSaleDetailsData();
-            var paymentTypesData = App.Helpers.DbHelpers.PaymentTypesData();
+            //var invoiceData = App.Helpers.DbHelpers.InvoiceData();
+            //var saleData = App.Helpers.DbHelpers.SaleDetailsData();
+            //var paymentTypesData = App.Helpers.DbHelpers.PaymentTypesData();
 
 
             var facade = new SyncFacade();
             var result = await facade.SendInvoicesAsync();
             //var result1 = await facade.SendPaymentsAsync();
-            var result2 = await facade.SendSalesAsync();
+            //var result2 = await facade.SendSalesAsync();
 
             if (result.Ok)
                 XtraMessageBox.Show($"Uğurlu: {result.Inserted} sətir göndərildi");

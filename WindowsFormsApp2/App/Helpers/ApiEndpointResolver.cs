@@ -9,14 +9,18 @@ namespace WindowsFormsApp2.App.Helpers
         {
             switch (operation)
             {
-                case ApiOperation.Odenis:
-                    return "odenis";
-                case ApiOperation.Stock:
-                    return "stock";
-                case ApiOperation.Invoice:
-                    return "mahsulalis";
-                case ApiOperation.Return:
-                    return "return";
+                case ApiOperation.ProductInvoice:
+                    return "productpurchase";
+                case ApiOperation.WarehouseStock:
+                    return "warehousestock";
+                case ApiOperation.SaleDetail:
+                    return "salesdetail";
+                case ApiOperation.SaleRefund:
+                    return "salerefund";
+                case ApiOperation.Profit:
+                    return "profit";
+                case ApiOperation.PaymentTypes:
+                    return "payment";
                 default:
                     throw new ArgumentOutOfRangeException(nameof(operation), operation, null);
             }

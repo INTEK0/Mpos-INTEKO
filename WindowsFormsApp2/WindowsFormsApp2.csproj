@@ -242,6 +242,7 @@
     <Compile Include="App\Dtos\PaymentTypesDto.cs" />
     <Compile Include="App\Dtos\ProfitReportDto.cs" />
     <Compile Include="App\Dtos\SaleDetailsDto.cs" />
+    <Compile Include="App\Dtos\SaleRefundsDto.cs" />
     <Compile Include="App\Dtos\StockDto.cs" />
     <Compile Include="App\Helpers\ApiEndpointResolver.cs" />
     <Compile Include="App\Helpers\ApiResult.cs" />

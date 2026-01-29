@@ -172,7 +172,7 @@ namespace WindowsFormsApp2.Forms
                     int? IsSuccess = await DbProsedures.InsertProductDetails(productsDetail);
                     if (IsSuccess > 0)
                     {
-                        var invoiceData = App.Helpers.DbHelpers.GetInvoiceData();
+                        //var invoiceData = App.Helpers.DbHelpers.InvoiceData();
 
 
                         Clear();
