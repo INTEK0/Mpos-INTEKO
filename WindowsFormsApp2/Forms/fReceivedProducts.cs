@@ -39,20 +39,16 @@ namespace WindowsFormsApp2.Forms
         {
             string query = "SELECT * FROM dbo.ALINAN_MEHSUL(@pricePoint,@pricePoint1)";
             using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, connection))
             {
                 connection.Open();
-                using (SqlCommand cmd = new SqlCommand(query, connection))
+                cmd.Parameters.AddWithValue("@pricePoint", start);
+                cmd.Parameters.AddWithValue("@pricePoint1", finish);
+                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                using (DataTable dt = new DataTable())
                 {
-                    cmd.Parameters.AddWithValue("@pricePoint", start);
-                    cmd.Parameters.AddWithValue("@pricePoint1", finish);
-                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-                    {
-                        using (DataTable dt = new DataTable())
-                        {
-                            da.Fill(dt);
-                            gridControl1.DataSource = dt;
-                        }
-                    }
+                    da.Fill(dt);
+                    gridControl1.DataSource = dt;
                 }
             }
         }

@@ -1,5 +1,4 @@
-﻿using DevExpress.Diagram.Core.Shapes;
-using System;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
@@ -31,16 +30,15 @@ namespace WindowsFormsApp2
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(lookUpEdit1.Text))
-                {
-                    GetallData_id_(Convert.ToDateTime(dateEdit1.Text), Convert.ToDateTime(dateEdit2.Text));
+                DateTime start = Convert.ToDateTime(dateEdit1.Text);
+                DateTime end = Convert.ToDateTime(dateEdit2.Text);
 
-                }
+                if (string.IsNullOrWhiteSpace(lookUpEdit1.Text))
+                    GetData(start, end);
                 else
                 {
-                    GetallData_tech_id(Convert.ToDateTime(dateEdit1.Text),
-                                                      Convert.ToDateTime(dateEdit2.Text),
-                                                      Convert.ToInt32(lookUpEdit1.EditValue.ToString()));
+                    int supplierId = Convert.ToInt32(lookUpEdit1.EditValue.ToString());
+                    GetData_ToSupplier(start, end, supplierId);
                 }
             }
             catch (Exception ex)
@@ -49,8 +47,10 @@ namespace WindowsFormsApp2
             }
         }
 
-        public void GetallData_tech_id(DateTime D1_, DateTime D2_, int te_id)
+        public void GetData_ToSupplier(DateTime start, DateTime end, int supplierId)
         {
+            /* KÖHNƏ MƏHSUL ALIŞI HESABATI
+
             SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString);
             string queryString = "EXEC dbo.MEHSUL_ALIS_HESABAT_t_id  @d1 = @pricepoint  ,@d2=@pricepoint1 ,@t_id =@pricepoint2  ";
 
@@ -63,24 +63,51 @@ namespace WindowsFormsApp2
             DataTable dt = new DataTable();
             da.Fill(dt);
             gridControl1.DataSource = dt;
+            */
+
+
+            string query = "SELECT * FROM dbo.ALINAN_MEHSUL_TECHIZATCI_ID(@start,@end,@supplierId)";
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            {
+                connection.Open();
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@start", start);
+                    cmd.Parameters.AddWithValue("@end", end);
+                    cmd.Parameters.AddWithValue("@supplierId", supplierId);
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    using (DataTable dt = new DataTable())
+                    {
+                        da.Fill(dt);
+                        gridControl1.DataSource = dt;
+                    }
+                }
+            }
+
+
+
         }
 
-        public void GetallData_id_(DateTime D1_, DateTime D2_)
+        public void GetData(DateTime D1_, DateTime D2_)
         {
-            //string queryString = "EXEC MEHSUL_ALIS_HESABAT  @d1 = @pricepoint, @d2=@pricepoint1 ";
+            /* KÖHNƏ MƏHSUL ALIŞI HESABATI
 
-            //using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
-            //using (SqlCommand cmd = new SqlCommand(queryString, connection))
-            //{
-            //    cmd.Parameters.AddWithValue("@pricepoint", D1_);
-            //    cmd.Parameters.AddWithValue("@pricepoint1", D2_);
-            //    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-            //    using (DataTable dt = new DataTable())
-            //    {
-            //        da.Fill(dt);
-            //        gridControl1.DataSource = dt;
-            //    }
-            //}
+            string queryString = "EXEC MEHSUL_ALIS_HESABAT  @d1 = @pricepoint, @d2=@pricepoint1 ";
+
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(queryString, connection))
+            {
+                cmd.Parameters.AddWithValue("@pricepoint", D1_);
+                cmd.Parameters.AddWithValue("@pricepoint1", D2_);
+                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                using (DataTable dt = new DataTable())
+                {
+                    da.Fill(dt);
+                    gridControl1.DataSource = dt;
+                }
+            }
+        
+            */
 
 
             string query = "SELECT * FROM dbo.ALINAN_MEHSUL(@pricePoint,@pricePoint1)";
