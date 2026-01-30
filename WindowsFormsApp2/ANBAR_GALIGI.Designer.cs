@@ -41,6 +41,7 @@ namespace WindowsFormsApp2
             this.bDetail = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -55,7 +56,7 @@ namespace WindowsFormsApp2
             this.dateEdit4 = new DevExpress.XtraEditors.DateEdit();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.groupControl1 = new DevExpress.XtraEditors.GroupControl();
-            this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bDetail)).BeginInit();
@@ -156,18 +157,27 @@ namespace WindowsFormsApp2
             // 
             // gridColumn2
             // 
-            this.gridColumn2.Caption = "TƏCHİZATÇI";
-            this.gridColumn2.FieldName = "TƏCHİZATÇI";
+            this.gridColumn2.Caption = "Təchizatçı";
+            this.gridColumn2.FieldName = "SupplierName";
             this.gridColumn2.Name = "gridColumn2";
             this.gridColumn2.OptionsColumn.ReadOnly = true;
             this.gridColumn2.Visible = true;
             this.gridColumn2.VisibleIndex = 1;
             this.gridColumn2.Width = 140;
             // 
+            // gridColumn3
+            // 
+            this.gridColumn3.Caption = "Kateqoriya";
+            this.gridColumn3.FieldName = "CategoryName";
+            this.gridColumn3.Name = "gridColumn3";
+            this.gridColumn3.Visible = true;
+            this.gridColumn3.VisibleIndex = 2;
+            this.gridColumn3.Width = 148;
+            // 
             // gridColumn4
             // 
-            this.gridColumn4.Caption = "MƏHSUL ADI";
-            this.gridColumn4.FieldName = "MƏHSUL ADI";
+            this.gridColumn4.Caption = "Məhsul adı";
+            this.gridColumn4.FieldName = "ProductName";
             this.gridColumn4.Name = "gridColumn4";
             this.gridColumn4.OptionsColumn.ReadOnly = true;
             this.gridColumn4.Visible = true;
@@ -176,8 +186,8 @@ namespace WindowsFormsApp2
             // 
             // gridColumn5
             // 
-            this.gridColumn5.Caption = "MƏHSUL KODU";
-            this.gridColumn5.FieldName = "MƏHSUL KODU";
+            this.gridColumn5.Caption = "Məhsul kodu";
+            this.gridColumn5.FieldName = "ProductCode";
             this.gridColumn5.Name = "gridColumn5";
             this.gridColumn5.OptionsColumn.ReadOnly = true;
             this.gridColumn5.Visible = true;
@@ -188,11 +198,12 @@ namespace WindowsFormsApp2
             // 
             this.gridColumn8.AppearanceCell.Options.UseTextOptions = true;
             this.gridColumn8.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.gridColumn8.Caption = "ALIŞ QİYMƏTİ";
+            this.gridColumn8.Caption = "Alış qiyməti";
             this.gridColumn8.DisplayFormat.FormatString = "N2";
             this.gridColumn8.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
-            this.gridColumn8.FieldName = "ALIŞ QİYMƏTİ";
+            this.gridColumn8.FieldName = "PurchasePrice";
             this.gridColumn8.Name = "gridColumn8";
+            this.gridColumn8.OptionsColumn.AllowEdit = false;
             this.gridColumn8.OptionsColumn.ReadOnly = true;
             this.gridColumn8.Visible = true;
             this.gridColumn8.VisibleIndex = 8;
@@ -202,11 +213,12 @@ namespace WindowsFormsApp2
             // 
             this.gridColumn9.AppearanceCell.Options.UseTextOptions = true;
             this.gridColumn9.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.gridColumn9.Caption = "SATIŞ QİYMƏTİ";
+            this.gridColumn9.Caption = "Satış qiyməti";
             this.gridColumn9.DisplayFormat.FormatString = "N2";
             this.gridColumn9.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
-            this.gridColumn9.FieldName = "SATIŞ QİYMƏTİ";
+            this.gridColumn9.FieldName = "SalePrice";
             this.gridColumn9.Name = "gridColumn9";
+            this.gridColumn9.OptionsColumn.AllowEdit = false;
             this.gridColumn9.OptionsColumn.ReadOnly = true;
             this.gridColumn9.Visible = true;
             this.gridColumn9.VisibleIndex = 9;
@@ -216,11 +228,12 @@ namespace WindowsFormsApp2
             // 
             this.gridColumn12.AppearanceCell.Options.UseTextOptions = true;
             this.gridColumn12.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.gridColumn12.Caption = "ANBAR QALIĞI";
+            this.gridColumn12.Caption = "Anbar qalığı";
             this.gridColumn12.DisplayFormat.FormatString = "N3";
             this.gridColumn12.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
-            this.gridColumn12.FieldName = "ANBAR QALIĞI";
+            this.gridColumn12.FieldName = "StockQuantity";
             this.gridColumn12.Name = "gridColumn12";
+            this.gridColumn12.OptionsColumn.AllowEdit = false;
             this.gridColumn12.OptionsColumn.ReadOnly = true;
             this.gridColumn12.Visible = true;
             this.gridColumn12.VisibleIndex = 10;
@@ -228,8 +241,8 @@ namespace WindowsFormsApp2
             // 
             // gridColumn6
             // 
-            this.gridColumn6.Caption = "BARKOD";
-            this.gridColumn6.FieldName = "MƏHSUL BARKOD";
+            this.gridColumn6.Caption = "Barkod";
+            this.gridColumn6.FieldName = "ProductBarcode";
             this.gridColumn6.Name = "gridColumn6";
             this.gridColumn6.OptionsColumn.ReadOnly = true;
             this.gridColumn6.Visible = true;
@@ -238,9 +251,10 @@ namespace WindowsFormsApp2
             // 
             // gridColumn10
             // 
-            this.gridColumn10.Caption = "VERGİ DƏRƏCƏSİ";
-            this.gridColumn10.FieldName = "EDV";
+            this.gridColumn10.Caption = "Vergi dərəcəsi";
+            this.gridColumn10.FieldName = "TaxName";
             this.gridColumn10.Name = "gridColumn10";
+            this.gridColumn10.OptionsColumn.AllowEdit = false;
             this.gridColumn10.OptionsColumn.ReadOnly = true;
             this.gridColumn10.Visible = true;
             this.gridColumn10.VisibleIndex = 7;
@@ -248,9 +262,10 @@ namespace WindowsFormsApp2
             // 
             // gridColumn7
             // 
-            this.gridColumn7.Caption = "VAHİD";
-            this.gridColumn7.FieldName = "VAHİD";
+            this.gridColumn7.Caption = "Vahid";
+            this.gridColumn7.FieldName = "UnitName";
             this.gridColumn7.Name = "gridColumn7";
+            this.gridColumn7.OptionsColumn.AllowEdit = false;
             this.gridColumn7.OptionsColumn.ReadOnly = true;
             this.gridColumn7.Visible = true;
             this.gridColumn7.VisibleIndex = 6;
@@ -328,6 +343,7 @@ namespace WindowsFormsApp2
             // 
             // groupControl1
             // 
+            this.groupControl1.Controls.Add(this.simpleButton1);
             this.groupControl1.Controls.Add(this.simpleButton3);
             this.groupControl1.Controls.Add(this.simpleButton2);
             this.groupControl1.Controls.Add(this.dateEdit4);
@@ -341,14 +357,20 @@ namespace WindowsFormsApp2
             this.groupControl1.TabIndex = 8;
             this.groupControl1.Text = "groupControl1";
             // 
-            // gridColumn3
+            // simpleButton1
             // 
-            this.gridColumn3.Caption = "KATEQORİYA";
-            this.gridColumn3.FieldName = "KATEGORIYA";
-            this.gridColumn3.Name = "gridColumn3";
-            this.gridColumn3.Visible = true;
-            this.gridColumn3.VisibleIndex = 2;
-            this.gridColumn3.Width = 148;
+            this.simpleButton1.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Primary;
+            this.simpleButton1.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
+            this.simpleButton1.Appearance.Options.UseBackColor = true;
+            this.simpleButton1.Appearance.Options.UseFont = true;
+            this.simpleButton1.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("simpleButton1.ImageOptions.SvgImage")));
+            this.simpleButton1.ImageOptions.SvgImageSize = new System.Drawing.Size(24, 24);
+            this.simpleButton1.Location = new System.Drawing.Point(321, 16);
+            this.simpleButton1.Name = "simpleButton1";
+            this.simpleButton1.Size = new System.Drawing.Size(116, 32);
+            this.simpleButton1.TabIndex = 6;
+            this.simpleButton1.Text = "AXTAR";
+            this.simpleButton1.Click += new System.EventHandler(this.simpleButton1_Click);
             // 
             // ANBAR_GALIGI
             // 
@@ -404,5 +426,6 @@ namespace WindowsFormsApp2
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn13;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit bDetail;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn3;
+        private DevExpress.XtraEditors.SimpleButton simpleButton1;
     }
 }

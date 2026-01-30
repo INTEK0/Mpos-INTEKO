@@ -14,24 +14,28 @@ namespace WindowsFormsApp2.App.Application
             _apiService = new ApiService();
         }
 
+        //Ok
         public async Task<ApiResult> SendPaymentsAsync()
         {
             var data = DbHelpers.PaymentTypesData();
             return await _apiService.SendAsync(data, ApiOperation.PaymentTypes);
         }
 
+        //Ok
         public async Task<ApiResult> SendInvoicesAsync()
         {
             var data = DbHelpers.InvoiceData();
             return await _apiService.SendAsync(data, ApiOperation.ProductInvoice);
         }
 
+        //Ok
         public async Task<ApiResult> SendSalesAsync()
         {
             var data = DbHelpers.SaleDetailsData();
             return await _apiService.SendAsync(data, ApiOperation.SaleDetail);
         }
 
+        //Ok
         public async Task<ApiResult> SendStockAsync()
         {
             var data = DbHelpers.StockData();
@@ -44,6 +48,7 @@ namespace WindowsFormsApp2.App.Application
             return await _apiService.SendAsync(data, ApiOperation.SaleRefund);
         }
 
+        //Ok
         public async Task<ApiResult> SendProfitAsync()
         {
             var data = DbHelpers.ProfitData();

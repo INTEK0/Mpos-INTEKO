@@ -20,8 +20,8 @@ namespace WindowsFormsApp2.App.Helpers
                 {
                     while (reader.Read())
                     {
-                        if (result.Voen == null)
-                            result.Voen = reader["VOEN"].ToString();
+                        if (result.voen == null)
+                            result.voen = reader["VOEN"].ToString();
 
                         var tarix = ((DateTime)reader["TARİX"]).Date;
 
@@ -60,8 +60,8 @@ namespace WindowsFormsApp2.App.Helpers
                 {
                     while (reader.Read())
                     {
-                        if (result.Voen == null)
-                            result.Voen = reader["VOEN"].ToString();
+                        if (result.voen == null)
+                            result.voen = reader["VOEN"].ToString();
 
                         result.items.Add(new SaleDetailsDto.Items
                         {
@@ -102,8 +102,8 @@ namespace WindowsFormsApp2.App.Helpers
                 {
                     while (reader.Read())
                     {
-                        if (result.Voen == null)
-                            result.Voen = reader["VOEN"].ToString();
+                        if (result.voen == null)
+                            result.voen = reader["VOEN"].ToString();
 
                         var tarix = ((DateTime)reader["TARİX"]).Date;
 
@@ -130,21 +130,27 @@ namespace WindowsFormsApp2.App.Helpers
             using (var conn = new SqlConnection(WindowsFormsApp2.Helpers.DB.DbHelpers.CurrentConnectionString))
             {
                 conn.Open();
-                var cmd = new SqlCommand("SELECT * FROM ODENISGUNLUK", conn);
+                var cmd = new SqlCommand("SELECT * FROM ANBAR_QALIQ", conn);
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        if (result.Voen == null)
-                            result.Voen = reader["VOEN"].ToString();
+                        if (result.voen == null)
+                            result.voen = reader["VOEN"].ToString();
 
-                        var tarix = ((DateTime)reader["TARİX"]).Date;
 
                         result.items.Add(new StockDto.Items
                         {
                             SupplierId = Convert.ToInt32(reader["TECHIZATCI_ID"].ToString()),
                             SupplierName = reader["TƏCHİZATÇI"].ToString(),
-
+                            ProductId = Convert.ToInt32(reader["MAL_ALISI_DETAILS_ID"].ToString()),
+                            ProductName = reader["MƏHSUL ADI"].ToString(),
+                            ProductCode = reader["MƏHSUL KODU"].ToString(),
+                            SalePrice = Convert.ToDecimal(reader["SATIS_GIYMETI"].ToString()),
+                            Quantity = Convert.ToDecimal(reader["migdar_"].ToString()),
+                            ProductBarcode = reader["BARKOD"].ToString(),
+                            UnitName = reader["Vahid"].ToString(),
+                            TaxName = reader["Vergi_Derecesi"].ToString(),
                         });
                     }
                 }
@@ -161,27 +167,27 @@ namespace WindowsFormsApp2.App.Helpers
             using (var conn = new SqlConnection(WindowsFormsApp2.Helpers.DB.DbHelpers.CurrentConnectionString))
             {
                 conn.Open();
-                var cmd = new SqlCommand("SELECT * FROM ODENISGUNLUK", conn);
+                var cmd = new SqlCommand("SELECT * FROM SATISDETAYLIMENFAAT", conn);
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        if (result.Voen == null)
-                            result.Voen = reader["VOEN"].ToString();
+                        if (result.voen == null)
+                            result.voen = reader["VOEN"].ToString();
 
-                        var tarix = (DateTime)reader["TARİX"];
+                        var tarix = (DateTime)reader["Date"];
 
                         result.items.Add(new ProfitReportDto.Items
                         {
                             Count = Convert.ToInt32(reader["Count"].ToString()),
                             Date = tarix,
-                            Username = reader["Username"].ToString(),
+                            Username = reader["CashierName"].ToString(),
                             ProccessNo = reader["ProccessNo"].ToString(),
                             SupplierName = reader["SupplierName"].ToString(),
                             CategoryName = reader["CategoryName"].ToString(),
                             ProductName = reader["ProductName"].ToString(),
-                            Quantity = Convert.ToDecimal(reader["Quantity"].ToString()),
                             UnitName = reader["UnitName"].ToString(),
+                            Quantity = Convert.ToDecimal(reader["SaleQuantity"].ToString()),
                             SaleQuantity = Convert.ToDecimal(reader["SaleQuantity"].ToString()),
                             PurchasePrice = Convert.ToDecimal(reader["PurchasePrice"].ToString()),
                             SalePrice = Convert.ToDecimal(reader["SalePrice"].ToString()),
@@ -198,7 +204,45 @@ namespace WindowsFormsApp2.App.Helpers
 
         public static SaleRefundsDto SaleRefund()
         {
-            return null;
+            var result = new SaleRefundsDto();
+            result.items = new List<SaleRefundsDto.Items>();
+
+            using (var conn = new SqlConnection(WindowsFormsApp2.Helpers.DB.DbHelpers.CurrentConnectionString))
+            {
+                conn.Open();
+                var cmd = new SqlCommand("SELECT * FROM SATISDETAYLIMENFAAT", conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        if (result.voen == null)
+                            result.voen = reader["VOEN"].ToString();
+
+                        var tarix = (DateTime)reader["TARİX"];
+
+                        result.items.Add(new SaleRefundsDto.Items
+                        {
+                            //Count = Convert.ToInt32(reader["Count"].ToString()),
+                            //Date = tarix,
+                            //Username = reader["CashierName"].ToString(),
+                            //ProccessNo = reader["ProccessNo"].ToString(),
+                            //SupplierName = reader["SupplierName"].ToString(),
+                            //CategoryName = reader["CategoryName"].ToString(),
+                            //ProductName = reader["ProductName"].ToString(),
+                            //UnitName = reader["UnitName"].ToString(),
+                            //Quantity = Convert.ToDecimal(reader["SaleQuantity"].ToString()),
+                            //SaleQuantity = Convert.ToDecimal(reader["SaleQuantity"].ToString()),
+                            //PurchasePrice = Convert.ToDecimal(reader["PurchasePrice"].ToString()),
+                            //SalePrice = Convert.ToDecimal(reader["SalePrice"].ToString()),
+                            //TotalPurchaseAmount = Convert.ToDecimal(reader["TotalPurchaseAmount"].ToString()),
+                            //TotalSaleAmount = Convert.ToDecimal(reader["TotalSaleAmount"].ToString()),
+                            //ProfitAmount = Convert.ToDecimal(reader["ProfitAmount"].ToString()),
+                        });
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }

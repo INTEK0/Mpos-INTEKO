@@ -5,7 +5,7 @@ namespace WindowsFormsApp2.App.Dtos
 {
     public class ProfitReportDto
     {
-        public string Voen { get; set; }
+        public string voen { get; set; }
         public List<Items> items { get; set; }
         public class Items
         {
@@ -16,8 +16,8 @@ namespace WindowsFormsApp2.App.Dtos
             public string SupplierName { get; set; }
             public string CategoryName { get; set; }
             public string ProductName { get; set; }
-            public decimal Quantity { get; set; }
             public string UnitName { get; set; }
+            public decimal Quantity { get; set; }
             public decimal SaleQuantity { get; set; }
             public decimal PurchasePrice { get; set; }
             public decimal SalePrice { get; set; }

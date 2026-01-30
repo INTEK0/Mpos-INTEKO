@@ -5,7 +5,7 @@ namespace WindowsFormsApp2.App.Dtos
 {
     public class SaleDetailsDto
     {
-        public string Voen { get; set; }
+        public string voen { get; set; }
         public List<Items> items { get; set; }
         public class Items
         {

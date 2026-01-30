@@ -12,12 +12,14 @@ namespace WindowsFormsApp2.Forms
         public fSaleProfitReport()
         {
             InitializeComponent();
+            FormHelpers.GridPanelText(gridView1);
         }
 
         private void fSaleProfitReport_Load(object sender, EventArgs e)
         {
             dateEdit1.Text = DateTime.Now.ToShortDateString();
             dateEdit2.Text = DateTime.Now.ToShortDateString();
+            gridView1.OptionsView.ShowColumnHeaders = false;
         }
 
         private void simpleButton1_Click(object sender, EventArgs e)
@@ -44,7 +46,9 @@ namespace WindowsFormsApp2.Forms
                     using (DataTable dt = new DataTable())
                     {
                         da.Fill(dt);
+                        gridView1.OptionsView.ShowColumnHeaders = true;
                         gridControl1.DataSource = dt;
+                        gridView1.BestFitColumns();
                     }
                 }
             }

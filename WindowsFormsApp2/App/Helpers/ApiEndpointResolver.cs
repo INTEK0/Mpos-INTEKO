@@ -22,7 +22,7 @@ namespace WindowsFormsApp2.App.Helpers
                 case ApiOperation.PaymentTypes:
                     return "payment";
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(operation), operation, null);
+                    throw new ArgumentOutOfRangeException(nameof(operation), operation, "Endpoint düzgün daxil edilmədi");
             }
         }
     }

@@ -268,7 +268,7 @@ namespace WindowsFormsApp2.Forms
                 FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
                 return;
             }
-            FormHelpers.OpenForm<fReceivedProducts>();
+            FormHelpers.OpenForm<MEHSUL_ALIS_HESABATI>();
         }
 
         public override void ReceiveData<T>(T data)

@@ -53,32 +53,32 @@ namespace WindowsFormsApp2
                     da.Fill(dt);
 
                     gridControl1.DataSource = dt;
-                    gridView1.Columns["ANBAR QALIĞI"].Summary.Clear();
-                    gridView1.Columns["ALIŞ QİYMƏTİ"].Summary.Clear();
-                    gridView1.Columns["SATIŞ QİYMƏTİ"].Summary.Clear();
+                    gridView1.Columns["StockQuantity"].Summary.Clear();
+                    gridView1.Columns["PurchasePrice"].Summary.Clear();
+                    gridView1.Columns["SalePrice"].Summary.Clear();
                     GridColumnSummaryItem stockSum = new GridColumnSummaryItem
                     {
-                        FieldName = "ANBAR QALIĞI",
+                        FieldName = "StockQuantity",
                         SummaryType = DevExpress.Data.SummaryItemType.Sum,
                         DisplayFormat = "{0:N2}"
                     };
                     GridColumnSummaryItem PuchaseSum = new GridColumnSummaryItem
                     {
-                        FieldName = "ALIŞ QİYMƏTİ",
+                        FieldName = "PurchasePrice",
                         SummaryType = DevExpress.Data.SummaryItemType.Sum,
                         DisplayFormat = "{0:N2}",
 
                     };
                     GridColumnSummaryItem SaleSum = new GridColumnSummaryItem
                     {
-                        FieldName = "SATIŞ QİYMƏTİ",
+                        FieldName = "SalePrice",
                         SummaryType = DevExpress.Data.SummaryItemType.Sum,
                         DisplayFormat = "{0:N2}",
 
                     };
-                    gridView1.Columns["ANBAR QALIĞI"].Summary.Add(stockSum);
-                    gridView1.Columns["ALIŞ QİYMƏTİ"].Summary.Add(PuchaseSum);
-                    gridView1.Columns["SATIŞ QİYMƏTİ"].Summary.Add(SaleSum);
+                    gridView1.Columns["StockQuantity"].Summary.Add(stockSum);
+                    gridView1.Columns["PurchasePrice"].Summary.Add(PuchaseSum);
+                    gridView1.Columns["SalePrice"].Summary.Add(SaleSum);
                 }
             }
         }
@@ -137,6 +137,12 @@ namespace WindowsFormsApp2
         {
             fColumnSettings f = new fColumnSettings("Stock");
             f.ShowDialog();
+        }
+
+        private void simpleButton1_Click(object sender, EventArgs e)
+        {
+            fApiTest f = new fApiTest();
+            f.Show();
         }
     }
 }

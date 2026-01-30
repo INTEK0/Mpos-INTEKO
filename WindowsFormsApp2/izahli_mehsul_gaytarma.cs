@@ -24,22 +24,24 @@ namespace WindowsFormsApp2
         {
             getall(Convert.ToDateTime(dateEdit3.Text), Convert.ToDateTime(dateEdit4.Text));
         }
-        public void getall(DateTime D1_, DateTime D2_)
+        public void getall(DateTime start, DateTime end)
         {
             string queryString = "SELECT * FROM  dbo.IZAHLI_GAYTARMA_HESABAT( @pricepoint,@pricepoint1) order by 1 ASC";
             try
             {
-                SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString);
-                SqlCommand command = new SqlCommand(queryString, connection);
-                command.Parameters.AddWithValue("@pricepoint", D1_);
-                command.Parameters.AddWithValue("@pricepoint1", D2_);
-                SqlDataAdapter da = new SqlDataAdapter(command);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-                gridControl1.DataSource = dt;
-
-                gridView1.Columns["TARİX"].DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-                gridView1.Columns["TARİX"].DisplayFormat.FormatString = "dd-MM-yyyy HH:mm:ss";
+                using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
+                using (SqlCommand cmd = new SqlCommand(queryString,con))
+                {
+                    cmd.Parameters.AddWithValue("@pricepoint", start);
+                    cmd.Parameters.AddWithValue("@pricepoint1", end);
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    using (DataTable dt = new DataTable())
+                    {
+                        da.Fill(dt);
+                        gridControl1.DataSource = dt;
+                        gridView1.BestFitColumns();
+                    }
+                }
             }
             catch (Exception e)
             {

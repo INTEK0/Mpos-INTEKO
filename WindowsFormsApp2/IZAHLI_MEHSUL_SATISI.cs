@@ -28,6 +28,7 @@ namespace WindowsFormsApp2
 
             dateEdit3.Text = dateTime.ToShortDateString();
             dateEdit4.Text = dateTime.ToShortDateString();
+            gridView1.OptionsView.ShowColumnHeaders = false;
         }
 
         private void simpleButton3_Click(object sender, EventArgs e)
@@ -49,9 +50,9 @@ namespace WindowsFormsApp2
                     SqlDataAdapter da = new SqlDataAdapter(command);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
+                    gridView1.OptionsView.ShowColumnHeaders = true;
                     gridControl1.DataSource = dt;
-                    gridView1.Columns["TARİX"].DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-                    gridView1.Columns["TARİX"].DisplayFormat.FormatString = "dd-MM-yyyy HH:mm:ss";
+                    gridView1.BestFitColumns();
                 }
             }
             catch (Exception e)
