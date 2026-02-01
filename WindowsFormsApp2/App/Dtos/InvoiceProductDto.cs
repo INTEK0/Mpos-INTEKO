@@ -13,10 +13,14 @@ namespace WindowsFormsApp2.App.Dtos
             public string Username { get; set; }
             public string InvoiceNo { get; set; }
             public string SupplierName { get; set; }
+            public string CategoryName { get; set; }
             public string ProductName { get; set; }
             public string ProductCode { get; set; }
+            public string Barcode { get; set; }
             public double Quantity { get; set; }
+            public string UnitName { get; set; }
             public double PurchasePrice { get; set; }
+            public double SalePrice { get; set; }
             public int DiscountPercantages { get; set; }
             public double DiscountAzn { get; set; }
             public double DiscountTotalAmount { get; set; }

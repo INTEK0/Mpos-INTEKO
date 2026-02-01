@@ -7,6 +7,43 @@ namespace WindowsFormsApp2.App.Helpers
 {
     public class DbHelpers
     {
+        public static StockDto StockData()
+        {
+            var result = new StockDto();
+            result.items = new List<StockDto.Items>();
+
+            using (var conn = new SqlConnection(WindowsFormsApp2.Helpers.DB.DbHelpers.CurrentConnectionString))
+            {
+                conn.Open();
+                var cmd = new SqlCommand("SELECT * FROM VW_GetWarehouseStock", conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        if (result.voen == null)
+                            result.voen = reader["VOEN"].ToString();
+
+
+                        result.items.Add(new StockDto.Items
+                        {
+                            SupplierName = reader["SupplierName"].ToString(),
+                            CategoryName = reader["CategoryName"].ToString(),
+                            ProductName = reader["ProductName"].ToString(),
+                            ProductCode = reader["ProductCode"].ToString(),
+                            ProductBarcode = reader["ProductBarcode"].ToString(),
+                            UnitName = reader["UnitName"].ToString(),
+                            TaxName = reader["TaxName"].ToString(),
+                            PurchasePrice = Convert.ToDecimal(reader["PurchasePrice"].ToString()),
+                            SalePrice = Convert.ToDecimal(reader["SalePrice"].ToString()),
+                            StockQuantity = Convert.ToDecimal(reader["StockQuantity"].ToString()),
+                        });
+                    }
+                }
+            }
+
+            return result;
+        }
+
         public static InvoiceProductDto InvoiceData()
         {
             var result = new InvoiceProductDto();
@@ -15,7 +52,7 @@ namespace WindowsFormsApp2.App.Helpers
             using (var conn = new SqlConnection(WindowsFormsApp2.Helpers.DB.DbHelpers.CurrentConnectionString))
             {
                 conn.Open();
-                var cmd = new SqlCommand("SELECT * FROM MAHSUL_ALIS_HESABATI", conn);
+                var cmd = new SqlCommand("SELECT * FROM VW_PRODUCT_INVOICES", conn);
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
@@ -28,17 +65,21 @@ namespace WindowsFormsApp2.App.Helpers
                         result.items.Add(new InvoiceProductDto.Items
                         {
                             Date = tarix.ToString("yyyy-MM-dd"),
-                            Username = reader["İSTİFADƏÇİ ADI"].ToString(),
-                            InvoiceNo = reader["FAKTURA №"].ToString(),
-                            SupplierName = reader["TƏCHİZATÇININ ADI"].ToString(),
-                            ProductName = reader["MƏHSULUN ADI"].ToString(),
-                            ProductCode = reader["MƏHSULUN KODU"].ToString(),
+                            Username = reader["Username"].ToString(),
+                            InvoiceNo = reader["FAKTURA NÖMRƏSİ"].ToString(),
+                            SupplierName = reader["TƏCHİZATÇI ADI"].ToString(),
+                            CategoryName = reader["KATEQORİYA"].ToString(),
+                            ProductName = reader["MƏHSUL ADI"].ToString(),
+                            ProductCode = reader["MƏHSUL KODU"].ToString(),
+                            Barcode = reader["BARCODE"].ToString(),
                             Quantity = Convert.ToDouble(reader["MİQDARI"]),
+                            UnitName = reader["VAHİDİ"].ToString(),
                             PurchasePrice = Convert.ToDouble(reader["ALIŞ QİYMƏTİ"]),
+                            SalePrice = Convert.ToDouble(reader["SATIŞ QİYMƏTİ"]),
                             DiscountPercantages = Convert.ToInt32(reader["ENDİRİM FAİZ"]),
                             DiscountAzn = Convert.ToDouble(reader["ENDİRİM AZN"]),
                             DiscountTotalAmount = Convert.ToDouble(reader["ENDİRİM MƏBLƏĞİ"]),
-                            PayableAmount = Convert.ToDouble(reader["ÖDƏNİLƏCƏK MƏBLƏĞ"])
+                            PayableAmount = Convert.ToDouble(reader["YEKUN MƏBLƏĞ"])
                         });
                     }
                 }
@@ -55,12 +96,12 @@ namespace WindowsFormsApp2.App.Helpers
             using (var conn = new SqlConnection(WindowsFormsApp2.Helpers.DB.DbHelpers.CurrentConnectionString))
             {
                 conn.Open();
-                var cmd = new SqlCommand("SELECT * FROM IZAHLI_SATIS", conn);
+                var cmd = new SqlCommand("SELECT * FROM VW_SALE_DETAILS", conn);
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        if (result.voen == null)
+                        if (result.voen is null)
                             result.voen = reader["VOEN"].ToString();
 
                         result.items.Add(new SaleDetailsDto.Items
@@ -70,6 +111,8 @@ namespace WindowsFormsApp2.App.Helpers
                             SupplierName = reader["TƏCHİZATÇI"].ToString(),
                             CategoryName = reader["CATEGORY"].ToString(),
                             ProductName = reader["MƏHSUL ADI"].ToString(),
+                            ProductCode = reader["ProductCode"].ToString(),
+                            Barcode = reader["Barcode"].ToString(),
                             CustomerName = reader["CUSTOMER_NAME"].ToString(),
                             DoctorName = reader["DOCTOR_NAME"].ToString(),
                             Quantity = Convert.ToDouble(reader["MİQDARI"]),
@@ -114,43 +157,6 @@ namespace WindowsFormsApp2.App.Helpers
                             Card = Convert.ToDouble(reader["KART"]),
                             Bank = Convert.ToDouble(reader["BANK"]),
                             Credit = Convert.ToDouble(reader["NİSYƏ"]),
-                        });
-                    }
-                }
-            }
-
-            return result;
-        }
-
-        public static StockDto StockData()
-        {
-            var result = new StockDto();
-            result.items = new List<StockDto.Items>();
-
-            using (var conn = new SqlConnection(WindowsFormsApp2.Helpers.DB.DbHelpers.CurrentConnectionString))
-            {
-                conn.Open();
-                var cmd = new SqlCommand("SELECT * FROM ANBAR_QALIQ", conn);
-                using (var reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        if (result.voen == null)
-                            result.voen = reader["VOEN"].ToString();
-
-
-                        result.items.Add(new StockDto.Items
-                        {
-                            SupplierId = Convert.ToInt32(reader["TECHIZATCI_ID"].ToString()),
-                            SupplierName = reader["TƏCHİZATÇI"].ToString(),
-                            ProductId = Convert.ToInt32(reader["MAL_ALISI_DETAILS_ID"].ToString()),
-                            ProductName = reader["MƏHSUL ADI"].ToString(),
-                            ProductCode = reader["MƏHSUL KODU"].ToString(),
-                            SalePrice = Convert.ToDecimal(reader["SATIS_GIYMETI"].ToString()),
-                            Quantity = Convert.ToDecimal(reader["migdar_"].ToString()),
-                            ProductBarcode = reader["BARKOD"].ToString(),
-                            UnitName = reader["Vahid"].ToString(),
-                            TaxName = reader["Vergi_Derecesi"].ToString(),
                         });
                     }
                 }

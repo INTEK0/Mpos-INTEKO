@@ -14,6 +14,8 @@ namespace WindowsFormsApp2.App.Dtos
             public string SupplierName { get; set; }
             public string CategoryName { get; set; }
             public string ProductName { get; set; }
+            public string ProductCode { get; set; }
+            public string Barcode { get; set; }
             public string CustomerName { get; set; }
             public string DoctorName { get; set; }
             public double Quantity { get; set; }
