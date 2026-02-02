@@ -14,45 +14,58 @@ namespace WindowsFormsApp2.App.Application
             _apiService = new ApiService();
         }
 
-        //Ok
         public async Task<ApiResult> SendPaymentsAsync()
         {
             var data = DbHelpers.PaymentTypesData();
-            return await _apiService.SendAsync(data, ApiOperation.PaymentTypes);
+            if (data.items.Count > 0)
+                return await _apiService.SendAsync(data, ApiOperation.PaymentTypes);
+            else
+                return ApiResult.Fail(null);
         }
 
-        //Ok
         public async Task<ApiResult> SendInvoicesAsync()
         {
             var data = DbHelpers.InvoiceData();
-            return await _apiService.SendAsync(data, ApiOperation.ProductInvoice);
+            if (data.items.Count > 0)
+                return await _apiService.SendAsync(data, ApiOperation.ProductInvoice);
+            else
+                return ApiResult.Fail(null);
         }
 
-        //Ok
         public async Task<ApiResult> SendSalesAsync()
         {
             var data = DbHelpers.SaleDetailsData();
-            return await _apiService.SendAsync(data, ApiOperation.SaleDetail);
+            if (data.items.Count > 0)
+                return await _apiService.SendAsync(data, ApiOperation.SaleDetail);
+            else
+                return ApiResult.Fail(null);
         }
 
-        //Ok
         public async Task<ApiResult> SendStockAsync()
         {
             var data = DbHelpers.StockData();
-            return await _apiService.SendAsync(data, ApiOperation.WarehouseStock);
+            if (data.items.Count > 0)
+                return await _apiService.SendAsync(data, ApiOperation.WarehouseStock);
+            else
+                return ApiResult.Fail(null);
         }
 
         public async Task<ApiResult> SendSaleRefundAsync()
         {
             var data = DbHelpers.SaleRefund();
-            return await _apiService.SendAsync(data, ApiOperation.SaleRefund);
+            if (data.items.Count > 0)
+                return await _apiService.SendAsync(data, ApiOperation.SaleRefund);
+            else
+                return ApiResult.Fail(null);
         }
 
-        //Ok
         public async Task<ApiResult> SendProfitAsync()
         {
             var data = DbHelpers.ProfitData();
-            return await _apiService.SendAsync(data, ApiOperation.Profit);
+            if (data.items.Count > 0)
+                return await _apiService.SendAsync(data, ApiOperation.Profit);
+            else
+                return ApiResult.Fail(null);
         }
     }
 }

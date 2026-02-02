@@ -4,7 +4,9 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DevExpress.XtraEditors;
 using DevExpress.XtraGrid;
+using WindowsFormsApp2.App.Application;
 using WindowsFormsApp2.Forms;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
@@ -139,10 +141,70 @@ namespace WindowsFormsApp2
             f.ShowDialog();
         }
 
-        private void simpleButton1_Click(object sender, EventArgs e)
+        private async void simpleButton1_Click(object sender, EventArgs e)
         {
-            fApiTest f = new fApiTest();
-            f.Show();
+            var facade = new SyncFacade();
+            var result = await facade.SendStockAsync();
+
+            if (result.Ok)
+                XtraMessageBox.Show($"Uğurlu: {result.Inserted} sətir göndərildi");
+            else
+                XtraMessageBox.Show($"Xəta: {result.Error}");
+        }
+
+        private async void simpleButton4_Click(object sender, EventArgs e)
+        {
+            var facade = new SyncFacade();
+            var result = await facade.SendInvoicesAsync();
+
+            if (result.Ok)
+                XtraMessageBox.Show($"Uğurlu: {result.Inserted} sətir göndərildi");
+            else
+                XtraMessageBox.Show($"Xəta: {result.Error}");
+        }
+
+        private async void simpleButton5_Click(object sender, EventArgs e)
+        {
+            var facade = new SyncFacade();
+            var result = await facade.SendSalesAsync();
+
+            if (result.Ok)
+                XtraMessageBox.Show($"Uğurlu: {result.Inserted} sətir göndərildi");
+            else
+                XtraMessageBox.Show($"Xəta: {result.Error}");
+        }
+
+        private async void simpleButton6_Click(object sender, EventArgs e)
+        {
+            var facade = new SyncFacade();
+            var result = await facade.SendProfitAsync();
+
+            if (result.Ok)
+                XtraMessageBox.Show($"Uğurlu: {result.Inserted} sətir göndərildi");
+            else
+                XtraMessageBox.Show($"Xəta: {result.Error}");
+        }
+
+        private async void simpleButton7_Click(object sender, EventArgs e)
+        {
+            var facade = new SyncFacade();
+            var result = await facade.SendSaleRefundAsync();
+
+            if (result.Ok)
+                XtraMessageBox.Show($"Uğurlu: {result.Inserted} sətir göndərildi");
+            else
+                XtraMessageBox.Show($"Xəta: {result.Error}");
+        }
+
+        private async void simpleButton8_Click(object sender, EventArgs e)
+        {
+            var facade = new SyncFacade();
+            var result = await facade.SendPaymentsAsync();
+
+            if (result.Ok)
+                XtraMessageBox.Show($"Uğurlu: {result.Inserted} sətir göndərildi");
+            else
+                XtraMessageBox.Show($"Xəta: {result.Error}");
         }
     }
 }

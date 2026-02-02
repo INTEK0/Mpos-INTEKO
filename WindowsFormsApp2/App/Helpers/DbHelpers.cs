@@ -15,7 +15,7 @@ namespace WindowsFormsApp2.App.Helpers
             using (var conn = new SqlConnection(WindowsFormsApp2.Helpers.DB.DbHelpers.CurrentConnectionString))
             {
                 conn.Open();
-                var cmd = new SqlCommand("SELECT * FROM VW_GetWarehouseStock", conn);
+                var cmd = new SqlCommand("SELECT * FROM VW_WAREHOUSE_STOCK", conn);
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
@@ -35,7 +35,7 @@ namespace WindowsFormsApp2.App.Helpers
                             TaxName = reader["TaxName"].ToString(),
                             PurchasePrice = Convert.ToDecimal(reader["PurchasePrice"].ToString()),
                             SalePrice = Convert.ToDecimal(reader["SalePrice"].ToString()),
-                            StockQuantity = Convert.ToDecimal(reader["StockQuantity"].ToString()),
+                            Quantity = Convert.ToDecimal(reader["StockQuantity"].ToString()),
                         });
                     }
                 }
@@ -140,7 +140,7 @@ namespace WindowsFormsApp2.App.Helpers
             using (var conn = new SqlConnection(WindowsFormsApp2.Helpers.DB.DbHelpers.CurrentConnectionString))
             {
                 conn.Open();
-                var cmd = new SqlCommand("SELECT * FROM ODENISGUNLUK", conn);
+                var cmd = new SqlCommand("SELECT * FROM VW_DAILY_PAYMENTS", conn);
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
@@ -173,7 +173,7 @@ namespace WindowsFormsApp2.App.Helpers
             using (var conn = new SqlConnection(WindowsFormsApp2.Helpers.DB.DbHelpers.CurrentConnectionString))
             {
                 conn.Open();
-                var cmd = new SqlCommand("SELECT * FROM SATISDETAYLIMENFAAT", conn);
+                var cmd = new SqlCommand("SELECT * FROM VW_PROFIT_REPORT", conn);
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
@@ -185,15 +185,15 @@ namespace WindowsFormsApp2.App.Helpers
 
                         result.items.Add(new ProfitReportDto.Items
                         {
-                            Count = Convert.ToInt32(reader["Count"].ToString()),
                             Date = tarix,
                             Username = reader["CashierName"].ToString(),
                             ProccessNo = reader["ProccessNo"].ToString(),
                             SupplierName = reader["SupplierName"].ToString(),
                             CategoryName = reader["CategoryName"].ToString(),
                             ProductName = reader["ProductName"].ToString(),
+                            ProductCode = reader["ProductCode"].ToString(),
+                            Barcode = reader["Barcode"].ToString(),
                             UnitName = reader["UnitName"].ToString(),
-                            Quantity = Convert.ToDecimal(reader["SaleQuantity"].ToString()),
                             SaleQuantity = Convert.ToDecimal(reader["SaleQuantity"].ToString()),
                             PurchasePrice = Convert.ToDecimal(reader["PurchasePrice"].ToString()),
                             SalePrice = Convert.ToDecimal(reader["SalePrice"].ToString()),
@@ -216,7 +216,7 @@ namespace WindowsFormsApp2.App.Helpers
             using (var conn = new SqlConnection(WindowsFormsApp2.Helpers.DB.DbHelpers.CurrentConnectionString))
             {
                 conn.Open();
-                var cmd = new SqlCommand("SELECT * FROM SATISDETAYLIMENFAAT", conn);
+                var cmd = new SqlCommand("SELECT * FROM VW_SALE_REFUNDS", conn);
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
@@ -228,21 +228,23 @@ namespace WindowsFormsApp2.App.Helpers
 
                         result.items.Add(new SaleRefundsDto.Items
                         {
-                            //Count = Convert.ToInt32(reader["Count"].ToString()),
-                            //Date = tarix,
-                            //Username = reader["CashierName"].ToString(),
-                            //ProccessNo = reader["ProccessNo"].ToString(),
-                            //SupplierName = reader["SupplierName"].ToString(),
-                            //CategoryName = reader["CategoryName"].ToString(),
-                            //ProductName = reader["ProductName"].ToString(),
-                            //UnitName = reader["UnitName"].ToString(),
-                            //Quantity = Convert.ToDecimal(reader["SaleQuantity"].ToString()),
-                            //SaleQuantity = Convert.ToDecimal(reader["SaleQuantity"].ToString()),
-                            //PurchasePrice = Convert.ToDecimal(reader["PurchasePrice"].ToString()),
-                            //SalePrice = Convert.ToDecimal(reader["SalePrice"].ToString()),
-                            //TotalPurchaseAmount = Convert.ToDecimal(reader["TotalPurchaseAmount"].ToString()),
-                            //TotalSaleAmount = Convert.ToDecimal(reader["TotalSaleAmount"].ToString()),
-                            //ProfitAmount = Convert.ToDecimal(reader["ProfitAmount"].ToString()),
+                            Date = tarix,
+                            SaleProccessNo = reader["SaleProccessNo"].ToString(),
+                            Username = reader["Username"].ToString(),
+                            Supplier = reader["Supplier"].ToString(),
+                            CategoryName = reader["CategoryName"].ToString(),
+                            ProductName = reader["ProductName"].ToString(),
+                            ProductCode = reader["ProductCode"].ToString(),
+                            Barcode = reader["Barcode"].ToString(),
+                            Quantity = Convert.ToDecimal(reader["Quantity"].ToString()),
+                            UnitName = reader["UnitName"].ToString(),
+                            SalePrice = Convert.ToDecimal(reader["SalePrice"].ToString()),
+                            DiscountAzn = Convert.ToDecimal(reader["DiscountAzn"].ToString()),
+                            PaymentType = reader["PaymentType"].ToString(),
+                            TotalAmount = Convert.ToDecimal(reader["TotalAmount"].ToString()),
+                            RefundQuantity = Convert.ToDecimal(reader["RefundQuantity"].ToString()),
+                            RefundAmount = Convert.ToDecimal(reader["RefundAmount"].ToString()),
+                            RefundProccessNo = reader["RefundProccessNo"].ToString(),
                         });
                     }
                 }

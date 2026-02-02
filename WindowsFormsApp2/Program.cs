@@ -9,6 +9,7 @@ using DevExpress.XtraGrid.Localization;
 using DevExpress.XtraReports.Design;
 using Licence.Forms;
 using Licence.Services;
+using Serilog;
 using WindowsFormsApp2.Forms;
 using WindowsFormsApp2.Helpers;
 using static WindowsFormsApp2.Helpers.FormHelpers;
@@ -28,6 +29,25 @@ namespace WindowsFormsApp2
         [STAThread]
         static void Main()
         {
+            Serilog.Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Information()
+                .Enrich.WithMachineName()
+                .Enrich.WithThreadId()
+                .Enrich.FromLogContext()
+                .WriteTo.Async(a => a.File(
+                    "logs\\app-.log",
+                    rollingInterval: RollingInterval.Day,
+                    outputTemplate:
+                    "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} " +
+                    "[{Level:u3}] " +
+                    "[{CorrelationId}] " +
+                    "{Message:lj}{NewLine}{Exception}"
+                ))
+                .CreateLogger();
+
+
+
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             DevExpress.XtraEditors.Controls.Localizer.Active = new CustomLocalizer();

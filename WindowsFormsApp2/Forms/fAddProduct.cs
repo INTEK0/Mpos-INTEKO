@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
+using WindowsFormsApp2.App.Application;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.DB;
@@ -172,9 +173,6 @@ namespace WindowsFormsApp2.Forms
                     int? IsSuccess = await DbProsedures.InsertProductDetails(productsDetail);
                     if (IsSuccess > 0)
                     {
-                        //var invoiceData = App.Helpers.DbHelpers.InvoiceData();
-
-
                         Clear();
                         GetAllData(tProccessNo.Text, ProductOperation.Add);
                         YeniBorcHesabla();
@@ -673,18 +671,25 @@ namespace WindowsFormsApp2.Forms
             MessageBoxManager.Unregister();
         }
 
-        private void fAddProduct_FormClosing(object sender, FormClosingEventArgs e)
+        private async void fAddProduct_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (gridView1.RowCount > 0)
             {
                 if (e.CloseReason is CloseReason.UserClosing)
                 {
                     MessageBoxManager.Register();
-                    DialogResult result = MessageBox.Show("SƏHİFƏDƏN ÇIXMAQ İSTƏDİYİNİZƏ ƏMİNSİNİZ ?", nameof(HeaderMessage.Xəbərdarlıq), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    DialogResult dialogResult = MessageBox.Show("SƏHİFƏDƏN ÇIXMAQ İSTƏDİYİNİZƏ ƏMİNSİNİZ ?", nameof(HeaderMessage.Xəbərdarlıq), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     MessageBoxManager.Unregister();
-                    if (result is DialogResult.No)
+                    if (dialogResult is DialogResult.No)
                         e.Cancel = true;
 
+                    var facade = new SyncFacade();
+                    var result = await facade.SendInvoicesAsync();
+
+                    if (result.Ok)
+                        XtraMessageBox.Show($"Uğurlu: {result.Inserted} sətir göndərildi");
+                    else
+                        XtraMessageBox.Show($"Xəta: {result.Error}");
                 }
             }
         }

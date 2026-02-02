@@ -20,13 +20,7 @@ namespace WindowsFormsApp2.Forms
 
         private async void button1_Click(object sender, EventArgs e)
         {
-            var facade = new SyncFacade();
-            var result = await facade.SendProfitAsync();
-
-            if (result.Ok)
-                XtraMessageBox.Show($"Uğurlu: {result.Inserted} sətir göndərildi");
-            else
-                XtraMessageBox.Show($"Xəta: {result.Error}");
+           
         }
     }
 }

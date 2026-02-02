@@ -147,33 +147,6 @@ namespace WindowsFormsApp2.Helpers
             }
         }
 
-        public static async Task LogAsync(string message)
-        {
-            using (SqlConnection con = new SqlConnection())
-            {
-                con.ConnectionString = Properties.Settings.Default.SqlCon;
-
-                string query = "INSERT INTO Logs (UserID, Operation, Date, Time) VALUES (@UserID, @Operation, @Date, @Time)";
-
-                SqlCommand command = new SqlCommand(query, con);
-
-                command.Parameters.AddWithValue("@UserID", Properties.Settings.Default.UserID);
-                command.Parameters.AddWithValue("@Operation", message);
-                command.Parameters.AddWithValue("@Date", DateTime.Now.Date);
-                command.Parameters.AddWithValue("@Time", DateTime.Now.TimeOfDay);
-
-                try
-                {
-                    await con.OpenAsync();
-                    await command.ExecuteNonQueryAsync();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Əməliyyat səhvi\n\n{ex.Message}", "Logs", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
-
         public static void Alert(string msg, Enums.MessageType type)
         {
             Form_Alert frm = new Form_Alert();
