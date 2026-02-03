@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -23,13 +24,11 @@ namespace WindowsFormsApp2.Helpers.DB
         private const string DELETE_ItemQuery = "delete_item";
         private const string INSERT_HeaderQuery = "INSERT_header";
         private const string INSERT_CalculationQuery = "insert_calculation";
-        private const string GET_PosSalesProccesNoQuery = "exec dbo.pos_emeliyyat_nomre";
         private const string INSERT_PosBasketQuery = "InsertBasketData";
         private const string ExportPosBasketQuery = "ExportBasketDataToCalculation";
         private const string GET_BasketDataLoadQuery = "PosBasketDataLoad";
         private const string GET_CategoryExistsQuery = "SELECT_COUNT_KATEGORY";
         private const string INSERT_CategoryQuery = "SELECT_KATEGORY";
-        private const string INSERT_IMPORT_MALALISIMAINQuery = "INSERT_IMPORT_MAL_ALISI_MAIN";
         private const string INSERT_CustomerQuery = "INSERT_MUSTERI";
         private const string INSERT_DoctorQuery = "INSERT_DOCTOR";
         private const string DELETE_DoctorQuery = "delete_doctor";
@@ -487,17 +486,18 @@ namespace WindowsFormsApp2.Helpers.DB
                 parameter.Direction = ParameterDirection.Output;
                 var result = cmd.ExecuteNonQuery();
 
-                //if (result > 0)
-                //{
-                //    Task.Run(async () =>
-                //    {
-                //        var facade = new SyncFacade();
-                //        await facade.SendSalesAsync();
-                //        await facade.SendStockAsync();
-                //        await facade.SendPaymentsAsync();
-                //        await facade.SendProfitAsync();
-                //    });
-                //}
+                bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("CloudApp").ToString());
+                if (control is true && result > 0)
+                {
+                    Task.Run(async () =>
+                    {
+                        var facade = new SyncFacade();
+                        await facade.SendSalesAsync();
+                        await facade.SendStockAsync();
+                        await facade.SendPaymentsAsync();
+                        await facade.SendProfitAsync();
+                    });
+                }
 
                 return Convert.ToInt32(parameter.Value);
             }
@@ -689,19 +689,16 @@ namespace WindowsFormsApp2.Helpers.DB
 
         public static string GET_SalesProcessNo()
         {
+            string query = "exec dbo.pos_emeliyyat_nomre";
             using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, connection))
             {
-                using (SqlCommand cmd = new SqlCommand(GET_PosSalesProccesNoQuery, connection))
+                connection.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
                 {
-                    connection.Open();
-                    using (SqlDataReader dr = cmd.ExecuteReader())
-                    {
-                        while (dr.Read())
-                        {
-                            return dr["col1"].ToString();
-                        }
-                        return null;
-                    }
+                    if (dr.Read())
+                        return dr["col1"].ToString();
+                    return null;
                 }
             }
         }
@@ -960,27 +957,25 @@ WHERE date_ BETWEEN CAST(GETDATE() AS DATE) AND DATEADD(DAY, 1, CAST(GETDATE() A
 
         public static int Exists_ProductCode(string productCode, int supplierId)
         {
+            string query = "yoxlama_mehsul_kodu";
             using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, connection))
             {
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlParameter param;
+
+                param = cmd.Parameters.Add("@mehsul_kodu", SqlDbType.NVarChar, 500);
+                param.Value = productCode;
+
+                param = cmd.Parameters.Add("@techizatci_id", SqlDbType.Int);
+                param.Value = supplierId;
+
+                param = cmd.Parameters.Add("@empcount", SqlDbType.Int);
+                param.Direction = ParameterDirection.Output;
+
                 connection.Open();
-                string query = "yoxlama_mehsul_kodu";
-                using (SqlCommand cmd = new SqlCommand(query, connection))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    SqlParameter param;
-
-                    param = cmd.Parameters.Add("@mehsul_kodu", SqlDbType.NVarChar, 500);
-                    param.Value = productCode;
-
-                    param = cmd.Parameters.Add("@techizatci_id", SqlDbType.Int);
-                    param.Value = supplierId;
-
-                    param = cmd.Parameters.Add("@empcount", SqlDbType.Int);
-                    param.Direction = ParameterDirection.Output;
-
-                    cmd.ExecuteNonQuery();
-                    return Convert.ToInt32(param.Value);
-                }
+                cmd.ExecuteNonQuery();
+                return Convert.ToInt32(param.Value);
             }
         }
 
@@ -1062,49 +1057,46 @@ WHERE date_ BETWEEN CAST(GETDATE() AS DATE) AND DATEADD(DAY, 1, CAST(GETDATE() A
         public static int InsertImportProductMain(ProductsMain item)
         {
             using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand("INSERT_IMPORT_MAL_ALISI_MAIN", connection))
             {
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlParameter param;
+
+                param = cmd.Parameters.Add("@FAKTURA_NOMRE", SqlDbType.NVarChar, 500);
+                param.Value = item.FakturaNo;
+
+                param = cmd.Parameters.Add("@TECHIZATCI", SqlDbType.Int);
+                param.Value = item.SupplierId;
+
+                param = cmd.Parameters.Add("@TARIX", SqlDbType.Date);
+                param.Value = item.Date;
+
+                param = cmd.Parameters.Add("@ODEME_TIPI", SqlDbType.NVarChar, 500);
+                param.Value = item.PaymentType;
+
+                param = cmd.Parameters.Add("@EMELIYYAT_NOMRE", SqlDbType.NVarChar, 100);
+                param.Value = item.ProccessNo;
+
+                param = cmd.Parameters.Add("@STATUS", SqlDbType.NVarChar, 100);
+                param.Value = item.Status;
+
+                param = cmd.Parameters.Add("@USER_ID_", SqlDbType.Int);
+                param.Value = Properties.Settings.Default.UserID;
+
+                param = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
+                param.Direction = ParameterDirection.Output;
+
                 connection.Open();
-                using (SqlCommand cmd = new SqlCommand(INSERT_IMPORT_MALALISIMAINQuery, connection))
+                cmd.ExecuteNonQuery();
+
+
+                FormHelpers.OperationLog(new OperationLogs
                 {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    SqlParameter param;
+                    OperationType = OperationType.AddProduct,
+                    OperationId = Convert.ToInt32(param.Value)
+                });
 
-                    param = cmd.Parameters.Add("@FAKTURA_NOMRE", SqlDbType.NVarChar, 500);
-                    param.Value = item.FakturaNo;
-
-                    param = cmd.Parameters.Add("@TECHIZATCI", SqlDbType.Int);
-                    param.Value = item.SupplierId;
-
-                    param = cmd.Parameters.Add("@TARIX", SqlDbType.Date);
-                    param.Value = item.Date;
-
-                    param = cmd.Parameters.Add("@ODEME_TIPI", SqlDbType.NVarChar, 500);
-                    param.Value = item.PaymentType;
-
-                    param = cmd.Parameters.Add("@EMELIYYAT_NOMRE", SqlDbType.NVarChar, 100);
-                    param.Value = item.ProccessNo;
-
-                    param = cmd.Parameters.Add("@STATUS", SqlDbType.NVarChar, 100);
-                    param.Value = item.Status;
-
-                    param = cmd.Parameters.Add("@USER_ID_", SqlDbType.Int);
-                    param.Value = Properties.Settings.Default.UserID;
-
-                    param = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
-                    param.Direction = ParameterDirection.Output;
-                    cmd.ExecuteNonQuery();
-
-
-                    FormHelpers.OperationLog(new OperationLogs
-                    {
-                        OperationType = OperationType.AddProduct,
-                        OperationId = Convert.ToInt32(param.Value)
-                    });
-
-
-
-                    return Convert.ToInt32(param.Value);
-                }
+                return Convert.ToInt32(param.Value);
             }
         }
 
@@ -1232,20 +1224,16 @@ WHERE BARKOD = '{barcode}'";
 
         public static string GET_ProductProcessNo()
         {
+            string query = "EXEC dbo.MAL_ALISI_EMELIYYAT_NOMRE";
             using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, connection))
             {
-                string query = "EXEC dbo.MAL_ALISI_EMELIYYAT_NOMRE";
-                using (SqlCommand cmd = new SqlCommand(query, connection))
+                connection.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
                 {
-                    connection.Open();
-                    using (SqlDataReader dr = cmd.ExecuteReader())
-                    {
-                        while (dr.Read())
-                        {
-                            return dr[0].ToString();
-                        }
-                        return null;
-                    }
+                    if (dr.Read())
+                        return dr[0].ToString();
+                    return null;
                 }
             }
         }
@@ -1253,21 +1241,19 @@ WHERE BARKOD = '{barcode}'";
         public static int ProductNegativeStatus(bool status)
         {
             using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand("MENFI_AC_BAGLA_CRUD", connection))
             {
-                using (SqlCommand cmd = new SqlCommand("MENFI_AC_BAGLA_CRUD", connection))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    SqlParameter param;
-                    param = cmd.Parameters.Add("@CHECK", SqlDbType.Int);
-                    param.Value = status;
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlParameter param;
+                param = cmd.Parameters.Add("@CHECK", SqlDbType.Int);
+                param.Value = status;
 
-                    param = cmd.Parameters.Add("@empcount", SqlDbType.Int);
-                    param.Direction = ParameterDirection.Output;
+                param = cmd.Parameters.Add("@empcount", SqlDbType.Int);
+                param.Direction = ParameterDirection.Output;
 
-                    connection.Open();
-                    cmd.ExecuteNonQuery();
-                    return Convert.ToInt32(param.Value);
-                }
+                connection.Open();
+                cmd.ExecuteNonQuery();
+                return Convert.ToInt32(param.Value);
             }
         }
 
@@ -1420,7 +1406,7 @@ FROM
                 param = cmd.Parameters.Add("@TARIX", SqlDbType.Date);
                 param.Value = date;
                 param = cmd.Parameters.Add("@_USER_ID", SqlDbType.Int);
-                param.Value = Properties.Settings.Default.UserID;
+                param.Value = UserCacheService.User.Id;
                 param = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
                 param.Direction = ParameterDirection.Output;
                 con.Open();

@@ -70,7 +70,7 @@ namespace WindowsFormsApp2
             labelControl9.Text = ID;
             textEdit3.Text = MUSTERI_AD;
         }
-        
+
         private void GAIME_SATISI_LAYOUT_Load(object sender, EventArgs e)
         {
             clear();
@@ -396,7 +396,7 @@ WHERE
 
                             decimal migdar_ = Convert.ToDecimal(mig_d);
 
-                            
+
                             int status_menfi_ = getmenfi_status();
                             if (status_menfi_ > 0)
                             {
@@ -451,14 +451,14 @@ WHERE
                              textEdit1.Text,//mebleg
                              Convert.ToInt32(mal_alisi_details_id),
                              Convert.ToInt32(lookUpEdit1.EditValue.ToString()),
-                             0, 
-                             textEdit8.Text, 
-                             Convert.ToDecimal(textEdit6.Text), 
+                             0,
+                             textEdit8.Text,
+                             Convert.ToDecimal(textEdit6.Text),
                              textEdit7.Text,
                              textEdit13.Text,
                              textEdit10.Text,
                              Convert.ToDecimal(textEdit4.Text),
-                             memoEdit1.Text, 
+                             memoEdit1.Text,
                              Convert.ToDateTime(dateEdit1.Text),
                              textEdit1.Text,
                              textEdit11.Text
@@ -518,7 +518,7 @@ WHERE
                 return -100;
             }
         }
-        
+
         private void button21_Click(object sender, EventArgs e)
         {
 
@@ -605,11 +605,7 @@ WHERE
         }
         private void button3_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(textEdit5.Text))
-            {
-
-            }
-            else
+            if (!string.IsNullOrEmpty(textEdit5.Text))
             {
                 int x = cgs.GAIME_SATISI_check_status(textEdit5.Text);
                 if (x > 0)
@@ -626,9 +622,7 @@ WHERE
                     textEdit2.Text = "";
                     textEdit17.Text = null;
                 }
-
             }
-
         }
 
         private void simpleButton1_Click(object sender, EventArgs e)
@@ -653,7 +647,7 @@ WHERE
             M.ShowDialog();
         }
 
-       
+
         private void simpleButton4_Click(object sender, EventArgs e)
         {
             FormHelpers.OpenForm<fQaimeSalesReport>(this);

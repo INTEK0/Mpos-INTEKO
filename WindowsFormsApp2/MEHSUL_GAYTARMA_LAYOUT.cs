@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.ComponentModel;
 using System.Data;
+using System.Threading.Tasks;
+using WindowsFormsApp2.App.Application;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
@@ -20,7 +23,7 @@ namespace WindowsFormsApp2
             dateTarix.Properties.MaxDate = DateTime.Today;
             dateTarix.DateTime = DateTime.Now;
             tProccessNo.Text = DbProsedures.GET_ProductReturnProcessNo();
-           
+
 
             SupplierDataLoad();
         }
@@ -68,6 +71,16 @@ namespace WindowsFormsApp2
                                 OperationId = result
                             });
                             FormHelpers.Log($"{row.SupplierName} təchizatçısının {row.ProductName} məhsulunun {row.RefundQuantity} {row.UnitName} qaytarması edildi");
+
+                            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("CloudApp").ToString());
+                            if (control is true)
+                            {
+                                Task.Run(async () =>
+                                {
+                                    var facade = new SyncFacade();
+                                    await facade.SendStockAsync();
+                                });
+                            }
                         }
                     }
                     FormHelpers.Alert("Məhsul qaytarılması uğurla edildi", Enums.MessageType.Success);
@@ -127,7 +140,7 @@ WHERE
 
             gridControl1.DataSource = products;
         }
-        
+
         private void simpleButton3_Click(object sender, EventArgs e)
         {
             FormHelpers.OpenForm<MEHSUL_GAYTARMA_HESABAT>();

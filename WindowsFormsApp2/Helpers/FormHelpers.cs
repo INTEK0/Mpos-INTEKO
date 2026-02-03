@@ -374,6 +374,11 @@ inner join userParol u on u.id = ki.KASSIR_ID where u.id = {Properties.Settings.
             {
                 Registry.CurrentUser.CreateSubKey("Mpos").SetValue("OtherPay", false);
             }
+
+            if (Registry.GetValue(@"HKEY_CURRENT_USER\Mpos\", "CloudApp", null) == null)
+            {
+                Registry.CurrentUser.CreateSubKey("Mpos").SetValue("CloudApp", false);
+            }
             #endregion [..REGEDIT FILE..]
         }
 

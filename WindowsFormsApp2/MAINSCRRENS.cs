@@ -31,34 +31,6 @@ namespace WindowsFormsApp2
         public MAINSCRRENS(int xuser)
         {
             InitializeComponent();
-            //if (xuser < 1)
-            //{
-            //    accordionControlElement5.Visible = false;
-            //    accordionControlElement6.Visible = false;
-            //    accordionControlElement58.Visible = false;
-            //    accordionControlElement8.Visible = false;
-            //    accordionControlElement9.Visible = false;
-            //    accordionControlElement10.Visible = false;
-            //    accordionControlElement17.Visible = false;
-            //    accordionControlElement28.Visible = false;
-            //    accordionControlElement32.Visible = false;
-            //    accordionControlElement33.Visible = false;
-            //    accordionControlElement35.Visible = false;
-            //    accordionControlElement36.Visible = false;
-            //    accordionControlElement43.Visible = false;
-            //    accordionControlElement47.Visible = false;
-            //    accordionControlElement48.Visible = false;
-            //    accordionControlElement50.Visible = false;
-            //    accordionControlElement54.Visible = false;
-            //    tabLog.Visible = false;
-            //    tabDatabase.Visible = false;
-            //    accordionControlElement54.Visible = false;
-            //    chStockAmount.Enabled = false;
-            //    chActive.Enabled = false;
-            //    chDeactive.Enabled = false;
-            //    tabLog.PageEnabled = false;
-            //    tabDatabase.PageEnabled = false;
-            //}
             GridPanelText(gridLogs);
         }
 
@@ -603,6 +575,7 @@ FROM[terazimalzeme]";
             XPrinterReceiptPrintShow();
             OtherPayShow();
             SuccessMessageVisibleShow();
+            CloudAppShow();
             Get_StockDecreasingAmountShow();
             ClinicModuleShow();
             SysAdminControl();
@@ -1244,17 +1217,22 @@ FROM (
             }
         }
 
+        private void CloudAppShow()
+        {
+            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("CloudApp").ToString());
+            if (control)
+                chCloud.Checked = true;
+            else
+                chCloud.Checked = false;
+        }
+
         private void SuccessMessageVisibleShow()
         {
             bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("SuccessMessageVisible").ToString());
             if (control)
-            {
                 chPosSalesMessage.Checked = true;
-            }
             else
-            {
                 chPosSalesMessage.Checked = false;
-            }
         }
 
         private void chHotSales_CheckedChanged(object sender, EventArgs e)
@@ -1524,25 +1502,25 @@ FROM (
         private void chTerminalPrintReceipt_CheckedChanged(object sender, EventArgs e)
         {
             if (chTerminalPrintReceipt.Checked)
-            {
                 Registry.CurrentUser.CreateSubKey("Mpos").SetValue("TerminalCashierPrint", true);
-            }
             else
-            {
                 Registry.CurrentUser.CreateSubKey("Mpos").SetValue("TerminalCashierPrint", false);
-            }
         }
 
         private void chClinicModul_CheckedChanged(object sender, EventArgs e)
         {
             if (chClinicModul.Checked)
-            {
                 Registry.CurrentUser.CreateSubKey("Mpos").SetValue("ClinicModule", true);
-            }
             else
-            {
                 Registry.CurrentUser.CreateSubKey("Mpos").SetValue("ClinicModule", false);
-            }
+        }
+
+        private void chCloud_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chCloud.Checked)
+                Registry.CurrentUser.CreateSubKey("Mpos").SetValue("CloudApp", true);
+            else
+                Registry.CurrentUser.CreateSubKey("Mpos").SetValue("CloudApp", false);
         }
 
         #endregion [..SETTINGS..]

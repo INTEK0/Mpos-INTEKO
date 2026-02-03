@@ -5,13 +5,16 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
+using Microsoft.Win32;
 using WindowsFormsApp2.App.Application;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Validations;
+using static DevExpress.Xpo.Helpers.AssociatedCollectionCriteriaHelper;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
 using static WindowsFormsApp2.Helpers.Enums;
 using static WindowsFormsApp2.Helpers.FormHelpers;
@@ -457,43 +460,39 @@ namespace WindowsFormsApp2.Forms
             if (operation is ProductOperation.Add)
             {
                 using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+                using (SqlCommand cmd = new SqlCommand("SELECT * FROM dbo.fn_MAL_ALISI_LOAD(@pricepoint)", connection))
                 {
                     connection.Open();
-                    using (SqlCommand cmd = new SqlCommand("SELECT * FROM dbo.fn_MAL_ALISI_LOAD(@pricepoint)", connection))
+                    cmd.Parameters.AddWithValue("@pricepoint", proccessNo);
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    using (DataTable dt = new DataTable())
                     {
-                        cmd.Parameters.AddWithValue("@pricepoint", proccessNo);
-                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        da.Fill(dt);
+
+                        // Əgər _currentDataTable boş deyilsə, sadəcə yeni sətirləri əlavə et
+                        if (_currentDataTable.Rows.Count > 0)
                         {
-                            using (DataTable dt = new DataTable())
+                            foreach (DataRow row in dt.Rows)
                             {
-                                da.Fill(dt);
+                                string malDetailsId = row["MAL_ALISI_DETAILS_ID"].ToString();
 
-                                // Əgər _currentDataTable boş deyilsə, sadəcə yeni sətirləri əlavə et
-                                if (_currentDataTable.Rows.Count > 0)
+                                // Əgər bu sətir varsa _currentDataTable'a əlavə etmə
+                                if (!_currentDataTable.AsEnumerable()
+                                                     .Any(r => r["MAL_ALISI_DETAILS_ID"].ToString() == malDetailsId))
                                 {
-                                    foreach (DataRow row in dt.Rows)
-                                    {
-                                        string malDetailsId = row["MAL_ALISI_DETAILS_ID"].ToString();
-
-                                        // Əgər bu sətir varsa _currentDataTable'a əlavə etmə
-                                        if (!_currentDataTable.AsEnumerable()
-                                                             .Any(r => r["MAL_ALISI_DETAILS_ID"].ToString() == malDetailsId))
-                                        {
-                                            _currentDataTable.ImportRow(row);
-                                        }
-                                    }
+                                    _currentDataTable.ImportRow(row);
                                 }
-                                else
-                                {
-                                    // Əgər _currentDataTable tamamilə boşdursa, yeni DataTable olaraq təyin et
-                                    _currentDataTable = dt;
+                            }
+                        }
+                        else
+                        {
+                            // Əgər _currentDataTable tamamilə boşdursa, yeni DataTable olaraq təyin et
+                            _currentDataTable = dt;
 
-                                    // Manual sətirləri işarətləmək üçün IsManual sütununu yarat
-                                    if (!_currentDataTable.Columns.Contains("IsManual"))
-                                    {
-                                        _currentDataTable.Columns.Add("IsManual", typeof(bool));
-                                    }
-                                }
+                            // Manual sətirləri işarətləmək üçün IsManual sütununu yarat
+                            if (!_currentDataTable.Columns.Contains("IsManual"))
+                            {
+                                _currentDataTable.Columns.Add("IsManual", typeof(bool));
                             }
                         }
                     }
@@ -683,13 +682,18 @@ namespace WindowsFormsApp2.Forms
                     if (dialogResult is DialogResult.No)
                         e.Cancel = true;
 
-                    //var facade = new SyncFacade();
-                    //var result = await facade.SendInvoicesAsync();
 
-                    //if (result.Ok)
-                    //    XtraMessageBox.Show($"Uğurlu: {result.Inserted} sətir göndərildi");
-                    //else
-                    //    XtraMessageBox.Show($"Xəta: {result.Error}");
+
+                    bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("CloudApp").ToString());
+                    if (control is true)
+                    {
+                        Task.Run(async () =>
+                        {
+                            var facade = new SyncFacade();
+                            await facade.SendInvoicesAsync();
+                            await facade.SendStockAsync();
+                        });
+                    }
                 }
             }
         }

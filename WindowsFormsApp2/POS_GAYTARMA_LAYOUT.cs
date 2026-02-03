@@ -9,18 +9,21 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using RestSharp;
+using WindowsFormsApp2.App.Application;
 using WindowsFormsApp2.Forms;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using WindowsFormsApp2.NKA;
+using static DevExpress.Xpo.Helpers.AssociatedCollectionCriteriaHelper;
 using static WindowsFormsApp2.Helpers.Enums;
 using static WindowsFormsApp2.Helpers.FormHelpers;
 using static WindowsFormsApp2.POS_LAYOUT_NEW;
@@ -2060,6 +2063,18 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
                             break; /*EKASSAM*/
                     }
                     Cursor.Current = Cursors.Default;
+
+
+                    bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("CloudApp").ToString());
+                    if (control is true && isSuccess is true)
+                    {
+                        Task.Run(async () =>
+                        {
+                            var facade = new SyncFacade();
+                            await facade.SendSaleRefundAsync();
+                            await facade.SendStockAsync();
+                        });
+                    }
 
 
                     #region BEFORE CODE

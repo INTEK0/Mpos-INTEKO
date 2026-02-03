@@ -1,13 +1,16 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WindowsFormsApp2.App.Application;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
+using static DevExpress.Xpo.Helpers.AssociatedCollectionCriteriaHelper;
 using static WindowsFormsApp2.Helpers.Enums;
 
 namespace WindowsFormsApp2
@@ -99,25 +102,23 @@ namespace WindowsFormsApp2
             int returnMainId = 0;
 
             using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand("update_gaime_satis", con))
             {
-                using (SqlCommand cmd = new SqlCommand("update_gaime_satis", con))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.Add("@emeliyyat_nomre", SqlDbType.NVarChar, 100).Value = emeliyyat_nomre_;
+                cmd.Parameters.Add("@emeliyyat_nomre", SqlDbType.NVarChar, 100).Value = emeliyyat_nomre_;
 
-                    SqlParameter empCountParam = cmd.Parameters.Add("@EMPCOUNT", SqlDbType.Int);
-                    empCountParam.Direction = ParameterDirection.Output;
+                SqlParameter empCountParam = cmd.Parameters.Add("@EMPCOUNT", SqlDbType.Int);
+                empCountParam.Direction = ParameterDirection.Output;
 
-                    SqlParameter returnMainIdParam = cmd.Parameters.Add("@returnMainId", SqlDbType.Int);
-                    returnMainIdParam.Direction = ParameterDirection.Output;
+                SqlParameter returnMainIdParam = cmd.Parameters.Add("@returnMainId", SqlDbType.Int);
+                returnMainIdParam.Direction = ParameterDirection.Output;
 
-                    con.Open();
-                    cmd.ExecuteNonQuery();
+                con.Open();
+                cmd.ExecuteNonQuery();
 
-                    empCount = Convert.ToInt32(empCountParam.Value);
-                    returnMainId = Convert.ToInt32(returnMainIdParam.Value);
-                }
+                empCount = Convert.ToInt32(empCountParam.Value);
+                returnMainId = Convert.ToInt32(returnMainIdParam.Value);
             }
 
             FormHelpers.OperationLog(new DatabaseClasses.OperationLogs
@@ -125,6 +126,19 @@ namespace WindowsFormsApp2
                 OperationType = OperationType.QaimeSales,
                 OperationId = returnMainId
             });
+
+            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("CloudApp").ToString());
+            if (control is true && returnMainId > 0)
+            {
+                Task.Run(async () =>
+                {
+                    var facade = new SyncFacade();
+                    await facade.SendSalesAsync();
+                    await facade.SendStockAsync();
+                    await facade.SendPaymentsAsync();
+                    await facade.SendProfitAsync();
+                });
+            }
 
 
             return empCount;
