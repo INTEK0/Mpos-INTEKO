@@ -9,10 +9,10 @@ namespace WindowsFormsApp2.App.Dtos
         public class Items
         {
             public string Date { get; set; }
-            public double Cash { get; set; }
-            public double Card { get; set; }
-            public double Bank { get; set; }
-            public double Credit { get; set; }
+            public decimal Cash { get; set; }
+            public decimal Card { get; set; }
+            public decimal Bank { get; set; }
+            public decimal Credit { get; set; }
         }
     }
 }

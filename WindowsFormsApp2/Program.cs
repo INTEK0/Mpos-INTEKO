@@ -7,11 +7,14 @@ using System.Threading;
 using System.Windows.Forms;
 using DevExpress.XtraGrid.Localization;
 using DevExpress.XtraReports.Design;
+using DevExpress.XtraWaitForm;
 using Licence.Forms;
 using Licence.Services;
 using Serilog;
+using Serilog.Context;
 using WindowsFormsApp2.Forms;
 using WindowsFormsApp2.Helpers;
+using WindowsFormsApp2.Helpers.CacheData;
 using static WindowsFormsApp2.Helpers.FormHelpers;
 
 namespace WindowsFormsApp2
@@ -38,14 +41,12 @@ namespace WindowsFormsApp2
                     "logs\\app-.log",
                     rollingInterval: RollingInterval.Day,
                     outputTemplate:
-                    "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} " +
-                    "[{Level:u3}] " +
-                    "[{CorrelationId}] " +
+                    "{Timestamp:dd-MM-yyyy HH:mm:ss} " +
+                    "[{Level:u4}] " +
+                    "[{UUID}] " +
                     "{Message:lj}{NewLine}{Exception}"
                 ))
                 .CreateLogger();
-
-
 
 
             Application.EnableVisualStyles();
@@ -105,14 +106,33 @@ namespace WindowsFormsApp2
             }
             else
             {
-                FormHelpers.Alert("İnternet bağlantınız yoxdur", Enums.MessageType.Error);
+                FormHelpers.Alert("İnternet bağlantınız yoxdur", Enums.MessageType.Warning);
             }
 
             #endregion [..Licence..]
 
+
             FolderControl();
             CultureInfoData();
-            Application.Run(new avtorizasiya());
+            //Application.Run(new avtorizasiya());
+
+
+
+            try
+            {
+                LogContext.PushProperty("UUID", UUIDGenerateService.GetToken());
+                Serilog.Log.Information("Application started");
+                Application.Run(new avtorizasiya());
+            }
+            catch (Exception ex)
+            {
+                Serilog.Log.Fatal(ex, "Application crashed");
+            }
+            finally
+            {
+                Serilog.Log.Information("Application exit");
+                Serilog.Log.CloseAndFlush();
+            }
         }
 
         static void CultureInfoData()

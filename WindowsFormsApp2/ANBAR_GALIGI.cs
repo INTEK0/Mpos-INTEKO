@@ -4,7 +4,6 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DevExpress.XtraEditors;
 using DevExpress.XtraGrid;
 using WindowsFormsApp2.App.Application;
 using WindowsFormsApp2.Forms;
@@ -97,15 +96,15 @@ namespace WindowsFormsApp2
 
         private async Task GetProduct()
         {
-            string supplierName = gridView1.GetFocusedRowCellValue("TƏCHİZATÇI")?.ToString() ?? "Yoxdur";
-            string name = gridView1.GetFocusedRowCellValue("MƏHSUL ADI")?.ToString() ?? "Yoxdur";
-            string code = gridView1.GetFocusedRowCellValue("MƏHSUL KODU")?.ToString() ?? "Yoxdur";
-            string barcode = gridView1.GetFocusedRowCellValue("MƏHSUL BARKOD")?.ToString() ?? "Yoxdur";
-            string unit = gridView1.GetFocusedRowCellValue("VAHİD")?.ToString() ?? "Yoxdur";
-            string tax = gridView1.GetFocusedRowCellValue("EDV")?.ToString() ?? "Yoxdur";
-            decimal purchasePrice = Convert.ToDecimal(gridView1.GetFocusedRowCellValue("ALIŞ QİYMƏTİ")?.ToString() ?? "0");
-            decimal salePrice = Convert.ToDecimal(gridView1.GetFocusedRowCellValue("SATIŞ QİYMƏTİ")?.ToString() ?? "0");
-            decimal quantity = Convert.ToDecimal(gridView1.GetFocusedRowCellValue("ANBAR QALIĞI")?.ToString() ?? "0");
+            string supplierName = gridView1.GetFocusedRowCellValue("SupplierName")?.ToString() ?? "Yoxdur";
+            string name = gridView1.GetFocusedRowCellValue("ProductName")?.ToString() ?? "Yoxdur";
+            string code = gridView1.GetFocusedRowCellValue("ProductCode")?.ToString() ?? "Yoxdur";
+            string barcode = gridView1.GetFocusedRowCellValue("ProductBarcode")?.ToString() ?? "Yoxdur";
+            string unit = gridView1.GetFocusedRowCellValue("UnitName")?.ToString() ?? "Yoxdur";
+            string tax = gridView1.GetFocusedRowCellValue("TaxName")?.ToString() ?? "Yoxdur";
+            decimal purchasePrice = Convert.ToDecimal(gridView1.GetFocusedRowCellValue("PurchasePrice")?.ToString() ?? "0");
+            decimal salePrice = Convert.ToDecimal(gridView1.GetFocusedRowCellValue("SalePrice")?.ToString() ?? "0");
+            decimal quantity = Convert.ToDecimal(gridView1.GetFocusedRowCellValue("StockQuantity")?.ToString() ?? "0");
             ProductDetail _detail = new ProductDetail()
             {
                 SupplierName = supplierName,
@@ -139,72 +138,6 @@ namespace WindowsFormsApp2
         {
             fColumnSettings f = new fColumnSettings("Stock");
             f.ShowDialog();
-        }
-
-        private async void simpleButton1_Click(object sender, EventArgs e)
-        {
-            var facade = new SyncFacade();
-            var result = await facade.SendStockAsync();
-
-            if (result.Ok)
-                XtraMessageBox.Show($"Uğurlu: {result.Inserted} sətir göndərildi");
-            else
-                XtraMessageBox.Show($"Xəta: {result.Error}");
-        }
-
-        private async void simpleButton4_Click(object sender, EventArgs e)
-        {
-            var facade = new SyncFacade();
-            var result = await facade.SendInvoicesAsync();
-
-            if (result.Ok)
-                XtraMessageBox.Show($"Uğurlu: {result.Inserted} sətir göndərildi");
-            else
-                XtraMessageBox.Show($"Xəta: {result.Error}");
-        }
-
-        private async void simpleButton5_Click(object sender, EventArgs e)
-        {
-            var facade = new SyncFacade();
-            var result = await facade.SendSalesAsync();
-
-            if (result.Ok)
-                XtraMessageBox.Show($"Uğurlu: {result.Inserted} sətir göndərildi");
-            else
-                XtraMessageBox.Show($"Xəta: {result.Error}");
-        }
-
-        private async void simpleButton6_Click(object sender, EventArgs e)
-        {
-            var facade = new SyncFacade();
-            var result = await facade.SendProfitAsync();
-
-            if (result.Ok)
-                XtraMessageBox.Show($"Uğurlu: {result.Inserted} sətir göndərildi");
-            else
-                XtraMessageBox.Show($"Xəta: {result.Error}");
-        }
-
-        private async void simpleButton7_Click(object sender, EventArgs e)
-        {
-            var facade = new SyncFacade();
-            var result = await facade.SendSaleRefundAsync();
-
-            if (result.Ok)
-                XtraMessageBox.Show($"Uğurlu: {result.Inserted} sətir göndərildi");
-            else
-                XtraMessageBox.Show($"Xəta: {result.Error}");
-        }
-
-        private async void simpleButton8_Click(object sender, EventArgs e)
-        {
-            var facade = new SyncFacade();
-            var result = await facade.SendPaymentsAsync();
-
-            if (result.Ok)
-                XtraMessageBox.Show($"Uğurlu: {result.Inserted} sətir göndərildi");
-            else
-                XtraMessageBox.Show($"Xəta: {result.Error}");
         }
     }
 }

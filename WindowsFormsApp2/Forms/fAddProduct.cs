@@ -118,10 +118,10 @@ namespace WindowsFormsApp2.Forms
             ProductsDetail productsDetail = new ProductsDetail
             {
                 ProductMainId = 0,
-                CategoryName = tCategoryName.Text.Trim(),
-                Barocde = tBarcode.Text.Trim(),
-                ProductName = tProductName.Text.Trim(),
-                ProductCode = tProductCode.Text.Trim(),
+                CategoryName = tCategoryName.Text.TrimStart().Trim(),
+                Barocde = tBarcode.Text.TrimStart().Trim(),
+                ProductName = tProductName.Text.TrimStart().Trim(),
+                ProductCode = tProductCode.Text.TrimStart().Trim(),
                 WarehouseName = lookWarehouse.Text,
                 Quantity = Decimal.Parse(tQuantity.Text),
                 UnitName = lookUnit.Text,
@@ -159,7 +159,7 @@ namespace WindowsFormsApp2.Forms
             {
                 int addMainProduct = DbProsedures.InsertProductMain(new ProductsMain
                 {
-                    FakturaNo = tFakturaNo.Text,
+                    FakturaNo = tFakturaNo.Text.TrimStart().Trim(),
                     SupplierName = lookSupplier.Text,
                     Date = dateTarix.DateTime,
                     PaymentType = selectedPaymentType.Text,
@@ -671,7 +671,7 @@ namespace WindowsFormsApp2.Forms
             MessageBoxManager.Unregister();
         }
 
-        private async void fAddProduct_FormClosing(object sender, FormClosingEventArgs e)
+        private void fAddProduct_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (gridView1.RowCount > 0)
             {
@@ -683,13 +683,13 @@ namespace WindowsFormsApp2.Forms
                     if (dialogResult is DialogResult.No)
                         e.Cancel = true;
 
-                    var facade = new SyncFacade();
-                    var result = await facade.SendInvoicesAsync();
+                    //var facade = new SyncFacade();
+                    //var result = await facade.SendInvoicesAsync();
 
-                    if (result.Ok)
-                        XtraMessageBox.Show($"Uğurlu: {result.Inserted} sətir göndərildi");
-                    else
-                        XtraMessageBox.Show($"Xəta: {result.Error}");
+                    //if (result.Ok)
+                    //    XtraMessageBox.Show($"Uğurlu: {result.Inserted} sətir göndərildi");
+                    //else
+                    //    XtraMessageBox.Show($"Xəta: {result.Error}");
                 }
             }
         }

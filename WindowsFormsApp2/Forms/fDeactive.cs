@@ -55,12 +55,12 @@ namespace WindowsFormsApp2.Forms
             bool licenceDateResult = LicenseService.Instance.LicenceExpireDateControl(_user);
             if (!licenceDateResult)
             {
-                lMessage.Text = $"Lisenziya müddəti {_user.LicenceExpireDate.ToString("dd.MM.yyyy")} tarixində bitmişdir.\nƏtraflı məlumat üçün (055-206-23-66) nömrəsi ilə əlaqə saxlayın.";
+                lMessage.Text = $"Lisenziya müddəti {_user.LicenceExpireDate.ToString("dd.MM.yyyy")} tarixində bitmişdir.\nƏtraflı məlumat üçün <b>(055-206-23-66)</b> nömrəsi ilə əlaqə saxlayın.";
                 return;
             }
             else
             {
-                lMessage.Text = "Ətraflı məlumat üçün (055-206-23-66) nömrəsi ilə əlaqə saxlayın.";
+                lMessage.Text = "Ətraflı məlumat üçün <b>(055-206-23-66)</b> nömrəsi ilə əlaqə saxlayın.";
                 return;
             }
         }

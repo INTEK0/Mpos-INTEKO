@@ -180,6 +180,7 @@
             // 
             // lMessage
             // 
+            this.lMessage.AllowHtmlString = true;
             this.lMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -217,7 +218,7 @@
             this.lMessage.Padding = new System.Windows.Forms.Padding(10, 5, 5, 0);
             this.lMessage.Size = new System.Drawing.Size(438, 197);
             this.lMessage.TabIndex = 4;
-            this.lMessage.Text = "Ətraflı məlumat üçün (055-206-23-66) nömrəsi ilə əlaqə saxlayın.";
+            this.lMessage.Text = "Ətraflı məlumat üçün <b>(055-206-23-66)</b> nömrəsi ilə əlaqə saxlayın.";
             // 
             // pic2
             // 

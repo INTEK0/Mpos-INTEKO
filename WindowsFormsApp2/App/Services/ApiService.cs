@@ -23,7 +23,26 @@ namespace WindowsFormsApp2.App.Services
             var url = $"{_baseUrl}/api/{endpoint}";
 
             var json = JsonConvert.SerializeObject(data);
+
+            Serilog.Log.Information(
+                "POST {Url} | Operation={Operation} | PayloadLength={Length}",
+                url,
+                operation,
+                json.Length
+            );
+
             var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            if (!Licence.Helpers.FormHelpers.HasInternetConnection())
+            {
+                Serilog.Log.Error(
+                    "API Error | Operation={Operation} | Error={Error}",
+                    operation,
+                    "No internet connection"
+                );
+
+                return ApiResult.Fail("No internet connection");
+            }
 
             var response = await _client.PostAsync(url, content);
             var responseBody = await response.Content.ReadAsStringAsync();
@@ -31,11 +50,26 @@ namespace WindowsFormsApp2.App.Services
             if (response.IsSuccessStatusCode)
             {
                 var success = JsonConvert.DeserializeObject<ApiSuccessResponse>(responseBody);
+
+                Serilog.Log.Information(
+                    "API Success | Operation={Operation} | Inserted={Inserted}",
+                    operation,
+                    success.inserted
+                );
+
                 return ApiResult.Success(success.inserted);
             }
             else
             {
                 var error = JsonConvert.DeserializeObject<ApiErrorResponse>(responseBody);
+
+                Serilog.Log.Error(
+                    "API Error | Operation={Operation} | Error={Error} | RequestJson={requestJson}",
+                    operation,
+                    error.error,
+                    json
+                );
+
                 return ApiResult.Fail(error.error);
             }
         }

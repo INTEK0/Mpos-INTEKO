@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Threading.Tasks;
 using System.Web.Security;
 using System.Windows.Forms;
+using WindowsFormsApp2.App.Application;
 using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.Messages;
 using static DevExpress.Xpo.Helpers.AssociatedCollectionCriteriaHelper;
@@ -28,7 +29,6 @@ namespace WindowsFormsApp2.Helpers.DB
         private const string GET_BasketDataLoadQuery = "PosBasketDataLoad";
         private const string GET_CategoryExistsQuery = "SELECT_COUNT_KATEGORY";
         private const string INSERT_CategoryQuery = "SELECT_KATEGORY";
-        private const string INSERT_MALALISIMAINQuery = "INSERT_MAL_ALISI_MAIN";
         private const string INSERT_IMPORT_MALALISIMAINQuery = "INSERT_IMPORT_MAL_ALISI_MAIN";
         private const string INSERT_CustomerQuery = "INSERT_MUSTERI";
         private const string INSERT_DoctorQuery = "INSERT_DOCTOR";
@@ -464,7 +464,7 @@ namespace WindowsFormsApp2.Helpers.DB
                 parameter = cmd.Parameters.Add("@rrncode", SqlDbType.NVarChar);
                 parameter.Value = item.rrn;
 
-                parameter = cmd.Parameters.Add("@bankTransactionId", SqlDbType.NVarChar, size:50);
+                parameter = cmd.Parameters.Add("@bankTransactionId", SqlDbType.NVarChar, size: 50);
                 parameter.Value = item.BankTransactionId;
 
                 parameter = cmd.Parameters.Add("@bankTransactionNumber", SqlDbType.NVarChar, size: 50);
@@ -485,7 +485,19 @@ namespace WindowsFormsApp2.Helpers.DB
                 connection.Open();
                 parameter = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
                 parameter.Direction = ParameterDirection.Output;
-                cmd.ExecuteNonQuery();
+                var result = cmd.ExecuteNonQuery();
+
+                //if (result > 0)
+                //{
+                //    Task.Run(async () =>
+                //    {
+                //        var facade = new SyncFacade();
+                //        await facade.SendSalesAsync();
+                //        await facade.SendStockAsync();
+                //        await facade.SendPaymentsAsync();
+                //        await facade.SendProfitAsync();
+                //    });
+                //}
 
                 return Convert.ToInt32(parameter.Value);
             }
@@ -1004,48 +1016,46 @@ WHERE date_ BETWEEN CAST(GETDATE() AS DATE) AND DATEADD(DAY, 1, CAST(GETDATE() A
         public static int InsertProductMain(ProductsMain item)
         {
             using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand("INSERT_MAL_ALISI_MAIN", connection))
             {
                 connection.Open();
-                using (SqlCommand cmd = new SqlCommand(INSERT_MALALISIMAINQuery, connection))
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlParameter param;
+
+                param = cmd.Parameters.Add("@FAKTURA_NOMRE", SqlDbType.NVarChar, 500);
+                param.Value = item.FakturaNo;
+
+                param = cmd.Parameters.Add("@TECHIZATCI", SqlDbType.NVarChar, 500);
+                param.Value = item.SupplierName;
+
+                param = cmd.Parameters.Add("@TARIX", SqlDbType.Date);
+                param.Value = item.Date;
+
+                param = cmd.Parameters.Add("@ODEME_TIPI", SqlDbType.NVarChar, 500);
+                param.Value = item.PaymentType;
+
+                param = cmd.Parameters.Add("@EMELIYYAT_NOMRE", SqlDbType.NVarChar, 100);
+                param.Value = item.ProccessNo;
+
+                param = cmd.Parameters.Add("@STATUS", SqlDbType.NVarChar, 100);
+                param.Value = item.Status;
+
+                param = cmd.Parameters.Add("@USER_ID_", SqlDbType.Int);
+                param.Value = Properties.Settings.Default.UserID;
+
+                param = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
+                param.Direction = ParameterDirection.Output;
+                cmd.ExecuteNonQuery();
+
+
+                FormHelpers.OperationLog(new OperationLogs
                 {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    SqlParameter param;
-
-                    param = cmd.Parameters.Add("@FAKTURA_NOMRE", SqlDbType.NVarChar, 500);
-                    param.Value = item.FakturaNo;
-
-                    param = cmd.Parameters.Add("@TECHIZATCI", SqlDbType.NVarChar, 500);
-                    param.Value = item.SupplierName;
-
-                    param = cmd.Parameters.Add("@TARIX", SqlDbType.Date);
-                    param.Value = item.Date;
-
-                    param = cmd.Parameters.Add("@ODEME_TIPI", SqlDbType.NVarChar, 500);
-                    param.Value = item.PaymentType;
-
-                    param = cmd.Parameters.Add("@EMELIYYAT_NOMRE", SqlDbType.NVarChar, 100);
-                    param.Value = item.ProccessNo;
-
-                    param = cmd.Parameters.Add("@STATUS", SqlDbType.NVarChar, 100);
-                    param.Value = item.Status;
-
-                    param = cmd.Parameters.Add("@USER_ID_", SqlDbType.Int);
-                    param.Value = Properties.Settings.Default.UserID;
-
-                    param = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
-                    param.Direction = ParameterDirection.Output;
-                    cmd.ExecuteNonQuery();
+                    OperationType = OperationType.AddProduct,
+                    OperationId = Convert.ToInt32(param.Value)
+                });
 
 
-                    FormHelpers.OperationLog(new OperationLogs
-                    {
-                        OperationType = OperationType.AddProduct,
-                        OperationId = Convert.ToInt32(param.Value)
-                    });
-
-
-                    return Convert.ToInt32(param.Value);
-                }
+                return Convert.ToInt32(param.Value);
             }
         }
 
@@ -1103,76 +1113,73 @@ WHERE date_ BETWEEN CAST(GETDATE() AS DATE) AND DATEADD(DAY, 1, CAST(GETDATE() A
             try
             {
                 using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+                using (SqlCommand cmd = new SqlCommand("INSERT_MAL_ALISI_DETAILS", connection))
                 {
-                    string query = "INSERT_MAL_ALISI_DETAILS";
                     connection.Open();
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlParameter param;
+
+                    param = cmd.Parameters.Add("@MAL_ALISI_MAIN_ID", SqlDbType.Int);
+                    param.Value = item.ProductMainId;
+                    param = cmd.Parameters.Add("@KATEGORIYA", SqlDbType.NVarChar, 500);
+                    param.Value = item.CategoryName;
+                    param = cmd.Parameters.Add("@BARKOD", SqlDbType.NVarChar, 500);
+                    param.Value = item.Barocde;
+                    param = cmd.Parameters.Add("@MEHSUL_ADI", SqlDbType.NVarChar, 500);
+                    param.Value = item.ProductName;
+                    param = cmd.Parameters.Add("@MEHSUL_KODU", SqlDbType.NVarChar, 500);
+                    param.Value = item.ProductCode;
+                    param = cmd.Parameters.Add("@ANBAR", SqlDbType.NVarChar, 500);
+                    param.Value = item.WarehouseName;
+                    param = cmd.Parameters.Add("@MIGDARI", SqlDbType.Decimal);
+                    param.Value = item.Quantity;
+                    param = cmd.Parameters.Add("@VAHID", SqlDbType.NVarChar, 500);
+                    param.Value = item.UnitName;
+                    param = cmd.Parameters.Add("@VALYUTA", SqlDbType.NVarChar, 500);
+                    param.Value = item.CurrencyName;
+                    param = cmd.Parameters.Add("@VERGI_DERECESI", SqlDbType.NVarChar, 500);
+                    param.Value = item.TaxName;
+                    param = cmd.Parameters.Add("@ALIS_GIYMETI", SqlDbType.NVarChar, 500);
+                    param.Value = item.PurchasePrice.ToString();
+                    param = cmd.Parameters.Add("@SATIS_GIYMETI", SqlDbType.NVarChar, 500);
+                    param.Value = item.SalePrice.ToString();
+                    param = cmd.Parameters.Add("@ENDIRIM_FAIZ", SqlDbType.NVarChar, 500);
+                    param.Value = item.DiscountPercent.ToString();
+                    param = cmd.Parameters.Add("@ENDIRIM_AZN", SqlDbType.NVarChar, 500);
+                    param.Value = item.DiscountAZN.ToString();
+                    param = cmd.Parameters.Add("@ENDIRIM_MEBLEGI", SqlDbType.NVarChar, 500);
+                    param.Value = item.DiscountAmount.ToString();
+                    param = cmd.Parameters.Add("@YEKUN_MEBLEG", SqlDbType.NVarChar, 500);
+                    param.Value = item.TotalAmount.ToString();
+                    param = cmd.Parameters.Add("@ISTEHSAL_TARIXI", SqlDbType.NVarChar, 20);
+                    param.Value = item.IstehsalTarixi;
+                    param = cmd.Parameters.Add("@BITIS_TARIXI", SqlDbType.NVarChar, 20);
+                    param.Value = item.BitisTarixi;
+                    param = cmd.Parameters.Add("@XEBERDAR_ET", SqlDbType.NVarChar, 500);
+                    param.Value = item.XeberdarEt;
+                    param = cmd.Parameters.Add("@ShowPosScreen", SqlDbType.Bit);
+                    param.Value = false;
+                    param = cmd.Parameters.Add("@SEKIL", SqlDbType.VarBinary, int.MaxValue);
+                    param.Value = item.imageBytes;
+
+                    var empCountParam = new SqlParameter("@emp_count", SqlDbType.Int) { Direction = ParameterDirection.Output };
+                    var malDetailIdParam = new SqlParameter("@MalDetailId", SqlDbType.Int) { Direction = ParameterDirection.Output };
+
+                    cmd.Parameters.Add(empCountParam);
+                    cmd.Parameters.Add(malDetailIdParam);
+
+                    cmd.ExecuteNonQuery();
+
+                    int empCount = (int)empCountParam.Value;
+                    int malDetailId = (int)malDetailIdParam.Value;
+
+                    if (item.imageBytes != null)
                     {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        SqlParameter param;
-
-                        param = cmd.Parameters.Add("@MAL_ALISI_MAIN_ID", SqlDbType.Int);
-                        param.Value = item.ProductMainId;
-                        param = cmd.Parameters.Add("@KATEGORIYA", SqlDbType.NVarChar, 500);
-                        param.Value = item.CategoryName;
-                        param = cmd.Parameters.Add("@BARKOD", SqlDbType.NVarChar, 500);
-                        param.Value = item.Barocde;
-                        param = cmd.Parameters.Add("@MEHSUL_ADI", SqlDbType.NVarChar, 500);
-                        param.Value = item.ProductName;
-                        param = cmd.Parameters.Add("@MEHSUL_KODU", SqlDbType.NVarChar, 500);
-                        param.Value = item.ProductCode;
-                        param = cmd.Parameters.Add("@ANBAR", SqlDbType.NVarChar, 500);
-                        param.Value = item.WarehouseName;
-                        param = cmd.Parameters.Add("@MIGDARI", SqlDbType.Decimal);
-                        param.Value = item.Quantity;
-                        param = cmd.Parameters.Add("@VAHID", SqlDbType.NVarChar, 500);
-                        param.Value = item.UnitName;
-                        param = cmd.Parameters.Add("@VALYUTA", SqlDbType.NVarChar, 500);
-                        param.Value = item.CurrencyName;
-                        param = cmd.Parameters.Add("@VERGI_DERECESI", SqlDbType.NVarChar, 500);
-                        param.Value = item.TaxName;
-                        param = cmd.Parameters.Add("@ALIS_GIYMETI", SqlDbType.NVarChar, 500);
-                        param.Value = item.PurchasePrice.ToString();
-                        param = cmd.Parameters.Add("@SATIS_GIYMETI", SqlDbType.NVarChar, 500);
-                        param.Value = item.SalePrice.ToString();
-                        param = cmd.Parameters.Add("@ENDIRIM_FAIZ", SqlDbType.NVarChar, 500);
-                        param.Value = item.DiscountPercent.ToString();
-                        param = cmd.Parameters.Add("@ENDIRIM_AZN", SqlDbType.NVarChar, 500);
-                        param.Value = item.DiscountAZN.ToString();
-                        param = cmd.Parameters.Add("@ENDIRIM_MEBLEGI", SqlDbType.NVarChar, 500);
-                        param.Value = item.DiscountAmount.ToString();
-                        param = cmd.Parameters.Add("@YEKUN_MEBLEG", SqlDbType.NVarChar, 500);
-                        param.Value = item.TotalAmount.ToString();
-                        param = cmd.Parameters.Add("@ISTEHSAL_TARIXI", SqlDbType.NVarChar, 20);
-                        param.Value = item.IstehsalTarixi;
-                        param = cmd.Parameters.Add("@BITIS_TARIXI", SqlDbType.NVarChar, 20);
-                        param.Value = item.BitisTarixi;
-                        param = cmd.Parameters.Add("@XEBERDAR_ET", SqlDbType.NVarChar, 500);
-                        param.Value = item.XeberdarEt;
-                        param = cmd.Parameters.Add("@ShowPosScreen", SqlDbType.Bit);
-                        param.Value = false;
-                        param = cmd.Parameters.Add("@SEKIL", SqlDbType.VarBinary, int.MaxValue);
-                        param.Value = item.imageBytes;
-
-                        var empCountParam = new SqlParameter("@emp_count", SqlDbType.Int) { Direction = ParameterDirection.Output };
-                        var malDetailIdParam = new SqlParameter("@MalDetailId", SqlDbType.Int) { Direction = ParameterDirection.Output };
-
-                        cmd.Parameters.Add(empCountParam);
-                        cmd.Parameters.Add(malDetailIdParam);
-
-                        cmd.ExecuteNonQuery();
-
-                        int empCount = (int)empCountParam.Value;
-                        int malDetailId = (int)malDetailIdParam.Value;
-
-                        if (item.imageBytes != null)
-                        {
-                            await UpdateProductImage(malDetailId, item.Barocde);
-                        }
-
-                        FormHelpers.Log($"{item.ProductName} məhsulundan {item.Quantity} {item.UnitName} alış edildi");
-                        return Convert.ToInt32(empCount);
+                        await UpdateProductImage(malDetailId, item.Barocde);
                     }
+
+                    FormHelpers.Log($"{item.ProductName} məhsulundan {item.Quantity} {item.UnitName} alış edildi");
+                    return Convert.ToInt32(empCount);
                 }
             }
             catch (Exception e)

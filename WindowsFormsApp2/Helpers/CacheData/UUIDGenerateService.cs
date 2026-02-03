@@ -20,5 +20,10 @@ namespace WindowsFormsApp2.Helpers.CacheData
         {
             _uuid = Guid.NewGuid().ToString();
         }
+
+        public static string GetToken()
+        {
+            return Guid.NewGuid().ToString("N");
+        }
     }
 }

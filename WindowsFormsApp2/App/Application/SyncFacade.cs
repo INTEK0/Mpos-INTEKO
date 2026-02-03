@@ -17,55 +17,73 @@ namespace WindowsFormsApp2.App.Application
         public async Task<ApiResult> SendPaymentsAsync()
         {
             var data = DbHelpers.PaymentTypesData();
-            if (data.items.Count > 0)
-                return await _apiService.SendAsync(data, ApiOperation.PaymentTypes);
-            else
-                return ApiResult.Fail(null);
+            if (data.items.Count <= 0)
+            {
+                Serilog.Log.Warning($"Operation={ApiOperation.PaymentTypes} | Message=No data found");
+                return ApiResult.Fail("No data");
+            }
+
+            return await _apiService.SendAsync(data, ApiOperation.PaymentTypes);
         }
 
         public async Task<ApiResult> SendInvoicesAsync()
         {
             var data = DbHelpers.InvoiceData();
-            if (data.items.Count > 0)
-                return await _apiService.SendAsync(data, ApiOperation.ProductInvoice);
-            else
-                return ApiResult.Fail(null);
+            if (data.items.Count <= 0)
+            {
+                Serilog.Log.Warning($"Operation={ApiOperation.ProductInvoice} | Message=No data found");
+                return ApiResult.Fail("No data");
+            }
+
+            return await _apiService.SendAsync(data, ApiOperation.ProductInvoice);
         }
 
         public async Task<ApiResult> SendSalesAsync()
         {
             var data = DbHelpers.SaleDetailsData();
-            if (data.items.Count > 0)
-                return await _apiService.SendAsync(data, ApiOperation.SaleDetail);
-            else
-                return ApiResult.Fail(null);
+            if (data.items.Count <= 0)
+            {
+                Serilog.Log.Warning($"Operation={ApiOperation.SaleDetail} | Message=No data found");
+                return ApiResult.Fail("No data");
+            }
+
+            return await _apiService.SendAsync(data, ApiOperation.SaleDetail);
         }
 
         public async Task<ApiResult> SendStockAsync()
         {
             var data = DbHelpers.StockData();
-            if (data.items.Count > 0)
-                return await _apiService.SendAsync(data, ApiOperation.WarehouseStock);
-            else
-                return ApiResult.Fail(null);
+            if (data.items.Count <= 0)
+            {
+                Serilog.Log.Warning($"Operation={ApiOperation.WarehouseStock} | Message=No data found");
+                return ApiResult.Fail("No data");
+            }
+
+            return await _apiService.SendAsync(data, ApiOperation.WarehouseStock);
         }
 
         public async Task<ApiResult> SendSaleRefundAsync()
         {
             var data = DbHelpers.SaleRefund();
-            if (data.items.Count > 0)
-                return await _apiService.SendAsync(data, ApiOperation.SaleRefund);
-            else
-                return ApiResult.Fail(null);
+            if (data.items.Count <= 0)
+            {
+                Serilog.Log.Warning($"Operation={ApiOperation.SaleRefund} | Message=No data found");
+                return ApiResult.Fail("No data");
+            }
+
+            return await _apiService.SendAsync(data, ApiOperation.SaleRefund);
         }
 
         public async Task<ApiResult> SendProfitAsync()
         {
             var data = DbHelpers.ProfitData();
-            if (data.items.Count > 0)
-                return await _apiService.SendAsync(data, ApiOperation.Profit);
-            else
-                return ApiResult.Fail(null);
+            if (data.items.Count <= 0)
+            {
+                Serilog.Log.Warning($"Operation={ApiOperation.Profit} | Message=No data found");
+                return ApiResult.Fail("No data");
+            }
+
+            return await _apiService.SendAsync(data, ApiOperation.Profit);
         }
     }
 }

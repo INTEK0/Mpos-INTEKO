@@ -22,7 +22,7 @@ namespace WindowsFormsApp2
 
         private void simpleButton3_Click(object sender, EventArgs e)
         {
-            getall(Convert.ToDateTime(dateEdit3.Text), Convert.ToDateTime(dateEdit4.Text));
+            getall(Convert.ToDateTime(dateEdit3.Text), Convert.ToDateTime(dateEdit4.Text).AddDays(1));
         }
         public void getall(DateTime start, DateTime end)
         {
