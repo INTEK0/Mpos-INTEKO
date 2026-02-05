@@ -20,6 +20,7 @@ using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
+using static WindowsFormsApp2.App.Helpers.Enums;
 using static WindowsFormsApp2.Helpers.Enums;
 using static WindowsFormsApp2.Helpers.FormHelpers;
 
@@ -1518,9 +1519,26 @@ FROM (
         private void chCloud_CheckedChanged(object sender, EventArgs e)
         {
             if (chCloud.Checked)
+            {
                 Registry.CurrentUser.CreateSubKey("Mpos").SetValue("CloudApp", true);
+                var data = Enum.GetValues(typeof(ApiOperation))
+                   .Cast<ApiOperation>()
+                   .Select(x => new
+                   {
+                       Value = GetEnumDescription(x)
+                   })
+                   .ToList();
+                lookCloudReport.Enabled = true;
+                lookCloudReport.Properties.DataSource = data;
+                lookCloudReport.Properties.DisplayMember = "Value";
+                lookCloudReport.Properties.ForceInitialize();
+            }
             else
+            {
                 Registry.CurrentUser.CreateSubKey("Mpos").SetValue("CloudApp", false);
+                lookCloudReport.Enabled = false;
+                lookCloudReport.EditValue = null;
+            }
         }
 
         #endregion [..SETTINGS..]
@@ -1864,6 +1882,14 @@ FROM (
         {
             DbHelpers.UseLocalConnection();
             await MonthEarningLoadAsync();
+        }
+
+        private void lookCloudReport_Properties_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            if (e.Button?.Tag?.ToString() is "CloudImport")
+            {
+                MessageBox.Show("Test");
+            }
         }
 
         private async Task MonthEarningLoadAsync()

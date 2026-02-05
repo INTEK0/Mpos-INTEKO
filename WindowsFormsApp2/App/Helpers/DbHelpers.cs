@@ -153,10 +153,10 @@ namespace WindowsFormsApp2.App.Helpers
                         result.items.Add(new PaymentTypesDto.Items
                         {
                             Date = tarix.ToString("yyyy-MM-dd"),
-                            Cash = Convert.ToDecimal(reader["NAĞD"]),
-                            Card = Convert.ToDecimal(reader["KART"]),
-                            Bank = Convert.ToDecimal(reader["BANK"]),
-                            Credit = Convert.ToDecimal(reader["NİSYƏ"]),
+                            Cash = reader.GetDecimal(reader.GetOrdinal("NAĞD")),
+                            Card = reader.GetDecimal(reader.GetOrdinal("KART")),
+                            Bank = reader.GetDecimal(reader.GetOrdinal("BANK")),
+                            Credit = reader.GetDecimal(reader.GetOrdinal("NİSYƏ"))
                         });
                     }
                 }

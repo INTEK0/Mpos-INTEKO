@@ -14,7 +14,6 @@ using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Validations;
-using static DevExpress.Xpo.Helpers.AssociatedCollectionCriteriaHelper;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
 using static WindowsFormsApp2.Helpers.Enums;
 using static WindowsFormsApp2.Helpers.FormHelpers;
@@ -681,7 +680,6 @@ namespace WindowsFormsApp2.Forms
                     MessageBoxManager.Unregister();
                     if (dialogResult is DialogResult.No)
                         e.Cancel = true;
-
 
 
                     bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("CloudApp").ToString());

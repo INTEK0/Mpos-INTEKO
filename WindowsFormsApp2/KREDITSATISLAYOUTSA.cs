@@ -7,6 +7,8 @@ using System.Drawing.Printing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
+using Microsoft.Win32;
+using WindowsFormsApp2.App.Application;
 using WindowsFormsApp2.Forms;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.CacheData;
@@ -166,17 +168,29 @@ namespace WindowsFormsApp2
             data.ShortFiskalId = shortFiscalId;
             data.ReceiptNo = receiptNo;
             int id = await DbProsedures.Insert_CreditMain(data);
+            if (id > 0)
+            {
+                DbProsedures.InsertCustomerDebt(CustomerDebtType.CreditSale,
+                    DateTime.Now,
+                    Convert.ToInt32(data.CustomerId),
+                    Convert.ToDecimal(data.OdenilenMebleg));
 
-            DbProsedures.InsertCustomerDebt(CustomerDebtType.CreditSale,
-                DateTime.Now,
-                Convert.ToInt32(data.CustomerId),
-                Convert.ToDecimal(data.OdenilenMebleg));
+                await CreditMonthAdd(id, longFiscalId);
 
-            await CreditMonthAdd(id, longFiscalId);
+                bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("CloudApp").ToString());
+                if (control)
+                {
+                    var facade = new SyncFacade();
+                    await facade.SendSalesAsync();
+                    await facade.SendProfitAsync();
+                    await facade.SendPaymentsAsync();
+                    await facade.SendStockAsync();
+                }
 
-            FormHelpers.Log($"{tProductName.Text} məhsulu {tContractNo.Text} müqavilə nömrəsinə əsasən kredit satışı ilə satıldı.");
-            //krediprint();
-            RestartForm();
+                FormHelpers.Log($"{tProductName.Text} məhsulu {tContractNo.Text} müqavilə nömrəsinə əsasən kredit satışı ilə satıldı.");
+                RestartForm();
+                //krediprint();
+            }
         }
 
         private void RestartForm()
@@ -688,20 +702,14 @@ namespace WindowsFormsApp2
             {
                 fPay pay = new fPay(payment);
                 if (pay.ShowDialog() is DialogResult.OK)
-                {
                     Payment(pay.Result.Total, pay.Result.Cash, pay.Result.Card, pay.Result.IncomingSum);
-                }
             }
             else
-            {
                 Payment(0, 0, 0, 0);
-            }
-
         }
 
         private void Payment(decimal Total, decimal Cash, decimal Card, decimal IncomingSum)
         {
-            string uuid = Guid.NewGuid().ToString();
             string vahid = get_vahid();
 
             var data = Validation();
@@ -722,7 +730,7 @@ namespace WindowsFormsApp2
                     MerchantId = lMerchantId.Text,
                     CustomerName = tCustomerName.Text,
                     Cashier = lCashier.Text,
-                    DocumentUUID = uuid,
+                    DocumentUUID = UUIDGenerateService.UUID,
                     CreditContract = tContractNo.Text.Trim(),
                     CashPayment = Cash,
                     CardPayment = Card,

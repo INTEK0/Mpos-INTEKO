@@ -392,6 +392,12 @@
     <Compile Include="Forms\fCategory.Designer.cs">
       <DependentUpon>fCategory.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\fCloudSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\fCloudSettings.Designer.cs">
+      <DependentUpon>fCloudSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\fColumnSettings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1193,6 +1199,9 @@
     <EmbeddedResource Include="Forms\fCategory.resx">
       <DependentUpon>fCategory.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\fCloudSettings.resx">
+      <DependentUpon>fCloudSettings.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\fColumnSettings.resx">
       <DependentUpon>fColumnSettings.cs</DependentUpon>
     </EmbeddedResource>
@@ -1818,6 +1827,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Mpos.ico" />
+    <None Include="Resources\insert_16x16.png" />
+    <None Include="Resources\insert_32x32.png" />
     <None Include="Resources\financial1.svg" />
     <None Include="Resources\functionsinformation.svg" />
     <None Include="Resources\delete_32x32.png" />

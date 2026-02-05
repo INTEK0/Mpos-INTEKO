@@ -31,12 +31,17 @@ namespace WindowsFormsApp2
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            DevExpress.XtraCharts.XYDiagram xyDiagram3 = new DevExpress.XtraCharts.XYDiagram();
-            DevExpress.XtraCharts.Series series5 = new DevExpress.XtraCharts.Series();
-            DevExpress.XtraCharts.ChartTitle chartTitle5 = new DevExpress.XtraCharts.ChartTitle();
-            DevExpress.XtraCharts.Series series6 = new DevExpress.XtraCharts.Series();
-            DevExpress.XtraCharts.DoughnutSeriesView doughnutSeriesView3 = new DevExpress.XtraCharts.DoughnutSeriesView();
-            DevExpress.XtraCharts.ChartTitle chartTitle6 = new DevExpress.XtraCharts.ChartTitle();
+            DevExpress.XtraCharts.XYDiagram xyDiagram1 = new DevExpress.XtraCharts.XYDiagram();
+            DevExpress.XtraCharts.Series series1 = new DevExpress.XtraCharts.Series();
+            DevExpress.XtraCharts.ChartTitle chartTitle1 = new DevExpress.XtraCharts.ChartTitle();
+            DevExpress.XtraCharts.Series series2 = new DevExpress.XtraCharts.Series();
+            DevExpress.XtraCharts.DoughnutSeriesView doughnutSeriesView1 = new DevExpress.XtraCharts.DoughnutSeriesView();
+            DevExpress.XtraCharts.ChartTitle chartTitle2 = new DevExpress.XtraCharts.ChartTitle();
+            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions1 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MAINSCRRENS));
             this.fluentDesignFormContainer1 = new DevExpress.XtraBars.FluentDesignSystem.FluentDesignFormContainer();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -193,13 +198,17 @@ namespace WindowsFormsApp2
             this.tabPaneSettings = new DevExpress.XtraBars.Navigation.TabPane();
             this.tabDatabase = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.panelDatabase = new DevExpress.XtraEditors.PanelControl();
+            this.lookCloudReport = new DevExpress.XtraEditors.LookUpEdit();
+            this.chCloud = new DevExpress.XtraEditors.CheckEdit();
             this.lBackupHistory = new DevExpress.XtraEditors.LabelControl();
             this.labelControl21 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl20 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl17 = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl29 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl16 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl23 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl22 = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl24 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl18 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl15 = new DevExpress.XtraEditors.LabelControl();
             this.bDbDelete = new DevExpress.XtraEditors.SimpleButton();
@@ -287,8 +296,6 @@ namespace WindowsFormsApp2
             this.checkButton3 = new DevExpress.XtraEditors.CheckButton();
             this.checkButton4 = new DevExpress.XtraEditors.CheckButton();
             this.checkButton5 = new DevExpress.XtraEditors.CheckButton();
-            this.labelControl24 = new DevExpress.XtraEditors.LabelControl();
-            this.chCloud = new DevExpress.XtraEditors.CheckEdit();
             this.fluentDesignFormContainer1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
@@ -326,11 +333,11 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit3.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartWeek)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(xyDiagram3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(series5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(xyDiagram1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(series1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartSalesType)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(series6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(doughnutSeriesView3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(series2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(doughnutSeriesView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit4.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.accordionControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fluentDesignFormControl1)).BeginInit();
@@ -354,6 +361,8 @@ namespace WindowsFormsApp2
             this.tabDatabase.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.panelDatabase)).BeginInit();
             this.panelDatabase.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.lookCloudReport.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chCloud.Properties)).BeginInit();
             this.tabLog.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).BeginInit();
             this.tablePanel1.SuspendLayout();
@@ -399,7 +408,6 @@ namespace WindowsFormsApp2
             this.groupControl4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel2)).BeginInit();
             this.tablePanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chCloud.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // fluentDesignFormContainer1
@@ -1283,28 +1291,28 @@ namespace WindowsFormsApp2
             // chartWeek
             // 
             this.tableLayoutPanel1.SetColumnSpan(this.chartWeek, 3);
-            xyDiagram3.AxisX.VisibleInPanesSerializable = "-1";
-            xyDiagram3.AxisY.VisibleInPanesSerializable = "-1";
-            this.chartWeek.Diagram = xyDiagram3;
+            xyDiagram1.AxisX.VisibleInPanesSerializable = "-1";
+            xyDiagram1.AxisY.VisibleInPanesSerializable = "-1";
+            this.chartWeek.Diagram = xyDiagram1;
             this.chartWeek.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chartWeek.EmptyChartText.DXFont = new DevExpress.Drawing.DXFont("Nunito", 14F);
             this.chartWeek.EmptyChartText.Text = "Məlumat yoxdur";
             this.chartWeek.Legend.Visibility = DevExpress.Utils.DefaultBoolean.False;
             this.chartWeek.Location = new System.Drawing.Point(3, 119);
             this.chartWeek.Name = "chartWeek";
-            series5.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
-            series5.LegendTextPattern = "{V}";
-            series5.Name = "Series 1";
-            series5.SeriesID = 0;
+            series1.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+            series1.LegendTextPattern = "{V}";
+            series1.Name = "Series 1";
+            series1.SeriesID = 0;
             this.chartWeek.SeriesSerializable = new DevExpress.XtraCharts.Series[] {
-        series5};
+        series1};
             this.chartWeek.Size = new System.Drawing.Size(855, 283);
             this.chartWeek.TabIndex = 14;
-            chartTitle5.DXFont = new DevExpress.Drawing.DXFont("Verdana", 16F);
-            chartTitle5.Text = "Aylıq satış hesabatı";
-            chartTitle5.TitleID = 0;
+            chartTitle1.DXFont = new DevExpress.Drawing.DXFont("Verdana", 16F);
+            chartTitle1.Text = "Aylıq satış hesabatı";
+            chartTitle1.TitleID = 0;
             this.chartWeek.Titles.AddRange(new DevExpress.XtraCharts.ChartTitle[] {
-            chartTitle5});
+            chartTitle1});
             // 
             // chartSalesType
             // 
@@ -1318,18 +1326,18 @@ namespace WindowsFormsApp2
             this.chartSalesType.Name = "chartSalesType";
             this.chartSalesType.PaletteName = "Civic";
             this.tableLayoutPanel1.SetRowSpan(this.chartSalesType, 2);
-            series6.Name = "Series 1";
-            series6.SeriesID = 1;
-            series6.View = doughnutSeriesView3;
+            series2.Name = "Series 1";
+            series2.SeriesID = 1;
+            series2.View = doughnutSeriesView1;
             this.chartSalesType.SeriesSerializable = new DevExpress.XtraCharts.Series[] {
-        series6};
+        series2};
             this.chartSalesType.Size = new System.Drawing.Size(855, 345);
             this.chartSalesType.TabIndex = 15;
-            chartTitle6.DXFont = new DevExpress.Drawing.DXFont("Verdana", 16F);
-            chartTitle6.Text = "Cari satış növ hesabatı";
-            chartTitle6.TitleID = 0;
+            chartTitle2.DXFont = new DevExpress.Drawing.DXFont("Verdana", 16F);
+            chartTitle2.Text = "Cari satış növ hesabatı";
+            chartTitle2.TitleID = 0;
             this.chartSalesType.Titles.AddRange(new DevExpress.XtraCharts.ChartTitle[] {
-            chartTitle6});
+            chartTitle2});
             // 
             // pictureEdit4
             // 
@@ -2443,11 +2451,13 @@ namespace WindowsFormsApp2
             this.panelDatabase.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(245)))), ((int)(((byte)(250)))));
             this.panelDatabase.Appearance.Options.UseBackColor = true;
             this.panelDatabase.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.panelDatabase.Controls.Add(this.lookCloudReport);
             this.panelDatabase.Controls.Add(this.chCloud);
             this.panelDatabase.Controls.Add(this.lBackupHistory);
             this.panelDatabase.Controls.Add(this.labelControl21);
             this.panelDatabase.Controls.Add(this.labelControl20);
             this.panelDatabase.Controls.Add(this.labelControl17);
+            this.panelDatabase.Controls.Add(this.labelControl29);
             this.panelDatabase.Controls.Add(this.labelControl16);
             this.panelDatabase.Controls.Add(this.labelControl23);
             this.panelDatabase.Controls.Add(this.labelControl22);
@@ -2467,10 +2477,52 @@ namespace WindowsFormsApp2
             this.panelDatabase.Size = new System.Drawing.Size(1157, 761);
             this.panelDatabase.TabIndex = 1;
             // 
+            // lookCloudReport
+            // 
+            this.lookCloudReport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lookCloudReport.Location = new System.Drawing.Point(826, 183);
+            this.lookCloudReport.Margin = new System.Windows.Forms.Padding(4);
+            this.lookCloudReport.Name = "lookCloudReport";
+            this.lookCloudReport.Properties.Appearance.Font = new System.Drawing.Font("Verdana", 10F);
+            this.lookCloudReport.Properties.Appearance.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.ControlText;
+            this.lookCloudReport.Properties.Appearance.Options.UseFont = true;
+            this.lookCloudReport.Properties.Appearance.Options.UseForeColor = true;
+            serializableAppearanceObject1.Font = new System.Drawing.Font("Nunito", 11F, System.Drawing.FontStyle.Bold);
+            serializableAppearanceObject1.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Hyperlink;
+            serializableAppearanceObject1.Options.UseFont = true;
+            serializableAppearanceObject1.Options.UseForeColor = true;
+            this.lookCloudReport.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "Yüklə", -1, true, true, false, editorButtonImageOptions1, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", "CloudImport", null, DevExpress.Utils.ToolTipAnchor.Default)});
+            this.lookCloudReport.Properties.DropDownRows = 6;
+            this.lookCloudReport.Properties.NullText = "";
+            this.lookCloudReport.Properties.NullValuePrompt = "Hesabat növünü seç";
+            this.lookCloudReport.Properties.ShowFooter = false;
+            this.lookCloudReport.Properties.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.lookCloudReport_Properties_ButtonClick);
+            this.lookCloudReport.Size = new System.Drawing.Size(318, 30);
+            this.lookCloudReport.TabIndex = 26;
+            // 
+            // chCloud
+            // 
+            this.chCloud.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.chCloud.Location = new System.Drawing.Point(7, 147);
+            this.chCloud.MenuManager = this.fluentFormDefaultManager1;
+            this.chCloud.Name = "chCloud";
+            this.chCloud.Properties.Appearance.Font = new System.Drawing.Font("Verdana", 11F);
+            this.chCloud.Properties.Appearance.Options.UseFont = true;
+            this.chCloud.Properties.Caption = "Cloud serverin statusu";
+            this.chCloud.Properties.CheckBoxOptions.Style = DevExpress.XtraEditors.Controls.CheckBoxStyle.SvgToggle1;
+            this.chCloud.Properties.CheckBoxOptions.SvgImageSize = new System.Drawing.Size(32, 28);
+            this.chCloud.Properties.GlyphAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.chCloud.Size = new System.Drawing.Size(1138, 32);
+            this.chCloud.TabIndex = 25;
+            this.chCloud.CheckedChanged += new System.EventHandler(this.chCloud_CheckedChanged);
+            // 
             // lBackupHistory
             // 
             this.lBackupHistory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lBackupHistory.Appearance.Font = new System.Drawing.Font("Nunito", 11F);
+            this.lBackupHistory.Appearance.Font = new System.Drawing.Font("Verdana", 11F);
             this.lBackupHistory.Appearance.Options.UseFont = true;
             this.lBackupHistory.Appearance.Options.UseTextOptions = true;
             this.lBackupHistory.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
@@ -2484,14 +2536,14 @@ namespace WindowsFormsApp2
             // 
             // labelControl21
             // 
-            this.labelControl21.Appearance.Font = new System.Drawing.Font("Nunito", 10F);
+            this.labelControl21.Appearance.Font = new System.Drawing.Font("Verdana", 10F);
             this.labelControl21.Appearance.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Critical;
             this.labelControl21.Appearance.Options.UseFont = true;
             this.labelControl21.Appearance.Options.UseForeColor = true;
-            this.labelControl21.Location = new System.Drawing.Point(10, 312);
+            this.labelControl21.Location = new System.Drawing.Point(10, 349);
             this.labelControl21.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
             this.labelControl21.Name = "labelControl21";
-            this.labelControl21.Size = new System.Drawing.Size(494, 18);
+            this.labelControl21.Size = new System.Drawing.Size(547, 16);
             this.labelControl21.TabIndex = 20;
             this.labelControl21.Text = "Silinmə edildikdən sonra heç bir məlumatın geri qaytarılması mümkün olmayacaqdır " +
     "!";
@@ -2499,57 +2551,85 @@ namespace WindowsFormsApp2
             // 
             // labelControl20
             // 
-            this.labelControl20.Appearance.Font = new System.Drawing.Font("Nunito", 11F);
+            this.labelControl20.Appearance.Font = new System.Drawing.Font("Verdana", 11F);
             this.labelControl20.Appearance.Options.UseFont = true;
-            this.labelControl20.Location = new System.Drawing.Point(9, 292);
+            this.labelControl20.Location = new System.Drawing.Point(10, 327);
             this.labelControl20.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.labelControl20.Name = "labelControl20";
-            this.labelControl20.Size = new System.Drawing.Size(225, 20);
+            this.labelControl20.Size = new System.Drawing.Size(241, 18);
             this.labelControl20.TabIndex = 20;
             this.labelControl20.Text = "Verilənlər bazasını qalıcı olaraq sil";
             this.labelControl20.Visible = false;
             // 
             // labelControl17
             // 
-            this.labelControl17.Appearance.Font = new System.Drawing.Font("Nunito", 11F);
+            this.labelControl17.Appearance.Font = new System.Drawing.Font("Verdana", 11F);
             this.labelControl17.Appearance.Options.UseFont = true;
-            this.labelControl17.Location = new System.Drawing.Point(9, 258);
+            this.labelControl17.Location = new System.Drawing.Point(10, 293);
             this.labelControl17.Name = "labelControl17";
-            this.labelControl17.Size = new System.Drawing.Size(406, 20);
+            this.labelControl17.Size = new System.Drawing.Size(448, 18);
             this.labelControl17.TabIndex = 20;
             this.labelControl17.Text = "Verilənlər bazasını sıfırla (Anbar qalığı, satış, hesabatlar və s.)";
             this.labelControl17.Visible = false;
             // 
+            // labelControl29
+            // 
+            this.labelControl29.Appearance.Font = new System.Drawing.Font("Verdana", 11F);
+            this.labelControl29.Appearance.Options.UseFont = true;
+            this.labelControl29.Location = new System.Drawing.Point(10, 189);
+            this.labelControl29.Name = "labelControl29";
+            this.labelControl29.Size = new System.Drawing.Size(456, 18);
+            this.labelControl29.TabIndex = 20;
+            this.labelControl29.Text = "Seçilmiş hesabat üzrə bütün əməliyyatların clouda yüklənməsi";
+            // 
             // labelControl16
             // 
-            this.labelControl16.Appearance.Font = new System.Drawing.Font("Nunito", 11F);
+            this.labelControl16.Appearance.Font = new System.Drawing.Font("Verdana", 11F);
             this.labelControl16.Appearance.Options.UseFont = true;
-            this.labelControl16.Location = new System.Drawing.Point(9, 226);
+            this.labelControl16.Location = new System.Drawing.Point(10, 261);
             this.labelControl16.Name = "labelControl16";
-            this.labelControl16.Size = new System.Drawing.Size(144, 20);
+            this.labelControl16.Size = new System.Drawing.Size(159, 18);
             this.labelControl16.TabIndex = 20;
             this.labelControl16.Text = "Keş yaddaşını təmizlə";
             this.labelControl16.Visible = false;
             // 
             // labelControl23
             // 
-            this.labelControl23.Appearance.Font = new System.Drawing.Font("Nunito", 11F);
+            this.labelControl23.Appearance.Font = new System.Drawing.Font("Verdana", 11F);
             this.labelControl23.Appearance.Options.UseFont = true;
-            this.labelControl23.Location = new System.Drawing.Point(7, 81);
+            this.labelControl23.Location = new System.Drawing.Point(10, 82);
             this.labelControl23.Name = "labelControl23";
-            this.labelControl23.Size = new System.Drawing.Size(197, 20);
+            this.labelControl23.Size = new System.Drawing.Size(217, 18);
             this.labelControl23.TabIndex = 20;
             this.labelControl23.Text = "Son nüsxənin yaradılma tarixi";
             // 
             // labelControl22
             // 
-            this.labelControl22.Appearance.Font = new System.Drawing.Font("Nunito", 11F);
+            this.labelControl22.Appearance.Font = new System.Drawing.Font("Verdana", 11F);
             this.labelControl22.Appearance.Options.UseFont = true;
-            this.labelControl22.Location = new System.Drawing.Point(7, 49);
+            this.labelControl22.Location = new System.Drawing.Point(10, 48);
             this.labelControl22.Name = "labelControl22";
-            this.labelControl22.Size = new System.Drawing.Size(148, 20);
+            this.labelControl22.Size = new System.Drawing.Size(164, 18);
             this.labelControl22.TabIndex = 20;
             this.labelControl22.Text = "Ehtiyyat nüsxəsi yarat";
+            // 
+            // labelControl24
+            // 
+            this.labelControl24.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelControl24.Appearance.Font = new System.Drawing.Font("Nunito", 14F, System.Drawing.FontStyle.Bold);
+            this.labelControl24.Appearance.Options.UseFont = true;
+            this.labelControl24.Appearance.Options.UseTextOptions = true;
+            this.labelControl24.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
+            this.labelControl24.AutoEllipsis = true;
+            this.labelControl24.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.Vertical;
+            this.labelControl24.LineLocation = DevExpress.XtraEditors.LineLocation.Bottom;
+            this.labelControl24.LineVisible = true;
+            this.labelControl24.Location = new System.Drawing.Point(7, 112);
+            this.labelControl24.Name = "labelControl24";
+            this.labelControl24.Size = new System.Drawing.Size(1147, 29);
+            this.labelControl24.TabIndex = 0;
+            this.labelControl24.Text = "Cloud serverin idarə olunması";
             // 
             // labelControl18
             // 
@@ -2563,7 +2643,7 @@ namespace WindowsFormsApp2
             this.labelControl18.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.Vertical;
             this.labelControl18.LineLocation = DevExpress.XtraEditors.LineLocation.Bottom;
             this.labelControl18.LineVisible = true;
-            this.labelControl18.Location = new System.Drawing.Point(9, 185);
+            this.labelControl18.Location = new System.Drawing.Point(7, 220);
             this.labelControl18.Name = "labelControl18";
             this.labelControl18.Size = new System.Drawing.Size(1147, 29);
             this.labelControl18.TabIndex = 0;
@@ -2600,7 +2680,7 @@ namespace WindowsFormsApp2
             this.bDbDelete.AppearanceDisabled.Options.UseForeColor = true;
             this.bDbDelete.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bDbDelete.ImageOptions.SvgImage")));
             this.bDbDelete.ImageOptions.SvgImageSize = new System.Drawing.Size(24, 24);
-            this.bDbDelete.Location = new System.Drawing.Point(988, 288);
+            this.bDbDelete.Location = new System.Drawing.Point(988, 323);
             this.bDbDelete.Name = "bDbDelete";
             this.bDbDelete.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
             this.bDbDelete.Size = new System.Drawing.Size(159, 28);
@@ -2621,7 +2701,7 @@ namespace WindowsFormsApp2
             this.bDbClear.AppearanceDisabled.Options.UseForeColor = true;
             this.bDbClear.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bDbClear.ImageOptions.SvgImage")));
             this.bDbClear.ImageOptions.SvgImageSize = new System.Drawing.Size(24, 24);
-            this.bDbClear.Location = new System.Drawing.Point(988, 254);
+            this.bDbClear.Location = new System.Drawing.Point(988, 289);
             this.bDbClear.Name = "bDbClear";
             this.bDbClear.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
             this.bDbClear.Size = new System.Drawing.Size(159, 28);
@@ -2642,7 +2722,7 @@ namespace WindowsFormsApp2
             this.bDbCacheDelete.AppearanceDisabled.Options.UseForeColor = true;
             this.bDbCacheDelete.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bDbCacheDelete.ImageOptions.SvgImage")));
             this.bDbCacheDelete.ImageOptions.SvgImageSize = new System.Drawing.Size(24, 24);
-            this.bDbCacheDelete.Location = new System.Drawing.Point(988, 220);
+            this.bDbCacheDelete.Location = new System.Drawing.Point(988, 255);
             this.bDbCacheDelete.Name = "bDbCacheDelete";
             this.bDbCacheDelete.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
             this.bDbCacheDelete.Size = new System.Drawing.Size(159, 28);
@@ -3394,7 +3474,7 @@ namespace WindowsFormsApp2
             this.xtraTabPage6.Controls.Add(this.bBranchBankRefund);
             this.xtraTabPage6.Controls.Add(this.bBranchBankSale);
             this.xtraTabPage6.Name = "xtraTabPage6";
-            this.xtraTabPage6.Size = new System.Drawing.Size(1151, 655);
+            this.xtraTabPage6.Size = new System.Drawing.Size(1151, 657);
             this.xtraTabPage6.Text = "Satış";
             // 
             // bBranchBankRefund
@@ -3442,7 +3522,7 @@ namespace WindowsFormsApp2
             this.xtraTabPage2.Controls.Add(this.bBranchAlisHesabat);
             this.xtraTabPage2.Controls.Add(this.bBranchStock);
             this.xtraTabPage2.Name = "xtraTabPage2";
-            this.xtraTabPage2.Size = new System.Drawing.Size(1151, 655);
+            this.xtraTabPage2.Size = new System.Drawing.Size(1151, 657);
             this.xtraTabPage2.Text = "Hesabatlar";
             // 
             // bBranchAvansHesabati
@@ -3571,7 +3651,7 @@ namespace WindowsFormsApp2
             this.xtraTabPage3.Controls.Add(this.bBranchCreditPay);
             this.xtraTabPage3.Controls.Add(this.bBranchCreditSale);
             this.xtraTabPage3.Name = "xtraTabPage3";
-            this.xtraTabPage3.Size = new System.Drawing.Size(1151, 655);
+            this.xtraTabPage3.Size = new System.Drawing.Size(1151, 657);
             this.xtraTabPage3.Text = "Kredit";
             // 
             // bBranchCreditSaleRefund
@@ -3624,7 +3704,7 @@ namespace WindowsFormsApp2
             // 
             this.xtraTabPage5.Controls.Add(this.bBranchSuppliers);
             this.xtraTabPage5.Name = "xtraTabPage5";
-            this.xtraTabPage5.Size = new System.Drawing.Size(1151, 655);
+            this.xtraTabPage5.Size = new System.Drawing.Size(1151, 657);
             this.xtraTabPage5.Text = "Təchizatçılar";
             // 
             // bBranchSuppliers
@@ -3646,7 +3726,7 @@ namespace WindowsFormsApp2
             // 
             this.xtraTabPage4.Controls.Add(this.bBranchUsers);
             this.xtraTabPage4.Name = "xtraTabPage4";
-            this.xtraTabPage4.Size = new System.Drawing.Size(1151, 655);
+            this.xtraTabPage4.Size = new System.Drawing.Size(1151, 657);
             this.xtraTabPage4.Text = "İstifadəçilər";
             // 
             // bBranchUsers
@@ -3670,7 +3750,7 @@ namespace WindowsFormsApp2
             this.xtraTabPage7.Controls.Add(this.bBranchLog);
             this.xtraTabPage7.Controls.Add(this.bBranchTerminal);
             this.xtraTabPage7.Name = "xtraTabPage7";
-            this.xtraTabPage7.Size = new System.Drawing.Size(1151, 655);
+            this.xtraTabPage7.Size = new System.Drawing.Size(1151, 657);
             this.xtraTabPage7.Text = "Sazlamalar";
             // 
             // bBranchMinusCountControl
@@ -3914,41 +3994,6 @@ namespace WindowsFormsApp2
             this.checkButton5.Text = "NAMAZOV BƏXTİYAR";
             this.checkButton5.CheckedChanged += new System.EventHandler(this.CheckedBranches);
             // 
-            // labelControl24
-            // 
-            this.labelControl24.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelControl24.Appearance.Font = new System.Drawing.Font("Nunito", 14F, System.Drawing.FontStyle.Bold);
-            this.labelControl24.Appearance.Options.UseFont = true;
-            this.labelControl24.Appearance.Options.UseTextOptions = true;
-            this.labelControl24.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
-            this.labelControl24.AutoEllipsis = true;
-            this.labelControl24.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.Vertical;
-            this.labelControl24.LineLocation = DevExpress.XtraEditors.LineLocation.Bottom;
-            this.labelControl24.LineVisible = true;
-            this.labelControl24.Location = new System.Drawing.Point(7, 112);
-            this.labelControl24.Name = "labelControl24";
-            this.labelControl24.Size = new System.Drawing.Size(1147, 29);
-            this.labelControl24.TabIndex = 0;
-            this.labelControl24.Text = "Cloud serverin idarə olunması";
-            // 
-            // chCloud
-            // 
-            this.chCloud.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.chCloud.Location = new System.Drawing.Point(7, 147);
-            this.chCloud.MenuManager = this.fluentFormDefaultManager1;
-            this.chCloud.Name = "chCloud";
-            this.chCloud.Properties.Appearance.Font = new System.Drawing.Font("Verdana", 11F);
-            this.chCloud.Properties.Appearance.Options.UseFont = true;
-            this.chCloud.Properties.Caption = "Cloud serverin statusu";
-            this.chCloud.Properties.CheckBoxOptions.Style = DevExpress.XtraEditors.Controls.CheckBoxStyle.SvgToggle1;
-            this.chCloud.Properties.CheckBoxOptions.SvgImageSize = new System.Drawing.Size(32, 28);
-            this.chCloud.Properties.GlyphAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.chCloud.Size = new System.Drawing.Size(1137, 32);
-            this.chCloud.TabIndex = 25;
-            this.chCloud.CheckedChanged += new System.EventHandler(this.chCloud_CheckedChanged);
-            // 
             // MAINSCRRENS
             // 
             this.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(245)))), ((int)(((byte)(250)))));
@@ -4014,11 +4059,11 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.gridControl2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit3.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(xyDiagram3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(series5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(xyDiagram1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(series1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartWeek)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(doughnutSeriesView3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(series6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(doughnutSeriesView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(series2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartSalesType)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit4.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.accordionControl1)).EndInit();
@@ -4045,6 +4090,8 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.panelDatabase)).EndInit();
             this.panelDatabase.ResumeLayout(false);
             this.panelDatabase.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.lookCloudReport.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chCloud.Properties)).EndInit();
             this.tabLog.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).EndInit();
             this.tablePanel1.ResumeLayout(false);
@@ -4093,7 +4140,6 @@ namespace WindowsFormsApp2
             this.groupControl4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel2)).EndInit();
             this.tablePanel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.chCloud.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -4350,6 +4396,8 @@ namespace WindowsFormsApp2
         private DevExpress.XtraEditors.CheckButton checkButton6;
         private DevExpress.XtraEditors.LabelControl labelControl24;
         private DevExpress.XtraEditors.CheckEdit chCloud;
+        private DevExpress.XtraEditors.LabelControl labelControl29;
+        private DevExpress.XtraEditors.LookUpEdit lookCloudReport;
     }
 }
 
