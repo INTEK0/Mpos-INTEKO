@@ -10,7 +10,7 @@ namespace WindowsFormsApp2.App.Dtos
         public class Items
         {
             public DateTime Date { get; set; }
-            public string Username { get; set; }
+            public string CashierName { get; set; }
             public string SupplierName { get; set; }
             public string CategoryName { get; set; }
             public string ProductName { get; set; }
@@ -24,7 +24,7 @@ namespace WindowsFormsApp2.App.Dtos
             public double DiscountAzn { get; set; }
             public string PaymentType { get; set; }
             public double TotalAmount { get; set; }
-            public int TaxPercantages { get; set; }
+            public int TaxPercantages { get; set; } //string olmalıdır
             public string ProccessNo { get; set; }
             public string ReceiptNo { get; set; }
         }

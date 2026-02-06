@@ -107,7 +107,7 @@ namespace WindowsFormsApp2.App.Helpers
                         result.items.Add(new SaleDetailsDto.Items
                         {
                             Date = Convert.ToDateTime(reader["TARİX"].ToString()),
-                            Username = reader["İSTİFADƏÇİ"].ToString(),
+                            CashierName = reader["İSTİFADƏÇİ"].ToString(),
                             SupplierName = reader["TƏCHİZATÇI"].ToString(),
                             CategoryName = reader["CATEGORY"].ToString(),
                             ProductName = reader["MƏHSUL ADI"].ToString(),

@@ -9,7 +9,7 @@ namespace WindowsFormsApp2.App.Dtos
         public List<Items> items { get; set; }
         public class Items
         {
-            //public int Count { get; set; }
+            public int Count { get; set; } = 0;
             public DateTime Date { get; set; }
             public string Username { get; set; }
             public string ProccessNo { get; set; }

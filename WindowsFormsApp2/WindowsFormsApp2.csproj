@@ -270,7 +270,6 @@
     <Compile Include="App\Helpers\DbHelpers.cs" />
     <Compile Include="App\Helpers\Enums.cs" />
     <Compile Include="App\Services\ApiService.cs" />
-    <Compile Include="App\Services\BackgroundService.cs" />
     <Compile Include="App\Application\SyncFacade.cs" />
     <Compile Include="avtorizasiya.cs">
       <SubType>Form</SubType>
