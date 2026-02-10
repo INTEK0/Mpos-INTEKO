@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace WindowsFormsApp2.App.Dtos
 {
@@ -9,7 +8,7 @@ namespace WindowsFormsApp2.App.Dtos
         public List<Items> items { get; set; }
         public class Items
         {
-            public DateTime Date { get; set; }
+            public string Date { get; set; }
             public string CashierName { get; set; }
             public string SupplierName { get; set; }
             public string CategoryName { get; set; }
@@ -24,7 +23,7 @@ namespace WindowsFormsApp2.App.Dtos
             public double DiscountAzn { get; set; }
             public string PaymentType { get; set; }
             public double TotalAmount { get; set; }
-            public int TaxPercantages { get; set; } //string olmalıdır
+            public decimal TaxPercantages { get; set; }
             public string ProccessNo { get; set; }
             public string ReceiptNo { get; set; }
         }

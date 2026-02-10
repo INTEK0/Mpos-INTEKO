@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 using WindowsFormsApp2.App.Dtos;
 
 namespace WindowsFormsApp2.App.Helpers
 {
     public class DbHelpers
     {
-        public static StockDto StockData()
+        public async static Task<StockDto> StockData()
         {
             var result = new StockDto();
             result.items = new List<StockDto.Items>();
@@ -16,9 +17,8 @@ namespace WindowsFormsApp2.App.Helpers
             {
                 conn.Open();
                 var cmd = new SqlCommand("SELECT * FROM VW_WAREHOUSE_STOCK", conn);
-                using (var reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
+                using (var reader = await cmd.ExecuteReaderAsync())
+                    while (await reader.ReadAsync())
                     {
                         if (result.voen == null)
                             result.voen = reader["VOEN"].ToString();
@@ -38,13 +38,12 @@ namespace WindowsFormsApp2.App.Helpers
                             Quantity = Convert.ToDecimal(reader["StockQuantity"].ToString()),
                         });
                     }
-                }
             }
 
             return result;
         }
 
-        public static InvoiceProductDto InvoiceData()
+        public async static Task<InvoiceProductDto> InvoiceData(bool fullData = false)
         {
             var result = new InvoiceProductDto();
             result.items = new List<InvoiceProductDto.Items>();
@@ -52,10 +51,14 @@ namespace WindowsFormsApp2.App.Helpers
             using (var conn = new SqlConnection(WindowsFormsApp2.Helpers.DB.DbHelpers.CurrentConnectionString))
             {
                 conn.Open();
-                var cmd = new SqlCommand("SELECT * FROM VW_PRODUCT_INVOICES", conn);
-                using (var reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
+
+                string query = "SELECT * FROM VW_PRODUCT_INVOICES";
+                if (!fullData)
+                    query += "  WHERE CAST(TARİX AS DATE) >= CAST(GETDATE() - 30 AS DATE)";
+
+                var cmd = new SqlCommand(query, conn);
+                using (var reader = await cmd.ExecuteReaderAsync())
+                    while (await reader.ReadAsync())
                     {
                         if (result.voen == null)
                             result.voen = reader["VOEN"].ToString();
@@ -82,13 +85,12 @@ namespace WindowsFormsApp2.App.Helpers
                             PayableAmount = Convert.ToDouble(reader["YEKUN MƏBLƏĞ"])
                         });
                     }
-                }
             }
 
             return result;
         }
 
-        public static SaleDetailsDto SaleDetailsData()
+        public async static Task<SaleDetailsDto> SaleDetailsData(bool fullData = false)
         {
             var result = new SaleDetailsDto();
             result.items = new List<SaleDetailsDto.Items>();
@@ -96,17 +98,22 @@ namespace WindowsFormsApp2.App.Helpers
             using (var conn = new SqlConnection(WindowsFormsApp2.Helpers.DB.DbHelpers.CurrentConnectionString))
             {
                 conn.Open();
-                var cmd = new SqlCommand("SELECT * FROM VW_SALE_DETAILS", conn);
-                using (var reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
+                string query = "SELECT * FROM VW_SALE_DETAILS";
+                if (!fullData)
+                    query += "  WHERE CAST(TARİX AS DATE) >= CAST(GETDATE() - 30 AS DATE)";
+
+                var cmd = new SqlCommand(query, conn);
+                using (var reader = await cmd.ExecuteReaderAsync())
+                    while (await reader.ReadAsync())
                     {
                         if (result.voen is null)
                             result.voen = reader["VOEN"].ToString();
 
+                        var tarix = (DateTime)reader["TARİX"];
+
                         result.items.Add(new SaleDetailsDto.Items
                         {
-                            Date = Convert.ToDateTime(reader["TARİX"].ToString()),
+                            Date = tarix.ToString("yyyy-MM-dd HH:mm:ss"),
                             CashierName = reader["İSTİFADƏÇİ"].ToString(),
                             SupplierName = reader["TƏCHİZATÇI"].ToString(),
                             CategoryName = reader["CATEGORY"].ToString(),
@@ -121,18 +128,17 @@ namespace WindowsFormsApp2.App.Helpers
                             DiscountAzn = Convert.ToDouble(reader["ENDİRİM AZN"]),
                             PaymentType = reader["ÖDƏNİŞ NÖVÜ"].ToString(),
                             TotalAmount = Convert.ToDouble(reader["CƏM ÖDƏNİŞ"]),
-                            TaxPercantages = Convert.ToInt32(reader["VERGİ %"]),
+                            TaxPercantages = Convert.ToDecimal(reader["VERGİ %"]),
                             ProccessNo = reader["ProccessNo"].ToString(),
                             ReceiptNo = reader["QƏBZ"].ToString(),
                         });
                     }
-                }
             }
 
             return result;
         }
 
-        public static PaymentTypesDto PaymentTypesData()
+        public async static Task<PaymentTypesDto> PaymentTypesData(bool fullData = false)
         {
             var result = new PaymentTypesDto();
             result.items = new List<PaymentTypesDto.Items>();
@@ -140,10 +146,14 @@ namespace WindowsFormsApp2.App.Helpers
             using (var conn = new SqlConnection(WindowsFormsApp2.Helpers.DB.DbHelpers.CurrentConnectionString))
             {
                 conn.Open();
-                var cmd = new SqlCommand("SELECT * FROM VW_DAILY_PAYMENTS", conn);
-                using (var reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
+
+                string query = "SELECT * FROM VW_DAILY_PAYMENTS";
+                if (!fullData)
+                    query += "  WHERE CAST(TARİX AS DATE) >= CAST(GETDATE() - 30 AS DATE)";
+
+                var cmd = new SqlCommand(query, conn);
+                using (var reader = await cmd.ExecuteReaderAsync())
+                    while (await reader.ReadAsync())
                     {
                         if (result.voen == null)
                             result.voen = reader["VOEN"].ToString();
@@ -159,13 +169,12 @@ namespace WindowsFormsApp2.App.Helpers
                             Credit = reader.GetDecimal(reader.GetOrdinal("NİSYƏ"))
                         });
                     }
-                }
             }
 
             return result;
         }
 
-        public static ProfitReportDto ProfitData()
+        public async static Task<ProfitReportDto> ProfitData(bool fullData = false)
         {
             var result = new ProfitReportDto();
             result.items = new List<ProfitReportDto.Items>();
@@ -173,10 +182,14 @@ namespace WindowsFormsApp2.App.Helpers
             using (var conn = new SqlConnection(WindowsFormsApp2.Helpers.DB.DbHelpers.CurrentConnectionString))
             {
                 conn.Open();
-                var cmd = new SqlCommand("SELECT * FROM VW_PROFIT_REPORT", conn);
-                using (var reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
+
+                string query = "SELECT * FROM VW_PROFIT_REPORT";
+                if (!fullData)
+                    query += "  WHERE CAST([Date] AS DATE) >= CAST(GETDATE() - 30 AS DATE)";
+
+                var cmd = new SqlCommand(query, conn);
+                using (var reader = await cmd.ExecuteReaderAsync())
+                    while (await reader.ReadAsync())
                     {
                         if (result.voen == null)
                             result.voen = reader["VOEN"].ToString();
@@ -185,7 +198,7 @@ namespace WindowsFormsApp2.App.Helpers
 
                         result.items.Add(new ProfitReportDto.Items
                         {
-                            Date = tarix,
+                            Date = tarix.ToString("yyyy-MM-dd HH:mm:ss"),
                             Username = reader["CashierName"].ToString(),
                             ProccessNo = reader["ProccessNo"].ToString(),
                             SupplierName = reader["SupplierName"].ToString(),
@@ -202,13 +215,12 @@ namespace WindowsFormsApp2.App.Helpers
                             ProfitAmount = Convert.ToDecimal(reader["ProfitAmount"].ToString()),
                         });
                     }
-                }
             }
 
             return result;
         }
 
-        public static SaleRefundsDto SaleRefund()
+        public async static Task<SaleRefundsDto> SaleRefund(bool fullData = false)
         {
             var result = new SaleRefundsDto();
             result.items = new List<SaleRefundsDto.Items>();
@@ -216,19 +228,23 @@ namespace WindowsFormsApp2.App.Helpers
             using (var conn = new SqlConnection(WindowsFormsApp2.Helpers.DB.DbHelpers.CurrentConnectionString))
             {
                 conn.Open();
-                var cmd = new SqlCommand("SELECT * FROM VW_SALE_REFUNDS", conn);
-                using (var reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
+
+                string query = "SELECT * FROM VW_SALE_REFUNDS";
+                if (!fullData)
+                    query += "  WHERE CAST([Date] AS DATE) >= CAST(GETDATE() - 30 AS DATE)";
+
+                var cmd = new SqlCommand(query, conn);
+                using (var reader = await cmd.ExecuteReaderAsync())
+                    while (await reader.ReadAsync())
                     {
                         if (result.voen == null)
                             result.voen = reader["VOEN"].ToString();
 
-                        var tarix = (DateTime)reader["TARİX"];
+                        var tarix = (DateTime)reader["Date"];
 
                         result.items.Add(new SaleRefundsDto.Items
                         {
-                            Date = tarix,
+                            Date = tarix.ToString("yyyy-MM-dd HH:mm:ss"),
                             SaleProccessNo = reader["SaleProccessNo"].ToString(),
                             Username = reader["Username"].ToString(),
                             Supplier = reader["Supplier"].ToString(),
@@ -247,7 +263,6 @@ namespace WindowsFormsApp2.App.Helpers
                             RefundProccessNo = reader["RefundProccessNo"].ToString(),
                         });
                     }
-                }
             }
 
             return result;

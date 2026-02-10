@@ -10,7 +10,7 @@ namespace WindowsFormsApp2.App.Dtos
 
         public class Items
         {
-            public DateTime Date { get; set; }
+            public string Date { get; set; }
             public string SaleProccessNo { get; set; }
             public string Username { get; set; }
             public string Supplier { get; set; }

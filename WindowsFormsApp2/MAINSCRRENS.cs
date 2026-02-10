@@ -9,11 +9,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DevExpress.CodeParser;
 using DevExpress.XtraBars.Navigation;
 using DevExpress.XtraEditors;
 using Licence.Services;
 using Microsoft.Win32;
 using Newtonsoft.Json;
+using WindowsFormsApp2.App.Application;
+using WindowsFormsApp2.App.Helpers;
 using WindowsFormsApp2.Forms;
 using WindowsFormsApp2.Forms.PrintPages;
 using WindowsFormsApp2.Helpers;
@@ -23,6 +26,8 @@ using WindowsFormsApp2.Helpers.Messages;
 using static WindowsFormsApp2.App.Helpers.Enums;
 using static WindowsFormsApp2.Helpers.Enums;
 using static WindowsFormsApp2.Helpers.FormHelpers;
+using DbHelpers = WindowsFormsApp2.Helpers.DB.DbHelpers;
+using Enums = WindowsFormsApp2.Helpers.Enums;
 
 namespace WindowsFormsApp2
 {
@@ -1220,11 +1225,30 @@ FROM (
 
         private void CloudAppShow()
         {
-            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("CloudApp").ToString());
+            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos")?.GetValue("CloudApp").ToString());
             if (control)
+            {
+                var data = Enum.GetValues(typeof(ApiOperation))
+                    .Cast<ApiOperation>()
+                    .Select(x => new
+                    {
+                        Value = GetEnumDescription(x)
+                    })
+                    .ToList();
+
+                lookCloudReport.Enabled = true;
+                lookCloudReport.Properties.DataSource = data;
+                lookCloudReport.Properties.DisplayMember = "Value";
+                lookCloudReport.Properties.ForceInitialize();
                 chCloud.Checked = true;
+            }
             else
+            {
                 chCloud.Checked = false;
+                lookCloudReport.Enabled = false;
+                lookCloudReport.EditValue = null;
+            }
+            chCloud.Refresh();
         }
 
         private void SuccessMessageVisibleShow()
@@ -1422,14 +1446,9 @@ FROM (
         private void chIsReceipt_CheckedChanged(object sender, EventArgs e)
         {
             if (chIsReceipt.Checked)
-            {
-                Registry.CurrentUser.CreateSubKey("Mpos").SetValue("IsReceipt", true);
-            }
+                Registry.CurrentUser.CreateSubKey("Mpos")?.SetValue("IsReceipt", true);
             else
-            {
-                Registry.CurrentUser.CreateSubKey("Mpos").SetValue("IsReceipt", false);
-
-            }
+                Registry.CurrentUser.CreateSubKey("Mpos")?.SetValue("IsReceipt", false);
         }
 
         private void navigationFrame1_SelectedPageChanged(object sender, SelectedPageChangedEventArgs e)
@@ -1503,41 +1522,97 @@ FROM (
         private void chTerminalPrintReceipt_CheckedChanged(object sender, EventArgs e)
         {
             if (chTerminalPrintReceipt.Checked)
-                Registry.CurrentUser.CreateSubKey("Mpos").SetValue("TerminalCashierPrint", true);
+                Registry.CurrentUser.CreateSubKey("Mpos")?.SetValue("TerminalCashierPrint", true);
             else
-                Registry.CurrentUser.CreateSubKey("Mpos").SetValue("TerminalCashierPrint", false);
+                Registry.CurrentUser.CreateSubKey("Mpos")?.SetValue("TerminalCashierPrint", false);
         }
 
         private void chClinicModul_CheckedChanged(object sender, EventArgs e)
         {
             if (chClinicModul.Checked)
-                Registry.CurrentUser.CreateSubKey("Mpos").SetValue("ClinicModule", true);
+                Registry.CurrentUser.CreateSubKey("Mpos")?.SetValue("ClinicModule", true);
             else
-                Registry.CurrentUser.CreateSubKey("Mpos").SetValue("ClinicModule", false);
+                Registry.CurrentUser.CreateSubKey("Mpos")?.SetValue("ClinicModule", false);
         }
 
-        private void chCloud_CheckedChanged(object sender, EventArgs e)
+        private void chCloud_Click(object sender, EventArgs e)
         {
-            if (chCloud.Checked)
+            if (!chCloud.Checked)
             {
-                Registry.CurrentUser.CreateSubKey("Mpos").SetValue("CloudApp", true);
-                var data = Enum.GetValues(typeof(ApiOperation))
-                   .Cast<ApiOperation>()
-                   .Select(x => new
-                   {
-                       Value = GetEnumDescription(x)
-                   })
-                   .ToList();
-                lookCloudReport.Enabled = true;
-                lookCloudReport.Properties.DataSource = data;
-                lookCloudReport.Properties.DisplayMember = "Value";
-                lookCloudReport.Properties.ForceInitialize();
+                fAdminPassword f = new fAdminPassword();
+                if (f.ShowDialog() is DialogResult.OK)
+                    Registry.CurrentUser.CreateSubKey("Mpos")?.SetValue("CloudApp", true);
+                else
+                {
+                    chCloud.Checked = false;
+                    Registry.CurrentUser.CreateSubKey("Mpos")?.SetValue("CloudApp", false);
+                    lookCloudReport.Enabled = false;
+                    lookCloudReport.EditValue = null;
+                }
             }
             else
             {
-                Registry.CurrentUser.CreateSubKey("Mpos").SetValue("CloudApp", false);
+                chCloud.Checked = false;
+                Registry.CurrentUser.CreateSubKey("Mpos")?.SetValue("CloudApp", false);
                 lookCloudReport.Enabled = false;
                 lookCloudReport.EditValue = null;
+            }
+            CloudAppShow();
+        }
+
+        private void lookCloudReport_Properties_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            if (e.Button?.Tag?.ToString() is "CloudImport" && !string.IsNullOrWhiteSpace(lookCloudReport.Text))
+            {
+                var facade = new SyncFacade();
+                Task.Run(async () =>
+                {
+                    switch (lookCloudReport.Text)
+                    {
+                        case "Məhsul alışı hesabatı":
+                            var resultInvoice = await facade.SendInvoicesAsync(true);
+                            if (resultInvoice.Ok)
+                                XtraMessageBox.Show($"{lookCloudReport.Text} clouda əlavə edildi", "Mesaj", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            else
+                                XtraMessageBox.Show(resultInvoice.Error, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            break;
+                        case "Anbar qalığı hesabatı":
+                            var resultStock = await facade.SendStockAsync();
+                            if (resultStock.Ok)
+                                XtraMessageBox.Show($"{lookCloudReport.Text} clouda əlavə edildi", "Mesaj", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            else
+                                XtraMessageBox.Show(resultStock.Error, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error); break;
+                        case "Mənfəət hesabatı":
+                            var resultProfit = await facade.SendProfitAsync(true);
+                            if (resultProfit.Ok)
+                                XtraMessageBox.Show($"{lookCloudReport.Text} clouda əlavə edildi", "Mesaj", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            else
+                                XtraMessageBox.Show(resultProfit.Error, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            break;
+                        case "Satış hesabatı":
+                            var resultSales = await facade.SendSalesAsync(true);
+                            if (resultSales.Ok)
+                                XtraMessageBox.Show($"{lookCloudReport.Text} clouda əlavə edildi", "Mesaj", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            else
+                                XtraMessageBox.Show(resultSales.Error, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            break;
+                        case "Satış qaytarma hesabatı":
+                            var resultRefund = await facade.SendSaleRefundAsync(true);
+                            if (resultRefund.Ok)
+                                XtraMessageBox.Show($"{lookCloudReport.Text} clouda əlavə edildi", "Mesaj", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            else
+                                XtraMessageBox.Show(resultRefund.Error, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            break;
+                        case "Ödəniş növü hesabatı":
+                            var resultPaymentType = await facade.SendPaymentsAsync(true);
+                            if (resultPaymentType.Ok)
+                                XtraMessageBox.Show($"{lookCloudReport.Text} clouda əlavə edildi", "Mesaj", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            else
+                                XtraMessageBox.Show(resultPaymentType.Error, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            break;
+                    }
+                });
+
             }
         }
 
@@ -1882,14 +1957,6 @@ FROM (
         {
             DbHelpers.UseLocalConnection();
             await MonthEarningLoadAsync();
-        }
-
-        private void lookCloudReport_Properties_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
-        {
-            if (e.Button?.Tag?.ToString() is "CloudImport")
-            {
-                MessageBox.Show("Test");
-            }
         }
 
         private async Task MonthEarningLoadAsync()

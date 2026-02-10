@@ -14,9 +14,7 @@ namespace WindowsFormsApp2.Forms
         private void Submit()
         {
             if (tPassword.Text.Trim() is "inteko12348765")
-            {
                 DialogResult = DialogResult.OK;
-            }
             else
             {
                 tPassword.Text = null;

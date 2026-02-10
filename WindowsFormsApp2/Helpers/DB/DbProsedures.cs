@@ -487,7 +487,7 @@ namespace WindowsFormsApp2.Helpers.DB
                 var result = cmd.ExecuteNonQuery();
 
                 bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("CloudApp").ToString());
-                if (control is true && result > 0)
+                if (control && result > 0)
                 {
                     Task.Run(async () =>
                     {

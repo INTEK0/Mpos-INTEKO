@@ -31,7 +31,6 @@ namespace WindowsFormsApp2
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MAINSCRRENS));
             DevExpress.XtraCharts.XYDiagram xyDiagram2 = new DevExpress.XtraCharts.XYDiagram();
             DevExpress.XtraCharts.Series series3 = new DevExpress.XtraCharts.Series();
             DevExpress.XtraCharts.ChartTitle chartTitle3 = new DevExpress.XtraCharts.ChartTitle();
@@ -43,6 +42,7 @@ namespace WindowsFormsApp2
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MAINSCRRENS));
             this.fluentDesignFormContainer1 = new DevExpress.XtraBars.FluentDesignSystem.FluentDesignFormContainer();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.groupControl1 = new DevExpress.XtraEditors.GroupControl();
@@ -2517,7 +2517,7 @@ namespace WindowsFormsApp2
             this.chCloud.Properties.GlyphAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.chCloud.Size = new System.Drawing.Size(1138, 32);
             this.chCloud.TabIndex = 25;
-            this.chCloud.CheckedChanged += new System.EventHandler(this.chCloud_CheckedChanged);
+            this.chCloud.Click += new System.EventHandler(this.chCloud_Click);
             // 
             // lBackupHistory
             // 
@@ -3474,7 +3474,7 @@ namespace WindowsFormsApp2
             this.xtraTabPage6.Controls.Add(this.bBranchBankRefund);
             this.xtraTabPage6.Controls.Add(this.bBranchBankSale);
             this.xtraTabPage6.Name = "xtraTabPage6";
-            this.xtraTabPage6.Size = new System.Drawing.Size(1151, 655);
+            this.xtraTabPage6.Size = new System.Drawing.Size(1151, 657);
             this.xtraTabPage6.Text = "Satış";
             // 
             // bBranchBankRefund
@@ -3522,7 +3522,7 @@ namespace WindowsFormsApp2
             this.xtraTabPage2.Controls.Add(this.bBranchAlisHesabat);
             this.xtraTabPage2.Controls.Add(this.bBranchStock);
             this.xtraTabPage2.Name = "xtraTabPage2";
-            this.xtraTabPage2.Size = new System.Drawing.Size(1151, 655);
+            this.xtraTabPage2.Size = new System.Drawing.Size(1151, 657);
             this.xtraTabPage2.Text = "Hesabatlar";
             // 
             // bBranchAvansHesabati
@@ -3651,7 +3651,7 @@ namespace WindowsFormsApp2
             this.xtraTabPage3.Controls.Add(this.bBranchCreditPay);
             this.xtraTabPage3.Controls.Add(this.bBranchCreditSale);
             this.xtraTabPage3.Name = "xtraTabPage3";
-            this.xtraTabPage3.Size = new System.Drawing.Size(1151, 655);
+            this.xtraTabPage3.Size = new System.Drawing.Size(1151, 657);
             this.xtraTabPage3.Text = "Kredit";
             // 
             // bBranchCreditSaleRefund
@@ -3704,7 +3704,7 @@ namespace WindowsFormsApp2
             // 
             this.xtraTabPage5.Controls.Add(this.bBranchSuppliers);
             this.xtraTabPage5.Name = "xtraTabPage5";
-            this.xtraTabPage5.Size = new System.Drawing.Size(1151, 655);
+            this.xtraTabPage5.Size = new System.Drawing.Size(1151, 657);
             this.xtraTabPage5.Text = "Təchizatçılar";
             // 
             // bBranchSuppliers
@@ -3726,7 +3726,7 @@ namespace WindowsFormsApp2
             // 
             this.xtraTabPage4.Controls.Add(this.bBranchUsers);
             this.xtraTabPage4.Name = "xtraTabPage4";
-            this.xtraTabPage4.Size = new System.Drawing.Size(1151, 655);
+            this.xtraTabPage4.Size = new System.Drawing.Size(1151, 657);
             this.xtraTabPage4.Text = "İstifadəçilər";
             // 
             // bBranchUsers
@@ -3750,7 +3750,7 @@ namespace WindowsFormsApp2
             this.xtraTabPage7.Controls.Add(this.bBranchLog);
             this.xtraTabPage7.Controls.Add(this.bBranchTerminal);
             this.xtraTabPage7.Name = "xtraTabPage7";
-            this.xtraTabPage7.Size = new System.Drawing.Size(1151, 655);
+            this.xtraTabPage7.Size = new System.Drawing.Size(1151, 657);
             this.xtraTabPage7.Text = "Sazlamalar";
             // 
             // bBranchMinusCountControl

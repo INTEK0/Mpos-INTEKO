@@ -13,7 +13,6 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DevExpress.Data.Linq.Helpers;
 using DevExpress.XtraBars.Navigation;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid;
@@ -21,7 +20,6 @@ using DevExpress.XtraGrid.Views.Grid;
 using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
 using RestSharp;
-using WindowsFormsApp2.App;
 using WindowsFormsApp2.Forms;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.CacheData;
@@ -29,7 +27,6 @@ using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using WindowsFormsApp2.NKA;
 using WindowsFormsApp2.Reports;
-using static DTOs;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
 using static WindowsFormsApp2.Helpers.DB.DTOs;
 using static WindowsFormsApp2.Helpers.Enums;
@@ -1046,19 +1043,17 @@ group by
                 }
                 else if (type is Enums.PayType.Card)
                 {
-                    //bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("ClinicModule").ToString());
-                    //bool clinic = false;
+                    bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("ClinicModule").ToString());
+                    bool clinic = false;
 
-                    //if (control)
-                    //{
-                    //    DialogResult result = XtraMessageBox.Show("A4 sənədi çap edilsin ?", nameof(HeaderMessage.Mesaj), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    //    if (result is DialogResult.Yes)
-                    //    {
-                    //        clinic = true;
-                    //    }
-                    //}
+                    if (control)
+                    {
+                        DialogResult result = XtraMessageBox.Show("A4 sənədi çap edilsin ?", nameof(HeaderMessage.Mesaj), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        if (result is DialogResult.Yes)
+                            clinic = true;
+                    }
 
-                    gelen_data_negd_pos(0, totalAmount, totalAmount, 0, 0, false, type);
+                    gelen_data_negd_pos(0, totalAmount, totalAmount, 0, 0, clinic, type);
                 }
                 else if (type is Enums.PayType.CashCard)
                 {
@@ -1089,7 +1084,7 @@ group by
 
         private void simpleButton6_Click(object sender, EventArgs e)
         {
-            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("OtherPay").ToString());
+            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos")?.GetValue("OtherPay").ToString());
             if (control)
             {
                 fCardAndOtherPay f = new fCardAndOtherPay();

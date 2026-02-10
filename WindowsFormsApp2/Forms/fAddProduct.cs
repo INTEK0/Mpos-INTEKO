@@ -683,7 +683,7 @@ namespace WindowsFormsApp2.Forms
 
 
                     bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("CloudApp").ToString());
-                    if (control is true)
+                    if (control)
                     {
                         Task.Run(async () =>
                         {

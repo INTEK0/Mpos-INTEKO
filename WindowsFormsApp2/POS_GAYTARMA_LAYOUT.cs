@@ -1029,7 +1029,6 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
                     FormHelpers.Log($"Qəbz geri qaytarması edildi");
                     textEdit1.Text = DbProsedures.GET_RefundProccessNo();
                     gridControl1.DataSource = null;
-                    CloudSend();
                     returnid = $"{weatherForecast.data.short_document_id}";
 
 
@@ -1382,7 +1381,6 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
                     ReadyMessages.SUCCESS_RETURN_SALES_MESSAGE();
                 }
 
-                CloudSend();
                 FormHelpers.Log($"Qəbz geri qaytarması edildi Qəbz №: {weatherForecast.document_number}");
 
                 textEdit1.Text = DbProsedures.GET_RefundProccessNo();
@@ -1401,7 +1399,6 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
             PrintTest();
             textEdit1.Text = DbProsedures.GET_RefundProccessNo();
             gridControl1.RefreshDataSource();
-            CloudSend();
         }
 
         private void PrintTest()
@@ -1951,7 +1948,6 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
                                 UUIDGenerateService.Refreshid();
                                 textEdit1.Text = DbProsedures.GET_RefundProccessNo();
                                 gridControl1.DataSource = null;
-                                CloudSend();
                             }
                             break; /*SUNMI*/
                         case "2":
@@ -1960,7 +1956,6 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
                             {
                                 textEdit1.Text = DbProsedures.GET_RefundProccessNo();
                                 gridControl1.DataSource = null;
-                                CloudSend();
                             }
                             break; /*AZSMART*/
                         case "3":
@@ -1970,7 +1965,6 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
                             {
                                 textEdit1.Text = DbProsedures.GET_RefundProccessNo();
                                 gridControl1.DataSource = null;
-                                CloudSend();
                             }
                             break; /*OMNITECH*/
                         case "4":
@@ -2045,7 +2039,6 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
                                     {
                                         textEdit1.Text = DbProsedures.GET_RefundProccessNo();
                                         gridControl1.DataSource = null;
-                                        CloudSend();
                                     }
                                     //ekasam_gaytarma(lIpAddress.Text, PayType.Cash);
                                     break;
@@ -2062,7 +2055,6 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
                                     {
                                         textEdit1.Text = DbProsedures.GET_RefundProccessNo();
                                         gridControl1.DataSource = null;
-                                        CloudSend();
                                     }
                                     //ekasam_gaytarma(lIpAddress.Text, PayType.Card);
                                     break;
@@ -2070,7 +2062,16 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
                             break; /*EKASSAM*/
                     }
                     Cursor.Current = Cursors.Default;
-
+                    bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("CloudApp").ToString());
+                    if (control && isSuccess)
+                    {
+                        Task.Run(async () =>
+                        {
+                            var facade = new SyncFacade();
+                            await facade.SendSaleRefundAsync();
+                            await facade.SendStockAsync();
+                        });
+                    }
 
                     #region BEFORE CODE
 
@@ -2315,20 +2316,6 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
                 }
             }
             Cursor.Current = Cursors.Default;
-        }
-
-        private void CloudSend()
-        {
-            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("CloudApp").ToString());
-            if (control)
-            {
-                Task.Run(async () =>
-                {
-                    var facade = new SyncFacade();
-                    await facade.SendSaleRefundAsync();
-                    await facade.SendStockAsync();
-                });
-            }
         }
 
         /// <summary>
