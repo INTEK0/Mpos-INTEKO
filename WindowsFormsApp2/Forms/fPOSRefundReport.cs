@@ -1,15 +1,7 @@
-﻿using DevExpress.XtraEditors;
-using DevExpress.XtraGrid.Localization;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using DevExpress.XtraGrid.Localization;
 using WindowsFormsApp2.Helpers;
 using static WindowsFormsApp2.Helpers.FormHelpers;
 

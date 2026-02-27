@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             DevExpress.XtraGrid.GridLevelNode gridLevelNode1 = new DevExpress.XtraGrid.GridLevelNode();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(fProductDetail));
             this.gridPurchases = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -60,7 +61,7 @@
             this.repositoryItemPictureEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit();
             this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
             this.chPurchaseHistory = new DevExpress.XtraEditors.CheckButton();
-            this.bProductDelete = new DevExpress.XtraEditors.SimpleButton();
+            this.bExport = new DevExpress.XtraEditors.SimpleButton();
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
             this.labelControl8 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl7 = new DevExpress.XtraEditors.LabelControl();
@@ -470,11 +471,11 @@
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 184.37F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 185.07F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 628.51F),
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 218.05F),
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 179F)});
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 211.05F),
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 150F)});
             this.tablePanel1.Controls.Add(this.gridControl1);
             this.tablePanel1.Controls.Add(this.chPurchaseHistory);
-            this.tablePanel1.Controls.Add(this.bProductDelete);
+            this.tablePanel1.Controls.Add(this.bExport);
             this.tablePanel1.Controls.Add(this.panelControl1);
             this.tablePanel1.Controls.Add(this.panelControl2);
             this.tablePanel1.Controls.Add(this.chSaleHistory);
@@ -510,22 +511,25 @@
             this.chPurchaseHistory.Text = "ALIŞ TARİXÇƏSİ";
             this.chPurchaseHistory.CheckedChanged += new System.EventHandler(this.chPurchaseHistory_CheckedChanged);
             // 
-            // bProductDelete
+            // bExport
             // 
-            this.bProductDelete.AllowFocus = false;
-            this.bProductDelete.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Danger;
-            this.bProductDelete.Appearance.Options.UseBackColor = true;
-            this.tablePanel1.SetColumn(this.bProductDelete, 4);
-            this.bProductDelete.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.bProductDelete.Location = new System.Drawing.Point(1033, 309);
-            this.bProductDelete.Margin = new System.Windows.Forms.Padding(1);
-            this.bProductDelete.Name = "bProductDelete";
-            this.tablePanel1.SetRow(this.bProductDelete, 1);
-            this.bProductDelete.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.bProductDelete.Size = new System.Drawing.Size(177, 31);
-            this.bProductDelete.TabIndex = 10;
-            this.bProductDelete.Text = "MƏHSULU SİL";
-            this.bProductDelete.Visible = false;
+            this.bExport.AllowFocus = false;
+            this.bExport.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Success;
+            this.bExport.Appearance.Options.UseBackColor = true;
+            this.bExport.AutoSize = true;
+            this.tablePanel1.SetColumn(this.bExport, 4);
+            this.bExport.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.bExport.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bExport.ImageOptions.SvgImage")));
+            this.bExport.ImageOptions.SvgImageSize = new System.Drawing.Size(24, 24);
+            this.bExport.Location = new System.Drawing.Point(1093, 309);
+            this.bExport.Margin = new System.Windows.Forms.Padding(1);
+            this.bExport.Name = "bExport";
+            this.tablePanel1.SetRow(this.bExport, 1);
+            this.bExport.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bExport.Size = new System.Drawing.Size(117, 31);
+            this.bExport.TabIndex = 10;
+            this.bExport.Text = "Excel export";
+            this.bExport.Click += new System.EventHandler(this.bExport_Click);
             // 
             // panelControl1
             // 
@@ -551,7 +555,7 @@
             this.panelControl1.Location = new System.Drawing.Point(4, 4);
             this.panelControl1.Name = "panelControl1";
             this.tablePanel1.SetRow(this.panelControl1, 0);
-            this.panelControl1.Size = new System.Drawing.Size(807, 301);
+            this.panelControl1.Size = new System.Drawing.Size(874, 301);
             this.panelControl1.TabIndex = 0;
             // 
             // labelControl8
@@ -626,7 +630,7 @@
             this.tStockAmount.Location = new System.Drawing.Point(182, 260);
             this.tStockAmount.Name = "tStockAmount";
             this.tStockAmount.Properties.ReadOnly = true;
-            this.tStockAmount.Size = new System.Drawing.Size(620, 30);
+            this.tStockAmount.Size = new System.Drawing.Size(687, 30);
             this.tStockAmount.TabIndex = 7;
             this.tStockAmount.TabStop = false;
             // 
@@ -637,7 +641,7 @@
             this.tTaxtType.Location = new System.Drawing.Point(182, 224);
             this.tTaxtType.Name = "tTaxtType";
             this.tTaxtType.Properties.ReadOnly = true;
-            this.tTaxtType.Size = new System.Drawing.Size(620, 30);
+            this.tTaxtType.Size = new System.Drawing.Size(687, 30);
             this.tTaxtType.TabIndex = 7;
             this.tTaxtType.TabStop = false;
             // 
@@ -648,7 +652,7 @@
             this.tSalePrice.Location = new System.Drawing.Point(182, 188);
             this.tSalePrice.Name = "tSalePrice";
             this.tSalePrice.Properties.ReadOnly = true;
-            this.tSalePrice.Size = new System.Drawing.Size(620, 30);
+            this.tSalePrice.Size = new System.Drawing.Size(687, 30);
             this.tSalePrice.TabIndex = 7;
             this.tSalePrice.TabStop = false;
             // 
@@ -659,7 +663,7 @@
             this.tPurchasePrice.Location = new System.Drawing.Point(182, 152);
             this.tPurchasePrice.Name = "tPurchasePrice";
             this.tPurchasePrice.Properties.ReadOnly = true;
-            this.tPurchasePrice.Size = new System.Drawing.Size(620, 30);
+            this.tPurchasePrice.Size = new System.Drawing.Size(687, 30);
             this.tPurchasePrice.TabIndex = 7;
             this.tPurchasePrice.TabStop = false;
             // 
@@ -670,7 +674,7 @@
             this.tProductCode.Location = new System.Drawing.Point(182, 116);
             this.tProductCode.Name = "tProductCode";
             this.tProductCode.Properties.ReadOnly = true;
-            this.tProductCode.Size = new System.Drawing.Size(620, 30);
+            this.tProductCode.Size = new System.Drawing.Size(687, 30);
             this.tProductCode.TabIndex = 7;
             this.tProductCode.TabStop = false;
             // 
@@ -681,7 +685,7 @@
             this.tBarcode.Location = new System.Drawing.Point(182, 80);
             this.tBarcode.Name = "tBarcode";
             this.tBarcode.Properties.ReadOnly = true;
-            this.tBarcode.Size = new System.Drawing.Size(620, 30);
+            this.tBarcode.Size = new System.Drawing.Size(687, 30);
             this.tBarcode.TabIndex = 7;
             this.tBarcode.TabStop = false;
             // 
@@ -692,7 +696,7 @@
             this.tProductName.Location = new System.Drawing.Point(182, 44);
             this.tProductName.Name = "tProductName";
             this.tProductName.Properties.ReadOnly = true;
-            this.tProductName.Size = new System.Drawing.Size(620, 30);
+            this.tProductName.Size = new System.Drawing.Size(687, 30);
             this.tProductName.TabIndex = 7;
             this.tProductName.TabStop = false;
             // 
@@ -703,7 +707,7 @@
             this.tSupplierName.Location = new System.Drawing.Point(182, 8);
             this.tSupplierName.Name = "tSupplierName";
             this.tSupplierName.Properties.ReadOnly = true;
-            this.tSupplierName.Size = new System.Drawing.Size(620, 30);
+            this.tSupplierName.Size = new System.Drawing.Size(687, 30);
             this.tSupplierName.TabIndex = 7;
             this.tSupplierName.TabStop = false;
             // 
@@ -713,10 +717,10 @@
             this.tablePanel1.SetColumnSpan(this.panelControl2, 2);
             this.panelControl2.Controls.Add(this.picImage);
             this.panelControl2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelControl2.Location = new System.Drawing.Point(817, 4);
+            this.panelControl2.Location = new System.Drawing.Point(884, 4);
             this.panelControl2.Name = "panelControl2";
             this.tablePanel1.SetRow(this.panelControl2, 0);
-            this.panelControl2.Size = new System.Drawing.Size(391, 301);
+            this.panelControl2.Size = new System.Drawing.Size(324, 301);
             this.panelControl2.TabIndex = 0;
             // 
             // picImage
@@ -732,7 +736,7 @@
             this.picImage.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
             this.picImage.Properties.ShowMenu = false;
             this.picImage.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Stretch;
-            this.picImage.Size = new System.Drawing.Size(387, 297);
+            this.picImage.Size = new System.Drawing.Size(320, 297);
             this.picImage.TabIndex = 0;
             this.picImage.Visible = false;
             // 
@@ -773,6 +777,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).EndInit();
             this.tablePanel1.ResumeLayout(false);
+            this.tablePanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).EndInit();
             this.panelControl1.ResumeLayout(false);
             this.panelControl1.PerformLayout();
@@ -816,7 +821,7 @@
         private DevExpress.XtraGrid.GridControl gridControl1;
         private DevExpress.XtraGrid.Views.Grid.GridView gridSales;
         private DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit repositoryItemPictureEdit1;
-        private DevExpress.XtraEditors.SimpleButton bProductDelete;
+        private DevExpress.XtraEditors.SimpleButton bExport;
         private DevExpress.XtraEditors.CheckButton chPurchaseHistory;
         private DevExpress.XtraEditors.CheckButton chSaleHistory;
         private DevExpress.XtraGrid.Views.Grid.GridView gridPurchases;

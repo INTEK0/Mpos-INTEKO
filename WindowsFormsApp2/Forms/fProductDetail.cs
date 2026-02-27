@@ -79,5 +79,10 @@ namespace WindowsFormsApp2.Forms
         {
             DataLoad();
         }
+
+        private void bExport_Click(object sender, EventArgs e)
+        {
+            FormHelpers.ExcelExport(gridControl1,$"{tProductName.Text} - Məhsul üzrə hesabat");
+        }
     }
 }

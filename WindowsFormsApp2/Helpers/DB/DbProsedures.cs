@@ -645,46 +645,58 @@ namespace WindowsFormsApp2.Helpers.DB
 
         public static int InsertPosRefund(PosRefund item)
         {
-            const string query = "insert_pos_gaytarma_manual";
-            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
-            using (SqlCommand cmd = new SqlCommand(query, connection))
+            try
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                SqlParameter param;
-                param = cmd.Parameters.Add("@emeliyyat_nomre", SqlDbType.NVarChar, 100);
-                param.Value = item.proccessNo;
-
-                param = cmd.Parameters.Add("@pos_satis_check_main_id", SqlDbType.Int);
-                param.Value = item.pos_satis_check_main_id;
-
-                param = cmd.Parameters.Add("@pos_satis_check_details", SqlDbType.Int);
-                param.Value = item.pos_satis_check_details_id;
-
-                param = cmd.Parameters.Add("@say", SqlDbType.Decimal);
-                param.Value = item.quantity;
-
-                param = cmd.Parameters.Add("@user_id_", SqlDbType.Int);
-                param.Value = Properties.Settings.Default.UserID;
-
-                param = cmd.Parameters.Add("@GEYD", SqlDbType.NVarChar, 250);
-                param.Value = item.comment;
-
-                connection.Open();
-                param = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
-                param.Direction = ParameterDirection.Output;
-                cmd.ExecuteNonQuery();
-
-
-                FormHelpers.OperationLog(new OperationLogs
+                const string query = "insert_pos_gaytarma_manual";
+                using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+                using (SqlCommand cmd = new SqlCommand(query, connection))
                 {
-                    OperationType = OperationType.RefundPosSales,
-                    OperationId = Convert.ToInt32(param.Value)
-                });
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlParameter param;
+                    param = cmd.Parameters.Add("@emeliyyat_nomre", SqlDbType.NVarChar, 100);
+                    param.Value = item.proccessNo;
+
+                    param = cmd.Parameters.Add("@pos_satis_check_main_id", SqlDbType.Int);
+                    param.Value = item.pos_satis_check_main_id;
+
+                    param = cmd.Parameters.Add("@pos_satis_check_details", SqlDbType.Int);
+                    param.Value = item.pos_satis_check_details_id;
+
+                    param = cmd.Parameters.Add("@say", SqlDbType.Decimal);
+                    param.Value = item.quantity;
+
+                    param = cmd.Parameters.Add("@user_id_", SqlDbType.Int);
+                    param.Value = Properties.Settings.Default.UserID;
+
+                    param = cmd.Parameters.Add("@GEYD", SqlDbType.NVarChar, 250);
+                    param.Value = item.comment;
+
+                    connection.Open();
+                    param = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
+                    param.Direction = ParameterDirection.Output;
+                    cmd.ExecuteNonQuery();
 
 
-                return Convert.ToInt32(param.Value);
+                    FormHelpers.OperationLog(new OperationLogs
+                    {
+                        OperationType = OperationType.RefundPosSales,
+                        OperationId = Convert.ToInt32(param.Value)
+                    });
+
+
+                    return Convert.ToInt32(param.Value);
+                }
             }
-
+            catch (SqlException ex) when (ex.Number == 2601 || ex.Number == 2627)
+            {
+                ReadyMessages.ERROR_DEFAULT_MESSAGE($"Bu əməliyyat artıq mövcuddur. Təkrar əlavə edilə bilməz.\n\n{ex.Message}");
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                ReadyMessages.ERROR_DEFAULT_MESSAGE(ex.Message);
+                return 0;
+            }
         }
 
         public static string GET_SalesProcessNo()

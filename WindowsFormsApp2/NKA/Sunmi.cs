@@ -842,7 +842,7 @@ FROM
             Data data = new Data
             {
                 parentDocumentId = fiskallID,
-                documentUUID = Guid.NewGuid().ToString(),
+                documentUUID = UUIDGenerateService.UUID,
                 cashPayment = cash,
                 cardPayment = card,
                 items = items,

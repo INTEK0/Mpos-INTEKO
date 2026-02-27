@@ -114,7 +114,6 @@ namespace WindowsFormsApp2
 
             FolderControl();
             CultureInfoData();
-            //Application.Run(new avtorizasiya());
 
 
 
