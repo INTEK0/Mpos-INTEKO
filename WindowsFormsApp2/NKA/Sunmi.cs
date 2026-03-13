@@ -5,10 +5,12 @@ using System.Linq;
 using System.Security.Policy;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DevExpress.CodeParser;
 using DevExpress.DashboardCommon;
 using DevExpress.DashboardWin.Design;
 using DevExpress.Data.Helpers;
 using DevExpress.DataAccess.Native.Web;
+using DevExpress.Xpo.DB.Helpers;
 using DevExpress.XtraEditors;
 using DevExpress.XtraMap.Native;
 using Newtonsoft.Json;
@@ -17,6 +19,7 @@ using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 using static DTOs;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
 using static WindowsFormsApp2.Helpers.Enums;
@@ -569,11 +572,13 @@ namespace WindowsFormsApp2.NKA
                     {
                         documentUUID = salesData.DocumentUUID,
                         operationType = 0,
-                        amount = salesData.Card
-                    }
+                        amount = salesData.Card,
+                        rrn = string.Empty
+                    },
+                    operation = "transactionTapXPhone"
                 };
 
-                string Bankjson = Newtonsoft.Json.JsonConvert.SerializeObject(bank, new JsonSerializerSettings
+                string Bankjson = JsonConvert.SerializeObject(bank, new JsonSerializerSettings
                 {
                     NullValueHandling = NullValueHandling.Ignore
                 });
@@ -592,6 +597,15 @@ namespace WindowsFormsApp2.NKA
 
                 if (response != null)
                 {
+                    FormHelpers.OperationLog(new OperationLogs
+                    {
+                        OperationType = OperationType.PosSales,
+                        OperationId = 0,
+                        Message = response.message,
+                        RequestCode = Bankjson,
+                        ResponseCode = Restresponse.Content
+                    });
+
                     switch (response.message)
                     {
                         case "İcra olunur":
@@ -684,7 +698,9 @@ namespace WindowsFormsApp2.NKA
             {
                 NullValueHandling = NullValueHandling.Ignore
             });
+
         start:
+
             RestRequest request = new RestRequest(IpAdress, Method.Post);
             request.AddHeader("Content-Type", "application/json;charset=utf-8");
             request.AddStringBody(Bankjson, DataFormat.Json);
@@ -698,7 +714,6 @@ namespace WindowsFormsApp2.NKA
             var response = System.Text.Json.JsonSerializer.Deserialize<BankResponse>(Restresponse.Content);
 
             if (response != null)
-            {
                 switch (response.message)
                 {
                     case "TƏSDİQLƏNDİ":
@@ -706,13 +721,30 @@ namespace WindowsFormsApp2.NKA
                         if (string.IsNullOrWhiteSpace(response?.data.rrn))
                             goto start;
 
+                        FormHelpers.OperationLog(new OperationLogs
+                        {
+                            OperationType = OperationType.PosSales,
+                            OperationId = 0,
+                            Message = response.message,
+                            RequestCode = Bankjson,
+                            ResponseCode = Restresponse.Content
+                        });
+
+                        Task.Delay(5000);
                         return response;
                     default:
+                        FormHelpers.OperationLog(new OperationLogs
+                        {
+                            OperationType = OperationType.PosSales,
+                            OperationId = 0,
+                            Message = response.message,
+                            RequestCode = Bankjson,
+                            ResponseCode = Restresponse.Content
+                        });
                         ReadyMessages.ERROR_SALES_MESSAGE(response.message);
                         FormHelpers.Log($"Bank xətası - Xəta mesajı: {response.message}");
                         return null;
                 }
-            }
             else
             {
                 ReadyMessages.ERROR_SALES_MESSAGE("Terminal ilə əlaqə zamanı xəta yarandı");
@@ -772,6 +804,7 @@ FROM
                         decimal card1 = Convert.ToDecimal(dr["KART_"].ToString());
                         string fiscal_id = dr["fiscal_id"].ToString();
                         string rrn1 = dr["bankttnm"].ToString();
+                        decimal total = Convert.ToDecimal(dr["UMUMI_MEBLEG"].ToString());
                         string bankTransactionId = dr["BankTransactionId"].ToString();
                         string bankTransactionNumber = dr["BankTransactionNumber"].ToString();
                         string bankApprovalCode = dr["BankApprovalCode"].ToString();
@@ -781,21 +814,37 @@ FROM
                         fiskallID = fiscal_id;
                         cash = cash1;
                         card = card1;
-                        rrn = rrn1;
-                        transactionId = bankTransactionId;
-                        transactionNumber = bankTransactionNumber;
-                        approvalCode = bankApprovalCode;
+                        //rrn = rrn1;
+                        //transactionId = bankTransactionId;
+                        //transactionNumber = bankTransactionNumber;
+                        //approvalCode = bankApprovalCode;
                         saleDate = tarix.ToString("dd.MM.yyyy");
+
+                        refundData.Rrn = string.IsNullOrWhiteSpace(rrn1) ? refundData.Rrn : rrn1;
+                        refundData.BankTransactionId = bankTransactionId;
+                        refundData.BankTransactionNumber = bankTransactionNumber;
+                        refundData.BankApprovalCode = bankApprovalCode;
+                        refundData.Total = total;
+                        refundData.Cash = cash;
+                        refundData.Card = card;
+                        refundData.ParentDocumentId = fiscal_id;
                     }
-                    refundData.Rrn = string.IsNullOrWhiteSpace(rrn) ? refundData.Rrn : rrn;
-                    refundData.BankTransactionId = transactionId;
-                    refundData.BankTransactionNumber = transactionNumber;
-                    refundData.BankApprovalCode = approvalCode;
+
                 }
 
             }
 
-            string query2 = $@"(SELECT md.MEHSUL_ADI AS name,
+            //Rollback
+            if (saleDate == DateTime.Now.ToString("dd.MM.yyyy"))
+            {
+                var result = Rollback(refundData);
+                return result;
+            }
+            else
+            {
+
+
+                string query2 = $@"(SELECT md.MEHSUL_ADI AS name,
                        p.item_id AS code,
                        pl.say AS say,
                        p.satis_giymet AS satis_giymet,
@@ -806,103 +855,347 @@ FROM
                        INNER JOIN MAL_ALISI_DETAILS md ON p.mal_alisi_details_id = md.MAL_ALISI_DETAILS_ID
                        INNER JOIN pos_gaytarma_manual pl ON p.pos_satis_check_details_id = pl.pos_satis_check_details
               WHERE pl.emeliyyat_nomre = '{refundData.ProccessNo}')";
+                using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
+                using (SqlCommand cmd = new SqlCommand(query2, con))
+                {
+                    con.Open();
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            string name = dr["name"].ToString();
+                            string code = dr["code"].ToString();
+                            decimal salePrice = Convert.ToDecimal(dr["satis_giymet"]);
+                            decimal quantity = Convert.ToDecimal(dr["say"]);
+                            int vatType = Convert.ToInt32(dr["vtypes"]);
+                            int quantityType = Convert.ToInt32(dr["quantity_type"]);
+                            double ssum = Convert.ToDouble(dr["tutar"]);
+
+                            Item itemProduct = new Item
+                            {
+                                name = name,
+                                code = code,
+                                salePrice = salePrice,
+                                quantity = quantity,
+                                codeType = 1,
+                                vatType = vatType,
+                                quantityType = quantityType,
+                                discountAmount = 0
+                            };
+                            items.Add(itemProduct);
+                        }
+                    }
+
+                }
+
+                Data data = new Data
+                {
+                    parentDocumentId = fiskallID,
+                    documentUUID = UUIDGenerateService.UUID,
+                    cashPayment = cash,
+                    cardPayment = card,
+                    items = items,
+                    moneyBackType = 0,
+                    cashierName = refundData.Cashier,
+                    rrn = refundData.Rrn,
+                    isManual = true
+                };
+
+                if (card > 0 && UserCacheService.Terminal?.BankName == "PAX A35")
+                {
+                    data.sum = card + cash;
+                    data.isSendCardPayment = true;
+                    data.rrn = refundData.Rrn;
+                    data.transactionId = refundData.BankTransactionId;
+                    data.transactionNumber = refundData.BankTransactionNumber;
+                    data.approvalCode = refundData.BankApprovalCode;
+                }
+
+
+                if (refundData.PayType is PayType.Card &&
+                    !string.IsNullOrWhiteSpace(UserCacheService.Terminal?.BankName) &&
+                    UserCacheService.Terminal?.BankName != "PAX A35")
+
+                {
+                    string today = DateTime.Now.ToString("dd.MM.yyyy");
+
+                    var responseBank = RefundBank(new RefundDto
+                    {
+                        IpAddress = refundData.IpAddress,
+                        Card = card,
+                        Rrn = saleDate == today ? refundData.BankTransactionId : refundData.Rrn,
+                        DocumentUUID = refundData.DocumentUUID,
+                    });
+
+                    Sunmi.BankResponse responseCheck = new Sunmi.BankResponse();
+                    if (responseBank)
+                    {
+                        responseCheck = Sunmi.BankCheckStatus(refundData.IpAddress, refundData.DocumentUUID);
+                    }
+
+                    if (responseCheck is null || string.IsNullOrWhiteSpace(responseCheck?.data?.rrn))
+                    {
+                        // Bank uğursuzdursa, qaytarma dayansın
+                        return false;
+                    }
+
+                    rrn = responseCheck.data.rrn;
+                    //data.isSendCardPayment = true;
+                    data.rrn = refundData.Rrn;
+                }
+
+
+                RootObject rootObject = new RootObject
+                {
+                    data = data,
+                    operation = "moneyBack",
+                };
+
+                string json = JsonConvert.SerializeObject(rootObject, new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                });
+
+                var response = RequestPOST(refundData.IpAddress, json);
+
+                try
+                {
+                    if (response.message != "error" && response.code != "506")
+                        if (response.message == "Success operation" || response.message == "Successful operation")
+                        {
+                            if (MessageVisible)
+                            {
+                                ReadyMessages.SUCCESS_RETURN_SALES_MESSAGE();
+                            }
+
+                            FormHelpers.Log($"Qəbz geri qaytarması edildi. Qəbz №: {response.data.number}");
+                            return true;
+                        }
+                        else
+                        {
+                            FormHelpers.Log($"Pos satış qaytarma xətası. Xəta mesajı: {response.message}");
+                            ReadyMessages.ERROR_RETURN_SALES_MESSAGE(response.message);
+                            return false;
+                        }
+                    else
+                        return false;
+                }
+                catch (Exception ex)
+                {
+                    FormHelpers.Log($"Pos satış qaytarma xətası. Xəta mesajı: {ex.Message}");
+                    ReadyMessages.ERROR_RETURN_SALES_MESSAGE(ex.Message);
+                    return false;
+                }
+                finally
+                {
+                    FormHelpers.OperationLog(new OperationLogs
+                    {
+                        OperationType = OperationType.RefundPosSales,
+                        OperationId = (int)OperationType.RefundPosSales,
+                        RequestCode = response.requestJson,
+                        ResponseCode = response.responseJson,
+                    });
+                }
+            }
+        }
+
+        private static bool Rollback(RefundDto refundData)
+        {
+            string fiskallID = "";
+            decimal cash = default;
+            decimal card = default;
+            decimal total = default;
+            string rrn = null;
+            string transactionId = null;
+            string transactionNumber = null;
+            string approvalCode = null;
+
+            string query = $@"SELECT 
+  [pos_satis_check_main_id], 
+  [pos_nomre], 
+  [fiscal_id], 
+  [date_], 
+  [bankttnm], 
+  [user_id_], 
+  [emeliyyat_nomre], 
+  [NEGD_], 
+  [KART_], 
+  [UMUMI_MEBLEG], 
+  [json_], 
+  [fiscalNum],
+  [BankTransactionId],
+  [BankTransactionNumber],
+  [BankApprovalCode],
+  [documentID] 
+FROM 
+  [pos_satis_check_main] WHERE[pos_satis_check_main_id] IN(
+    SELECT[pos_satis_check_main_id] 
+    FROM 
+      [pos_gaytarma_manual] 
+    where 
+      [pos_gaytarma_manual_id] =(
+        select 
+          max([pos_gaytarma_manual_id]) 
+        from 
+          [pos_gaytarma_manual] WHERE user_id_ = {UserCacheService.User.Id}));";
+
             using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
-            using (SqlCommand cmd = new SqlCommand(query2, con))
+            using (SqlCommand cmd = new SqlCommand(query, con))
             {
                 con.Open();
                 using (SqlDataReader dr = cmd.ExecuteReader())
                 {
+                    if (dr.Read())
+                    {
+                        decimal cash1 = Convert.ToDecimal(dr["NEGD_"].ToString());
+                        decimal card1 = Convert.ToDecimal(dr["KART_"].ToString());
+                        string fiscal_id = dr["fiscal_id"].ToString();
+                        string rrn1 = dr["bankttnm"].ToString();
+                        string bankTransactionId = dr["BankTransactionId"].ToString();
+                        string bankTransactionNumber = dr["BankTransactionNumber"].ToString();
+                        string bankApprovalCode = dr["BankApprovalCode"].ToString();
+
+
+                        fiskallID = fiscal_id;
+                        cash = cash1;
+                        card = card1;
+                        rrn = rrn1;
+                        transactionId = bankTransactionId;
+                        transactionNumber = bankTransactionNumber;
+                        approvalCode = bankApprovalCode;
+                    }
+                    refundData.Rrn = string.IsNullOrWhiteSpace(rrn) ? refundData.Rrn : rrn;
+                    refundData.BankTransactionId = transactionId;
+                    refundData.BankTransactionNumber = transactionNumber;
+                    refundData.BankApprovalCode = approvalCode;
+                }
+
+            }
+
+
+            decimal vatSumFor18Percent = 0;
+            decimal vatSumFor18Percent_TE = 0;
+            decimal vatSumFor2Percent = 0;
+            decimal vatSumFor0Percent = 0;
+            decimal vatSumFor0Percent_Free = 0;
+            decimal vatSumFor8Percent = 0;
+
+            List<RollbackRequest.VatAmount> vatAmounts = new List<RollbackRequest.VatAmount>();
+            string queryItems = $@"
+(SELECT 
+md.MEHSUL_ADI AS name,
+pl.say AS quantity,
+p.satis_giymet AS salePrice,
+pl.say * p.satis_giymet as ssum,
+md.VERGI_DERECESI AS vatType
+FROM pos_satis_check_details p
+INNER JOIN MAL_ALISI_DETAILS md ON p.mal_alisi_details_id = md.MAL_ALISI_DETAILS_ID
+INNER JOIN pos_gaytarma_manual pl ON p.pos_satis_check_details_id = pl.pos_satis_check_details
+WHERE pl.emeliyyat_nomre = '{refundData.ProccessNo}' AND pl.user_id_ = {UserCacheService.User.Id})";
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand(queryItems, con))
+                using (SqlDataReader dr = cmd.ExecuteReader())
                     while (dr.Read())
                     {
                         string name = dr["name"].ToString();
-                        string code = dr["code"].ToString();
-                        decimal salePrice = Convert.ToDecimal(dr["satis_giymet"]);
-                        decimal quantity = Convert.ToDecimal(dr["say"]);
-                        int vatType = Convert.ToInt32(dr["vtypes"]);
-                        int quantityType = Convert.ToInt32(dr["quantity_type"]);
-                        double ssum = Convert.ToDouble(dr["tutar"]);
+                        decimal salePrice = Convert.ToDecimal(dr["salePrice"]);
+                        double quantity = Convert.ToDouble(dr["quantity"]);
+                        int vatType = Convert.ToInt32(dr["vatType"]);
+                        decimal ssum = Convert.ToDecimal(dr["ssum"]);
 
-                        Item itemProduct = new Item
+                        switch (vatType)
                         {
-                            name = name,
-                            code = code,
-                            salePrice = salePrice,
-                            quantity = quantity,
-                            codeType = 1,
-                            vatType = vatType,
-                            quantityType = quantityType,
-                            discountAmount = 0
-                        };
-                        items.Add(itemProduct);
+                            case 1: //ƏDV 18 %
+                                vatSumFor18Percent += ssum;
+                                break;
+                            case 2: //Ticarət ƏDV-si 18%
+                                vatSumFor18Percent_TE += ssum;
+                                break;
+                            case 3: //ƏDV-dən azad
+                                vatSumFor0Percent_Free += ssum;
+                                break;
+                            case 5: //ƏDV 0%
+                                vatSumFor0Percent += ssum;
+                                break;
+                            case 6: //Sadaləşdirilmiş 2%
+                                vatSumFor2Percent += ssum;
+                                break;
+                            case 7: //Sadaləşdirilmiş 8%
+                                vatSumFor8Percent += ssum;
+                                break;
+                        }
                     }
-                }
-
             }
 
-            Data data = new Data
+            if (vatSumFor18Percent > 0)
             {
-                parentDocumentId = fiskallID,
-                documentUUID = UUIDGenerateService.UUID,
-                cashPayment = cash,
-                cardPayment = card,
-                items = items,
-                moneyBackType = 0,
-                cashierName = refundData.Cashier,
-                rrn = refundData.Rrn,
-                isManual = true
-            };
-
-            if (card > 0 && UserCacheService.Terminal?.BankName == "PAX A35")
-            {
-                data.sum = card + cash;
-                data.isSendCardPayment = true;
-                data.rrn = refundData.Rrn;
-                data.transactionId = refundData.BankTransactionId;
-                data.transactionNumber = refundData.BankTransactionNumber;
-                data.approvalCode = refundData.BankApprovalCode;
-            }
-
-
-            if (refundData.PayType is PayType.Card &&
-                !string.IsNullOrWhiteSpace(UserCacheService.Terminal?.BankName) &&
-                UserCacheService.Terminal?.BankName != "PAX A35")
-
-            {
-                string today = DateTime.Now.ToString("dd.MM.yyyy");
-
-                var responseBank = RefundBank(new RefundDto
+                vatAmounts.Add(new RollbackRequest.VatAmount
                 {
-                    IpAddress = refundData.IpAddress,
-                    Card = card,
-                    Rrn = saleDate == today ? refundData.BankTransactionId : refundData.Rrn,
-                    DocumentUUID = refundData.DocumentUUID,
+                    vatType = 1,
+                    vatSum = vatSumFor18Percent
                 });
-
-                Sunmi.BankResponse responseCheck = new Sunmi.BankResponse();
-                if (responseBank)
-                {
-                    responseCheck = Sunmi.BankCheckStatus(refundData.IpAddress, refundData.DocumentUUID);
-                }
-
-                if (responseCheck is null || string.IsNullOrWhiteSpace(responseCheck?.data?.rrn))
-                {
-                    // Bank uğursuzdursa, satış dayansın
-                    return false;
-                }
-
-                rrn = responseCheck.data.rrn;
-                //data.isSendCardPayment = true;
-                data.rrn = refundData.Rrn;
             }
 
-
-            RootObject rootObject = new RootObject
+            if (vatSumFor18Percent_TE > 0)
             {
-                data = data,
-                operation = "moneyBack",
+                vatAmounts.Add(new RollbackRequest.VatAmount
+                {
+                    vatType = 2,
+                    vatSum = vatSumFor18Percent_TE
+                });
+            }
+
+            if (vatSumFor2Percent > 0)
+            {
+                vatAmounts.Add(new RollbackRequest.VatAmount
+                {
+                    vatType = 6,
+                    vatSum = vatSumFor2Percent
+                });
+            }
+
+            if (vatSumFor0Percent > 0)
+            {
+                vatAmounts.Add(new RollbackRequest.VatAmount
+                {
+                    vatType = 3,
+                    vatSum = vatSumFor0Percent
+                });
+            }
+
+            if (vatSumFor0Percent_Free > 0)
+            {
+                vatAmounts.Add(new RollbackRequest.VatAmount
+                {
+                    vatType = 3,
+                    vatSum = vatSumFor0Percent_Free
+                });
+            }
+
+            RollbackRequest.Data rollbackData = new RollbackRequest.Data
+            {
+                rrn = refundData.Rrn,
+                transactionId = refundData.BankTransactionId,
+                transactionNumber = refundData.BankTransactionNumber,
+                approvalCode = refundData.BankApprovalCode,
+                documentUUID = UUIDGenerateService.UUID,
+                parentDocumentId = fiskallID,
+                sum = refundData.Total,
+                cashPayment = refundData.Cash,
+                cardPayment = refundData.Card,
+                vatAmounts = vatAmounts
             };
 
-            string json = JsonConvert.SerializeObject(rootObject, new JsonSerializerSettings
+            RollbackRequest rollback = new RollbackRequest
+            {
+                cashierName = refundData.Cashier,
+                data = rollbackData
+            };
+
+
+            string json = JsonConvert.SerializeObject(rollback, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
             });
@@ -916,16 +1209,14 @@ FROM
                     if (response.message == "Success operation" || response.message == "Successful operation")
                     {
                         if (MessageVisible)
-                        {
-                            ReadyMessages.SUCCESS_RETURN_SALES_MESSAGE();
-                        }
+                            ReadyMessages.SUCCESS_ROLLBACK_SALES_MESSAGE();
 
-                        FormHelpers.Log($"Qəbz geri qaytarması edildi. Qəbz №: {response.data.number}");
+                        FormHelpers.Log($"Satış çeki ləğv edildi. Qəbz №: {response.data.number}");
                         return true;
                     }
                     else
                     {
-                        FormHelpers.Log($"Pos satış qaytarma xətası. Xəta mesajı: {response.message}");
+                        FormHelpers.Log($"Satış ləğv etmə xətası. Xəta mesajı: {response.message}");
                         ReadyMessages.ERROR_RETURN_SALES_MESSAGE(response.message);
                         return false;
                     }
@@ -935,7 +1226,7 @@ FROM
             }
             catch (Exception ex)
             {
-                FormHelpers.Log($"Pos satış qaytarma xətası. Xəta mesajı: {ex.Message}");
+                FormHelpers.Log($"Satış ləğv etmə xətası. Xəta mesajı: {ex.Message}");
                 ReadyMessages.ERROR_RETURN_SALES_MESSAGE(ex.Message);
                 return false;
             }
@@ -949,7 +1240,6 @@ FROM
                     ResponseCode = response.responseJson,
                 });
             }
-
 
             return false;
         }
@@ -1895,8 +2185,42 @@ WHERE psd.pos_satis_check_main_id = {pos_satis_main_id} AND psm.user_id_ = {Prop
             }
 
             public Data data { get; set; }
-            public string operation { get; set; } = "transactionTapXPhone";
+            public string operation { get; set; }
             public int version { get; set; } = 1;
+        }
+
+        private class RollbackRequest
+        {
+            public class Data
+            {
+                public string rrn { get; set; }
+                public string transactionId { get; set; }
+                public string transactionNumber { get; set; }
+                public string approvalCode { get; set; }
+                public string documentUUID { get; set; }
+                public string parentDocumentId { get; set; }
+                public decimal sum { get; set; }
+                public decimal cashPayment { get; set; }
+                public decimal creditPayment { get; set; }
+                public decimal depositPayment { get; set; }
+                public decimal cardPayment { get; set; }
+                public decimal bonusPayment { get; set; }
+                public List<VatAmount> vatAmounts { get; set; }
+                public string note { get; set; } = null;
+            }
+
+            public class VatAmount
+            {
+                public int vatType { get; set; }
+                public decimal vatSum { get; set; }
+            }
+
+            public Data data { get; set; }
+            public string cashierName { get; set; }
+            public string currency { get; set; } = "AZN";
+            public string operation { get; set; } = "rollBack";
+            public string username { get; set; } = "username";
+            public string password { get; set; } = "password";
         }
 
         #endregion [..REQUEST CLASS..]

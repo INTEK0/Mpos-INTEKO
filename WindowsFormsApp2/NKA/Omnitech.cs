@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
+using DevExpress.XtraMap.Native;
 using Newtonsoft.Json;
 using RestSharp;
 using WindowsFormsApp2.App;
@@ -12,6 +13,7 @@ using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
+using Zen.Barcode;
 using static DTOs;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
 using static WindowsFormsApp2.Helpers.Enums;
@@ -297,7 +299,7 @@ namespace WindowsFormsApp2.NKA
             }
             else
             {
-                
+
             }
 
         }
@@ -464,7 +466,7 @@ WHERE user_id = {UserCacheService.User.Id}";
                 vatAmounts.Add(new VatAmount
                 {
                     vatPercent = 2,
-                    vatSum = vatSumFor0Percent
+                    vatSum = vatSumFor2Percent
                 });
             }
 
@@ -538,7 +540,7 @@ WHERE user_id = {UserCacheService.User.Id}";
             {
                 if (response.message == "Successful operation")
                 {
-                   var resultId =  DbProsedures.InsertPosSales(new PosSales
+                    var resultId = DbProsedures.InsertPosSales(new PosSales
                     {
                         posNomre = response.document_number.ToString(),
                         longFiskalId = response.long_id,
@@ -579,7 +581,7 @@ WHERE user_id = {UserCacheService.User.Id}";
                 }
             }
 
-                return false;
+            return false;
         }
 
         public static bool Prepayment(SalesDto salesData /*string ipAddress, string token, string proccessNo, decimal total, decimal cash, decimal card, decimal incomingSum, string cashier, Customer customer, Doctor doctor, string rrn = ""*/)
@@ -1115,7 +1117,7 @@ case A.VERGI_DERECESI
             }
         }
 
-        public static bool Refund(string ipAddress, string accessToken, PayType payType, string cashier, string proccesNo)
+        public static bool Refund(RefundDto refundDto, string ipAddress, string accessToken, PayType payType, string cashier, string proccesNo)
         {
             if (string.IsNullOrWhiteSpace(accessToken))
             {
@@ -1124,22 +1126,25 @@ case A.VERGI_DERECESI
                     return false;
             }
 
-            string _fiskallID = "", _shortFiskallID = "", _checkNum = "";
+            string _fiskallID = "", _shortFiskallID = "", _checkNum = "", _date = string.Empty;
             decimal _cash = default, _card = default, _total2 = default;
 
             using (SqlConnection conn2 = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 conn2.Open();
-                string query2 = $@"SELECT [pos_satis_check_main_id],
-                [pos_nomre],
-                [fiscal_id],
-                [NEGD_],
-                [KART_],
-                [UMUMI_MEBLEG], 
-                [fiscalNum]
-                FROM [pos_satis_check_main] WHERE [pos_satis_check_main_id] IN 
-                (SELECT [pos_satis_check_main_id] FROM [pos_gaytarma_manual] WHERE [pos_gaytarma_manual_id] = 
-                (SELECT MAX([pos_gaytarma_manual_id]) FROM [pos_gaytarma_manual] WHERE user_id_ = {Properties.Settings.Default.UserID}));";
+                string query2 = $@"SELECT TOP 1
+ps.pos_satis_check_main_id,
+ps.pos_nomre,
+ps.date_,
+ps.fiscal_id,
+ps.NEGD_,
+ps.KART_,
+ps.UMUMI_MEBLEG,
+ps.fiscalNum
+FROM pos_gaytarma_manual pg
+JOIN pos_satis_check_main ps ON ps.pos_satis_check_main_id = pg.pos_satis_check_main_id
+WHERE pg.user_id_ = {UserCacheService.User.Id}
+ORDER BY pg.pos_gaytarma_manual_id DESC;";
 
                 using (SqlCommand cmd2 = new SqlCommand(query2, conn2))
                 using (SqlDataReader dr2 = cmd2.ExecuteReader())
@@ -1152,10 +1157,18 @@ case A.VERGI_DERECESI
                         _cash = Convert.ToDecimal(dr2["NEGD_"]);
                         _card = Convert.ToDecimal(dr2["KART_"]);
                         _total2 = Convert.ToDecimal(dr2["UMUMI_MEBLEG"]);
+                        _date = Convert.ToDateTime(dr2["date_"].ToString()).ToString("dd.MM.yyyy");
                     }
+
+                    refundDto.ParentDocumentId = _fiskallID;
                 }
             }
 
+            if (_date == DateTime.Now.ToString("dd.MM.yyyy"))
+            {
+                var result = Rollback(refundDto);
+                return result;
+            }
 
             List<Item> items = new List<Item>();
             items.Clear();
@@ -1215,15 +1228,15 @@ case A.VERGI_DERECESI
 
 
             #region Ticarət əlavəsi olanların alış məbləğlərinin toplamı
-            var vat18Items = items.Where(i => i.itemVatPercent == 18);
-            decimal marginSum18 = vat18Items.Where(i => i.itemMarginSum.HasValue).Sum(i => i.itemMarginSum.Value);
+
+
             decimal vatSum18 = items.Where(i => i.itemVatPercent == 18)
                                     .Sum(i => i.itemMarginSum.HasValue ? i.itemMarginSum.Value : i.itemSum);
             if (vatSum18 > 0)
             {
                 vatAmounts.Add(new VatAmount
                 {
-                    vatSum = Truncate2Decimals(vatSum18),
+                    vatSum = FormHelpers.Truncate2Decimals(vatSum18),
                     vatPercent = 18
                 });
             }
@@ -1238,7 +1251,7 @@ case A.VERGI_DERECESI
             {
                 vatAmounts.Add(new VatAmount
                 {
-                    vatSum = Truncate2Decimals(priceSum0),
+                    vatSum = FormHelpers.Truncate2Decimals(priceSum0),
                     vatPercent = 0
                 });
             }
@@ -1246,9 +1259,11 @@ case A.VERGI_DERECESI
 
 
             #region %18 ƏDV'li bütün məhsulların itemSumların toplanması (sadəcə marginSum yazanların)
+            var vat18Items = items.Where(i => i.itemVatPercent == 18);
+
             decimal sumOfItemSum18 = vat18Items.Where(x => x.itemVatPercent == 18 && x.itemMarginSum.HasValue).Sum(i => i.itemSum);
             decimal totalMarginSum = vat18Items.Where(i => i.itemMarginSum.HasValue).Sum(i => i.itemMarginSum.Value);
-            decimal vatDifference = Truncate2Decimals(sumOfItemSum18 - totalMarginSum);
+            decimal vatDifference = FormHelpers.Truncate2Decimals(sumOfItemSum18 - totalMarginSum);
 
             if (vatDifference > 0)
             {
@@ -1267,7 +1282,7 @@ case A.VERGI_DERECESI
             {
                 vatAmounts.Add(new VatAmount
                 {
-                    vatSum = Truncate2Decimals(priceSum2),
+                    vatSum = FormHelpers.Truncate2Decimals(priceSum2),
                     vatPercent = 2
                 });
             }
@@ -1276,12 +1291,12 @@ case A.VERGI_DERECESI
 
             #region SV-8 olanların itemSumlarının toplanması
             var vat8Items = items.Where(x => x.itemVatPercent == 8);
-            decimal priceSum8 = vat2Items.Sum(x => x.itemSum);
+            decimal priceSum8 = vat8Items.Sum(x => x.itemSum);
             if (priceSum2 > 0)
             {
                 vatAmounts.Add(new VatAmount
                 {
-                    vatSum = Truncate2Decimals(priceSum2),
+                    vatSum = FormHelpers.Truncate2Decimals(priceSum8),
                     vatPercent = 8
                 });
             }
@@ -1314,6 +1329,54 @@ case A.VERGI_DERECESI
                 NullValueHandling = NullValueHandling.Ignore
             });
             var response = Omnitech.RequestPOST(ipAddress, json);
+
+            if ($"{response.message}" == "Successful operation" || $"{response.message}" == "Successful operation")
+            {
+                if (MessageVisible)
+                {
+                    ReadyMessages.SUCCESS_RETURN_SALES_MESSAGE();
+                }
+
+                FormHelpers.Log($"Qəbz geri qaytarması edildi Qəbz №: {response.document_number}");
+                return true;
+            }
+            else
+            {
+                XtraMessageBox.Show(response.message);
+                FormHelpers.Log($"Qəbz geri qaytarma xətası. Xəta mesajı: {response.message}");
+                return false;
+            }
+        }
+
+        private static bool Rollback(RefundDto refundDto)
+        {
+            if (string.IsNullOrWhiteSpace(refundDto.AccessToken))
+            {
+                refundDto.AccessToken = Login(refundDto.IpAddress);
+                if (string.IsNullOrWhiteSpace(refundDto.AccessToken))
+                    return false;
+            }
+
+            RollbackRequest.RequestData root = new RollbackRequest.RequestData
+            {
+                checkData = new RollbackRequest.CheckData()
+                {
+                    check_type = 10
+                },
+                access_token = refundDto.AccessToken,
+                fiscalId = refundDto.ParentDocumentId
+            };
+
+            RollbackRequest request = new RollbackRequest
+            {
+                requestData = root
+            };
+
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(request, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            });
+            var response = Omnitech.RequestPOST(refundDto.IpAddress, json);
 
             if ($"{response.message}" == "Successful operation" || $"{response.message}" == "Successful operation")
             {
@@ -1487,11 +1550,6 @@ case A.VERGI_DERECESI
             string error;
         }
 
-        private static decimal Truncate2Decimals(decimal value)
-        {
-            return Math.Truncate(value * 100) / 100;
-        }
-
         public static Tuple<bool, string, string, string> CreditSale(CreditSaleDto creditData)
         {
             if (string.IsNullOrWhiteSpace(creditData.AccessToken))
@@ -1562,7 +1620,10 @@ case A.VERGI_DERECESI
                         data = data
                     },
                 },
-                checkData = new CreditSaleRequest.CheckData() { }
+                checkData = new CreditSaleRequest.CheckData()
+                {
+                    check_type = 1
+                }
             };
 
             CreditSaleRequest.Root root = new CreditSaleRequest.Root()
@@ -2356,6 +2417,21 @@ case A.VERGI_DERECESI
             public int? t { get; set; } = null;
             public string k { get; set; } = null;
             public string v { get; set; }
+        }
+
+        private class RollbackRequest
+        {
+            public class CheckData
+            {
+                public short check_type { get; set; }
+            }
+            public RequestData requestData { get; set; }
+            public class RequestData
+            {
+                public string access_token { get; set; }
+                public CheckData checkData { get; set; }
+                public string fiscalId { get; set; }
+            }
         }
 
         private class RootObject

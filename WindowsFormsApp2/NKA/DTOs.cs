@@ -32,6 +32,7 @@ public static class DTOs
     {
         public string IpAddress { get; set; }
         public string DocumentUUID { get; set; }
+        public string ParentDocumentId { get; set; }
         public string AccessToken { get; set; }
         public string MerchantId { get; set; }
         public string ProccessNo { get; set; }

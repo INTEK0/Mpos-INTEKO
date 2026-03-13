@@ -114,6 +114,7 @@ namespace WindowsFormsApp2
             this.textEdit1.Name = "textEdit1";
             this.textEdit1.Properties.Appearance.BackColor = System.Drawing.Color.Snow;
             this.textEdit1.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.textEdit1.Properties.Appearance.Options.UseBackColor = true;
             this.textEdit1.Properties.Appearance.Options.UseFont = true;
             this.textEdit1.Properties.LookAndFeel.SkinName = "WXI";
             this.textEdit1.Properties.LookAndFeel.UseDefaultLookAndFeel = false;
@@ -263,7 +264,6 @@ namespace WindowsFormsApp2
             // 
             // pictureBox6
             // 
-            this.pictureBox6.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox6.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox6.Image")));
             this.pictureBox6.Location = new System.Drawing.Point(0, 0);

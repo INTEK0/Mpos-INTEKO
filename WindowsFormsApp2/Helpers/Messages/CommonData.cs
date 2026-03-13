@@ -15,6 +15,7 @@
         public static readonly string SUCCESS_SALES= "SATIŞ UĞURLA TAMAMLANDI";
         public static readonly string SUCCESS_ADVANCE_SALES = "AVANS SATIŞI UĞURLA TAMAMLANDI";
         public static readonly string SUCCESS_RETURN_SALES = "GERİ QAYTARMA UĞURLA TAMAMLANDI";
+        public static readonly string SUCCESS_ROLLBACK_SALES = "SATIŞ ÇEKİ UĞURLA LƏĞV EDİLDİ";
         public static readonly string SUCCESS_CREDIT_SALES = "KREDİT SATIŞI UĞURLA TAMAMLANDI";
         public static readonly string SUCCESS_CREDIT_PAYMENT = "KREDİT ÖDƏNİŞİ UĞURLA TAMAMLANDI";
         public static readonly string SUCCES_PERİODİC_Z_REPORT = "DÖVRÜ HESABAT UĞURLA ÇAP EDİLDİ";

@@ -211,7 +211,7 @@ namespace WindowsFormsApp2
             this.Name = "TECHIZATCI_SEC";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "TƏCHİZATÇI SEÇ";
-            this.Load += new System.EventHandler(this.TECHIZATCI_SEC_Load);
+            this.Shown += new System.EventHandler(this.TECHIZATCI_SEC_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             this.ResumeLayout(false);

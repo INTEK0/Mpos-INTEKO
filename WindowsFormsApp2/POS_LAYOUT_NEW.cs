@@ -219,9 +219,7 @@ namespace WindowsFormsApp2
                         if (kontrol.Substring(0, 1) == "0")
                         {
                             if (kontrol.Count() is 12)
-                            {
                                 kontrol = "0" + kontrol;
-                            }
 
                             kod = kontrol.Substring(2, 5);
                             kg = kontrol.Substring(7, 2);

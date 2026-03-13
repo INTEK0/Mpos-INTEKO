@@ -57,6 +57,11 @@ namespace WindowsFormsApp2.Helpers.Messages
             XtraMessageBox.Show(CommonData.SUCCESS_RETURN_SALES, nameof(HeaderMessage.Mesaj), MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
+        public static void SUCCESS_ROLLBACK_SALES_MESSAGE()
+        {
+            XtraMessageBox.Show(CommonData.SUCCESS_ROLLBACK_SALES, nameof(HeaderMessage.Mesaj), MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
         public static void SUCCESS_CREDIT_SALES_MESSAGE()
         {
             XtraMessageBox.Show(CommonData.SUCCESS_CREDIT_SALES, nameof(HeaderMessage.Mesaj), MessageBoxButtons.OK, MessageBoxIcon.Information);

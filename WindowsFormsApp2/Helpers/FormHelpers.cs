@@ -461,6 +461,11 @@ inner join userParol u on u.id = ki.KASSIR_ID where u.id = {Properties.Settings.
             }
         }
 
+        public static decimal Truncate2Decimals(decimal value)
+        {
+            return Math.Truncate(value * 100) / 100;
+        }
+
         private static class Emaildata
         {
             public static string Email { get; set; } = "support@inteko.az";

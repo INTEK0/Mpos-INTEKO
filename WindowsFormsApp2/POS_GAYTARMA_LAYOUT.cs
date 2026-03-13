@@ -293,15 +293,6 @@ namespace WindowsFormsApp2
             return System.Convert.ToBase64String(plainTextBytes);
         }
 
-        public void omnitech_gaytarma(string _url, PayType type)
-        {
-            bool Result = Omnitech.Refund(_url, textBox1.Text, type, Cashier, textEdit1.Text);
-            if (Result)
-            {
-
-            }
-        }
-
 
 
 
@@ -1960,7 +1951,17 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
                             break; /*AZSMART*/
                         case "3":
                             textBox1.Text = Omnitech.Login(lIpAddress.Text); //AccessToken
-                            isSuccess = Omnitech.Refund(lIpAddress.Text, textBox1.Text, type, Cashier, textEdit1.Text);
+                            isSuccess = Omnitech.Refund(
+                                new DTOs.RefundDto
+                                {
+                                    IpAddress = lIpAddress.Text,
+                                    AccessToken = textBox1.Text,
+                                    DocumentUUID = documentUUID,
+                                    Cashier = Cashier,
+                                    ProccessNo = textEdit1.Text,
+                                    PayType = type,
+                                },
+                                lIpAddress.Text, textBox1.Text, type, Cashier, textEdit1.Text);
                             if (isSuccess)
                             {
                                 textEdit1.Text = DbProsedures.GET_RefundProccessNo();
