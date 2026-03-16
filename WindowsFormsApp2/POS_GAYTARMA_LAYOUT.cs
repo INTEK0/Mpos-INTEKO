@@ -1889,7 +1889,7 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
             }
         }
 
-        private void ReturnSales(Enums.PayType type)
+        private async void ReturnSales(Enums.PayType type)
         {
             Cursor.Current = Cursors.WaitCursor;
             decimal fr;
@@ -1925,7 +1925,7 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
                     switch (lModel.Text)
                     {
                         case "1":
-                            isSuccess = Sunmi.Refund(new DTOs.RefundDto
+                            isSuccess = await Sunmi.Refund(new DTOs.RefundDto
                             {
                                 IpAddress = lIpAddress.Text,
                                 DocumentUUID = documentUUID,

@@ -21,6 +21,7 @@ public static class DTOs
         public Customer Customer { get; set; }
         public Doctor Doctor { get; set; }
         public string Rrn { get; set; } = string.Empty;
+        public string BankTransactionId { get; set; }
         public Enums.PayType PayType { get; set; }
         public string FiscalId { get; set; } = null;
         public decimal PrepaymentPay { get; set; } //Avans ödənişləri üçün

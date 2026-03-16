@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Security.Policy;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DevExpress.CodeParser;
@@ -263,68 +264,35 @@ namespace WindowsFormsApp2.NKA
 
         public static void CloseShift(string ipAddress, string cashier)
         {
-            bool IsBank = true;
-            if (!string.IsNullOrWhiteSpace(UserCacheService.Terminal.BankName) && UserCacheService.Terminal?.BankName != "PAX A35")
+            CloseShiftRequest request = new CloseShiftRequest()
             {
-                IsBank = false;
-                BankRequest bank = new BankRequest()
+                data = new CloseShiftRequest.Data()
                 {
-                    data = null,
-                    operation = "transactionTapXphoneCloseDay"
-                };
+                    cashierName = cashier,
+                    documentUUID = Guid.NewGuid().ToString()
+                }
+            };
 
-                string Bankjson = JsonConvert.SerializeObject(bank, new JsonSerializerSettings
-                {
-                    NullValueHandling = NullValueHandling.Ignore
-                });
-
-                var Bankresponse = RequestPOST(ipAddress, Bankjson);
-
-                //if (//response success olaraq gələrsə)
-                //{
-                //    IsBank = true;
-                //}else
-                //{
-                //    IsBank = false;
-                //    //Xəta mesajı
-                //}
-                //IsBank = true;
-            }
-
-            if (IsBank)
+            string json = JsonConvert.SerializeObject(request, new JsonSerializerSettings
             {
-                CloseShiftRequest request = new CloseShiftRequest()
+                NullValueHandling = NullValueHandling.Ignore
+            });
+
+            var response = RequestPOST(ipAddress, json);
+
+            if (response != null)
+            {
+                if (response.message is "Success operation" || response.message is "Successful operation")
                 {
-                    data = new CloseShiftRequest.Data()
-                    {
-                        cashierName = cashier,
-                        documentUUID = Guid.NewGuid().ToString()
-                    }
-                };
+                    if (MessageVisible)
+                        ReadyMessages.SUCCESS_CLOSE_SHIFT_MESSAGE();
 
-
-
-                string json = JsonConvert.SerializeObject(request, new JsonSerializerSettings
+                    FormHelpers.Log(CommonData.SUCCESS_CLOSE_SHIFT);
+                }
+                else
                 {
-                    NullValueHandling = NullValueHandling.Ignore
-                });
-
-                var response = RequestPOST(ipAddress, json);
-
-                if (response != null)
-                {
-                    if (response.message is "Success operation" || response.message is "Successful operation")
-                    {
-                        if (MessageVisible)
-                            ReadyMessages.SUCCESS_CLOSE_SHIFT_MESSAGE();
-
-                        FormHelpers.Log(CommonData.SUCCESS_CLOSE_SHIFT);
-                    }
-                    else
-                    {
-                        ReadyMessages.ERROR_DEFAULT_MESSAGE(response.message);
-                        FormHelpers.Log($"Xəta mesajı: {response.message}");
-                    }
+                    ReadyMessages.ERROR_DEFAULT_MESSAGE(response.message);
+                    FormHelpers.Log($"Xəta mesajı: {response.message}");
                 }
             }
         }
@@ -395,7 +363,7 @@ namespace WindowsFormsApp2.NKA
             }
         }
 
-        public static bool Sales(SalesDto salesData)
+        public async static Task<bool> Sales(SalesDto salesData)
         {
             int posSaleId = 0;
             string _requestJson = null;
@@ -472,6 +440,10 @@ namespace WindowsFormsApp2.NKA
                             return false;  // Bank uğursuzdursa, satış dayansın
 
                         data.rrn = responseBank.data.rrn;
+                        salesData.Rrn = responseBank.data.rrn;
+                        salesData.BankTransactionId = responseBank.data.trxid;
+                        await Task.Delay(6000);
+
                     }
                     else
                         return false;
@@ -515,7 +487,9 @@ namespace WindowsFormsApp2.NKA
                                 rrn = !string.IsNullOrWhiteSpace(response.data.rrn)
                                     ? response.data.rrn
                                     : (!string.IsNullOrWhiteSpace(salesData.Rrn) ? salesData.Rrn : null),
-                                BankTransactionId = !string.IsNullOrWhiteSpace(response.data.transaction_id) ? response.data.transaction_id : null,
+                                BankTransactionId = !string.IsNullOrWhiteSpace(response.data.transaction_id)
+                                    ? response.data.transaction_id
+                                    : (!string.IsNullOrWhiteSpace(salesData.BankTransactionId) ? salesData.BankTransactionId : null),
                                 BankTransactionNumber = !string.IsNullOrWhiteSpace(response.data.transaction_number) ? response.data.transaction_number : null,
                                 BankApprovalCode = !string.IsNullOrWhiteSpace(response.data.approval_code) ? response.data.approval_code : null,
                                 customerId = salesData.Customer?.CustomerID,
@@ -627,8 +601,11 @@ namespace WindowsFormsApp2.NKA
             return false;
         }
 
-        public static bool RefundBank(RefundDto refundData)
+        public static bool RefundBank(RefundDto refundData, int operationType = 1)
         {
+            //operationType = 1 (Ləğv etmə)
+            //operationType = 2 (Qaytarma)
+
             if (refundData.Card > 0 && !string.IsNullOrWhiteSpace(UserCacheService.Terminal.BankName))
             {
                 BankRequest bank = new BankRequest()
@@ -636,10 +613,12 @@ namespace WindowsFormsApp2.NKA
                     data = new BankRequest.Data()
                     {
                         documentUUID = refundData.DocumentUUID,
-                        operationType = 1,
+                        operationType = operationType,
                         amount = refundData.Card,
                         rrn = refundData.Rrn,
-                    }
+                    },
+                    operation = "transactionTapXPhone"
+
                 };
 
                 string Bankjson = Newtonsoft.Json.JsonConvert.SerializeObject(bank, new JsonSerializerSettings
@@ -664,9 +643,10 @@ namespace WindowsFormsApp2.NKA
                     switch (response.message)
                     {
                         case "İcra olunur":
-                            Task.Delay(3000);
+                            Thread.Sleep(3000);
                             return true;
-                        //return BankCheckStatus(salesData.IpAddress, salesData.DocumentUUID);
+
+                        //return BankCheckStatus(refundData.IpAddress, refundData.DocumentUUID);
 
                         default:
                             ReadyMessages.ERROR_SALES_MESSAGE(response.message);
@@ -730,7 +710,6 @@ namespace WindowsFormsApp2.NKA
                             ResponseCode = Restresponse.Content
                         });
 
-                        Task.Delay(5000);
                         return response;
                     default:
                         FormHelpers.OperationLog(new OperationLogs
@@ -752,7 +731,7 @@ namespace WindowsFormsApp2.NKA
             }
         }
 
-        public static bool Refund(RefundDto refundData)
+        public async static Task<bool> Refund(RefundDto refundData)
         {
             string fiskallID = "";
             List<Item> items = new List<Item>();
@@ -837,7 +816,7 @@ FROM
             //Rollback
             if (saleDate == DateTime.Now.ToString("dd.MM.yyyy"))
             {
-                var result = Rollback(refundData);
+                var result = await Rollback(refundData);
                 return result;
             }
             else
@@ -917,15 +896,13 @@ FROM
                     UserCacheService.Terminal?.BankName != "PAX A35")
 
                 {
-                    string today = DateTime.Now.ToString("dd.MM.yyyy");
-
                     var responseBank = RefundBank(new RefundDto
                     {
                         IpAddress = refundData.IpAddress,
                         Card = card,
-                        Rrn = saleDate == today ? refundData.BankTransactionId : refundData.Rrn,
+                        Rrn = refundData.Rrn,
                         DocumentUUID = refundData.DocumentUUID,
-                    });
+                    }, 2);
 
                     Sunmi.BankResponse responseCheck = new Sunmi.BankResponse();
                     if (responseBank)
@@ -999,7 +976,7 @@ FROM
             }
         }
 
-        private static bool Rollback(RefundDto refundData)
+        private async static Task<bool> Rollback(RefundDto refundData)
         {
             string fiskallID = "";
             decimal cash = default;
@@ -1087,8 +1064,11 @@ md.MEHSUL_ADI AS name,
 pl.say AS quantity,
 p.satis_giymet AS salePrice,
 pl.say * p.satis_giymet as ssum,
-md.VERGI_DERECESI AS vatType
+md.VERGI_DERECESI AS vatType,
+ps.bankttnm AS rrn,
+ps.BankTransactionId
 FROM pos_satis_check_details p
+INNER JOIN pos_satis_check_main AS ps ON ps.pos_satis_check_main_id = p.pos_satis_check_main_id
 INNER JOIN MAL_ALISI_DETAILS md ON p.mal_alisi_details_id = md.MAL_ALISI_DETAILS_ID
 INNER JOIN pos_gaytarma_manual pl ON p.pos_satis_check_details_id = pl.pos_satis_check_details
 WHERE pl.emeliyyat_nomre = '{refundData.ProccessNo}' AND pl.user_id_ = {UserCacheService.User.Id})";
@@ -1104,6 +1084,8 @@ WHERE pl.emeliyyat_nomre = '{refundData.ProccessNo}' AND pl.user_id_ = {UserCach
                         double quantity = Convert.ToDouble(dr["quantity"]);
                         int vatType = Convert.ToInt32(dr["vatType"]);
                         decimal ssum = Convert.ToDecimal(dr["ssum"]);
+                        refundData.Rrn = dr["rrn"].ToString();
+                        refundData.BankTransactionId = dr["BankTransactionId"].ToString();
 
                         switch (vatType)
                         {
@@ -1194,6 +1176,40 @@ WHERE pl.emeliyyat_nomre = '{refundData.ProccessNo}' AND pl.user_id_ = {UserCach
                 data = rollbackData
             };
 
+            if (refundData.PayType is PayType.Card &&
+                !string.IsNullOrWhiteSpace(UserCacheService.Terminal?.BankName) &&
+                UserCacheService.Terminal?.BankName != "PAX A35")
+            {
+                var responseBank = RefundBank(new RefundDto
+                {
+                    IpAddress = refundData.IpAddress,
+                    Card = card,
+                    Rrn = refundData.BankTransactionId,
+                    DocumentUUID = refundData.DocumentUUID,
+                }, 1);
+
+                if (!responseBank)
+                    return false;
+                else
+                {
+                    Sunmi.BankResponse responseCheck = new Sunmi.BankResponse();
+                    if (responseBank)
+                    {
+                        responseCheck = Sunmi.BankCheckStatus(refundData.IpAddress, refundData.DocumentUUID);
+                    }
+
+                    if (responseCheck is null || string.IsNullOrWhiteSpace(responseCheck?.data?.rrn))
+                    {
+                        // Bank uğursuzdursa, qaytarma dayansın
+                        return false;
+                    }
+
+                    //data.isSendCardPayment = true;
+                    //data.rrn = refundData.Rrn;
+                    await Task.Delay(6000);
+
+                }
+            }
 
             string json = JsonConvert.SerializeObject(rollback, new JsonSerializerSettings
             {
@@ -2189,7 +2205,7 @@ WHERE psd.pos_satis_check_main_id = {pos_satis_main_id} AND psm.user_id_ = {Prop
             }
 
             public Data data { get; set; }
-            public string operation { get; set; }
+            public string operation { get; set; } = "transactionTapXPhone";
             public int version { get; set; } = 1;
         }
 

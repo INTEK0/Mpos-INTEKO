@@ -1168,6 +1168,7 @@ group by
                         if (IsSuccess)
                         {
                             Sunmi.CloseShift(lIpAdress.Text, tUsername.Text);
+                            return;
                         }
                     }
                     Sunmi.CloseShift(lIpAdress.Text, tUsername.Text);
@@ -2438,7 +2439,7 @@ group by
                 switch (lModel.Text)
                 {
                     case "1":
-                        IsSuccess = Sunmi.Sales(new DTOs.SalesDto
+                        IsSuccess = await Sunmi.Sales(new DTOs.SalesDto
                         {
                             DocumentUUID = documentUUID,
                             IpAddress = lIpAdress.Text,
