@@ -1165,6 +1165,10 @@ group by
                         UserCacheService.Terminal?.BankName != "PAX A35")
                     {
                         bool IsSuccess = Sunmi.CloseShiftBank(lIpAdress.Text);
+                        if (IsSuccess)
+                        {
+                            Sunmi.CloseShift(lIpAdress.Text, tUsername.Text);
+                        }
                     }
                     Sunmi.CloseShift(lIpAdress.Text, tUsername.Text);
                     break; /*SUNMI*/

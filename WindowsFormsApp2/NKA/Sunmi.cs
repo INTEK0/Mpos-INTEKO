@@ -1248,8 +1248,12 @@ WHERE pl.emeliyyat_nomre = '{refundData.ProccessNo}' AND pl.user_id_ = {UserCach
         {
             BankRequest bank = new BankRequest()
             {
-                data = null,
-                operation = "transactionTapXphoneCloseDay"
+                data = new BankRequest.Data
+                {
+                    documentUUID = Guid.NewGuid().ToString(),
+                    rrn = "",
+                },
+                operation = "transactionTapXphoneCloseDay",
             };
 
             string Bankjson = Newtonsoft.Json.JsonConvert.SerializeObject(bank, new JsonSerializerSettings
