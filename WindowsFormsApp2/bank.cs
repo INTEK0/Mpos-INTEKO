@@ -41,7 +41,7 @@ namespace WindowsFormsApp2
 
         private void ClinicModule()
         {
-            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("ClinicModule").ToString());
+            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos")?.GetValue("ClinicModule").ToString());
             if (control)
             {
                 chClinicModul.Visible = true;
@@ -61,7 +61,7 @@ namespace WindowsFormsApp2
         public void getmebleg(string paramValue, string paramValue1)
         {
             string queryString = " exec  yekun_mebleg_nagd  @param1 =@pricePoint, @param2=@pricePoint1";
-            SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon);
+            SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString);
             SqlCommand cmd = new SqlCommand();
             SqlCommand command = new SqlCommand(queryString, connection);
 

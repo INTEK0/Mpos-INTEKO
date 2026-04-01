@@ -149,9 +149,7 @@ namespace WindowsFormsApp2
                 string deleteQuery = $"DELETE FROM calculation WHERE userId = {Properties.Settings.Default.UserID}";
 
                 using (SqlCommand cmd = new SqlCommand(deleteQuery, conn))
-                {
                     cmd.ExecuteNonQuery();
-                }
             }
         }
 
@@ -1041,7 +1039,7 @@ group by
                 }
                 else if (type is Enums.PayType.Card)
                 {
-                    bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("ClinicModule").ToString());
+                    bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos")?.GetValue("ClinicModule").ToString());
                     bool clinic = false;
 
                     if (control)
@@ -2755,6 +2753,7 @@ group by
             tDoctor.Text = null;
             gridView1.GroupPanelText = $"Məhsul sayı: {gridView1.RowCount}";
             _customer = null;
+            _doctor = null;
         }
 
         public static string CleanJson(string jsonString)

@@ -58,7 +58,7 @@ namespace WindowsFormsApp2.Helpers.DB
 
                 SaveFileDialog save = new SaveFileDialog();
 
-                save.FileName = "MPOS_backup_" + DateTime.Now.ToShortDateString() + ".bak";
+                save.FileName = $"Mpos_v{Application.ProductVersion}_backup_{DateTime.Now.ToShortDateString()}.bak";
                 save.InitialDirectory = Path.Combine(Application.StartupPath, "backup");
                 save.Filter = "Backup Files (*.bak)|*.bak|All Files (*.*)|*.*";
                 save.OverwritePrompt = true; //varsa soruşmadan üstünə yazması üçün false olaraq qalmalıdır

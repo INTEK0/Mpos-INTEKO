@@ -37,7 +37,7 @@ namespace WindowsFormsApp2
 
         private void ClinicModule()
         {
-            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("ClinicModule").ToString());
+            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos")?.GetValue("ClinicModule").ToString());
             if (control)
             {
                 chClinicModul.Visible = true;

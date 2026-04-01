@@ -442,7 +442,7 @@ namespace WindowsFormsApp2.NKA
                         data.rrn = responseBank.data.rrn;
                         salesData.Rrn = responseBank.data.rrn;
                         salesData.BankTransactionId = responseBank.data.trxid;
-                        await Task.Delay(6000);
+                        await Task.Delay(10000);
 
                     }
                     else
@@ -583,7 +583,7 @@ namespace WindowsFormsApp2.NKA
                     switch (response.message)
                     {
                         case "İcra olunur":
-                            Task.Delay(3500);
+                            Task.Delay(5000);
                             return true;
 
                         default:
@@ -1206,7 +1206,7 @@ WHERE pl.emeliyyat_nomre = '{refundData.ProccessNo}' AND pl.user_id_ = {UserCach
 
                     //data.isSendCardPayment = true;
                     //data.rrn = refundData.Rrn;
-                    await Task.Delay(6000);
+                    await Task.Delay(10000);
 
                 }
             }
