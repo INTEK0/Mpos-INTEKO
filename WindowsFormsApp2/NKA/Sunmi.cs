@@ -432,9 +432,11 @@ namespace WindowsFormsApp2.NKA
                     !string.IsNullOrWhiteSpace(UserCacheService.Terminal.BankName) &&
                     UserCacheService.Terminal.BankName != "PAX A35")
                 {
-                    if (SaleBank(salesData))
+                    if (await SaleBank(salesData))
                     {
                         var responseBank = BankCheckStatus(salesData.IpAddress, salesData.DocumentUUID);
+
+                        await Task.Delay(10000);
 
                         if (responseBank is null || string.IsNullOrWhiteSpace(responseBank?.data?.rrn))
                             return false;  // Bank uğursuzdursa, satış dayansın
@@ -442,7 +444,6 @@ namespace WindowsFormsApp2.NKA
                         data.rrn = responseBank.data.rrn;
                         salesData.Rrn = responseBank.data.rrn;
                         salesData.BankTransactionId = responseBank.data.trxid;
-                        await Task.Delay(10000);
 
                     }
                     else
@@ -536,7 +537,7 @@ namespace WindowsFormsApp2.NKA
             }
         }
 
-        private static bool SaleBank(SalesDto salesData)
+        private async static Task<bool> SaleBank(SalesDto salesData)
         {
             if (salesData.Card > 0 && !string.IsNullOrWhiteSpace(UserCacheService.Terminal.BankName))
             {
@@ -583,7 +584,7 @@ namespace WindowsFormsApp2.NKA
                     switch (response.message)
                     {
                         case "İcra olunur":
-                            Task.Delay(5000);
+                            await Task.Delay(5000);
                             return true;
 
                         default:
@@ -643,7 +644,7 @@ namespace WindowsFormsApp2.NKA
                     switch (response.message)
                     {
                         case "İcra olunur":
-                            Thread.Sleep(3000);
+                            Thread.Sleep(5000);
                             return true;
 
                         //return BankCheckStatus(refundData.IpAddress, refundData.DocumentUUID);
@@ -919,6 +920,7 @@ FROM
                     rrn = responseCheck.data.rrn;
                     //data.isSendCardPayment = true;
                     data.rrn = refundData.Rrn;
+                    await Task.Delay(10000);
                 }
 
 
@@ -1188,6 +1190,8 @@ WHERE pl.emeliyyat_nomre = '{refundData.ProccessNo}' AND pl.user_id_ = {UserCach
                     DocumentUUID = refundData.DocumentUUID,
                 }, 1);
 
+
+
                 if (!responseBank)
                     return false;
                 else
@@ -1198,6 +1202,8 @@ WHERE pl.emeliyyat_nomre = '{refundData.ProccessNo}' AND pl.user_id_ = {UserCach
                         responseCheck = Sunmi.BankCheckStatus(refundData.IpAddress, refundData.DocumentUUID);
                     }
 
+                    await Task.Delay(10000);
+
                     if (responseCheck is null || string.IsNullOrWhiteSpace(responseCheck?.data?.rrn))
                     {
                         // Bank uğursuzdursa, qaytarma dayansın
@@ -1206,7 +1212,6 @@ WHERE pl.emeliyyat_nomre = '{refundData.ProccessNo}' AND pl.user_id_ = {UserCach
 
                     //data.isSendCardPayment = true;
                     //data.rrn = refundData.Rrn;
-                    await Task.Delay(10000);
 
                 }
             }

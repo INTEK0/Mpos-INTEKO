@@ -9,14 +9,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DevExpress.CodeParser;
 using DevExpress.XtraBars.Navigation;
 using DevExpress.XtraEditors;
 using Licence.Services;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using WindowsFormsApp2.App.Application;
-using WindowsFormsApp2.App.Helpers;
 using WindowsFormsApp2.Forms;
 using WindowsFormsApp2.Forms.PrintPages;
 using WindowsFormsApp2.Helpers;
@@ -24,6 +22,7 @@ using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using static WindowsFormsApp2.App.Helpers.Enums;
+using static WindowsFormsApp2.Helpers.DB.DTOs;
 using static WindowsFormsApp2.Helpers.Enums;
 using static WindowsFormsApp2.Helpers.FormHelpers;
 using DbHelpers = WindowsFormsApp2.Helpers.DB.DbHelpers;
@@ -34,6 +33,7 @@ namespace WindowsFormsApp2
     public partial class MAINSCRRENS : DevExpress.XtraBars.FluentDesignSystem.FluentDesignForm
     {
         public string productname, productprice, barcodesa;
+        private string RrnFilePath => Path.Combine(Application.StartupPath, "BankTTNM.txt");
         public MAINSCRRENS(int xuser)
         {
             InitializeComponent();
@@ -178,11 +178,6 @@ namespace WindowsFormsApp2
         private void accordionControlElement50_Click(object sender, EventArgs e)
         {
             OpenForm<fTereziler>();
-        }
-
-        private void accordionControlElement52_Click(object sender, EventArgs e)
-        {
-            OpenForm<BankTTNM>();
         }
 
         private void accordionControlElement51_Click(object sender, EventArgs e)
@@ -573,7 +568,6 @@ FROM[terazimalzeme]";
         private async void MainScreen_Load(object sender, EventArgs e)
         {
             lMposVersion.Text = Application.ProductVersion;
-            chStockAmount.Checked = false;
             ProductNegativeStatus();
             HotSalesShow();
             SendToKassaShow();
@@ -582,7 +576,6 @@ FROM[terazimalzeme]";
             OtherPayShow();
             SuccessMessageVisibleShow();
             CloudAppShow();
-            Get_StockDecreasingAmountShow();
             ClinicModuleShow();
             SysAdminControl();
             await LicenceCheck();
@@ -618,23 +611,22 @@ FROM[terazimalzeme]";
             {
                 DateTime expireDate = licenceUser.LicenceExpireDate.Date;
                 lLicenceExpireDate.Text = expireDate.ToString("dd.MM.yyyy");
+                lExpireDate.Text = expireDate.ToString("dd.MM.yyyy");
 
                 int daysRemaining = (expireDate - DateTime.Today).Days;
 
                 if (daysRemaining <= 2)
-                {
                     lLicenceExpireDate.ForeColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Danger;
-                }
                 else if (daysRemaining <= 5)
-                {
                     lLicenceExpireDate.ForeColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Warning;
-                }
                 else
-                {
                     lLicenceExpireDate.ForeColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Success;
-                }
 
                 lLicenceExpireDate.ToolTip = $"Lisenziyanın bitmə müddətinə {daysRemaining} gün qalıb";
+                lExpireDate.ToolTip = $"Lisenziyanın bitmə müddətinə {daysRemaining} gün qalıb";
+
+
+
             }
         }
 
@@ -646,7 +638,6 @@ FROM[terazimalzeme]";
                 await TotalSalesInformation(); //Cari satış hesabatı
                 await TotalRefundInformation(); //Cari qaytarma hesabatı
                 await TotalPurchaseInformation(); //Cari alış hesabatı
-                await StockProductsList(); //Anbar qalığı
 
                 BestsellingProducts(); //Ən çox satılan məhsullar
             }
@@ -661,11 +652,12 @@ FROM[terazimalzeme]";
         {
             try
             {
-                // StockDecreasingAmountLoad(); //Miqdarı az olan məhsullar
                 await TotalSalesInformation(); //Cari satış hesabatı
                 await TotalRefundInformation(); //Cari qaytarma hesabatı
                 await TotalPurchaseInformation(); //Cari alış hesabatı
-                await StockProductsList();//Anbar qalığı
+                await MonthEarningLoadAsync(); //Aylıq satış qrafikası
+                await SalesTypeLoadAsync();//Cari satış növ qrafikası
+                await StockCountAsync();//Cari məhsul sayı
 
                 BestsellingProducts(); //Ən çox satılan məhsullar
             }
@@ -673,35 +665,6 @@ FROM[terazimalzeme]";
             {
                 ReadyMessages.ERROR_DATALOAD_MESSAGE(ex.Message);
             }
-        }
-
-        private void ExpensesDataLoad()
-        {
-            //            string query = @"WITH Headers AS (
-            //    SELECT DISTINCT Header FROM IncomeAndExpensesData
-            //)
-            //SELECT 
-            //    h.Header, 
-            //    COALESCE(SUM(i.Amount), 0) AS Amount
-            //FROM Headers h
-            //LEFT JOIN IncomeAndExpensesData i 
-            //    ON h.Header = i.Header 
-            //    AND i.Date = CAST(GETDATE() AS DATE) AND i.Type = 4
-            //GROUP BY h.Header;";
-
-            //            var data = DbProsedures.ConvertToDataTable(query);
-            //            gridControlExpenses.DataSource = data;
-            //            gridExpenses.ViewCaption = $"XƏRCLƏR - {DateTime.Now.ToString("dd.MM.yyyy")}";
-            //            gridExpenses.OptionsView.ShowFooter = true;
-            //            gridExpenses.Columns["Amount"].Summary.Clear();
-            //            GridColumnSummaryItem summaryItem = new GridColumnSummaryItem
-            //            {
-            //                FieldName = "Amount",
-            //                SummaryType = DevExpress.Data.SummaryItemType.Sum,
-            //                DisplayFormat = "{0:N2}"
-            //            };
-            //            gridExpenses.Columns["Amount"].Summary.Add(summaryItem);
-
         }
 
         private void BestsellingProducts(string count = "5")
@@ -891,49 +854,6 @@ FROM (
             navigationFrame1.SelectedPage = pageProducts;
         }
 
-        //private void StockProductsList()
-        //{
-        //    try
-        //    {
-        //        Cursor.Current = Cursors.WaitCursor;
-        //        gridView2.ViewCaption = "Anbar qalığı";
-        //        using (SqlConnection con = new SqlConnection())
-        //        {
-        //            con.ConnectionString = Properties.Settings.Default.SqlCon;
-        //            string query = $@"EXEC dbo.gaime_Satis_mal_load;";
-
-        //            using (SqlCommand cmd = new SqlCommand(query, con))
-        //            {
-        //                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-        //                {
-        //                    DataTable dataTable = new DataTable();
-        //                    da.Fill(dataTable);
-        //                    gridControl2.DataSource = dataTable;
-        //                }
-        //            }
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        ReadyMessages.ERROR_DATALOAD_MESSAGE(e.Message);
-        //    }
-
-        //}
-
-
-        /// <summary>
-        /// Anbar qalığını göstərilməsi
-        /// </summary>
-        private async Task StockProductsList()
-        {
-            //Cursor.Current = Cursors.WaitCursor;
-            //var data = await StockCacheService.LoadStockAsync();
-            //gridControlProducts.DataSource = data;
-            //gridProducts.RefreshData();
-            //lStockCount.Text = gridProducts.DataRowCount.ToString();
-            //Cursor.Current = Cursors.Default;
-        }
-
         private void accordionControlElement54_Click_1(object sender, EventArgs e)
         {
             if (!UserCacheService.User.UserRole.Users)
@@ -943,44 +863,6 @@ FROM (
             }
             OpenForm<fUser>();
         }
-
-        /// <summary>
-        /// Miqdarı az olan məhsulları göstərilməsi
-        /// </summary>
-        private void StockDecreasingAmountLoad()
-        {
-
-            //Cursor.Current = Cursors.WaitCursor;
-            //if (chStockAmount.Checked)
-            //{
-            //    gridProducts.ViewCaption = "Miqdarı az olan məhsullar";
-            //    using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
-            //    {
-            //        string query = $@"exec [StockDecreasingAmount]";
-
-            //        using (SqlCommand cmd = new SqlCommand(query, con))
-            //        {
-            //            await con.OpenAsync();
-
-            //            using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-            //            {
-            //                DataTable dataTable = new DataTable();
-            //                await Task.Run(() => da.Fill(dataTable));
-            //                gridControlProducts.DataSource = dataTable;
-            //            }
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    chStockDecreasingAmount.Visible = false;
-            //    chShowStock.Dock = DockStyle.Left;
-            //    chShowStock.Checked = true;
-            //}
-            //Cursor.Current = Cursors.Default;
-        }
-
-
 
         private void BestSellingProductListCount(object sender, EventArgs e)
         {
@@ -1029,18 +911,16 @@ FROM (
         {
             navigationFrame1.SelectedPage = pageSettings;
             BackupHistory();
+            DbBackupSettingsLoad();
+            RrnLoadStatus();
         }
 
         private void BackupHistory()
         {
             if (Registry.GetValue(@"HKEY_CURRENT_USER\Mpos\Backup", "History", null) == null)
-            {
                 Registry.CurrentUser.CreateSubKey("Mpos").CreateSubKey("Backup").SetValue("History", "Yoxdur");
-            }
             else
-            {
                 lBackupHistory.Text = Registry.CurrentUser.OpenSubKey("Mpos").OpenSubKey("Backup").GetValue("History").ToString();
-            }
         }
 
         private void bLogExport_Click(object sender, EventArgs e)
@@ -1112,44 +992,30 @@ FROM (
         {
             int result = DbProsedures.ProductNegativeStatus(status);
             if (result > 0)
-            {
                 FormHelpers.Log(message);
-            }
             else
-            {
                 FormHelpers.Alert("XƏTA BAŞ VERDİ", Enums.MessageType.Error);
-            }
+
             ProductNegativeStatus();
         }
 
         private void ProductNegativeStatus()
         {
-            var result = DbProsedures.ConvertToDataTable("SELECT STATUS FROM MENFI_AC_BAGLA", CommandType.Text);
+            var result = DbProsedures.ConvertToDataTable("SELECT STATUS FROM MENFI_AC_BAGLA");
             int data = result.Rows[0].Field<int>("STATUS");
             if (data > 0)
-            {
-                lProductNegativeStatus.Text = "Anbar qalığının mənfiyə doğru azalması aktiv edildi";
                 chActive.Checked = true;
-            }
             else
-            {
-                lProductNegativeStatus.Text = "Anbar qalığının mənfiyə doğru azalması deaktiv edildi";
                 chDeactive.Checked = true;
-            }
-            return;
         }
 
         private void HotSalesShow()
         {
             bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("HotSalesShow").ToString());
             if (control)
-            {
                 chHotSales.Checked = true;
-            }
             else
-            {
                 chHotSales.Checked = false;
-            }
         }
 
         private void SendToKassaShow()
@@ -1171,39 +1037,27 @@ FROM (
         {
             bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("IsReceipt").ToString());
             if (control)
-            {
                 chIsReceipt.Checked = true;
-            }
             else
-            {
                 chIsReceipt.Checked = false;
-            }
         }
 
         private void TerminalReceiptPrintShow()
         {
             bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("TerminalCashierPrint").ToString());
             if (control)
-            {
                 chTerminalPrintReceipt.Checked = true;
-            }
             else
-            {
                 chTerminalPrintReceipt.Checked = false;
-            }
         }
 
         private void OtherPayShow()
         {
             bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("OtherPay").ToString());
             if (control)
-            {
                 chOtherPay.Checked = true;
-            }
             else
-            {
                 chOtherPay.Checked = false;
-            }
         }
 
         private void ClinicModuleShow()
@@ -1272,29 +1126,10 @@ FROM (
             }
         }
 
-        private void bKassaAdd_Click(object sender, EventArgs e)
-        {
-            fKassalar f = new fKassalar();
-            f.ShowDialog();
-        }
-
-        private void bKassaPing_Click(object sender, EventArgs e)
-        {
-            Uri uri = new Uri(UserCacheService.Terminal.Ip);
-            FormHelpers.PingHostAsync(uri.Host);
-        }
-
         private void bTereziAdd_Click(object sender, EventArgs e)
         {
             fTereziler f = new fTereziler();
             f.ShowDialog();
-        }
-
-        private void bTereziPing_Click(object sender, EventArgs e)
-        {
-            //var data = GetIpModel();
-            //Uri uri = new Uri(data.Ip);
-            //FormHelpers.PingHostAsync(uri.Host);
         }
 
         private void chSendToKassa_CheckedChanged(object sender, EventArgs e)
@@ -1312,45 +1147,12 @@ FROM (
             }
         }
 
-        private async void chStockAmount_CheckedChanged(object sender, EventArgs e)
-        {
-            await StockProductsList();
-            //if (chStockAmount.Checked)
-            //{
-            //    Registry.CurrentUser.CreateSubKey("Mpos").SetValue("DecreasingAmount", true);
-
-            //}
-            //else
-            //{
-            //    Registry.CurrentUser.CreateSubKey("Mpos").SetValue("DecreasingAmount", false);
-
-            //}
-        }
-
-        private void Get_StockDecreasingAmountShow()
-        {
-            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("DecreasingAmount").ToString());
-            if (control)
-            {
-                chStockAmount.Checked = true;
-            }
-            else
-            {
-                chStockAmount.Checked = false;
-            }
-
-        }
-
         private void chPosSalesMessage_CheckedChanged(object sender, EventArgs e)
         {
             if (chPosSalesMessage.Checked)
-            {
                 Registry.CurrentUser.CreateSubKey("Mpos").SetValue("SuccessMessageVisible", true);
-            }
             else
-            {
                 Registry.CurrentUser.CreateSubKey("Mpos").SetValue("SuccessMessageVisible", false);
-            }
         }
 
         private void accordionControlElement60_Click(object sender, EventArgs e)
@@ -1361,13 +1163,9 @@ FROM (
         private void chOtherPay_CheckedChanged(object sender, EventArgs e)
         {
             if (chOtherPay.Checked)
-            {
                 Registry.CurrentUser.CreateSubKey("Mpos").SetValue("OtherPay", true);
-            }
             else
-            {
                 Registry.CurrentUser.CreateSubKey("Mpos").SetValue("OtherPay", false);
-            }
         }
 
         private void accordionControlElement61_Click(object sender, EventArgs e)
@@ -1429,15 +1227,6 @@ FROM (
             }
         }
 
-        private void gridProducts_DoubleClick(object sender, EventArgs e)
-        {
-            //if (gridProducts.GetFocusedDataRow() != null)
-            //{
-            //    string barcode = gridProducts.GetFocusedRowCellValue("MƏHSUL BARKOD").ToString();
-            //    OpenForm<fQuickAddProduct>(barcode);
-            //}
-        }
-
         private void accordionControlElement66_Click(object sender, EventArgs e)
         {
             OpenForm<fPrinterSettings>();
@@ -1476,7 +1265,6 @@ FROM (
                 return;
             }
             OpenForm<fDiscountProduct>();
-
         }
 
         private void accordionControlElement71_Click(object sender, EventArgs e)
@@ -1534,6 +1322,9 @@ FROM (
             else
                 Registry.CurrentUser.CreateSubKey("Mpos")?.SetValue("ClinicModule", false);
         }
+
+
+        #region [..CLOUD..]
 
         private void chCloud_Click(object sender, EventArgs e)
         {
@@ -1615,6 +1406,125 @@ FROM (
 
             }
         }
+
+        #endregion [..CLOUD..]
+
+
+        #region [..BACKUP..]
+
+        private void spinBackupRemoveDay_Leave(object sender, EventArgs e)
+        {
+            var value = spinBackupRemoveDay.Value;
+            string query = $"UPDATE DbBackupSettings set IsDailyDeleted = @value WHERE UserId = @userId";
+
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, con))
+            {
+                con.Open();
+                cmd.Parameters.AddWithValue("@value", (byte)value);
+                cmd.Parameters.AddWithValue("@userId", UserCacheService.User.Id);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        private void tBackupSendEmail_Properties_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            if (e.Button.Tag.ToString() is "Save")
+            {
+                string query = $"UPDATE DbBackupSettings set Email = @email WHERE UserId = @userId";
+
+                using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    con.Open();
+                    cmd.Parameters.AddWithValue("@email", tBackupSendEmail.Text.TrimStart().Trim());
+                    cmd.Parameters.AddWithValue("@userId", UserCacheService.User.Id);
+                    cmd.ExecuteNonQuery();
+                }
+                tBackupSendEmail.Properties.Buttons[0].Visible = true;
+                tBackupSendEmail.Properties.Buttons[1].Visible = false;
+                tBackupSendEmail.ReadOnly = true;
+
+            }
+            else if (e.Button.Tag.ToString() is "Edit")
+            {
+                tBackupSendEmail.Properties.Buttons[0].Visible = false;
+                tBackupSendEmail.Properties.Buttons[1].Visible = true;
+                tBackupSendEmail.ReadOnly = false;
+            }
+        }
+
+        private void DbBackupSettingsLoad()
+        {
+            var data = DbBackupService.dbBackupSetting;
+            if (data != null)
+            {
+                spinBackupRemoveDay.Value = data.IsDailyDeleted;
+                tBackupSendEmail.Text = data.Email;
+                chBackupAuto.Checked = data.DailyBackup;
+
+                if (string.IsNullOrWhiteSpace(tBackupSendEmail.Text))
+                {
+                    tBackupSendEmail.Properties.Buttons[0].Visible = false;
+                    tBackupSendEmail.Properties.Buttons[1].Visible = true;
+                    tBackupSendEmail.ReadOnly = false;
+                }
+                else
+                {
+                    tBackupSendEmail.Properties.Buttons[0].Visible = true;
+                    tBackupSendEmail.Properties.Buttons[1].Visible = false;
+                    tBackupSendEmail.ReadOnly = true;
+                }
+            }
+        }
+
+        private void chBackupAuto_EditValueChanged(object sender, EventArgs e)
+        {
+            string query = $"UPDATE DbBackupSettings set DailyBackup = @value WHERE UserId = @userId";
+
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, con))
+            {
+                con.Open();
+                cmd.Parameters.AddWithValue("@value", chBackupAuto.Checked);
+                cmd.Parameters.AddWithValue("@userId", UserCacheService.User.Id);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        #endregion  [..BACKUP..]
+
+
+        #region [..RRN MODULE..]
+
+        private void RrnSaveStatus(bool status)
+        {
+            File.WriteAllText(RrnFilePath, status ? "1" : "0");
+        }
+
+        private void RrnLoadStatus()
+        {
+            if (!File.Exists(RrnFilePath))
+            {
+                chRrn.Checked = false;
+                return;
+            }
+
+            var text = File.ReadAllText(RrnFilePath);
+            if (text is "1")
+                chRrn.Checked = true;
+            else
+                chRrn.Checked = false;
+        }
+
+        private void chRrn_CheckedChanged(object sender, EventArgs e)
+        {
+            RrnSaveStatus(chRrn.Checked);
+        }
+
+        #endregion
+
+
 
         #endregion [..SETTINGS..]
 
@@ -1953,10 +1863,13 @@ FROM (
 
         #endregion [..BRANCHES..]
 
+
         private async void MAINSCRRENS_Shown(object sender, EventArgs e)
         {
             DbHelpers.UseLocalConnection();
             await MonthEarningLoadAsync();
+            await SalesTypeLoadAsync();
+            await StockCountAsync();
         }
 
         private async Task MonthEarningLoadAsync()
@@ -2040,11 +1953,136 @@ ORDER BY SaleMonth;";
             series.ValueDataMembers.AddRange(new[] { "TotalGain" });
         }
 
+        private async Task SalesTypeLoadAsync()
+        {
+            var currentDate = DateTime.Now.Date;
+
+            var list = new List<DashboardSaleTypeDto>();
+
+            const string query = @"SELECT 
+    date_ as N'Date',
+    CAST(SUM(NEGD) AS decimal(18,3)) as N'Cash',
+    CAST(SUM(BANK_) AS decimal(18,3)) as N'Bank',
+    CAST(SUM(KART_) AS decimal(18,3)) as N'Card',
+    CAST(SUM(NISYE) AS decimal(18,3)) as N'Credit'
+FROM (
+
+    -- QAİMƏ SATIŞI
+    SELECT 
+        cast(gm.DATE_ as date) date_,
+        0 AS NEGD,
+        SUM(ISNULL( gm.ODENILEN_MEBLEG, 0)) AS BANK_,
+        0 AS KART_,
+        0 AS NISYE
+    FROM GAIME_SATISI_MAIN gm 
+    inner join GAIME_SATISI_DETAILS gsd 
+        on gm.GAIME_SATISI_MAIN_ID = gsd.GAIME_SATISI_MAIN_ID
+    left join gaime_satis_gaytarma gsg 
+        on gsg.gaime_satis_details_id=gsd.GAIME_SATISI_DETAILS_ID 
+    CROSS APPLY (
+        SELECT 
+        (gsd.MIGDARI - isnull(gsg.migdar,0.0)) *
+        (cast(replace(gsd.SATIS_GIYMETI,',','.') as decimal(18,3)) -
+         cast(replace(gsd.ENDIRIM_MEBLEGI,',','.') as decimal(18,3))) as mebleg
+    ) calc
+    where cast(gm.DATE_ as date) = @date 
+    GROUP BY cast(gm.DATE_ as date)
+
+    UNION ALL
+
+    -- POS SATIŞI
+    SELECT 
+        cast(date_ as date),
+        SUM(CASE WHEN NEGD_>UMUMI_MEBLEG THEN UMUMI_MEBLEG ELSE NEGD_ END),
+        0,
+        SUM(KART_),
+        0
+    FROM pos_satis_check_main
+    where cast(date_ as date) = @date 
+    GROUP BY cast(date_ as date)
+
+    UNION ALL
+
+    -- KREDIT SATIŞI
+    SELECT 
+        cast(TARIX as date),
+        0,
+        0,
+        0,
+        SUM(yekun)
+    FROM KREDIT_SATISI_MAIN
+    where cast(TARIX as date) = @date 
+    GROUP BY cast(TARIX as date)
+
+) X
+GROUP BY date_;";
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                cmd.Parameters.Add("@date", SqlDbType.Date).Value = currentDate;
+                cmd.CommandTimeout = 300;
+                await connection.OpenAsync();
+                using (var reader = await cmd.ExecuteReaderAsync())
+                {
+                    if (await reader.ReadAsync())
+                    {
+                        decimal cash = reader.GetDecimal(1);
+                        decimal bank = reader.GetDecimal(2);
+                        decimal card = reader.GetDecimal(3);
+                        decimal credit = reader.GetDecimal(4);
+
+                        list.Add(new DashboardSaleTypeDto { PaymentName = "Nağd", Amount = cash });
+                        list.Add(new DashboardSaleTypeDto { PaymentName = "Kart", Amount = card });
+                        list.Add(new DashboardSaleTypeDto { PaymentName = "Bank", Amount = bank });
+                        list.Add(new DashboardSaleTypeDto { PaymentName = "Nisyə", Amount = credit });
+                    }
+                }
+            }
+
+            var series = chartSalesType.Series[0];
+            series.DataSource = list;
+            series.ArgumentDataMember = "PaymentName";
+            series.ValueDataMembers.Clear();
+            series.ValueDataMembers.AddRange(new[] { "Amount" });
+
+            series.Label.TextPattern = "{A}: {V:C2}";
+            series.LegendTextPattern = "{A}";
+        }
+
+        private async Task StockCountAsync()
+        {
+            const string query = "SELECT COUNT(*) FROM [VW_WAREHOUSE_STOCK]";
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, con))
+            {
+                await con.OpenAsync();
+                using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
+                {
+                    if (await dr.ReadAsync())
+                    {
+                        var data = dr[0].ToString();
+                        lStockCount.Text = data;
+                    }
+                }
+            }
+        }
+
+        private void accordionControlElement36_Click(object sender, EventArgs e)
+        {
+            OpenForm<fBankSaleReport>();
+        }
+
         private class DashboardStatisticsDto
         {
             public string Day { get; set; }
             public DateTime Date { get; set; }
             public decimal TotalGain { get; set; }
+        }
+
+        private class DashboardSaleTypeDto
+        {
+            public string PaymentName { get; set; }
+            public decimal Amount { get; set; }
         }
     }
 }

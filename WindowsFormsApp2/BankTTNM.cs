@@ -21,7 +21,7 @@ namespace WindowsFormsApp2
                 checkBox1.Text = "AÇIQDIR";
 
 
-                string fileName = (Application.StartupPath + @"\BankTTNM.txt");
+                string fileName = Application.StartupPath + @"\BankTTNM.txt";
                 string writeText = "1";
                 FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.Write);
                 StreamWriter sw = new StreamWriter(fs);

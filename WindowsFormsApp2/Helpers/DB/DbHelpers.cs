@@ -1,9 +1,13 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Data.SqlClient;
 using System.IO;
+using System.Net;
+using System.Net.Mail;
 using System.Windows.Forms;
+using Microsoft.Win32;
+using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.Messages;
+using static WindowsFormsApp2.Helpers.DB.DTOs;
 
 namespace WindowsFormsApp2.Helpers.DB
 {
@@ -74,7 +78,12 @@ namespace WindowsFormsApp2.Helpers.DB
                         }
                     }
 
-                    Registry.CurrentUser.CreateSubKey("Mpos").CreateSubKey("Backup").SetValue("History", DateTime.Now.ToString("dd.MM.yyyy - HH:mm"));
+                    // Registry-ə yaz
+                    Registry.CurrentUser
+                        .CreateSubKey("Mpos")
+                        ?.CreateSubKey("Backup")
+                        ?.SetValue("History", DateTime.Now.ToString("dd.MM.yyyy - HH:mm"));
+
                     string successMessage = "Verilənlər bazasının nüsxəsi uğurla yaradıldı";
                     FormHelpers.Log(successMessage);
                     FormHelpers.Alert(successMessage, Enums.MessageType.Success);
@@ -84,12 +93,154 @@ namespace WindowsFormsApp2.Helpers.DB
             {
                 string errorMessage = "Verilənlər bazasının nüsxəsi yaradılarkən xəta yarandı.";
                 FormHelpers.Log(errorMessage);
-                ReadyMessages.ERROR_DEFAULT_MESSAGE($"{errorMessage} Xəta mesajı: {ex.Message}");
+                ReadyMessages.ERROR_DEFAULT_MESSAGE($"{errorMessage} \nXəta mesajı: {ex.Message}");
                 return;
             }
             finally { Cursor.Current = Cursors.Default; }
         }
 
+        private static void DbBackupSettingSeedDataInsert()
+        {
+            string query = @"INSERT INTO DbBackupSettings (DailyBackup, IsDailyDeleted, UserId) 
+VALUES (@DailyBackup, @IsDailyDeleted, @UserId)";
 
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, con))
+            {
+                con.Open();
+                cmd.Parameters.AddWithValue("@DailyBackup", false);
+                cmd.Parameters.AddWithValue("@IsDailyDeleted", 0);
+                cmd.Parameters.AddWithValue("@UserId", UserCacheService.User.Id);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public static DbBackupSettingDto DbBackupSettingLoad()
+        {
+            string query = @"SELECT [Id]
+      ,[DailyBackup]
+      ,[Email]
+      ,[UserId]
+  FROM [DbBackupSettings]
+  WHERE UserId = @userId";
+
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, con))
+            {
+                cmd.Parameters.AddWithValue("@userId", UserCacheService.User.Id);
+                con.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    if (dr.Read())
+                    {
+                        var data = FormHelpers.MapReaderToObject<DbBackupSettingDto>(dr);
+                        return data;
+                    }
+                }
+            }
+
+            DbBackupSettingSeedDataInsert();
+            return DbBackupSettingLoad();
+        }
+
+        public static void AutoBackupOnLogin()
+        {
+            try
+            {
+                string backupPath = Path.Combine(Application.StartupPath, "backup");
+                if (!Directory.Exists(backupPath))
+                    Directory.CreateDirectory(backupPath);
+
+                string lastBackup = Registry.CurrentUser
+                    .OpenSubKey("Mpos\\Backup")
+                    ?.GetValue("History")
+                    ?.ToString();
+
+                if (lastBackup != null)
+                    if (DateTime.TryParseExact(lastBackup, "dd.MM.yyyy - HH:mm",
+                            null, System.Globalization.DateTimeStyles.None, out DateTime lastDate))
+                    {
+                        if (lastDate.Date == DateTime.Today)
+                            return;
+                    }
+
+                string fileName = Path.Combine(backupPath,
+                    $"Mpos_v{Application.ProductVersion}_backup_{DateTime.Now.ToShortDateString()}.bak");
+
+                using (SqlConnection connection = new SqlConnection(CurrentConnectionString))
+                {
+                    connection.Open();
+                    string safePath = fileName.Replace("'", "''");
+
+                    using (SqlCommand command = new SqlCommand(
+                               $"BACKUP DATABASE [{connection.Database}] TO DISK=N'{safePath}' WITH INIT", connection))
+                    {
+                        command.CommandTimeout = 300; // 5 dəqiqə
+                        command.ExecuteNonQuery();
+                    }
+                }
+
+                // Registry-ə yaz
+                Registry.CurrentUser
+                    .CreateSubKey("Mpos")
+                    ?.CreateSubKey("Backup")
+                    ?.SetValue("History", DateTime.Now.ToString("dd.MM.yyyy - HH:mm"));
+
+                FormHelpers.Log("Avtomatik backup uğurla tamamlandı.");
+
+            }
+            catch (Exception ex)
+            {
+                FormHelpers.Log($"Avtomatik backup xətası: {ex.Message}");
+                ReadyMessages.ERROR_DEFAULT_MESSAGE($"Xəta mesajı: {ex.Message}");
+            }
+        }
+
+        public static void CleanOldBackups(int retentionDays)
+        {
+            string backupPath = Path.Combine(Application.StartupPath, "backup");
+
+            if (string.IsNullOrWhiteSpace(backupPath) || retentionDays <= 0)
+                return;
+
+            if (!Directory.Exists(backupPath))
+                return;
+
+            DateTime cutoffDate = DateTime.Now.AddDays(-retentionDays);
+
+            var files = Directory.EnumerateFiles(backupPath, "*.bak", SearchOption.TopDirectoryOnly);
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var fileInfo = new FileInfo(file);
+
+                    // Fayl hələ istifadə olunursa skip et
+                    if (IsFileLocked(fileInfo))
+                        continue;
+
+                    if (fileInfo.LastWriteTime < cutoffDate)
+                        fileInfo.Delete();
+                }
+                catch (Exception ex)
+                {
+                    FormHelpers.Log($"Backup silinə bilmədi: {file} | {ex.Message}");
+                }
+            }
+        }
+
+        private static bool IsFileLocked(FileInfo file)
+        {
+            try
+            {
+                using (file.Open(FileMode.Open, FileAccess.Read, FileShare.None))
+                    return false;
+            }
+            catch
+            {
+                return true;
+            }
+        }
     }
 }

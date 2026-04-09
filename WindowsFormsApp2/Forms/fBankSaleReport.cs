@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using DevExpress.XtraCharts.Design;
-using DevExpress.XtraEditors;
+using System.Data.SqlClient;
 using WindowsFormsApp2.Helpers;
+using WindowsFormsApp2.Helpers.DB;
 
 namespace WindowsFormsApp2.Forms
 {
@@ -20,19 +13,42 @@ namespace WindowsFormsApp2.Forms
             InitializeComponent();
         }
 
-        private void fBankSaleReport_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void bSearch_Click(object sender, EventArgs e)
         {
-            //getall(Convert.ToDateTime(dateStart.Text), Convert.ToDateTime(dateEnd.Text).AddDays(1));
+            var start = dateStart.DateTime;
+            var end = dateEnd.DateTime;
+            DataLoad(start, end.AddDays(1));
         }
 
         private void bPrint_Click(object sender, EventArgs e)
         {
             FormHelpers.ExcelExport(gridControl1, "Qaimə satış hesabatı");
+        }
+
+        private void DataLoad(DateTime start,DateTime end)
+        {
+            const string query = @"SELECT * FROM fn_BankSaleReport(@start,@end)";
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query,con))
+            {
+                cmd.Parameters.Add("@start", SqlDbType.DateTime).Value = start;
+                cmd.Parameters.Add("@end", SqlDbType.DateTime).Value = end;
+                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                using (DataTable dt = new DataTable())
+                {
+                    da.Fill(dt);
+                    gridView1.OptionsView.ShowColumnHeaders = true;
+                    gridControl1.DataSource = dt;
+                    gridView1.BestFitColumns();
+                }
+            }
+        }
+
+        private void fBankSaleReport_Shown(object sender, EventArgs e)
+        {
+            var currentDate = DateTime.Now;
+            dateStart.DateTime = currentDate;
+            dateEnd.DateTime = currentDate;
         }
     }
 }

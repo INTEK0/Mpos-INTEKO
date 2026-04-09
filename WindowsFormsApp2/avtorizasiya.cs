@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using Licence.Services;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.CacheData;
+using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using WindowsFormsApp2.Validations;
 
@@ -61,7 +62,7 @@ namespace WindowsFormsApp2
                 e.SuppressKeyPress = true;
                 e.Handled = true;
                 bLogin_Click(null, new KeyEventArgs(Keys.Enter));
-                
+
             }
             if (e.KeyCode == Keys.Down)
             {
@@ -137,6 +138,17 @@ namespace WindowsFormsApp2
                         };
                     }
                 }
+                var resultDb = DbHelpers.DbBackupSettingLoad();
+                if (resultDb != null)
+                {
+                    DbBackupService.dbBackupSetting = resultDb;
+
+                    if (resultDb.DailyBackup)
+                        DbHelpers.AutoBackupOnLogin();
+
+                    DbHelpers.CleanOldBackups(resultDb.IsDailyDeleted);
+                }
+
             }
             else
             {

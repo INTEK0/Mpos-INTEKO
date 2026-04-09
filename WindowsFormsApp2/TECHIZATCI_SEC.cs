@@ -3,7 +3,6 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using static WindowsFormsApp2.Helpers.FormHelpers;
@@ -27,15 +26,9 @@ namespace WindowsFormsApp2
             GridPanelText(gridView1);
         }
 
-        public async Task StockProductsList()
-        {
-            var data = await StockCacheService.LoadStockAsync();
-            gridControl1.DataSource = data;
-        }
-
         public async Task GetAllData()
         {
-            string query = "EXEC dbo.gaime_Satis_mal_load;";
+            string query = "SELECT * FROM [VW_WAREHOUSE_STOCK]";
 
             using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
             using (SqlCommand cmd = new SqlCommand(query, con))
@@ -43,13 +36,15 @@ namespace WindowsFormsApp2
                 cmd.CommandTimeout = 120;
                 await con.OpenAsync();
                 Cursor.Current = Cursors.WaitCursor;
-                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-                using (DataTable dt = new DataTable())
+
+                using (var reader = await cmd.ExecuteReaderAsync())
                 {
-                    da.Fill(dt);
+                    DataTable dt = new DataTable();
+                    dt.Load(reader);
+
                     gridControl1.DataSource = dt;
-                    gridView1.RefreshData();
                 }
+                Cursor.Current = Cursors.Default;
             }
         }
 
@@ -67,12 +62,12 @@ namespace WindowsFormsApp2
             DataRow dr = gridView1.GetDataRow(gridView1.FocusedRowHandle);
             if (dr != null)
             {
-                techizatci_adi = dr["TƏCHİZATÇI"].ToString();
-                mehsul_adi = dr["MƏHSUL ADI"].ToString();
-                satis_giymeti = dr["SATIŞ QİYMƏTİ"].ToString();
+                techizatci_adi = dr["SupplierName"].ToString();
+                mehsul_adi = dr["ProductName"].ToString();
+                satis_giymeti = dr["SalePrice"].ToString();
                 mal_det_id = Convert.ToInt32(dr["MAL_ALISI_DETAILS_ID"].ToString());
-                anbar_g = dr["ANBAR QALIĞI"].ToString();
-                edv_ = dr["EDV"].ToString();
+                anbar_g = dr["StockQuantity"].ToString();
+                edv_ = dr["TaxName"].ToString();
             }
         }
 
@@ -80,16 +75,11 @@ namespace WindowsFormsApp2
         {
             try
             {
-                //await  StockProductsList();
                 await GetAllData();
             }
             catch (Exception ex)
             {
                 ReadyMessages.ERROR_DEFAULT_MESSAGE(ex.Message);
-            }
-            finally
-            {
-                Cursor.Current = Cursors.Default;
             }
         }
     }

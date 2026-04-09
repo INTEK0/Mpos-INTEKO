@@ -57,11 +57,11 @@ namespace WindowsFormsApp2
         public void techizatci_axtar(string techizatci_adi, string Mehsul_ad, string satis_giymeti,
             int mal_Details, string anbar_galig, string _edv_)
         {
-            textEdit2.Text = techizatci_adi.ToString();
-            textEdit9.Text = Mehsul_ad.ToString();
-            textEdit6.Text = satis_giymeti.ToString();
+            textEdit2.Text = techizatci_adi;
+            textEdit9.Text = Mehsul_ad;
+            textEdit6.Text = satis_giymeti;
             mal_alisi_details_id = mal_Details.ToString();
-            anbargalig = anbar_galig.ToString();
+            anbargalig = anbar_galig;
             edv = _edv_;
             textEdit8.Text = "1";
         }

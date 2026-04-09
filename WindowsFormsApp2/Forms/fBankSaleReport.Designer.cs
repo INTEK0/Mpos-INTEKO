@@ -50,11 +50,10 @@
             this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn18 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn18 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
@@ -104,6 +103,7 @@
             this.dateEnd.Location = new System.Drawing.Point(190, 16);
             this.dateEnd.Margin = new System.Windows.Forms.Padding(4);
             this.dateEnd.Name = "dateEnd";
+            this.dateEnd.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
             this.dateEnd.Properties.Appearance.Font = new System.Drawing.Font("Verdana", 12F);
             this.dateEnd.Properties.Appearance.Options.UseFont = true;
             this.dateEnd.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -119,6 +119,7 @@
             this.dateStart.Location = new System.Drawing.Point(10, 16);
             this.dateStart.Margin = new System.Windows.Forms.Padding(4);
             this.dateStart.Name = "dateStart";
+            this.dateStart.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
             this.dateStart.Properties.Appearance.Font = new System.Drawing.Font("Verdana", 12F);
             this.dateStart.Properties.Appearance.Options.UseFont = true;
             this.dateStart.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -134,7 +135,7 @@
             this.bSearch.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.bSearch.Appearance.Options.UseBackColor = true;
             this.bSearch.Appearance.Options.UseFont = true;
-            this.bSearch.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("simpleButton3.ImageOptions.SvgImage")));
+            this.bSearch.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bSearch.ImageOptions.SvgImage")));
             this.bSearch.ImageOptions.SvgImageSize = new System.Drawing.Size(24, 24);
             this.bSearch.Location = new System.Drawing.Point(369, 16);
             this.bSearch.Name = "bSearch";
@@ -196,11 +197,10 @@
             this.gridColumn6,
             this.gridColumn7,
             this.gridColumn8,
-            this.gridColumn9,
             this.gridColumn10,
             this.gridColumn14,
-            this.gridColumn18,
             this.gridColumn11,
+            this.gridColumn18,
             this.gridColumn12});
             this.gridView1.DetailHeight = 431;
             this.gridView1.GridControl = this.gridControl1;
@@ -214,6 +214,7 @@
             this.gridView1.OptionsView.EnableAppearanceEvenRow = true;
             this.gridView1.OptionsView.EnableAppearanceOddRow = true;
             this.gridView1.OptionsView.RowAutoHeight = true;
+            this.gridView1.OptionsView.ShowColumnHeaders = false;
             this.gridView1.OptionsView.ShowHorizontalLines = DevExpress.Utils.DefaultBoolean.True;
             this.gridView1.OptionsView.ShowIndicator = false;
             this.gridView1.OptionsView.ShowVerticalLines = DevExpress.Utils.DefaultBoolean.True;
@@ -222,9 +223,9 @@
             // gridColumn1
             // 
             this.gridColumn1.Caption = "TARİX";
-            this.gridColumn1.DisplayFormat.FormatString = "dd.MM.yyyy HH:mm:ss";
+            this.gridColumn1.DisplayFormat.FormatString = "dd.MM.yyyy";
             this.gridColumn1.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-            this.gridColumn1.FieldName = "TARİX";
+            this.gridColumn1.FieldName = "Date";
             this.gridColumn1.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn1.Name = "gridColumn1";
             this.gridColumn1.OptionsColumn.AllowEdit = false;
@@ -235,7 +236,7 @@
             // colCustomer
             // 
             this.colCustomer.Caption = "MÜŞTƏRİ ADI";
-            this.colCustomer.FieldName = "CUSTOMER_NAME";
+            this.colCustomer.FieldName = "CustomerName";
             this.colCustomer.Name = "colCustomer";
             this.colCustomer.Visible = true;
             this.colCustomer.VisibleIndex = 1;
@@ -246,12 +247,12 @@
             this.gridColumn13.FieldName = "ProccessNo";
             this.gridColumn13.Name = "gridColumn13";
             this.gridColumn13.Visible = true;
-            this.gridColumn13.VisibleIndex = 15;
+            this.gridColumn13.VisibleIndex = 16;
             // 
             // gridColumn2
             // 
             this.gridColumn2.Caption = "İSTİFADƏÇİ";
-            this.gridColumn2.FieldName = "İSTİFADƏÇİ";
+            this.gridColumn2.FieldName = "Username";
             this.gridColumn2.Name = "gridColumn2";
             this.gridColumn2.Visible = true;
             this.gridColumn2.VisibleIndex = 2;
@@ -259,7 +260,7 @@
             // gridColumn3
             // 
             this.gridColumn3.Caption = "TƏCHİZATÇI";
-            this.gridColumn3.FieldName = "TƏCHİZATÇI";
+            this.gridColumn3.FieldName = "SupplierName";
             this.gridColumn3.Name = "gridColumn3";
             this.gridColumn3.Visible = true;
             this.gridColumn3.VisibleIndex = 3;
@@ -267,7 +268,7 @@
             // gridColumn15
             // 
             this.gridColumn15.Caption = "KATEQORİYA";
-            this.gridColumn15.FieldName = "CATEGORY";
+            this.gridColumn15.FieldName = "CategoryName";
             this.gridColumn15.Name = "gridColumn15";
             this.gridColumn15.Visible = true;
             this.gridColumn15.VisibleIndex = 4;
@@ -275,7 +276,7 @@
             // gridColumn4
             // 
             this.gridColumn4.Caption = "MƏHSUL ADI";
-            this.gridColumn4.FieldName = "MƏHSUL ADI";
+            this.gridColumn4.FieldName = "ProductName";
             this.gridColumn4.Name = "gridColumn4";
             this.gridColumn4.Visible = true;
             this.gridColumn4.VisibleIndex = 5;
@@ -301,7 +302,7 @@
             this.gridColumn5.Caption = "MİQDARI";
             this.gridColumn5.DisplayFormat.FormatString = "N3";
             this.gridColumn5.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
-            this.gridColumn5.FieldName = "MİQDARI";
+            this.gridColumn5.FieldName = "Quantity";
             this.gridColumn5.Name = "gridColumn5";
             this.gridColumn5.Visible = true;
             this.gridColumn5.VisibleIndex = 8;
@@ -309,7 +310,7 @@
             // gridColumn6
             // 
             this.gridColumn6.Caption = "VAHİDİ";
-            this.gridColumn6.FieldName = "VAHİDİ";
+            this.gridColumn6.FieldName = "UnitName";
             this.gridColumn6.Name = "gridColumn6";
             this.gridColumn6.Visible = true;
             this.gridColumn6.VisibleIndex = 9;
@@ -317,9 +318,9 @@
             // gridColumn7
             // 
             this.gridColumn7.Caption = "SATIŞ QİYMƏTİ";
-            this.gridColumn7.DisplayFormat.FormatString = "N2";
+            this.gridColumn7.DisplayFormat.FormatString = "C2";
             this.gridColumn7.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
-            this.gridColumn7.FieldName = "SATIŞ QİYMƏTİ";
+            this.gridColumn7.FieldName = "SalePrice";
             this.gridColumn7.Name = "gridColumn7";
             this.gridColumn7.Visible = true;
             this.gridColumn7.VisibleIndex = 10;
@@ -327,58 +328,55 @@
             // gridColumn8
             // 
             this.gridColumn8.Caption = "ENDİRİM AZN";
-            this.gridColumn8.DisplayFormat.FormatString = "N2";
+            this.gridColumn8.DisplayFormat.FormatString = "C2";
             this.gridColumn8.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
-            this.gridColumn8.FieldName = "ENDİRİM AZN";
+            this.gridColumn8.FieldName = "DiscountAZN";
             this.gridColumn8.Name = "gridColumn8";
             this.gridColumn8.Visible = true;
             this.gridColumn8.VisibleIndex = 11;
             // 
-            // gridColumn9
-            // 
-            this.gridColumn9.Caption = "ÖDƏNİŞ NÖVÜ";
-            this.gridColumn9.FieldName = "ÖDƏNİŞ NÖVÜ";
-            this.gridColumn9.Name = "gridColumn9";
-            this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 12;
-            // 
             // gridColumn10
             // 
             this.gridColumn10.Caption = "CƏM ÖDƏNİŞ";
-            this.gridColumn10.DisplayFormat.FormatString = "N2";
+            this.gridColumn10.DisplayFormat.FormatString = "C2";
             this.gridColumn10.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
-            this.gridColumn10.FieldName = "CƏM ÖDƏNİŞ";
+            this.gridColumn10.FieldName = "TotalAmount";
             this.gridColumn10.Name = "gridColumn10";
             this.gridColumn10.Visible = true;
-            this.gridColumn10.VisibleIndex = 13;
+            this.gridColumn10.VisibleIndex = 12;
             // 
             // gridColumn14
             // 
             this.gridColumn14.Caption = "VERGİ DƏRƏCƏSİ";
             this.gridColumn14.FieldName = "TaxName";
             this.gridColumn14.Name = "gridColumn14";
-            // 
-            // gridColumn18
-            // 
-            this.gridColumn18.Caption = "ƏSAS MƏBLƏĞ";
-            this.gridColumn18.Name = "gridColumn18";
-            this.gridColumn18.Visible = true;
-            this.gridColumn18.VisibleIndex = 16;
+            this.gridColumn14.Visible = true;
+            this.gridColumn14.VisibleIndex = 13;
             // 
             // gridColumn11
             // 
-            this.gridColumn11.Caption = "ƏDV MƏBLƏĞ";
+            this.gridColumn11.Caption = "VERGİ";
             this.gridColumn11.DisplayFormat.FormatString = "N2";
             this.gridColumn11.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
-            this.gridColumn11.FieldName = "VERGİ %";
+            this.gridColumn11.FieldName = "Edvli";
             this.gridColumn11.Name = "gridColumn11";
             this.gridColumn11.Visible = true;
             this.gridColumn11.VisibleIndex = 14;
             // 
+            // gridColumn18
+            // 
+            this.gridColumn18.Caption = "ƏDV-SİZ MƏBLƏĞ";
+            this.gridColumn18.DisplayFormat.FormatString = "N2";
+            this.gridColumn18.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.gridColumn18.FieldName = "Edvli";
+            this.gridColumn18.Name = "gridColumn18";
+            this.gridColumn18.Visible = true;
+            this.gridColumn18.VisibleIndex = 15;
+            // 
             // gridColumn12
             // 
             this.gridColumn12.Caption = "QAİMƏ №";
-            this.gridColumn12.FieldName = "QƏBZ";
+            this.gridColumn12.FieldName = "InvoiceNo";
             this.gridColumn12.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Right;
             this.gridColumn12.Name = "gridColumn12";
             this.gridColumn12.Visible = true;
@@ -396,7 +394,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "QAİMƏ SATIŞ HESABATI";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.Load += new System.EventHandler(this.fBankSaleReport_Load);
+            this.Shown += new System.EventHandler(this.fBankSaleReport_Shown);
             this.tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).EndInit();
             this.groupControl1.ResumeLayout(false);
@@ -433,7 +431,6 @@
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn6;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn7;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn8;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumn9;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn10;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn14;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn11;

@@ -167,7 +167,7 @@ namespace WindowsFormsApp2.Helpers.DB
                 connection.Open();
                 using (SqlCommand cmd = new SqlCommand(query, connection))
                 {
-                    cmd.Parameters.AddWithValue("@userID", Properties.Settings.Default.UserID);
+                    cmd.Parameters.AddWithValue("@userID", UserCacheService.User.Id);
                     using (SqlDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
