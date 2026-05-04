@@ -181,6 +181,7 @@ namespace WindowsFormsApp2
             this.accordionControlElement53 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement52 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement66 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
+            this.accordionControlElement74 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.fluentDesignFormControl1 = new DevExpress.XtraBars.FluentDesignSystem.FluentDesignFormControl();
             this.accordionControlElement1 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.gridView3 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -270,6 +271,7 @@ namespace WindowsFormsApp2
             this.tabAllSettings = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.panelControl13 = new DevExpress.XtraEditors.PanelControl();
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
+            this.chBranch = new DevExpress.XtraEditors.CheckEdit();
             this.chClinicModul = new DevExpress.XtraEditors.CheckEdit();
             this.chHotSales = new DevExpress.XtraEditors.CheckEdit();
             this.lProductNegativeStatus = new DevExpress.XtraEditors.LabelControl();
@@ -277,11 +279,12 @@ namespace WindowsFormsApp2
             this.chDeactive = new DevExpress.XtraEditors.CheckButton();
             this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem32 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem4 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem33 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem34 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem35 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem36 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem4 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.layoutControlItem37 = new DevExpress.XtraLayout.LayoutControlItem();
             this.tabKassa = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.panelControl14 = new DevExpress.XtraEditors.PanelControl();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
@@ -465,15 +468,17 @@ namespace WindowsFormsApp2
             this.panelControl13.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).BeginInit();
             this.layoutControl4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chBranch.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chClinicModul.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chHotSales.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem32)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem33)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem34)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem35)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem36)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem37)).BeginInit();
             this.tabKassa.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl14)).BeginInit();
             this.panelControl14.SuspendLayout();
@@ -1515,7 +1520,8 @@ namespace WindowsFormsApp2
             this.accordionControlElement30,
             this.accordionControlElement54,
             this.accordionControlElement41,
-            this.accordionControlElement39});
+            this.accordionControlElement39,
+            this.accordionControlElement74});
             this.accordionControl1.Location = new System.Drawing.Point(0, 31);
             this.accordionControl1.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.accordionControl1.Name = "accordionControl1";
@@ -1553,8 +1559,6 @@ namespace WindowsFormsApp2
             this.accordionControlElement3.Name = "accordionControlElement3";
             this.accordionControlElement3.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
             this.accordionControlElement3.Text = "Fliallar";
-            this.accordionControlElement3.Visible = false;
-            this.accordionControlElement3.VisibleInFooter = false;
             this.accordionControlElement3.Click += new System.EventHandler(this.accordionControlElement3_Click);
             // 
             // accordionControlElement4
@@ -2151,6 +2155,16 @@ namespace WindowsFormsApp2
             this.accordionControlElement66.Visible = false;
             this.accordionControlElement66.VisibleInFooter = false;
             this.accordionControlElement66.Click += new System.EventHandler(this.accordionControlElement66_Click);
+            // 
+            // accordionControlElement74
+            // 
+            this.accordionControlElement74.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("accordionControlElement74.ImageOptions.SvgImage")));
+            this.accordionControlElement74.ImageOptions.SvgImageColorizationMode = DevExpress.Utils.SvgImageColorizationMode.CommonPalette;
+            this.accordionControlElement74.ImageOptions.SvgImageSize = new System.Drawing.Size(24, 24);
+            this.accordionControlElement74.Name = "accordionControlElement74";
+            this.accordionControlElement74.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
+            this.accordionControlElement74.Text = "Haqqımızda";
+            this.accordionControlElement74.Click += new System.EventHandler(this.accordionControlElement74_Click);
             // 
             // fluentDesignFormControl1
             // 
@@ -3498,6 +3512,7 @@ namespace WindowsFormsApp2
             // 
             this.layoutControl4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.layoutControl4.Controls.Add(this.chBranch);
             this.layoutControl4.Controls.Add(this.chClinicModul);
             this.layoutControl4.Controls.Add(this.chHotSales);
             this.layoutControl4.Controls.Add(this.lProductNegativeStatus);
@@ -3506,9 +3521,26 @@ namespace WindowsFormsApp2
             this.layoutControl4.Location = new System.Drawing.Point(8, 5);
             this.layoutControl4.Name = "layoutControl4";
             this.layoutControl4.Root = this.layoutControlGroup3;
-            this.layoutControl4.Size = new System.Drawing.Size(1145, 156);
+            this.layoutControl4.Size = new System.Drawing.Size(1145, 253);
             this.layoutControl4.TabIndex = 24;
             this.layoutControl4.Text = "layoutControl4";
+            // 
+            // chBranch
+            // 
+            this.chBranch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.chBranch.Location = new System.Drawing.Point(6, 116);
+            this.chBranch.Name = "chBranch";
+            this.chBranch.Properties.Appearance.Font = new System.Drawing.Font("Verdana", 11F);
+            this.chBranch.Properties.Appearance.Options.UseFont = true;
+            this.chBranch.Properties.Caption = "Flial modulu";
+            this.chBranch.Properties.CheckBoxOptions.Style = DevExpress.XtraEditors.Controls.CheckBoxStyle.SvgToggle1;
+            this.chBranch.Properties.CheckBoxOptions.SvgImageSize = new System.Drawing.Size(32, 28);
+            this.chBranch.Properties.GlyphAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.chBranch.Size = new System.Drawing.Size(1133, 32);
+            this.chBranch.StyleController = this.layoutControl4;
+            this.chBranch.TabIndex = 23;
+            this.chBranch.Click += new System.EventHandler(this.chBranch_Click);
             // 
             // chClinicModul
             // 
@@ -3592,14 +3624,15 @@ namespace WindowsFormsApp2
             this.layoutControlGroup3.GroupBordersVisible = false;
             this.layoutControlGroup3.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlItem32,
-            this.emptySpaceItem4,
             this.layoutControlItem33,
             this.layoutControlItem34,
             this.layoutControlItem35,
-            this.layoutControlItem36});
+            this.layoutControlItem36,
+            this.emptySpaceItem4,
+            this.layoutControlItem37});
             this.layoutControlGroup3.Name = "layoutControlGroup3";
             this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(3, 3, 3, 3);
-            this.layoutControlGroup3.Size = new System.Drawing.Size(1145, 156);
+            this.layoutControlGroup3.Size = new System.Drawing.Size(1145, 253);
             this.layoutControlGroup3.TextVisible = false;
             // 
             // layoutControlItem32
@@ -3613,14 +3646,6 @@ namespace WindowsFormsApp2
             this.layoutControlItem32.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem32.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem32.TextVisible = false;
-            // 
-            // emptySpaceItem4
-            // 
-            this.emptySpaceItem4.AllowHotTrack = false;
-            this.emptySpaceItem4.Location = new System.Drawing.Point(0, 110);
-            this.emptySpaceItem4.Name = "emptySpaceItem4";
-            this.emptySpaceItem4.Size = new System.Drawing.Size(1139, 40);
-            this.emptySpaceItem4.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem33
             // 
@@ -3662,6 +3687,23 @@ namespace WindowsFormsApp2
             this.layoutControlItem36.Size = new System.Drawing.Size(1139, 38);
             this.layoutControlItem36.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem36.TextVisible = false;
+            // 
+            // emptySpaceItem4
+            // 
+            this.emptySpaceItem4.AllowHotTrack = false;
+            this.emptySpaceItem4.Location = new System.Drawing.Point(0, 148);
+            this.emptySpaceItem4.Name = "emptySpaceItem4";
+            this.emptySpaceItem4.Size = new System.Drawing.Size(1139, 99);
+            this.emptySpaceItem4.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // layoutControlItem37
+            // 
+            this.layoutControlItem37.Control = this.chBranch;
+            this.layoutControlItem37.Location = new System.Drawing.Point(0, 110);
+            this.layoutControlItem37.Name = "layoutControlItem37";
+            this.layoutControlItem37.Size = new System.Drawing.Size(1139, 38);
+            this.layoutControlItem37.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem37.TextVisible = false;
             // 
             // tabKassa
             // 
@@ -4707,7 +4749,7 @@ namespace WindowsFormsApp2
             this.Name = "MAINSCRRENS";
             this.NavigationControl = this.accordionControl1;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "MPOS  Anbar və Satış Proqramı";
+            this.Text = "MPOS - Anbar və Satış Proqramı";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Activated += new System.EventHandler(this.MAINSCRRENS_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainScreen_FormClosing);
@@ -4830,15 +4872,17 @@ namespace WindowsFormsApp2
             this.panelControl13.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).EndInit();
             this.layoutControl4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chBranch.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chClinicModul.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chHotSales.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem32)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem33)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem34)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem35)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem36)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem37)).EndInit();
             this.tabKassa.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.panelControl14)).EndInit();
             this.panelControl14.ResumeLayout(false);
@@ -5192,6 +5236,9 @@ namespace WindowsFormsApp2
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem34;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem35;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem36;
+        private DevExpress.XtraEditors.CheckEdit chBranch;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem37;
+        private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement74;
     }
 }
 

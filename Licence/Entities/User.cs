@@ -4,6 +4,7 @@ namespace Licence.Entities
 {
     public class User
     {
+        public bool CustomerStatus { get; set; } = true;
         public bool IsActive { get; set; }
         public string LicenceKey { get; set; }
         public string CompanyName { get; set; }

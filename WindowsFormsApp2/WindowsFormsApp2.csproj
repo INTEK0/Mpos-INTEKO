@@ -479,6 +479,12 @@
     <Compile Include="Forms\fIncomeAndExpensesReport.Designer.cs">
       <DependentUpon>fIncomeAndExpensesReport.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\fInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\fInfo.Designer.cs">
+      <DependentUpon>fInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\fLogs.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1242,6 +1248,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fIncomeAndExpensesReport.resx">
       <DependentUpon>fIncomeAndExpensesReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\fInfo.resx">
+      <DependentUpon>fInfo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fKassalar.resx">
       <DependentUpon>fKassalar.cs</DependentUpon>

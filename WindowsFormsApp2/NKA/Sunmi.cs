@@ -436,7 +436,7 @@ namespace WindowsFormsApp2.NKA
                     {
                         var responseBank = BankCheckStatus(salesData.IpAddress, salesData.DocumentUUID);
 
-                        await Task.Delay(10000);
+                        await Task.Delay(16000);
 
                         if (responseBank is null || string.IsNullOrWhiteSpace(responseBank?.data?.rrn))
                             return false;  // Bank uğursuzdursa, satış dayansın
@@ -584,7 +584,7 @@ namespace WindowsFormsApp2.NKA
                     switch (response.message)
                     {
                         case "İcra olunur":
-                            await Task.Delay(5000);
+                            await Task.Delay(16000);
                             return true;
 
                         default:
@@ -920,7 +920,7 @@ FROM
                     rrn = responseCheck.data.rrn;
                     //data.isSendCardPayment = true;
                     data.rrn = refundData.Rrn;
-                    await Task.Delay(10000);
+                    await Task.Delay(16000);
                 }
 
 
@@ -1202,7 +1202,7 @@ WHERE pl.emeliyyat_nomre = '{refundData.ProccessNo}' AND pl.user_id_ = {UserCach
                         responseCheck = Sunmi.BankCheckStatus(refundData.IpAddress, refundData.DocumentUUID);
                     }
 
-                    await Task.Delay(10000);
+                    await Task.Delay(16000);
 
                     if (responseCheck is null || string.IsNullOrWhiteSpace(responseCheck?.data?.rrn))
                     {

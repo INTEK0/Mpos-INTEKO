@@ -22,7 +22,6 @@ using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using static WindowsFormsApp2.App.Helpers.Enums;
-using static WindowsFormsApp2.Helpers.DB.DTOs;
 using static WindowsFormsApp2.Helpers.Enums;
 using static WindowsFormsApp2.Helpers.FormHelpers;
 using DbHelpers = WindowsFormsApp2.Helpers.DB.DbHelpers;
@@ -576,6 +575,7 @@ FROM[terazimalzeme]";
             OtherPayShow();
             SuccessMessageVisibleShow();
             CloudAppShow();
+            BranchShow();
             ClinicModuleShow();
             SysAdminControl();
             await LicenceCheck();
@@ -918,9 +918,9 @@ FROM (
         private void BackupHistory()
         {
             if (Registry.GetValue(@"HKEY_CURRENT_USER\Mpos\Backup", "History", null) == null)
-                Registry.CurrentUser.CreateSubKey("Mpos").CreateSubKey("Backup").SetValue("History", "Yoxdur");
+                Registry.CurrentUser.CreateSubKey("Mpos")?.CreateSubKey("Backup")?.SetValue("History", "Yoxdur");
             else
-                lBackupHistory.Text = Registry.CurrentUser.OpenSubKey("Mpos").OpenSubKey("Backup").GetValue("History").ToString();
+                lBackupHistory.Text = Registry.CurrentUser.OpenSubKey("Mpos")?.OpenSubKey("Backup")?.GetValue("History").ToString();
         }
 
         private void bLogExport_Click(object sender, EventArgs e)
@@ -935,24 +935,21 @@ FROM (
 
         private void LogReport(DateTime start, DateTime end)
         {
-            using (SqlConnection con = new SqlConnection(Properties.Settings.Default.SqlCon))
+            using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand("LogReport", con))
             {
                 con.Open();
-                using (SqlCommand cmd = new SqlCommand("LogReport", con))
+
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@StartDate", start);
+                cmd.Parameters.AddWithValue("@EndDate", end);
+                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                using (DataTable dataTable = new DataTable())
                 {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@StartDate", start);
-                    cmd.Parameters.AddWithValue("@EndDate", end);
-                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-                    {
-                        using (System.Data.DataTable dataTable = new System.Data.DataTable())
-                        {
-                            da.Fill(dataTable);
-                            gridControlLogs.DataSource = dataTable;
-                            //gridView1.Columns["Saat"].DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-                            //gridView1.Columns["Saat"].DisplayFormat.FormatString = "HH:mm:ss";
-                        }
-                    }
+                    da.Fill(dataTable);
+                    gridControlLogs.DataSource = dataTable;
+                    //gridView1.Columns["Saat"].DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+                    //gridView1.Columns["Saat"].DisplayFormat.FormatString = "HH:mm:ss";
                 }
             }
         }
@@ -963,16 +960,14 @@ FROM (
             if (f.ShowDialog() is DialogResult.OK)
             {
                 Cursor.Current = Cursors.WaitCursor;
-                using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon))
+                using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+                using (SqlCommand cmd = new SqlCommand("TRUNCATE TABLE dbo.Logs", connection))
                 {
-                    using (SqlCommand cmd = new SqlCommand("TRUNCATE TABLE dbo.Logs", connection))
-                    {
-                        connection.Open();
-                        cmd.ExecuteNonQuery();
-                        FormHelpers.Alert("Arxiv uğurla təmizləndi", Enums.MessageType.Success);
-                        Log("Arxiv məlumatları silindi");
-                        LogReport(Convert.ToDateTime(dateLogStart.Text), Convert.ToDateTime(dateLogFinish.Text));
-                    }
+                    connection.Open();
+                    cmd.ExecuteNonQuery();
+                    FormHelpers.Alert("Arxiv uğurla təmizləndi", Enums.MessageType.Success);
+                    Log("Arxiv məlumatları silindi");
+                    LogReport(Convert.ToDateTime(dateLogStart.Text), Convert.ToDateTime(dateLogFinish.Text));
                 }
                 Cursor.Current = Cursors.Default;
             }
@@ -1011,7 +1006,7 @@ FROM (
 
         private void HotSalesShow()
         {
-            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("HotSalesShow").ToString());
+            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos")?.GetValue("HotSalesShow").ToString());
             if (control)
                 chHotSales.Checked = true;
             else
@@ -1020,7 +1015,7 @@ FROM (
 
         private void SendToKassaShow()
         {
-            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("SendToKassa").ToString());
+            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos")?.GetValue("SendToKassa").ToString());
             if (control)
             {
                 chSendToKassa.Checked = true;
@@ -1035,7 +1030,8 @@ FROM (
 
         private void XPrinterReceiptPrintShow()
         {
-            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("IsReceipt").ToString());
+            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos")?.GetValue("IsReceipt").ToString());
+
             if (control)
                 chIsReceipt.Checked = true;
             else
@@ -1044,7 +1040,7 @@ FROM (
 
         private void TerminalReceiptPrintShow()
         {
-            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("TerminalCashierPrint").ToString());
+            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos")?.GetValue("TerminalCashierPrint").ToString());
             if (control)
                 chTerminalPrintReceipt.Checked = true;
             else
@@ -1053,7 +1049,7 @@ FROM (
 
         private void OtherPayShow()
         {
-            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("OtherPay").ToString());
+            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos")?.GetValue("OtherPay").ToString());
             if (control)
                 chOtherPay.Checked = true;
             else
@@ -1062,7 +1058,7 @@ FROM (
 
         private void ClinicModuleShow()
         {
-            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("ClinicModule").ToString());
+            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos")?.GetValue("ClinicModule").ToString());
             if (control)
             {
                 chClinicModul.Checked = true;
@@ -1105,6 +1101,21 @@ FROM (
             chCloud.Refresh();
         }
 
+        private void BranchShow()
+        {
+            bool isBranch = false;
+
+            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos")?.GetValue("Branch") ?? false);
+
+            if (control)
+                isBranch = true;
+
+            accordionControlElement3.Visible = isBranch;
+            chBranch.Checked = isBranch;
+
+            chBranch.Refresh();
+        }
+
         private void SuccessMessageVisibleShow()
         {
             bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("SuccessMessageVisible").ToString());
@@ -1117,19 +1128,9 @@ FROM (
         private void chHotSales_CheckedChanged(object sender, EventArgs e)
         {
             if (chHotSales.Checked)
-            {
-                Registry.CurrentUser.CreateSubKey("Mpos").SetValue("HotSalesShow", true);
-            }
+                Registry.CurrentUser.CreateSubKey("Mpos")?.SetValue("HotSalesShow", true);
             else
-            {
-                Registry.CurrentUser.CreateSubKey("Mpos").SetValue("HotSalesShow", false);
-            }
-        }
-
-        private void bTereziAdd_Click(object sender, EventArgs e)
-        {
-            fTereziler f = new fTereziler();
-            f.ShowDialog();
+                Registry.CurrentUser.CreateSubKey("Mpos")?.SetValue("HotSalesShow", false);
         }
 
         private void chSendToKassa_CheckedChanged(object sender, EventArgs e)
@@ -2070,6 +2071,27 @@ GROUP BY date_;";
         private void accordionControlElement36_Click(object sender, EventArgs e)
         {
             OpenForm<fBankSaleReport>();
+        }
+
+        private void chBranch_Click(object sender, EventArgs e)
+        {
+            bool isBranch = false;
+
+            if (!chBranch.Checked)
+            {
+                using (var f = new fAdminPassword())
+                    isBranch = f.ShowDialog() == DialogResult.OK;
+            }
+
+            chBranch.Checked = isBranch;
+            Registry.CurrentUser.CreateSubKey("Mpos")?.SetValue("Branch", isBranch);
+            BranchShow();
+        }
+
+        private void accordionControlElement74_Click(object sender, EventArgs e)
+        {
+            fInfo f = new fInfo();
+            f.ShowDialog();
         }
 
         private class DashboardStatisticsDto
