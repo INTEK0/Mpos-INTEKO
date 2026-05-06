@@ -7,7 +7,6 @@ using System.Threading;
 using System.Windows.Forms;
 using DevExpress.XtraGrid.Localization;
 using DevExpress.XtraReports.Design;
-using DevExpress.XtraWaitForm;
 using Licence.Forms;
 using Licence.Services;
 using Serilog;

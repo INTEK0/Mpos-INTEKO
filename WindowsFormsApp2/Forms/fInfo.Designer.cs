@@ -31,13 +31,13 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(fInfo));
             this.pictureEdit1 = new DevExpress.XtraEditors.PictureEdit();
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
-            this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
+            this.lVersion = new DevExpress.XtraEditors.LabelControl();
+            this.separatorControl1 = new DevExpress.XtraEditors.SeparatorControl();
             this.lWebLink = new DevExpress.XtraEditors.HyperlinkLabelControl();
-            this.labelControl2 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl3 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
-            this.separatorControl1 = new DevExpress.XtraEditors.SeparatorControl();
-            this.lVersion = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl2 = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit1.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
             this.panelControl1.SuspendLayout();
@@ -62,6 +62,7 @@
             this.pictureEdit1.Properties.ZoomAcceleration = 50D;
             this.pictureEdit1.Size = new System.Drawing.Size(473, 70);
             this.pictureEdit1.TabIndex = 1;
+            this.pictureEdit1.Click += new System.EventHandler(this.pictureEdit1_Click);
             // 
             // panelControl1
             // 
@@ -81,22 +82,35 @@
             this.panelControl1.Size = new System.Drawing.Size(483, 167);
             this.panelControl1.TabIndex = 2;
             // 
-            // labelControl1
+            // lVersion
             // 
-            this.labelControl1.Appearance.Font = new System.Drawing.Font("Poppins", 11F);
-            this.labelControl1.Appearance.Options.UseFont = true;
-            this.labelControl1.Location = new System.Drawing.Point(9, 5);
-            this.labelControl1.Name = "labelControl1";
-            this.labelControl1.Size = new System.Drawing.Size(382, 52);
-            this.labelControl1.TabIndex = 0;
-            this.labelControl1.Text = "© 2021-{year} • İNTEKO MMC\r\nMüəllif hüquqları İNTEKO MMC şirkətinə məxsusdur.";
+            this.lVersion.Appearance.Font = new System.Drawing.Font("Poppins", 11F);
+            this.lVersion.Appearance.Options.UseFont = true;
+            this.lVersion.ImageAlignToText = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.lVersion.Location = new System.Drawing.Point(9, 106);
+            this.lVersion.Name = "lVersion";
+            this.lVersion.Size = new System.Drawing.Size(58, 26);
+            this.lVersion.TabIndex = 0;
+            this.lVersion.Text = "Versiya:";
+            // 
+            // separatorControl1
+            // 
+            this.separatorControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.separatorControl1.AutoSizeMode = true;
+            this.separatorControl1.Location = new System.Drawing.Point(3, 63);
+            this.separatorControl1.Margin = new System.Windows.Forms.Padding(1);
+            this.separatorControl1.Name = "separatorControl1";
+            this.separatorControl1.Padding = new System.Windows.Forms.Padding(1);
+            this.separatorControl1.Size = new System.Drawing.Size(475, 3);
+            this.separatorControl1.TabIndex = 2;
             // 
             // lWebLink
             // 
             this.lWebLink.Appearance.Font = new System.Drawing.Font("Poppins", 11F);
             this.lWebLink.Appearance.Options.UseFont = true;
             this.lWebLink.ImageAlignToText = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.lWebLink.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("hyperlinkLabelControl1.ImageOptions.SvgImage")));
+            this.lWebLink.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("lWebLink.ImageOptions.SvgImage")));
             this.lWebLink.ImageOptions.SvgImageColorizationMode = DevExpress.Utils.SvgImageColorizationMode.None;
             this.lWebLink.ImageOptions.SvgImageSize = new System.Drawing.Size(18, 18);
             this.lWebLink.Location = new System.Drawing.Point(9, 74);
@@ -105,21 +119,6 @@
             this.lWebLink.TabIndex = 1;
             this.lWebLink.Text = "www.inteko.az";
             this.lWebLink.Click += new System.EventHandler(this.hyperlinkLabelControl1_Click);
-            // 
-            // labelControl2
-            // 
-            this.labelControl2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelControl2.Appearance.Font = new System.Drawing.Font("Poppins", 11F);
-            this.labelControl2.Appearance.Options.UseFont = true;
-            this.labelControl2.ImageAlignToText = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.labelControl2.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("labelControl2.ImageOptions.SvgImage")));
-            this.labelControl2.ImageOptions.SvgImageColorizationMode = DevExpress.Utils.SvgImageColorizationMode.None;
-            this.labelControl2.ImageOptions.SvgImageSize = new System.Drawing.Size(18, 18);
-            this.labelControl2.Location = new System.Drawing.Point(250, 106);
-            this.labelControl2.Name = "labelControl2";
-            this.labelControl2.Size = new System.Drawing.Size(146, 26);
-            this.labelControl2.TabIndex = 0;
-            this.labelControl2.Text = "(055)206-23-66";
             // 
             // labelControl3
             // 
@@ -151,28 +150,30 @@
             this.labelControl4.TabIndex = 0;
             this.labelControl4.Text = "(055)206-23-55";
             // 
-            // separatorControl1
+            // labelControl2
             // 
-            this.separatorControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.separatorControl1.AutoSizeMode = true;
-            this.separatorControl1.Location = new System.Drawing.Point(3, 63);
-            this.separatorControl1.Margin = new System.Windows.Forms.Padding(1);
-            this.separatorControl1.Name = "separatorControl1";
-            this.separatorControl1.Padding = new System.Windows.Forms.Padding(1);
-            this.separatorControl1.Size = new System.Drawing.Size(475, 3);
-            this.separatorControl1.TabIndex = 2;
+            this.labelControl2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelControl2.Appearance.Font = new System.Drawing.Font("Poppins", 11F);
+            this.labelControl2.Appearance.Options.UseFont = true;
+            this.labelControl2.ImageAlignToText = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.labelControl2.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("labelControl2.ImageOptions.SvgImage")));
+            this.labelControl2.ImageOptions.SvgImageColorizationMode = DevExpress.Utils.SvgImageColorizationMode.None;
+            this.labelControl2.ImageOptions.SvgImageSize = new System.Drawing.Size(18, 18);
+            this.labelControl2.Location = new System.Drawing.Point(250, 106);
+            this.labelControl2.Name = "labelControl2";
+            this.labelControl2.Size = new System.Drawing.Size(146, 26);
+            this.labelControl2.TabIndex = 0;
+            this.labelControl2.Text = "(055)206-23-66";
             // 
-            // lVersion
+            // labelControl1
             // 
-            this.lVersion.Appearance.Font = new System.Drawing.Font("Poppins", 11F);
-            this.lVersion.Appearance.Options.UseFont = true;
-            this.lVersion.ImageAlignToText = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.lVersion.Location = new System.Drawing.Point(9, 106);
-            this.lVersion.Name = "lVersion";
-            this.lVersion.Size = new System.Drawing.Size(58, 26);
-            this.lVersion.TabIndex = 0;
-            this.lVersion.Text = "Versiya:";
+            this.labelControl1.Appearance.Font = new System.Drawing.Font("Poppins", 11F);
+            this.labelControl1.Appearance.Options.UseFont = true;
+            this.labelControl1.Location = new System.Drawing.Point(9, 5);
+            this.labelControl1.Name = "labelControl1";
+            this.labelControl1.Size = new System.Drawing.Size(382, 52);
+            this.labelControl1.TabIndex = 0;
+            this.labelControl1.Text = "© 2021-{year} • İNTEKO MMC\r\nMüəllif hüquqları İNTEKO MMC şirkətinə məxsusdur.";
             // 
             // fInfo
             // 

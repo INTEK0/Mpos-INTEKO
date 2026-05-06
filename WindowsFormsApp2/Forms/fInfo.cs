@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Net.Http;
+using System.Text;
+using System.Text.Json;
 using System.Windows.Forms;
 
 namespace WindowsFormsApp2.Forms
@@ -24,6 +27,34 @@ namespace WindowsFormsApp2.Forms
                 FileName = lWebLink.Text,
                 UseShellExecute = true
             });
+        }
+
+        private async void pictureEdit1_Click(object sender, EventArgs e)
+        {
+            var data = new
+            {
+                customerName = "Ali Aliyev",
+                customerPhone = "+994501234567",
+                gender = "Male",
+                productName = "Kola",
+                categoryName = "İçkilər",
+                quantity = 2,
+                barcode = "1234567890123",
+                purchasePrice = 1.2,
+                salePrice = 1.5,
+                unitType = "ədəd",
+                taxRate = 18,
+                cashierName = "Admin"
+            };
+
+            var json = JsonSerializer.Serialize(data);
+
+            var client = new HttpClient();
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync("https://localhost:44377/api/Sale", content);
+
+            var result = await response.Content.ReadAsStringAsync();
         }
     }
 }

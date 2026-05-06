@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Data.SqlClient;
-using System.Drawing;
 using System.Windows.Forms;
 using Licence.Services;
 using WindowsFormsApp2.Helpers;
@@ -33,7 +31,6 @@ namespace WindowsFormsApp2
                     textEdit2.Text = password;
                     bClose.PerformClick();
                 }
-
             }
         }
 

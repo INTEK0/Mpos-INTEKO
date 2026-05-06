@@ -388,7 +388,6 @@ namespace WindowsFormsApp2.NKA
                 {
                     conn.Open();
                     using (SqlDataReader dr = cmd.ExecuteReader())
-                    {
                         while (dr.Read())
                         {
                             string name = dr["name"].ToString();
@@ -412,7 +411,6 @@ namespace WindowsFormsApp2.NKA
                             };
                             items.Add(itemProduct);
                         }
-                    }
                 }
 
                 Data data = new Data

@@ -444,11 +444,6 @@ FROM[terazimalzeme]";
             OpenForm<fAddCustomer>();
         }
 
-        private void accordionControlElement53_Click(object sender, EventArgs e)
-        {
-            tabPaneSettings.SelectedPage = tabModul;
-        }
-
         private void accordionControlElement23_Click(object sender, EventArgs e)
         {
             OpenForm<fAddGuarantor>();
@@ -889,10 +884,6 @@ FROM (
             else if (e.Page == tabLicence)
             {
                 lLicenceKey.Text = LicenseService.Instance.GetLicenceKey();
-            }
-            else if (e.Page == tabModul)
-            {
-
             }
         }
 
@@ -2091,6 +2082,12 @@ GROUP BY date_;";
         private void accordionControlElement74_Click(object sender, EventArgs e)
         {
             fInfo f = new fInfo();
+            f.ShowDialog();
+        }
+
+        private void accordionControlElement53_Click(object sender, EventArgs e)
+        {
+            fApiIntegration f = new fApiIntegration();
             f.ShowDialog();
         }
 

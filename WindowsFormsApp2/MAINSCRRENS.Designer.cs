@@ -315,9 +315,6 @@ namespace WindowsFormsApp2
             this.layoutControlItem22 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem23 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem24 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.tabModul = new DevExpress.XtraBars.Navigation.TabNavigationPage();
-            this.tileControl1 = new DevExpress.XtraEditors.TileControl();
-            this.tileGroup1 = new DevExpress.XtraEditors.TileGroup();
             this.pageBranch = new DevExpress.XtraBars.Navigation.NavigationPage();
             this.groupControl5 = new DevExpress.XtraEditors.GroupControl();
             this.xtraTabControl1 = new DevExpress.XtraTab.XtraTabControl();
@@ -509,7 +506,6 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem22)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem24)).BeginInit();
-            this.tabModul.SuspendLayout();
             this.pageBranch.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl5)).BeginInit();
             this.groupControl5.SuspendLayout();
@@ -2134,9 +2130,7 @@ namespace WindowsFormsApp2
             // 
             this.accordionControlElement53.Name = "accordionControlElement53";
             this.accordionControlElement53.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
-            this.accordionControlElement53.Text = "Modullar";
-            this.accordionControlElement53.Visible = false;
-            this.accordionControlElement53.VisibleInFooter = false;
+            this.accordionControlElement53.Text = "API İnteqrasiya";
             this.accordionControlElement53.Click += new System.EventHandler(this.accordionControlElement53_Click);
             // 
             // accordionControlElement52
@@ -2544,7 +2538,6 @@ namespace WindowsFormsApp2
             this.tabPaneSettings.Controls.Add(this.tabAllSettings);
             this.tabPaneSettings.Controls.Add(this.tabKassa);
             this.tabPaneSettings.Controls.Add(this.tabLicence);
-            this.tabPaneSettings.Controls.Add(this.tabModul);
             this.tabPaneSettings.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabPaneSettings.Location = new System.Drawing.Point(0, 0);
             this.tabPaneSettings.LookAndFeel.SkinName = "WXI";
@@ -2555,7 +2548,6 @@ namespace WindowsFormsApp2
             this.tabPaneSettings.Pages.AddRange(new DevExpress.XtraBars.Navigation.NavigationPageBase[] {
             this.tabAllSettings,
             this.tabKassa,
-            this.tabModul,
             this.tabDatabase,
             this.tabLicence,
             this.tabLog});
@@ -4084,31 +4076,6 @@ namespace WindowsFormsApp2
             this.layoutControlItem24.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem24.TextVisible = false;
             // 
-            // tabModul
-            // 
-            this.tabModul.Caption = "Modullar";
-            this.tabModul.Controls.Add(this.tileControl1);
-            this.tabModul.Name = "tabModul";
-            this.tabModul.PageVisible = false;
-            this.tabModul.Size = new System.Drawing.Size(1157, 806);
-            // 
-            // tileControl1
-            // 
-            this.tileControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tileControl1.Groups.Add(this.tileGroup1);
-            this.tileControl1.Location = new System.Drawing.Point(0, 0);
-            this.tileControl1.MaxId = 5;
-            this.tileControl1.Name = "tileControl1";
-            this.tileControl1.Padding = new System.Windows.Forms.Padding(3);
-            this.tileControl1.Size = new System.Drawing.Size(1157, 806);
-            this.tileControl1.TabIndex = 68;
-            this.tileControl1.Text = "tileControl1";
-            // 
-            // tileGroup1
-            // 
-            this.tileGroup1.Name = "tileGroup1";
-            this.tileGroup1.Text = "tileGroup1";
-            // 
             // pageBranch
             // 
             this.pageBranch.Controls.Add(this.groupControl5);
@@ -4913,7 +4880,6 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem22)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem24)).EndInit();
-            this.tabModul.ResumeLayout(false);
             this.pageBranch.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.groupControl5)).EndInit();
             this.groupControl5.ResumeLayout(false);
@@ -5100,10 +5066,7 @@ namespace WindowsFormsApp2
         private DevExpress.XtraEditors.CheckEdit chTerminalPrintReceipt;
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement49;
         private DevExpress.XtraEditors.CheckEdit chClinicModul;
-        private DevExpress.XtraBars.Navigation.TabNavigationPage tabModul;
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement53;
-        private DevExpress.XtraEditors.TileControl tileControl1;
-        private DevExpress.XtraEditors.TileGroup tileGroup1;
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement60;
         private DevExpress.XtraEditors.CheckEdit chOtherPay;
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement61;

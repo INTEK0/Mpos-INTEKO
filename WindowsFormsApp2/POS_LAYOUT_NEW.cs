@@ -8,6 +8,7 @@ using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using Microsoft.Owin.Hosting;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
@@ -17,6 +18,7 @@ using DevExpress.XtraBars.Navigation;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid;
 using DevExpress.XtraGrid.Views.Grid;
+using Microsoft.Owin.Hosting;
 using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
 using RestSharp;
@@ -37,6 +39,8 @@ namespace WindowsFormsApp2
 {
     public partial class POS_LAYOUT_NEW : BaseForm
     {
+        private IDisposable _server; //API Integration server
+
         private GridControl _gridScale;
         private GridView _viewScale;
         private readonly bool MessageVisible = FormHelpers.SuccessMessageVisible();
@@ -1929,10 +1933,13 @@ group by
         }
 
 
-
         private void POS_LAYOUT_NEW_Shown(object sender, EventArgs e)
         {
             DbHelpers.UseLocalConnection();
+
+            _server = WebApp.Start<WebApi.Startup>("http://+:9000/");
+            Serilog.Log.Information("API Service started:");
+            MessageBox.Show("API işləyir: http://+:9000");
         }
 
         private void bPeriodicReport_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
