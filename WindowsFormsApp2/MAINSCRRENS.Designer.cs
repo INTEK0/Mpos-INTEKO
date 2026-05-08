@@ -1739,28 +1739,24 @@ namespace WindowsFormsApp2
             this.accordionControlElement13.Text = "Transfer";
             this.accordionControlElement13.Visible = false;
             this.accordionControlElement13.VisibleInFooter = false;
-            this.accordionControlElement13.Click += new System.EventHandler(this.accordionControlElement13_Click);
             // 
             // accordionControlElement14
             // 
             this.accordionControlElement14.Name = "accordionControlElement14";
             this.accordionControlElement14.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
             this.accordionControlElement14.Text = "Anbardan Anbara";
-            this.accordionControlElement14.Click += new System.EventHandler(this.accordionControlElement14_Click);
             // 
             // accordionControlElement15
             // 
             this.accordionControlElement15.Name = "accordionControlElement15";
             this.accordionControlElement15.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
             this.accordionControlElement15.Text = "Anbardan Obyekte";
-            this.accordionControlElement15.Click += new System.EventHandler(this.accordionControlElement15_Click);
             // 
             // accordionControlElement16
             // 
             this.accordionControlElement16.Name = "accordionControlElement16";
             this.accordionControlElement16.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
             this.accordionControlElement16.Text = "Obyekten Anbara";
-            this.accordionControlElement16.Click += new System.EventHandler(this.accordionControlElement16_Click);
             // 
             // accordionControlElement21
             // 

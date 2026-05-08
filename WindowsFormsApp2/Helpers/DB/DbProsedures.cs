@@ -1473,7 +1473,7 @@ FROM
             }
         }
 
-        public static int InsertCustomer(Customer data)
+        public static int InsertCustomer(DbAccess.Entities.Customer data)
         {
             using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
@@ -1591,7 +1591,7 @@ FROM
             }
         }
 
-        public static bool UpdateCustomer(Customer data)
+        public static bool UpdateCustomer(DbAccess.Entities.Customer data)
         {
             const string query = "UPDATE_MUSTERI";
             using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))

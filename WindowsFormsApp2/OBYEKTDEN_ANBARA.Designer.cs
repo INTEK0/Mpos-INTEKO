@@ -108,7 +108,6 @@ namespace WindowsFormsApp2
             this.barButtonItem3.ItemAppearance.Normal.Options.UseBackColor = true;
             this.barButtonItem3.ItemAppearance.Normal.Options.UseForeColor = true;
             this.barButtonItem3.Name = "barButtonItem3";
-            this.barButtonItem3.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem3_ItemClick);
             // 
             // ribbonPage1
             // 

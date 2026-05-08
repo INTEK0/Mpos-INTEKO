@@ -5,9 +5,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using DevExpress.Xpo.DB.Helpers;
 using DevExpress.XtraEditors;
-using DevExpress.XtraGrid.Localization;
 using Newtonsoft.Json;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
@@ -18,7 +16,7 @@ namespace WindowsFormsApp2.Forms
     public partial class fCustomers<TParent> : BaseForm where TParent : BaseForm
     {
         private readonly TParent parentForm;
-        private DatabaseClasses.Customer customer;
+        private DbAccess.Entities.Customer customer;
         private readonly string filePath = $@"{Application.StartupPath}\LocalFiles\GridColumnsSettings.json";
 
 
@@ -80,7 +78,7 @@ namespace WindowsFormsApp2.Forms
                     {
                         if (reader.Read())
                         {
-                            customer = FormHelpers.MapReaderToObject<DatabaseClasses.Customer>(reader);
+                            customer = FormHelpers.MapReaderToObject<DbAccess.Entities.Customer>(reader);
                         }
                     }
                 }

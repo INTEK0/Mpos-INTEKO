@@ -6,7 +6,6 @@ namespace WebApi.Entities
     {
         public string CustomerName { get; set; }
         public string CustomerPhone { get; set; }
-        public string Gender { get; set; }
         public List<SaleItemDto> Items { get; set; }
         public string CashierName { get; set; } = "Admin";
     }

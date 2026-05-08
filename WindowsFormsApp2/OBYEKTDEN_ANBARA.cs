@@ -1,16 +1,9 @@
-﻿using DevExpress.XtraBars;
-using DevExpress.XtraEditors;
-using DevExpress.XtraGrid.Views.Grid;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using DevExpress.XtraBars;
+using DevExpress.XtraEditors;
+using DevExpress.XtraGrid.Views.Grid;
 
 namespace WindowsFormsApp2
 {
@@ -205,10 +198,5 @@ namespace WindowsFormsApp2
             //getall();
         }
 
-        private void barButtonItem3_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            Obyektden_anbara_gonderilenler oa = new Obyektden_anbara_gonderilenler();
-            oa.Show();
-        }
     }
 }

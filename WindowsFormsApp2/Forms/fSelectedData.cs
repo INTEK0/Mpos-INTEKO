@@ -1,5 +1,4 @@
-﻿using DevExpress.XtraGrid.Localization;
-using System;
+﻿using System;
 using System.Data.SqlClient;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
@@ -13,7 +12,7 @@ namespace WindowsFormsApp2.Forms
     {
         private SelectedDataType _selectedData;
         private readonly TParent _parent;
-        private Customer _customer;
+        private DbAccess.Entities.Customer _customer;
         private Doctor _doctor;
         private Guarantor _zamin;
 
@@ -103,7 +102,7 @@ WHERE IsDeleted = 0";
                     {
                         if (reader.Read())
                         {
-                            _customer = FormHelpers.MapReaderToObject<DatabaseClasses.Customer>(reader);
+                            _customer = FormHelpers.MapReaderToObject<DbAccess.Entities.Customer>(reader);
                         }
                     }
                 }

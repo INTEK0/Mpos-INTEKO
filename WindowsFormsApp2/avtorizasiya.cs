@@ -108,7 +108,7 @@ namespace WindowsFormsApp2
                 if (user.IsAdmin)
                 {
                     this.Hide();
-                    MAINSCRRENS f2 = new MAINSCRRENS(1);
+                    MAINSCRRENS f2 = new MAINSCRRENS();
                     f2.Show();
                 }
                 else
@@ -126,7 +126,7 @@ namespace WindowsFormsApp2
                     }
                     else
                     {
-                        MAINSCRRENS f2 = new MAINSCRRENS(0);
+                        MAINSCRRENS f2 = new MAINSCRRENS();
                         f2.Show();
                         f2.FormClosed += (s, args) =>
                         {

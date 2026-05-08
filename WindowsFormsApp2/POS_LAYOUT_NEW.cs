@@ -14,6 +14,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DevExpress.XtraBars;
 using DevExpress.XtraBars.Navigation;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid;
@@ -77,6 +78,8 @@ namespace WindowsFormsApp2
             textEdit2.Text = DateTime.Now.ToShortDateString();
             textEdit1.Text = DbProsedures.GET_SalesProcessNo();
             textEdit11.Text = await DbProsedures.GET_TotalSalesCount();
+            bScaleSync.Visibility = UserCacheService.User.UserRole.ScalesProductDownload ? BarItemVisibility.Always : BarItemVisibility.Never;
+            
             AutoAsync();
 
             PrintKassaOrPrinterShow();
@@ -5888,12 +5891,6 @@ WHERE rn = 1;";
 
         private void bScaleSync_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            if (!UserCacheService.User.UserRole.ScalesProductDownload)
-            {
-                FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
-                return;
-            }
-
             var terezi = DbProsedures.GetTerezi();
 
             if (terezi == null)

@@ -25,7 +25,7 @@ namespace WindowsFormsApp2.Forms
     {
         private readonly DatabaseClasses.User _user = DbProsedures.GetUser();
         private readonly FormHelpers.IpModel _terminal = UserCacheService.Terminal;
-        private Customer _customer;
+        private DbAccess.Entities.Customer _customer;
         private Guarantor _guarantor;
         private string productId = "0";
         private string taxId = "";
@@ -59,7 +59,7 @@ namespace WindowsFormsApp2.Forms
 
         public override void ReceiveData<T>(T data)
         {
-            if (data is Customer customer)
+            if (data is DbAccess.Entities.Customer customer)
             {
                 _customer = customer;
                 tCustomerName.Text = $"{customer.Name} {customer.Surname} {customer.FatherName}";

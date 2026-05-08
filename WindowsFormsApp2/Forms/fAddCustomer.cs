@@ -25,13 +25,9 @@ namespace WindowsFormsApp2.Forms
         private void bAdd_Click(object sender, EventArgs e)
         {
             if (bAdd.Text == Enums.GetEnumDescription(Enums.Operation.Add))
-            {
                 Add();
-            }
             else if (bAdd.Text == Enums.GetEnumDescription(Enums.Operation.Update))
-            {
                 Edit();
-            }
         }
 
         private void bClear_Click(object sender, EventArgs e)
@@ -63,7 +59,7 @@ namespace WindowsFormsApp2.Forms
                 return;
             }
 
-            Customer customer = new Customer();
+            var customer = new DbAccess.Entities.Customer();
             customer.ProccessNo = tProccessNo.Text;
             customer.CompanyName = tCompanyName.Text.Trim();
             customer.Voen = tVoen.Text.Trim();
@@ -105,7 +101,7 @@ namespace WindowsFormsApp2.Forms
             int response = DbProsedures.InsertCustomer(customer);
             if (response >= 0)
             {
-                FormHelpers.Alert($"{tNameSurname.Text} müştərisi uğurla yaradıldı", Enums.MessageType.Success);
+                FormHelpers.Alert($"Müştəri uğurla yaradıldı", Enums.MessageType.Success);
                 FormHelpers.Log($"{tNameSurname.Text} müştərisi yaradıldı");
                 Clear();
                 tProccessNo.Text = DbProsedures.GET_CustomerProccessNo();
@@ -130,7 +126,7 @@ namespace WindowsFormsApp2.Forms
                 return;
             }
 
-            Customer customer = new Customer();
+            var customer = new DbAccess.Entities.Customer();
             customer.CustomerID = Convert.ToInt32(lCustomerID.Text);
             customer.ProccessNo = tProccessNo.Text;
             customer.CompanyName = tCompanyName.Text.Trim();
@@ -182,7 +178,7 @@ namespace WindowsFormsApp2.Forms
 
         public override void ReceiveData<T>(T data)
         {
-            if (data is Customer customer)
+            if (data is DbAccess.Entities.Customer customer)
             {
                 lCustomerID.Text = customer.CustomerID.ToString();
                 tProccessNo.Text = customer.ProccessNo;

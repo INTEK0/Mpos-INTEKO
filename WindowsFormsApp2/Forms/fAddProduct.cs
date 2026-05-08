@@ -40,6 +40,8 @@ namespace WindowsFormsApp2.Forms
 
         private void fAddProduct_Load(object sender, EventArgs e)
         {
+            bAlinanMallar.Visible = UserCacheService.User.UserRole.Report;
+            bDelete.Visible = UserCacheService.User.UserRole.Report;
             dateTarix.Properties.MaxDate = DateTime.Today;
             dateTarix.DateTime = DateTime.Now;
             SupplierDataLoad();
@@ -263,11 +265,6 @@ namespace WindowsFormsApp2.Forms
 
         private void bAlinanMallar_Click(object sender, EventArgs e)
         {
-            if (!UserCacheService.User.UserRole.Report)
-            {
-                FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
-                return;
-            }
             FormHelpers.OpenForm<MEHSUL_ALIS_HESABATI>();
         }
 
@@ -642,12 +639,6 @@ namespace WindowsFormsApp2.Forms
 
         private void bDelete_Click(object sender, EventArgs e)
         {
-            if (!UserCacheService.User.UserRole.ProductDelete)
-            {
-                FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
-                return;
-            }
-
             if (string.IsNullOrWhiteSpace(tBarcode.Text))
                 return;
 

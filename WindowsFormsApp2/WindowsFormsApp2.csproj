@@ -1080,12 +1080,6 @@
     <Compile Include="OBYEKTDEN_ANBARA.Designer.cs">
       <DependentUpon>OBYEKTDEN_ANBARA.cs</DependentUpon>
     </Compile>
-    <Compile Include="Obyektden_anbara_gonderilenler.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Obyektden_anbara_gonderilenler.Designer.cs">
-      <DependentUpon>Obyektden_anbara_gonderilenler.cs</DependentUpon>
-    </Compile>
     <Compile Include="POS_MEHSUL_AXTARIS.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1461,9 +1455,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="OBYEKTDEN_ANBARA.resx">
       <DependentUpon>OBYEKTDEN_ANBARA.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Obyektden_anbara_gonderilenler.resx">
-      <DependentUpon>Obyektden_anbara_gonderilenler.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PASSWORDEMAIL.resx">
       <DependentUpon>PASSWORDEMAIL.cs</DependentUpon>
@@ -1947,6 +1938,10 @@
     <None Include="Resources\Mpos_Logo_Text.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DbAccess\DbAccess.csproj">
+      <Project>{fa649070-8782-4e10-9b07-fd78de23265a}</Project>
+      <Name>DbAccess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Licence\Licence.csproj">
       <Project>{60b454b3-dabf-49af-a4a8-8e804d9ebbc2}</Project>
       <Name>Licence</Name>
