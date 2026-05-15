@@ -79,7 +79,7 @@ namespace WindowsFormsApp2
             textEdit1.Text = DbProsedures.GET_SalesProcessNo();
             textEdit11.Text = await DbProsedures.GET_TotalSalesCount();
             bScaleSync.Visibility = UserCacheService.User.UserRole.ScalesProductDownload ? BarItemVisibility.Always : BarItemVisibility.Never;
-            
+
             AutoAsync();
 
             PrintKassaOrPrinterShow();
@@ -400,7 +400,6 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                 {
                     await getall(tBarcode.Text);
                     await get(textEdit1.Text);
-                    get_say_birmal(tBarcode.Text, textEdit1.Text);
                     get_cem(textEdit1.Text);
                 }
 
@@ -409,37 +408,6 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
                 tCustomer.Text = string.Empty;
                 tBarcode.Text = string.Empty;
             }
-        }
-
-        private void get_say_birmal(string barkod, string em_nomre)
-        {
-            //try
-            //{
-            //    using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon))
-            //    {
-            //        connection.Open();
-            //        string query = "exec CALC_SAY_CALCULATION @barkod=@pricepoint ,@emeliyyat_nomre=@pricepoint1,@userID=@userId";
-            //        using (SqlCommand cmd = new SqlCommand(query, connection))
-            //        {
-            //            cmd.Parameters.AddWithValue("@pricepoint", barkod);
-            //            cmd.Parameters.AddWithValue("@pricepoint1", em_nomre);
-            //            cmd.Parameters.AddWithValue("@userId", Properties.Settings.Default.UserID);
-            //            using (SqlDataReader dr = cmd.ExecuteReader())
-            //            {
-            //                while (dr.Read())
-            //                {
-            //                    textEdit10.Text = dr["SAY"].ToString();
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-            //catch (Exception e)
-            //{
-            //    ReadyMessages.ERROR_DEFAULT_MESSAGE("Xəta!\n" + e.Message);
-            //}
-
-
         }
 
         /// <summary>
@@ -725,8 +693,10 @@ LEFT JOIN pos_guzest pg
 
                     using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
                     {
-                        if (await dr.ReadAsync())
+                        bool hasData = false;
+                        while (await dr.ReadAsync())
                         {
+                            hasData = true;
                             int count = Convert.ToInt32(dr["say"]);
 
                             for (int i = 0; i < count; i++)
@@ -750,9 +720,10 @@ LEFT JOIN pos_guzest pg
 
                             }
                         }
-                        else
+                        if (!hasData)
                         {
-                            XtraMessageBox.Show("Məhsul tapılmadı",
+                            XtraMessageBox.Show(
+                                "Məhsul tapılmadı",
                                 nameof(Enums.HeaderMessage.Bildiriş),
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Warning);
@@ -1940,9 +1911,9 @@ group by
         {
             DbHelpers.UseLocalConnection();
 
-            _server = WebApp.Start<WebApi.Startup>("http://+:9000/");
-            Serilog.Log.Information("API Service started:");
-            MessageBox.Show("API işləyir: http://+:9000");
+            //_server = WebApp.Start<WebApi.Startup>("http://+:9000/");
+            //Serilog.Log.Information("API Service started:");
+            //MessageBox.Show("API işləyir: http://+:9000");
         }
 
         private void bPeriodicReport_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)

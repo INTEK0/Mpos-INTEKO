@@ -116,12 +116,6 @@ namespace Licence.Services
 
         public async Task<User> RequestKeyControl(string key)
         {
-            if (!FormHelpers.HasInternetConnection())
-            {
-                //   XtraMessageBox.Show("İnternet bağlantınız yoxdur.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return null;
-            }
-
             if (string.IsNullOrWhiteSpace(key) || key is "Yoxdur")
             {
                 return null;

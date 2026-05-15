@@ -74,7 +74,8 @@ namespace Licence.Forms
                 TerminalSerialNumber = tTerminalSN.Text.Trim(),
                 LicenceVersion = Application.ProductVersion,
                 IsActive = chIsActive.Checked,
-                LicenceExpireDate = dateRegister.DateTime.AddMonths(1)
+                LicenceExpireDate = dateRegister.DateTime.AddMonths(1),
+                CustomerStatus = true
             };
 
             var validator = new UserValidation();

@@ -33,7 +33,7 @@ namespace WebApi.Controllers
                 var customerId = SelectedCustomer(data, cashierId);
 
 
-                return Ok(new { message = "Successfull Operation" });
+                return Ok(new {cashierId = cashierId, customerId = customerId, message ="Successfull Operation" });
             }
             catch (Exception e)
             {
@@ -175,6 +175,11 @@ INSERT INTO SelectedCustomers (CustomerId,CreatedUserId) VALUES (@CustomerId,@Us
                     }
                 }
             }
+        }
+
+        private int SelectedProduct()
+        {
+            return 0;
         }
     }
 }
