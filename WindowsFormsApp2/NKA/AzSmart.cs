@@ -189,7 +189,7 @@ namespace WindowsFormsApp2.NKA
                     decimal _purchasePrice = Convert.ToDecimal(dr["purchasePrice"]);
                     decimal quantity = Convert.ToDecimal(dr["quantity"]);
                     string taxName = dr["TaxName"].ToString();
-                    int TaxCode = Convert.ToInt32(dr["TaxCode"]);
+                    string taxCode = dr["TaxCode"].ToString();
                     int calcType = Convert.ToInt32(dr["calcType"]);
                     int TaxPrc = Convert.ToInt32(dr["TaxPrc"]);
 
@@ -214,7 +214,7 @@ namespace WindowsFormsApp2.NKA
                             taxName = taxName,
                             taxPrc = TaxPrc,
                             calcType = calcType,
-                            //taxCode = 0
+                            taxCode = taxCode
                         }
                     };
 
@@ -1200,7 +1200,7 @@ namespace WindowsFormsApp2.NKA
                 public string taxName { get; set; }
                 public string fullName { get; set; }
                 public int taxPrc { get; set; }
-                public int? taxCode { get; set; } = null;
+                public string taxCode { get; set; } = null;
                 public int calcType { get; set; } = 1;
             }
 

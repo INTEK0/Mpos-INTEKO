@@ -288,6 +288,8 @@ namespace WindowsFormsApp2
             this.tabKassa = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.panelControl14 = new DevExpress.XtraEditors.PanelControl();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
+            this.labelControl24 = new DevExpress.XtraEditors.LabelControl();
+            this.spinEdit1 = new DevExpress.XtraEditors.SpinEdit();
             this.chRrn = new DevExpress.XtraEditors.CheckEdit();
             this.chOtherPay = new DevExpress.XtraEditors.CheckEdit();
             this.chTerminalPrintReceipt = new DevExpress.XtraEditors.CheckEdit();
@@ -302,6 +304,8 @@ namespace WindowsFormsApp2
             this.layoutControlItem29 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem30 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem31 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem38 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem39 = new DevExpress.XtraLayout.LayoutControlItem();
             this.tabLicence = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.panelControl15 = new DevExpress.XtraEditors.PanelControl();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
@@ -481,6 +485,7 @@ namespace WindowsFormsApp2
             this.panelControl14.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
             this.layoutControl3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spinEdit1.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chRrn.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chOtherPay.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chTerminalPrintReceipt.Properties)).BeginInit();
@@ -495,6 +500,8 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem29)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem30)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem31)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem38)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem39)).BeginInit();
             this.tabLicence.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl15)).BeginInit();
             this.panelControl15.SuspendLayout();
@@ -3479,7 +3486,7 @@ namespace WindowsFormsApp2
             this.tabAllSettings.Name = "tabAllSettings";
             this.tabAllSettings.Properties.AppearanceCaption.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.tabAllSettings.Properties.AppearanceCaption.Options.UseFont = true;
-            this.tabAllSettings.Size = new System.Drawing.Size(1157, 761);
+            this.tabAllSettings.Size = new System.Drawing.Size(1157, 759);
             // 
             // panelControl13
             // 
@@ -3493,7 +3500,7 @@ namespace WindowsFormsApp2
             this.panelControl13.LookAndFeel.UseDefaultLookAndFeel = false;
             this.panelControl13.Margin = new System.Windows.Forms.Padding(1);
             this.panelControl13.Name = "panelControl13";
-            this.panelControl13.Size = new System.Drawing.Size(1157, 761);
+            this.panelControl13.Size = new System.Drawing.Size(1157, 759);
             this.panelControl13.TabIndex = 12;
             // 
             // layoutControl4
@@ -3719,6 +3726,8 @@ namespace WindowsFormsApp2
             // 
             this.layoutControl3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.layoutControl3.Controls.Add(this.labelControl24);
+            this.layoutControl3.Controls.Add(this.spinEdit1);
             this.layoutControl3.Controls.Add(this.chRrn);
             this.layoutControl3.Controls.Add(this.chOtherPay);
             this.layoutControl3.Controls.Add(this.chTerminalPrintReceipt);
@@ -3728,9 +3737,48 @@ namespace WindowsFormsApp2
             this.layoutControl3.Location = new System.Drawing.Point(8, 5);
             this.layoutControl3.Name = "layoutControl3";
             this.layoutControl3.Root = this.layoutControlGroup2;
-            this.layoutControl3.Size = new System.Drawing.Size(1145, 278);
+            this.layoutControl3.Size = new System.Drawing.Size(1145, 415);
             this.layoutControl3.TabIndex = 26;
             this.layoutControl3.Text = "layoutControl3";
+            // 
+            // labelControl24
+            // 
+            this.labelControl24.Appearance.Font = new System.Drawing.Font("Verdana", 11F);
+            this.labelControl24.Appearance.Options.UseFont = true;
+            this.labelControl24.Location = new System.Drawing.Point(6, 234);
+            this.labelControl24.Name = "labelControl24";
+            this.labelControl24.Size = new System.Drawing.Size(962, 30);
+            this.labelControl24.StyleController = this.layoutControl3;
+            this.labelControl24.TabIndex = 27;
+            this.labelControl24.Text = "Bank terminalı gözləmə müddəti";
+            // 
+            // spinEdit1
+            // 
+            this.spinEdit1.EditValue = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.spinEdit1.Location = new System.Drawing.Point(974, 234);
+            this.spinEdit1.MenuManager = this.fluentFormDefaultManager1;
+            this.spinEdit1.Name = "spinEdit1";
+            this.spinEdit1.Properties.AdvancedModeOptions.AllowCaretAnimation = DevExpress.Utils.DefaultBoolean.True;
+            this.spinEdit1.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.spinEdit1.Properties.EditValueChangedDelay = 1;
+            this.spinEdit1.Properties.EditValueChangedFiringMode = DevExpress.XtraEditors.Controls.EditValueChangedFiringMode.Default;
+            this.spinEdit1.Properties.IsFloatValue = false;
+            this.spinEdit1.Properties.MaskSettings.Set("mask", "N0");
+            this.spinEdit1.Properties.MaskSettings.Set("autoHideDecimalSeparator", true);
+            this.spinEdit1.Properties.MaxLength = 3;
+            this.spinEdit1.Properties.MaxValue = new decimal(new int[] {
+            120,
+            0,
+            0,
+            0});
+            this.spinEdit1.Size = new System.Drawing.Size(165, 30);
+            this.spinEdit1.StyleController = this.layoutControl3;
+            this.spinEdit1.TabIndex = 31;
             // 
             // chRrn
             // 
@@ -3850,10 +3898,12 @@ namespace WindowsFormsApp2
             this.layoutControlItem28,
             this.layoutControlItem29,
             this.layoutControlItem30,
-            this.layoutControlItem31});
+            this.layoutControlItem31,
+            this.layoutControlItem38,
+            this.layoutControlItem39});
             this.layoutControlGroup2.Name = "layoutControlGroup2";
             this.layoutControlGroup2.Padding = new DevExpress.XtraLayout.Utils.Padding(3, 3, 3, 3);
-            this.layoutControlGroup2.Size = new System.Drawing.Size(1145, 278);
+            this.layoutControlGroup2.Size = new System.Drawing.Size(1145, 415);
             this.layoutControlGroup2.TextVisible = false;
             // 
             // layoutControlItem26
@@ -3868,9 +3918,9 @@ namespace WindowsFormsApp2
             // emptySpaceItem3
             // 
             this.emptySpaceItem3.AllowHotTrack = false;
-            this.emptySpaceItem3.Location = new System.Drawing.Point(0, 228);
+            this.emptySpaceItem3.Location = new System.Drawing.Point(0, 264);
             this.emptySpaceItem3.Name = "emptySpaceItem3";
-            this.emptySpaceItem3.Size = new System.Drawing.Size(1139, 44);
+            this.emptySpaceItem3.Size = new System.Drawing.Size(1139, 145);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem27
@@ -3917,6 +3967,27 @@ namespace WindowsFormsApp2
             this.layoutControlItem31.Size = new System.Drawing.Size(1139, 38);
             this.layoutControlItem31.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem31.TextVisible = false;
+            // 
+            // layoutControlItem38
+            // 
+            this.layoutControlItem38.Control = this.spinEdit1;
+            this.layoutControlItem38.Location = new System.Drawing.Point(968, 228);
+            this.layoutControlItem38.Name = "layoutControlItem38";
+            this.layoutControlItem38.Size = new System.Drawing.Size(171, 36);
+            this.layoutControlItem38.Text = "Bank terminalı gözləmə müddəti";
+            this.layoutControlItem38.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem38.TextVisible = false;
+            // 
+            // layoutControlItem39
+            // 
+            this.layoutControlItem39.Control = this.labelControl24;
+            this.layoutControlItem39.Location = new System.Drawing.Point(0, 228);
+            this.layoutControlItem39.MinSize = new System.Drawing.Size(277, 24);
+            this.layoutControlItem39.Name = "layoutControlItem39";
+            this.layoutControlItem39.Size = new System.Drawing.Size(968, 36);
+            this.layoutControlItem39.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.layoutControlItem39.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem39.TextVisible = false;
             // 
             // tabLicence
             // 
@@ -4174,7 +4245,7 @@ namespace WindowsFormsApp2
             this.xtraTabPage6.Controls.Add(this.bBranchBankRefund);
             this.xtraTabPage6.Controls.Add(this.bBranchBankSale);
             this.xtraTabPage6.Name = "xtraTabPage6";
-            this.xtraTabPage6.Size = new System.Drawing.Size(1151, 657);
+            this.xtraTabPage6.Size = new System.Drawing.Size(1151, 655);
             this.xtraTabPage6.Text = "Satış";
             // 
             // bBranchBankRefund
@@ -4222,7 +4293,7 @@ namespace WindowsFormsApp2
             this.xtraTabPage2.Controls.Add(this.bBranchAlisHesabat);
             this.xtraTabPage2.Controls.Add(this.bBranchStock);
             this.xtraTabPage2.Name = "xtraTabPage2";
-            this.xtraTabPage2.Size = new System.Drawing.Size(1151, 657);
+            this.xtraTabPage2.Size = new System.Drawing.Size(1151, 655);
             this.xtraTabPage2.Text = "Hesabatlar";
             // 
             // bBranchAvansHesabati
@@ -4351,7 +4422,7 @@ namespace WindowsFormsApp2
             this.xtraTabPage3.Controls.Add(this.bBranchCreditPay);
             this.xtraTabPage3.Controls.Add(this.bBranchCreditSale);
             this.xtraTabPage3.Name = "xtraTabPage3";
-            this.xtraTabPage3.Size = new System.Drawing.Size(1151, 657);
+            this.xtraTabPage3.Size = new System.Drawing.Size(1151, 655);
             this.xtraTabPage3.Text = "Kredit";
             // 
             // bBranchCreditSaleRefund
@@ -4404,7 +4475,7 @@ namespace WindowsFormsApp2
             // 
             this.xtraTabPage5.Controls.Add(this.bBranchSuppliers);
             this.xtraTabPage5.Name = "xtraTabPage5";
-            this.xtraTabPage5.Size = new System.Drawing.Size(1151, 657);
+            this.xtraTabPage5.Size = new System.Drawing.Size(1151, 655);
             this.xtraTabPage5.Text = "Təchizatçılar";
             // 
             // bBranchSuppliers
@@ -4426,7 +4497,7 @@ namespace WindowsFormsApp2
             // 
             this.xtraTabPage4.Controls.Add(this.bBranchUsers);
             this.xtraTabPage4.Name = "xtraTabPage4";
-            this.xtraTabPage4.Size = new System.Drawing.Size(1151, 657);
+            this.xtraTabPage4.Size = new System.Drawing.Size(1151, 655);
             this.xtraTabPage4.Text = "İstifadəçilər";
             // 
             // bBranchUsers
@@ -4450,7 +4521,7 @@ namespace WindowsFormsApp2
             this.xtraTabPage7.Controls.Add(this.bBranchLog);
             this.xtraTabPage7.Controls.Add(this.bBranchTerminal);
             this.xtraTabPage7.Name = "xtraTabPage7";
-            this.xtraTabPage7.Size = new System.Drawing.Size(1151, 657);
+            this.xtraTabPage7.Size = new System.Drawing.Size(1151, 655);
             this.xtraTabPage7.Text = "Sazlamalar";
             // 
             // bBranchMinusCountControl
@@ -4851,6 +4922,7 @@ namespace WindowsFormsApp2
             this.panelControl14.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).EndInit();
             this.layoutControl3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.spinEdit1.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chRrn.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chOtherPay.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chTerminalPrintReceipt.Properties)).EndInit();
@@ -4865,6 +4937,8 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem29)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem30)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem31)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem38)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem39)).EndInit();
             this.tabLicence.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.panelControl15)).EndInit();
             this.panelControl15.ResumeLayout(false);
@@ -5198,6 +5272,10 @@ namespace WindowsFormsApp2
         private DevExpress.XtraEditors.CheckEdit chBranch;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem37;
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement74;
+        private DevExpress.XtraEditors.SpinEdit spinEdit1;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem38;
+        private DevExpress.XtraEditors.LabelControl labelControl24;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem39;
     }
 }
 

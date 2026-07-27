@@ -1041,7 +1041,17 @@ group by
                 }
                 else if (type is PayType.OtherPay)
                 {
-                    gelen_data_negd_pos(0, totalAmount, totalAmount, 0, 0, false, Enums.PayType.OtherPay);
+                    bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos")?.GetValue("ClinicModule").ToString());
+                    bool clinic = false;
+
+                    if (control)
+                    {
+                        DialogResult result = XtraMessageBox.Show("A4 sənədi çap edilsin ?", nameof(HeaderMessage.Mesaj), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        if (result is DialogResult.Yes)
+                            clinic = true;
+                    }
+
+                    gelen_data_negd_pos(0, totalAmount, totalAmount, 0, 0, clinic, Enums.PayType.OtherPay);
                 }
                 else if (type is PayType.Installment)
                 {
@@ -2409,7 +2419,7 @@ group by
                 bool IsSuccess = false;
 
                 //Satışı Xprinterə yönləndirmək üçün
-                if (chSendToPrinter.Visible is true && chSendToPrinter.Checked is true)
+                if (chSendToPrinter.Visible  && chSendToPrinter.Checked )
                 {
                     xprintersales(cash_, card_, umumi_mebleg_, incomingSum);
                     return;

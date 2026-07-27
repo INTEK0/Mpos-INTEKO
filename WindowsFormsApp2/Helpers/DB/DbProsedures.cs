@@ -223,7 +223,7 @@ namespace WindowsFormsApp2.Helpers.DB
                     SqlParameter param;
                     param = cmd.Parameters.Add("@login", SqlDbType.NVarChar, 100);
                     param.Value = item.Username;
-                    param = cmd.Parameters.Add("@parol", SqlDbType.NVarChar, 100);
+                    param = cmd.Parameters.Add("@parol", SqlDbType.NVarChar, 50);
                     param.Value = item.Password;
                     param = cmd.Parameters.Add("@admin", SqlDbType.Bit);
                     param.Value = item.IsAdmin;

@@ -107,7 +107,6 @@ namespace WindowsFormsApp2
             this.gridColumn14,
             this.gridColumn11,
             this.gridColumn12});
-            this.gridView1.DetailHeight = 431;
             this.gridView1.GridControl = this.gridControl1;
             this.gridView1.Name = "gridView1";
             this.gridView1.OptionsBehavior.AllowPixelScrolling = DevExpress.Utils.DefaultBoolean.True;

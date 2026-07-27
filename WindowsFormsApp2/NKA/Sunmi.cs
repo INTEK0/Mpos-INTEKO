@@ -430,7 +430,7 @@ namespace WindowsFormsApp2.NKA
                     !string.IsNullOrWhiteSpace(UserCacheService.Terminal.BankName) &&
                     UserCacheService.Terminal.BankName != "PAX A35")
                 {
-                    if (await SaleBank(salesData))
+                    if (SaleBank(salesData))
                     {
                         var responseBank = BankCheckStatus(salesData.IpAddress, salesData.DocumentUUID);
 
@@ -535,7 +535,7 @@ namespace WindowsFormsApp2.NKA
             }
         }
 
-        private async static Task<bool> SaleBank(SalesDto salesData)
+        private static bool SaleBank(SalesDto salesData)
         {
             if (salesData.Card > 0 && !string.IsNullOrWhiteSpace(UserCacheService.Terminal.BankName))
             {
@@ -582,7 +582,7 @@ namespace WindowsFormsApp2.NKA
                     switch (response.message)
                     {
                         case "İcra olunur":
-                            await Task.Delay(16000);
+                            //await Task.Delay(16000);
                             return true;
 
                         default:
@@ -664,16 +664,16 @@ namespace WindowsFormsApp2.NKA
 
         public static BankResponse BankCheckStatus(string IpAdress, string uuid)
         {
-            BankRequest bank = new BankRequest()
+            BankRequest bank = new BankRequest
             {
-                data = new BankRequest.Data()
+                data = new BankRequest.Data
                 {
                     documentUUID = uuid
                 },
                 operation = "transactionTapXphoneCheck"
             };
 
-            string Bankjson = Newtonsoft.Json.JsonConvert.SerializeObject(bank, new JsonSerializerSettings
+            string Bankjson = JsonConvert.SerializeObject(bank, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
             });
@@ -697,7 +697,7 @@ namespace WindowsFormsApp2.NKA
                 {
                     case "TƏSDİQLƏNDİ":
                     case "Success operation":
-                        if (string.IsNullOrWhiteSpace(response?.data.rrn))
+                        if (string.IsNullOrWhiteSpace(response.data.rrn))
                             goto start;
 
                         FormHelpers.OperationLog(new OperationLogs
@@ -723,11 +723,9 @@ namespace WindowsFormsApp2.NKA
                         FormHelpers.Log($"Bank xətası - Xəta mesajı: {response.message}");
                         return null;
                 }
-            else
-            {
-                ReadyMessages.ERROR_SALES_MESSAGE("Terminal ilə əlaqə zamanı xəta yarandı");
-                return null;
-            }
+
+            ReadyMessages.ERROR_SALES_MESSAGE("Terminal ilə əlaqə zamanı xəta yarandı");
+            return null;
         }
 
         public async static Task<bool> Refund(RefundDto refundData)
