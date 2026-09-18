@@ -951,6 +951,7 @@
     <Compile Include="SearchTechizatci_LAYOUT.Designer.cs">
       <DependentUpon>SearchTechizatci_LAYOUT.cs</DependentUpon>
     </Compile>
+    <Compile Include="Services\DatetimeService.cs" />
     <Compile Include="store_.cs" />
     <Compile Include="TECHIZATCIKREDIT.cs">
       <SubType>Form</SubType>

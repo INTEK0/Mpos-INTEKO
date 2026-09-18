@@ -1164,11 +1164,11 @@ ORDER BY pg.pos_gaytarma_manual_id DESC;";
                 }
             }
 
-            if (_date == DateTime.Now.ToString("dd.MM.yyyy"))
-            {
-                var result = Rollback(refundDto);
-                return result;
-            }
+            //if (_date == DateTime.Now.ToString("dd.MM.yyyy"))
+            //{
+            //    var result = Rollback(refundDto);
+            //    return result;
+            //}
 
             List<Item> items = new List<Item>();
             items.Clear();
@@ -1197,14 +1197,12 @@ ORDER BY pg.pos_gaytarma_manual_id DESC;";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 using (SqlDataReader dr = cmd.ExecuteReader())
-                {
                     while (dr.Read())
                     {
                         decimal? purchasePrice = (Convert.ToInt32(dr["vtypes"]) == 2) ? Convert.ToDecimal(dr["alis_giymet"]) : (decimal?)null;
                         double qty = Convert.ToDouble(dr["say"]);
                         decimal ssum = Convert.ToDecimal(dr["tutar"]);
                         decimal? marginSum = purchasePrice * (decimal)qty;
-
 
                         Item item = new Item
                         {
@@ -1221,7 +1219,6 @@ ORDER BY pg.pos_gaytarma_manual_id DESC;";
                         items.Add(item);
 
                     }
-                }
             }
 
             List<VatAmount> vatAmounts = new List<VatAmount>();
@@ -1340,15 +1337,12 @@ ORDER BY pg.pos_gaytarma_manual_id DESC;";
                 FormHelpers.Log($"Qəbz geri qaytarması edildi Qəbz №: {response.document_number}");
                 return true;
             }
-            else
-            {
-                XtraMessageBox.Show(response.message);
-                FormHelpers.Log($"Qəbz geri qaytarma xətası. Xəta mesajı: {response.message}");
-                return false;
-            }
+            XtraMessageBox.Show(response.message);
+            FormHelpers.Log($"Qəbz geri qaytarma xətası. Xəta mesajı: {response.message}");
+            return false;
         }
 
-        private static bool Rollback(RefundDto refundDto)
+        public static bool Rollback(RefundDto refundDto, string ipAddress, string accessToken, PayType payType, string cashier, string proccesNo)
         {
             if (string.IsNullOrWhiteSpace(refundDto.AccessToken))
             {

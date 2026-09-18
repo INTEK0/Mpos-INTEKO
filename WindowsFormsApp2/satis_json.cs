@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
+using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.DB;
 
 namespace WindowsFormsApp2
@@ -15,7 +16,7 @@ namespace WindowsFormsApp2
         public string AzsmartRollback(int _main_id)
         {
             // Create ADO.NET objects.
-            SqlConnection con = new SqlConnection(Properties.Settings.Default.SqlCon);
+            SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString);
             SqlCommand cmd = new SqlCommand(azsmart_rollback, con);
             // Configure command and add input parameters.
             cmd.CommandType = CommandType.StoredProcedure;
@@ -34,7 +35,7 @@ namespace WindowsFormsApp2
         public void update_satis_giymeti_(int mal_details_id_, decimal giymet_)
         {
             // Create ADO.NET objects.
-            SqlConnection con = new SqlConnection(Properties.Settings.Default.SqlCon);
+            SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString);
             SqlCommand cmd = new SqlCommand(update_satis_giymeti, con);
             // Configure command and add input parameters.
             cmd.CommandType = CommandType.StoredProcedure;
@@ -54,7 +55,7 @@ namespace WindowsFormsApp2
         public void del_migdar_calculation(string mal_id_, string say_, string emeliyyat_nomr_)
         {
             // Create ADO.NET objects.
-            SqlConnection con = new SqlConnection(Properties.Settings.Default.SqlCon);
+            SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString);
             SqlCommand cmd = new SqlCommand(del_migdar, con);
             // Configure command and add input parameters.
             cmd.CommandType = CommandType.StoredProcedure;
@@ -69,7 +70,7 @@ namespace WindowsFormsApp2
             param.Value = emeliyyat_nomr_;
 
             param = cmd.Parameters.Add("@userID", SqlDbType.Int);
-            param.Value = Properties.Settings.Default.UserID;
+            param.Value = UserCacheService.User.Id;
 
             con.Open();
             cmd.ExecuteNonQuery();
@@ -92,7 +93,7 @@ namespace WindowsFormsApp2
             param.Value = emeliyyat_nomr_;
 
             param = cmd.Parameters.Add("@userID", SqlDbType.Int);
-            param.Value = Properties.Settings.Default.UserID;
+            param.Value = UserCacheService.User.Id;
 
 
             con.Open();
@@ -103,7 +104,7 @@ namespace WindowsFormsApp2
 
         public void update_calculation_tr()
         {
-            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SqlCon))
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 connection.Open();
                 using (SqlCommand cmd = new SqlCommand(update_tr_calculation, connection))

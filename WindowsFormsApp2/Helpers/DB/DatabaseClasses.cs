@@ -153,6 +153,7 @@ namespace WindowsFormsApp2.Helpers.DB
             public decimal cash { get; set; }
             public decimal card { get; set; }
             public decimal total { get; set; }
+            public decimal discount { get; set; }
             public string json { get; set; }
             public string shortFiskalId { get; set; }
             public string rrn { get; set; } = null;

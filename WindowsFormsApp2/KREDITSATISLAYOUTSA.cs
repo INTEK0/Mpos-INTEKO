@@ -761,6 +761,7 @@ namespace WindowsFormsApp2
                         if (SunmiResult.Item1 == true)
                         {
                             CreditSaleMain(data, SunmiResult.Item2, SunmiResult.Item3, SunmiResult.Item4);
+                            UUIDGenerateService.Refreshid();
                         }
                         break;
                     case "2":

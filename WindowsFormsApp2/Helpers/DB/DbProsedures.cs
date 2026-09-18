@@ -40,7 +40,6 @@ namespace WindowsFormsApp2.Helpers.DB
         private const string INSERT_GuarantorQuery = "INSERT_ZAMIN";
         private const string DELETE_GuarantorQuery = "delete_zamin";
         private const string UPDATE_GuarantorDataQuery = "UPDATE_ZAMIN";
-        private const string GET_RefundProccesNoQuery = "EXEC dbo.POS_GAYTARMA";
         private const string INSERT_ClinicDataQuery = "ClinicReportInsertData";
         public static readonly string GET_ClinicDataLoadQuery = $"EXEC [dbo].[ClinicReportDataLoad]@UserID = {Properties.Settings.Default.UserID}";
         private static readonly string GET_GaimeSalesProccessNoQuery = "EXEC dbo.GAIME_SATISI_EMELIYYAT_NOMRE";
@@ -454,6 +453,9 @@ namespace WindowsFormsApp2.Helpers.DB
                 parameter = cmd.Parameters.Add("@umumi_mebleg", SqlDbType.Decimal);
                 parameter.Value = item.total;
 
+                parameter = cmd.Parameters.Add("@discountAmount", SqlDbType.Decimal);
+                parameter.Value = item.discount;
+
                 parameter = cmd.Parameters.Add("@json_", SqlDbType.NVarChar, int.MaxValue);
                 parameter.Value = item.json;
 
@@ -486,7 +488,7 @@ namespace WindowsFormsApp2.Helpers.DB
                 parameter.Direction = ParameterDirection.Output;
                 var result = cmd.ExecuteNonQuery();
 
-                bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("CloudApp").ToString());
+                bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos")?.GetValue("CloudApp").ToString());
                 if (control && result > 0)
                 {
                     Task.Run(async () =>
@@ -643,59 +645,50 @@ namespace WindowsFormsApp2.Helpers.DB
             }
         }
 
-        public static int InsertPosRefund(PosRefund item)
+        public static int InsertPosRefund(PosRefund item, SqlConnection con = null, SqlTransaction transaction = null)
         {
-            try
+            if (con is null)
+                con = new SqlConnection(DbHelpers.CurrentConnectionString);
+
+            if (con.State != ConnectionState.Open)
+                con.Open();
+
+            const string query = "insert_pos_gaytarma_manual";
+            using (SqlCommand cmd = new SqlCommand(query, con, transaction))
             {
-                const string query = "insert_pos_gaytarma_manual";
-                using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
-                using (SqlCommand cmd = new SqlCommand(query, connection))
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlParameter param;
+                param = cmd.Parameters.Add("@emeliyyat_nomre", SqlDbType.NVarChar, 100);
+                param.Value = item.proccessNo;
+
+                param = cmd.Parameters.Add("@pos_satis_check_main_id", SqlDbType.Int);
+                param.Value = item.pos_satis_check_main_id;
+
+                param = cmd.Parameters.Add("@pos_satis_check_details", SqlDbType.Int);
+                param.Value = item.pos_satis_check_details_id;
+
+                param = cmd.Parameters.Add("@say", SqlDbType.Decimal);
+                param.Value = item.quantity;
+
+                param = cmd.Parameters.Add("@user_id_", SqlDbType.Int);
+                param.Value = Properties.Settings.Default.UserID;
+
+                param = cmd.Parameters.Add("@GEYD", SqlDbType.NVarChar, 250);
+                param.Value = item.comment;
+
+                param = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
+                param.Direction = ParameterDirection.Output;
+                cmd.ExecuteNonQuery();
+
+
+                FormHelpers.OperationLog(new OperationLogs
                 {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    SqlParameter param;
-                    param = cmd.Parameters.Add("@emeliyyat_nomre", SqlDbType.NVarChar, 100);
-                    param.Value = item.proccessNo;
-
-                    param = cmd.Parameters.Add("@pos_satis_check_main_id", SqlDbType.Int);
-                    param.Value = item.pos_satis_check_main_id;
-
-                    param = cmd.Parameters.Add("@pos_satis_check_details", SqlDbType.Int);
-                    param.Value = item.pos_satis_check_details_id;
-
-                    param = cmd.Parameters.Add("@say", SqlDbType.Decimal);
-                    param.Value = item.quantity;
-
-                    param = cmd.Parameters.Add("@user_id_", SqlDbType.Int);
-                    param.Value = Properties.Settings.Default.UserID;
-
-                    param = cmd.Parameters.Add("@GEYD", SqlDbType.NVarChar, 250);
-                    param.Value = item.comment;
-
-                    connection.Open();
-                    param = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
-                    param.Direction = ParameterDirection.Output;
-                    cmd.ExecuteNonQuery();
+                    OperationType = OperationType.RefundPosSales,
+                    OperationId = Convert.ToInt32(param.Value)
+                });
 
 
-                    FormHelpers.OperationLog(new OperationLogs
-                    {
-                        OperationType = OperationType.RefundPosSales,
-                        OperationId = Convert.ToInt32(param.Value)
-                    });
-
-
-                    return Convert.ToInt32(param.Value);
-                }
-            }
-            catch (SqlException ex) when (ex.Number == 2601 || ex.Number == 2627)
-            {
-                ReadyMessages.ERROR_DEFAULT_MESSAGE($"Bu əməliyyat artıq mövcuddur. Təkrar əlavə edilə bilməz.\n\n{ex.Message}");
-                return 0;
-            }
-            catch (Exception ex)
-            {
-                ReadyMessages.ERROR_DEFAULT_MESSAGE(ex.Message);
-                return 0;
+                return Convert.ToInt32(param.Value);
             }
         }
 
@@ -827,20 +820,22 @@ WHERE date_ BETWEEN CAST(GETDATE() AS DATE) AND DATEADD(DAY, 1, CAST(GETDATE() A
             }
         }
 
-        public static string GET_RefundProccessNo()
+        public static string GET_RefundProccessNo(SqlConnection con = null, SqlTransaction transaction = null)
         {
-            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
-            using (SqlCommand cmd = new SqlCommand(GET_RefundProccesNoQuery, connection))
+            if (con is null)
+                con = new SqlConnection(DbHelpers.CurrentConnectionString);
+
+            if (con.State != ConnectionState.Open)
+                con.Open();
+
+            string query = "EXEC dbo.POS_GAYTARMA";
+            using (SqlCommand cmd = new SqlCommand(query, con, transaction))
+            using (SqlDataReader dr = cmd.ExecuteReader())
             {
-                connection.Open();
-                using (SqlDataReader dr = cmd.ExecuteReader())
-                {
-                    if (dr.Read())
-                    {
-                        return dr[0].ToString();
-                    }
-                    return null;
-                }
+                if (dr.Read())
+                    return dr[0].ToString();
+
+                return null;
             }
         }
 

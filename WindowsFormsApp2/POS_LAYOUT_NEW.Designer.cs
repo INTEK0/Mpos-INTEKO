@@ -274,6 +274,7 @@ namespace WindowsFormsApp2
             // 
             // layoutControl1
             // 
+            this.layoutControl1.AllowCustomization = false;
             this.layoutControl1.Controls.Add(this.lModel);
             this.layoutControl1.Controls.Add(this.simpleButton15);
             this.layoutControl1.Controls.Add(this.simpleButton4);

@@ -65,6 +65,7 @@
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 66F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 519F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 47F)});
+            this.tablePanel3.ShowGrid = DevExpress.Utils.DefaultBoolean.False;
             this.tablePanel3.Size = new System.Drawing.Size(920, 535);
             this.tablePanel3.TabIndex = 13;
             this.tablePanel3.UseSkinIndents = true;
