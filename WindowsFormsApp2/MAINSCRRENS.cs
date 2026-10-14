@@ -1998,5 +1998,22 @@ GROUP BY date_;";
             public string PaymentName { get; set; }
             public decimal Amount { get; set; }
         }
+
+        private void accordionControlElement75_Click(object sender, EventArgs e)
+        {
+            navigationFrame1.SelectedPage = pageSalePersonnel;
+            GetSalePersonnels();
+        }
+
+        private void GetSalePersonnels()
+        {
+            labelControl25.Text = "Satıcı sayı : 0";
+        }
+
+        private void bAdd_Click(object sender, EventArgs e)
+        {
+            fAddSalePersonnel f = new fAddSalePersonnel();
+            f.ShowDialog(this);
+        }
     }
 }

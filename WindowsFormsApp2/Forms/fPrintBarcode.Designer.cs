@@ -50,6 +50,7 @@
             this.colProductName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colProductCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.coLSalePrice = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colAmount = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colBarcode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colEdv = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -84,6 +85,7 @@
             this.tablePanel1.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 57F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
+            this.tablePanel1.ShowGrid = DevExpress.Utils.DefaultBoolean.False;
             this.tablePanel1.Size = new System.Drawing.Size(1201, 768);
             this.tablePanel1.TabIndex = 0;
             this.tablePanel1.UseSkinIndents = true;
@@ -154,7 +156,7 @@
             this.lookPrintType.Name = "lookPrintType";
             this.lookPrintType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.lookPrintType.Properties.DropDownRows = 3;
+            this.lookPrintType.Properties.DropDownRows = 4;
             this.lookPrintType.Properties.NullText = "ÇAP ÖLÇÜLƏRİ";
             this.lookPrintType.Properties.ShowFooter = false;
             this.lookPrintType.Properties.ShowHeader = false;
@@ -226,6 +228,7 @@
             this.colProductName,
             this.colProductCode,
             this.coLSalePrice,
+            this.gridColumn1,
             this.colAmount,
             this.colBarcode,
             this.colEdv,
@@ -261,7 +264,7 @@
             this.colSupplierName.OptionsColumn.ReadOnly = true;
             this.colSupplierName.Visible = true;
             this.colSupplierName.VisibleIndex = 1;
-            this.colSupplierName.Width = 176;
+            this.colSupplierName.Width = 101;
             // 
             // colProductId
             // 
@@ -280,7 +283,7 @@
             this.colProductName.OptionsColumn.ReadOnly = true;
             this.colProductName.Visible = true;
             this.colProductName.VisibleIndex = 2;
-            this.colProductName.Width = 290;
+            this.colProductName.Width = 199;
             // 
             // colProductCode
             // 
@@ -303,7 +306,14 @@
             this.coLSalePrice.OptionsColumn.ReadOnly = true;
             this.coLSalePrice.Visible = true;
             this.coLSalePrice.VisibleIndex = 5;
-            this.coLSalePrice.Width = 121;
+            this.coLSalePrice.Width = 99;
+            // 
+            // gridColumn1
+            // 
+            this.gridColumn1.Caption = "ENDİRİMLİ SATIŞ QİYMƏTİ";
+            this.gridColumn1.Name = "gridColumn1";
+            this.gridColumn1.OptionsColumn.AllowEdit = false;
+            this.gridColumn1.Width = 114;
             // 
             // colAmount
             // 
@@ -322,7 +332,7 @@
             this.colBarcode.OptionsColumn.ReadOnly = true;
             this.colBarcode.Visible = true;
             this.colBarcode.VisibleIndex = 3;
-            this.colBarcode.Width = 174;
+            this.colBarcode.Width = 141;
             // 
             // colEdv
             // 
@@ -338,9 +348,10 @@
             this.colUnitName.FieldName = "UnitName";
             this.colUnitName.Name = "colUnitName";
             this.colUnitName.OptionsColumn.AllowEdit = false;
+            this.colUnitName.OptionsColumn.FixedWidth = true;
             this.colUnitName.Visible = true;
             this.colUnitName.VisibleIndex = 4;
-            this.colUnitName.Width = 105;
+            this.colUnitName.Width = 85;
             // 
             // colPrintCount
             // 
@@ -351,22 +362,23 @@
             this.colPrintCount.Caption = "ÇAP SAYI";
             this.colPrintCount.FieldName = "PrintCount";
             this.colPrintCount.Name = "colPrintCount";
-            this.colPrintCount.OptionsColumn.FixedWidth = true;
             this.colPrintCount.Visible = true;
             this.colPrintCount.VisibleIndex = 6;
-            this.colPrintCount.Width = 119;
+            this.colPrintCount.Width = 108;
             // 
             // colPrintButton
             // 
             this.colPrintButton.Caption = "gridColumn10";
             this.colPrintButton.ColumnEdit = this.bGridPrint;
             this.colPrintButton.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.MiddleLeft;
+            this.colPrintButton.MaxWidth = 100;
+            this.colPrintButton.MinWidth = 100;
             this.colPrintButton.Name = "colPrintButton";
             this.colPrintButton.OptionsColumn.FixedWidth = true;
             this.colPrintButton.OptionsColumn.ShowCaption = false;
             this.colPrintButton.Visible = true;
             this.colPrintButton.VisibleIndex = 7;
-            this.colPrintButton.Width = 131;
+            this.colPrintButton.Width = 100;
             // 
             // bGridPrint
             // 
@@ -430,5 +442,6 @@
         private DevExpress.XtraGrid.Columns.GridColumn colUnitName;
         private DevExpress.XtraEditors.CheckEdit chMehsulAlisi;
         private DevExpress.XtraEditors.DateEdit dateEdit1;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn1;
     }
 }

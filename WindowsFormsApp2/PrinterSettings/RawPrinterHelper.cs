@@ -96,4 +96,55 @@ public class RawPrinterHelper
         Marshal.FreeCoTaskMem(pBytes);
         return success;
     }
+
+    public static bool SendBytesToPrinter(string printerName, byte[] data)
+    {
+        if (!IsPrinterAvailable(printerName) || data == null || data.Length == 0)
+            return false;
+
+        IntPtr hPrinter = IntPtr.Zero;
+        IntPtr pBytes = IntPtr.Zero;
+        bool docStarted = false;
+        bool pageStarted = false;
+
+        try
+        {
+            if (!OpenPrinter(printerName, out hPrinter, IntPtr.Zero))
+                return false;
+
+            DOCINFOA di = new DOCINFOA
+            {
+                pDocName = "Dress 45x25 Label",
+                pDataType = "RAW"
+            };
+
+            if (!StartDocPrinter(hPrinter, 1, di))
+                return false;
+
+            docStarted = true;
+
+            if (!StartPagePrinter(hPrinter))
+                return false;
+
+            pageStarted = true;
+
+            pBytes = Marshal.AllocCoTaskMem(data.Length);
+            Marshal.Copy(data, 0, pBytes, data.Length);
+
+            int written;
+            bool ok = WritePrinter(hPrinter, pBytes, data.Length, out written);
+            return ok && written == data.Length;
+        }
+        finally
+        {
+            if (pBytes != IntPtr.Zero)
+                Marshal.FreeCoTaskMem(pBytes);
+            if (pageStarted)
+                EndPagePrinter(hPrinter);
+            if (docStarted)
+                EndDocPrinter(hPrinter);
+            if (hPrinter != IntPtr.Zero)
+                ClosePrinter(hPrinter);
+        }
+    }
 }

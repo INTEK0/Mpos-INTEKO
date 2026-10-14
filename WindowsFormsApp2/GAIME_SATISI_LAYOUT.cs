@@ -78,14 +78,13 @@ namespace WindowsFormsApp2
             radioButton1.Checked = true;
             dateEdit1.Properties.MaxDate = DateTime.Today;
             dateEdit1.Text = DateTime.Now.ToShortDateString();
-            gridControl1.TabStop = false;
             textEdit5.Enabled = false;
             textEdit5.Text = DbProsedures.GET_GaimeSalesProccessNo();
         }
 
         private void radioButton1_CheckedChanged_1(object sender, EventArgs e)
         {
-            radio = radioButton1.Text.ToString();
+            radio = radioButton1.Text;
 
             if (radioButton1.Checked == true)
             {
@@ -96,7 +95,7 @@ namespace WindowsFormsApp2
 
         private void radioButton3_CheckedChanged_1(object sender, EventArgs e)
         {
-            radio = radioButton3.Text.ToString();
+            radio = radioButton3.Text;
             if (radioButton3.Checked == true)
             {
                 textEdit17.Enabled = false;
@@ -292,11 +291,6 @@ WHERE
                 textEdit12.Text = dr["GALIG"].ToString();
             }
             connection.Close();
-        }
-
-        private void gridclear()
-        {
-            gridControl1.DataSource = null;
         }
 
         public void clear()
@@ -610,7 +604,7 @@ WHERE
                 int x = cgs.GAIME_SATISI_check_status(textEdit5.Text);
                 if (x > 0)
                 {
-                    gridclear();
+                    gridControl1.DataSource = null;
                     clear();
                     //searchLookUpEdit1.EditValue = null;
                     textEdit9.Text = "";

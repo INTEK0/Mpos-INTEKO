@@ -115,6 +115,7 @@ namespace WindowsFormsApp2
             this.accordionControlElement4 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement49 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement6 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
+            this.accordionControlElement75 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement5 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement71 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement69 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
@@ -358,6 +359,19 @@ namespace WindowsFormsApp2
             this.checkButton3 = new DevExpress.XtraEditors.CheckButton();
             this.checkButton4 = new DevExpress.XtraEditors.CheckButton();
             this.checkButton5 = new DevExpress.XtraEditors.CheckButton();
+            this.pageSalePersonnel = new DevExpress.XtraBars.Navigation.NavigationPage();
+            this.tablePanel3 = new DevExpress.Utils.Layout.TablePanel();
+            this.labelControl25 = new DevExpress.XtraEditors.LabelControl();
+            this.bAdd = new DevExpress.XtraEditors.SimpleButton();
+            this.gridControl4 = new DevExpress.XtraGrid.GridControl();
+            this.gridView5 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.fluentDesignFormContainer1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
@@ -529,6 +543,11 @@ namespace WindowsFormsApp2
             this.groupControl4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel2)).BeginInit();
             this.tablePanel2.SuspendLayout();
+            this.pageSalePersonnel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tablePanel3)).BeginInit();
+            this.tablePanel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControl4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView5)).BeginInit();
             this.SuspendLayout();
             // 
             // fluentDesignFormContainer1
@@ -1513,6 +1532,7 @@ namespace WindowsFormsApp2
             this.accordionControlElement4,
             this.accordionControlElement49,
             this.accordionControlElement6,
+            this.accordionControlElement75,
             this.accordionControlElement5,
             this.accordionControlElement7,
             this.accordionControlElement10,
@@ -1594,6 +1614,13 @@ namespace WindowsFormsApp2
             this.accordionControlElement6.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
             this.accordionControlElement6.Text = "Müştərilər";
             this.accordionControlElement6.Click += new System.EventHandler(this.accordionControlElement6_Click);
+            // 
+            // accordionControlElement75
+            // 
+            this.accordionControlElement75.Name = "accordionControlElement75";
+            this.accordionControlElement75.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
+            this.accordionControlElement75.Text = "Satıcılar";
+            this.accordionControlElement75.Click += new System.EventHandler(this.accordionControlElement75_Click);
             // 
             // accordionControlElement5
             // 
@@ -2191,6 +2218,7 @@ namespace WindowsFormsApp2
             this.navigationFrame1.Controls.Add(this.pageProducts);
             this.navigationFrame1.Controls.Add(this.pageSettings);
             this.navigationFrame1.Controls.Add(this.pageBranch);
+            this.navigationFrame1.Controls.Add(this.pageSalePersonnel);
             this.navigationFrame1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.navigationFrame1.Location = new System.Drawing.Point(250, 31);
             this.navigationFrame1.Margin = new System.Windows.Forms.Padding(0);
@@ -2199,7 +2227,8 @@ namespace WindowsFormsApp2
             this.pageDashboard,
             this.pageProducts,
             this.pageSettings,
-            this.pageBranch});
+            this.pageBranch,
+            this.pageSalePersonnel});
             this.navigationFrame1.SelectedPage = this.pageDashboard;
             this.navigationFrame1.Size = new System.Drawing.Size(1157, 806);
             this.navigationFrame1.TabIndex = 3;
@@ -2554,7 +2583,7 @@ namespace WindowsFormsApp2
             this.tabDatabase,
             this.tabLicence,
             this.tabLog});
-            this.tabPaneSettings.RegularSize = new System.Drawing.Size(1157, 806);
+            this.tabPaneSettings.RegularSize = new System.Drawing.Size(1157, 804);
             this.tabPaneSettings.SelectedPage = this.tabAllSettings;
             this.tabPaneSettings.Size = new System.Drawing.Size(1157, 806);
             this.tabPaneSettings.TabAlignment = DevExpress.XtraEditors.Alignment.Near;
@@ -3486,7 +3515,7 @@ namespace WindowsFormsApp2
             this.tabAllSettings.Name = "tabAllSettings";
             this.tabAllSettings.Properties.AppearanceCaption.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.tabAllSettings.Properties.AppearanceCaption.Options.UseFont = true;
-            this.tabAllSettings.Size = new System.Drawing.Size(1157, 759);
+            this.tabAllSettings.Size = new System.Drawing.Size(1157, 761);
             // 
             // panelControl13
             // 
@@ -3500,7 +3529,7 @@ namespace WindowsFormsApp2
             this.panelControl13.LookAndFeel.UseDefaultLookAndFeel = false;
             this.panelControl13.Margin = new System.Windows.Forms.Padding(1);
             this.panelControl13.Name = "panelControl13";
-            this.panelControl13.Size = new System.Drawing.Size(1157, 759);
+            this.panelControl13.Size = new System.Drawing.Size(1157, 761);
             this.panelControl13.TabIndex = 12;
             // 
             // layoutControl4
@@ -4245,7 +4274,7 @@ namespace WindowsFormsApp2
             this.xtraTabPage6.Controls.Add(this.bBranchBankRefund);
             this.xtraTabPage6.Controls.Add(this.bBranchBankSale);
             this.xtraTabPage6.Name = "xtraTabPage6";
-            this.xtraTabPage6.Size = new System.Drawing.Size(1151, 655);
+            this.xtraTabPage6.Size = new System.Drawing.Size(1151, 657);
             this.xtraTabPage6.Text = "Satış";
             // 
             // bBranchBankRefund
@@ -4293,7 +4322,7 @@ namespace WindowsFormsApp2
             this.xtraTabPage2.Controls.Add(this.bBranchAlisHesabat);
             this.xtraTabPage2.Controls.Add(this.bBranchStock);
             this.xtraTabPage2.Name = "xtraTabPage2";
-            this.xtraTabPage2.Size = new System.Drawing.Size(1151, 655);
+            this.xtraTabPage2.Size = new System.Drawing.Size(1151, 657);
             this.xtraTabPage2.Text = "Hesabatlar";
             // 
             // bBranchAvansHesabati
@@ -4422,7 +4451,7 @@ namespace WindowsFormsApp2
             this.xtraTabPage3.Controls.Add(this.bBranchCreditPay);
             this.xtraTabPage3.Controls.Add(this.bBranchCreditSale);
             this.xtraTabPage3.Name = "xtraTabPage3";
-            this.xtraTabPage3.Size = new System.Drawing.Size(1151, 655);
+            this.xtraTabPage3.Size = new System.Drawing.Size(1151, 657);
             this.xtraTabPage3.Text = "Kredit";
             // 
             // bBranchCreditSaleRefund
@@ -4475,7 +4504,7 @@ namespace WindowsFormsApp2
             // 
             this.xtraTabPage5.Controls.Add(this.bBranchSuppliers);
             this.xtraTabPage5.Name = "xtraTabPage5";
-            this.xtraTabPage5.Size = new System.Drawing.Size(1151, 655);
+            this.xtraTabPage5.Size = new System.Drawing.Size(1151, 657);
             this.xtraTabPage5.Text = "Təchizatçılar";
             // 
             // bBranchSuppliers
@@ -4497,7 +4526,7 @@ namespace WindowsFormsApp2
             // 
             this.xtraTabPage4.Controls.Add(this.bBranchUsers);
             this.xtraTabPage4.Name = "xtraTabPage4";
-            this.xtraTabPage4.Size = new System.Drawing.Size(1151, 655);
+            this.xtraTabPage4.Size = new System.Drawing.Size(1151, 657);
             this.xtraTabPage4.Text = "İstifadəçilər";
             // 
             // bBranchUsers
@@ -4521,7 +4550,7 @@ namespace WindowsFormsApp2
             this.xtraTabPage7.Controls.Add(this.bBranchLog);
             this.xtraTabPage7.Controls.Add(this.bBranchTerminal);
             this.xtraTabPage7.Name = "xtraTabPage7";
-            this.xtraTabPage7.Size = new System.Drawing.Size(1151, 655);
+            this.xtraTabPage7.Size = new System.Drawing.Size(1151, 657);
             this.xtraTabPage7.Text = "Sazlamalar";
             // 
             // bBranchMinusCountControl
@@ -4765,6 +4794,183 @@ namespace WindowsFormsApp2
             this.checkButton5.Text = "NAMAZOV BƏXTİYAR";
             this.checkButton5.CheckedChanged += new System.EventHandler(this.CheckedBranches);
             // 
+            // pageSalePersonnel
+            // 
+            this.pageSalePersonnel.Controls.Add(this.tablePanel3);
+            this.pageSalePersonnel.Name = "pageSalePersonnel";
+            this.pageSalePersonnel.Size = new System.Drawing.Size(1157, 806);
+            // 
+            // tablePanel3
+            // 
+            this.tablePanel3.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 91.9F),
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 13.1F)});
+            this.tablePanel3.Controls.Add(this.labelControl25);
+            this.tablePanel3.Controls.Add(this.bAdd);
+            this.tablePanel3.Controls.Add(this.gridControl4);
+            this.tablePanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tablePanel3.Location = new System.Drawing.Point(0, 0);
+            this.tablePanel3.Name = "tablePanel3";
+            this.tablePanel3.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 33F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
+            this.tablePanel3.ShowGrid = DevExpress.Utils.DefaultBoolean.False;
+            this.tablePanel3.Size = new System.Drawing.Size(1157, 806);
+            this.tablePanel3.TabIndex = 0;
+            // 
+            // labelControl25
+            // 
+            this.labelControl25.Appearance.Font = new System.Drawing.Font("Montserrat", 10F);
+            this.labelControl25.Appearance.Options.UseFont = true;
+            this.labelControl25.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.tablePanel3.SetColumn(this.labelControl25, 0);
+            this.labelControl25.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelControl25.Location = new System.Drawing.Point(3, 3);
+            this.labelControl25.Name = "labelControl25";
+            this.tablePanel3.SetRow(this.labelControl25, 0);
+            this.labelControl25.Size = new System.Drawing.Size(1131, 27);
+            this.labelControl25.TabIndex = 21;
+            this.labelControl25.Text = "Satıcı sayı : ";
+            // 
+            // bAdd
+            // 
+            this.bAdd.AllowFocus = false;
+            this.bAdd.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Success;
+            this.bAdd.Appearance.Font = new System.Drawing.Font("Nunito", 11F, System.Drawing.FontStyle.Bold);
+            this.bAdd.Appearance.Options.UseBackColor = true;
+            this.bAdd.Appearance.Options.UseFont = true;
+            this.tablePanel3.SetColumn(this.bAdd, 1);
+            this.bAdd.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.bAdd.Location = new System.Drawing.Point(1140, 3);
+            this.bAdd.LookAndFeel.SkinName = "WXI";
+            this.bAdd.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.bAdd.MaximumSize = new System.Drawing.Size(140, 0);
+            this.bAdd.MinimumSize = new System.Drawing.Size(140, 0);
+            this.bAdd.Name = "bAdd";
+            this.tablePanel3.SetRow(this.bAdd, 0);
+            this.bAdd.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.bAdd.Size = new System.Drawing.Size(140, 27);
+            this.bAdd.TabIndex = 20;
+            this.bAdd.TabStop = false;
+            this.bAdd.Text = "Yeni satıcı";
+            this.bAdd.Click += new System.EventHandler(this.bAdd_Click);
+            // 
+            // gridControl4
+            // 
+            this.tablePanel3.SetColumn(this.gridControl4, 0);
+            this.tablePanel3.SetColumnSpan(this.gridControl4, 2);
+            this.gridControl4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gridControl4.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(1);
+            this.gridControl4.Location = new System.Drawing.Point(2, 35);
+            this.gridControl4.LookAndFeel.SkinName = "WXI";
+            this.gridControl4.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.gridControl4.MainView = this.gridView5;
+            this.gridControl4.Margin = new System.Windows.Forms.Padding(2);
+            this.gridControl4.Name = "gridControl4";
+            this.tablePanel3.SetRow(this.gridControl4, 1);
+            this.gridControl4.Size = new System.Drawing.Size(1153, 769);
+            this.gridControl4.TabIndex = 19;
+            this.gridControl4.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gridView5});
+            // 
+            // gridView5
+            // 
+            this.gridView5.Appearance.EvenRow.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.gridView5.Appearance.EvenRow.Options.UseBackColor = true;
+            this.gridView5.Appearance.OddRow.BackColor = System.Drawing.Color.White;
+            this.gridView5.Appearance.OddRow.Options.UseBackColor = true;
+            this.gridView5.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.gridColumn7,
+            this.gridColumn8,
+            this.gridColumn9,
+            this.gridColumn10,
+            this.gridColumn11,
+            this.gridColumn12,
+            this.gridColumn13});
+            this.gridView5.DetailHeight = 239;
+            this.gridView5.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFullFocus;
+            this.gridView5.GridControl = this.gridControl4;
+            this.gridView5.Name = "gridView5";
+            this.gridView5.OptionsBehavior.Editable = false;
+            this.gridView5.OptionsNavigation.AutoFocusNewRow = true;
+            this.gridView5.OptionsView.ColumnHeaderAutoHeight = DevExpress.Utils.DefaultBoolean.True;
+            this.gridView5.OptionsView.EnableAppearanceEvenRow = true;
+            this.gridView5.OptionsView.EnableAppearanceOddRow = true;
+            this.gridView5.OptionsView.RowAutoHeight = true;
+            this.gridView5.OptionsView.ShowIndicator = false;
+            // 
+            // gridColumn7
+            // 
+            this.gridColumn7.Caption = "Satıcı adı";
+            this.gridColumn7.FieldName = "FullName";
+            this.gridColumn7.Name = "gridColumn7";
+            this.gridColumn7.OptionsColumn.AllowEdit = false;
+            this.gridColumn7.Visible = true;
+            this.gridColumn7.VisibleIndex = 0;
+            this.gridColumn7.Width = 183;
+            // 
+            // gridColumn8
+            // 
+            this.gridColumn8.Caption = "Təvəllüdü";
+            this.gridColumn8.FieldName = "Əməliyyat";
+            this.gridColumn8.Name = "gridColumn8";
+            this.gridColumn8.OptionsColumn.AllowEdit = false;
+            this.gridColumn8.Visible = true;
+            this.gridColumn8.VisibleIndex = 1;
+            this.gridColumn8.Width = 147;
+            // 
+            // gridColumn9
+            // 
+            this.gridColumn9.Caption = "Bonus faizi";
+            this.gridColumn9.DisplayFormat.FormatString = "d";
+            this.gridColumn9.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            this.gridColumn9.FieldName = "BonusPercent";
+            this.gridColumn9.Name = "gridColumn9";
+            this.gridColumn9.OptionsColumn.AllowEdit = false;
+            this.gridColumn9.Visible = true;
+            this.gridColumn9.VisibleIndex = 2;
+            this.gridColumn9.Width = 114;
+            // 
+            // gridColumn10
+            // 
+            this.gridColumn10.Caption = "Satış sayı";
+            this.gridColumn10.FieldName = "SaleCount";
+            this.gridColumn10.Name = "gridColumn10";
+            this.gridColumn10.OptionsColumn.AllowEdit = false;
+            this.gridColumn10.Visible = true;
+            this.gridColumn10.VisibleIndex = 3;
+            this.gridColumn10.Width = 131;
+            // 
+            // gridColumn11
+            // 
+            this.gridColumn11.Caption = "Qazanılan bonus";
+            this.gridColumn11.FieldName = "EarnedBonus";
+            this.gridColumn11.Name = "gridColumn11";
+            this.gridColumn11.OptionsColumn.AllowEdit = false;
+            this.gridColumn11.Visible = true;
+            this.gridColumn11.VisibleIndex = 4;
+            this.gridColumn11.Width = 151;
+            // 
+            // gridColumn12
+            // 
+            this.gridColumn12.Caption = "Qaytarılan bonus";
+            this.gridColumn12.FieldName = "ReturnedBonus";
+            this.gridColumn12.Name = "gridColumn12";
+            this.gridColumn12.OptionsColumn.AllowEdit = false;
+            this.gridColumn12.Visible = true;
+            this.gridColumn12.VisibleIndex = 5;
+            this.gridColumn12.Width = 187;
+            // 
+            // gridColumn13
+            // 
+            this.gridColumn13.Caption = "Xalis Bonus məbləği";
+            this.gridColumn13.FieldName = "NetBonus";
+            this.gridColumn13.Name = "gridColumn13";
+            this.gridColumn13.OptionsColumn.AllowEdit = false;
+            this.gridColumn13.Visible = true;
+            this.gridColumn13.VisibleIndex = 6;
+            this.gridColumn13.Width = 238;
+            // 
             // MAINSCRRENS
             // 
             this.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(245)))), ((int)(((byte)(250)))));
@@ -4966,6 +5172,12 @@ namespace WindowsFormsApp2
             this.groupControl4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel2)).EndInit();
             this.tablePanel2.ResumeLayout(false);
+            this.pageSalePersonnel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.tablePanel3)).EndInit();
+            this.tablePanel3.ResumeLayout(false);
+            this.tablePanel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControl4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView5)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -5276,6 +5488,20 @@ namespace WindowsFormsApp2
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem38;
         private DevExpress.XtraEditors.LabelControl labelControl24;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem39;
+        private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement75;
+        private DevExpress.XtraBars.Navigation.NavigationPage pageSalePersonnel;
+        private DevExpress.Utils.Layout.TablePanel tablePanel3;
+        private DevExpress.XtraGrid.GridControl gridControl4;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView5;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn7;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn8;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn9;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn10;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn11;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn12;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn13;
+        private DevExpress.XtraEditors.SimpleButton bAdd;
+        private DevExpress.XtraEditors.LabelControl labelControl25;
     }
 }
 

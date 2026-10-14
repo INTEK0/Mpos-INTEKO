@@ -120,7 +120,7 @@ namespace WindowsFormsApp2
             {
                 LogContext.PushProperty("UUID", UUIDGenerateService.GetToken());
                 Serilog.Log.Information("Application started");
-                Application.Run(new avtorizasiya());
+                Application.Run(new fTest());
             }
             catch (Exception ex)
             {

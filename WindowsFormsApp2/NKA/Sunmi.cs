@@ -543,12 +543,12 @@ namespace WindowsFormsApp2.NKA
             {
                 BankRequest bank = new BankRequest()
                 {
-                    data = new BankRequest.Data()
+                    data = new BankRequest.Data
                     {
                         documentUUID = salesData.DocumentUUID,
                         operationType = 0,
                         amount = salesData.Card,
-                        rrn = string.Empty
+                        rrn = null
                     },
                     operation = "transactionTapXPhone"
                 };

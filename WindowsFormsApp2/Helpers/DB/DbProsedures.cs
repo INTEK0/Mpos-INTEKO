@@ -29,7 +29,6 @@ namespace WindowsFormsApp2.Helpers.DB
         private const string GET_BasketDataLoadQuery = "PosBasketDataLoad";
         private const string GET_CategoryExistsQuery = "SELECT_COUNT_KATEGORY";
         private const string INSERT_CategoryQuery = "SELECT_KATEGORY";
-        private const string INSERT_CustomerQuery = "INSERT_MUSTERI";
         private const string INSERT_DoctorQuery = "INSERT_DOCTOR";
         private const string DELETE_DoctorQuery = "delete_doctor";
         private const string GET_DoctorProccessNoQuery = "EXEC dbo.DOCTOR_EMELIYYAT_NOMRE";
@@ -1470,100 +1469,99 @@ FROM
 
         public static int InsertCustomer(DbAccess.Entities.Customer data)
         {
+            string query = "INSERT_MUSTERI";
             using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, connection))
             {
-                using (SqlCommand cmd = new SqlCommand(INSERT_CustomerQuery, connection))
-                {
-                    connection.Open();
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    SqlParameter param;
+                connection.Open();
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlParameter param;
 
-                    param = cmd.Parameters.Add("@musteri_nomre", SqlDbType.NVarChar, 250);
-                    param.Value = data.ProccessNo;
+                param = cmd.Parameters.Add("@musteri_nomre", SqlDbType.NVarChar, 250);
+                param.Value = data.ProccessNo;
 
-                    param = cmd.Parameters.Add("@TARIX", SqlDbType.Date);
-                    param.Value = DateTime.Now;
+                param = cmd.Parameters.Add("@TARIX", SqlDbType.Date);
+                param.Value = DateTime.Now;
 
-                    param = cmd.Parameters.Add("@COMPANYNAME", SqlDbType.NVarChar, 100);
-                    param.Value = data.CompanyName;
+                param = cmd.Parameters.Add("@COMPANYNAME", SqlDbType.NVarChar, 100);
+                param.Value = data.CompanyName;
 
-                    param = cmd.Parameters.Add("@VOEN", SqlDbType.NVarChar, 500);
-                    param.Value = data.Voen;
+                param = cmd.Parameters.Add("@VOEN", SqlDbType.NVarChar, 500);
+                param.Value = data.Voen;
 
-                    param = cmd.Parameters.Add("@AD", SqlDbType.NVarChar, 250);
-                    param.Value = data.Name;
+                param = cmd.Parameters.Add("@AD", SqlDbType.NVarChar, 250);
+                param.Value = data.Name;
 
-                    param = cmd.Parameters.Add("@SOYAD", SqlDbType.NVarChar, 250);
-                    param.Value = data.Surname;
+                param = cmd.Parameters.Add("@SOYAD", SqlDbType.NVarChar, 250);
+                param.Value = data.Surname;
 
-                    param = cmd.Parameters.Add("@ATAADI", SqlDbType.NVarChar, 250);
-                    param.Value = data.FatherName;
+                param = cmd.Parameters.Add("@ATAADI", SqlDbType.NVarChar, 250);
+                param.Value = data.FatherName;
 
-                    param = cmd.Parameters.Add("@DOGUM_TARIX", SqlDbType.Date);
-                    param.Value = data.DateBirth;
+                param = cmd.Parameters.Add("@DOGUM_TARIX", SqlDbType.Date);
+                param.Value = data.DateBirth;
 
-                    param = cmd.Parameters.Add("@SVNO", SqlDbType.NVarChar, 250);
-                    param.Value = data.SvNo;
+                param = cmd.Parameters.Add("@SVNO", SqlDbType.NVarChar, 250);
+                param.Value = data.SvNo;
 
-                    param = cmd.Parameters.Add("@FINKOD", SqlDbType.NVarChar, 250);
-                    param.Value = data.FinCode;
+                param = cmd.Parameters.Add("@FINKOD", SqlDbType.NVarChar, 250);
+                param.Value = data.FinCode;
 
-                    param = cmd.Parameters.Add("@UNVAN", SqlDbType.NVarChar, 500);
-                    param.Value = data.Address;
+                param = cmd.Parameters.Add("@UNVAN", SqlDbType.NVarChar, 500);
+                param.Value = data.Address;
 
-                    param = cmd.Parameters.Add("@FAKTIKI_YASAYIS_YERI", SqlDbType.NVarChar, 500);
-                    param.Value = data.ResidentialAddress;
+                param = cmd.Parameters.Add("@FAKTIKI_YASAYIS_YERI", SqlDbType.NVarChar, 500);
+                param.Value = data.ResidentialAddress;
 
-                    param = cmd.Parameters.Add("@SV_VERILME_TARIX", SqlDbType.Date);
-                    param.Value = data.SV_Start;
+                param = cmd.Parameters.Add("@SV_VERILME_TARIX", SqlDbType.Date);
+                param.Value = data.SV_Start;
 
-                    param = cmd.Parameters.Add("@SV_BITME_TARIX", SqlDbType.Date);
-                    param.Value = data.SV_End;
+                param = cmd.Parameters.Add("@SV_BITME_TARIX", SqlDbType.Date);
+                param.Value = data.SV_End;
 
-                    param = cmd.Parameters.Add("@CINSI", SqlDbType.NVarChar, 20);
-                    param.Value = data.Gender;
+                param = cmd.Parameters.Add("@CINSI", SqlDbType.NVarChar, 20);
+                param.Value = data.Gender;
 
-                    param = cmd.Parameters.Add("@VETENDASLIG", SqlDbType.NVarChar, 250);
-                    param.Value = data.Nation;
+                param = cmd.Parameters.Add("@VETENDASLIG", SqlDbType.NVarChar, 250);
+                param.Value = data.Nation;
 
-                    param = cmd.Parameters.Add("@EMAIL", SqlDbType.NVarChar, 250);
-                    param.Value = data.Email;
+                param = cmd.Parameters.Add("@EMAIL", SqlDbType.NVarChar, 250);
+                param.Value = data.Email;
 
-                    param = cmd.Parameters.Add("@MOBIL", SqlDbType.NVarChar, 250);
-                    param.Value = data.MobPhone;
+                param = cmd.Parameters.Add("@MOBIL", SqlDbType.NVarChar, 250);
+                param.Value = data.MobPhone;
 
-                    param = cmd.Parameters.Add("@EV", SqlDbType.NVarChar, 250);
-                    param.Value = data.HomePhone;
+                param = cmd.Parameters.Add("@EV", SqlDbType.NVarChar, 250);
+                param.Value = data.HomePhone;
 
-                    param = cmd.Parameters.Add("@GEYD", SqlDbType.NVarChar, 250);
-                    param.Value = data.Comment;
+                param = cmd.Parameters.Add("@GEYD", SqlDbType.NVarChar, 250);
+                param.Value = data.Comment;
 
-                    param = cmd.Parameters.Add("@HESAB_NOM", SqlDbType.NVarChar, 500);
-                    param.Value = data.BankAccountNumber;
+                param = cmd.Parameters.Add("@HESAB_NOM", SqlDbType.NVarChar, 500);
+                param.Value = data.BankAccountNumber;
 
-                    param = cmd.Parameters.Add("@BANK_ADI", SqlDbType.NVarChar, 500);
-                    param.Value = data.BankName;
+                param = cmd.Parameters.Add("@BANK_ADI", SqlDbType.NVarChar, 500);
+                param.Value = data.BankName;
 
-                    param = cmd.Parameters.Add("@BANK_VOEN", SqlDbType.NVarChar, 500);
-                    param.Value = data.BankVoen;
+                param = cmd.Parameters.Add("@BANK_VOEN", SqlDbType.NVarChar, 500);
+                param.Value = data.BankVoen;
 
-                    param = cmd.Parameters.Add("@KOD", SqlDbType.NVarChar, 500);
-                    param.Value = data.BankCode;
+                param = cmd.Parameters.Add("@KOD", SqlDbType.NVarChar, 500);
+                param.Value = data.BankCode;
 
-                    param = cmd.Parameters.Add("@SWIFT", SqlDbType.NVarChar, 500);
-                    param.Value = data.BankSwift;
+                param = cmd.Parameters.Add("@SWIFT", SqlDbType.NVarChar, 500);
+                param.Value = data.BankSwift;
 
-                    param = cmd.Parameters.Add("@ISDELETED", SqlDbType.Int);
-                    param.Value = 0;
+                param = cmd.Parameters.Add("@ISDELETED", SqlDbType.Int);
+                param.Value = 0;
 
-                    param = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
+                param = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
 
-                    param.Direction = ParameterDirection.Output;
-                    cmd.ExecuteNonQuery();
+                param.Direction = ParameterDirection.Output;
+                cmd.ExecuteNonQuery();
 
 
-                    return Convert.ToInt32(param.Value);
-                }
+                return Convert.ToInt32(param.Value);
             }
         }
 
@@ -3005,6 +3003,57 @@ VALUES (@CreditPayId, @RefundDate, @FiscalId, @ReceiptNo, @UserId);
         }
 
         #endregion
+
+
+        #region [.. SALE PERSONNEL ..]
+
+        public static int InsertSalePersonnel(DbAccess.Entities.SalePersonnel data)
+        {
+            string query = "INSERT_SalePersonel";
+            try
+            {
+                SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString);
+                SqlCommand cmd = new SqlCommand(query, connection);
+
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@fullName", SqlDbType.NVarChar, 200).Value = (object)data.FullName ?? DBNull.Value;
+
+                cmd.Parameters.Add("@DateBirth", SqlDbType.Date).Value = data.DateBirth.HasValue
+                    ? (object)data.DateBirth.Value
+                    : DBNull.Value;
+
+                cmd.Parameters.Add("@bonusPercantage", SqlDbType.Decimal).Value = data.BonusPercantage;
+
+                cmd.Parameters.Add("@phone", SqlDbType.NVarChar, 50).Value = (object)data.Phone ?? DBNull.Value;
+
+                cmd.Parameters.Add("@email", SqlDbType.NVarChar, 250).Value = (object)data.Email ?? DBNull.Value;
+
+                cmd.Parameters.Add("@IsDeleted", SqlDbType.Bit).Value = data.IsDeleted;
+
+                cmd.Parameters.Add("@IsActive", SqlDbType.Bit).Value = data.IsActive;
+
+                cmd.Parameters.Add("@createdBy", SqlDbType.Int).Value = data.CreatedBy;
+
+                cmd.Parameters.Add("@createdAt", SqlDbType.DateTime2).Value = data.CreatedAt;
+
+                SqlParameter outputParam = cmd.Parameters.Add("@emp_count", SqlDbType.Int);
+                outputParam.Direction = ParameterDirection.Output;
+
+                connection.Open();
+                cmd.ExecuteNonQuery();
+
+                return Convert.ToInt32(outputParam.Value);
+
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+        }
+
+        #endregion [.. SALE PERSONNEL ..]
 
         #endregion [...PROCEDURES METHODS...]
     }

@@ -58,7 +58,7 @@ namespace WindowsFormsApp2.Helpers
             medium,
             [Description("60x40")]
             maximum,
-            [Description("ÜFÜQİ (Geyim mağazası üçün)")]
+            [Description("ÜFÜQİ 60x40 (Geyim mağazası üçün)")]
             maximumTextile
         }
 

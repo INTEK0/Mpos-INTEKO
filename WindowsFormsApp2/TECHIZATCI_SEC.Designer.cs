@@ -34,6 +34,7 @@ namespace WindowsFormsApp2
             this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -67,6 +68,7 @@ namespace WindowsFormsApp2
             this.gridColumn9,
             this.gridColumn10,
             this.gridColumn11,
+            this.gridColumn2,
             this.gridColumn12,
             this.gridColumn13,
             this.gridColumn14,
@@ -100,7 +102,7 @@ namespace WindowsFormsApp2
             this.gridColumn10.OptionsColumn.AllowEdit = false;
             this.gridColumn10.Visible = true;
             this.gridColumn10.VisibleIndex = 0;
-            this.gridColumn10.Width = 114;
+            this.gridColumn10.Width = 122;
             // 
             // gridColumn11
             // 
@@ -109,6 +111,16 @@ namespace WindowsFormsApp2
             this.gridColumn11.Name = "gridColumn11";
             this.gridColumn11.OptionsColumn.AllowEdit = false;
             // 
+            // gridColumn2
+            // 
+            this.gridColumn2.Caption = "KATEQORİYA";
+            this.gridColumn2.FieldName = "CategoryName";
+            this.gridColumn2.Name = "gridColumn2";
+            this.gridColumn2.OptionsColumn.AllowEdit = false;
+            this.gridColumn2.Visible = true;
+            this.gridColumn2.VisibleIndex = 1;
+            this.gridColumn2.Width = 124;
+            // 
             // gridColumn12
             // 
             this.gridColumn12.Caption = "MƏHSUL ADI";
@@ -116,8 +128,8 @@ namespace WindowsFormsApp2
             this.gridColumn12.Name = "gridColumn12";
             this.gridColumn12.OptionsColumn.AllowEdit = false;
             this.gridColumn12.Visible = true;
-            this.gridColumn12.VisibleIndex = 1;
-            this.gridColumn12.Width = 235;
+            this.gridColumn12.VisibleIndex = 2;
+            this.gridColumn12.Width = 238;
             // 
             // gridColumn13
             // 
@@ -126,8 +138,8 @@ namespace WindowsFormsApp2
             this.gridColumn13.Name = "gridColumn13";
             this.gridColumn13.OptionsColumn.AllowEdit = false;
             this.gridColumn13.Visible = true;
-            this.gridColumn13.VisibleIndex = 2;
-            this.gridColumn13.Width = 134;
+            this.gridColumn13.VisibleIndex = 3;
+            this.gridColumn13.Width = 135;
             // 
             // gridColumn14
             // 
@@ -140,8 +152,8 @@ namespace WindowsFormsApp2
             this.gridColumn14.Name = "gridColumn14";
             this.gridColumn14.OptionsColumn.AllowEdit = false;
             this.gridColumn14.Visible = true;
-            this.gridColumn14.VisibleIndex = 4;
-            this.gridColumn14.Width = 134;
+            this.gridColumn14.VisibleIndex = 5;
+            this.gridColumn14.Width = 135;
             // 
             // gridColumn16
             // 
@@ -152,7 +164,7 @@ namespace WindowsFormsApp2
             this.gridColumn16.Name = "gridColumn16";
             this.gridColumn16.OptionsColumn.AllowEdit = false;
             this.gridColumn16.Visible = true;
-            this.gridColumn16.VisibleIndex = 3;
+            this.gridColumn16.VisibleIndex = 4;
             this.gridColumn16.Width = 92;
             // 
             // gridColumn15
@@ -166,8 +178,8 @@ namespace WindowsFormsApp2
             this.gridColumn15.Name = "gridColumn15";
             this.gridColumn15.OptionsColumn.AllowEdit = false;
             this.gridColumn15.Visible = true;
-            this.gridColumn15.VisibleIndex = 5;
-            this.gridColumn15.Width = 144;
+            this.gridColumn15.VisibleIndex = 6;
+            this.gridColumn15.Width = 151;
             // 
             // gridColumn1
             // 
@@ -209,5 +221,6 @@ namespace WindowsFormsApp2
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn16;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn15;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn1;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn2;
     }
 }

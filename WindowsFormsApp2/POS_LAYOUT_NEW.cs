@@ -153,7 +153,7 @@ namespace WindowsFormsApp2
             using (SqlConnection conn = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
                 conn.Open();
-                string deleteQuery = $"DELETE FROM calculation WHERE userId = {Properties.Settings.Default.UserID}";
+                string deleteQuery = $"DELETE FROM calculation WHERE userId = {UserCacheService.User.Id}";
 
                 using (SqlCommand cmd = new SqlCommand(deleteQuery, conn))
                     cmd.ExecuteNonQuery();
@@ -170,40 +170,93 @@ namespace WindowsFormsApp2
                 using (SqlConnection conn = new SqlConnection(DbHelpers.CurrentConnectionString))
                 {
                     conn.Open();
-                    string deleteQuery = $"DELETE FROM pos_guzest WHERE userId = {Properties.Settings.Default.UserID}";
+                    string deleteQuery = $"DELETE FROM pos_guzest WHERE userId = {UserCacheService.User.Id}";
 
                     using (SqlCommand cmd = new SqlCommand(deleteQuery, conn))
-                    {
                         cmd.ExecuteNonQuery();
-                    }
                 }
             });
         }
 
+        //private async Task AutoAsync()
+        //{
+        //    Cursor.Current = Cursors.WaitCursor;
+        //    AutoCompleteStringCollection coll_ = new AutoCompleteStringCollection();
+
+        //    await Task.Run(() =>
+        //    {
+        //        using (SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM dbo.POS_autocomplete_search_mehsul_Adi_distinct()", DbHelpers.CurrentConnectionString))
+        //        using (DataTable dt = new DataTable())
+        //        {
+        //            da.Fill(dt);
+
+        //            foreach (DataRow row in dt.Rows)
+        //            {
+        //                if (row["MEHSUL_ADI"] != DBNull.Value)
+        //                    coll_.Add(row["MEHSUL_ADI"].ToString());
+        //            }
+        //        }
+        //    });
+
+        //    textBox5.AutoCompleteCustomSource = coll_;
+        //    textBox5.AutoCompleteMode = AutoCompleteMode.Suggest;
+        //    textBox5.AutoCompleteSource = AutoCompleteSource.CustomSource;
+        //    Cursor.Current = Cursors.Default;
+        //}
+
+        //private async Task AutoAsync()
+        //{
+        //    Cursor.Current = Cursors.WaitCursor;
+        //    AutoCompleteStringCollection coll_ = new AutoCompleteStringCollection();
+
+        //    await Task.Run(() =>
+        //    {
+        //        using (SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM dbo.POS_autocomplete_search_mehsul_Adi_distinct()", DbHelpers.CurrentConnectionString))
+        //        using (DataTable dt = new DataTable())
+        //        {
+        //            da.Fill(dt);
+
+        //            foreach (DataRow row in dt.Rows)
+        //            {
+        //                if (row["MEHSUL_ADI"] != DBNull.Value)
+        //                    coll_.Add(row["MEHSUL_ADI"].ToString());
+        //            }
+        //        }
+        //    });
+
+        //    textBox5.AutoCompleteCustomSource= coll_;
+        //    textBox5.AutoCompleteMode = AutoCompleteMode.Suggest;
+        //    textBox5.AutoCompleteSource = AutoCompleteSource.CustomSource;
+        //    Cursor.Current = Cursors.Default;
+        //}
+
         private async Task AutoAsync()
         {
             Cursor.Current = Cursors.WaitCursor;
-            AutoCompleteStringCollection coll_ = new AutoCompleteStringCollection();
 
-            await Task.Run(() =>
+            try
             {
-                using (SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM dbo.POS_autocomplete_search_mehsul_Adi_distinct()", DbHelpers.CurrentConnectionString))
-                using (DataTable dt = new DataTable())
+                DataTable dt = await Task.Run(() =>
                 {
-                    da.Fill(dt);
+                    var table = new DataTable();
+                    using (SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM dbo.POS_autocomplete_search_mehsul_Adi_distinct()", DbHelpers.CurrentConnectionString))
+                        da.Fill(table);
 
-                    foreach (DataRow row in dt.Rows)
-                    {
-                        if (row["MEHSUL_ADI"] != DBNull.Value)
-                            coll_.Add(row["MEHSUL_ADI"].ToString());
-                    }
-                }
-            });
+                    return table;
+                });
 
-            textBox5.AutoCompleteCustomSource = coll_;
-            textBox5.AutoCompleteMode = AutoCompleteMode.Suggest;
-            textBox5.AutoCompleteSource = AutoCompleteSource.CustomSource;
-            Cursor.Current = Cursors.Default;
+                searchLookUpEdit1.Properties.DataSource = dt;
+                searchLookUpEdit1.Properties.DisplayMember = "MEHSUL_ADI";
+                searchLookUpEdit1.Properties.ValueMember = "BARKOD";
+            }
+            catch (Exception ex)
+            {
+                ReadyMessages.ERROR_DEFAULT_MESSAGE(ex.Message);
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+            }
         }
 
         private async void tBarcode_KeyDown(object sender, KeyEventArgs e)
@@ -485,10 +538,7 @@ SELECT [Id]
             {
                 var deger = gridView1.GetRowCellValue(i, "TOPLAM");
                 if (deger != null && decimal.TryParse(deger.ToString(), out decimal d))
-                {
                     total += Math.Truncate(d * 100) / 100;
-                }
-
             }
             textEdit6.Text = total.ToString("0.00");
             gridView1.GroupPanelText = $"Məhsul sayı: {gridView1.RowCount}";
@@ -563,11 +613,11 @@ LEFT JOIN pos_guzest pg
                     using (SqlCommand command = new SqlCommand(queryString, connection))
                     {
                         command.Parameters.AddWithValue("@EMELIYYAT_NOMRE", proccessNo);
-                        command.Parameters.AddWithValue("@userID", Properties.Settings.Default.UserID);
+                        command.Parameters.AddWithValue("@userID", UserCacheService.User.Id);
 
                         using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                        using (DataTable dt = new DataTable())
                         {
-                            DataTable dt = new DataTable();
                             dt.Load(reader);
                             gridControl1.DataSource = dt;
                         }
@@ -722,9 +772,7 @@ LEFT JOIN pos_guzest pg
                         }
                         if (!hasData)
                         {
-                            XtraMessageBox.Show(
-                                "Məhsul tapılmadı",
-                                nameof(Enums.HeaderMessage.Bildiriş),
+                            XtraMessageBox.Show("Məhsul tapılmadı", nameof(Enums.HeaderMessage.Bildiriş),
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Warning);
                         }
@@ -905,7 +953,6 @@ LEFT JOIN pos_guzest pg
                 this.Close();
             }
         }
-
 
         private async void DeleteButton()
         {
@@ -1945,23 +1992,20 @@ group by
                 string queryString = "exec CALC_SAY_CALCULATION @MAL_ALISI_DETAILS_ID=@pricePoint ";
 
                 using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+                using (SqlCommand command = new SqlCommand(queryString, connection))
                 {
-                    SqlCommand command = new SqlCommand(queryString, connection);
                     command.Parameters.AddWithValue("@pricePoint", paramValue);
-
                     try
                     {
                         connection.Open();
                         SqlDataReader reader = command.ExecuteReader();
 
                         while (reader.Read())
-                        {
                             textEdit10.Text = reader[0].ToString();
-                        }
 
                         reader.Close();
                     }
-                    catch (Exception)
+                    catch
                     {
 
                     }
@@ -1971,7 +2015,7 @@ group by
 
         private void bAddProduct_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            var control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("HotSalesShow").ToString());
+            var control = Convert.ToBoolean(Registry.CurrentUser?.OpenSubKey("Mpos")?.GetValue("HotSalesShow").ToString());
             if (control)
             {
                 fQuickSale f = new fQuickSale();
@@ -2229,6 +2273,18 @@ group by
             getbarkod_mehsuladi(textBox5.Text);
         }
 
+        private async void searchLookUpEdit1_EditValueChanged(object sender, EventArgs e)
+        {
+            searchLookUpEdit1.EditValueChanged -= searchLookUpEdit1_EditValueChanged;
+            getbarkod_mehsuladi(searchLookUpEdit1.Text);
+            await getall(searchLookUpEdit1.EditValue.ToString());
+            await get(textEdit1.Text);
+            get_cem(textEdit1.Text);
+            searchLookUpEdit1.Clear();
+            tBarcode.Text = null;
+            searchLookUpEdit1.EditValueChanged += searchLookUpEdit1_EditValueChanged;
+        }
+
         private async void textBox5_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -2242,6 +2298,19 @@ group by
             }
         }
 
+        private async void searchLookUpEdit1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                await getall(tBarcode.Text);
+                await get(textEdit1.Text);
+
+                get_cem(textEdit1.Text);
+                searchLookUpEdit1.Clear();
+                tBarcode.Text = null;
+            }
+        }
+
         private void textBox5_Leave(object sender, EventArgs e)
         {
             if (textBox5.Text == "")
@@ -2250,7 +2319,6 @@ group by
                 textBox5.ForeColor = Color.Black;
                 textBox5.Font = new Font("Tahoma", 16, FontStyle.Bold);
             }
-
         }
 
         private void bInstallment_Click(object sender, EventArgs e)
@@ -2419,7 +2487,7 @@ group by
                 bool IsSuccess = false;
 
                 //Satışı Xprinterə yönləndirmək üçün
-                if (chSendToPrinter.Visible  && chSendToPrinter.Checked )
+                if (chSendToPrinter.Visible && chSendToPrinter.Checked)
                 {
                     xprintersales(cash_, card_, umumi_mebleg_, incomingSum);
                     return;
