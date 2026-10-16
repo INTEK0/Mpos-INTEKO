@@ -349,7 +349,7 @@ namespace WindowsFormsApp2.NKA
             }
         }
 
-        public static bool Sales(string ipAddress, string token, string proccessNo, decimal total, decimal cash, decimal card, decimal incomingSum, string cashier, Customer customer, Doctor doctor, string rrn = "")
+        public static bool Sales(string ipAddress, string token, string proccessNo, decimal total, decimal cash, decimal card, decimal incomingSum, string cashier, DbAccess.Entities.Customer customer, Doctor doctor, DbAccess.Entities.SalePersonnel personel, string rrn = "")
         {
             if (string.IsNullOrWhiteSpace(token))
             {
@@ -551,6 +551,7 @@ WHERE user_id = {UserCacheService.User.Id}";
                         json = json,
                         shortFiskalId = response.short_id,
                         customerId = customer?.CustomerID,
+                        salePersonelId = personel.Id,
                         doctorId = doctor?.Id,
                     });
 

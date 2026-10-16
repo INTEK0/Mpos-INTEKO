@@ -67,7 +67,9 @@ namespace WindowsFormsApp2.Helpers
             [Description("EAN13")]
             EAN13,
             [Description("128")]
-            Code128
+            Code128,
+            [Description("EAN8")]
+            EAN8,
         }
 
         public enum SelectedDataType
@@ -83,7 +85,9 @@ namespace WindowsFormsApp2.Helpers
             [Description("XƏRC")]
             Expense,
             [Description("TƏCHİZATÇI")]
-            Supplier
+            Supplier,
+            [Description("SATICI")]
+            SalePersonnel
         }
 
         public enum OperationType

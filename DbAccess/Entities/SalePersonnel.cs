@@ -4,6 +4,7 @@ namespace DbAccess.Entities
 {
     public class SalePersonnel
     {
+        public int Id { get; set; }
         public string FullName { get; set; }
         public DateTime? DateBirth { get; set; }
         public decimal BonusPercantage { get; set; }

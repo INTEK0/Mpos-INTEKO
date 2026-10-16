@@ -23,7 +23,6 @@ namespace WindowsFormsApp2.Helpers.DB
 
         private const string DELETE_ItemQuery = "delete_item";
         private const string INSERT_HeaderQuery = "INSERT_header";
-        private const string INSERT_CalculationQuery = "insert_calculation";
         private const string INSERT_PosBasketQuery = "InsertBasketData";
         private const string ExportPosBasketQuery = "ExportBasketDataToCalculation";
         private const string GET_BasketDataLoadQuery = "PosBasketDataLoad";
@@ -479,6 +478,9 @@ namespace WindowsFormsApp2.Helpers.DB
                 parameter = cmd.Parameters.Add("@doctorId", SqlDbType.Int);
                 parameter.Value = item.doctorId;
 
+                parameter = cmd.Parameters.Add("@salePersonelId", SqlDbType.Int);
+                parameter.Value = item.salePersonelId;
+
                 parameter = cmd.Parameters.Add("@Prepayment", SqlDbType.Int);
                 parameter.Value = item.Prepayment;
 
@@ -618,29 +620,28 @@ namespace WindowsFormsApp2.Helpers.DB
 
         public static void InsertCalculation(Calculation item)
         {
+            string query = "insert_calculation";
             using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, connection))
             {
-                using (SqlCommand cmd = new SqlCommand(INSERT_CalculationQuery, connection))
-                {
-                    connection.Open();
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    SqlParameter param;
-                    param = cmd.Parameters.Add("@emeliyyat_nomre", SqlDbType.NVarChar, 20);
-                    param.Value = item.proccessNo;
-                    param = cmd.Parameters.Add("@mal_alisi_details_id", SqlDbType.Int);
-                    param.Value = item.ProductID;
-                    param = cmd.Parameters.Add("@barkod", SqlDbType.NVarChar, 100);
-                    param.Value = item.Barcode;
-                    param = cmd.Parameters.Add("@mehsul_adi", SqlDbType.NVarChar, 250);
-                    param.Value = item.ProductName;
-                    param = cmd.Parameters.Add("@satis_qiymeti", SqlDbType.Decimal);
-                    param.Value = item.SalePrice;
-                    param = cmd.Parameters.Add("@alis_qiymeti", SqlDbType.Decimal);
-                    param.Value = item.PurchasePrice;
-                    param = cmd.Parameters.Add("@userID", SqlDbType.Int);
-                    param.Value = Properties.Settings.Default.UserID;
-                    cmd.ExecuteNonQuery();
-                }
+                connection.Open();
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlParameter param;
+                param = cmd.Parameters.Add("@emeliyyat_nomre", SqlDbType.NVarChar, 20);
+                param.Value = item.proccessNo;
+                param = cmd.Parameters.Add("@mal_alisi_details_id", SqlDbType.Int);
+                param.Value = item.ProductID;
+                param = cmd.Parameters.Add("@barkod", SqlDbType.NVarChar, 100);
+                param.Value = item.Barcode;
+                param = cmd.Parameters.Add("@mehsul_adi", SqlDbType.NVarChar, 250);
+                param.Value = item.ProductName;
+                param = cmd.Parameters.Add("@satis_qiymeti", SqlDbType.Decimal);
+                param.Value = item.SalePrice;
+                param = cmd.Parameters.Add("@alis_qiymeti", SqlDbType.Decimal);
+                param.Value = item.PurchasePrice;
+                param = cmd.Parameters.Add("@userID", SqlDbType.Int);
+                param.Value = UserCacheService.User.Id;
+                cmd.ExecuteNonQuery();
             }
         }
 

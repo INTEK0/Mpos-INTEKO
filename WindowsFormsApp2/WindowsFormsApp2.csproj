@@ -705,12 +705,6 @@
     <Compile Include="Forms\fTereziler.Designer.cs">
       <DependentUpon>fTereziler.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\fTest.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\fTest.Designer.cs">
-      <DependentUpon>fTest.cs</DependentUpon>
-    </Compile>
     <Compile Include="Helpers\DB\DatabaseClasses.cs" />
     <Compile Include="Helpers\DB\DTOs.cs" />
     <Compile Include="Helpers\DB\RemoteDbManager.cs" />
@@ -719,12 +713,6 @@
     </Compile>
     <Compile Include="Helpers\FormComponents\controlModule.Designer.cs">
       <DependentUpon>controlModule.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Helpers\ftest.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Helpers\ftest.Designer.cs">
-      <DependentUpon>ftest.cs</DependentUpon>
     </Compile>
     <Compile Include="Form_Alert.cs">
       <SubType>Form</SubType>
@@ -1347,9 +1335,6 @@
     <EmbeddedResource Include="Forms\fTereziler.resx">
       <DependentUpon>fTereziler.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\fTest.resx">
-      <DependentUpon>fTest.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\fUser.resx">
       <DependentUpon>fUser.cs</DependentUpon>
     </EmbeddedResource>
@@ -1367,9 +1352,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Helpers\FormComponents\controlModule.resx">
       <DependentUpon>controlModule.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Helpers\ftest.resx">
-      <DependentUpon>ftest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_Alert.resx">
       <DependentUpon>Form_Alert.cs</DependentUpon>

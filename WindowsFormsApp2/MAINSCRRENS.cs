@@ -514,32 +514,35 @@ FROM[terazimalzeme]";
             //lLicenceExpireDate.ForeColor = Color.Black;
             //return;
 
-            var licenceUser = await LicenseService.Instance.RequestKeyControl(LicenseService.Instance.GetLicenceKey());
-            if (licenceUser is null)
+            if (Licence.Helpers.FormHelpers.HasInternetConnection())
             {
-                lLicenceExpireDate.Text = "-";
-                lLicenceExpireDate.ForeColor = Color.Black;
-            }
-            else
-            {
-                DateTime expireDate = licenceUser.LicenceExpireDate.Date;
-                lLicenceExpireDate.Text = expireDate.ToString("dd.MM.yyyy");
-                lExpireDate.Text = expireDate.ToString("dd.MM.yyyy");
-
-                int daysRemaining = (expireDate - DateTime.Today).Days;
-
-                if (daysRemaining <= 2)
-                    lLicenceExpireDate.ForeColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Danger;
-                else if (daysRemaining <= 7)
-                    lLicenceExpireDate.ForeColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Warning;
+                var licenceUser = await LicenseService.Instance.RequestKeyControl(LicenseService.Instance.GetLicenceKey());
+                if (licenceUser is null)
+                {
+                    lLicenceExpireDate.Text = "-";
+                    lLicenceExpireDate.ForeColor = Color.Black;
+                }
                 else
-                    lLicenceExpireDate.ForeColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Success;
+                {
+                    DateTime expireDate = licenceUser.LicenceExpireDate.Date;
+                    lLicenceExpireDate.Text = expireDate.ToString("dd.MM.yyyy");
+                    lExpireDate.Text = expireDate.ToString("dd.MM.yyyy");
 
-                lLicenceExpireDate.ToolTip = $"Lisenziyanın bitmə müddətinə {daysRemaining} gün qalıb";
-                lExpireDate.ToolTip = $"Lisenziyanın bitmə müddətinə {daysRemaining} gün qalıb";
+                    int daysRemaining = (expireDate - DateTime.Today).Days;
 
-                if (daysRemaining <= 7)
-                    LicenceNotificationMessage(daysRemaining);
+                    if (daysRemaining <= 2)
+                        lLicenceExpireDate.ForeColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Danger;
+                    else if (daysRemaining <= 7)
+                        lLicenceExpireDate.ForeColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Warning;
+                    else
+                        lLicenceExpireDate.ForeColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Success;
+
+                    lLicenceExpireDate.ToolTip = $"Lisenziyanın bitmə müddətinə {daysRemaining} gün qalıb";
+                    lExpireDate.ToolTip = $"Lisenziyanın bitmə müddətinə {daysRemaining} gün qalıb";
+
+                    if (daysRemaining <= 7)
+                        LicenceNotificationMessage(daysRemaining);
+                }
             }
         }
 
@@ -2002,18 +2005,21 @@ GROUP BY date_;";
         private void accordionControlElement75_Click(object sender, EventArgs e)
         {
             navigationFrame1.SelectedPage = pageSalePersonnel;
-            GetSalePersonnels();
-        }
-
-        private void GetSalePersonnels()
-        {
-            labelControl25.Text = "Satıcı sayı : 0";
+            SalePersonelDataLoad();
         }
 
         private void bAdd_Click(object sender, EventArgs e)
         {
             fAddSalePersonnel f = new fAddSalePersonnel();
             f.ShowDialog(this);
+            SalePersonelDataLoad();
+        }
+
+        private void SalePersonelDataLoad()
+        {
+            var data = DbProsedures.ConvertToDataTable("SELECT * FROM [VW_SalePersonnelBonusSummary]");
+            gridControl4.DataSource = data;
+            gridView5.GroupPanelText = $"Satıcı sayı: {gridView5.RowCount}";
         }
     }
 }

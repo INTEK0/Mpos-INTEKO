@@ -13,6 +13,7 @@ namespace WindowsFormsApp2.Forms
         private SelectedDataType _selectedData;
         private readonly TParent _parent;
         private DbAccess.Entities.Customer _customer;
+        private DbAccess.Entities.SalePersonnel _salePersonnel;
         private Doctor _doctor;
         private Guarantor _zamin;
 
@@ -45,7 +46,10 @@ namespace WindowsFormsApp2.Forms
                     gridControl1.MainView = gridDoctor;
                     bAdd.Text = "YENİ HƏKİM";
                     break;
-                default:
+                case SelectedDataType.SalePersonnel:
+                    SalePersonnelDataLoad();
+                    gridControl1.MainView = tileView1;
+                    bAdd.Text = "YENİ SATICI";
                     break;
             }
         }
@@ -85,6 +89,18 @@ WHERE IsDeleted = 0";
             var data = DbProsedures.ConvertToDataTable("SELECT * FROM dbo.fn_DOCTOR()");
             gridControl1.DataSource = data;
             gridDoctor.GroupPanelText = $"Həkim sayı: {gridDoctor.RowCount}";
+        }
+
+        private void SalePersonnelDataLoad()
+        {
+            this.Text = "SATICI SEÇİMİ";
+            string query = @"select Id,
+FullName
+from SalePersonnel
+where IsActive = 1 AND IsDeleted = 0";
+            var data = DbProsedures.ConvertToDataTable(query);
+            gridControl1.DataSource = data;
+            gridDoctor.GroupPanelText = $"Satıcı sayı: {tileView1.RowCount}";
         }
 
         private void gridCustomers_DoubleClick(object sender, EventArgs e)
@@ -188,6 +204,35 @@ WHERE IsDeleted = 0 AND ZAMINLER_ID = @Id";
             }
         }
 
+        private void tileView1_ItemClick(object sender, DevExpress.XtraGrid.Views.Tile.TileViewItemClickEventArgs e)
+        {
+            int Id = Convert.ToInt32(tileView1.GetFocusedRowCellValue("Id").ToString());
+
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            {
+                connection.Open();
+                string query = "SELECT * FROM SELECT_SALEPERSONEL_DATA_LOAD(@personelID)";
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@personelID", Id);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            _salePersonnel = FormHelpers.MapReaderToObject<DbAccess.Entities.SalePersonnel>(reader);
+                        }
+                    }
+                }
+            }
+
+            var method = _parent.GetType().GetMethod("ReceiveData");
+            if (method != null)
+            {
+                method.MakeGenericMethod(_salePersonnel.GetType()).Invoke(_parent, new object[] { _salePersonnel });
+                this.Close();
+            }
+        }
+
         private void bAdd_Click(object sender, EventArgs e)
         {
             switch (_selectedData)
@@ -201,7 +246,8 @@ WHERE IsDeleted = 0 AND ZAMINLER_ID = @Id";
                 case SelectedDataType.Doctor:
                     OpenForm<fAddDoctor>();
                     break;
-                default:
+                case SelectedDataType.SalePersonnel:
+                    OpenForm<fAddSalePersonnel>();
                     break;
             }
             gridControl1.RefreshDataSource();
@@ -220,7 +266,12 @@ WHERE IsDeleted = 0 AND ZAMINLER_ID = @Id";
                 case SelectedDataType.Doctor:
                     DoctorDataLoad();
                     break;
+                case SelectedDataType.SalePersonnel:
+                    SalePersonnelDataLoad();
+                    break;
             }
         }
+
+        
     }
 }

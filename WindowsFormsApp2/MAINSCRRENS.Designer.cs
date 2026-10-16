@@ -361,10 +361,10 @@ namespace WindowsFormsApp2
             this.checkButton5 = new DevExpress.XtraEditors.CheckButton();
             this.pageSalePersonnel = new DevExpress.XtraBars.Navigation.NavigationPage();
             this.tablePanel3 = new DevExpress.Utils.Layout.TablePanel();
-            this.labelControl25 = new DevExpress.XtraEditors.LabelControl();
             this.bAdd = new DevExpress.XtraEditors.SimpleButton();
             this.gridControl4 = new DevExpress.XtraGrid.GridControl();
             this.gridView5 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -2583,7 +2583,7 @@ namespace WindowsFormsApp2
             this.tabDatabase,
             this.tabLicence,
             this.tabLog});
-            this.tabPaneSettings.RegularSize = new System.Drawing.Size(1157, 804);
+            this.tabPaneSettings.RegularSize = new System.Drawing.Size(1157, 806);
             this.tabPaneSettings.SelectedPage = this.tabAllSettings;
             this.tabPaneSettings.Size = new System.Drawing.Size(1157, 806);
             this.tabPaneSettings.TabAlignment = DevExpress.XtraEditors.Alignment.Near;
@@ -4805,7 +4805,6 @@ namespace WindowsFormsApp2
             this.tablePanel3.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 91.9F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 13.1F)});
-            this.tablePanel3.Controls.Add(this.labelControl25);
             this.tablePanel3.Controls.Add(this.bAdd);
             this.tablePanel3.Controls.Add(this.gridControl4);
             this.tablePanel3.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -4817,20 +4816,6 @@ namespace WindowsFormsApp2
             this.tablePanel3.ShowGrid = DevExpress.Utils.DefaultBoolean.False;
             this.tablePanel3.Size = new System.Drawing.Size(1157, 806);
             this.tablePanel3.TabIndex = 0;
-            // 
-            // labelControl25
-            // 
-            this.labelControl25.Appearance.Font = new System.Drawing.Font("Montserrat", 10F);
-            this.labelControl25.Appearance.Options.UseFont = true;
-            this.labelControl25.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.tablePanel3.SetColumn(this.labelControl25, 0);
-            this.labelControl25.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelControl25.Location = new System.Drawing.Point(3, 3);
-            this.labelControl25.Name = "labelControl25";
-            this.tablePanel3.SetRow(this.labelControl25, 0);
-            this.labelControl25.Size = new System.Drawing.Size(1131, 27);
-            this.labelControl25.TabIndex = 21;
-            this.labelControl25.Text = "Satıcı sayı : ";
             // 
             // bAdd
             // 
@@ -4880,6 +4865,7 @@ namespace WindowsFormsApp2
             this.gridView5.Appearance.OddRow.BackColor = System.Drawing.Color.White;
             this.gridView5.Appearance.OddRow.Options.UseBackColor = true;
             this.gridView5.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.gridColumn14,
             this.gridColumn7,
             this.gridColumn8,
             this.gridColumn9,
@@ -4899,6 +4885,13 @@ namespace WindowsFormsApp2
             this.gridView5.OptionsView.RowAutoHeight = true;
             this.gridView5.OptionsView.ShowIndicator = false;
             // 
+            // gridColumn14
+            // 
+            this.gridColumn14.Caption = "Id";
+            this.gridColumn14.FieldName = "SalePersonnelId";
+            this.gridColumn14.Name = "gridColumn14";
+            this.gridColumn14.OptionsColumn.AllowEdit = false;
+            // 
             // gridColumn7
             // 
             this.gridColumn7.Caption = "Satıcı adı";
@@ -4912,7 +4905,9 @@ namespace WindowsFormsApp2
             // gridColumn8
             // 
             this.gridColumn8.Caption = "Təvəllüdü";
-            this.gridColumn8.FieldName = "Əməliyyat";
+            this.gridColumn8.DisplayFormat.FormatString = "dd.MM.yyyy";
+            this.gridColumn8.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            this.gridColumn8.FieldName = "DateBirth";
             this.gridColumn8.Name = "gridColumn8";
             this.gridColumn8.OptionsColumn.AllowEdit = false;
             this.gridColumn8.Visible = true;
@@ -4922,8 +4917,8 @@ namespace WindowsFormsApp2
             // gridColumn9
             // 
             this.gridColumn9.Caption = "Bonus faizi";
-            this.gridColumn9.DisplayFormat.FormatString = "d";
-            this.gridColumn9.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            this.gridColumn9.DisplayFormat.FormatString = "N0";
+            this.gridColumn9.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
             this.gridColumn9.FieldName = "BonusPercent";
             this.gridColumn9.Name = "gridColumn9";
             this.gridColumn9.OptionsColumn.AllowEdit = false;
@@ -5175,7 +5170,6 @@ namespace WindowsFormsApp2
             this.pageSalePersonnel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel3)).EndInit();
             this.tablePanel3.ResumeLayout(false);
-            this.tablePanel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView5)).EndInit();
             this.ResumeLayout(false);
@@ -5501,7 +5495,7 @@ namespace WindowsFormsApp2
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn12;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn13;
         private DevExpress.XtraEditors.SimpleButton bAdd;
-        private DevExpress.XtraEditors.LabelControl labelControl25;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn14;
     }
 }
 

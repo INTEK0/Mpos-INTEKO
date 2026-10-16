@@ -8,7 +8,6 @@ using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
 using System.Net;
-using Microsoft.Owin.Hosting;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
@@ -62,7 +61,8 @@ namespace WindowsFormsApp2
         List<string> bankdizi = new List<string>();
         List<string> bankdizic = new List<string>();
         List<string> bankdizis = new List<string>();
-        private Customer _customer;
+        private DbAccess.Entities.Customer _customer;
+        private DbAccess.Entities.SalePersonnel _salePersonnel;
         private Doctor _doctor;
         private List<DiscountProduct> _discountProducts = new List<DiscountProduct>();
 
@@ -137,14 +137,14 @@ namespace WindowsFormsApp2
 
         private void ClinicModule()
         {
-            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("ClinicModule").ToString());
+            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos")?.GetValue("ClinicModule").ToString());
             if (control)
             {
-                layoutControlItem56.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                layoutControlItem25.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
             }
             else
             {
-                layoutControlItem56.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                layoutControlItem25.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             }
         }
 
@@ -458,7 +458,7 @@ ORDER BY MAL_ALISI_DETAILS_ID DESC;";
 
 
                 textBox5.Text = string.Empty;
-                tCustomer.Text = string.Empty;
+                chCustomer.Text = "MÜŞTƏRİ SEÇ";
                 tBarcode.Text = string.Empty;
             }
         }
@@ -755,7 +755,6 @@ LEFT JOIN pos_guzest pg
                                 decimal salePrice = Convert.ToDecimal(dr["SATIŞ QİYMƏTİ"]);
                                 decimal purchasePrice = Convert.ToDecimal(dr["ALIŞ QİYMƏTİ"]);
 
-
                                 DbProsedures.InsertCalculation(new Calculation
                                 {
                                     proccessNo = textEdit1.Text,
@@ -772,9 +771,7 @@ LEFT JOIN pos_guzest pg
                         }
                         if (!hasData)
                         {
-                            XtraMessageBox.Show("Məhsul tapılmadı", nameof(Enums.HeaderMessage.Bildiriş),
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Warning);
+                            XtraMessageBox.Show("Məhsul tapılmadı", nameof(Enums.HeaderMessage.Bildiriş), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
                     }
                 }
@@ -974,7 +971,7 @@ LEFT JOIN pos_guzest pg
             textEdit10.Text = "";
             textEdit12.Text = "";
             textEdit13.Text = "";
-            tCustomer.Text = "";
+            chCustomer.Text = "MÜŞTƏRİ SEÇ";
             textBox5.Text = "";
             tBarcode.Focus();
         }
@@ -1748,29 +1745,29 @@ group by
 
         private void tDoctor_Properties_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
-            fSelectedData<POS_LAYOUT_NEW> doctor = new fSelectedData<POS_LAYOUT_NEW>(this, SelectedDataType.Doctor);
-            doctor.ShowDialog();
+           
         }
 
         private void bZakazPrint_Click(object sender, EventArgs e)
         {
-            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("ClinicModule").ToString());
+            bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos")?.GetValue("ClinicModule").ToString());
             if (control)
             {
                 if (gridView1.RowCount > 0)
                 {
-                    if (string.IsNullOrWhiteSpace(tCustomer.Text))
+                    if (chCustomer.Text == "MÜŞTƏRİ SEÇ")
                     {
                         FormHelpers.Alert("Müştəri seçimi edilmədi", MessageType.Warning);
                         return;
                     }
 
-                    if (string.IsNullOrWhiteSpace(tDoctor.Text))
+                    if (chDoctor.Text == "HƏKİM SEÇ")
                     {
                         FormHelpers.Alert("Həkim seçimi edilmədi", MessageType.Warning);
                         return;
                     }
-                    DbProsedures.Insert_ClinicData(tCustomer.Text, tDoctor.Text);
+
+                    DbProsedures.Insert_ClinicData(chCustomer.Text, chCustomer.Text);
 
                     printXezerClinic zakaz = new printXezerClinic();
                     zakaz.Print();
@@ -1781,12 +1778,6 @@ group by
             }
         }
 
-        private void tCustomer_Properties_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
-        {
-            fSelectedData<POS_LAYOUT_NEW> customers = new fSelectedData<POS_LAYOUT_NEW>(this, SelectedDataType.Customer);
-            customers.ShowDialog();
-        }
-
         private bool XezerClinicPrint()
         {
             bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("ClinicModule").ToString());
@@ -1794,19 +1785,19 @@ group by
             {
                 if (gridView1.RowCount > 0)
                 {
-                    if (string.IsNullOrWhiteSpace(tCustomer.Text))
+                    if (chCustomer.Text == "MÜŞTƏRİ SEÇ")
                     {
                         FormHelpers.Alert("Müştəri seçimi edilmədi", MessageType.Warning);
                         return false;
                     }
 
-                    if (string.IsNullOrWhiteSpace(tDoctor.Text))
+                    if (chDoctor.Text == "HƏKİM SEÇ")
                     {
                         FormHelpers.Alert("Həkim seçimi edilmədi", MessageType.Warning);
                         return false;
                     }
 
-                    DbProsedures.Insert_ClinicData(tCustomer.Text, tDoctor.Text);
+                    DbProsedures.Insert_ClinicData(chCustomer.Text, chDoctor.Text);
 
                     printMasterClinic zakaz = new printMasterClinic();
                     zakaz.Print();
@@ -2050,7 +2041,7 @@ group by
                 textEdit10.Text = "";
                 textEdit12.Text = "";
                 textEdit13.Text = "";
-                tCustomer.Text = "";
+                chCustomer.Text = "MÜŞTƏRİ SEÇ";
                 textBox5.Text = "";
                 tBarcode.Focus();
             }
@@ -2131,8 +2122,7 @@ group by
                 ReadyMessages.ERROR_SERVER_CONNECTION_MESSAGE(e.Message);
             }
         }
-
-        satis_json st_ = new satis_json();
+       
 
         private async void AzSmartInstallmentSales(string ip, string cashier, decimal total)
         {
@@ -2218,6 +2208,42 @@ group by
                 textEdit1.Text = DbProsedures.GET_SalesProcessNo();
                 textEdit11.Text = await DbProsedures.GET_TotalSalesCount();
                 CalculationDelete();
+            }
+        }
+
+        private void chCustomer_TextChanged(object sender, EventArgs e)
+        {
+            if (chCustomer.Text == "MÜŞTƏRİ SEÇ")
+            {
+                chCustomer.Appearance.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Critical;
+            }
+            else
+            {
+                chCustomer.Appearance.ForeColor = Color.White;
+            }
+        }
+
+        private void chSalePersonnel_TextChanged(object sender, EventArgs e)
+        {
+            if (chSalePersonnel.Text == "SATICI SEÇ")
+            {
+                chSalePersonnel.Appearance.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Critical;
+            }
+            else
+            {
+                chSalePersonnel.Appearance.ForeColor = Color.White;
+            }
+        }
+
+        private void chDoctor_TextChanged(object sender, EventArgs e)
+        {
+            if (chDoctor.Text == "HƏKİM SEÇ")
+            {
+                chDoctor.Appearance.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Critical;
+            }
+            else
+            {
+                chDoctor.Appearance.ForeColor = Color.White;
             }
         }
 
@@ -2463,7 +2489,7 @@ group by
                 {
                     cash = cash_,
                     card = card_,
-                    CustomerName = string.IsNullOrWhiteSpace(tCustomer.Text) ? "YENİ MÜŞTƏRİ" : tCustomer.Text,
+                    CustomerName = _customer == null ? "YENİ MÜŞTƏRİ" : $"{_customer.Name} {_customer.Surname} {_customer?.FatherName}",
                     paidPayment = incomingSum
                 });
 
@@ -2505,6 +2531,7 @@ group by
                             Card = card_,
                             Total = umumi_mebleg_,
                             Cashier = tUsername.Text,
+                            personel = _salePersonnel,
                             Customer = _customer,
                             Doctor = _doctor,
                             PayType = payType,
@@ -2529,6 +2556,9 @@ group by
                             Card = card_,
                             IncomingSum = incomingSum,
                             Cashier = tUsername.Text,
+                            Customer = _customer,
+                            Doctor = _doctor,
+                            personel = _salePersonnel,
                             Rrn = bankttnminputdata
                         });
 
@@ -2549,6 +2579,7 @@ group by
                             tUsername.Text,
                             _customer,
                             _doctor,
+                            _salePersonnel,
                             bankttnminputdata);
 
                         if (IsSuccess)
@@ -2570,6 +2601,9 @@ group by
                             Card = card_,
                             Total = umumi_mebleg_,
                             IncomingSum = incomingSum,
+                            personel = _salePersonnel,
+                            Customer = _customer,
+                            Doctor = _doctor,
                             Balance = _qaliq,
                             PayType = payType
                         });
@@ -2586,6 +2620,7 @@ group by
                             IncomingSum = incomingSum,
                             Cashier = tUsername.Text,
                             Customer = _customer,
+                            personel = _salePersonnel,
                             Doctor = _doctor,
                             Balance = incomingSum - cash_
                         });
@@ -2610,8 +2645,8 @@ group by
                 textEdit1.Text = DbProsedures.GET_SalesProcessNo();
                 _customer = null;
                 _doctor = null;
-                tCustomer.Clear();
-                tDoctor.Clear();
+                chCustomer.Text = "MÜŞTƏRİ SEÇ";
+                chDoctor.Text = "HƏKİM SEÇ";
                 UUIDGenerateService.Refreshid();
             }
 
@@ -2666,7 +2701,7 @@ group by
                 {
                     cash = cash_,
                     card = card_,
-                    CustomerName = string.IsNullOrWhiteSpace(tCustomer.Text) ? "YENİ MÜŞTƏRİ" : tCustomer.Text,
+                    CustomerName = string.IsNullOrWhiteSpace(chCustomer.Text) ? "YENİ MÜŞTƏRİ" : chCustomer.Text,
                     paidPayment = incomingSum,
                     PayType = PayType.Prepayment
                 });
@@ -2785,15 +2820,23 @@ group by
 
         public override void ReceiveData<T>(T data)
         {
-            if (data is Customer customer)
+            if (data is DbAccess.Entities.Customer customer)
             {
                 _customer = customer;
-                tCustomer.Text = $"{customer?.Name} {customer?.Surname} - ({customer?.DateBirth.ToString("dd.MM.yyyy")})";
+                //tCustomer.Text = $"{customer?.Name} {customer?.Surname} - ({customer?.DateBirth.ToString("dd.MM.yyyy")})";
+                chCustomer.Text = $"Müştəri: {customer?.Name} {customer?.Surname}";
             }
             else if (data is Doctor doctor)
             {
                 _doctor = doctor;
-                tDoctor.Text = doctor?.NameSurname;
+                chDoctor.Text = $"Həkim: {doctor?.NameSurname}";
+
+                //tDoctor.Text = doctor?.NameSurname;
+            }
+            else if (data is DbAccess.Entities.SalePersonnel salePersonnel)
+            {
+                _salePersonnel = salePersonnel;
+                chSalePersonnel.Text = $"Satıcı: {salePersonnel?.FullName}";
             }
         }
 
@@ -2806,10 +2849,13 @@ group by
             textEdit13.Text = "0";
             textEdit6.Text = "";
             textEdit7.Text = "";
-            tCustomer.Text = "";
+            chSalePersonnel.Text = "SATICI SEÇ";
+            chSalePersonnel.Checked = false;
+            chDoctor.Text = "HƏKİM SEÇ";
+            chDoctor.Checked = false;
+            chCustomer.Text = "MÜŞTƏRİ SEÇ";
+            chCustomer.Checked = false;
             textBox5.Text = "";
-            tCustomer.Text = null;
-            tDoctor.Text = null;
             gridView1.GroupPanelText = $"Məhsul sayı: {gridView1.RowCount}";
             _customer = null;
             _doctor = null;
@@ -3933,7 +3979,7 @@ from  dbo.item where user_id = {Properties.Settings.Default.UserID}";
 
                 SqlConnection conn = new SqlConnection();
                 SqlCommand cmd = new SqlCommand();
-                conn.ConnectionString = Properties.Settings.Default.SqlCon;
+                conn.ConnectionString = DbHelpers.CurrentConnectionString;
                 conn.Open();
                 string query =
                     $"select name,code,salePrice,quantity,case  vatType when 1 then '18' when 3 then '0' when 4 then '2' when 5 then '8' else 0 end as vatType,quantityType,salePrice*quantity as ssum from  dbo.item WHERE user_id = {Properties.Settings.Default.UserID};";
@@ -3972,6 +4018,7 @@ from  dbo.item where user_id = {Properties.Settings.Default.UserID}";
                     cash = cash_,
                     card = card_,
                     total = umumi_mebleg_,
+                    salePersonelId = _salePersonnel?.Id,
                     json = null,
                     shortFiskalId = null
                 });
@@ -6170,6 +6217,54 @@ FROM[terazimalzeme]";
             _viewScale = new GridView();
             _gridScale.MainView = _viewScale;
             _gridScale.ViewCollection.Add(_viewScale);
+        }
+
+        private void checkButton1_Click(object sender, EventArgs e)
+        {
+            if (chSalePersonnel.Checked is false)
+            {
+                fSelectedData<POS_LAYOUT_NEW> customers = new fSelectedData<POS_LAYOUT_NEW>(this, SelectedDataType.SalePersonnel);
+                customers.ShowDialog();
+            }
+            else
+            {
+                _salePersonnel = null;
+                chSalePersonnel.Text = "SATICI SEÇ";
+            }
+        }
+
+        private void checkButton2_Click(object sender, EventArgs e)
+        {
+            if (chDoctor.Checked is false)
+            {
+                fSelectedData<POS_LAYOUT_NEW> doctor = new fSelectedData<POS_LAYOUT_NEW>(this, SelectedDataType.Doctor);
+                doctor.ShowDialog();
+            }
+            else
+            {
+                _doctor = null;
+                chDoctor.Text = "HƏKİM SEÇ";
+            }
+        }
+
+        private void checkButton3_Click(object sender, EventArgs e)
+        {
+           if (chCustomer.Checked is false)
+            {
+                fSelectedData<POS_LAYOUT_NEW> customers = new fSelectedData<POS_LAYOUT_NEW>(this, SelectedDataType.Customer);
+                customers.ShowDialog();
+
+                if (chCustomer.Text == "MÜŞTƏRİ SEÇ")
+                {
+                    chCustomer.Checked = false;
+                    _customer = null;
+                }
+            }
+            else
+            {
+                _customer = null;
+                chCustomer.Text = "MÜŞTƏRİ SEÇ";
+            }
         }
     }
 }

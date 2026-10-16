@@ -49,6 +49,16 @@
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions5 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions6 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject21 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject22 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject23 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject24 = new DevExpress.Utils.SerializableAppearanceObject();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
@@ -2021,8 +2031,18 @@
             serializableAppearanceObject5.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Hyperlink;
             serializableAppearanceObject5.Options.UseFont = true;
             serializableAppearanceObject5.Options.UseForeColor = true;
+            serializableAppearanceObject9.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold);
+            serializableAppearanceObject9.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Hyperlink;
+            serializableAppearanceObject9.Options.UseFont = true;
+            serializableAppearanceObject9.Options.UseForeColor = true;
+            serializableAppearanceObject13.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold);
+            serializableAppearanceObject13.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Hyperlink;
+            serializableAppearanceObject13.Options.UseFont = true;
+            serializableAppearanceObject13.Options.UseForeColor = true;
             this.tBarcode.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "YENİ BARKOD", -1, true, true, false, editorButtonImageOptions2, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "YENİ BARKOD", -1, true, true, false, editorButtonImageOptions2, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, DevExpress.Utils.ToolTipAnchor.Default),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "EAN-8", -1, true, true, false, editorButtonImageOptions3, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, DevExpress.Utils.ToolTipAnchor.Default),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "EAN-13", -1, true, true, false, editorButtonImageOptions4, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.tBarcode.Size = new System.Drawing.Size(344, 30);
             this.tBarcode.TabIndex = 4;
             this.tBarcode.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.tBarcode_ButtonClick);
@@ -2034,12 +2054,12 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tProductName.Location = new System.Drawing.Point(184, 185);
             this.tProductName.Name = "tProductName";
-            serializableAppearanceObject9.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold);
-            serializableAppearanceObject9.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Hyperlink;
-            serializableAppearanceObject9.Options.UseFont = true;
-            serializableAppearanceObject9.Options.UseForeColor = true;
+            serializableAppearanceObject17.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold);
+            serializableAppearanceObject17.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Hyperlink;
+            serializableAppearanceObject17.Options.UseFont = true;
+            serializableAppearanceObject17.Options.UseForeColor = true;
             this.tProductName.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "AXTAR", -1, true, true, false, editorButtonImageOptions3, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "AXTAR", -1, true, true, false, editorButtonImageOptions5, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.tProductName.Size = new System.Drawing.Size(344, 30);
             this.tProductName.TabIndex = 3;
             this.tProductName.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.tProductName_ButtonClick);
@@ -2050,12 +2070,12 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tCategoryName.Location = new System.Drawing.Point(184, 149);
             this.tCategoryName.Name = "tCategoryName";
-            serializableAppearanceObject13.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold);
-            serializableAppearanceObject13.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Hyperlink;
-            serializableAppearanceObject13.Options.UseFont = true;
-            serializableAppearanceObject13.Options.UseForeColor = true;
+            serializableAppearanceObject21.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold);
+            serializableAppearanceObject21.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Hyperlink;
+            serializableAppearanceObject21.Options.UseFont = true;
+            serializableAppearanceObject21.Options.UseForeColor = true;
             this.tCategoryName.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "AXTAR", -1, true, true, false, editorButtonImageOptions4, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "AXTAR", -1, true, true, false, editorButtonImageOptions6, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.tCategoryName.Size = new System.Drawing.Size(344, 30);
             this.tCategoryName.TabIndex = 2;
             this.tCategoryName.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.tCategoryName_ButtonClick);

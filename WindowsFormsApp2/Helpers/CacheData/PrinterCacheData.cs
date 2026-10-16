@@ -217,10 +217,10 @@ TEXT 5,{productY + (i * lineSpacing)},""2"",0,1,1,""{productLines[i]}""
             // Qiyməti və AZN yazdırılır
             tsplCommand += $@"
 REM === Price ===
-TEXT 55,135,""2"",0,1,1,""{_price} AZN""
+TEXT 58,135,""2"",0,1,1,""{_price} AZN""
 
 REM === Barcode ===
-BARCODE  7,60,""{Enums.GetEnumDescription(barcodeType)}"",40,1,0,2,2,""{_barcode}""
+BARCODE  7,50,""{Enums.GetEnumDescription(barcodeType)}"",40,1,0,2,2,""{_barcode}""
 
 PRINT 1,1
 ";

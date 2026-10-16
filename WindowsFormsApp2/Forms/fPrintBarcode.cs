@@ -188,7 +188,7 @@ namespace WindowsFormsApp2.Forms
                             case PrintType.maximumTextile:
                                 for (int i = 0; i < printCount; i++)
                                 {
-                                    PrinterCacheData.PrintLabel60x40Dress(companyName,name,salesPrice,barcode,lookPrinters.Text, "3");
+                                    PrinterCacheData.PrintLabel60x40Dress(companyName,name,salesPrice,barcode,lookPrinters.Text);
                                 }
                                 break;
 
@@ -256,7 +256,7 @@ namespace WindowsFormsApp2.Forms
                         case PrintType.maximumTextile:
                             for (int i = 0; i < printCount; i++)
                             {
-                                PrinterCacheData.PrintLabel60x40Dress(companyName, name, salesPrice, barcode, lookPrinters.Text, "3");
+                                PrinterCacheData.PrintLabel60x40Dress(companyName, name, salesPrice, barcode, lookPrinters.Text);
                             }
                             break;
                     }

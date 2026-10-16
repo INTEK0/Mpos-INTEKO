@@ -33,22 +33,15 @@ namespace WindowsFormsApp2
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(POS_LAYOUT_NEW));
-            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions3 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions6 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject21 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject22 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject23 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject24 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions5 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions1 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.chCustomer = new DevExpress.XtraEditors.CheckButton();
+            this.chDoctor = new DevExpress.XtraEditors.CheckButton();
+            this.chSalePersonnel = new DevExpress.XtraEditors.CheckButton();
             this.searchLookUpEdit1 = new DevExpress.XtraEditors.SearchLookUpEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar2 = new DevExpress.XtraBars.Bar();
@@ -131,8 +124,6 @@ namespace WindowsFormsApp2
             this.bBasket2 = new DevExpress.XtraEditors.SimpleButton();
             this.bBasket1 = new DevExpress.XtraEditors.SimpleButton();
             this.bInstallment = new DevExpress.XtraEditors.SimpleButton();
-            this.tDoctor = new DevExpress.XtraEditors.ButtonEdit();
-            this.tCustomer = new DevExpress.XtraEditors.ButtonEdit();
             this.simpleButton26 = new DevExpress.XtraEditors.SimpleButton();
             this.layoutControlItem52 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem53 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -173,8 +164,6 @@ namespace WindowsFormsApp2
             this.layoutControlItem58 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem60 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem56 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem64 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem63 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem59 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -187,7 +176,10 @@ namespace WindowsFormsApp2
             this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem16 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem25 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem19 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.behaviorManager1 = new DevExpress.Utils.Behaviors.BehaviorManager(this.components);
             this.lMerchantId = new System.Windows.Forms.Label();
@@ -217,8 +209,6 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.textEdit11.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.textEdit6.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.textEdit9.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tDoctor.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tCustomer.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem52)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem53)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem50)).BeginInit();
@@ -258,8 +248,6 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem58)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem60)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem56)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem64)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem63)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem59)).BeginInit();
@@ -272,7 +260,10 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem19)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.behaviorManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem54)).BeginInit();
@@ -283,6 +274,9 @@ namespace WindowsFormsApp2
             // layoutControl1
             // 
             this.layoutControl1.AllowCustomization = false;
+            this.layoutControl1.Controls.Add(this.chCustomer);
+            this.layoutControl1.Controls.Add(this.chDoctor);
+            this.layoutControl1.Controls.Add(this.chSalePersonnel);
             this.layoutControl1.Controls.Add(this.searchLookUpEdit1);
             this.layoutControl1.Controls.Add(this.lModel);
             this.layoutControl1.Controls.Add(this.simpleButton15);
@@ -329,8 +323,6 @@ namespace WindowsFormsApp2
             this.layoutControl1.Controls.Add(this.bBasket2);
             this.layoutControl1.Controls.Add(this.bBasket1);
             this.layoutControl1.Controls.Add(this.bInstallment);
-            this.layoutControl1.Controls.Add(this.tDoctor);
-            this.layoutControl1.Controls.Add(this.tCustomer);
             this.layoutControl1.Controls.Add(this.simpleButton26);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.HiddenItems.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
@@ -351,6 +343,66 @@ namespace WindowsFormsApp2
             this.layoutControl1.Size = new System.Drawing.Size(1384, 716);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
+            // 
+            // chCustomer
+            // 
+            this.chCustomer.AllowFocus = false;
+            this.chCustomer.AllowHtmlDraw = DevExpress.Utils.DefaultBoolean.True;
+            this.chCustomer.Appearance.Font = new System.Drawing.Font("Nunito", 11F, System.Drawing.FontStyle.Bold);
+            this.chCustomer.Appearance.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Critical;
+            this.chCustomer.Appearance.Options.UseFont = true;
+            this.chCustomer.Appearance.Options.UseForeColor = true;
+            this.chCustomer.Appearance.Options.UseTextOptions = true;
+            this.chCustomer.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.chCustomer.Location = new System.Drawing.Point(342, 8);
+            this.chCustomer.Name = "chCustomer";
+            this.chCustomer.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.chCustomer.Size = new System.Drawing.Size(146, 66);
+            this.chCustomer.StyleController = this.layoutControl1;
+            this.chCustomer.TabIndex = 107;
+            this.chCustomer.Text = "MÜŞTƏRİ SEÇ";
+            this.chCustomer.TextChanged += new System.EventHandler(this.chCustomer_TextChanged);
+            this.chCustomer.Click += new System.EventHandler(this.checkButton3_Click);
+            // 
+            // chDoctor
+            // 
+            this.chDoctor.AllowFocus = false;
+            this.chDoctor.AllowHtmlDraw = DevExpress.Utils.DefaultBoolean.False;
+            this.chDoctor.Appearance.Font = new System.Drawing.Font("Nunito", 11F, System.Drawing.FontStyle.Bold);
+            this.chDoctor.Appearance.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Critical;
+            this.chDoctor.Appearance.Options.UseFont = true;
+            this.chDoctor.Appearance.Options.UseForeColor = true;
+            this.chDoctor.Appearance.Options.UseTextOptions = true;
+            this.chDoctor.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.chDoctor.Location = new System.Drawing.Point(342, 80);
+            this.chDoctor.Name = "chDoctor";
+            this.chDoctor.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.chDoctor.Size = new System.Drawing.Size(146, 66);
+            this.chDoctor.StyleController = this.layoutControl1;
+            this.chDoctor.TabIndex = 106;
+            this.chDoctor.Text = "HƏKİM SEÇ";
+            this.chDoctor.TextChanged += new System.EventHandler(this.chDoctor_TextChanged);
+            this.chDoctor.Click += new System.EventHandler(this.checkButton2_Click);
+            // 
+            // chSalePersonnel
+            // 
+            this.chSalePersonnel.AllowFocus = false;
+            this.chSalePersonnel.AllowHtmlDraw = DevExpress.Utils.DefaultBoolean.False;
+            this.chSalePersonnel.Appearance.Font = new System.Drawing.Font("Nunito", 11F, System.Drawing.FontStyle.Bold);
+            this.chSalePersonnel.Appearance.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Critical;
+            this.chSalePersonnel.Appearance.Options.UseFont = true;
+            this.chSalePersonnel.Appearance.Options.UseForeColor = true;
+            this.chSalePersonnel.Appearance.Options.UseTextOptions = true;
+            this.chSalePersonnel.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.chSalePersonnel.Location = new System.Drawing.Point(494, 8);
+            this.chSalePersonnel.Name = "chSalePersonnel";
+            this.chSalePersonnel.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
+            this.chSalePersonnel.Size = new System.Drawing.Size(137, 66);
+            this.chSalePersonnel.StyleController = this.layoutControl1;
+            this.chSalePersonnel.TabIndex = 105;
+            this.chSalePersonnel.Text = "SATICI SEÇ";
+            this.chSalePersonnel.TextChanged += new System.EventHandler(this.chSalePersonnel_TextChanged);
+            this.chSalePersonnel.Click += new System.EventHandler(this.checkButton1_Click);
             // 
             // searchLookUpEdit1
             // 
@@ -598,11 +650,11 @@ namespace WindowsFormsApp2
             this.simpleButton15.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.simpleButton15.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("simpleButton15.ImageOptions.SvgImage")));
             this.simpleButton15.ImageOptions.SvgImageSize = new System.Drawing.Size(24, 24);
-            this.simpleButton15.Location = new System.Drawing.Point(950, 288);
+            this.simpleButton15.Location = new System.Drawing.Point(950, 292);
             this.simpleButton15.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.simpleButton15.Name = "simpleButton15";
             this.simpleButton15.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.simpleButton15.Size = new System.Drawing.Size(154, 31);
+            this.simpleButton15.Size = new System.Drawing.Size(154, 33);
             this.simpleButton15.StyleController = this.layoutControl1;
             this.simpleButton15.TabIndex = 102;
             this.simpleButton15.Text = "AVANS ÖDƏNİŞİ";
@@ -619,11 +671,11 @@ namespace WindowsFormsApp2
             this.simpleButton4.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.simpleButton4.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("simpleButton4.ImageOptions.SvgImage")));
             this.simpleButton4.ImageOptions.SvgImageSize = new System.Drawing.Size(24, 24);
-            this.simpleButton4.Location = new System.Drawing.Point(1110, 288);
+            this.simpleButton4.Location = new System.Drawing.Point(1110, 292);
             this.simpleButton4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.simpleButton4.Name = "simpleButton4";
             this.simpleButton4.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.simpleButton4.Size = new System.Drawing.Size(127, 31);
+            this.simpleButton4.Size = new System.Drawing.Size(127, 33);
             this.simpleButton4.StyleController = this.layoutControl1;
             this.simpleButton4.TabIndex = 101;
             this.simpleButton4.Text = "AVANS SATIŞ";
@@ -664,11 +716,11 @@ namespace WindowsFormsApp2
             // 
             this.tileControl1.BackColor = System.Drawing.Color.Transparent;
             this.tileControl1.Groups.Add(this.tileGroup1);
-            this.tileControl1.Location = new System.Drawing.Point(950, 388);
+            this.tileControl1.Location = new System.Drawing.Point(950, 438);
             this.tileControl1.MaxId = 5;
             this.tileControl1.Name = "tileControl1";
             this.tileControl1.Padding = new System.Windows.Forms.Padding(3);
-            this.tileControl1.Size = new System.Drawing.Size(426, 206);
+            this.tileControl1.Size = new System.Drawing.Size(426, 156);
             this.tileControl1.TabIndex = 67;
             this.tileControl1.Text = "tileControl1";
             this.tileControl1.ItemClick += new DevExpress.XtraEditors.TileItemClickEventHandler(this.tileControl1_ItemClick);
@@ -685,10 +737,10 @@ namespace WindowsFormsApp2
             this.textBox5.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox5.Font = new System.Drawing.Font("Tahoma", 16F, System.Drawing.FontStyle.Bold);
             this.textBox5.ForeColor = System.Drawing.Color.LightGray;
-            this.textBox5.Location = new System.Drawing.Point(342, 80);
+            this.textBox5.Location = new System.Drawing.Point(950, 369);
             this.textBox5.Margin = new System.Windows.Forms.Padding(5, 3, 3, 3);
             this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(328, 37);
+            this.textBox5.Size = new System.Drawing.Size(426, 20);
             this.textBox5.TabIndex = 58;
             this.textBox5.Text = "MƏHSUL ADI";
             this.textBox5.TextChanged += new System.EventHandler(this.textBox5_TextChanged);
@@ -1095,10 +1147,10 @@ namespace WindowsFormsApp2
             // bRowDelete
             // 
             this.bRowDelete.AutoHeight = false;
-            editorButtonImageOptions3.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("editorButtonImageOptions3.SvgImage")));
-            editorButtonImageOptions3.SvgImageSize = new System.Drawing.Size(24, 24);
+            editorButtonImageOptions1.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("editorButtonImageOptions1.SvgImage")));
+            editorButtonImageOptions1.SvgImageSize = new System.Drawing.Size(24, 24);
             this.bRowDelete.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions3, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions1, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.bRowDelete.Name = "bRowDelete";
             this.bRowDelete.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.bRowDelete.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.bRowDelete_ButtonClick);
@@ -1261,7 +1313,7 @@ namespace WindowsFormsApp2
             this.simpleButton5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.simpleButton5.Name = "simpleButton5";
             this.simpleButton5.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.simpleButton5.Size = new System.Drawing.Size(154, 38);
+            this.simpleButton5.Size = new System.Drawing.Size(154, 42);
             this.simpleButton5.StyleController = this.layoutControl1;
             this.simpleButton5.TabIndex = 21;
             this.simpleButton5.Text = "NAĞD";
@@ -1279,7 +1331,7 @@ namespace WindowsFormsApp2
             this.simpleButton6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.simpleButton6.Name = "simpleButton6";
             this.simpleButton6.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.simpleButton6.Size = new System.Drawing.Size(127, 38);
+            this.simpleButton6.Size = new System.Drawing.Size(127, 42);
             this.simpleButton6.StyleController = this.layoutControl1;
             this.simpleButton6.TabIndex = 22;
             this.simpleButton6.Text = "KART";
@@ -1297,7 +1349,7 @@ namespace WindowsFormsApp2
             this.simpleButton7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.simpleButton7.Name = "simpleButton7";
             this.simpleButton7.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.simpleButton7.Size = new System.Drawing.Size(133, 38);
+            this.simpleButton7.Size = new System.Drawing.Size(133, 42);
             this.simpleButton7.StyleController = this.layoutControl1;
             this.simpleButton7.TabIndex = 23;
             this.simpleButton7.Text = "NAĞD KART";
@@ -1433,58 +1485,22 @@ namespace WindowsFormsApp2
             this.bInstallment.Appearance.Options.UseFont = true;
             this.bInstallment.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bInstallment.ImageOptions.SvgImage")));
             this.bInstallment.ImageOptions.SvgImageSize = new System.Drawing.Size(24, 24);
-            this.bInstallment.Location = new System.Drawing.Point(950, 325);
+            this.bInstallment.Location = new System.Drawing.Point(950, 331);
             this.bInstallment.Name = "bInstallment";
             this.bInstallment.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
-            this.bInstallment.Size = new System.Drawing.Size(426, 31);
+            this.bInstallment.Size = new System.Drawing.Size(426, 32);
             this.bInstallment.StyleController = this.layoutControl1;
             this.bInstallment.TabIndex = 64;
             this.bInstallment.Text = "TAKSİT (BİRBANK)";
             this.bInstallment.Click += new System.EventHandler(this.bInstallment_Click);
             // 
-            // tDoctor
-            // 
-            this.tDoctor.Location = new System.Drawing.Point(342, 44);
-            this.tDoctor.Name = "tDoctor";
-            serializableAppearanceObject21.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold);
-            serializableAppearanceObject21.Options.UseFont = true;
-            this.tDoctor.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "AXTAR", -1, true, true, false, editorButtonImageOptions6, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
-            this.tDoctor.Properties.NullValuePrompt = "Həkim adı";
-            this.tDoctor.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
-            this.tDoctor.Properties.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.tDoctor_Properties_ButtonClick);
-            this.tDoctor.Size = new System.Drawing.Size(443, 30);
-            this.tDoctor.StyleController = this.layoutControl1;
-            this.tDoctor.TabIndex = 100;
-            // 
-            // tCustomer
-            // 
-            this.tCustomer.Location = new System.Drawing.Point(342, 8);
-            this.tCustomer.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tCustomer.Name = "tCustomer";
-            this.tCustomer.Properties.AdvancedModeOptions.AutoCompleteMode = DevExpress.XtraEditors.TextEditAutoCompleteMode.SuggestAppend;
-            this.tCustomer.Properties.AdvancedModeOptions.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
-            this.tCustomer.Properties.AllowFocused = false;
-            serializableAppearanceObject17.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold);
-            serializableAppearanceObject17.Options.UseFont = true;
-            this.tCustomer.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "AXTAR", -1, true, true, false, editorButtonImageOptions5, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
-            this.tCustomer.Properties.NullValuePrompt = "Müştəri adı";
-            this.tCustomer.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
-            this.tCustomer.Properties.UseMaskAsDisplayFormat = true;
-            this.tCustomer.Properties.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.tCustomer_Properties_ButtonClick);
-            this.tCustomer.Size = new System.Drawing.Size(443, 30);
-            this.tCustomer.StyleController = this.layoutControl1;
-            this.tCustomer.TabIndex = 99;
-            this.tCustomer.TabStop = false;
-            // 
             // simpleButton26
             // 
             this.simpleButton26.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Question;
             this.simpleButton26.Appearance.Options.UseBackColor = true;
-            this.simpleButton26.Location = new System.Drawing.Point(1243, 288);
+            this.simpleButton26.Location = new System.Drawing.Point(1243, 292);
             this.simpleButton26.Name = "simpleButton26";
-            this.simpleButton26.Size = new System.Drawing.Size(133, 31);
+            this.simpleButton26.Size = new System.Drawing.Size(133, 33);
             this.simpleButton26.StyleController = this.layoutControl1;
             this.simpleButton26.TabIndex = 103;
             this.simpleButton26.Text = "TAKSİT";
@@ -1603,8 +1619,6 @@ namespace WindowsFormsApp2
             this.layoutControlItem58,
             this.layoutControlItem60,
             this.emptySpaceItem3,
-            this.layoutControlItem6,
-            this.layoutControlItem56,
             this.layoutControlItem64,
             this.layoutControlItem63,
             this.layoutControlItem59,
@@ -1617,7 +1631,10 @@ namespace WindowsFormsApp2
             this.layoutControlItem15,
             this.emptySpaceItem1,
             this.layoutControlItem9,
-            this.layoutControlItem8});
+            this.layoutControlItem16,
+            this.layoutControlItem6,
+            this.layoutControlItem8,
+            this.layoutControlItem25});
             this.Root.Name = "Root";
             this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(5, 5, 5, 5);
             this.Root.Size = new System.Drawing.Size(1384, 716);
@@ -1751,7 +1768,7 @@ namespace WindowsFormsApp2
             this.layoutControlItem22.Location = new System.Drawing.Point(942, 236);
             this.layoutControlItem22.MinSize = new System.Drawing.Size(94, 44);
             this.layoutControlItem22.Name = "layoutControlItem22";
-            this.layoutControlItem22.Size = new System.Drawing.Size(160, 44);
+            this.layoutControlItem22.Size = new System.Drawing.Size(160, 48);
             this.layoutControlItem22.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem22.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem22.TextVisible = false;
@@ -1762,7 +1779,7 @@ namespace WindowsFormsApp2
             this.layoutControlItem23.Location = new System.Drawing.Point(1102, 236);
             this.layoutControlItem23.MinSize = new System.Drawing.Size(91, 44);
             this.layoutControlItem23.Name = "layoutControlItem23";
-            this.layoutControlItem23.Size = new System.Drawing.Size(133, 44);
+            this.layoutControlItem23.Size = new System.Drawing.Size(133, 48);
             this.layoutControlItem23.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem23.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem23.TextVisible = false;
@@ -1773,7 +1790,7 @@ namespace WindowsFormsApp2
             this.layoutControlItem24.Location = new System.Drawing.Point(1235, 236);
             this.layoutControlItem24.MinSize = new System.Drawing.Size(139, 44);
             this.layoutControlItem24.Name = "layoutControlItem24";
-            this.layoutControlItem24.Size = new System.Drawing.Size(139, 44);
+            this.layoutControlItem24.Size = new System.Drawing.Size(139, 48);
             this.layoutControlItem24.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem24.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem24.TextVisible = false;
@@ -1781,10 +1798,10 @@ namespace WindowsFormsApp2
             // emptySpaceItem18
             // 
             this.emptySpaceItem18.AllowHotTrack = false;
-            this.emptySpaceItem18.Location = new System.Drawing.Point(783, 0);
+            this.emptySpaceItem18.Location = new System.Drawing.Point(629, 0);
             this.emptySpaceItem18.MinSize = new System.Drawing.Size(106, 26);
             this.emptySpaceItem18.Name = "emptySpaceItem18";
-            this.emptySpaceItem18.Size = new System.Drawing.Size(159, 72);
+            this.emptySpaceItem18.Size = new System.Drawing.Size(313, 72);
             this.emptySpaceItem18.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.emptySpaceItem18.TextSize = new System.Drawing.Size(0, 0);
             // 
@@ -1842,10 +1859,10 @@ namespace WindowsFormsApp2
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(942, 354);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(942, 387);
             this.emptySpaceItem2.MinSize = new System.Drawing.Size(106, 26);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(432, 26);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(432, 43);
             this.emptySpaceItem2.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
@@ -1968,10 +1985,10 @@ namespace WindowsFormsApp2
             // layoutControlItem60
             // 
             this.layoutControlItem60.Control = this.tileControl1;
-            this.layoutControlItem60.Location = new System.Drawing.Point(942, 380);
+            this.layoutControlItem60.Location = new System.Drawing.Point(942, 430);
             this.layoutControlItem60.MinSize = new System.Drawing.Size(106, 26);
             this.layoutControlItem60.Name = "layoutControlItem60";
-            this.layoutControlItem60.Size = new System.Drawing.Size(432, 212);
+            this.layoutControlItem60.Size = new System.Drawing.Size(432, 162);
             this.layoutControlItem60.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem60.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem60.TextVisible = false;
@@ -1979,49 +1996,20 @@ namespace WindowsFormsApp2
             // emptySpaceItem3
             // 
             this.emptySpaceItem3.AllowHotTrack = false;
-            this.emptySpaceItem3.Location = new System.Drawing.Point(668, 72);
+            this.emptySpaceItem3.Location = new System.Drawing.Point(486, 72);
             this.emptySpaceItem3.MinSize = new System.Drawing.Size(106, 26);
             this.emptySpaceItem3.Name = "emptySpaceItem3";
-            this.emptySpaceItem3.Size = new System.Drawing.Size(274, 72);
+            this.emptySpaceItem3.Size = new System.Drawing.Size(456, 72);
             this.emptySpaceItem3.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
-            // 
-            // layoutControlItem6
-            // 
-            this.layoutControlItem6.Control = this.tCustomer;
-            this.layoutControlItem6.Location = new System.Drawing.Point(334, 0);
-            this.layoutControlItem6.MaxSize = new System.Drawing.Size(449, 36);
-            this.layoutControlItem6.MinSize = new System.Drawing.Size(449, 36);
-            this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(449, 36);
-            this.layoutControlItem6.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
-            this.layoutControlItem6.Text = "MÜŞTƏRİ";
-            this.layoutControlItem6.TextLocation = DevExpress.Utils.Locations.Left;
-            this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem6.TextVisible = false;
-            // 
-            // layoutControlItem56
-            // 
-            this.layoutControlItem56.Control = this.tDoctor;
-            this.layoutControlItem56.Location = new System.Drawing.Point(334, 36);
-            this.layoutControlItem56.MaxSize = new System.Drawing.Size(449, 0);
-            this.layoutControlItem56.MinSize = new System.Drawing.Size(449, 36);
-            this.layoutControlItem56.Name = "layoutControlItem56";
-            this.layoutControlItem56.Size = new System.Drawing.Size(449, 36);
-            this.layoutControlItem56.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
-            this.layoutControlItem56.Text = "HƏKİM";
-            this.layoutControlItem56.TextLocation = DevExpress.Utils.Locations.Left;
-            this.layoutControlItem56.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem56.TextVisible = false;
-            this.layoutControlItem56.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // layoutControlItem64
             // 
             this.layoutControlItem64.Control = this.simpleButton15;
-            this.layoutControlItem64.Location = new System.Drawing.Point(942, 280);
+            this.layoutControlItem64.Location = new System.Drawing.Point(942, 284);
             this.layoutControlItem64.MinSize = new System.Drawing.Size(145, 36);
             this.layoutControlItem64.Name = "layoutControlItem64";
-            this.layoutControlItem64.Size = new System.Drawing.Size(160, 37);
+            this.layoutControlItem64.Size = new System.Drawing.Size(160, 39);
             this.layoutControlItem64.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem64.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem64.TextVisible = false;
@@ -2029,10 +2017,10 @@ namespace WindowsFormsApp2
             // layoutControlItem63
             // 
             this.layoutControlItem63.Control = this.simpleButton4;
-            this.layoutControlItem63.Location = new System.Drawing.Point(1102, 280);
+            this.layoutControlItem63.Location = new System.Drawing.Point(1102, 284);
             this.layoutControlItem63.MinSize = new System.Drawing.Size(133, 36);
             this.layoutControlItem63.Name = "layoutControlItem63";
-            this.layoutControlItem63.Size = new System.Drawing.Size(133, 37);
+            this.layoutControlItem63.Size = new System.Drawing.Size(133, 39);
             this.layoutControlItem63.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem63.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem63.TextVisible = false;
@@ -2040,10 +2028,10 @@ namespace WindowsFormsApp2
             // layoutControlItem59
             // 
             this.layoutControlItem59.Control = this.bInstallment;
-            this.layoutControlItem59.Location = new System.Drawing.Point(942, 317);
+            this.layoutControlItem59.Location = new System.Drawing.Point(942, 323);
             this.layoutControlItem59.MinSize = new System.Drawing.Size(163, 36);
             this.layoutControlItem59.Name = "layoutControlItem59";
-            this.layoutControlItem59.Size = new System.Drawing.Size(432, 37);
+            this.layoutControlItem59.Size = new System.Drawing.Size(432, 38);
             this.layoutControlItem59.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem59.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem59.TextVisible = false;
@@ -2052,10 +2040,10 @@ namespace WindowsFormsApp2
             // layoutControlItem65
             // 
             this.layoutControlItem65.Control = this.simpleButton26;
-            this.layoutControlItem65.Location = new System.Drawing.Point(1235, 280);
+            this.layoutControlItem65.Location = new System.Drawing.Point(1235, 284);
             this.layoutControlItem65.MinSize = new System.Drawing.Size(64, 34);
             this.layoutControlItem65.Name = "layoutControlItem65";
-            this.layoutControlItem65.Size = new System.Drawing.Size(139, 37);
+            this.layoutControlItem65.Size = new System.Drawing.Size(139, 39);
             this.layoutControlItem65.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem65.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem65.TextVisible = false;
@@ -2152,18 +2140,54 @@ namespace WindowsFormsApp2
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem9.TextVisible = false;
             // 
+            // layoutControlItem16
+            // 
+            this.layoutControlItem16.Control = this.chSalePersonnel;
+            this.layoutControlItem16.Location = new System.Drawing.Point(486, 0);
+            this.layoutControlItem16.MaxSize = new System.Drawing.Size(143, 0);
+            this.layoutControlItem16.MinSize = new System.Drawing.Size(143, 34);
+            this.layoutControlItem16.Name = "layoutControlItem16";
+            this.layoutControlItem16.Size = new System.Drawing.Size(143, 72);
+            this.layoutControlItem16.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.layoutControlItem16.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem16.TextVisible = false;
+            // 
+            // layoutControlItem6
+            // 
+            this.layoutControlItem6.Control = this.chCustomer;
+            this.layoutControlItem6.Location = new System.Drawing.Point(334, 0);
+            this.layoutControlItem6.MaxSize = new System.Drawing.Size(152, 0);
+            this.layoutControlItem6.MinSize = new System.Drawing.Size(152, 34);
+            this.layoutControlItem6.Name = "layoutControlItem6";
+            this.layoutControlItem6.Size = new System.Drawing.Size(152, 72);
+            this.layoutControlItem6.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem6.TextVisible = false;
+            // 
             // layoutControlItem8
             // 
             this.layoutControlItem8.Control = this.textBox5;
-            this.layoutControlItem8.Location = new System.Drawing.Point(334, 72);
-            this.layoutControlItem8.MaxSize = new System.Drawing.Size(334, 43);
-            this.layoutControlItem8.MinSize = new System.Drawing.Size(334, 43);
+            this.layoutControlItem8.Location = new System.Drawing.Point(942, 361);
+            this.layoutControlItem8.MaxSize = new System.Drawing.Size(0, 26);
+            this.layoutControlItem8.MinSize = new System.Drawing.Size(26, 26);
             this.layoutControlItem8.Name = "layoutControlItem8";
-            this.layoutControlItem8.Size = new System.Drawing.Size(334, 72);
+            this.layoutControlItem8.Size = new System.Drawing.Size(432, 26);
             this.layoutControlItem8.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem8.TextVisible = false;
             this.layoutControlItem8.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            // 
+            // layoutControlItem25
+            // 
+            this.layoutControlItem25.Control = this.chDoctor;
+            this.layoutControlItem25.Location = new System.Drawing.Point(334, 72);
+            this.layoutControlItem25.MaxSize = new System.Drawing.Size(152, 0);
+            this.layoutControlItem25.MinSize = new System.Drawing.Size(152, 34);
+            this.layoutControlItem25.Name = "layoutControlItem25";
+            this.layoutControlItem25.Size = new System.Drawing.Size(152, 72);
+            this.layoutControlItem25.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.layoutControlItem25.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem25.TextVisible = false;
             // 
             // emptySpaceItem19
             // 
@@ -2274,8 +2298,6 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.textEdit11.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.textEdit6.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.textEdit9.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tDoctor.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tCustomer.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem52)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem53)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem50)).EndInit();
@@ -2315,8 +2337,6 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem58)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem60)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem56)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem64)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem63)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem59)).EndInit();
@@ -2329,7 +2349,10 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem19)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.behaviorManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem54)).EndInit();
@@ -2354,7 +2377,6 @@ namespace WindowsFormsApp2
         private DevExpress.XtraEditors.TextEdit tUsername;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem4;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
         private DevExpress.XtraEditors.SimpleButton simpleButton1;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem7;
         private DevExpress.XtraEditors.TextEdit textEdit8;
@@ -2444,9 +2466,6 @@ namespace WindowsFormsApp2
         private DevExpress.XtraEditors.CheckButton chSendToKassa;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem14;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem3;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem56;
-        private DevExpress.XtraEditors.ButtonEdit tDoctor;
-        private DevExpress.XtraEditors.ButtonEdit tCustomer;
         private DevExpress.XtraEditors.SimpleButton simpleButton4;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem63;
         private DevExpress.XtraEditors.SimpleButton simpleButton15;
@@ -2491,5 +2510,11 @@ namespace WindowsFormsApp2
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem9;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn13;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn14;
+        private DevExpress.XtraEditors.CheckButton chSalePersonnel;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem16;
+        private DevExpress.XtraEditors.CheckButton chDoctor;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem25;
+        private DevExpress.XtraEditors.CheckButton chCustomer;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
     }
 }

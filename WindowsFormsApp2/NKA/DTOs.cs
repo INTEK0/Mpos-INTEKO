@@ -18,7 +18,8 @@ public static class DTOs
         public decimal IncomingSum { get; set; } //Ödənilən
         public decimal Balance { get; set; } //qalıq
         public string Cashier { get; set; }
-        public Customer Customer { get; set; }
+        public DbAccess.Entities.Customer Customer { get; set; }
+        public DbAccess.Entities.SalePersonnel personel { get; set; }
         public Doctor Doctor { get; set; }
         public string Rrn { get; set; } = string.Empty;
         public string BankTransactionId { get; set; }
