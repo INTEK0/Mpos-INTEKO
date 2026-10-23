@@ -25,10 +25,10 @@ using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
 using WindowsFormsApp2.NKA;
 using WindowsFormsApp2.Services;
-using static DevExpress.Xpo.Helpers.AssociatedCollectionCriteriaHelper;
 using static WindowsFormsApp2.Helpers.Enums;
 using static WindowsFormsApp2.Helpers.FormHelpers;
 using static WindowsFormsApp2.POS_LAYOUT_NEW;
+using Method = RestSharp.Method;
 
 namespace WindowsFormsApp2
 {
@@ -1914,27 +1914,36 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
                 {
                     Cursor.Current = Cursors.WaitCursor;
 
-
-
                     using (SqlConnection con = new SqlConnection(DbHelpers.CurrentConnectionString))
                     {
                         con.Open();
                         using (SqlTransaction transaction = con.BeginTransaction())
-                        {
                             try
                             {
+                                int saleId = 0;
+                                int returnId = 0;
+                                decimal totalRefundAmount = 0;
+
                                 foreach (int i in gridView1.GetSelectedRows())
                                 {
                                     DataRow row = gridView1.GetDataRow(i);
                                     fr = Convert.ToDecimal(row["QAYTARILACAQ MİQDAR"]);
-                                    DbProsedures.InsertPosRefund(new DatabaseClasses.PosRefund
+
+                                    var posRefund = new DatabaseClasses.PosRefund
                                     {
                                         proccessNo = textEdit1.Text,
                                         pos_satis_check_main_id = Convert.ToInt32(row["pos_satis_check_main_id"]),
                                         pos_satis_check_details_id = Convert.ToInt32(row["pos_satis_check_details_id"]),
+                                        Amount = Convert.ToInt32(row["MƏBLƏĞ"]),
                                         quantity = fr,
                                         comment = memoEdit1.Text
-                                    }, con, transaction);
+                                    };
+
+                                    var resultId = DbProsedures.InsertPosRefund(posRefund, con, transaction);
+
+                                    saleId = posRefund.pos_satis_check_main_id;
+                                    returnId = resultId;
+                                    totalRefundAmount += posRefund.TotalAmount;
                                 }
                                 string documentUUID = UUIDGenerateService.UUID;
 
@@ -1963,7 +1972,7 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
                                             Cashier = Cashier,
                                             ProccessNo = textEdit1.Text,
                                             PayType = type,
-                                        }, lIpAddress.Text, textBox1.Text, type, Cashier, textEdit1.Text);
+                                        }, con, transaction);
 
                                         break; /*OMNITECH*/
                                     case "4":
@@ -2050,8 +2059,11 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
                                 if (isSuccess)
                                 {
                                     UUIDGenerateService.Refreshid();
-                                    textEdit1.Text = DbProsedures.GET_RefundProccessNo();
+                                    textEdit1.Text = DbProsedures.GET_RefundProccessNo(con, transaction);
                                     gridControl1.DataSource = null;
+
+                                    DbProsedures.InsertSalePersonnelReturnBonus(saleId, returnId, totalRefundAmount, con, transaction);
+
                                     transaction.Commit();
                                 }
                                 else
@@ -2070,12 +2082,10 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
                                 ReadyMessages.ERROR_DEFAULT_MESSAGE(e.Message);
                                 transaction.Rollback();
                             }
-                        }
                     }
 
 
-
-                    bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos").GetValue("CloudApp").ToString());
+                    bool control = Convert.ToBoolean(Registry.CurrentUser.OpenSubKey("Mpos")?.GetValue("CloudApp").ToString());
                     if (control && isSuccess)
                     {
                         Task.Run(async () =>

@@ -9,6 +9,7 @@ using WindowsFormsApp2.App.Application;
 using WindowsFormsApp2.Forms;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
+using WindowsFormsApp2.Services;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
 using static WindowsFormsApp2.Helpers.FormHelpers;
 
@@ -39,7 +40,7 @@ namespace WindowsFormsApp2
         private void getall(DateTime D2_)
         {
             Cursor.Current = Cursors.WaitCursor;
-            if (D2_.Date == DateTime.Now.Date)
+            if (D2_.Date == DatetimeService.CurrentDateTime.Date)
                 D2_ = D2_.AddDays(1);
 
             string queryString = "gaime_Satis_mal_load_tarixle @d1 = @pricepoint1";

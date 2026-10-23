@@ -18,6 +18,7 @@ using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
+using WindowsFormsApp2.Services;
 using Zen.Barcode;
 using static DevExpress.Diagram.Core.Native.Either;
 using static WindowsFormsApp2.Helpers.Enums;
@@ -91,40 +92,91 @@ namespace WindowsFormsApp2.Forms
             public int SupplierId { get; set; }
             public string SupplierName { get; set; }
             public int ProductId { get; set; }
+            public string CategoryName { get; set; }
             public string ProductName { get; set; }
             public string ProductCode { get; set; }
             public Decimal PurchasePrice { get; set; }
             public Decimal SalePrice { get; set; }
-            public Decimal StockAmount { get; set; }
-            public string Barcode { get; set; }
+            public string ProductBarcode { get; set; }
             public string TaxName { get; set; }
             public string UnitName { get; set; }
+            public decimal Quantity { get; set; }
             public int PrintCount { get; set; } = 1;
         }
 
         private void GridDataLoad()
         {
             _data.Clear();
-            var data = DbProsedures.ConvertToDataTable("exec dbo.gaime_Satis_mal_load");
-            foreach (DataRow row in data.Rows)
-            {
-                GridData gridData = new GridData();
-                gridData.SupplierId = Convert.ToInt32(row[0].ToString());
-                gridData.SupplierName = row[1].ToString();
-                gridData.ProductId = Convert.ToInt32(row[2].ToString());
-                gridData.ProductName = row[3].ToString();
-                gridData.ProductCode = row[4].ToString();
-                gridData.PurchasePrice = Convert.ToDecimal(row[5].ToString());
-                gridData.SalePrice = Convert.ToDecimal(row[6].ToString());
-                gridData.StockAmount = Convert.ToDecimal(row[7].ToString());
-                gridData.Barcode = row[8].ToString();
-                gridData.TaxName = row[9].ToString();
-                gridData.UnitName = row["VAHIDLER_NAME"].ToString();
-                _data.Add(gridData);
-            }
+            var date = DatetimeService.CurrentDateTime.ToString("yyyy-MM-dd");
+            //var data = DbProsedures.ConvertToDataTable("exec dbo.gaime_Satis_mal_load");
+            var data = DbProsedures.ConvertToDataTable($"exec dbo.gaime_Satis_mal_load_tarixle @d1 = '{date}'");
+            _data = new BindingList<GridData>(data.AsEnumerable()
+                .Select(row => new GridData
+                {
+                    SupplierId = Convert.ToInt32(row[0]),
+                    SupplierName = row[1].ToString(),
+                    ProductId = Convert.ToInt32(row[2]),
+                    ProductName = row[3].ToString(),
+                    ProductCode = row[4].ToString(),
+                    PurchasePrice = Convert.ToDecimal(row[5]),
+                    SalePrice = Convert.ToDecimal(row[6]),
+                    ProductBarcode = row[8].ToString(),
+                    TaxName = row[9].ToString(),
+                    CategoryName = row[10].ToString(),
+                    UnitName = row[11].ToString()
+                }).OrderBy(x => x.ProductId).ToList()
+            );
+
+            //foreach (var row in data.Rows.OfType<GridData>().OrderBy(x=> x.ProductId))
+            //{
+            //    //GridData gridData = new GridData();
+            //    //gridData.SupplierId = Convert.ToInt32(row[0].ToString());
+            //    //gridData.SupplierName = row[1].ToString();
+            //    //gridData.ProductId = Convert.ToInt32(row[2].ToString());
+            //    //gridData.ProductName = row[3].ToString();
+            //    //gridData.ProductCode = row[4].ToString();
+            //    //gridData.PurchasePrice = Convert.ToDecimal(row[5].ToString());
+            //    //gridData.SalePrice = Convert.ToDecimal(row[6].ToString());
+            //    //gridData.ProductBarcode = row[8].ToString();
+            //    //gridData.TaxName = row[9].ToString();
+            //    //gridData.CategoryName = row[10].ToString();
+            //    //gridData.UnitName = row[11].ToString();
+            //    //_data.Add(gridData);
+            //}
             gridControlProducts.DataSource = _data;
             gridProducts.GroupPanelText = $"Məhsul sayı: {_data.Count}";
             gridProducts.ClearSelection();
+        }
+
+        private void InvoiceReport(DateTime _date)
+        {
+            _data.Clear();
+            string date = _date.ToString("yyyy-MM-dd");
+            var data = DbProsedures.ConvertToDataTable($"SELECT * FROM dbo.ALINAN_MEHSUL('{date}','{date}')");
+
+            if (data != null)
+            {
+                foreach (DataRow row in data.Rows)
+                {
+                    GridData gridData = new GridData();
+                    gridData.SupplierId = Convert.ToInt32(row[3].ToString());
+                    gridData.SupplierName = row[4].ToString();
+                    gridData.CategoryName = row[5].ToString();
+                    gridData.ProductId = Convert.ToInt32(row[6].ToString());
+                    gridData.ProductName = row[7].ToString();
+                    gridData.ProductCode = row[8].ToString();
+                    gridData.ProductBarcode = row[9].ToString();
+                    gridData.Quantity = Convert.ToDecimal(row[10].ToString());
+                    gridData.UnitName = row[11].ToString();
+                    gridData.TaxName = row[12].ToString();
+                    gridData.PurchasePrice = Convert.ToDecimal(row[13].ToString());
+                    gridData.SalePrice = Convert.ToDecimal(row[14].ToString());
+                    _data.Add(gridData);
+                }
+                gridControlProducts.DataSource = _data;
+                gridProducts.GroupPanelText = $"Məhsul sayı: {_data.Count}";
+                gridProducts.ClearSelection();
+            }
         }
 
         private void bRefresh_Click(object sender, EventArgs e)
@@ -156,7 +208,9 @@ namespace WindowsFormsApp2.Forms
                     string status = RawPrinterHelper.GetPrinterDetailedStatus(lookPrinters.Text);
                     if (status is "Online")
                     {
-                        Enums.BarcodeType barcodeType = barcode.Length == 13 ? BarcodeType.EAN13 : BarcodeType.Code128;
+                        Enums.BarcodeType barcodeType = barcode.Length == 13 
+                            ? BarcodeType.EAN13 
+                            : BarcodeType.Code128;
 
 
                         switch ((PrintType)lookPrintType.EditValue)
@@ -188,7 +242,7 @@ namespace WindowsFormsApp2.Forms
                             case PrintType.maximumTextile:
                                 for (int i = 0; i < printCount; i++)
                                 {
-                                    PrinterCacheData.PrintLabel60x40Dress(companyName,name,salesPrice,barcode,lookPrinters.Text);
+                                    PrinterCacheData.PrintLabel60x40Dress(companyName, name, salesPrice, barcode, lookPrinters.Text);
                                 }
                                 break;
 
@@ -305,11 +359,17 @@ namespace WindowsFormsApp2.Forms
             if (chMehsulAlisi.Checked)
             {
                 dateEdit1.Visible = true;
-                dateEdit1.DateTime = DateTime.Now;
+                checkEdit1.Visible = true;
+                colQuantity.Visible = true;
+                dateEdit1.DateTime = DatetimeService.CurrentDateTime;
+                InvoiceReport(dateEdit1.DateTime);
             }
             else
             {
                 dateEdit1.Visible = false;
+                checkEdit1.Checked = false;
+                checkEdit1.Visible = false;
+                colQuantity.Visible = false;
                 GridDataLoad();
             }
         }
@@ -338,8 +398,7 @@ namespace WindowsFormsApp2.Forms
                             gridData.ProductCode = row["MƏHSUL KODU"].ToString();
                             gridData.PurchasePrice = 0;
                             gridData.SalePrice = Convert.ToDecimal(row["SATIS_GIYMETI"].ToString());
-                            gridData.StockAmount = 0;
-                            gridData.Barcode = row["BARKOD"].ToString();
+                            gridData.ProductBarcode = row["BARKOD"].ToString();
                             gridData.TaxName = row["EDV"].ToString();
                             gridData.UnitName = row["VAHİD"].ToString();
                             _data.Add(gridData);
@@ -356,8 +415,18 @@ namespace WindowsFormsApp2.Forms
         {
             if (dateEdit1.Visible)
             {
-                MehsulAlisiDataLoad();
+                InvoiceReport(dateEdit1.DateTime);
             }
+        }
+
+        private void checkEdit1_CheckedChanged(object sender, EventArgs e)
+        {
+            foreach (var item in _data)
+                item.PrintCount = checkEdit1.Checked
+                    ? (int)item.Quantity
+                    : 1;
+
+            gridControlProducts.RefreshDataSource();
         }
 
         void printbarkod(System.Object sender, System.Drawing.Printing.PrintPageEventArgs e)

@@ -59,6 +59,11 @@
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject22 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject23 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject24 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions7 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject25 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject26 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject27 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject28 = new DevExpress.Utils.SerializableAppearanceObject();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
@@ -202,6 +207,7 @@
             this.tTotalAmount = new DevExpress.XtraEditors.TextEdit();
             this.labelControl24 = new DevExpress.XtraEditors.LabelControl();
             this.tDiscountTotal = new DevExpress.XtraEditors.TextEdit();
+            this.tMarja = new DevExpress.XtraEditors.ButtonEdit();
             this.labelControl23 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl22 = new DevExpress.XtraEditors.LabelControl();
             this.tDiscountPercentage = new DevExpress.XtraEditors.TextEdit();
@@ -367,6 +373,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.tMainAmount.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tTotalAmount.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tDiscountTotal.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tMarja.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tDiscountPercentage.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tQuantity.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lookTaxType.Properties)).BeginInit();
@@ -2040,12 +2047,12 @@
             serializableAppearanceObject13.Options.UseFont = true;
             serializableAppearanceObject13.Options.UseForeColor = true;
             this.tBarcode.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "YENİ BARKOD", -1, true, true, false, editorButtonImageOptions2, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, DevExpress.Utils.ToolTipAnchor.Default),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "EAN-8", -1, true, true, false, editorButtonImageOptions3, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, DevExpress.Utils.ToolTipAnchor.Default),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "EAN-13", -1, true, true, false, editorButtonImageOptions4, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "YENİ BARKOD", -1, true, false, false, editorButtonImageOptions2, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", "EAN-128", null, DevExpress.Utils.ToolTipAnchor.Default),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "EAN-8", -1, true, true, false, editorButtonImageOptions3, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", "ean-8", null, DevExpress.Utils.ToolTipAnchor.Default),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "EAN-13", -1, true, true, false, editorButtonImageOptions4, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", "ean-13", null, DevExpress.Utils.ToolTipAnchor.Default)});
+            this.tBarcode.Properties.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.tBarcode_ButtonClick);
             this.tBarcode.Size = new System.Drawing.Size(344, 30);
             this.tBarcode.TabIndex = 4;
-            this.tBarcode.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.tBarcode_ButtonClick);
             this.tBarcode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tBarcode_KeyDown);
             // 
             // tProductName
@@ -2093,6 +2100,7 @@
             this.panelControl5.Controls.Add(this.tTotalAmount);
             this.panelControl5.Controls.Add(this.labelControl24);
             this.panelControl5.Controls.Add(this.tDiscountTotal);
+            this.panelControl5.Controls.Add(this.tMarja);
             this.panelControl5.Controls.Add(this.labelControl23);
             this.panelControl5.Controls.Add(this.labelControl22);
             this.panelControl5.Controls.Add(this.tDiscountPercentage);
@@ -2128,8 +2136,10 @@
             this.tSalePrice.Properties.MaskSettings.Set("mask", "f2");
             this.tSalePrice.Properties.NullText = "0.00";
             this.tSalePrice.Properties.UseMaskAsDisplayFormat = true;
-            this.tSalePrice.Size = new System.Drawing.Size(318, 30);
+            this.tSalePrice.Size = new System.Drawing.Size(214, 30);
             this.tSalePrice.TabIndex = 5;
+            this.tSalePrice.EditValueChanged += new System.EventHandler(this.tSalePrice_EditValueChanged);
+            this.tSalePrice.TextChanged += new System.EventHandler(this.tSalePrice_TextChanged);
             // 
             // tPurchasePrice
             // 
@@ -2147,6 +2157,7 @@
             this.tPurchasePrice.Size = new System.Drawing.Size(318, 30);
             this.tPurchasePrice.StyleController = this.layoutControl1;
             this.tPurchasePrice.TabIndex = 4;
+            this.tPurchasePrice.EditValueChanged += new System.EventHandler(this.tPurchasePrice_EditValueChanged);
             this.tPurchasePrice.TextChanged += new System.EventHandler(this.tPurchasePrice_TextChanged_1);
             // 
             // tDiscountAmount
@@ -2255,6 +2266,29 @@
             this.tDiscountTotal.Properties.UseMaskAsDisplayFormat = true;
             this.tDiscountTotal.Size = new System.Drawing.Size(318, 30);
             this.tDiscountTotal.TabIndex = 8;
+            // 
+            // tMarja
+            // 
+            this.tMarja.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.tMarja.EditValue = "0.0";
+            this.tMarja.Location = new System.Drawing.Point(405, 195);
+            this.tMarja.Name = "tMarja";
+            this.tMarja.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "%", -1, true, true, false, editorButtonImageOptions7, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
+            this.tMarja.Properties.DisplayFormat.FormatString = "N2";
+            this.tMarja.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.tMarja.Properties.EditFormat.FormatString = "N2";
+            this.tMarja.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.tMarja.Properties.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.NumericMaskManager));
+            this.tMarja.Properties.MaskSettings.Set("MaskManagerSignature", "allowNull=False");
+            this.tMarja.Properties.MaskSettings.Set("mask", "f2");
+            this.tMarja.Properties.NullText = "0.00";
+            this.tMarja.Properties.UseMaskAsDisplayFormat = true;
+            this.tMarja.Size = new System.Drawing.Size(97, 30);
+            this.tMarja.TabIndex = 71;
+            this.tMarja.TabStop = false;
+            this.tMarja.EditValueChanged += new System.EventHandler(this.tMarja_EditValueChanged);
+            this.tMarja.TextChanged += new System.EventHandler(this.tMarja_TextChanged);
             // 
             // labelControl23
             // 
@@ -2650,13 +2684,10 @@
             // 
             // bEdit
             // 
-            this.bEdit.AllowFocus = false;
             this.bEdit.Appearance.BackColor = DevExpress.LookAndFeel.DXSkinColors.FillColors.Warning;
             this.bEdit.Appearance.Options.UseBackColor = true;
             this.bEdit.AutoSize = true;
-            this.bEdit.Cursor = System.Windows.Forms.Cursors.No;
             this.bEdit.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.bEdit.Enabled = false;
             this.bEdit.Location = new System.Drawing.Point(183, 2);
             this.bEdit.Margin = new System.Windows.Forms.Padding(2);
             this.bEdit.MinimumSize = new System.Drawing.Size(177, 32);
@@ -2994,6 +3025,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.tMainAmount.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tTotalAmount.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tDiscountTotal.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tMarja.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tDiscountPercentage.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tQuantity.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lookTaxType.Properties)).EndInit();
@@ -3207,5 +3239,6 @@
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn9;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn10;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn11;
+        private DevExpress.XtraEditors.ButtonEdit tMarja;
     }
 }

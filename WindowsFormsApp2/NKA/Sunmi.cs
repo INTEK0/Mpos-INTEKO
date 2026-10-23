@@ -495,12 +495,14 @@ namespace WindowsFormsApp2.NKA
                                 BankApprovalCode = !string.IsNullOrWhiteSpace(response.data.approval_code) ? response.data.approval_code : null,
                                 customerId = salesData.Customer?.CustomerID,
                                 doctorId = salesData.Doctor?.Id,
+                                salePersonelId = salesData.personel?.Id
                             });
 
+                            if (salesData.personel != null)
+                                DbProsedures.InsertSalePersonnelBonus(posSaleId);
+
                             if (MessageVisible)
-                            {
                                 ReadyMessages.SUCCESS_SALES_MESSAGE();
-                            }
 
                             FormHelpers.Log($"Pos satışı uğurla edildi. Qəbz No: {response.data.number}");
                             return true;

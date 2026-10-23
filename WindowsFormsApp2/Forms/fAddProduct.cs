@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
+using DevExpress.XtraReports.UI;
 using Microsoft.Win32;
 using WindowsFormsApp2.App.Application;
 using WindowsFormsApp2.Helpers;
@@ -369,28 +370,36 @@ namespace WindowsFormsApp2.Forms
 
         private void tBarcode_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
-            tBarcode.Text = CreateBarcode();
+            switch (e.Button.Tag?.ToString())
+            {
+                case "ean-8":
+                    tBarcode.Text = CreateBarcode(8);
+                    break;
+                case "ean-13":
+                    tBarcode.Text = CreateBarcode(13);
+                    break;
+            }
+
+            //tBarcode.Text = CreateBarcode();
         }
 
         private string CreateBarcode()
         {
             Random rastgele = new Random();
             string ida = "";
-            SqlConnection conn = new SqlConnection(Properties.Settings.Default.SqlCon);
-            SqlCommand cmd = new SqlCommand();
-            conn.Open();
             string query = "SELECT MAX([MAL_ALISI_DETAILS_ID])+1 AS id  FROM  [MAL_ALISI_DETAILS]";
 
-            cmd.Connection = conn;
-            cmd.CommandText = query;
-
-            SqlDataReader dr = cmd.ExecuteReader();
-            while (dr.Read())
+            using (SqlConnection conn = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, conn))
             {
-                string id = dr["id"].ToString();
-                ida = id;
+                conn.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                    if (dr.Read())
+                    {
+                        string id = dr["id"].ToString();
+                        ida = id;
+                    }
             }
-
 
             string a1 = "994";
             string a2 = "";
@@ -433,16 +442,93 @@ namespace WindowsFormsApp2.Forms
             return barkoda1 + kontrol1.ToString();
         }
 
+        private static readonly object barcodeLock = new object();
+
+        private string CreateBarcode(int eanType = 13)
+        {
+            Random rastgele = new Random();
+
+            string ida = "";
+
+            string query = @"SELECT ISNULL(MAX([MAL_ALISI_DETAILS_ID]), 0) + 1 AS id
+                     FROM [MAL_ALISI_DETAILS]";
+
+            using (SqlConnection conn = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                conn.Open();
+
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                    if (dr.Read())
+                        ida = dr["id"].ToString();
+            }
+
+            string a1 = eanType == 13 ? "994" : "2";
+            string a2 = "";
+            string a3 = "";
+            string barkoda1 = "";
+
+            int bodyLength = eanType == 13 ? 12 : 7;
+
+            int randomLength = bodyLength - a1.Length - ida.Length;
+
+            if (randomLength < 1)
+            {
+                FormHelpers.Alert("Məhsulun ID nömrəsi bu EAN formatı üçün çox böyükdür", MessageType.Error);
+                return null;
+            }
+
+            lock (barcodeLock)
+            {
+                for (int attempt = 0; attempt < 1000; attempt++)
+                {
+                    a2 = "";
+                    a3 = "";
+
+                    int a2Length = Math.Max(0, randomLength - 4);
+                    int a3Length = randomLength - a2Length;
+
+                    for (int i = 0; i < a2Length; i++)
+                    {
+                        a2 += rastgele.Next(0, 10).ToString();
+                    }
+
+                    for (int i = 0; i < a3Length; i++)
+                    {
+                        a3 += rastgele.Next(0, 10).ToString();
+                    }
+
+                    barkoda1 = a1 + ida + a2 + a3;
+
+                    string code = barkoda1;
+
+                    var reversed = code.Reverse().ToArray();
+
+                    var sum = (from i in Enumerable.Range(0, reversed.Count())
+                               let digit = (int)char.GetNumericValue(reversed[i])
+                               select digit * (i % 2 == 0 ? 3 : 1)).Sum();
+
+                    var kontrol1 = (10 - sum % 10) % 10;
+
+                    string barcode = barkoda1 + kontrol1.ToString();
+
+                    return barcode;
+                }
+            }
+            FormHelpers.Alert("Unikal barkod yaradıla bilmədi", MessageType.Error);
+            return null;
+        }
+
         private void Clear()
         {
-            tCategoryName.Text = null;
             tBarcode.Text = null;
             tProductName.Text = null;
             tProductCode.Text = null;
             tComment.Text = null;
             tQuantity.EditValue = "";
-            tSalePrice.EditValue = "";
+            tMarja.EditValue = "";
             tPurchasePrice.EditValue = "";
+            tSalePrice.EditValue = "";
             tDiscountPercentage.EditValue = "";
             tDiscountAmount.EditValue = "";
             dateİstehsal.Text = null;
@@ -613,6 +699,8 @@ namespace WindowsFormsApp2.Forms
         private void tPurchasePrice_TextChanged_1(object sender, EventArgs e)
         {
             TotalCalc(tQuantity.Text, tPurchasePrice.Text, tDiscountPercentage.Text, tDiscountAmount.Text);
+            tMarja_EditValueChanged(sender, e);
+
         }
 
         private void tQuantity_TextChanged(object sender, EventArgs e)
@@ -630,11 +718,60 @@ namespace WindowsFormsApp2.Forms
             }
         }
 
-        private void bEdit_Click(object sender, EventArgs e)
+        private async void bEdit_Click(object sender, EventArgs e)
         {
-            //Müvəqqəti olaraq deaktiv edilmiştir
-            return;
-            YeniBorcHesabla();
+            if (!UserCacheService.User.UserRole.ProductAdd)
+            {
+                FormHelpers.Alert("Sizin icazəniz yoxdur", MessageType.Error);
+                return;
+            }
+
+            ProductsDetail productsDetail = new ProductsDetail
+            {
+                ProductId = productID,
+                CategoryName = tCategoryName.Text.TrimStart().Trim(),
+                Barocde = tBarcode.Text.TrimStart().Trim(),
+                ProductName = tProductName.Text.TrimStart().Trim(),
+                ProductCode = tProductCode.Text.TrimStart().Trim(),
+                Quantity = Decimal.Parse(tQuantity.Text),
+                UnitName = lookUnit.Text,
+                TaxName = lookTaxType.Text,
+                WarehouseName = lookWarehouse.Text,
+                CurrencyName = lookCurrency.Text,
+                PurchasePrice = Convert.ToDecimal(tPurchasePrice.Text),
+                SalePrice = Convert.ToDecimal(tSalePrice.Text),
+                DiscountPercent = tDiscountPercentage.Text,
+                DiscountAZN = tDiscountAmount.Text,
+                DiscountAmount = tDiscountTotal.Text,
+                TotalAmount = tTotalAmount.Text,
+                imageBytes = _imageBytes
+            };
+
+
+            var validator = new ProductValidation();
+            var validateResult = validator.Validate(productsDetail);
+
+            if (!validateResult.IsValid)
+            {
+                foreach (var error in validateResult.Errors)
+                {
+                    FormHelpers.Alert(error.ErrorMessage, Enums.MessageType.Warning);
+                    return;
+                }
+            }
+
+            int? IsSuccess = await DbProsedures.UpdateProductDetails(productsDetail);
+            if (IsSuccess > 0)
+            {
+                Clear();
+                GetAllData(tProccessNo.Text, ProductOperation.Add);
+                YeniBorcHesabla();
+            }
+            else
+            {
+                FormHelpers.Alert("Məhsul düzəlişi edilərkən xəta yarandı", Enums.MessageType.Error);
+                return;
+            }
         }
 
         private void bDelete_Click(object sender, EventArgs e)
@@ -791,6 +928,60 @@ namespace WindowsFormsApp2.Forms
                 tQuantity.Properties.MaskSettings.Set("mask", "f0");
             else
                 tQuantity.Properties.MaskSettings.Set("mask", "f3");
+        }
+
+        private bool isCalculating = false;
+        private void tMarja_EditValueChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void tSalePrice_EditValueChanged(object sender, EventArgs e)
+        {
+            //if (isCalculating) return;
+            //isCalculating = true;
+
+            //decimal alis = Convert.ToDecimal(tPurchasePrice.EditValue ?? 0);
+            //decimal satis = Convert.ToDecimal(tSalePrice.EditValue ?? 0);
+
+            //tMarja.EditValue = alis > 0
+            //    ? Math.Round((satis - alis) / alis * 100, 2)
+            //    : 0;
+
+            //isCalculating = false;
+        }
+
+        private void tPurchasePrice_EditValueChanged(object sender, EventArgs e)
+        {
+            //tMarja_EditValueChanged(sender, e);
+        }
+
+        private void tSalePrice_TextChanged(object sender, EventArgs e)
+        {
+            if (isCalculating) return;
+            isCalculating = true;
+
+            decimal alis = Convert.ToDecimal(tPurchasePrice.Text);
+            decimal satis = Convert.ToDecimal(tSalePrice.Text );
+
+            tMarja.EditValue = alis > 0
+                ? Math.Round((satis - alis) / alis * 100, 2)
+                : 0;
+
+            isCalculating = false;
+        }
+
+        private void tMarja_TextChanged(object sender, EventArgs e)
+        {
+            if (isCalculating) return;
+            isCalculating = true;
+
+            decimal alis = Convert.ToDecimal(tPurchasePrice.Text);
+            decimal marja = Convert.ToDecimal(tMarja.Text);
+
+            tSalePrice.EditValue = Math.Round(alis * (1 + marja / 100), 2);
+
+            isCalculating = false;
         }
     }
 }

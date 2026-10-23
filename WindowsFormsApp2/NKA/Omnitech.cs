@@ -3,18 +3,14 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Windows.Forms;
+using DevExpress.XtraCharts.Native;
 using DevExpress.XtraEditors;
-using DevExpress.XtraMap.Native;
 using Newtonsoft.Json;
 using RestSharp;
-using WindowsFormsApp2.App;
-using WindowsFormsApp2.App.Dtos;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
-using Zen.Barcode;
-using static DTOs;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
 using static WindowsFormsApp2.Helpers.Enums;
 
@@ -551,10 +547,12 @@ WHERE user_id = {UserCacheService.User.Id}";
                         json = json,
                         shortFiskalId = response.short_id,
                         customerId = customer?.CustomerID,
-                        salePersonelId = personel.Id,
+                        salePersonelId = personel?.Id,
                         doctorId = doctor?.Id,
                     });
 
+                    if (personel != null)
+                        DbProsedures.InsertSalePersonnelBonus(resultId);
 
                     if (MessageVisible)
                     {
@@ -585,7 +583,7 @@ WHERE user_id = {UserCacheService.User.Id}";
             return false;
         }
 
-        public static bool Prepayment(SalesDto salesData /*string ipAddress, string token, string proccessNo, decimal total, decimal cash, decimal card, decimal incomingSum, string cashier, Customer customer, Doctor doctor, string rrn = ""*/)
+        public static bool Prepayment(DTOs.SalesDto salesData /*string ipAddress, string token, string proccessNo, decimal total, decimal cash, decimal card, decimal incomingSum, string cashier, Customer customer, Doctor doctor, string rrn = ""*/)
         {
             if (string.IsNullOrWhiteSpace(salesData.AccessToken))
             {
@@ -770,7 +768,7 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
             {
                 if (response.message == "Successful operation")
                 {
-                    DbProsedures.InsertPosSales(new PosSales
+                    var resultId = DbProsedures.InsertPosSales(new PosSales
                     {
                         posNomre = response.document_number.ToString(),
                         longFiskalId = response.long_id,
@@ -783,14 +781,16 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
                         shortFiskalId = response.short_id,
                         customerId = salesData.Customer?.CustomerID,
                         doctorId = salesData.Doctor?.Id,
+                        salePersonelId = salesData.personel?.Id
                     });
 
-                    if (MessageVisible)
-                    {
-                        ReadyMessages.SUCCESS_SALES_MESSAGE();
-                    }
+                    if (salesData.personel != null)
+                        DbProsedures.InsertSalePersonnelBonus(resultId);
 
-                    FormHelpers.Log($"Pos satışı uğurla edildi. Qəbz №: {response.document_number}");
+                    if (MessageVisible)
+                        ReadyMessages.SUCCESS_SALES_MESSAGE();
+
+                    FormHelpers.Log($"Avans satışı uğurla edildi. Qəbz №: {response.document_number}");
                     return true;
                 }
                 else if (response.message == "document: invalid shift duration")
@@ -816,7 +816,7 @@ WHERE user_id = {Properties.Settings.Default.UserID}";
             }
         }
 
-        public static bool PrepaymentSale(SalesDto salesData, decimal pos_satis_main_id)
+        public static bool PrepaymentSale(DTOs.SalesDto salesData, decimal pos_satis_main_id)
         {
             if (string.IsNullOrWhiteSpace(salesData.AccessToken))
             {
@@ -1118,22 +1118,19 @@ case A.VERGI_DERECESI
             }
         }
 
-        public static bool Refund(RefundDto refundDto, string ipAddress, string accessToken, PayType payType, string cashier, string proccesNo)
+        public static bool Refund(DTOs.RefundDto refundDto, SqlConnection con, SqlTransaction transaction)
         {
-            if (string.IsNullOrWhiteSpace(accessToken))
+            if (string.IsNullOrWhiteSpace(refundDto.AccessToken))
             {
-                accessToken = Login(ipAddress);
-                if (string.IsNullOrWhiteSpace(accessToken))
+                refundDto.AccessToken = Login(refundDto.IpAddress);
+                if (string.IsNullOrWhiteSpace(refundDto.AccessToken))
                     return false;
             }
 
             string _fiskallID = "", _shortFiskallID = "", _checkNum = "", _date = string.Empty;
             decimal _cash = default, _card = default, _total2 = default;
 
-            using (SqlConnection conn2 = new SqlConnection(DbHelpers.CurrentConnectionString))
-            {
-                conn2.Open();
-                string query2 = $@"SELECT TOP 1
+            string query2 = $@"SELECT TOP 1
 ps.pos_satis_check_main_id,
 ps.pos_nomre,
 ps.date_,
@@ -1147,22 +1144,21 @@ JOIN pos_satis_check_main ps ON ps.pos_satis_check_main_id = pg.pos_satis_check_
 WHERE pg.user_id_ = {UserCacheService.User.Id}
 ORDER BY pg.pos_gaytarma_manual_id DESC;";
 
-                using (SqlCommand cmd2 = new SqlCommand(query2, conn2))
-                using (SqlDataReader dr2 = cmd2.ExecuteReader())
+            using (SqlCommand cmd2 = new SqlCommand(query2, con, transaction))
+            using (SqlDataReader dr2 = cmd2.ExecuteReader())
+            {
+                if (dr2.Read())
                 {
-                    if (dr2.Read())
-                    {
-                        _fiskallID = dr2["fiscal_id"].ToString();
-                        _shortFiskallID = dr2["fiscalNum"].ToString();
-                        _checkNum = dr2["pos_nomre"].ToString();
-                        _cash = Convert.ToDecimal(dr2["NEGD_"]);
-                        _card = Convert.ToDecimal(dr2["KART_"]);
-                        _total2 = Convert.ToDecimal(dr2["UMUMI_MEBLEG"]);
-                        _date = Convert.ToDateTime(dr2["date_"].ToString()).ToString("dd.MM.yyyy");
-                    }
-
-                    refundDto.ParentDocumentId = _fiskallID;
+                    _fiskallID = dr2["fiscal_id"].ToString();
+                    _shortFiskallID = dr2["fiscalNum"].ToString();
+                    _checkNum = dr2["pos_nomre"].ToString();
+                    _cash = Convert.ToDecimal(dr2["NEGD_"]);
+                    _card = Convert.ToDecimal(dr2["KART_"]);
+                    _total2 = Convert.ToDecimal(dr2["UMUMI_MEBLEG"]);
+                    _date = Convert.ToDateTime(dr2["date_"].ToString()).ToString("dd.MM.yyyy");
                 }
+
+                refundDto.ParentDocumentId = _fiskallID;
             }
 
             //if (_date == DateTime.Now.ToString("dd.MM.yyyy"))
@@ -1173,10 +1169,7 @@ ORDER BY pg.pos_gaytarma_manual_id DESC;";
 
             List<Item> items = new List<Item>();
             items.Clear();
-            using (SqlConnection conn = new SqlConnection(DbHelpers.CurrentConnectionString))
-            {
-                conn.Open();
-                string query = $@"(SELECT md.MEHSUL_ADI AS name,
+            string query = $@"(SELECT md.MEHSUL_ADI AS name,
                                 p.item_id AS code,
                                 pl.say AS say,
                                 md.ALIS_GIYMETI as alis_giymet,
@@ -1194,33 +1187,32 @@ ORDER BY pg.pos_gaytarma_manual_id DESC;";
                                 FROM pos_satis_check_details p
                                 INNER JOIN MAL_ALISI_DETAILS md ON p.mal_alisi_details_id = md.MAL_ALISI_DETAILS_ID
                                 INNER JOIN pos_gaytarma_manual pl ON p.pos_satis_check_details_id = pl.pos_satis_check_details
-                                WHERE pl.emeliyyat_nomre = '{proccesNo}')";
+                                WHERE pl.emeliyyat_nomre = '{refundDto.ProccessNo}')";
 
-                using (SqlCommand cmd = new SqlCommand(query, conn))
-                using (SqlDataReader dr = cmd.ExecuteReader())
-                    while (dr.Read())
+            using (SqlCommand cmd = new SqlCommand(query, con, transaction))
+            using (SqlDataReader dr = cmd.ExecuteReader())
+                while (dr.Read())
+                {
+                    decimal? purchasePrice = (Convert.ToInt32(dr["vtypes"]) == 2) ? Convert.ToDecimal(dr["alis_giymet"]) : (decimal?)null;
+                    double qty = Convert.ToDouble(dr["say"]);
+                    decimal ssum = Convert.ToDecimal(dr["tutar"]);
+                    decimal? marginSum = purchasePrice * (decimal)qty;
+
+                    Item item = new Item
                     {
-                        decimal? purchasePrice = (Convert.ToInt32(dr["vtypes"]) == 2) ? Convert.ToDecimal(dr["alis_giymet"]) : (decimal?)null;
-                        double qty = Convert.ToDouble(dr["say"]);
-                        decimal ssum = Convert.ToDecimal(dr["tutar"]);
-                        decimal? marginSum = purchasePrice * (decimal)qty;
+                        itemName = dr["name"].ToString(),
+                        itemCode = dr["code"].ToString(),
+                        itemQuantityType = Convert.ToInt32(dr["quantity_type"]),
+                        itemQuantity = qty,
+                        itemPrice = Convert.ToDecimal(dr["satis_giymet"]),
+                        itemSum = ssum,
+                        itemVatPercent = Convert.ToDecimal(dr["TaxPrc"]),
+                        itemMarginPrice = purchasePrice,
+                        itemMarginSum = marginSum
+                    };
+                    items.Add(item);
 
-                        Item item = new Item
-                        {
-                            itemName = dr["name"].ToString(),
-                            itemCode = dr["code"].ToString(),
-                            itemQuantityType = Convert.ToInt32(dr["quantity_type"]),
-                            itemQuantity = qty,
-                            itemPrice = Convert.ToDecimal(dr["satis_giymet"]),
-                            itemSum = ssum,
-                            itemVatPercent = Convert.ToDecimal(dr["TaxPrc"]),
-                            itemMarginPrice = purchasePrice,
-                            itemMarginSum = marginSum
-                        };
-                        items.Add(item);
-
-                    }
-            }
+                }
 
             List<VatAmount> vatAmounts = new List<VatAmount>();
 
@@ -1305,9 +1297,9 @@ ORDER BY pg.pos_gaytarma_manual_id DESC;";
             Data data = new Data
             {
                 sum = totalSum,
-                cashSum = (payType == PayType.Cash) ? totalSum : 0,
-                cashlessSum = (payType == PayType.Card) ? totalSum : 0,
-                cashier = cashier,
+                cashSum = (refundDto.PayType == PayType.Cash) ? totalSum : 0,
+                cashlessSum = (refundDto.PayType == PayType.Card) ? totalSum : 0,
+                cashier = refundDto.Cashier,
                 vatAmounts = vatAmounts,
                 items = items,
                 refund_short_document_id = _shortFiskallID,
@@ -1319,21 +1311,20 @@ ORDER BY pg.pos_gaytarma_manual_id DESC;";
             TokenData tokenData = new TokenData { parameters = parameters };
             CheckData checkData = new CheckData { check_type = 100, payment_change = null };
 
-            RequestData requestData = new RequestData { access_token = accessToken, tokenData = tokenData, int_ref = null, checkData = checkData };
+            RequestData requestData = new RequestData { access_token = refundDto.AccessToken, tokenData = tokenData, int_ref = null, checkData = checkData };
             RootObject rootObject = new RootObject { requestData = requestData };
 
             string json = Newtonsoft.Json.JsonConvert.SerializeObject(rootObject, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
             });
-            var response = Omnitech.RequestPOST(ipAddress, json);
+
+            var response = Omnitech.RequestPOST(refundDto.IpAddress, json);
 
             if ($"{response.message}" == "Successful operation" || $"{response.message}" == "Successful operation")
             {
                 if (MessageVisible)
-                {
                     ReadyMessages.SUCCESS_RETURN_SALES_MESSAGE();
-                }
 
                 FormHelpers.Log($"Qəbz geri qaytarması edildi Qəbz №: {response.document_number}");
                 return true;
@@ -1343,7 +1334,7 @@ ORDER BY pg.pos_gaytarma_manual_id DESC;";
             return false;
         }
 
-        public static bool Rollback(RefundDto refundDto, string ipAddress, string accessToken, PayType payType, string cashier, string proccesNo)
+        public static bool Rollback(DTOs.RefundDto refundDto, string ipAddress, string accessToken, PayType payType, string cashier, string proccesNo)
         {
             if (string.IsNullOrWhiteSpace(refundDto.AccessToken))
             {
@@ -1545,7 +1536,7 @@ ORDER BY pg.pos_gaytarma_manual_id DESC;";
             string error;
         }
 
-        public static Tuple<bool, string, string, string> CreditSale(CreditSaleDto creditData)
+        public static Tuple<bool, string, string, string> CreditSale(DTOs.CreditSaleDto creditData)
         {
             if (string.IsNullOrWhiteSpace(creditData.AccessToken))
             {
@@ -1665,7 +1656,7 @@ ORDER BY pg.pos_gaytarma_manual_id DESC;";
             }
         }
 
-        public static bool CreditPay(CreditPayDto creditData)
+        public static bool CreditPay(DTOs.CreditPayDto creditData)
         {
             if (string.IsNullOrWhiteSpace(creditData.AccessToken))
             {
@@ -1796,7 +1787,7 @@ ORDER BY pg.pos_gaytarma_manual_id DESC;";
             return false;
         }
 
-        public static Tuple<bool, string, string> CreditRefund(CreditSaleRefundDto refundDto)
+        public static Tuple<bool, string, string> CreditRefund(DTOs.CreditSaleRefundDto refundDto)
         {
             if (string.IsNullOrWhiteSpace(refundDto.AccessToken))
             {
@@ -1915,7 +1906,7 @@ ORDER BY pg.pos_gaytarma_manual_id DESC;";
             }
         }
 
-        public static Tuple<bool, string, string> CreditPayRefund(CreditPayRefundDto refundDto)
+        public static Tuple<bool, string, string> CreditPayRefund(DTOs.CreditPayRefundDto refundDto)
         {
             if (string.IsNullOrWhiteSpace(refundDto.AccessToken))
             {

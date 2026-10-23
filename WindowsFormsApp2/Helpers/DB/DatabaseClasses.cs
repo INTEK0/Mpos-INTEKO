@@ -141,6 +141,8 @@ namespace WindowsFormsApp2.Helpers.DB
             public int pos_satis_check_main_id { get; set; }
             public int pos_satis_check_details_id { get; set; }
             public decimal quantity { get; set; }
+            public decimal Amount { get; set; }
+            public decimal TotalAmount => quantity * Amount;
             public string comment { get; set; }
         }
 

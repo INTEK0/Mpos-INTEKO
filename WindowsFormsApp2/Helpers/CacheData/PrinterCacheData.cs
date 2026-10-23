@@ -220,7 +220,7 @@ REM === Price ===
 TEXT 58,135,""2"",0,1,1,""{_price} AZN""
 
 REM === Barcode ===
-BARCODE  7,50,""{Enums.GetEnumDescription(barcodeType)}"",40,1,0,2,2,""{_barcode}""
+BARCODE  7,50,""{Enums.GetEnumDescription(barcodeType)}"",40,2,0,2,2,""{_barcode}""
 
 PRINT 1,1
 ";
@@ -242,9 +242,7 @@ PRINT 1,1
         public static void PrintLabel60x40Dress(string _company, string _product, string _price, string _barcode, string printerName, string discountPrice = "")
         {
             string companyName = ReplaceChars(_company ?? "").Replace("\"", "'").Trim();
-
             string productName = ReplaceChars(_product ?? "").Replace("\"", "'").Trim();
-
             string barcode = (_barcode ?? "").Trim();
 
             // 203 DPI:

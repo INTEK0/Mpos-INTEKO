@@ -671,7 +671,7 @@ namespace WindowsFormsApp2.Helpers.DB
                 param.Value = item.quantity;
 
                 param = cmd.Parameters.Add("@user_id_", SqlDbType.Int);
-                param.Value = Properties.Settings.Default.UserID;
+                param.Value = UserCacheService.User.Id;
 
                 param = cmd.Parameters.Add("@GEYD", SqlDbType.NVarChar, 250);
                 param.Value = item.comment;
@@ -1179,6 +1179,87 @@ WHERE date_ BETWEEN CAST(GETDATE() AS DATE) AND DATEADD(DAY, 1, CAST(GETDATE() A
 
                     FormHelpers.Log($"{item.ProductName} məhsulundan {item.Quantity} {item.UnitName} alış edildi");
                     return Convert.ToInt32(empCount);
+                }
+            }
+            catch (Exception e)
+            {
+                ReadyMessages.ERROR_DEFAULT_MESSAGE(e.Message);
+                return null;
+            }
+        }
+
+        public static async Task<int?> UpdateProductDetails(ProductsDetail item)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+                using (SqlCommand cmd = new SqlCommand("update_MAL_ALISI_DETAILS", connection))
+                {
+                    await connection.OpenAsync();
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlParameter param;
+
+                    param = cmd.Parameters.Add("@MAL_ALISI_details_ID", SqlDbType.Int);
+                    param.Value = item.ProductId;
+
+                    param = cmd.Parameters.Add("@KATEGORIYA", SqlDbType.NVarChar, 250);
+                    param.Value = item.CategoryName ?? "";
+
+                    param = cmd.Parameters.Add("@BARKOD", SqlDbType.NVarChar, 100);
+                    param.Value = item.Barocde ?? "";
+
+                    param = cmd.Parameters.Add("@MEHSUL_ADI", SqlDbType.NVarChar, 100);
+                    param.Value = item.ProductName ?? "";
+
+                    param = cmd.Parameters.Add("@MEHSUL_KODU", SqlDbType.NVarChar, 100);
+                    param.Value = item.ProductCode ?? "";
+
+                    param = cmd.Parameters.Add("@ANBAR", SqlDbType.NVarChar, 250);
+                    param.Value = item.WarehouseName ?? "";
+
+                    param = cmd.Parameters.Add("@MIGDARI", SqlDbType.NVarChar, 20);
+                    param.Value = item.Quantity.ToString();
+
+                    param = cmd.Parameters.Add("@VAHID", SqlDbType.NVarChar, 50);
+                    param.Value = item.UnitName ?? "";
+
+                    param = cmd.Parameters.Add("@VALYUTA", SqlDbType.NVarChar, 50);
+                    param.Value = item.CurrencyName ?? "";
+
+                    param = cmd.Parameters.Add("@VERGI_DERECESI", SqlDbType.NVarChar, 50);
+                    param.Value = item.TaxName ?? "";
+
+                    param = cmd.Parameters.Add("@ALIS_GIYMETI", SqlDbType.NVarChar, 20);
+                    param.Value = item.PurchasePrice.ToString();
+
+                    param = cmd.Parameters.Add("@SATIS_GIYMETI", SqlDbType.NVarChar, 20);
+                    param.Value = item.SalePrice.ToString();
+
+                    param = cmd.Parameters.Add("@ENDIRIM_FAIZ", SqlDbType.NVarChar, 20);
+                    param.Value = item.DiscountPercent;
+
+                    param = cmd.Parameters.Add("@ENDIRIM_AZN", SqlDbType.NVarChar, 20);
+                    param.Value = item.DiscountAZN;
+
+                    param = cmd.Parameters.Add("@ENDIRIM_MEBLEGI", SqlDbType.NVarChar, 20);
+                    param.Value = item.DiscountAmount;
+
+                    param = cmd.Parameters.Add("@YEKUN_MEBLEG", SqlDbType.NVarChar, 20);
+                    param.Value = item.TotalAmount;
+
+                    var empCountParam = new SqlParameter("@emp_count", SqlDbType.Int)
+                    {
+                        Direction = ParameterDirection.Output
+                    };
+
+                    cmd.Parameters.Add(empCountParam);
+                    await cmd.ExecuteNonQueryAsync();
+                    int empCount = empCountParam.Value == DBNull.Value ? 0 : Convert.ToInt32(empCountParam.Value);
+
+                    if (empCount == 1)
+                        FormHelpers.Log("Məhsul üzrə düzəliş uğurla edildi");
+
+                    return empCount;
                 }
             }
             catch (Exception e)
@@ -3052,6 +3133,36 @@ VALUES (@CreditPayId, @RefundDate, @FiscalId, @ReceiptNo, @UserId);
                 throw e;
             }
 
+        }
+
+        public static decimal InsertSalePersonnelBonus(int saleId)
+        {
+            using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
+            using (SqlCommand cmd = new SqlCommand("INSERT_SalePersonnelBonus", connection))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@SaleId", SqlDbType.Int).Value = saleId;
+
+                connection.Open();
+                object result = cmd.ExecuteScalar();
+
+                return result == null || result == DBNull.Value ? 0m : Convert.ToDecimal(result);
+            }
+        }
+
+        public static decimal InsertSalePersonnelReturnBonus(int saleId, int refundId, decimal refundAmount, SqlConnection con, SqlTransaction transaction)
+        {
+            using (SqlCommand cmd = new SqlCommand("INSERT_SalePersonnelReturnBonus", con,transaction))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@SaleId", SqlDbType.Int).Value = saleId;
+                cmd.Parameters.Add("@ReturnId", SqlDbType.Int).Value = refundId;
+                cmd.Parameters.Add("@ReturnAmount", SqlDbType.Decimal).Value = refundAmount;
+
+                object result = cmd.ExecuteScalar();
+
+                return result == null || result == DBNull.Value ? 0m : Convert.ToDecimal(result);
+            }
         }
 
         #endregion [.. SALE PERSONNEL ..]

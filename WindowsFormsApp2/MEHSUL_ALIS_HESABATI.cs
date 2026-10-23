@@ -47,7 +47,7 @@ namespace WindowsFormsApp2
             }
         }
 
-        public void GetData_ToSupplier(DateTime start, DateTime end, int supplierId)
+        private void GetData_ToSupplier(DateTime start, DateTime end, int supplierId)
         {
             /* KÖHNƏ MƏHSUL ALIŞI HESABATI
 
@@ -88,7 +88,7 @@ namespace WindowsFormsApp2
 
         }
 
-        public void GetData(DateTime D1_, DateTime D2_)
+        private void GetData(DateTime D1_, DateTime D2_)
         {
             /* KÖHNƏ MƏHSUL ALIŞI HESABATI
 

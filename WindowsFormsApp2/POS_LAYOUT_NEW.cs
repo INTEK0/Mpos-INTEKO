@@ -18,6 +18,7 @@ using DevExpress.XtraBars.Navigation;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid;
 using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraReports.UI;
 using Microsoft.Owin.Hosting;
 using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
@@ -732,7 +733,7 @@ LEFT JOIN pos_guzest pg
             try
             {
                 Cursor.Current = Cursors.WaitCursor;
-                string query = "SELECT * FROM dbo.POS_SATIS(1, @pricePoint);";
+                string query = "SELECT * FROM dbo.POS_SATIS(1, @pricePoint)";
 
                 using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
                 using (SqlCommand cmd = new SqlCommand(query, connection))
@@ -2303,7 +2304,7 @@ group by
         {
             searchLookUpEdit1.EditValueChanged -= searchLookUpEdit1_EditValueChanged;
             getbarkod_mehsuladi(searchLookUpEdit1.Text);
-            await getall(searchLookUpEdit1.EditValue.ToString());
+            await getall(tBarcode.Text);
             await get(textEdit1.Text);
             get_cem(textEdit1.Text);
             searchLookUpEdit1.Clear();
@@ -2645,8 +2646,10 @@ group by
                 textEdit1.Text = DbProsedures.GET_SalesProcessNo();
                 _customer = null;
                 _doctor = null;
+                _salePersonnel = null;
                 chCustomer.Text = "MÜŞTƏRİ SEÇ";
                 chDoctor.Text = "HƏKİM SEÇ";
+                chSalePersonnel.Text = "SATICI SEÇ";
                 UUIDGenerateService.Refreshid();
             }
 

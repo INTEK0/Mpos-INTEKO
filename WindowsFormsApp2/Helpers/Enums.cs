@@ -175,5 +175,13 @@ namespace WindowsFormsApp2.Helpers
             Noyabr,
             Dekabr
         }
+
+        public enum SalePersonnelBonusMovementType : byte
+        {
+            [Description("Satış")]
+            Sale = 1,
+            [Description("Qaytarma")]
+            Return = 2
+        }
     }
 }

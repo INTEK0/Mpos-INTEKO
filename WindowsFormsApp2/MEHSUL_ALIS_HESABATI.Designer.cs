@@ -141,7 +141,7 @@ namespace WindowsFormsApp2
             // gridColumn2
             // 
             this.gridColumn2.Caption = "Faktura №";
-            this.gridColumn2.FieldName = "FAKTURA NÖMRƏSİ";
+            this.gridColumn2.FieldName = "InvoiceNo";
             this.gridColumn2.Name = "gridColumn2";
             this.gridColumn2.OptionsColumn.AllowEdit = false;
             this.gridColumn2.OptionsColumn.AllowFocus = false;
@@ -151,7 +151,7 @@ namespace WindowsFormsApp2
             // gridColumn4
             // 
             this.gridColumn4.Caption = "Təchizatçı adı";
-            this.gridColumn4.FieldName = "TƏCHİZATÇI ADI";
+            this.gridColumn4.FieldName = "SupplierName";
             this.gridColumn4.Name = "gridColumn4";
             this.gridColumn4.OptionsColumn.AllowEdit = false;
             this.gridColumn4.OptionsColumn.AllowFocus = false;
@@ -161,7 +161,7 @@ namespace WindowsFormsApp2
             // gridColumn5
             // 
             this.gridColumn5.Caption = "Kateqoriya";
-            this.gridColumn5.FieldName = "KATEQORİYA";
+            this.gridColumn5.FieldName = "CategoryName";
             this.gridColumn5.Name = "gridColumn5";
             this.gridColumn5.OptionsColumn.AllowEdit = false;
             this.gridColumn5.OptionsColumn.AllowFocus = false;
@@ -171,7 +171,7 @@ namespace WindowsFormsApp2
             // gridColumn6
             // 
             this.gridColumn6.Caption = "Məhsul adı";
-            this.gridColumn6.FieldName = "MƏHSUL ADI";
+            this.gridColumn6.FieldName = "ProductName";
             this.gridColumn6.Name = "gridColumn6";
             this.gridColumn6.OptionsColumn.AllowEdit = false;
             this.gridColumn6.OptionsColumn.AllowFocus = false;
@@ -181,7 +181,7 @@ namespace WindowsFormsApp2
             // gridColumn7
             // 
             this.gridColumn7.Caption = "Məhsul kodu";
-            this.gridColumn7.FieldName = "MƏHSUL KODU";
+            this.gridColumn7.FieldName = "ProductCode";
             this.gridColumn7.Name = "gridColumn7";
             this.gridColumn7.OptionsColumn.AllowEdit = false;
             this.gridColumn7.OptionsColumn.AllowFocus = false;
@@ -191,7 +191,7 @@ namespace WindowsFormsApp2
             // gridColumn16
             // 
             this.gridColumn16.Caption = "Barkod";
-            this.gridColumn16.FieldName = "BARCODE";
+            this.gridColumn16.FieldName = "ProductBarcode";
             this.gridColumn16.Name = "gridColumn16";
             this.gridColumn16.OptionsColumn.AllowEdit = false;
             this.gridColumn16.OptionsColumn.AllowFocus = false;
@@ -203,7 +203,7 @@ namespace WindowsFormsApp2
             this.gridColumn8.Caption = "Miqdarı";
             this.gridColumn8.DisplayFormat.FormatString = "N3";
             this.gridColumn8.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
-            this.gridColumn8.FieldName = "MİQDARI";
+            this.gridColumn8.FieldName = "Quantity";
             this.gridColumn8.GroupFormat.FormatString = "N3";
             this.gridColumn8.GroupFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
             this.gridColumn8.Name = "gridColumn8";
@@ -215,7 +215,7 @@ namespace WindowsFormsApp2
             // gridColumn9
             // 
             this.gridColumn9.Caption = "Vahid";
-            this.gridColumn9.FieldName = "VAHİDİ";
+            this.gridColumn9.FieldName = "UnitName";
             this.gridColumn9.Name = "gridColumn9";
             this.gridColumn9.OptionsColumn.AllowEdit = false;
             this.gridColumn9.OptionsColumn.AllowFocus = false;
@@ -227,7 +227,7 @@ namespace WindowsFormsApp2
             this.gridColumn10.Caption = "Alış qiyməti";
             this.gridColumn10.DisplayFormat.FormatString = "C2";
             this.gridColumn10.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
-            this.gridColumn10.FieldName = "ALIŞ QİYMƏTİ";
+            this.gridColumn10.FieldName = "PurchasePrice";
             this.gridColumn10.GroupFormat.FormatString = "C2";
             this.gridColumn10.GroupFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
             this.gridColumn10.Name = "gridColumn10";
@@ -241,7 +241,7 @@ namespace WindowsFormsApp2
             this.gridColumn11.Caption = "Satış qiyməti";
             this.gridColumn11.DisplayFormat.FormatString = "C2";
             this.gridColumn11.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
-            this.gridColumn11.FieldName = "SATIŞ QİYMƏTİ";
+            this.gridColumn11.FieldName = "SalePrice";
             this.gridColumn11.GroupFormat.FormatString = "C2";
             this.gridColumn11.GroupFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
             this.gridColumn11.Name = "gridColumn11";

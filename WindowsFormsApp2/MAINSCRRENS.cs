@@ -503,7 +503,6 @@ FROM[terazimalzeme]";
             CloudAppShow();
             BranchShow();
             ClinicModuleShow();
-            SysAdminControl();
             await LicenceCheck();
             ApplyPermissions();
         }
@@ -762,14 +761,6 @@ FROM (
         private void accordionControlElement59_Click(object sender, EventArgs e)
         {
             navigationFrame1.SelectedPage = pageDashboard;
-        }
-
-        private void SysAdminControl()
-        {
-            if (Properties.Settings.Default.UserID is 0)
-            {
-                accordionControlElement66.Visible = true;//Printer module
-            }
         }
 
         private void accordionControlElement58_Click(object sender, EventArgs e)
