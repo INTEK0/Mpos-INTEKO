@@ -31,28 +31,28 @@ namespace WindowsFormsApp2
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            DevExpress.XtraCharts.XYDiagram xyDiagram1 = new DevExpress.XtraCharts.XYDiagram();
-            DevExpress.XtraCharts.Series series1 = new DevExpress.XtraCharts.Series();
-            DevExpress.XtraCharts.ChartTitle chartTitle1 = new DevExpress.XtraCharts.ChartTitle();
-            DevExpress.XtraCharts.Series series2 = new DevExpress.XtraCharts.Series();
-            DevExpress.XtraCharts.DoughnutSeriesView doughnutSeriesView1 = new DevExpress.XtraCharts.DoughnutSeriesView();
-            DevExpress.XtraCharts.ChartTitle chartTitle2 = new DevExpress.XtraCharts.ChartTitle();
+            DevExpress.XtraCharts.XYDiagram xyDiagram2 = new DevExpress.XtraCharts.XYDiagram();
+            DevExpress.XtraCharts.Series series3 = new DevExpress.XtraCharts.Series();
+            DevExpress.XtraCharts.ChartTitle chartTitle3 = new DevExpress.XtraCharts.ChartTitle();
+            DevExpress.XtraCharts.Series series4 = new DevExpress.XtraCharts.Series();
+            DevExpress.XtraCharts.DoughnutSeriesView doughnutSeriesView2 = new DevExpress.XtraCharts.DoughnutSeriesView();
+            DevExpress.XtraCharts.ChartTitle chartTitle4 = new DevExpress.XtraCharts.ChartTitle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MAINSCRRENS));
+            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions4 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions1 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MAINSCRRENS));
-            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions2 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions3 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions5 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
             this.fluentDesignFormContainer1 = new DevExpress.XtraBars.FluentDesignSystem.FluentDesignFormContainer();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.groupControl1 = new DevExpress.XtraEditors.GroupControl();
@@ -375,6 +375,7 @@ namespace WindowsFormsApp2
             this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.accordionControlElement76 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.fluentDesignFormContainer1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
@@ -412,11 +413,11 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit3.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartWeek)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(xyDiagram1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(series1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(xyDiagram2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(series3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartSalesType)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(series2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(doughnutSeriesView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(series4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(doughnutSeriesView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit4.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.accordionControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fluentDesignFormControl1)).BeginInit();
@@ -1434,28 +1435,28 @@ namespace WindowsFormsApp2
             // chartWeek
             // 
             this.tableLayoutPanel1.SetColumnSpan(this.chartWeek, 3);
-            xyDiagram1.AxisX.VisibleInPanesSerializable = "-1";
-            xyDiagram1.AxisY.VisibleInPanesSerializable = "-1";
-            this.chartWeek.Diagram = xyDiagram1;
+            xyDiagram2.AxisX.VisibleInPanesSerializable = "-1";
+            xyDiagram2.AxisY.VisibleInPanesSerializable = "-1";
+            this.chartWeek.Diagram = xyDiagram2;
             this.chartWeek.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chartWeek.EmptyChartText.DXFont = new DevExpress.Drawing.DXFont("Nunito", 14F);
             this.chartWeek.EmptyChartText.Text = "Məlumat yoxdur";
             this.chartWeek.Legend.Visibility = DevExpress.Utils.DefaultBoolean.False;
             this.chartWeek.Location = new System.Drawing.Point(3, 119);
             this.chartWeek.Name = "chartWeek";
-            series1.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
-            series1.LegendTextPattern = "{V}";
-            series1.Name = "Series 1";
-            series1.SeriesID = 0;
+            series3.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+            series3.LegendTextPattern = "{V}";
+            series3.Name = "Series 1";
+            series3.SeriesID = 0;
             this.chartWeek.SeriesSerializable = new DevExpress.XtraCharts.Series[] {
-        series1};
+        series3};
             this.chartWeek.Size = new System.Drawing.Size(855, 283);
             this.chartWeek.TabIndex = 14;
-            chartTitle1.DXFont = new DevExpress.Drawing.DXFont("Verdana", 16F);
-            chartTitle1.Text = "Aylıq satış hesabatı";
-            chartTitle1.TitleID = 0;
+            chartTitle3.DXFont = new DevExpress.Drawing.DXFont("Verdana", 16F);
+            chartTitle3.Text = "Aylıq satış hesabatı";
+            chartTitle3.TitleID = 0;
             this.chartWeek.Titles.AddRange(new DevExpress.XtraCharts.ChartTitle[] {
-            chartTitle1});
+            chartTitle3});
             // 
             // chartSalesType
             // 
@@ -1469,18 +1470,18 @@ namespace WindowsFormsApp2
             this.chartSalesType.Name = "chartSalesType";
             this.chartSalesType.PaletteName = "Civic";
             this.tableLayoutPanel1.SetRowSpan(this.chartSalesType, 2);
-            series2.Name = "Series 1";
-            series2.SeriesID = 1;
-            series2.View = doughnutSeriesView1;
+            series4.Name = "Series 1";
+            series4.SeriesID = 1;
+            series4.View = doughnutSeriesView2;
             this.chartSalesType.SeriesSerializable = new DevExpress.XtraCharts.Series[] {
-        series2};
+        series4};
             this.chartSalesType.Size = new System.Drawing.Size(855, 345);
             this.chartSalesType.TabIndex = 15;
-            chartTitle2.DXFont = new DevExpress.Drawing.DXFont("Verdana", 16F);
-            chartTitle2.Text = "Cari satış növ hesabatı";
-            chartTitle2.TitleID = 0;
+            chartTitle4.DXFont = new DevExpress.Drawing.DXFont("Verdana", 16F);
+            chartTitle4.Text = "Cari satış növ hesabatı";
+            chartTitle4.TitleID = 0;
             this.chartSalesType.Titles.AddRange(new DevExpress.XtraCharts.ChartTitle[] {
-            chartTitle2});
+            chartTitle4});
             // 
             // pictureEdit4
             // 
@@ -1958,7 +1959,8 @@ namespace WindowsFormsApp2
             this.accordionControlElement56,
             this.accordionControlElement61,
             this.accordionControlElement60,
-            this.accordionControlElement64});
+            this.accordionControlElement64,
+            this.accordionControlElement76});
             this.accordionControlElement30.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("accordionControlElement30.ImageOptions.SvgImage")));
             this.accordionControlElement30.Name = "accordionControlElement30";
             this.accordionControlElement30.Text = "Hesabatlar";
@@ -2733,13 +2735,13 @@ namespace WindowsFormsApp2
             this.lookCloudReport.Properties.Appearance.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.ControlText;
             this.lookCloudReport.Properties.Appearance.Options.UseFont = true;
             this.lookCloudReport.Properties.Appearance.Options.UseForeColor = true;
-            serializableAppearanceObject1.Font = new System.Drawing.Font("Nunito", 11F, System.Drawing.FontStyle.Bold);
-            serializableAppearanceObject1.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Hyperlink;
-            serializableAppearanceObject1.Options.UseFont = true;
-            serializableAppearanceObject1.Options.UseForeColor = true;
+            serializableAppearanceObject13.Font = new System.Drawing.Font("Nunito", 11F, System.Drawing.FontStyle.Bold);
+            serializableAppearanceObject13.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Hyperlink;
+            serializableAppearanceObject13.Options.UseFont = true;
+            serializableAppearanceObject13.Options.UseForeColor = true;
             this.lookCloudReport.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "Yüklə", -1, true, true, false, editorButtonImageOptions1, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", "CloudImport", null, DevExpress.Utils.ToolTipAnchor.Default)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "Yüklə", -1, true, true, false, editorButtonImageOptions4, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", "CloudImport", null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.lookCloudReport.Properties.DropDownRows = 6;
             this.lookCloudReport.Properties.NullText = "";
             this.lookCloudReport.Properties.NullValuePrompt = "Hesabat növünü seç";
@@ -2995,11 +2997,11 @@ namespace WindowsFormsApp2
             this.tBackupSendEmail.Name = "tBackupSendEmail";
             this.tBackupSendEmail.Properties.Appearance.Font = new System.Drawing.Font("Verdana", 10F);
             this.tBackupSendEmail.Properties.Appearance.Options.UseFont = true;
-            editorButtonImageOptions2.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("editorButtonImageOptions2.SvgImage")));
-            editorButtonImageOptions3.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("editorButtonImageOptions3.SvgImage")));
+            editorButtonImageOptions1.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("editorButtonImageOptions1.SvgImage")));
+            editorButtonImageOptions5.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("editorButtonImageOptions5.SvgImage")));
             this.tBackupSendEmail.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions2, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", "Edit", null, DevExpress.Utils.ToolTipAnchor.Default),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions3, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", "Save", null, DevExpress.Utils.ToolTipAnchor.Default)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions1, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", "Edit", null, DevExpress.Utils.ToolTipAnchor.Default),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions5, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", "Save", null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.tBackupSendEmail.Properties.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.tBackupSendEmail_Properties_ButtonClick);
             this.tBackupSendEmail.Size = new System.Drawing.Size(315, 30);
             this.tBackupSendEmail.StyleController = this.layoutControl1;
@@ -3517,7 +3519,7 @@ namespace WindowsFormsApp2
             this.tabAllSettings.Name = "tabAllSettings";
             this.tabAllSettings.Properties.AppearanceCaption.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.tabAllSettings.Properties.AppearanceCaption.Options.UseFont = true;
-            this.tabAllSettings.Size = new System.Drawing.Size(1157, 759);
+            this.tabAllSettings.Size = new System.Drawing.Size(1157, 761);
             // 
             // panelControl13
             // 
@@ -3531,7 +3533,7 @@ namespace WindowsFormsApp2
             this.panelControl13.LookAndFeel.UseDefaultLookAndFeel = false;
             this.panelControl13.Margin = new System.Windows.Forms.Padding(1);
             this.panelControl13.Name = "panelControl13";
-            this.panelControl13.Size = new System.Drawing.Size(1157, 759);
+            this.panelControl13.Size = new System.Drawing.Size(1157, 761);
             this.panelControl13.TabIndex = 12;
             // 
             // layoutControl4
@@ -4276,7 +4278,7 @@ namespace WindowsFormsApp2
             this.xtraTabPage6.Controls.Add(this.bBranchBankRefund);
             this.xtraTabPage6.Controls.Add(this.bBranchBankSale);
             this.xtraTabPage6.Name = "xtraTabPage6";
-            this.xtraTabPage6.Size = new System.Drawing.Size(1151, 655);
+            this.xtraTabPage6.Size = new System.Drawing.Size(1151, 657);
             this.xtraTabPage6.Text = "Satış";
             // 
             // bBranchBankRefund
@@ -4324,7 +4326,7 @@ namespace WindowsFormsApp2
             this.xtraTabPage2.Controls.Add(this.bBranchAlisHesabat);
             this.xtraTabPage2.Controls.Add(this.bBranchStock);
             this.xtraTabPage2.Name = "xtraTabPage2";
-            this.xtraTabPage2.Size = new System.Drawing.Size(1151, 655);
+            this.xtraTabPage2.Size = new System.Drawing.Size(1151, 657);
             this.xtraTabPage2.Text = "Hesabatlar";
             // 
             // bBranchAvansHesabati
@@ -4453,7 +4455,7 @@ namespace WindowsFormsApp2
             this.xtraTabPage3.Controls.Add(this.bBranchCreditPay);
             this.xtraTabPage3.Controls.Add(this.bBranchCreditSale);
             this.xtraTabPage3.Name = "xtraTabPage3";
-            this.xtraTabPage3.Size = new System.Drawing.Size(1151, 655);
+            this.xtraTabPage3.Size = new System.Drawing.Size(1151, 657);
             this.xtraTabPage3.Text = "Kredit";
             // 
             // bBranchCreditSaleRefund
@@ -4506,7 +4508,7 @@ namespace WindowsFormsApp2
             // 
             this.xtraTabPage5.Controls.Add(this.bBranchSuppliers);
             this.xtraTabPage5.Name = "xtraTabPage5";
-            this.xtraTabPage5.Size = new System.Drawing.Size(1151, 655);
+            this.xtraTabPage5.Size = new System.Drawing.Size(1151, 657);
             this.xtraTabPage5.Text = "Təchizatçılar";
             // 
             // bBranchSuppliers
@@ -4528,7 +4530,7 @@ namespace WindowsFormsApp2
             // 
             this.xtraTabPage4.Controls.Add(this.bBranchUsers);
             this.xtraTabPage4.Name = "xtraTabPage4";
-            this.xtraTabPage4.Size = new System.Drawing.Size(1151, 655);
+            this.xtraTabPage4.Size = new System.Drawing.Size(1151, 657);
             this.xtraTabPage4.Text = "İstifadəçilər";
             // 
             // bBranchUsers
@@ -4552,7 +4554,7 @@ namespace WindowsFormsApp2
             this.xtraTabPage7.Controls.Add(this.bBranchLog);
             this.xtraTabPage7.Controls.Add(this.bBranchTerminal);
             this.xtraTabPage7.Name = "xtraTabPage7";
-            this.xtraTabPage7.Size = new System.Drawing.Size(1151, 655);
+            this.xtraTabPage7.Size = new System.Drawing.Size(1151, 657);
             this.xtraTabPage7.Text = "Sazlamalar";
             // 
             // bBranchMinusCountControl
@@ -5015,6 +5017,13 @@ namespace WindowsFormsApp2
             this.gridColumn13.VisibleIndex = 9;
             this.gridColumn13.Width = 147;
             // 
+            // accordionControlElement76
+            // 
+            this.accordionControlElement76.Name = "accordionControlElement76";
+            this.accordionControlElement76.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
+            this.accordionControlElement76.Text = "Məhsul Giriş/Çıxış hesabatı";
+            this.accordionControlElement76.Click += new System.EventHandler(this.accordionControlElement76_Click);
+            // 
             // MAINSCRRENS
             // 
             this.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(245)))), ((int)(((byte)(250)))));
@@ -5080,11 +5089,11 @@ namespace WindowsFormsApp2
             ((System.ComponentModel.ISupportInitialize)(this.gridControl2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit3.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(xyDiagram1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(series1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(xyDiagram2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(series3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartWeek)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(doughnutSeriesView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(series2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(doughnutSeriesView2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(series4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartSalesType)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit4.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.accordionControl1)).EndInit();
@@ -5548,6 +5557,7 @@ namespace WindowsFormsApp2
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn15;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn16;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn17;
+        private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement76;
     }
 }
 

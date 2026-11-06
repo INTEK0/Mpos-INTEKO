@@ -206,6 +206,7 @@
             this.gridColumn14});
             this.gridView1.DetailHeight = 431;
             this.gridView1.GridControl = this.gridControl1;
+            this.gridView1.GroupPanelText = "Satış sayı: 0";
             this.gridView1.Name = "gridView1";
             this.gridView1.OptionsBehavior.ReadOnly = true;
             this.gridView1.OptionsEditForm.PopupEditFormWidth = 1066;
@@ -215,8 +216,10 @@
             this.gridView1.OptionsView.EnableAppearanceEvenRow = true;
             this.gridView1.OptionsView.EnableAppearanceOddRow = true;
             this.gridView1.OptionsView.RowAutoHeight = true;
+            this.gridView1.OptionsView.ShowFooter = true;
             this.gridView1.OptionsView.ShowHorizontalLines = DevExpress.Utils.DefaultBoolean.True;
             this.gridView1.OptionsView.ShowIndicator = false;
+            this.gridView1.RowCountChanged += new System.EventHandler(this.gridView1_RowCountChanged);
             // 
             // gridColumn1
             // 

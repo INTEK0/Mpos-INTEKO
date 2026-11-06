@@ -324,6 +324,7 @@ namespace WindowsFormsApp2
             this.dateEdit4.Location = new System.Drawing.Point(190, 16);
             this.dateEdit4.Margin = new System.Windows.Forms.Padding(4);
             this.dateEdit4.Name = "dateEdit4";
+            this.dateEdit4.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
             this.dateEdit4.Properties.Appearance.Font = new System.Drawing.Font("Verdana", 12F);
             this.dateEdit4.Properties.Appearance.Options.UseFont = true;
             this.dateEdit4.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -339,6 +340,7 @@ namespace WindowsFormsApp2
             this.dateEdit3.Location = new System.Drawing.Point(10, 16);
             this.dateEdit3.Margin = new System.Windows.Forms.Padding(4);
             this.dateEdit3.Name = "dateEdit3";
+            this.dateEdit3.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
             this.dateEdit3.Properties.Appearance.Font = new System.Drawing.Font("Verdana", 12F);
             this.dateEdit3.Properties.Appearance.Options.UseFont = true;
             this.dateEdit3.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -378,6 +380,7 @@ namespace WindowsFormsApp2
             this.simpleButton2.Location = new System.Drawing.Point(1090, 2);
             this.simpleButton2.MaximumSize = new System.Drawing.Size(100, 66);
             this.simpleButton2.Name = "simpleButton2";
+            this.simpleButton2.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.False;
             this.simpleButton2.Size = new System.Drawing.Size(100, 60);
             this.simpleButton2.TabIndex = 7;
             this.simpleButton2.Text = "Çap et";

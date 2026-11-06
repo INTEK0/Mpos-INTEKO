@@ -1,12 +1,8 @@
-﻿using DevExpress.XtraGrid.Localization;
-using System;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Globalization;
-using System.Windows.Forms;
+using DevExpress.XtraGrid.Localization;
 using WindowsFormsApp2.Helpers;
-using WindowsFormsApp2.Helpers.DB;
-
 using static WindowsFormsApp2.Helpers.FormHelpers;
 
 namespace WindowsFormsApp2

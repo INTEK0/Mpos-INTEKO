@@ -56,6 +56,7 @@ namespace WindowsFormsApp2
             this.separatorControl1 = new DevExpress.XtraEditors.SeparatorControl();
             this.simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
             this.simpleButton2 = new DevExpress.XtraEditors.SimpleButton();
+            this.gridColumn17 = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dateEdit1.Properties)).BeginInit();
@@ -106,7 +107,8 @@ namespace WindowsFormsApp2
             this.gridColumn12,
             this.gridColumn13,
             this.gridColumn14,
-            this.gridColumn15});
+            this.gridColumn15,
+            this.gridColumn17});
             this.gridView1.DetailHeight = 431;
             this.gridView1.GridControl = this.gridControl1;
             this.gridView1.Name = "gridView1";
@@ -114,6 +116,7 @@ namespace WindowsFormsApp2
             this.gridView1.OptionsEditForm.PopupEditFormWidth = 1067;
             this.gridView1.OptionsView.EnableAppearanceEvenRow = true;
             this.gridView1.OptionsView.EnableAppearanceOddRow = true;
+            this.gridView1.OptionsView.ShowFooter = true;
             this.gridView1.OptionsView.ShowIndicator = false;
             // 
             // gridColumn3
@@ -290,7 +293,7 @@ namespace WindowsFormsApp2
             // 
             // gridColumn15
             // 
-            this.gridColumn15.Caption = "Yekun məbləğ";
+            this.gridColumn15.Caption = "Yekun alış məbləği";
             this.gridColumn15.DisplayFormat.FormatString = "C2";
             this.gridColumn15.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
             this.gridColumn15.FieldName = "YEKUN MƏBLƏĞ";
@@ -308,6 +311,7 @@ namespace WindowsFormsApp2
             this.dateEdit1.Location = new System.Drawing.Point(243, 16);
             this.dateEdit1.Margin = new System.Windows.Forms.Padding(4);
             this.dateEdit1.Name = "dateEdit1";
+            this.dateEdit1.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
             this.dateEdit1.Properties.Appearance.Font = new System.Drawing.Font("Verdana", 12F);
             this.dateEdit1.Properties.Appearance.Options.UseFont = true;
             this.dateEdit1.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -323,6 +327,7 @@ namespace WindowsFormsApp2
             this.dateEdit2.Location = new System.Drawing.Point(423, 16);
             this.dateEdit2.Margin = new System.Windows.Forms.Padding(4);
             this.dateEdit2.Name = "dateEdit2";
+            this.dateEdit2.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
             this.dateEdit2.Properties.Appearance.Font = new System.Drawing.Font("Verdana", 12F);
             this.dateEdit2.Properties.Appearance.Options.UseFont = true;
             this.dateEdit2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -426,6 +431,17 @@ namespace WindowsFormsApp2
             this.simpleButton2.Text = "Çap et";
             this.simpleButton2.Click += new System.EventHandler(this.simpleButton2_Click);
             // 
+            // gridColumn17
+            // 
+            this.gridColumn17.Caption = "Yekun satış məbləği";
+            this.gridColumn17.FieldName = "TotalSaleAmount";
+            this.gridColumn17.GroupFormat.FormatString = "C2";
+            this.gridColumn17.GroupFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.gridColumn17.Name = "gridColumn17";
+            this.gridColumn17.OptionsColumn.AllowEdit = false;
+            this.gridColumn17.Visible = true;
+            this.gridColumn17.VisibleIndex = 16;
+            // 
             // MEHSUL_ALIS_HESABATI
             // 
             this.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(245)))), ((int)(((byte)(250)))));
@@ -487,5 +503,6 @@ namespace WindowsFormsApp2
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn14;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn15;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn16;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn17;
     }
 }

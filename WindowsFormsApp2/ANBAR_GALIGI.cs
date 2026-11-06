@@ -87,7 +87,7 @@ namespace WindowsFormsApp2
 
         private void ANBAR_GALIGI_Load(object sender, EventArgs e)
         {
-            dateEdit4.DateTime = DateTime.Now;
+            dateEdit4.DateTime = DatetimeService.CurrentDateTime;
         }
 
         private async void gridView1_DoubleClick(object sender, EventArgs e)

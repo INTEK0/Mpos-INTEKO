@@ -2012,5 +2012,11 @@ GROUP BY date_;";
             gridControl4.DataSource = data;
             gridView5.GroupPanelText = $"Satıcı sayı: {gridView5.RowCount}";
         }
+
+        private void accordionControlElement76_Click(object sender, EventArgs e)
+        {
+            fProductMovementReport f = new fProductMovementReport();
+            f.Show();
+        }
     }
 }

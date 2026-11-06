@@ -735,7 +735,10 @@ namespace WindowsFormsApp2.NKA
         public async static Task<bool> Refund(RefundDto refundData, SqlConnection con = null, SqlTransaction transaction = null)
         {
             if (con is null)
+            {
                 con = new SqlConnection(DbHelpers.CurrentConnectionString);
+                transaction = con.BeginTransaction();
+            }
 
             if (con.State != ConnectionState.Open)
                 con.Open();
@@ -891,10 +894,7 @@ WHERE pl.emeliyyat_nomre = '{refundData.ProccessNo}'";
             }
 
 
-            if (refundData.PayType is PayType.Card &&
-                !string.IsNullOrWhiteSpace(UserCacheService.Terminal?.BankName) &&
-                UserCacheService.Terminal?.BankName != "PAX A35")
-
+            if (refundData.PayType is PayType.Card && !string.IsNullOrWhiteSpace(UserCacheService.Terminal?.BankName) && UserCacheService.Terminal?.BankName != "PAX A35")
             {
                 var responseBank = RefundBank(new RefundDto
                 {
@@ -939,6 +939,7 @@ WHERE pl.emeliyyat_nomre = '{refundData.ProccessNo}'";
             try
             {
                 if (response.message != "error" && response.code != "506")
+                {
                     if (response.message == "Success operation" || response.message == "Successful operation")
                     {
                         if (MessageVisible)
@@ -947,14 +948,12 @@ WHERE pl.emeliyyat_nomre = '{refundData.ProccessNo}'";
                         FormHelpers.Log($"Qəbz geri qaytarması edildi. Qəbz №: {response.data.number}");
                         return true;
                     }
-                    else
-                    {
-                        FormHelpers.Log($"Pos satış qaytarma xətası. Xəta mesajı: {response.message}");
-                        ReadyMessages.ERROR_RETURN_SALES_MESSAGE(response.message);
-                        return false;
-                    }
+                }
+                    
 
-                ReadyMessages.ERROR_RETURN_SALES_MESSAGE(response.message);
+                ReadyMessages.ERROR_RETURN_SALES_MESSAGE(response?.message);
+                FormHelpers.Log($"Pos satış qaytarma xətası. Xəta mesajı: {response?.message}");
+
                 return false;
             }
             catch (Exception ex)

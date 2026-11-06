@@ -2207,8 +2207,7 @@ FROM [pos_gaytarma_manual] where user_id_ = '{Properties.Settings.Default.UserID
                                             Cashier = Cashier,
                                             ProccessNo = textEdit1.Text,
                                             PayType = type,
-                                        },
-                                            lIpAddress.Text, textBox1.Text, type, Cashier, textEdit1.Text);
+                                        }, con, transaction);
                                         break; /*OMNITECH*/
                                     case "4":
                                         using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))

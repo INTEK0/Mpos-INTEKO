@@ -32,7 +32,7 @@ namespace WindowsFormsApp2.Helpers.CacheData
                 .Replace("ə", "e").Replace("Ə", "E");
         }
 
-        public static void PrintLabel45x25(string _company, string _product, string _price, string _barcode, string printerName)
+        public static void PrintLabel45x25(string _company, string _product, string _price, string _barcode, string printerName, string discountPrice = "")
         {
             string companyName = ReplaceChars(_company);
             string productName = ReplaceChars(_product);
@@ -42,7 +42,12 @@ namespace WindowsFormsApp2.Helpers.CacheData
             double productY = 35;
             int lineSpacing = 25;
 
+            decimal normalPrice = ParseLabelPrice60x40(_price);
+            decimal newPrice = string.IsNullOrWhiteSpace(discountPrice) ? 0 : ParseLabelPrice60x40(discountPrice);
+            bool hasDiscount = newPrice > 0 && newPrice < normalPrice;
+
             List<string> productLines = SplitProductName(productName, 12);
+
             if (productLines.Count > 3)
                 productLines = productLines.Take(3).ToList();
 
@@ -61,14 +66,14 @@ REM === Draw line under company name ===
 BAR 0,30,420,2
 ";
 
+            // === MƏHSUL ADI ===
             for (int i = 0; i < productLines.Count; i++)
-            {
                 tsplCommand += $@"
 REM === Product name, line {i + 1} ===
 TEXT 10,{productY + (i * lineSpacing)},""3"",0,1,1,""{productLines[i]}""
 ";
-            }
 
+            /*
             tsplCommand += $@"
 REM === Price ===
 TEXT 10,{priceY},""3"",0,1,1,""{_price}""
@@ -80,58 +85,63 @@ REM === Barcode ===
 BARCODE  160,130,""128"",60,1,0,2,2,""{_barcode}""
 
 PRINT 1,1
-";
+//";
 
+            */
+
+            // === QİYMƏT ===
+            if (hasDiscount)
+            {
+                string oldPrice = FormatLabelPrice60x40(normalPrice);
+                string newPriceText = FormatLabelPrice60x40(newPrice);
+
+                int oldPriceWidth = (oldPrice.Length + 4) * 12;
+
+                tsplCommand += $@"
+REM === OLD PRICE ===
+TEXT 10,115,""2"",0,1,1,""{oldPrice} AZN""
+
+REM === STRIKE THROUGH ===
+BAR 10,125,{oldPriceWidth},2
+
+REM === DISCOUNT PRICE ===
+TEXT 10,{priceY},""3"",0,1,1,""{newPriceText}""
+
+REM === AZN ===
+TEXT 10,{aznY},""3"",0,1,1,""AZN""
+";
+            }
+            else
+            {
+                tsplCommand += $@"
+REM === NORMAL PRICE ===
+TEXT 10,{priceY},""3"",0,1,1,""{_price}""
+
+REM === AZN ===
+TEXT 10,{aznY},""3"",0,1,1,""AZN""
+";
+            }
+
+            // === BARKOD ===
+            tsplCommand += $@"
+BARCODE 160,130,""128"",60,1,0,2,2,""{_barcode}""
+
+PRINT 1,1
+";
             bool result = RawPrinterHelper.SendStringToPrinter(printerName, tsplCommand);
         }
 
-        public static void PrintLabel60x40(string _company, string _product, string _price, string _barcode, string printerName)
+        public static void PrintLabel60x40(string _company, string _product, string _price, string _barcode, string printerName, string discountPrice = "")
         {
             string companyName = ReplaceChars(_company);
             string productName = ReplaceChars(_product);
 
             double priceY = 220;
             double aznY = priceY + 40;
-            //double productY = 55;
-            //if (productName.Length > 19)
-            //{
-            //    productY += 25;
-            //}      
 
-            #region [..MƏHSUL ADINDA LİMİT OLMAYAN KOD (Uzun olduqda alt sətirə keçmir)..]
-
-            //            string tsplCommand = $@"
-            //SIZE 60 mm, 40 mm
-            //GAP 2 mm, 0
-            //DENSITY 10
-            //SPEED 4
-            //DIRECTION 1
-            //CLS
-
-            //REM === Company Name: Centered at top ===
-            //TEXT 150,15,""3"",0,1,1,""{companyName}""
-
-            //REM === Draw line under company name ===
-            //BAR 0,45,580,2
-
-            //REM === Product name under the line, left aligned, large area ===
-            //TEXT 10,55,""3"",0,1,1,""{productName}""
-
-            //REM === Price at bottom-left ===
-            //TEXT 15,{priceY},""4"",0,1,1,""{_price}""
-
-
-            //REM === Price at bottom-left ===
-            //TEXT 15,{aznY},""4"",0,1,1,""AZN""
-
-            //REM === Barcode at bottom-right ===
-            //BARCODE  180,200,""128"",80,1,0,2,2,""{_barcode}""
-
-            //PRINT 1,1
-            //";
-
-            #endregion [..MƏHSUL ADINDA LİMİT OLMAYAN KOD (Uzun olduqda alt sətirə keçmir)..]
-
+            decimal normalPrice = ParseLabelPrice60x40(_price);
+            decimal newPrice = string.IsNullOrWhiteSpace(discountPrice) ? 0 : ParseLabelPrice60x40(discountPrice);
+            bool hasDiscount = newPrice > 0 && newPrice < normalPrice;
 
             List<string> productLines = SplitProductName(productName, 16);
             if (productLines.Count > 3)
@@ -157,13 +167,12 @@ BAR 0,45,580,2
 
             // Məhsulun adını hər sətir üçün yazdırılır. (Maksimum 4 sətir)
             for (int i = 0; i < productLines.Count; i++)
-            {
                 tsplCommand += $@"
 REM === Product name, line {i + 1}, left aligned ===
 TEXT 10,{productY + (i * lineSpacing)},""4"",0,1,1,""{productLines[i]}""
 ";
-            }
 
+            /*
             // Qiyməti və AZN yazdırılır
             tsplCommand += $@"
 REM === Price at bottom-left ===
@@ -177,19 +186,56 @@ BARCODE  180,200,""128"",80,1,0,2,2,""{_barcode}""
 PRINT 1,1
 ";
 
+            */
 
-            bool result = RawPrinterHelper.SendStringToPrinter(printerName, tsplCommand);
+            // === QİYMƏT ===
+            if (hasDiscount)
+            {
+                string oldPrice = FormatLabelPrice60x40(normalPrice);
+                string newPriceText = FormatLabelPrice60x40(newPrice);
+
+                int oldPriceWidth = (oldPrice.Length + 4) * 12;
+
+                tsplCommand += $@"
+REM === OLD PRICE ===
+TEXT 15,185,""2"",0,1,1,""{oldPrice} AZN""
+
+REM === STRIKE THROUGH ===
+BAR 15,195,{oldPriceWidth},2
+
+REM === DISCOUNT PRICE ===
+TEXT 15,{priceY},""4"",0,1,1,""{newPriceText}""
+
+REM === AZN ===
+TEXT 15,{aznY},""4"",0,1,1,""AZN""
+";
+            }
+            else
+            {
+                tsplCommand += $@"
+REM === NORMAL PRICE ===
+TEXT 15,{priceY},""4"",0,1,1,""{_price}""
+
+REM === AZN ===
+TEXT 15,{aznY},""4"",0,1,1,""AZN""
+";
+            }
+
+            // === BARKOD ===
+            tsplCommand += $@"
+REM === BARCODE ===
+BARCODE 180,200,""128"",80,1,0,2,2,""{_barcode}""
+
+PRINT 1,1
+";
+
+
+            RawPrinterHelper.SendStringToPrinter(printerName, tsplCommand);
         }
 
-        public static void PrintLabel30x20(string _product, string _price, string _barcode, string printerName, Enums.BarcodeType barcodeType)
+        public static void PrintLabel30x20(string _product, string _price, string _barcode, string printerName, Enums.BarcodeType barcodeType, string discountPrice = "")
         {
             string productName = ReplaceChars(_product);
-
-            //double productY = 10;
-            //if (productName.Length > 16)
-            //{
-            //    productY += 15;
-            //}
 
             List<string> productLines = SplitProductName(productName, 16);
             if (productLines.Count > 2)
@@ -198,6 +244,12 @@ PRINT 1,1
             double productY = 10;
             int lineSpacing = 22;
 
+            decimal normalPrice = ParseLabelPrice60x40(_price);
+
+            decimal newPrice = string.IsNullOrWhiteSpace(discountPrice) ? 0 : ParseLabelPrice60x40(discountPrice);
+
+            bool hasDiscount = newPrice > 0 && newPrice < normalPrice;
+
             string tsplCommand = $@"
 SIZE 30 mm, 20 mm
 GAP 2 mm, 0
@@ -205,6 +257,7 @@ DENSITY 10
 SPEED 4
 DIRECTION 1
 CLS";
+
             // Məhsulun adını hər sətir üçün yazdırılır. (Maksimum 2 sətir)
             for (int i = 0; i < productLines.Count; i++)
             {
@@ -214,13 +267,48 @@ TEXT 5,{productY + (i * lineSpacing)},""2"",0,1,1,""{productLines[i]}""
 ";
             }
 
-            // Qiyməti və AZN yazdırılır
-            tsplCommand += $@"
-REM === Price ===
-TEXT 58,135,""2"",0,1,1,""{_price} AZN""
+            //            // Qiyməti və AZN yazdırılır
+            //            tsplCommand += $@"
+            //REM === Price ===
+            //TEXT 58,135,""2"",0,1,1,""{_price} AZN""
 
-REM === Barcode ===
-BARCODE  7,50,""{Enums.GetEnumDescription(barcodeType)}"",40,2,0,2,2,""{_barcode}""
+            //REM === Barcode ===
+            //BARCODE  7,50,""{Enums.GetEnumDescription(barcodeType)}"",40,2,0,2,2,""{_barcode}""
+
+            //PRINT 1,1
+            //";
+
+
+
+            // === ENDİRİMLİ QİYMƏT ===
+            if (hasDiscount)
+            {
+                string oldPrice = FormatLabelPrice60x40(normalPrice);
+                string newPriceText = FormatLabelPrice60x40(newPrice);
+
+                // Köhnə qiymət
+                tsplCommand += $@"
+REM === OLD PRICE ===
+TEXT 5,113,""2"",0,1,1,""{oldPrice} AZN""
+
+REM === STRIKE THROUGH ===
+BAR 5,123,{Math.Min(230, (oldPrice.Length + 4) * 12)},2
+
+REM === DISCOUNT PRICE ===
+TEXT 58,135,""2"",0,1,1,""{newPriceText} AZN""
+";
+            }
+            else
+            {
+                // === NORMAL QİYMƏT ===
+                tsplCommand += $@"
+TEXT 58,135,""2"",0,1,1,""{_price} AZN""
+";
+            }
+
+            // === BARKOD ===
+            tsplCommand += $@"
+BARCODE 7,50,""{Enums.GetEnumDescription(barcodeType)}"",40,2,0,2,2,""{_barcode}""
 
 PRINT 1,1
 ";

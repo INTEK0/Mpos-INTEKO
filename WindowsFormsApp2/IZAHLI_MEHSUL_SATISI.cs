@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
+using WindowsFormsApp2.Services;
 using static WindowsFormsApp2.Helpers.FormHelpers;
 
 namespace WindowsFormsApp2
@@ -24,16 +25,16 @@ namespace WindowsFormsApp2
         private void IZAHLI_MEHSUL_SATISI_Load(object sender, EventArgs e)
         {
             ClinicModuleShow();
-            DateTime dateTime = DateTime.Now;
+            DateTime dateTime = DatetimeService.CurrentDateTime;
 
-            dateEdit3.Text = dateTime.ToShortDateString();
-            dateEdit4.Text = dateTime.ToShortDateString();
+            dateEdit3.DateTime = dateTime;
+            dateEdit4.DateTime = dateTime;
             gridView1.OptionsView.ShowColumnHeaders = false;
         }
 
         private void simpleButton3_Click(object sender, EventArgs e)
         {
-            getall(Convert.ToDateTime(dateEdit3.Text), Convert.ToDateTime(dateEdit4.Text).AddDays(1));
+            getall(dateEdit3.DateTime, dateEdit4.DateTime.AddDays(1));
         }
 
         public void getall(DateTime D1_, DateTime D2_)

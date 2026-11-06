@@ -29,13 +29,14 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(fPrintBarcode));
-            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions3 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions1 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
             this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
             this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
+            this.checkEdit1 = new DevExpress.XtraEditors.CheckEdit();
             this.dateEdit1 = new DevExpress.XtraEditors.DateEdit();
             this.chMehsulAlisi = new DevExpress.XtraEditors.CheckEdit();
             this.lookPrinters = new DevExpress.XtraEditors.LookUpEdit();
@@ -51,7 +52,8 @@
             this.colProductName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colProductCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.coLSalePrice = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colDiscountPrice = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colQuantity = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colBarcode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colEdv = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -60,11 +62,11 @@
             this.spinCount = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
             this.colPrintButton = new DevExpress.XtraGrid.Columns.GridColumn();
             this.bGridPrint = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.checkEdit1 = new DevExpress.XtraEditors.CheckEdit();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).BeginInit();
             this.tablePanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).BeginInit();
             this.panelControl2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.checkEdit1.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dateEdit1.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dateEdit1.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chMehsulAlisi.Properties)).BeginInit();
@@ -74,7 +76,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.gridProducts)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinCount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bGridPrint)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.checkEdit1.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // tablePanel1
@@ -113,6 +114,19 @@
             this.tablePanel1.SetRow(this.panelControl2, 0);
             this.panelControl2.Size = new System.Drawing.Size(1197, 61);
             this.panelControl2.TabIndex = 3;
+            // 
+            // checkEdit1
+            // 
+            this.checkEdit1.Location = new System.Drawing.Point(636, 3);
+            this.checkEdit1.Name = "checkEdit1";
+            this.checkEdit1.Properties.Appearance.Options.UseTextOptions = true;
+            this.checkEdit1.Properties.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.checkEdit1.Properties.AutoHeight = false;
+            this.checkEdit1.Properties.Caption = "Alış miqdarı ilə çap sayını eyniləşdir";
+            this.checkEdit1.Size = new System.Drawing.Size(156, 55);
+            this.checkEdit1.TabIndex = 14;
+            this.checkEdit1.Visible = false;
+            this.checkEdit1.CheckedChanged += new System.EventHandler(this.checkEdit1_CheckedChanged);
             // 
             // dateEdit1
             // 
@@ -238,7 +252,8 @@
             this.colProductName,
             this.colProductCode,
             this.coLSalePrice,
-            this.gridColumn1,
+            this.gridColumn3,
+            this.colDiscountPrice,
             this.colQuantity,
             this.colBarcode,
             this.colEdv,
@@ -258,6 +273,7 @@
             this.gridProducts.OptionsView.ColumnHeaderAutoHeight = DevExpress.Utils.DefaultBoolean.True;
             this.gridProducts.OptionsView.RowAutoHeight = true;
             this.gridProducts.OptionsView.ShowIndicator = false;
+            this.gridProducts.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridProducts_CustomRowCellEdit);
             this.gridProducts.InvalidValueException += new DevExpress.XtraEditors.Controls.InvalidValueExceptionEventHandler(this.gridProducts_InvalidValueException);
             // 
             // colSupplierId
@@ -277,7 +293,7 @@
             this.colSupplierName.OptionsColumn.ReadOnly = true;
             this.colSupplierName.Visible = true;
             this.colSupplierName.VisibleIndex = 1;
-            this.colSupplierName.Width = 147;
+            this.colSupplierName.Width = 148;
             // 
             // colProductId
             // 
@@ -295,7 +311,7 @@
             this.gridColumn2.OptionsColumn.AllowEdit = false;
             this.gridColumn2.Visible = true;
             this.gridColumn2.VisibleIndex = 2;
-            this.gridColumn2.Width = 206;
+            this.gridColumn2.Width = 183;
             // 
             // colProductName
             // 
@@ -306,7 +322,7 @@
             this.colProductName.OptionsColumn.ReadOnly = true;
             this.colProductName.Visible = true;
             this.colProductName.VisibleIndex = 3;
-            this.colProductName.Width = 454;
+            this.colProductName.Width = 291;
             // 
             // colProductCode
             // 
@@ -329,14 +345,33 @@
             this.coLSalePrice.OptionsColumn.ReadOnly = true;
             this.coLSalePrice.Visible = true;
             this.coLSalePrice.VisibleIndex = 6;
-            this.coLSalePrice.Width = 169;
+            this.coLSalePrice.Width = 168;
             // 
-            // gridColumn1
+            // gridColumn3
             // 
-            this.gridColumn1.Caption = "ENDİRİMLİ SATIŞ QİYMƏTİ";
-            this.gridColumn1.Name = "gridColumn1";
-            this.gridColumn1.OptionsColumn.AllowEdit = false;
-            this.gridColumn1.Width = 114;
+            this.gridColumn3.Caption = "ENDİRİM MƏBLƏĞİ";
+            this.gridColumn3.DisplayFormat.FormatString = "C2";
+            this.gridColumn3.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.gridColumn3.FieldName = "DiscountTotal";
+            this.gridColumn3.Name = "gridColumn3";
+            this.gridColumn3.OptionsColumn.AllowEdit = false;
+            this.gridColumn3.Visible = true;
+            this.gridColumn3.VisibleIndex = 7;
+            this.gridColumn3.Width = 140;
+            // 
+            // colDiscountPrice
+            // 
+            this.colDiscountPrice.AppearanceCell.Options.UseTextOptions = true;
+            this.colDiscountPrice.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.colDiscountPrice.Caption = "ENDİRİMLİ SATIŞ QİYMƏTİ";
+            this.colDiscountPrice.DisplayFormat.FormatString = "C2";
+            this.colDiscountPrice.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.colDiscountPrice.FieldName = "DiscountPrice";
+            this.colDiscountPrice.Name = "colDiscountPrice";
+            this.colDiscountPrice.OptionsColumn.AllowEdit = false;
+            this.colDiscountPrice.Visible = true;
+            this.colDiscountPrice.VisibleIndex = 8;
+            this.colDiscountPrice.Width = 277;
             // 
             // colQuantity
             // 
@@ -358,7 +393,7 @@
             this.colBarcode.OptionsColumn.ReadOnly = true;
             this.colBarcode.Visible = true;
             this.colBarcode.VisibleIndex = 4;
-            this.colBarcode.Width = 158;
+            this.colBarcode.Width = 131;
             // 
             // colEdv
             // 
@@ -377,7 +412,7 @@
             this.colUnitName.OptionsColumn.FixedWidth = true;
             this.colUnitName.Visible = true;
             this.colUnitName.VisibleIndex = 5;
-            this.colUnitName.Width = 101;
+            this.colUnitName.Width = 89;
             // 
             // colPrintCount
             // 
@@ -393,7 +428,7 @@
             this.colPrintCount.MinWidth = 120;
             this.colPrintCount.Name = "colPrintCount";
             this.colPrintCount.Visible = true;
-            this.colPrintCount.VisibleIndex = 7;
+            this.colPrintCount.VisibleIndex = 9;
             this.colPrintCount.Width = 120;
             // 
             // spinCount
@@ -431,23 +466,10 @@
             // 
             this.bGridPrint.AutoHeight = false;
             this.bGridPrint.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "ÇAP ET", -1, true, true, false, editorButtonImageOptions3, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "ÇAP ET", -1, true, true, false, editorButtonImageOptions1, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.bGridPrint.Name = "bGridPrint";
             this.bGridPrint.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.bGridPrint.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.bGridPrint_ButtonClick);
-            // 
-            // checkEdit1
-            // 
-            this.checkEdit1.Location = new System.Drawing.Point(636, 3);
-            this.checkEdit1.Name = "checkEdit1";
-            this.checkEdit1.Properties.Appearance.Options.UseTextOptions = true;
-            this.checkEdit1.Properties.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.checkEdit1.Properties.AutoHeight = false;
-            this.checkEdit1.Properties.Caption = "Alış miqdarı ilə çap sayını eyniləşdir";
-            this.checkEdit1.Size = new System.Drawing.Size(156, 55);
-            this.checkEdit1.TabIndex = 14;
-            this.checkEdit1.Visible = false;
-            this.checkEdit1.CheckedChanged += new System.EventHandler(this.checkEdit1_CheckedChanged);
             // 
             // fPrintBarcode
             // 
@@ -465,6 +487,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).EndInit();
             this.panelControl2.ResumeLayout(false);
             this.panelControl2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.checkEdit1.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dateEdit1.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dateEdit1.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chMehsulAlisi.Properties)).EndInit();
@@ -474,7 +497,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.gridProducts)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinCount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bGridPrint)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.checkEdit1.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -504,9 +526,10 @@
         private DevExpress.XtraGrid.Columns.GridColumn colUnitName;
         private DevExpress.XtraEditors.CheckEdit chMehsulAlisi;
         private DevExpress.XtraEditors.DateEdit dateEdit1;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumn1;
+        private DevExpress.XtraGrid.Columns.GridColumn colDiscountPrice;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn2;
         private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit spinCount;
         private DevExpress.XtraEditors.CheckEdit checkEdit1;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn3;
     }
 }

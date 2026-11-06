@@ -157,7 +157,6 @@ namespace WindowsFormsApp2.Forms
                 }
             }
 
-
             int IsExistsBarcode = DbProsedures.Exists_ProductBarcode(tBarcode.Text.Trim(), tProductName.Text.TrimStart().Trim());
 
             if (IsExistsBarcode != 1)

@@ -1047,7 +1047,7 @@ group by
                                 if ((DbProductquantity - selectedProductQuantity) < 0)
                                 {
                                     XtraMessageBox.Show($"Satılan məhsul sayı anbardakı qalıqdan çoxdur \nMəhsul adı: {row["MƏHSUL ADI"].ToString()}\nAnbar qalığı: {DbProductquantity.ToString("N2")}", "Bildiriş", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                    //return;
+                                    return;
                                 }
                             }
                         }

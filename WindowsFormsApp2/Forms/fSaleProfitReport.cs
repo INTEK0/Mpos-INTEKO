@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using DevExpress.XtraGrid;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
+using WindowsFormsApp2.Services;
 
 namespace WindowsFormsApp2.Forms
 {
@@ -12,13 +14,13 @@ namespace WindowsFormsApp2.Forms
         public fSaleProfitReport()
         {
             InitializeComponent();
-            FormHelpers.GridPanelText(gridView1);
         }
 
         private void fSaleProfitReport_Load(object sender, EventArgs e)
         {
-            dateEdit1.Text = DateTime.Now.ToShortDateString();
-            dateEdit2.Text = DateTime.Now.ToShortDateString();
+            var date = DatetimeService.CurrentDateTime;
+            dateEdit1.DateTime = date;
+            dateEdit2.DateTime = date;
             gridView1.OptionsView.ShowColumnHeaders = false;
         }
 
@@ -47,8 +49,52 @@ namespace WindowsFormsApp2.Forms
                     {
                         da.Fill(dt);
                         gridView1.OptionsView.ShowColumnHeaders = true;
+                        gridView1.OptionsView.ShowColumnHeaders = true;
                         gridControl1.DataSource = dt;
                         gridView1.BestFitColumns();
+
+                        string SaleQuantity = "SaleQuantity";
+                        string TotalPurchaseAmount = "TotalPurchaseAmount";
+                        string TotalSaleAmount = "TotalSaleAmount";
+                        string Profit = "Profit";
+
+                        gridView1.Columns[SaleQuantity].Summary.Clear();
+                        gridView1.Columns[TotalPurchaseAmount].Summary.Clear();
+                        gridView1.Columns[TotalSaleAmount].Summary.Clear();
+                        gridView1.Columns[Profit].Summary.Clear();
+
+                        GridColumnSummaryItem quantitySum = new GridColumnSummaryItem
+                        {
+                            FieldName = SaleQuantity,
+                            SummaryType = DevExpress.Data.SummaryItemType.Sum,
+                            DisplayFormat = "{0:N2}"
+                        };
+
+                        GridColumnSummaryItem purchasekSum = new GridColumnSummaryItem
+                        {
+                            FieldName = TotalPurchaseAmount,
+                            SummaryType = DevExpress.Data.SummaryItemType.Sum,
+                            DisplayFormat = "{0:N2}"
+                        };
+
+                        GridColumnSummaryItem saleSum = new GridColumnSummaryItem
+                        {
+                            FieldName = TotalSaleAmount,
+                            SummaryType = DevExpress.Data.SummaryItemType.Sum,
+                            DisplayFormat = "{0:N2}"
+                        };
+
+                        GridColumnSummaryItem profitSum = new GridColumnSummaryItem
+                        {
+                            FieldName = Profit,
+                            SummaryType = DevExpress.Data.SummaryItemType.Sum,
+                            DisplayFormat = "{0:N2}"
+                        };
+
+                        gridView1.Columns[SaleQuantity].Summary.Add(quantitySum);
+                        gridView1.Columns[TotalPurchaseAmount].Summary.Add(purchasekSum);
+                        gridView1.Columns[TotalSaleAmount].Summary.Add(saleSum);
+                        gridView1.Columns[Profit].Summary.Add(profitSum);
                     }
                 }
             }
@@ -56,6 +102,11 @@ namespace WindowsFormsApp2.Forms
             {
                 ReadyMessages.ERROR_DEFAULT_MESSAGE(e.Message);
             }
+        }
+
+        private void gridView1_RowCountChanged(object sender, EventArgs e)
+        {
+            gridView1.GroupPanelText = $"Satış sayı: {gridView1.RowCount}";
         }
     }
 }

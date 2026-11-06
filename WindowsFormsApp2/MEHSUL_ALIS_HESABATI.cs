@@ -2,8 +2,10 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
+using DevExpress.XtraGrid;
 using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.DB;
+using WindowsFormsApp2.Services;
 using static WindowsFormsApp2.Helpers.FormHelpers;
 
 namespace WindowsFormsApp2
@@ -18,10 +20,10 @@ namespace WindowsFormsApp2
 
         private void MEHSUL_ALIS_HESABATI_Load(object sender, EventArgs e)
         {
-            DateTime dateTime = DateTime.Now;
+            DateTime dateTime = DatetimeService.CurrentDateTime;
 
-            dateEdit1.Text = dateTime.ToShortDateString();
-            dateEdit2.Text = dateTime.ToShortDateString();
+            dateEdit1.DateTime = dateTime;
+            dateEdit2.DateTime = dateTime;
 
             lookupedittextxhange_main();
         }
@@ -80,6 +82,15 @@ namespace WindowsFormsApp2
                     {
                         da.Fill(dt);
                         gridControl1.DataSource = dt;
+
+                        gridView1.Columns["YEKUN MƏBLƏĞ"].Summary.Clear();
+                        GridColumnSummaryItem stockSum = new GridColumnSummaryItem
+                        {
+                            FieldName = "YEKUN MƏBLƏĞ",
+                            SummaryType = DevExpress.Data.SummaryItemType.Sum,
+                            DisplayFormat = "{0:N2}"
+                        };
+                        gridView1.Columns["YEKUN MƏBLƏĞ"].Summary.Add(stockSum);
                     }
                 }
             }
@@ -110,6 +121,7 @@ namespace WindowsFormsApp2
             */
 
 
+            //string query = "SELECT * FROM dbo.ALINAN_MEHSUL(@pricePoint,@pricePoint1)";
             string query = "SELECT * FROM dbo.ALINAN_MEHSUL(@pricePoint,@pricePoint1)";
             using (SqlConnection connection = new SqlConnection(DbHelpers.CurrentConnectionString))
             {
@@ -124,6 +136,34 @@ namespace WindowsFormsApp2
                         {
                             da.Fill(dt);
                             gridControl1.DataSource = dt;
+
+                            gridView1.Columns["YEKUN MƏBLƏĞ"].Summary.Clear();
+                            gridView1.Columns["Quantity"].Summary.Clear();
+                            gridView1.Columns["TotalSaleAmount"].Summary.Clear();
+
+                            GridColumnSummaryItem stockSum = new GridColumnSummaryItem
+                            {
+                                FieldName = "YEKUN MƏBLƏĞ",
+                                SummaryType = DevExpress.Data.SummaryItemType.Sum,
+                                DisplayFormat = "{0:N2}"
+                            };
+
+                            GridColumnSummaryItem quantitySum = new GridColumnSummaryItem
+                            {
+                                FieldName = "Quantity",
+                                SummaryType = DevExpress.Data.SummaryItemType.Sum,
+                                DisplayFormat = "{0:N2}"
+                            };
+
+                            GridColumnSummaryItem saleySum = new GridColumnSummaryItem
+                            {
+                                FieldName = "TotalSaleAmount",
+                                SummaryType = DevExpress.Data.SummaryItemType.Sum,
+                                DisplayFormat = "{0:N2}"
+                            };
+                            gridView1.Columns["YEKUN MƏBLƏĞ"].Summary.Add(stockSum);
+                            gridView1.Columns["Quantity"].Summary.Add(quantitySum);
+                            gridView1.Columns["TotalSaleAmount"].Summary.Add(saleySum);
                         }
                     }
                 }

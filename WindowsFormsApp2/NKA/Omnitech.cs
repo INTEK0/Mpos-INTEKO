@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Windows.Forms;
+using DevExpress.Utils;
 using DevExpress.XtraCharts.Native;
 using DevExpress.XtraEditors;
 using Newtonsoft.Json;
@@ -11,6 +12,7 @@ using WindowsFormsApp2.Helpers;
 using WindowsFormsApp2.Helpers.CacheData;
 using WindowsFormsApp2.Helpers.DB;
 using WindowsFormsApp2.Helpers.Messages;
+using static DTOs;
 using static WindowsFormsApp2.Helpers.DB.DatabaseClasses;
 using static WindowsFormsApp2.Helpers.Enums;
 
@@ -41,6 +43,8 @@ namespace WindowsFormsApp2.NKA
                 else
                 {
                     OmnitechResponse weatherForecast = System.Text.Json.JsonSerializer.Deserialize<OmnitechResponse>(response.Content);
+                    weatherForecast.requestJson = json;
+                    weatherForecast.responseJson = response.Content;
                     return weatherForecast;
                 }
             }
@@ -532,55 +536,73 @@ WHERE user_id = {UserCacheService.User.Id}";
 
             var response = RequestPOST(ipAddress, json);
 
-            if (response != null)
+            try
             {
-                if (response.message == "Successful operation")
+                if (response != null)
                 {
-                    var resultId = DbProsedures.InsertPosSales(new PosSales
+                    if (response.message == "Successful operation")
                     {
-                        posNomre = response.document_number.ToString(),
-                        longFiskalId = response.long_id,
-                        proccessNo = proccessNo,
-                        cash = cash,
-                        card = card,
-                        total = total,
-                        json = json,
-                        shortFiskalId = response.short_id,
-                        customerId = customer?.CustomerID,
-                        salePersonelId = personel?.Id,
-                        doctorId = doctor?.Id,
-                    });
+                        var resultId = DbProsedures.InsertPosSales(new PosSales
+                        {
+                            posNomre = response.document_number.ToString(),
+                            longFiskalId = response.long_id,
+                            proccessNo = proccessNo,
+                            cash = cash,
+                            card = card,
+                            total = total,
+                            json = json,
+                            shortFiskalId = response.short_id,
+                            customerId = customer?.CustomerID,
+                            salePersonelId = personel?.Id,
+                            doctorId = doctor?.Id,
+                        });
 
-                    if (personel != null)
-                        DbProsedures.InsertSalePersonnelBonus(resultId);
+                        if (personel != null)
+                            DbProsedures.InsertSalePersonnelBonus(resultId);
 
-                    if (MessageVisible)
-                    {
-                        ReadyMessages.SUCCESS_SALES_MESSAGE();
+                        if (MessageVisible)
+                        {
+                            ReadyMessages.SUCCESS_SALES_MESSAGE();
+                        }
+
+                        FormHelpers.Log($"Pos satışı uğurla edildi. Qəbz №: {response.document_number}");
+                        return true;
                     }
+                    else if (response.message == "document: invalid shift duration")
+                    {
+                        XtraMessageBox.Show("GÜN SONU (Z) HESABATI ÇIXARILMAYIB !\n\nZəhmət olmasa pos bağla düyməsinə vuraraq günü sonlandırın.", "Mesaj", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else if (response.message == "document: invalid shift status")
+                    {
+                        XtraMessageBox.Show("NÖVBƏ AÇILMAYIB !\n\nZəhmət olmasa pos aç düyməsinə vuraraq növbəni açın.", "Mesaj", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        ReadyMessages.ERROR_SALES_MESSAGE(response.message);
+                        FormHelpers.Log($"Pos satışı xətası - Xəta mesajı: {response.message}");
+                    }
+                }
 
-                    FormHelpers.Log($"Pos satışı uğurla edildi. Qəbz №: {response.document_number}");
-                    return true;
-                }
-                else if (response.message == "document: invalid shift duration")
+                return false;
+            }
+            catch (Exception ex)
+            {
+                FormHelpers.Log($"Pos satışı xətası. Xəta mesajı: {ex.Message}");
+                ReadyMessages.ERROR_SALES_MESSAGE(ex.Message);
+                return false;
+            }
+            finally
+            {
+                FormHelpers.OperationLog(new OperationLogs
                 {
-                    XtraMessageBox.Show("GÜN SONU (Z) HESABATI ÇIXARILMAYIB !\n\nZəhmət olmasa pos bağla düyməsinə vuraraq günü sonlandırın.", "Mesaj", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return false;
-                }
-                else if (response.message == "document: invalid shift status")
-                {
-                    XtraMessageBox.Show("NÖVBƏ AÇILMAYIB !\n\nZəhmət olmasa pos aç düyməsinə vuraraq növbəni açın.", "Mesaj", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return false;
-                }
-                else
-                {
-                    ReadyMessages.ERROR_SALES_MESSAGE(response.message);
-                    FormHelpers.Log($"Pos satışı xətası - Xəta mesajı: {response.message}");
-                    return false;
-                }
+                    OperationType = OperationType.PosSales,
+                    OperationId = (int)OperationType.PosSales,
+                    Message = response.message,
+                    RequestCode = response.requestJson,
+                    ResponseCode = response.responseJson,
+                });
             }
 
-            return false;
         }
 
         public static bool Prepayment(DTOs.SalesDto salesData /*string ipAddress, string token, string proccessNo, decimal total, decimal cash, decimal card, decimal incomingSum, string cashier, Customer customer, Doctor doctor, string rrn = ""*/)
@@ -1334,13 +1356,85 @@ ORDER BY pg.pos_gaytarma_manual_id DESC;";
             return false;
         }
 
-        public static bool Rollback(DTOs.RefundDto refundDto, string ipAddress, string accessToken, PayType payType, string cashier, string proccesNo)
+        public static bool Rollback(DTOs.RefundDto refundDto, SqlConnection con = null, SqlTransaction transaction = null)
         {
             if (string.IsNullOrWhiteSpace(refundDto.AccessToken))
             {
                 refundDto.AccessToken = Login(refundDto.IpAddress);
                 if (string.IsNullOrWhiteSpace(refundDto.AccessToken))
                     return false;
+            }
+
+            string fiskallID = "";
+            decimal total = default;
+            string rrn = null;
+            string transactionId = null;
+            string transactionNumber = null;
+            string approvalCode = null;
+
+            string query = $@"SELECT 
+  [pos_satis_check_main_id], 
+  [pos_nomre], 
+  [fiscal_id], 
+  [date_], 
+  [bankttnm], 
+  [user_id_], 
+  [emeliyyat_nomre], 
+  [NEGD_], 
+  [KART_], 
+  CASE 
+        WHEN [NEGD_] > 0 THEN N'NAĞD'
+        WHEN [KART_] > 0 THEN N'KART'
+        ELSE NULL
+    END AS PaymentType,
+  [UMUMI_MEBLEG], 
+  [json_], 
+  [fiscalNum],
+  [BankTransactionId],
+  [BankTransactionNumber],
+  [BankApprovalCode],
+  [documentID] 
+FROM 
+  [pos_satis_check_main] WHERE[pos_satis_check_main_id] IN(
+    SELECT[pos_satis_check_main_id] 
+    FROM 
+      [pos_gaytarma_manual] 
+    where 
+      [pos_gaytarma_manual_id] =(
+        select 
+          max([pos_gaytarma_manual_id]) 
+        from 
+          [pos_gaytarma_manual] WHERE user_id_ = 
+            {UserCacheService.User.Id}));";
+
+            using (SqlCommand cmd = new SqlCommand(query, con, transaction))
+            using (SqlDataReader dr = cmd.ExecuteReader())
+            {
+                if (dr.Read())
+                {
+                    decimal cash1 = Convert.ToDecimal(dr["NEGD_"].ToString());
+                    decimal card1 = Convert.ToDecimal(dr["KART_"].ToString());
+                    string fiscal_id = dr["fiscal_id"].ToString();
+                    string rrn1 = dr["bankttnm"].ToString();
+                    string bankTransactionId = dr["BankTransactionId"].ToString();
+                    string bankTransactionNumber = dr["BankTransactionNumber"].ToString();
+                    string bankApprovalCode = dr["BankApprovalCode"].ToString();
+                    string paymentType = dr["PaymentType"].ToString();
+
+                    refundDto.PayType = paymentType == "KART" ? PayType.Card : PayType.Cash;
+                    refundDto.Total = cash1 + card1;
+                    refundDto.Cash = cash1;
+                    refundDto.Card = card1;
+                    refundDto.ParentDocumentId = fiscal_id;
+                    rrn = rrn1;
+                    transactionId = bankTransactionId;
+                    transactionNumber = bankTransactionNumber;
+                    approvalCode = bankApprovalCode;
+                }
+                refundDto.Rrn = string.IsNullOrWhiteSpace(rrn) ? refundDto.Rrn : rrn;
+                refundDto.BankTransactionId = transactionId;
+                refundDto.BankTransactionNumber = transactionNumber;
+                refundDto.BankApprovalCode = approvalCode;
             }
 
             RollbackRequest.RequestData root = new RollbackRequest.RequestData
@@ -2439,6 +2533,8 @@ ORDER BY pg.pos_gaytarma_manual_id DESC;";
 
         public class OmnitechResponse
         {
+            public string requestJson { get; set; }
+            public string responseJson { get; set; }
             public int code { get; set; }
             public string message { get; set; }
             public string access_token { get; set; }
